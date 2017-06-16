@@ -4,10 +4,10 @@
 
 <dl>
   <dt>Logical ID</dt>
-  <dd>Entity item's visible string ID, which may or may not be DB <i>Primary ID</i>.</dd>
+  <dd>Entity instance's visible string ID, which may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
-  <dd>Optional actions to be perfomed with an entity item. There are three kinds of operations:
+  <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
     <ul>
       <li><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
       <br />
@@ -17,7 +17,7 @@
     </ul>
   </dd>
   <dt>Persistent field</dt>
-  <dd>Entity attribute stored on server and returned as item property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
+  <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
   <dd>One of the following <i>Persistent fields</i>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
 </dl>
@@ -72,8 +72,8 @@ Custom/standard View ID. *Custom Views* are defined in [Entity Configuration](#e
 View ID | Description
 ---|---
 search | Search criteria and result
-create | New entity item creation
-edit | Existing entity item editing
+create | New entity instance creation
+edit | Existing entity instance editing
 show | The same as *edit* but in read-only mode
 error | Error page
 
@@ -118,7 +118,7 @@ offset | `0`
 
 ```javascript
 {
-  id: <string, entity item Ligical ID>,
+  id: <string, entity instance Ligical ID>,
   ?tab: <string, active tab name>
 }
 ```
@@ -144,10 +144,10 @@ message | -
 
 ### *EditorComponent* props.onTransition
 
-A transition handler to be called *before* CRUD Editor changes View ID/State.  Usually this function reflects View ID and View State to URL.  It may also change View ID/State by rendering *EditorComponent* with new *props*.
+A transition handler to be called *after* CRUD Editor changes View ID/State.  Usually this function reflects View ID and View State to URL.  It may also change View ID/State by rendering *EditorComponent* with new *props*.
 
 ```javascript
-function ({ view, state, preventDefault }) {
+function ({ view, state }) {
   ...
   return;  // Return value is ignored.
 }
@@ -157,7 +157,6 @@ Argument | Type | Description
 ---|---|---
 view | string | View ID.<br />See [props.view](#editorcomponent-propsview)
 state | object | Full View State.<br />See [props.state](#editorcomponent-propsstate)
-preventDefault | function | Call this function to prevent CRUD Editor from changing its View and/or State.
 
 ### *EditorComponent* props.onExternalOperation
 
@@ -165,7 +164,7 @@ An object with *external operation* handlers.  A handler is called when a corres
 
 ```javascript
 {
-  <external operation name>: function({ item, view, state }) {
+  <external operation name>: function({ instance, view, state }) {
     ...
     return;  // Return value is ignored.
   },
@@ -177,7 +176,7 @@ Every handler has the same set of arguments:
 
 Argument | Type | Description
 ---|---|---
-item | object | An entity item which *external operation* was called upon.
+instance | object | An entity instance which *external operation* was called upon.
 view | string | View ID at the time when *external operation* was called.<br />See [props.view](#editorcomponent-propsview)
 state | object | Full View State at the time when *external operation* was called.<br />See [props.state](#editorcomponent-propsstate)
 
@@ -208,7 +207,7 @@ An object describing an entity. It has the following structure:
 
         /*
          * Constraints for field validation.
-         * They are usually applied during entity item creation/modification.
+         * They are usually applied during entity instance creation/modification.
          */
         ?constraints: {
           ?max: <number|date, max length for strings or max value for dates/numbers>,
@@ -223,7 +222,7 @@ An object describing an entity. It has the following structure:
            * - true for pass,
            * - false for fail.
            */
-          ?async validate: function(<serializable, field value>, <object, entity item>) {...}
+          ?async validate: function(<serializable, field value>, <object, entity instance>) {...}
         }
       },
       ...
@@ -240,7 +239,7 @@ An object describing an entity. It has the following structure:
    */
   api: {
     /*
-     * get single entity item by its Logical ID.
+     * get single entity instance by its Logical ID.
      */
     async get: function(<string, Logical IDs>) {
       ...
@@ -251,7 +250,7 @@ An object describing an entity. It has the following structure:
     },
 
     /*
-     * search for entity items by a criteria.
+     * search for entity instances by a criteria.
      */
     async search: function({
       ?filter: {
@@ -265,25 +264,25 @@ An object describing an entity. It has the following structure:
     }) {
       ...
       return {
-        items: [{
+        instances: [{
           <field name>: <serializable, field value>,
           ...
         }, ...],
-        totalCount: <whole number, total number of filtered entity items>
+        totalCount: <whole number, total number of filtered entity instances>
       };
     },
 
     /*
-     * delete entity items transactionally by their Logical IDs.
+     * delete entity instances transactionally by their Logical IDs.
      */
     async delete: function(<array[string], Logical IDs>) {
       return {
-        count: <whole number, how many entity items where actually deleted>
+        count: <whole number, how many entity instances where actually deleted>
       };
     },
 
     /*
-     * create new entity item and return its actial server copy.
+     * create new entity instance and return its actial server copy.
      */
     async create: function({
       <field name>: <serializable, field value>,
@@ -297,7 +296,7 @@ An object describing an entity. It has the following structure:
     },
 
     /*
-     * update existing entity item and return its actial server copy.
+     * update existing entity instance and return its actial server copy.
      */
     async update: function({
       <field name>: <serializable, field value>,
@@ -345,12 +344,12 @@ An object describing an entity. It has the following structure:
       return {
 
         /*
-         * Generate label for entity item description.
-         * Default is item._objectLabel
+         * Generate label for entity instance description.
+         * Default is instance._objectLabel
          */
-        ?itemDescription(<object, entity item>) {
+        ?instanceDescription(<object, entity instance>) {
           ...
-          return <string, entity item description>;
+          return <string, entity instance description>;
         },
 
         /*
@@ -362,7 +361,7 @@ An object describing an entity. It has the following structure:
           tab: <function>,
           section: <function>,
           field: <function>,
-          item: <object, entity item>
+          instance: <object, entity instance>
         }) {
           return layout(
             ?tab({name: <string>, ?disabled: <boolean>, ?Component: <TabFormComponent>},
@@ -393,12 +392,12 @@ An object describing an entity. It has the following structure:
     },
 
     /*
-     * Generate and return an entity item with predefined field values.
-     * The item is not persistent.
+     * Generate and return an entity instance with predefined field values.
+     * The instance is not persistent.
      */
     ?defaultNewItem: function(<object, "search" View State>) {
       ...
-      return <object, entity item>;
+      return <object, entity instance>;
     },
 
     /*
@@ -406,7 +405,7 @@ An object describing an entity. It has the following structure:
      * An operation handler is called by pressing a dedicated button.
      * Handlers are provided for Custom Operations.
      */
-    ?operations: function(<object, entity item>, <string, View ID>) {
+    ?operations: function(<object, entity instance>, <string, View ID>) {
       ...
       return [{
         name: <string, operation ID>,
@@ -428,7 +427,7 @@ An object describing an entity. It has the following structure:
 
 ### FieldInputComponent
 
-React component for a custom rendering of entity item field in Search Form or Create/Edit Form.
+React component for a custom rendering of entity instance field in Search Form or Create/Edit Form.
 
 Props:
 
@@ -442,14 +441,14 @@ onBlur | function | optional | - | Handler called when Component loses focus.<pr
 
 ### FieldRenderComponent
 
-React component for a custom rendering of item persistent/composite field value in Search Result listing.
+React component for a custom rendering of instance persistent/composite field value in Search Result listing.
 
 Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 name | string | mandatory | - | Field name from [Entity Configuration](#entity-configuration)'s **ui.search().resultFields**
-item | object | mandatory | - | Entity item
+instance | object | mandatory | - | Entity instance
 
 ### TabFormComponent
 
@@ -483,8 +482,8 @@ This handler is called when
 
 ```javascript
 function ({
-  view,
-  state
+  ?view: <string, View ID>,
+  ?state: <object, View State>
 }) {
   ...
   return;  // return value is ignored.
@@ -493,7 +492,7 @@ function ({
 
 Arguments:
 
-Name | Type | Necessity | Default | Description
----|---|---|---|---
-view | string | optional | active View | ID of to-be-displayed View
-state | object | optional | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
+Name | Default | Description
+---|---|---
+view | active View | ID of to-be-displayed View
+state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).

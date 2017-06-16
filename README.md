@@ -4,20 +4,20 @@
 
 <dl>
   <dt>Logical ID</dt>
-  <dd>Entity item's visible string ID, which may or may not be *Primary ID*.</dd>
+  <dd>Entity item's visible string ID, which may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity item. There are three kinds of operations:
     <ul>
       <li><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
       <br />
-      <li><i>Custom</i> - custom operation which handler is defined in <i>Entity Configuration</i>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
+      <li><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
       <br />
       <li><i>External</i> - operation which handler is defined by an application as a callback function passed to <b>onExternalOperation</b> prop of <i>EditorComponent</i>.<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
     </ul>
   </dd>
   <dt>Persistent field</dt>
-  <dd>Entity attribute stored on server and returned as item property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <i>Entity Configuration</i>'s <b>model.fields</b>.</dd>
+  <dd>Entity attribute stored on server and returned as item property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
   <dd>One of the following <i>Persistent fields</i>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
 </dl>
@@ -60,14 +60,14 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-view | "search" | View ID.<br>See [props.view](#props.view)
-state | `{}` | Full/sliced View State.<br />See [props.state](#props.state)
-onTransition | - | View ID and/or View State transition handler.<br />See [props.onTransition](#props.onTransition)
-onExternalOperation | - | Set of *external operations* handlers.<br />See [props.onExternalOperation](#props.onExternalOperation)
+view | "search" | View ID.<br>See [props.view](#editorcomponent-propsview)
+state | `{}` | Full/sliced View State.<br />See [props.state](#editorcomponent-propsstate)
+onTransition | - | View ID and/or View State transition handler.<br />See [props.onTransition](#editorcomponent-propsontransition)
+onExternalOperation | - | Set of *external operations* handlers.<br />See [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
 
 ### *EditorComponent* props.view
 
-ID of either a custom or standard view. Custom views are defined in *Entity Configuration*'s **ui.customViews**. Standard view is one of:
+Custom/standard View ID. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
 
 View ID | Description
 ---|---
@@ -79,13 +79,13 @@ error | Error page
 
 ### *EditorComponent* props.state
 
-Full/sliced View State describing CRUD Editor state.  Its structure is determined by [props.view](#props.view).
+Full/sliced View State describing CRUD Editor state.  Its structure is determined by [props.view](#editorcomponent-propsview).
 
 If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial *EditorComponent* rendering).
 
 View State *must* be serializable.
 
-#### *EditorComponent* props.state for *"search"* view:
+#### *EditorComponent* props.state for *"search"* View:
 
 ```javascript
 {
@@ -102,19 +102,19 @@ View State *must* be serializable.
 
 Name | Default
 ---|---
-filter | <ul><li>`{}` - for initial loading,</li><li>CRUD Editor current value - otherwise.</li></ul>
-sort | <ul><li>Result field marked with `sortByDefault` (first result field if no `sortByDefault` marker is set) - for initial loading</li><li>CRUD Editor current value - otherwise.</li></ul>
-order | <ul><li>`"asc"` - for initial loading,</li><li>CRUD Editor current value - otherwise</li></ul>
-max | <ul><li>`30` - for initial loading,</li><li>CRUD Editor current value - otherwise.</li></ul>
+filter | <ul><li>`{}` - for initial View rendering,</li><li>CRUD Editor current value - otherwise.</li></ul>
+sort | <ul><li>Result field marked with `sortByDefault` (first result field if no `sortByDefault` marker is set) - for initial View rendering</li><li>CRUD Editor current value - otherwise.</li></ul>
+order | <ul><li>`"asc"` - for initial View rendering,</li><li>CRUD Editor current value - otherwise</li></ul>
+max | <ul><li>`30` - for initial View rendering,</li><li>CRUD Editor current value - otherwise.</li></ul>
 offset | `0`
 
-#### *EditorComponent* props.state for *"create"* view:
+#### *EditorComponent* props.state for *"create"* View:
 
 ```javascript
 {}
 ```
 
-#### *EditorComponent* props.state for *"edit"* and *"show"* views:
+#### *EditorComponent* props.state for *"edit"* and *"show"* Views:
 
 ```javascript
 {
@@ -128,7 +128,7 @@ Name | Default
 id | -
 tab | First tab
 
-#### *EditorComponent* props.state for *"error"* view:
+#### *EditorComponent* props.state for *"error"* View:
 
 ```javascript
 {
@@ -144,7 +144,7 @@ message | -
 
 ### *EditorComponent* props.onTransition
 
-A transition handler to be called *before* CRUD Editor changes view and/or state.  Usually this function reflects view/state to URL.  It may also change view and/or state by rendering *EditorComponent* with new *props*.
+A transition handler to be called *before* CRUD Editor changes View ID/State.  Usually this function reflects View ID and View State to URL.  It may also change View ID/State by rendering *EditorComponent* with new *props*.
 
 ```javascript
 function ({ view, state, preventDefault }) {
@@ -155,9 +155,9 @@ function ({ view, state, preventDefault }) {
 
 Argument | Type | Description
 ---|---|---
-view | string | View ID.<br />See [props.view](#props.view)
-state | object | Full View State.<br />See [props.state](#props.state)
-preventDefault | function | Call this function to prevent CRUD Editor from changing its view and state.
+view | string | View ID.<br />See [props.view](#editorcomponent-propsview)
+state | object | Full View State.<br />See [props.state](#editorcomponent-propsstate)
+preventDefault | function | Call this function to prevent CRUD Editor from changing its View and/or State.
 
 ### *EditorComponent* props.onExternalOperation
 
@@ -178,8 +178,8 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 item | object | An entity item which *external operation* was called upon.
-view | string | View ID at the time when *external operation* was called.<br />See [props.view](#props.view)
-state | object | Full View State at the time when *external operation* was called.<br />See [props.state](#props.state)
+view | string | View ID at the time when *external operation* was called.<br />See [props.view](#editorcomponent-propsview)
+state | object | Full View State at the time when *external operation* was called.<br />See [props.state](#editorcomponent-propsstate)
 
 ## Entity Configuration
 
@@ -396,7 +396,7 @@ An object describing an entity. It has the following structure:
      * Generate and return an entity item with predefined field values.
      * The item is not persistent.
      */
-    ?defaultNewItem: function(<object, "search" view state>) {
+    ?defaultNewItem: function(<object, "search" View State>) {
       ...
       return <object, entity item>;
     },
@@ -406,7 +406,7 @@ An object describing an entity. It has the following structure:
      * An operation handler is called by pressing a dedicated button.
      * Handlers are provided for Custom Operations.
      */
-    ?operations: function(<object, entity item>, <string, view name>) {
+    ?operations: function(<object, entity item>, <string, View ID>) {
       ...
       return [{
         name: <string, operation ID>,
@@ -416,7 +416,7 @@ An object describing an entity. It has the following structure:
         ?handler: function() {
           ...
           return {
-            ?view: <string, View ID, active view by default>,
+            ?view: <string, View ID, active View by default>,
             ?state: <object, View State, empty object by default>
           };
         }
@@ -448,38 +448,38 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-name | string | mandatory | - | Field name from *Entity Configuration*'s **ui.search().resultFields**
+name | string | mandatory | - | Field name from [Entity Configuration](#entity-configuration)'s **ui.search().resultFields**
 item | object | mandatory | - | Entity item
 
 ### TabFormComponent
 
-React component for a custom rendering of Tab form in create/edit/show views.
+React component for a custom rendering of Tab form in create/edit/show Views.
 
 Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-view | string | mandatory | - | View ID.
-state | object | mandatory | - | View state.
+view | string | mandatory | - | View ID. See [props.view](#editorcomponent-propsview)
+state | object | mandatory | - | View State. See [props.state](#editorcomponent-propsstate)
 doTransition | function | optional | - | See [doTransition](#dotransition)
 
 ### ViewComponent
 
-React component for a custom view.
+React component for a custom View.
 
 Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-state | object | mandatory | - | Custom view component state.
+state | object | mandatory | - | State of the custom View
 doTransition | function | optional | - | See [doTransition](#dotransition)
 
 ### doTransition
 
 This handler is called when
 
- - active view changes its state, *view* argument is optional in such case;
- - another view must be displayed, *state* argument is optional in such case.
+ - active View changes its State, *view* argument is optional in such case;
+ - another View must be displayed, *state* argument is optional in such case.
 
 ```javascript
 function ({
@@ -495,5 +495,5 @@ Arguments:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-view | string | optional | active view | ID of a view to be displayed.
-state | object | optional | `{}` | Full/sliced State of a view with ID from *view* argument.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
+view | string | optional | active View | ID of to-be-displayed View
+state | object | optional | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).

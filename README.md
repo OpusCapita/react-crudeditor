@@ -496,3 +496,7 @@ Name | Default | Description
 ---|---|---
 view | active View | ID of to-be-displayed View
 state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
+
+## Transitions of views and their states
+
+![Views States Transitions](ViewStatesTransitions.png)

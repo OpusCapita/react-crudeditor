@@ -1,5 +1,28 @@
 # CRUD Editor
 
+Table of Content
+
+- [Terminology](#terminology)
+- [Usage](#usage)
+- [*EditorComponent*](#editorcomponent)
+    * [props.view](#editorcomponent-propsview)
+    * [props.state](#editorcomponent-propsstate)
+    * [props.onTransition](#editorcomponent-propsontransition)
+    * [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
+- [Entity Configuration](#entity-configuration)
+    * [Configuration Object Structure](#configuration-object-structure)
+    * [FieldInputComponent](#fieldinputcomponent)
+    * [FieldRenderComponent](#fieldrendercomponent)
+    * [TabFormComponent](#tabformcomponent)
+    * [ViewComponent](#viewcomponent)
+    * [doTransition](#dotransition)
+- [Store](#store)
+    * [State Structure](#state-structure)
+    * [Validation Error](#validation-error)
+    * [Internal Error](#internal-error)
+- [Transitions of views and their states](#transitions-of-views-and-their-states)
+- [TODO](#todo)
+
 ## Terminology
 
 <dl>
@@ -126,21 +149,21 @@ offset | `0`
 Name | Default
 ---|---
 id | -
-tab | First tab
+tab | First tab name
 
 #### *EditorComponent* props.state for *"error"* View:
 
 ```javascript
 {
   code: <natural number, error code>,
-  ?message: <string, error message>
+  ?payload: <any, structure is defined by error code>
 }
 ```
 
 Name | Default
 ---|---
 code | -
-message | -
+payload | -
 
 ### *EditorComponent* props.onTransition
 
@@ -182,7 +205,9 @@ state | object | Full View State at the time when *external operation* was calle
 
 ## Entity Configuration
 
-An object describing an entity. It has the following structure:
+### Configuration Object Structure
+
+Entity Configuration is an object describing an entity. It has the following structure:
 
 ```javascript
 {
@@ -234,7 +259,7 @@ An object describing an entity. It has the following structure:
    * Each method returns a promise.  In case of failure it rejects to
    * {
    *   code: <whole number, error code>,
-   *   ?message: <string, error message>
+   *   ?payload: <any, structure is defined by error code>
    * }
    */
   api: {
@@ -497,6 +522,141 @@ Name | Default | Description
 view | active View | ID of to-be-displayed View
 state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
 
+## Store
+
+### State Structure
+
+```javascript
+{
+  general: {
+    activeView: <"search"|"create"|"edit"|"show"|"error">
+  },
+  views: {
+    search: {
+
+      /*
+       * filter used in Search Result
+       */
+      resultFilter: {
+        <field name>: <serializable, filter value for the field>,
+        ...
+      },
+
+      /*
+       * raw filter as displayed in Search Form
+       * (may be equal to or different from "resultFilter")
+       */
+      formFilter: {
+        <field name>: <serializable, filter value for the field>,
+        ...
+      }
+
+      sortParams: {
+        sort: <string, sort field name>,
+        order: <"asc"|"desc", sort order>,
+      },
+      pageParams: {
+        max: <natural number, search result limit>,
+        offset: <whole number, search result offset>,
+      }
+      resultInstances: [{
+        <field name>: <serializable, field value>,
+        ...
+      }, ...],
+      selectedInstances: [
+        <ref, reference to an object from "instances" array>,
+        ...
+      ],
+      totalCount: <whole number, total number of filtered entity instances>,
+      status: <"ready"|"searching"|"deleting", search view status>
+    },
+    create: {
+      instance: {
+        <field name>: <serializable, field value>,
+        ...
+      },
+      status: <"ready"|"saving">
+
+      /*
+       * validation or internal error
+       * (all other errors are displayed on "error" view)
+       */
+      error: <Validation Error|Internal Error>,  // See relevant subheadings.
+    },
+    edit: {
+
+      /*
+       * instance as present on the server
+       */
+      persistentInstance: {
+        <field name>: <serializable, field value>,
+        ...
+      },
+
+      /*
+       * row instance as displayed in Edit Form
+       */
+      formInstance: {
+        <field name>: <serializable, field value>,
+        ...
+      },
+
+      tab: <string, active tab name>,
+      status: <"ready"|"extracting", edit view status>
+
+      /*
+       * validation or internal error
+       * (all other errors are displayed on "error" view)
+       */
+      error: <Validation Error|Internal Error>  // See relevant subheadings.
+    },
+    show: {
+      instance: {
+        <field name>: <serializable, field value>,
+        ...
+      },
+      tab: <string, active tab name>,
+      status: <"ready"|"extracting", show view status>
+    },
+    error: {
+      code: <natural number, error code>,
+      ?payload: <any, structure is defined by error code>
+    }
+  }
+}
+```
+
+### Validation Error
+
+```javascript
+{
+  code: 400,
+  payload: {
+    <field name>: [{
+      code: <natural number, error code>,
+      ?message: <string, error message>
+    }, ...]
+  }
+}
+```
+
+### Internal Error
+
+```javascript
+{
+  code: 500,
+  ?payload: <string, error message>
+}
+```
+
 ## Transitions of views and their states
 
 ![Views States Transitions](ViewStatesTransitions.png)
+
+## TODO
+
+Not implemented:
+
+- isCreateSupported,
+- duplicationConfiguration,
+- cmlExportConfiguration

@@ -36,13 +36,17 @@ Table of Content
       <br />
       <li><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
       <br />
-      <li><i>External</i> - operation which handler is defined by an application as a callback function passed to <b>onExternalOperation</b> prop of <i>EditorComponent</i>.<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
+      <li><i>External</i> - operation which handler is defined by an application as a callback function passed to [*EditorComponent* props.onExternalOperation](#editorcomponent-propsonexternaloperation).<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
     </ul>
   </dd>
   <dt>Persistent field</dt>
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
   <dd>One of the following <i>Persistent fields</i>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
+  <dt>Store State</dt>
+  <dd>Redux store state of CRUD Editor. It must be serializable.</dd>
+  <dt>Editor State</dt>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View ID and active View State. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for its structure.</dd>
 </dl>
 
 ## Usage
@@ -85,12 +89,12 @@ Name | Default | Description
 ---|---|---
 view | "search" | View ID.<br>See [props.view](#editorcomponent-propsview)
 state | `{}` | Full/sliced View State.<br />See [props.state](#editorcomponent-propsstate)
-onTransition | - | View ID and/or View State transition handler.<br />See [props.onTransition](#editorcomponent-propsontransition)
+onTransition | - | *Editor State* transition handler.<br />See [props.onTransition](#editorcomponent-propsontransition)
 onExternalOperation | - | Set of *external operations* handlers.<br />See [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
 
 ### *EditorComponent* props.view
 
-Custom/standard View ID. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
+ID of a custom/standard View. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
 
 View ID | Description
 ---|---
@@ -102,9 +106,9 @@ error | Error page
 
 ### *EditorComponent* props.state
 
-Full/sliced View State describing CRUD Editor state.  Its structure is determined by [props.view](#editorcomponent-propsview).
+Full/sliced State describing [props.view](#editorcomponent-propsview).  Its structure is determined by View it describes.
 
-If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial *EditorComponent* rendering).
+If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial [*EditorComponent*](#editorcomponent) rendering).
 
 View State *must* be serializable.
 
@@ -167,19 +171,17 @@ payload | -
 
 ### *EditorComponent* props.onTransition
 
-A transition handler to be called *after* CRUD Editor changes View ID/State.  Usually this function reflects View ID and View State to URL.  It may also change View ID/State by rendering *EditorComponent* with new *props*.
+A transition handler to be called after *Editor State* changes. Its only argument is *Editor State* object. Usually the function reflects *Editor State* to URL.  It may also change *Editor State* by rendering [*EditorComponent*](#editorcomponent) with new *props*.
 
 ```javascript
-function ({ view, state }) {
+function ({
+  view: <string, View ID>,  // See EditorComponent props.view
+  state: <object, Full View State>  // See EditorComponent props.state
+}) {
   ...
   return;  // Return value is ignored.
 }
 ```
-
-Argument | Type | Description
----|---|---
-view | string | View ID.<br />See [props.view](#editorcomponent-propsview)
-state | object | Full View State.<br />See [props.state](#editorcomponent-propsstate)
 
 ### *EditorComponent* props.onExternalOperation
 
@@ -420,7 +422,7 @@ Entity Configuration is an object describing an entity. It has the following str
      * Generate and return an entity instance with predefined field values.
      * The instance is not persistent.
      */
-    ?defaultNewItem: function(<object, "search" View State>) {
+    ?defaultNewInstance: function(<object, "search" View State>) {
       ...
       return <object, entity instance>;
     },
@@ -586,7 +588,7 @@ state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View Sta
     edit: {
 
       /*
-       * instance as present on the server
+       * instance in its "canonical state", i.e. as present on the server
        */
       persistentInstance: {
         <field name>: <serializable, field value>,
@@ -652,6 +654,33 @@ state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View Sta
 ## Transitions of views and their states
 
 ![Views States Transitions](ViewStatesTransitions.png)
+
+## Code structure
+
+**NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder.
+
+    project-root/
+    └── client/
+        ├── rootReducer.js
+        ├── globalSelectors.js
+        ├── common/
+        ├── views/
+        │   └── search/
+        │       ├── constants.js
+        │       ├── actions/
+        │       │   └── ....
+        │       ├── components/
+        │       │   └── ....
+        │       ├── containers/
+        │       │   └── ....
+        │       ├── reducers/
+        │       │   └── ...
+        │       ├── sagas/
+        │       │   └── ...
+        │       └── selectors/
+        │           └── ...
+        └── services/
+            └── ...
 
 ## TODO
 

@@ -42,7 +42,7 @@ Table of Content
   <dt id="persistent-field">Persistent field</dt>
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
-  <dd>One of the following <a href="#persistent-fields">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
+  <dd>One of the following <a href="#persistent-field">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
   <dt id="store-state">Store State</dt>
   <dd>Redux <a href="#store">store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
@@ -202,8 +202,8 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
-[view](#editorcomponent-propsview) | string | View ID at the time when [External Operation](#external-operation) was called
-[state](#editorcomponent-propsstate) | object | Full View State at the time when [External Operation](#external-operation) was called
+view | string | [View ID](#editorcomponent-propsview) at the time when [External Operation](#external-operation) was called
+state | object | Full [View State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
 
 ## Entity Configuration
 
@@ -485,8 +485,8 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-[view](#editorcomponent-propsview) | string | mandatory | - | View ID
-[state](#editorcomponent-propsstate) | object | mandatory | - | View State
+view | string | mandatory | - | [View ID](#editorcomponent-propsview)
+state | object | mandatory | - | [View State](#editorcomponent-propsstate)
 [doTransition](#dotransition) | function | optional | - | View ID/State change handler
 
 ### ViewComponent
@@ -497,7 +497,7 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-state | object | mandatory | - | State of the custom View
+state | object | mandatory | - | Custom [View State](#editorcomponent-propsstate)
 [doTransition](#dotransition) | function | optional | - | View ID/State change handler
 
 ### doTransition
@@ -521,8 +521,8 @@ Arguments:
 
 Name | Default | Description
 ---|---|---
-[view](#editorcomponent-propsview) | active View | ID of to-be-displayed View
-[state](#editorcomponent-propsstate) | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
+view | active View | To-be-displayed [View ID](#editorcomponent-propsview)
+state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsstate).
 
 ## Store
 

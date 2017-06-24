@@ -171,7 +171,7 @@ payload | -
 
 ### *EditorComponent* props.onTransition
 
-A transition handler to be called after *Editor State* changes. Its only argument is *Editor State* object. Usually the function reflects *Editor State* to URL.  It may also change *Editor State* by rendering [*EditorComponent*](#editorcomponent) with new *props*.
+A transition handler to be called after [Editor State](#editor-state) changes. Its only argument is [Editor State](#editor-state) object. Usually the function reflects [Editor State](#editor-state) to URL.  It may also change [Editor State](#editor-state) by rendering [*EditorComponent*](#editorcomponent) with new *props*.
 
 ```javascript
 function ({
@@ -504,8 +504,8 @@ state | object | mandatory | - | Custom [View State](#editorcomponent-propsstate
 
 This handler is called when
 
- - active View changes its State, *view* argument is optional in such case;
- - another View must be displayed, *state* argument is optional in such case.
+ - active View changes its [State](#editorcomponent-propsstate), *view* argument is optional in such case;
+ - another [View](#editorcomponent-propsview) must be displayed, *state* argument is optional in such case.
 
 ```javascript
 function ({

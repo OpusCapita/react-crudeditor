@@ -32,21 +32,21 @@ Table of Content
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
     <ul>
-      <li><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
+      <li id="internal-operation"><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
       <br />
-      <li><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
+      <li id="custom-operation"><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
       <br />
-      <li><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
+      <li id="external-operation"><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
     </ul>
   </dd>
-  <dt>Persistent field</dt>
+  <dt id="persistent-field">Persistent field</dt>
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
-  <dd>One of the following <i>Persistent fields</i>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
-  <dt>Store State</dt>
+  <dd>One of the following <a href="#persistent-fields">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
+  <dt id="store-state">Store State</dt>
   <dd>Redux <a href="#store">store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
-  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View <a href="#editorcomponent-propsview">ID</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsview">ID</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
 
 ## Usage
@@ -90,7 +90,7 @@ Name | Default | Description
 [view](#editorcomponent-propsview) | "search" | View ID
 [state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of *external operations* handlers
+[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
 
 ### *EditorComponent* props.view
 
@@ -185,7 +185,7 @@ function ({
 
 ### *EditorComponent* props.onExternalOperation
 
-An object with *external operation* handlers.  A handler is called when a corresponding *external operation* is triggered by CRUD Editor.
+An object with [External Operations](#external-operation) handlers.  A handler is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
 
 ```javascript
 {
@@ -201,9 +201,9 @@ Every handler has the same set of arguments:
 
 Argument | Type | Description
 ---|---|---
-instance | object | An entity instance which *external operation* was called upon.
-[view](#editorcomponent-propsview) | string | View ID at the time when *external operation* was called
-[state](#editorcomponent-propsstate) | object | Full View State at the time when *external operation* was called
+instance | object | An entity instance which [External Operation](#external-operation) was called upon.
+[view](#editorcomponent-propsview) | string | View ID at the time when [External Operation](#external-operation) was called
+[state](#editorcomponent-propsstate) | object | Full View State at the time when [External Operation](#external-operation) was called
 
 ## Entity Configuration
 
@@ -462,13 +462,13 @@ Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 id | string | optional | - | ID of DOM element which must be focused on label click
 readOnly | boolean | optional | false | Wheter field value can be changed.
-value | serializable | mandatory | - | Persistent field value.
+value | serializable | mandatory | - | [Persistent field](#persistent-field) value.
 onChange | function | mandatory | - | Handler called when Component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when Component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
 ### FieldRenderComponent
 
-React component for a custom rendering of instance persistent/composite field value in Search Result listing.
+React component for a custom rendering of instance [persistent](#persistent-field)/composite field value in Search Result listing.
 
 Props:
 

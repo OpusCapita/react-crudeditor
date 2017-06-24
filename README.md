@@ -45,7 +45,7 @@ Table of Content
   <dd>One of the following <i>Persistent fields</i>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
   <dt>Store State</dt>
   <dd>Redux <a href="#store">store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
-  <dt>Editor State</dt>
+  <dt><a class="anchor" href="#editor-state"></a>Editor State</dt>
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View <a href="#editorcomponent-propsview">ID</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
 
@@ -89,7 +89,7 @@ Name | Default | Description
 ---|---|---
 [view](#editorcomponent-propsview) | "search" | View ID
 [state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
-[onTransition](#editorcomponent-propsontransition) | - | *Editor State* transition handler
+[onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
 [onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of *external operations* handlers
 
 ### *EditorComponent* props.view

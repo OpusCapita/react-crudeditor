@@ -461,8 +461,8 @@ Props:
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 id | string | optional | - | ID of DOM element which must be focused on label click
-readOnly | boolean | optional | false | Wheter field value can be changed.
-value | serializable | mandatory | - | [Persistent field](#persistent-field) value.
+readOnly | boolean | optional | false | Wheter field value can be changed
+value | serializable | mandatory | - | [Persistent field](#persistent-field) value
 onChange | function | mandatory | - | Handler called when Component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when Component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
@@ -487,7 +487,7 @@ Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 view | string | mandatory | - | [View ID](#editorcomponent-propsview)
 state | object | mandatory | - | [View State](#editorcomponent-propsstate)
-[doTransition](#dotransition) | function | optional | - | View ID/State change handler
+[doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### ViewComponent
 
@@ -498,7 +498,7 @@ Props:
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 state | object | mandatory | - | Custom [View State](#editorcomponent-propsstate)
-[doTransition](#dotransition) | function | optional | - | View ID/State change handler
+[doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### doTransition
 

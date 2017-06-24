@@ -46,7 +46,7 @@ Table of Content
   <dt>Store State</dt>
   <dd>Redux store state of CRUD Editor. It must be serializable.</dd>
   <dt>Editor State</dt>
-  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View ID/State. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for its structure.</dd>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View <a href="#editorcomponent-propsview">ID</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
 
 ## Usage

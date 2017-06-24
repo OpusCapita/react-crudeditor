@@ -36,7 +36,7 @@ Table of Content
       <br />
       <li><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
       <br />
-      <li><i>External</i> - operation which handler is defined by an application as a callback function passed to [*EditorComponent* props.onExternalOperation](#editorcomponent-propsonexternaloperation).<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
+      <li><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <i>Custom/Internal Operation</i>, i.e. may overwrite it.</li>
     </ul>
   </dd>
   <dt>Persistent field</dt>
@@ -46,7 +46,7 @@ Table of Content
   <dt>Store State</dt>
   <dd>Redux store state of CRUD Editor. It must be serializable.</dd>
   <dt>Editor State</dt>
-  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View ID and active View State. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for its structure.</dd>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <i>Store State</i> and contains information about active View ID/State. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for its structure.</dd>
 </dl>
 
 ## Usage
@@ -87,10 +87,10 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-view | "search" | View ID.<br>See [props.view](#editorcomponent-propsview)
-state | `{}` | Full/sliced View State.<br />See [props.state](#editorcomponent-propsstate)
-onTransition | - | *Editor State* transition handler.<br />See [props.onTransition](#editorcomponent-propsontransition)
-onExternalOperation | - | Set of *external operations* handlers.<br />See [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
+[view](#editorcomponent-propsview) | "search" | View ID
+[state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
+[onTransition](#editorcomponent-propsontransition) | - | *Editor State* transition handler
+[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of *external operations* handlers
 
 ### *EditorComponent* props.view
 
@@ -202,8 +202,8 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which *external operation* was called upon.
-view | string | View ID at the time when *external operation* was called.<br />See [props.view](#editorcomponent-propsview)
-state | object | Full View State at the time when *external operation* was called.<br />See [props.state](#editorcomponent-propsstate)
+[view](#editorcomponent-propsview) | string | View ID at the time when *external operation* was called
+[state](#editorcomponent-propsstate) | object | Full View State at the time when *external operation* was called
 
 ## Entity Configuration
 
@@ -485,9 +485,9 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-view | string | mandatory | - | View ID. See [props.view](#editorcomponent-propsview)
-state | object | mandatory | - | View State. See [props.state](#editorcomponent-propsstate)
-doTransition | function | optional | - | See [doTransition](#dotransition)
+[view](#editorcomponent-propsview) | string | mandatory | - | View ID
+[state](#editorcomponent-propsstate) | object | mandatory | - | View State
+[doTransition](#dotransition) | function | optional | - | View ID/State change handler
 
 ### ViewComponent
 
@@ -498,7 +498,7 @@ Props:
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 state | object | mandatory | - | State of the custom View
-doTransition | function | optional | - | See [doTransition](#dotransition)
+[doTransition](#dotransition) | function | optional | - | View ID/State change handler
 
 ### doTransition
 
@@ -521,8 +521,8 @@ Arguments:
 
 Name | Default | Description
 ---|---|---
-view | active View | ID of to-be-displayed View
-state | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
+[view](#editorcomponent-propsview) | active View | ID of to-be-displayed View
+[state](#editorcomponent-propsstate) | `{}` | Full/sliced State of to-be-displayed View.<br /><br />If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial React Component rendering).
 
 ## Store
 

@@ -653,9 +653,22 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 
 ## Transitions of views and their states
 
-![Views States Transitions](ViewStatesTransitions.png)
+![Views States Transitions](./docs/ViewStatesTransitions.png)
 
-## Code structure
+## Data Flow
+
+![Data Flow](./docs/DataFlow.png)
+
+## Code Conventions
+
+### Redux actions
+
+All Redux actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant. Async actions are suffixed with
+ - _REQUESTED
+ - _SUCCEEDED
+ - _FAILED
+
+### Code structure
 
 **NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder.
 

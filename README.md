@@ -20,7 +20,12 @@ Table of Content
     * [State Structure](#state-structure)
     * [Validation Error](#validation-error)
     * [Internal Error](#internal-error)
-- [Transitions of views and their states](#transitions-of-views-and-their-states)
+- [Diagrams](#diagrams)
+    * [Transitions of views and their states](#transitions-of-views-and-their-states)
+    * [Data Flow](#data-flow)
+- [Code Conventions](#code-conventions)
+    * [Redux Actions](#redux-actions)
+    * [Code Structure](#code-structure)
 - [TODO](#todo)
 
 ## Terminology
@@ -651,24 +656,26 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 }
 ```
 
-## Transitions of views and their states
+## Diagrams
+
+### Transitions of views and their states
 
 ![Views States Transitions](./docs/ViewStatesTransitions.png)
 
-## Data Flow
+### Data Flow
 
 ![Data Flow](./docs/DataFlow.png)
 
 ## Code Conventions
 
-### Redux actions
+### Redux Actions
 
 All Redux actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant. Async actions are suffixed with
  - _REQUESTED
  - _SUCCEEDED
  - _FAILED
 
-### Code structure
+### Code Structure
 
 **NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder.
 

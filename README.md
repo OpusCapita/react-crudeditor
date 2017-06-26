@@ -670,10 +670,21 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 
 ### Redux Actions
 
-All Redux actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant. Async actions are suffixed with
- - _REQUESTED
- - _SUCCEEDED
- - _FAILED
+Action sumbolizes not a command but an effect, i.e. a change already happened in the application.
+
+All actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant.
+
+Action types are in `CONSTANT_CASE` and follow `<NOUN>_<VERB>` pattern, e.g. `TODO_ADD`. `VERB` is in the present tense. Putting `NOUN` first makes sorting actions more efficient.
+
+Async actions are suffixed with
+ - _REQUEST - for when you first send the api call,
+ - _SUCCESS - for when the api call is done and successfully returned data,
+ - _FAIL - for when the api call failed and responded with an error,
+ - _COMPLETE - sometimes used at the end of the call regardless of status.
+
+Action types are saved in a separate file as *sorted* constants (e.g. `var TODO_ADD = 'TODO_ADD';`) and used them from there. This avoids spelling errors, since if the variable doesn't exist, you'll get an error immediately, especially if you're linting.
+
+Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
 
 ### Code Structure
 
@@ -686,21 +697,35 @@ All Redux actions are [FSA](https://github.com/acdlite/flux-standard-action)-com
         ├── common/
         ├── views/
         │   └── search/
-        │       ├── constants.js
-        │       ├── actions/
+        │       ├── constants.js  # declare actions' types and other constants
+        │       ├── index.js  # define a public interface of the duck
+        │       ├── tests.js
+        │       ├── actions/  # action creators (always encapsulated inside a duck)
+        │       │   ├── index.js
         │       │   └── ....
         │       ├── components/
+        │       │   ├── index.js
         │       │   └── ....
         │       ├── containers/
+        │       │   ├── index.js
         │       │   └── ....
-        │       ├── reducers/
+        │       ├── operations/  # thunks/sagas/event handlers (exported by a duck)
+        │       │   ├── index.js
         │       │   └── ...
-        │       ├── sagas/
+        │       ├── reducers/
+        │       │   ├── index.js  # combines reducers
         │       │   └── ...
         │       └── selectors/
+        │       │   ├── index.js
         │           └── ...
         └── services/
             └── ...
+
+Particular view's `index.js` file exports:
+ - (as default) reducer function of the duck,
+ - the selectors,
+ - the operations,
+ - constants for actions' types if they are needed in other ducks.
 
 ## TODO
 

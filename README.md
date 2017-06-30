@@ -670,11 +670,13 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 
 ### Redux Actions
 
-Action sumbolizes not a command but an effect, i.e. a change already happened in the application.
+An action symbolizes not a command but an effect, i.e. a change already happened in the application.
 
 All actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant.
 
-Action types are in `CONSTANT_CASE` and follow `<NOUN>_<VERB>` pattern, e.g. `TODO_ADD`. `VERB` is in the present tense. Putting `NOUN` first makes sorting actions more efficient.
+Action types are in `CONSTANT_CASE` and follow `<NOUN>_<VERB>` pattern, e.g. `TODO_ADD`. `VERB` is in the *present* tense. Putting `NOUN` first makes sorting actions more efficient.
+
+An action creator name follows `<verb><Noun>` pattern, e.g. `createTodo()`.
 
 Async actions are suffixed with
  - _REQUEST - for when you first send the api call,
@@ -682,21 +684,32 @@ Async actions are suffixed with
  - _FAIL - for when the api call failed and responded with an error,
  - _COMPLETE - sometimes used at the end of the call regardless of status.
 
+!!!TBD: "_SUCCESS" and "_FAIL" are not needed when [FSA](https://github.com/acdlite/flux-standard-action) convention is followed.
+
 Action types are saved in a separate file as *sorted* constants (e.g. `var TODO_ADD = 'TODO_ADD';`) and used them from there. This avoids spelling errors, since if the variable doesn't exist, you'll get an error immediately, especially if you're linting.
 
 Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
 
 ### Code Structure
 
-**NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder.
+**NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder[1](#footnote-1).
 
     project-root/
     └── client/
         ├── rootReducer.js
         ├── globalSelectors.js
         ├── common/
+        │   └── ...  # "common" namespace dir content
         ├── views/
-        │   └── search/
+        │   ├── create/
+        │   │   └── ...  # "create" view namespace dir content
+        │   ├── edit/
+        │   │   └── ...  # "edit" view namespace dir content
+        │   ├── error/
+        │   │   └── ...  # "error" view namespace dir content
+        │   ├── search/
+        │   │   └── ...  # "search" view namespace dir content
+        │   └── show/
         │       ├── constants.js  # declare actions' types and other constants
         │       ├── index.js  # define a public interface of the duck
         │       ├── tests.js
@@ -716,12 +729,14 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
         │       │   ├── index.js  # combines reducers
         │       │   └── ...
         │       └── selectors/
-        │       │   ├── index.js
+        │           ├── index.js
         │           └── ...
         └── services/
             └── ...
 
-Particular view's `index.js` file exports:
+Every view dir and *common* dir represent a namespace which is [ducks](https://github.com/erikras/ducks-modular-redux)-complient. All namespaces have similar dir structure (see *show* view for an example).
+
+Namespace's `index.js` file exports:
  - (as default) reducer function of the duck,
  - the selectors,
  - the operations,
@@ -733,4 +748,8 @@ Not implemented:
 
 - isCreateSupported,
 - duplicationConfiguration,
-- cmlExportConfiguration
+- cmlExportConfiguration.
+
+## Footnotes
+
+1. <a id="footnote-1"></a>There's no such thing as reducer / action creator pairing in Redux. That's purely a Ducks thing. Some people like it but it obscures the fundamental strengths of Redux/Flux model: state mutations are decoupled from each other and from the code causing them. Actions are global in the app, and I think that's fine. One part of the app might want to react to another part's actions because of complex product requirements, and we think this is fine. The coupling is minimal: all you depend on is a string and the action object shape. The benefit is it's easy to introduce new derivations of the actions in different parts of the app without creating tons of wiring with action creators. Your components stay ignorant of what exactly happens when an action is dispatched—this is decided on the reducer end. So our official recommendation is that you should first try to have different reducers respond to the same actions. If it gets awkward, then sure, make separate action creators. But don't start with this approach.

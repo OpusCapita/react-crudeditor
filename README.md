@@ -348,7 +348,7 @@ Entity Configuration is an object describing an entity. It has the following str
       return {
         /*
          * Only Persistent fields from model.fields are allowed.
-         * By default, all Persistent (but not Auditable) fields from model.fields
+         * By default, all Persistent (excluding Auditable) fields from model.fields
          * are used for building search criteria.
          */
         ?searchableFields: [{
@@ -358,7 +358,7 @@ Entity Configuration is an object describing an entity. It has the following str
 
         /*
          * Both persistent and composite fields are allowed.
-         * By default, all Persistent fields from model.fields are used in result listing.
+         * By default, all Persistent (including Auditable) fields from model.fields are used in result listing.
          * Only one field may have "sortByDefault" set to true.
          */
         ?resultFields: [{
@@ -535,7 +535,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 
 ```javascript
 {
-  general: {
+  common: {
     activeView: <"search"|"create"|"edit"|"show"|"error">
   },
   views: {
@@ -559,7 +559,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
       }
 
       sortParams: {
-        sort: <string, sort field name>,
+        field: <string, sort field name>,
         order: <"asc"|"desc", sort order>,
       },
       pageParams: {
@@ -725,7 +725,7 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
         │       ├── operations/  # thunks/sagas/event handlers (exported by a duck)
         │       │   ├── index.js
         │       │   └── ...
-        │       ├── reducers/
+        │       ├── reducer/
         │       │   ├── index.js  # combines reducers
         │       │   └── ...
         │       └── selectors/

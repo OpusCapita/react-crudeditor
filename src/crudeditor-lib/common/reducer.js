@@ -1,0 +1,30 @@
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
+import * as u from 'updeep';
+import { VIEW_NAME_CHANGE } from './constants';
+
+const defaultStoreStateTemplate = {
+  activeView: undefined  // XXX: must be undefined until initialization completes.
+};
+
+/*
+ * XXX:
+ * Only objects and arrays are allowed at branch nodes.
+ * Only primitive data types are allowed at leaf nodes.
+ */
+export default modelMetaData => (
+  storeState = cloneDeep(defaultStoreStateTemplate),
+  { type, payload, error, meta }
+) => {
+  const newStoreStateSlice = {};
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  if (type === VIEW_NAME_CHANGE) {
+    newStoreStateSlice.activeView = payload;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  }
+
+  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+}

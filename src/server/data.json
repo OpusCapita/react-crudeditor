@@ -1,0 +1,436 @@
+{
+  "contracts": [
+    {
+      "contractId": "bio001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Gefahrgut",
+      "_objectLabel": "Gefahrgut (bio001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "car001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Automobile",
+      "_objectLabel": "Automobile (car001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "cor001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Bürobedarf",
+      "_objectLabel": "Bürobedarf (cor001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "hrs001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Dienstleistungen",
+      "_objectLabel": "Dienstleistungen (hrs001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": "2010-01-31T22:00:00.000+01:00",
+        "to": "2012-12-30T21:00:00.000+01:00"
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "int001quote",
+      "statusId": "400",
+      "currencyId": null,
+      "description": "int001quote",
+      "_objectLabel": "int001quote (int001quote)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "lap001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Laptops",
+      "_objectLabel": "Laptops (lap001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": null,
+      "isInternal": null,
+      "isOffer": null,
+      "isPreferred": null,
+      "isStandard": null,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": null,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "Literatur",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "PunchOut-Shop der IMS",
+      "_objectLabel": "PunchOut-Shop der IMS (Literatur)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": null,
+      "isInternal": null,
+      "isOffer": null,
+      "isPreferred": null,
+      "isStandard": null,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": null,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": "2010-01-31T22:00:00.000+01:00",
+        "to": "2011-08-30T21:00:00.000+02:00"
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "lyr001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Lyreco Büroartikel",
+      "_objectLabel": "Lyreco Büroartikel (lyr001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": false,
+      "isInternal": false,
+      "isOffer": false,
+      "isPreferred": false,
+      "isStandard": false,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": false,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": null,
+        "to": null
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "may001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Baustoffe",
+      "_objectLabel": "Baustoffe (may001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": null,
+      "isInternal": null,
+      "isOffer": null,
+      "isPreferred": null,
+      "isStandard": null,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": null,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": "2010-01-31T22:00:00.000+01:00",
+        "to": "2011-12-30T21:00:00.000+01:00"
+      },
+      "contractCategory": {
+        "id": null
+      }
+    },
+    {
+      "contractId": "stp001",
+      "statusId": "400",
+      "currencyId": "EUR",
+      "description": "Staples",
+      "_objectLabel": "Staples (stp001)",
+      "extContractId": null,
+      "extContractLineId": null,
+      "freeShippingBoundary": null,
+      "freightSurcharge": null,
+      "isFrameContract": null,
+      "isInternal": null,
+      "isOffer": null,
+      "isPreferred": null,
+      "isStandard": null,
+      "maxOrderValue": null,
+      "minOrderValue": null,
+      "minOrderValueRequired": null,
+      "smallVolumeSurcharge": null,
+      "termsOfDeliveryId": null,
+      "termsOfPaymentId": null,
+      "totalContractedAmount": null,
+      "validRange": {
+        "from": "2010-01-31T22:00:00.000+01:00",
+        "to": "2011-12-30T21:00:00.000+01:00"
+      },
+      "contractCategory": {
+        "id": null
+      }
+    }
+  ],
+  "statuses": [
+    {
+      "statusId": "100",
+      "objectClass": "BOILERPLATE",
+      "_objectLabel": "100 (new)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:27.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "105",
+      "objectClass": "BOILERPLATE",
+      "_objectLabel": "105 (changed)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:27.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "400",
+      "objectClass": "BOILERPLATE",
+      "_objectLabel": "400 (active)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:27.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "100",
+      "objectClass": "CATALOGPROVISIONING",
+      "_objectLabel": "100 (new)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": false,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:26.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "105",
+      "objectClass": "CATALOGPROVISIONING",
+      "_objectLabel": "105 (changed)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:27.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "400",
+      "objectClass": "CATALOGPROVISIONING",
+      "_objectLabel": "400 (confirmed)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": false,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:26.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "100",
+      "objectClass": "CLASSIFICATIONGROUP",
+      "_objectLabel": "100 (new)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:26.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "105",
+      "objectClass": "CLASSIFICATIONGROUP",
+      "_objectLabel": "105 (changed)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:27.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "400",
+      "objectClass": "CLASSIFICATIONGROUP",
+      "_objectLabel": "400 (confirmed)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:26.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    },
+    {
+      "statusId": "800",
+      "objectClass": "CLASSIFICATIONGROUP",
+      "_objectLabel": "800 (deleted)",
+      "bgColor": "",
+      "fgColor": null,
+      "icon": null,
+      "isSystemDefined": true,
+      "changedBy": "jcadmin",
+      "changedOn": "2017-05-24T05:17:26.000+02:00",
+      "createdBy": "jcadmin",
+      "createdOn": "2017-05-24T05:17:17.000+02:00"
+    }
+  ]
+}

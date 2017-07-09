@@ -1,10 +1,50 @@
+import { VIEW_NAME } from './constants';
+
 export const
+  getEntityName = ({
+    entityConfiguration: {
+      model: {
+        name
+      }
+    }
+  }) => name,
+
   getResultFilter = ({ resultFilter }) => resultFilter,
 
-  getSortField = ({ sortParams: { field } }) => field,
+  getFormFilter = ({ formFilter }) => formFilter,
 
-  getSortOrder = ({ sortParams: { order } }) => order,
+  getSortField = ({
+    sortParams: {
+      field
+    }
+  }) => field,
 
-  getPageMax = ({ pageParams: { max } }) => max,
+  getSortOrder = ({
+    sortParams: {
+      order
+    }
+  }) => order,
 
-  getPageOffset = ({ pageParams: { offset } }) => offset;
+  getPageMax = ({
+    pageParams: {
+      max
+    }
+  }) => max,
+
+  getPageOffset = ({
+    pageParams: {
+      offset
+    }
+  }) => offset,
+
+  getSearchableFields => ({
+    entityConfiguration: {
+      model: {
+        fields
+      },
+      ui
+    }
+  }) => ui && ui.search && ui.search().searchableFields || Object.keys(fields).map(name => ({
+    name,
+    type: fields[name].type || 'string'
+  }));

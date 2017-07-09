@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import connect from 'react-redux';
+import connect from '../../../connect';
 import ViewSwitcher from '../ViewSwitcher';
-import { actions } from '../../index';
+import { initializeView } from '../../actions';
 
 class Main extends PureComponent {
   constructor(...args) {
@@ -9,7 +9,8 @@ class Main extends PureComponent {
 
     let {
       viewName,
-      viewState  // its structure is unknown and depends on viewName value.
+      viewState,  // its structure is unknown and depends on viewName value.
+      initializeView
     } = this.props;
 
     // Initial initialization:
@@ -21,7 +22,7 @@ class Main extends PureComponent {
     viewState  // its structure is unknown and depends on viewName value.
   }) {
     // Re-initialization:
-    initializeView({ viewName, viewState });
+    this.props.initializeView({ viewName, viewState });
   }
 
   render() {
@@ -31,5 +32,5 @@ class Main extends PureComponent {
 
 export default connect(
   undefined,
-  { initializeView: actions.initializeView }
+  { initializeView }
 )(Main);

@@ -1,2 +1,4 @@
 export const
-  getActiveView = state => state.activeView;
+  getEntityConfigurationIndex = ({ entityConfigurationIndex }) => entityConfigurationIndex,
+
+  getActiveView = ({ activeView }) => activeView;

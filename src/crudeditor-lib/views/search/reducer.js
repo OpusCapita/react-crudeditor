@@ -3,9 +3,17 @@ import isEqual from 'lodash/isEqual';
 import * as u from 'updeep';
 
 import {
-  INSTANCES_SEARCH,
+  FORM_FILTER_RESET,
+  FORM_FILTER_UPDATE,
+  INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
-  INSTANCES_SEARCH_COMPLETE
+  INSTANCES_SEARCH_SUCCESS
+} from './constants';
+
+import {
+  UNINITIALIZED,
+  SEARCHING,
+  READY
 } from './constants';
 
 const defaultStoreStateTemplate = {
@@ -21,7 +29,8 @@ const defaultStoreStateTemplate = {
   },
   resultInstances: undefined,  // XXX: must be undefined until first extraction.
   selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
-  totalCount: undefined
+  totalCount: undefined,
+  status = UNINITIALIZED;
 };
 
 /*
@@ -36,17 +45,39 @@ export default entityConfiguration => {
     entityConfiguration.ui.search &&
     entityConfiguration.ui.search().searchableFields;
 
-  defaultStoreState.formFilter = (
+  const getDefaultFormFilter = _ => (
     searchableFieldsMeta &&
-    searchableFieldsMeta.map(({ name }) => name) ||
-    Object.keys(entityConfiguration.model.fields)
+      searchableFieldsMeta.map(({
+        name,
+        Component
+      }) => ({
+        name,
+        Component
+      })) ||
+    Object.keys(entityConfiguration.model.fields).map(name => ({
+      name,
+      type: entityConfiguration.model.fields.type || 'string'
+    }))
   ).reduce(
-    (rez, fieldName) => ({
+    (rez, {
+      name,
+      Component,
+      type
+    }) => ({
       ...rez,
-      [fieldName]: null
+      [name]: do {
+        if (Component) { null; }
+        else if (type === 'string') { ''; }
+        else if (type === 'number') { ''; }
+        else if (type === 'date') { null; }
+        else if (type === 'boolean') { null; }
+        else { throw new Error('Unknown field type ' + type); }
+      }
     }),
     {}
   );
+
+  defaultStoreState.formFilter = getDefaultFormFilter();
 
   const resultFieldsMeta = entityConfiguration.ui &&
     entityConfiguration.ui.search &&
@@ -62,13 +93,11 @@ export default entityConfiguration => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
     if (type === INSTANCES_SEARCH_REQUEST) {
+      newStoreStateSlice.status = SEARCHING;
 
-    } else if (type === INSTANCES_SEARCH_COMPLETE) {
-      if (error) {
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-      }
-    }
-    if (type === 'FILTER_ENTITIES_DONE_SUCCESS') {
+    } else if (type === INSTANCES_SEARCH_SUCCESS) {
       const {
         filter,
         sort,
@@ -99,71 +128,28 @@ export default entityConfiguration => {
         newStoreStateSlice.selectedInstances = [];
       }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === 'FILTER_ENTITIES_DONE_FAILURE') {
-      newStoreStateSlice.err = payload.err;
+      newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === 'SELECT_ENTITY') {
-      newStoreStateSlice.selectedInstances = storeState.selectedInstances.concat([payload.entity]);
+    } else if (type === INSTANCES_SEARCH_FAIL) {
+      newStoreStateSlice.status = storeState.resultInstances ? READY : UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === 'DESELECT_ENTITY') {
-      newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(
-        entity => entity !== payload.entity
-      )
+    } else if (type === FORM_FILTER_RESET) {
+      newStoreStateSlice.formFilter = getDefaultFormFilter();
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === 'SELECT_ALL_ENTITIES') {
-      newStoreStateSlice.selectedInstances = storeState.resultInstances;
+    } else if (type === FORM_FILTER_UPDATE) {
+      const {
+        name: fieldName,
+        value: fieldValue
+      } = payload;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === 'DESELECT_ALL_ENTITIES') {
-      newStoreStateSlice.selectedInstances = [];
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === 'DELETE_ENTITIES_DONE_SUCCESS') {
-      const isDeleted = entity =>
-        payload.entityIds.some(entityId =>
-          entityId === entity[entityConfiguration.search.result.fields[0].name]
-        );
-
-      let newInstances = storeState.selectedInstances.filter(entity => !isDeleted(entity));
-
-      // XXX: updeep-package does not check arrays for equality.
-      if (newInstances.length !== storeState.selectedInstances.length) {
-        newStoreStateSlice.selectedInstances = newInstances;
-      }
-
-      newInstances = storeState.resultInstances.filter(entity => !isDeleted(entity));
-
-      // XXX: updeep-package does not check arrays for equality.
-      if (newInstances.length !== storeState.resultInstances.length) {
-        newStoreStateSlice.resultInstances = newInstances;
-      }
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === 'RESET_RAW_FILTER') {
-      newStoreStateSlice.formFilter = Object.keys(storeState.formFilter).reduce(
-        (rez, field) => ({
-          ...rez,
-          [field]: null
-        }),
-        {}
-      );
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === 'UPDATE_RAW_FILTER') {
       newStoreStateSlice.formFilter = {
-        [payload.fieldName]: payload.fieldValue
+        [fieldName]: fieldValue
       };
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

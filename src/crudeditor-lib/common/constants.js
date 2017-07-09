@@ -9,9 +9,8 @@ export const
 
   DEFAULT_VIEW = VIEW_SEARCH,
 
-  /*███████████████*\
-   *███ ACTIONS ███*
-  \*███████████████*/
+  /*███████████████████████████████████████*\
+   *███ ACTIONS (in alphabetical order) ███*
+  \*███████████████████████████████████████*/
 
-  VIEW_INITIALIZE = NAMESPACE + '/VIEW_INITIALIZE',
-  VIEW_NAME_CHANGE = NAMESPACE + '/VIEW_NAME_CHANGE';
+  VIEW_INITIALIZE = NAMESPACE + '/VIEW_INITIALIZE';

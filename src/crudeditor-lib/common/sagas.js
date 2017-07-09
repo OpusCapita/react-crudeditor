@@ -13,8 +13,7 @@ import {
   VIEW_EDIT,
   VIEW_SHOW,
   DEFAULT_VIEW,
-  VIEW_INITIALIZE,
-  VIEW_NAME_CHANGE
+  VIEW_INITIALIZE
 } from './constants';
 
 const { searchInstances } = searchActions;
@@ -33,26 +32,20 @@ function* onViewInitialize(entityConfiguration, {
 }) {
   viewName = viewName || (yield select(getActiveView)) || DEFAULT_VIEW;
 
-  // ask specific view to process new input and
-  // if success display the view, otherwise display error page.
-  yield put(
-    viewName === VIEW_SEARCH && searchInstances({
-      filter : viewState.filter,
-      sort   : viewState.sort,
-      order  : viewState.order,
-      max    : viewState.max,
-      offset : viewState.offset
-    }, source) ||
-    viewName === VIEW_CREATE && createInstance(viewState, source) ||
-    viewName === VIEW_EDIT && editInstance(viewState, source) ||
-    viewName === VIEW_SHOW && showInstance(viewState, source)
+  const actionCreator = (
+    viewName === VIEW_SEARCH && searchInstances ||
+    viewName === VIEW_CREATE && createInstance  ||
+    viewName === VIEW_EDIT   && editInstance    ||
+    viewName === VIEW_SHOW   && showInstance
   );
 
-  yield put({
-    type: VIEW_NAME_CHANGE,
-    payload: viewName,
-    meta: { source }
-  });
+  if (!actionCreator) {
+    throw new Error('Unknown view ' + viewName);
+  }
+
+  // ask specific view to process new input and
+  // if success display the view, otherwise display error page.
+  yield put(actionCreator(viewState, source));
 }
 
 export default function*(entityConfiguration) {

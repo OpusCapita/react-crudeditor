@@ -1,4 +1,8 @@
-import { INSTANCES_SEARCH } from './constants';
+import {
+  FORM_FILTER_RESET,
+  FORM_FILTER_UPDATE,
+  INSTANCES_SEARCH
+} from './constants';
 
 export
   const searchInstances = ({
@@ -19,4 +23,19 @@ export
     meta: {
       source
     }
+  }),
+
+  updateFormFilter => ({
+    name,
+    value
+  }) => ({
+    type: FORM_FILTER_UPDATE,
+    payload: {
+      name,
+      value
+    }
+  }),
+
+  resetFormFilter => _ => ({
+    type: FORM_FILTER_RESET
   });

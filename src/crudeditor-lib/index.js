@@ -8,7 +8,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import Main from './common/components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-import { constants } from './common';
+import { commonConstants } from './common';
 
 const {
   VIEW_SEARCH,
@@ -16,7 +16,7 @@ const {
   VIEW_EDIT,
   VIEW_SHOW,
   VIEW_ERROR
-} = constants;
+} = commonConstants;
 
 const storeState2appState = storeState => {
   const activeView = storeState.common.exposable.activeView;
@@ -54,7 +54,7 @@ export default entityConfiguration => {
   const sagaMiddleware = createSagaMiddleware();
 
   const appStateChangeDetect = ({ getState }) => next => action => {
-    if (action.meta.source === 'owner' || !onTransition) {
+    if (!action.meta || action.meta.source === 'owner' || !onTransition) {
       return next(action);
     }
 

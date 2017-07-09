@@ -7,7 +7,7 @@ import edit from './views/edit';
 import show from './views/show';
 import error from './views/error';
 
-import { constants } from './common';
+import { commonConstants } from './common';
 
 const {
   VIEW_SEARCH,
@@ -15,7 +15,7 @@ const {
   VIEW_EDIT,
   VIEW_SHOW,
   VIEW_ERROR
-} = constants;
+} = commonConstants;
 
 export default entityConfiguration => combineReducers({
   common: common(entityConfiguration),

@@ -536,7 +536,9 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 ```javascript
 {
   common: {
-    activeView: <"search"|"create"|"edit"|"show"|"error">
+    activeView: <"search"|"create"|"edit"|"show"|"error">,
+    entityConfigurationIndex: <natural number>,  // an index for setting/getting entityConfiguration object by "entityConfiguration.js" module.
+    entityConfiguration: <object>  // "virtual" property added by custom "connect()" and available in selectors only.
   },
   views: {
     search: {
@@ -710,27 +712,16 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
         │   ├── search/
         │   │   └── ...  # "search" view namespace dir content
         │   └── show/
-        │       ├── constants.js  # declare actions' types and other constants
-        │       ├── index.js  # define a public interface of the duck
-        │       ├── tests.js
-        │       ├── actions/  # action creators (always encapsulated inside a duck)
-        │       │   ├── index.js
-        │       │   └── ....
         │       ├── components/
         │       │   ├── index.js
         │       │   └── ....
-        │       ├── containers/
-        │       │   ├── index.js
-        │       │   └── ....
-        │       ├── operations/  # thunks/sagas/event handlers (exported by a duck)
-        │       │   ├── index.js
-        │       │   └── ...
-        │       ├── reducer/
-        │       │   ├── index.js  # combines reducers
-        │       │   └── ...
-        │       └── selectors/
-        │           ├── index.js
-        │           └── ...
+        │       ├── actions.js  # action creators (always encapsulated inside a duck)
+        │       ├── constants.js  # actions' types and other constants
+        │       ├── index.js  # public interface of the duck
+        │       ├── reducer.js
+        │       ├── sagas.js
+        │       └── selectors.js
+        │       ├── tests.js
         └── services/
             └── ...
 
@@ -738,9 +729,10 @@ Every view dir and *common* dir represent a namespace which is [ducks](https://g
 
 Namespace's `index.js` file exports:
  - (as default) reducer function of the duck,
- - the selectors,
- - the operations,
- - constants for actions' types if they are needed in other ducks.
+ - action creators,
+ - constants,
+ - sagas,
+ - selectors.
 
 ## TODO
 

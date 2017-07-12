@@ -129,7 +129,7 @@ module.exports = function (app) {
       })
       .remove();
 
-    return res.json(ids);
+    return res.json(ids.length);
   });
 
   /**

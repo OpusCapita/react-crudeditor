@@ -441,7 +441,7 @@ Entity Configuration is an object describing an entity. It has the following str
       ...
       return [{
         name: <string, operation ID>,
-        ?icon: <string, name of an icon to be displayed inside a button>,
+        ?icon: <string, name of an icon to be displayed inside a button, ex. "trash", "edit"; see full list at http://getbootstrap.com/components/#glyphicons >,
 
         // handler for a Custom Operation.
         ?handler: function() {
@@ -538,7 +538,6 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
   common: {
     activeView: <"search"|"create"|"edit"|"show"|"error">,
     entityConfigurationIndex: <natural number>,  // an index for setting/getting entityConfiguration object by "entityConfiguration.js" module.
-    entityConfiguration: <object>  // "virtual" property added by custom "connect()" and available in selectors only.
   },
   views: {
     search: {
@@ -698,8 +697,6 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
 
     project-root/
     └── client/
-        ├── rootReducer.js
-        ├── globalSelectors.js
         ├── common/
         │   └── ...  # "common" namespace dir content
         ├── views/
@@ -720,12 +717,14 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
         │       ├── index.js  # public interface of the duck
         │       ├── reducer.js
         │       ├── sagas.js
-        │       └── selectors.js
-        │       ├── tests.js
+        │       ├── selectors.js
+        │       └── tests.js
+        ├── rootReducer.js
+        ├── rootSaga.js
         └── services/
             └── ...
 
-Every view dir and *common* dir represent a namespace which is [ducks](https://github.com/erikras/ducks-modular-redux)-complient. All namespaces have similar dir structure (see *show* view for an example).
+Every view dir and *common* dir represents a [ducks](https://github.com/erikras/ducks-modular-redux)-complient namespace. All namespaces have similar dir structure (see *show* view for an example).
 
 Namespace's `index.js` file exports:
  - (as default) reducer function of the duck,

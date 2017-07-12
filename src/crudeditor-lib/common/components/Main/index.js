@@ -3,7 +3,11 @@ import connect from '../../../connect';
 import ViewSwitcher from '../ViewSwitcher';
 import { initializeView } from '../../actions';
 
-class Main extends PureComponent {
+@connect(
+  undefined,
+  { initializeView }
+)
+export default class extends PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -29,8 +33,3 @@ class Main extends PureComponent {
     return <ViewSwitcher />;
   }
 }
-
-export default connect(
-  undefined,
-  { initializeView }
-)(Main);

@@ -20,7 +20,17 @@ import { actions as createActions } from '../../../create';
 
 const { createInstance } = createActions;
 
-class SearchForm extends PureComponent {
+@connect({
+  resultFilter: getResultFilter,
+  formFilter: getFormFilter,
+  fields: getSearchableFields
+}, {
+  searchInstances,
+  resetFormFilter,
+  updateFormFilter,
+  createInstance
+})
+export default class extends PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -77,14 +87,3 @@ class SearchForm extends PureComponent {
     );
   }
 }
-
-export default connect({
-  resultFilter: getResultFilter,
-  formFilter: getFormFilter,
-  fields: getSearchableFields
-}, {
-  searchInstances,
-  resetFormFilter,
-  updateFormFilter,
-  createInstance
-})(SearchForm);

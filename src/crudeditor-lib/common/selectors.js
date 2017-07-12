@@ -1,4 +1,11 @@
-export const
-  getEntityConfigurationIndex = ({ entityConfigurationIndex }) => entityConfigurationIndex,
+const wrapper = f => ({ common }, entityConfiguration) => f(common, entityConfiguration);
 
-  getActiveView = ({ activeView }) => activeView;
+export const
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getEntityConfigurationIndex = wrapper(({ entityConfigurationIndex }) => entityConfigurationIndex),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getActiveView = wrapper(({ activeView }) => activeView);

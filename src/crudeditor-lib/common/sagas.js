@@ -30,7 +30,7 @@ function* onViewInitialize(entityConfiguration, {
     source
   }
 }) {
-  viewName = viewName || (yield select(getActiveView)) || DEFAULT_VIEW;
+  viewName = viewName || (yield select(getActiveView, entityConfiguration)) || DEFAULT_VIEW;
 
   const actionCreator = (
     viewName === VIEW_SEARCH && searchInstances ||

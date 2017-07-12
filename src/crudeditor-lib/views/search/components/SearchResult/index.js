@@ -1,22 +1,18 @@
 import React from 'react';
-import connect from '../../connect';
-import DefaultSearchResultListing from '../SearchResultListing';
-import DefaultBulkOperationsPanel from '../BulkOperationsPanel';
-import DefaultPaginationPanel from '../PaginationPanel';
-import { VIEW_NAME_SEARCH } from '../../constants';
 
-const SearchResult = ({ SearchResultListing, BulkOperationsPanel, PaginationPanel, totalCount }) =>
+import SearchResultListing from '../SearchResultListing';
+import BulkOperationsPanel from '../BulkOperationsPanel';
+import PaginationPanel from '../PaginationPanel';
+
+import connect from '../../../../connect';
+import { getTotalCount } from '../../selectors';
+
+const SearchResult = ({ totalCount }) =>
   totalCount > 0 ?
     <div>
-      {
-        SearchResultListing ? <SearchResultListing /> : <DefaultSearchResultListing />
-      }
-      {
-        BulkOperationsPanel ? <BulkOperationsPanel /> : <DefaultBulkOperationsPanel />
-      }
-      {
-        PaginationPanel ? <PaginationPanel /> : <DefaultPaginationPanel />
-      }
+        <SearchResultListing />
+        <BulkOperationsPanel />
+        <PaginationPanel />
     </div> :
     <div className="bs-callout bs-callout-info">
       <span>0 item(s) found</span>
@@ -32,20 +28,8 @@ export default connect(
           }
         }
       }
-    },
-    metaData: {
-      search: {
-        result: {
-          listing,
-          pagination,
-          bulkOperations
-        }
-      }
     }
   }) => ({
-    totalCount,
-    SearchResultListing: listing && listing.Component,
-    BulkOperationsPanel: bulkOperations && bulkOperations.Component,
-    PaginationPanel: pagination && pagination.Component
+    totalCount
   }))({ state, metaData }),
 )(SearchResult);

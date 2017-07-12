@@ -1,7 +1,7 @@
 import { VIEW_INITIALIZE } from './constants';
 
-export
-  const initializeView = ({
+export const
+  initializeView = ({
     viewName,
     viewState
   }) => ({

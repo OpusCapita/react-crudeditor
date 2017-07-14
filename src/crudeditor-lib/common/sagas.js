@@ -3,7 +3,7 @@ import { put, takeLatest, all, select } from 'redux-saga/effects';
 import { actions as searchActions } from '../views/search';
 import { actions as createActions } from '../views/create';
 import { actions as editActions } from '../views/edit';
-import { actions as showActions } from '../views/show';
+//import { actions as showActions } from '../views/show';
 
 import { getActiveView } from './selectors';
 
@@ -19,7 +19,7 @@ import {
 const { searchInstances } = searchActions;
 const { createInstance } = createActions;
 const { editInstance } = editActions;
-const { showInstance } = showActions;
+//const { showInstance } = showActions;
 
 function* onViewInitialize(entityConfiguration, {
   payload: {
@@ -35,8 +35,8 @@ function* onViewInitialize(entityConfiguration, {
   const actionCreator = (
     viewName === VIEW_SEARCH && searchInstances ||
     viewName === VIEW_CREATE && createInstance  ||
-    viewName === VIEW_EDIT   && editInstance    ||
-    viewName === VIEW_SHOW   && showInstance
+    viewName === VIEW_EDIT   && editInstance
+    //viewName === VIEW_SHOW   && showInstance
   );
 
   if (!actionCreator) {

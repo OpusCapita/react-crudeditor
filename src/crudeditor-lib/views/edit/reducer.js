@@ -2,20 +2,21 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import * as u from 'updeep';
 
-import { constants as searchConstants } from '../search';
-import { constants as editConstants } from '../edit';
-
 import {
-  UNINITIALIZED,
-  READY
+  INSTANCE_EDIT,
+  INSTANCE_EDIT_REQUEST,
+  INSTANCE_EDIT_SUCCESS,
+  INSTANCE_EDIT_FAIL,
+
+  EXTRACTING,
+  READY,
+  UNINITIALIZED
 } from './constants';
 
-const { INSTANCES_SEARCH_FAIL } = searchConstants;
-const { INSTANCE_EDIT_FAIL } = editConstants;
-
 const defaultStoreStateTemplate = {
-  code: undefined,
-  payload: undefined,
+  persistentInstance: undefined,
+  formInstance: undefined,
+  tab: 0,  // TODO: implement tab names
   status: UNINITIALIZED
 };
 
@@ -32,27 +33,20 @@ export default modelMetaData => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === INSTANCES_SEARCH_FAIL) {
-    const {
-      code,
-      payload: codePayload
-    } = payload;
+  if (type === INSTANCE_EDIT_REQUEST) {
+    newStoreStateSlice.status = EXTRACTING;
 
-    newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = codePayload;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_EDIT_SUCCESS) {
+    const { instance, tab } = payload;
+    newStoreStateSlice.persistentInstance = instance;
     newStoreStateSlice.status = READY;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_FAIL) {
-    const {
-      code,
-      payload: codePayload
-    } = payload;
-
-    newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = codePayload;
-    newStoreStateSlice.status = READY;
+    } else if (type === INSTANCE_EDIT_FAIL) {
+      newStoreStateSlice.status = storeState.resultInstances ? READY : UNINITIALIZED;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }

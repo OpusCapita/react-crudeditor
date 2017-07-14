@@ -24,7 +24,7 @@ app.use(webpackDevMiddleware);
 app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(function (req, res, next) {
-  console.log('===== [' + new Date().toUTCString() + '] ', req.originalUrl);
+  console.info('===== [' + new Date().toUTCString() + '] ', req.originalUrl);
   next();
 });
 
@@ -50,5 +50,5 @@ app.get('*', function (req, res) {
 let server = app.listen(PORT || 8081, function () {
   let host = server.address().address;
   let port = server.address().port;
-  console.log(`Server listening at http://${host === '::' ? 'localhost' : host}:${port}`);
+  console.info(`Server listening at http://${host === '::' ? 'localhost' : host}:${port}`);
 });

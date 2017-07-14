@@ -1,11 +1,5 @@
-import {
-  EDIT_PERMISSION,
-  FIELD_STATE_READONLY,
-  FIELD_STATE_EDITABLE,
-  FORM_MODE_EDIT
-} from '../../crud-editor-lib/constants';
-
 function security(user) {
+  const EDIT_PERMISSION = 2;
   return EDIT_PERMISSION;
 }
 
@@ -18,31 +12,27 @@ const general = {
       type       : 'string',
       isUnique   : true,
       isRequired : true,
-      validation : value => /^\d+$/.test(value),
-      state      : FIELD_STATE_READONLY
+      validation : value => /^\d+$/.test(value)
     },
     firstName: {
       title      : 'First Name',
       type       : 'string',
       isUnique   : false,
       isRequired : true,
-      validation : value => value && value.length > 2 && value.length < 22 && /^\S+$/.test(value),
-      state      : FIELD_STATE_EDITABLE
+      validation : value => value && value.length > 2 && value.length < 22 && /^\S+$/.test(value)
     },
     lastName: {
       title      : 'Last Name',
       type       : 'string',
       isUnique   : false,
       isRequired : true,
-      validation : value => value && value.length > 2 && value.length < 22 && /^\S+$/.test(value),
-      state      : FIELD_STATE_EDITABLE
+      validation : value => value && value.length > 2 && value.length < 22 && /^\S+$/.test(value)
     },
     isActive: {
       title      : 'Alive',
       type       : 'bool',
       isUnique   : false,
-      isRequired : false,
-      state      : FIELD_STATE_EDITABLE
+      isRequired : false
     }
   }
 };
@@ -114,10 +104,6 @@ function createOrEdit(mode) {
       }
     }
   };
-
-  if (mode === FORM_MODE_EDIT) {
-    rez.listFields.unshift('id');
-  }
 
   return rez;
 }

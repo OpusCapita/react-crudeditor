@@ -1,20 +1,20 @@
 import { VIEW_NAME } from './constants';
+import { buildViewSelectorWrapper } from '../../lib';
 
-const DEFAULT_FIELD_TYPE = 'string';
-const getFieldType = ({ type }) => return type || DEFAULT_FIELD_TYPE;
+import {
+  DEFAULT_FIELD_TYPE,
+  AUDITABLE_FIELDS
+} from './constants';
 
-const AUDITABLE_FIELDS = [
-  'createdBy',
-  'changedBy',
-  'createdOn',
-  'changedOn'
-];
+const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
-const wrapper = f => ({
-  views: {
-    [VIEW_NAME]: view
+const getFieldType = (fields, name) => {
+  if (!fields.hasOwnProperty(name)) {
+    throw new Error(`Unknown field ${name}`);
   }
-}, entityConfiguration) => f(view, entityConfiguration);
+
+  return fields[name].type || DEFAULT_FIELD_TYPE;
+}
 
 export const
 
@@ -71,12 +71,20 @@ export const
         fields
       },
       ui
-  }) => ui && ui.search && ui.search().searchableFields || Object.keys(fields).
-    filter(name => !AUDITABLE_FIELDS.includes(name)).
-    map(name => ({
-      name,
-      type: getFieldType(fields[name])
-    }))),
+  }) => ui &&
+    ui.search &&
+    ui.search().searchableFields &&
+    ui.search().searchableFields.map(field => field.Component ?
+      field :
+      { ...field, type: getFieldType(fields, field.name) }
+    ) ||
+    Object.keys(fields).
+      filter(name => !AUDITABLE_FIELDS.includes(name)).
+      map(name => ({
+        name,
+        type: getFieldType(fields, name)
+      }))
+  ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -85,10 +93,28 @@ export const
         fields
       },
       ui
-  }) => ui && ui.search && ui.search().resultFields || Object.keys(fields).map(name => ({
-    name,
-    type: getFieldType(fields[name])
-  }))),
+  }) => ui &&
+    ui.search &&
+    ui.search().resultFields &&
+    ui.search().resultFields.map(field => {
+      if (field.Component) {
+        return field;
+      }
+
+      if (!fields.hasOwnProperty(field.name)) {
+        throw `Composite field ${field.name} must have FieldRenderComponent specified`;
+      }
+
+      return {
+        ...field,
+        type: getFieldType(fields, field.name)
+      };
+    }) ||
+    Object.keys(fields).map(name => ({
+      name,
+      type: getFieldType(fields, name)
+    }))
+  ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -100,8 +126,4 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getSelectedInstances = wrapper(({ selectedInstances }) => selectedInstances),
-
-  getIdField = wrapper((_, {
-    model: { idField }
-  }) => idField);
+  getSelectedInstances = wrapper(({ selectedInstances }) => selectedInstances);

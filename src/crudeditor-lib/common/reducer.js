@@ -6,7 +6,7 @@ import { setEntityConfiguration } from '../entityConfiguration';
 import { constants as searchConstants } from '../views/search';
 import { constants as createConstants } from '../views/create';
 import { constants as editConstants   } from '../views/edit';
-import { constants as showConstants   } from '../views/show';
+//import { constants as showConstants   } from '../views/show';
 
 import {
   VIEW_SEARCH,
@@ -22,13 +22,18 @@ const {
 } = searchConstants;
 
 const { INSTANCE_CREATE       } = createConstants;
-const { INSTANCE_EDIT_SUCCESS } = editConstants;
-const { INSTANCE_SHOW_SUCCESS } = showConstants;
+
+const {
+  INSTANCE_EDIT_SUCCESS,
+  INSTANCE_EDIT_FAIL
+} = editConstants;
+
+//const { INSTANCE_SHOW_SUCCESS } = showConstants;
 
 const getDefaultStoreState = entityConfiguration => ({
   activeView: undefined,  // XXX: must be undefined until initialization completes.
   entityConfigurationIndex: setEntityConfiguration(entityConfiguration)
-};
+});
 
 /*
  * XXX:
@@ -58,8 +63,8 @@ export default entityConfiguration => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCE_SHOW_SUCCESS) {
-      newStoreStateSlice.activeView = VIEW_SHOW;
+    //} else if (type === INSTANCE_SHOW_SUCCESS) {
+      //newStoreStateSlice.activeView = VIEW_SHOW;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -67,8 +72,13 @@ export default entityConfiguration => {
       newStoreStateSlice.activeView = VIEW_ERROR;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_EDIT_FAIL) {
+      newStoreStateSlice.activeView = VIEW_ERROR;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     }
 
     return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
   };
-}
+};

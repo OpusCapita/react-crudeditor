@@ -1,10 +1,7 @@
 import { VIEW_NAME } from './constants';
+import { buildViewSelectorWrapper } from '../../lib';
 
-const wrapper = f => ({
-  views: {
-    [VIEW_NAME]: view
-  }
-}, entityConfiguration) => f(view, entityConfiguration);
+const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
   getErrorInfo = wrapper(({

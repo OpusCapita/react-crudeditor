@@ -16,7 +16,7 @@ export const
     order,
     max,
     offset
-  }, source) => ({
+  } = {}, source) => ({
     type: INSTANCES_SEARCH,
     payload: {
       filter,
@@ -28,7 +28,7 @@ export const
     meta: { source }
   }),
 
-  updateFormFilter => ({
+  updateFormFilter = ({
     name,
     value
   }) => ({
@@ -44,15 +44,15 @@ export const
     payload: { instances }
   }),
 
-  resetFormFilter => _ => ({
+  resetFormFilter = _ => ({
     type: FORM_FILTER_RESET
   }),
 
   toggleSelected = (isSelected, instance) => ({
-    type: isSelected ? 'INSTANCE_SELECT' : 'INSTANCE_DESELECT',
+    type: isSelected ? INSTANCE_SELECT : INSTANCE_DESELECT,
     payload: { instance }
   }),
 
   toggleSelectedAll = isSelected => ({
-    type: isSelected ? 'ALL_INSTANCES_SELECT' : 'ALL_INSTANCES_DESELECT'
+    type: isSelected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
   });

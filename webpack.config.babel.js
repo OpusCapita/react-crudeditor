@@ -43,8 +43,13 @@ module.exports = {
         test: /\.css$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'postcss-loader' }
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'postcss-loader', options: {
+            plugins: (loader) => [
+              require('precss')(),
+              require('autoprefixer')()
+            ]
+          } }
         ]
       }
     ]
@@ -54,9 +59,9 @@ module.exports = {
       template: './client/index.html',
       inject: "body"
     }),
-    new webpack.LoaderOptionsPlugin({ options: { postcss: [precss, autoprefixer] } }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]
 };

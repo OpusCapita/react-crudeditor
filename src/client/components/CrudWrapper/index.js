@@ -1,9 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
-import getModelBuilder from '../../../models';
-import createCrud from '../../../crud-editor-lib';
+import buildModel from '../../../models';
+import createCrud from '../../../crudeditor-lib';
 import { hash2obj, query2obj, suffix2arr, buildURL } from './lib';
-import { VIEW_NAME_EDIT } from '../../../crud-editor-lib/constants';
+import { constants as crudeditorConstants } from '../../../crudeditor-lib/common';
+
+const { VIEW_EDIT } = crudeditorConstants;
 
 function url2view({ hash, query, suffix }) {
   hash = hash2obj(hash);
@@ -21,7 +23,7 @@ const entities2crud = {};
 const transitionHandlers = {};
 
 function handleTransition(historyPush, baseURL, { viewName, viewState }) {
-  if (viewName === VIEW_NAME_EDIT && viewState.tab === 3) {
+  if (viewName === VIEW_EDIT && viewState.tab === 3) {
     const betterTab = Number(prompt('TAB 3 is not recommended. You may choose another one:'));
 
     if ([1,2].includes(betterTab)) {
@@ -71,18 +73,7 @@ export default ({
   }
 
   if (!entities2crud[entities]) {
-    const modelBuilder = getModelBuilder(entities);  // TODO: handle unknown entities name.
-
-    const urlMapper = {
-      revisions(entityId) {
-        push(`/revisions/${entityId}`);
-      },
-      google() {
-        window.location.href = 'http://www.google.com/';
-      }
-    };
-
-    const model = modelBuilder(urlMapper);
+    const model = buildModel(entities);  // TODO: handle unknown entities name.
     entities2crud[entities] = createCrud(model);
   }
 

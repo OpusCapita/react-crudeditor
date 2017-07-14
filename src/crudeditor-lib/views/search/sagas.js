@@ -1,6 +1,8 @@
-import { put, takeLatest, all, select } from 'redux-saga/effects';
+import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
 
 import {
+  EMPTY_FILTER_VALUE,
+
   INSTANCES_DELETE,
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_REQUEST,
@@ -13,13 +15,18 @@ import {
 } from './constants';
 
 import {
-  getResultFilter,
-  getSortField,
-  getSortOrder,
   getPageMax,
   getPageOffset,
-  getIdField
+  getResultFilter,
+  getResultInstances,
+  getSortField,
+  getSortOrder
 } from './selectors';
+
+import { searchInstances } from './actions';
+import { selectors as commonSelectors } from '../../common';
+
+const { getIdField } = commonSelectors;
 
 function* onInstancesSearch(entityConfiguration, {
   payload: {
@@ -32,13 +39,20 @@ function* onInstancesSearch(entityConfiguration, {
   meta: { source }
 }) {
   filter = filter || (yield select(getResultFilter, entityConfiguration));
-  sort   = sort   || (yield select(getSortField, entityConfiguration));
-  order  = order  || (yield select(getSortOrder, entityConfiguration));
-  max    = max    || (yield select(getPageMax, entityConfiguration));
 
-  offset = offset || offset === 0 ?
-    offset :
-    (yield select(getPageOffset, entityConfiguration));
+  const currentSort = yield select(getSortField, entityConfiguration);
+  const currentOrder = yield select(getSortOrder, entityConfiguration);
+
+  sort   = sort  || currentSort;
+  order  = order || currentOrder;
+  max    = max   || (yield select(getPageMax, entityConfiguration));
+
+  offset = sort === currentSort && order === currentOrder ?
+    (offset || offset === 0 ?
+      offset :
+      (yield select(getPageOffset, entityConfiguration))
+    ) :
+    0;
 
   yield put({
     type: INSTANCES_SEARCH_REQUEST,
@@ -47,7 +61,9 @@ function* onInstancesSearch(entityConfiguration, {
 
   try {
     const { instances, totalCount } = yield call(entityConfiguration.api.search, {
-      filter,  // TODO: remove "" and undefined from filter just like in detailedFilter2briefFilter
+      filter: filter && Object.keys(filter).every(field => filter[field] === EMPTY_FILTER_VALUE) ?
+        undefined :  // this option is also triggered when filter === {}
+        filter,
       sort,
       order,
       max,
@@ -80,7 +96,7 @@ function* onInstancesSearch(entityConfiguration, {
 function* onInstancesDelete(entityConfiguration, {
   payload: { instances }
 }) {
-  const idFieldName = yield select(getIdField, entityConfiguration);
+  const idField = yield select(getIdField, entityConfiguration);
 
   yield put({
     type: INSTANCES_DELETE_REQUEST
@@ -89,13 +105,28 @@ function* onInstancesDelete(entityConfiguration, {
   try {
     const { deletedCount } = yield call(
       entityConfiguration.api.delete,
-      instances.map(instance => instance[idFieldName])
+      instances.map(instance => instance[idField])
     );
 
     yield put({
       type: INSTANCES_DELETE_SUCCESS,
       payload: { instances }
     });
+
+    const resultInstances = yield select(getResultInstances, entityConfiguration);
+    let searchParams;
+
+    if (resultInstances.length === 0) {
+      const offset = yield select(getPageOffset, entityConfiguration);
+
+      if (offset !== 0) {
+        searchParams = {
+          offset: offset - (yield select(getPageMax, entityConfiguration))
+        };
+      }
+    }
+
+    yield put(searchInstances(searchParams));
   } catch (err) {
     yield put({
       type: INSTANCES_DELETE_FAIL,  // TODO: handle error

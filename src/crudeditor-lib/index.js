@@ -5,10 +5,16 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 
-import Main from './common/components/Main';
+import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-import { commonConstants } from './common';
+
+import {
+  constants as commonConstants,
+  selectors as commonSelectors
+} from './common';
+
+import { selectors as editSelectors } from './views/edit';
 
 const {
   VIEW_SEARCH,
@@ -18,40 +24,44 @@ const {
   VIEW_ERROR
 } = commonConstants;
 
-const storeState2appState = storeState => {
-  const activeView = storeState.common.exposable.activeView;
-  const viewStoreState = storeState.views[activeView];
-
-  return {
-    view: activeView,
-    state:
-      activeView === VIEW_SEARCH && {
-        filter : cloneDeep(viewStoreState.resultFilter),
-        sort   : viewStoreState.sortParams.sort,
-        order  : viewStoreState.sortParams.order,
-        max    : viewStoreState.pageParams.max,
-        offset : viewStoreState.pageParams.offset
-      } ||
-      activeView === VIEW_CREATE && {} ||
-      activeView === VIEW_EDIT && {
-        //instance: cloneDeep(viewStoreState.persistentInstance),
-        id  : viewStoreState.persistentInstance.id,  // TBD : what if id is complex???
-        tab : viewStoreState.tab
-      } ||
-      activeView === VIEW_SHOW && {
-        //instance: cloneDeep(viewStoreState.instance),
-        id  : viewStoreState.instance.id,  // TBD : what if id is complex???
-        tab : viewStoreState.tab
-      } ||
-      activeView === VIEW_ERROR && {
-        code    : viewStoreState.code,
-        payload : cloneDeep(viewStoreState.payload)
-      }
-};
+const { getIdField } = commonSelectors;
+const { getPersistentInstance } = editSelectors;
 
 export default entityConfiguration => {
-  let onTransition = null;
-  const sagaMiddleware = createSagaMiddleware();
+  const storeState2appState = storeState => {
+    const activeView = storeState.common.activeView;
+    const viewStoreState = storeState.views[activeView];
+
+    return {
+      view: activeView,
+      state:
+        activeView === VIEW_SEARCH && {
+          filter : cloneDeep(viewStoreState.resultFilter),
+          sort   : viewStoreState.sortParams.sort,
+          order  : viewStoreState.sortParams.order,
+          max    : viewStoreState.pageParams.max,
+          offset : viewStoreState.pageParams.offset
+        } ||
+        activeView === VIEW_CREATE && {} ||
+        activeView === VIEW_EDIT && {
+          id: getPersistentInstance(storeState, entityConfiguration)[
+            getIdField(storeState, entityConfiguration)
+          ],
+          tab: viewStoreState.tab
+        } ||
+        activeView === VIEW_SHOW && {
+          //id: getInstance(storeState, entityConfiguration)[
+          //  getIdField(storeState, entityConfiguration)
+          //],
+          tab: viewStoreState.tab
+        } ||
+        activeView === VIEW_ERROR && {
+          code    : viewStoreState.code,
+          payload : cloneDeep(viewStoreState.payload)
+        }
+    }
+  };
+
 
   const appStateChangeDetect = ({ getState }) => next => action => {
     if (!action.meta || action.meta.source === 'owner' || !onTransition) {
@@ -76,6 +86,9 @@ export default entityConfiguration => {
 
     return rez;
   }
+
+  let onTransition = null;
+  const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     getReducer(entityConfiguration),
@@ -109,4 +122,4 @@ export default entityConfiguration => {
       );
     }
   }
-}
+};

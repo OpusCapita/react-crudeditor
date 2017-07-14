@@ -11,8 +11,7 @@ import {
   getSortOrder,
   getResultInstances,
   getSelectedInstances,
-  getResultFields,
-  getIdField
+  getResultFields
 } from '../../selectors';
 
 import {
@@ -23,8 +22,10 @@ import {
 } from '../../actions';
 
 import { actions as editActions } from '../../../edit';
+import { selectors as commonSelectors } from '../../../../common';
 
 const { editInstance } = editActions;
+const { getIdField } = commonSelectors;
 
 @connect({
   sortField: getSortField,
@@ -32,7 +33,7 @@ const { editInstance } = editActions;
   instances: getResultInstances,
   selectedInstances: getSelectedInstances,
   fields: getResultFields,
-  idFieldName: getIdField
+  idField: getIdField
 }, {
   editInstance,
   deleteInstances,
@@ -41,8 +42,6 @@ const { editInstance } = editActions;
   searchInstances
 })
 export default class extends PureComponent {
-  getInstanceId = instance => instance[this.props.idFieldName]
-
   handleNewInstances = instances => {
     this.handleToggleSelected = new WeakMap(instances.map(instance => [
       instance,
@@ -51,7 +50,7 @@ export default class extends PureComponent {
 
     this.handleEdit = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.editInstance({ id: this.getInstanceId(instance) })
+      _ => this.props.editInstance({ id: instance[this.props.idField] })
     ]));
 
     this.handleDelete = new WeakMap(instances.map(instance => [
@@ -89,7 +88,7 @@ export default class extends PureComponent {
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.toggleSelectedAll(checked)
 
   render() {
-    const { selectedInstances, instances, fields, sortField, sortOrder } = this.props;
+    const { selectedInstances, instances, fields, sortField, sortOrder, idField } = this.props;
 
     return (
       <Table responsive={true} condensed={true}>
@@ -125,7 +124,7 @@ export default class extends PureComponent {
         <tbody>
 
         {instances.map(instance =>
-          <tr key={`tr-${this.getInstanceId(instance)}`}>
+          <tr key={`tr-${instance[idField]}`}>
             <td>
               <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected.get(instance)} />
             </td>
@@ -151,6 +150,7 @@ export default class extends PureComponent {
               <ButtonGroup bsSize='sm'>
                 <Button onClick={this.handleEdit.get(instance)}>
                   <Glyphicon glyph='edit' />
+                  {' '}
                   Edit
                 </Button>
 
@@ -162,6 +162,7 @@ export default class extends PureComponent {
                 >
                   <Button>
                     <Glyphicon glyph='trash' />
+                    {' '}
                     Delete
                   </Button>
                 </ConfirmDialog>

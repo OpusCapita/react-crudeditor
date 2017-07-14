@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react';
-import connect from '../../../connect';
+
+import connect from '../../connect';
 import ViewSwitcher from '../ViewSwitcher';
-import { initializeView } from '../../actions';
+import { actions as commonActions } from '../../common';
+
+const { initializeView } = commonActions;
 
 @connect(
   undefined,

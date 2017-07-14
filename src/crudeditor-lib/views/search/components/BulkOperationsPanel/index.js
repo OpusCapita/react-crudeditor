@@ -12,7 +12,7 @@ import { getSelectedInstances } from '../../selectors';
   deleteInstances
 })
 export default class extends PureComponent {
-  handleDelete = _ => this.props.deleteInstances([this.props.selectedInstances]);
+  handleDelete = _ => this.props.deleteInstances(this.props.selectedInstances);
 
   render() {
     const { selectedInstances } = this.props;

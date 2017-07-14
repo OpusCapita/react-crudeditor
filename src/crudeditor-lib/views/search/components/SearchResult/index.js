@@ -15,21 +15,9 @@ const SearchResult = ({ totalCount }) =>
         <PaginationPanel />
     </div> :
     <div className="bs-callout bs-callout-info">
-      <span>0 item(s) found</span>
+      <span>0 items found</span>
     </div>;
 
-export default connect(
-  (state, metaData) => (({
-    state: {
-      views: {
-        [VIEW_NAME_SEARCH]: {
-          control: {
-            totalCount
-          }
-        }
-      }
-    }
-  }) => ({
-    totalCount
-  }))({ state, metaData }),
-)(SearchResult);
+export default connect({
+  totalCount: getTotalCount
+})(SearchResult);

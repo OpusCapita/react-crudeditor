@@ -99,8 +99,8 @@ export default {
         }, {
           name: 'extContractLineId'
         }, {
-          name: 'statusId'
-          //Component: StatusField
+          name: 'statusId',
+          Component: StatusField
         }],
         resultFields: [{
           name: 'contractId',
@@ -115,8 +115,8 @@ export default {
           name: 'extContractLineId',
           sortable: true
         }, {
-          name: 'validRange'
-          //Component: DateRangeCellRender
+          name: 'validRange',
+          Component: DateRangeCellRender
         }]
       };
     }

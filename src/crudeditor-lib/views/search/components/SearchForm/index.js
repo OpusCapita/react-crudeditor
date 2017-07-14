@@ -37,7 +37,9 @@ export default class extends PureComponent {
     this.handleFormFilterUpdate = this.props.fields.reduce(
       (rez, { name }) => ({
         ...rez,
-        [name]: value => this.props.updateFormFilter({ name, value })
+        [name]: ({
+          target: { value }
+        }) => this.props.updateFormFilter({ name, value })
       }),
       {}
     );
@@ -65,18 +67,26 @@ export default class extends PureComponent {
             </Col>
             <Col sm={10}>
               {
-                Component          && <Component value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} /> ||
-                type === 'string'  && <FormControl type='text' value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} />
-                type === 'number'  && <FormControl type='text' value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} />
-                type === 'date'    && <FormControl type='text' value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} />
-                type === 'boolean' && <FormControl type='text' value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} />
+                Component          && <Component   value={formFilter[name]}       onChange={this.handleFormFilterUpdate[name]}             /> ||
+                type === 'string'  && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
+                type === 'number'  && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
+                type === 'date'    && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
+                type === 'boolean' && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' />
               }
             </Col>
           </FormGroup>
         )}
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Button bsStyle='link' onClick={resetFormFilter} disabled={isEqual(formFilter, defaultFilter)}>Reset</Button>
+            <Button
+              bsStyle='link'
+              onClick={resetFormFilter}
+              disabled={!Object.keys(formFilter).some(
+                field => formFilter[field] || formFilter[field] === false || formFilter[field] === 0
+              )}
+            >
+              Reset
+            </Button>
             {' '}
             <Button onClick={this.handleCreate}>Create</Button>
             {' '}

@@ -8,9 +8,14 @@ function date2str(date) {
   return [date.getDate(), date.getMonth(), date.getFullYear()].join('/');
 }
 
-export default ({ value = {} }) =>
-  <span>
-    {
-      `${value.from ? date2str(value.from) : '...'} - ${value.to ? date2str(value.to) : '...'}`
-    }
-  </span>;
+export default ({ name, instance }) => {
+  const value = instance[name];
+
+  return (
+    <span>
+      {
+        `${value.from ? date2str(value.from) : '...'} - ${value.to ? date2str(value.to) : '...'}`
+      }
+    </span>
+  );
+};

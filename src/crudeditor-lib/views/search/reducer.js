@@ -6,6 +6,8 @@ import {
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
+  EMPTY_FILTER_VALUE,
+
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
 
@@ -27,7 +29,7 @@ import {
 } from './constants';
 
 const defaultStoreStateTemplate = {
-  resultFilter: undefined,  // Active filter as displayed in Search Result and sent to URL/server.
+  resultFilter: {},  // Active filter as displayed in Search Result and sent to URL/server.
   formFilter: {},  // Filter as displayed in Search Criteria.
   sortParams: {
     field: undefined,
@@ -40,7 +42,7 @@ const defaultStoreStateTemplate = {
   resultInstances: undefined,  // XXX: must be undefined until first extraction.
   selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
   totalCount: undefined,
-  status = UNINITIALIZED;
+  status: UNINITIALIZED
 };
 
 /*
@@ -55,47 +57,35 @@ export default entityConfiguration => {
     entityConfiguration.ui.search &&
     entityConfiguration.ui.search().searchableFields;
 
-  const getDefaultFormFilter = _ => (
+  const buildDefaultFormFilter = _ => (
     searchableFieldsMeta &&
-      searchableFieldsMeta.map(({
-        name,
-        Component
-      }) => ({
-        name,
-        Component
-      })) ||
-    Object.keys(entityConfiguration.model.fields).map(name => ({
-      name,
-      type: entityConfiguration.model.fields.type || 'string'
-    }))
+    searchableFieldsMeta.map(({ name }) => name) ||
+    Object.keys(entityConfiguration.model.fields)
   ).reduce(
-    (rez, {
-      name,
-      Component,
-      type
-    }) => ({
+    (rez, name) => ({
       ...rez,
-      [name]: do {
-        if (Component) { null; }
-        else if (type === 'string') { ''; }
-        else if (type === 'number') { ''; }
-        else if (type === 'date') { null; }
-        else if (type === 'boolean') { null; }
-        else { throw new Error('Unknown field type ' + type); }
-      }
+      [name]: EMPTY_FILTER_VALUE
     }),
     {}
   );
 
-  defaultStoreState.formFilter = getDefaultFormFilter();
+  defaultStoreState.formFilter = buildDefaultFormFilter();
+  defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
 
   const resultFieldsMeta = entityConfiguration.ui &&
     entityConfiguration.ui.search &&
     entityConfiguration.ui.search().resultFields;
 
-  defaultStoreState.sortParams.field = resultFieldsMeta ?
-    resultFieldsMeta[resultFieldsMeta.findIndex(field => field.hasOwnProperty('sortByDefault')) || 0].name :
-    Object.keys(entityConfiguration.model.fields)[0];
+  if (resultFieldsMeta) {
+    const sortByDefaultIndex = resultFieldsMeta.findIndex(field => field.hasOwnProperty('sortByDefault'));
+
+    defaultStoreState.sortParams.field = resultFieldsMeta[sortByDefaultIndex === -1 ?
+      0 :
+      sortByDefaultIndex
+    ].name;
+  } else {
+    defaultStoreState.sortParams.field = Object.keys(entityConfiguration.model.fields)[0];
+  }
 
   return (storeState = defaultStoreState, { type, payload, error, meta }) => {
     const newStoreStateSlice = {};
@@ -118,18 +108,16 @@ export default entityConfiguration => {
         totalCount
       } = payload;
 
-      newStoreStateSlice = {
-        resultFilter: filter,
-        sortParams: {
-          field: sort,
-          order
-        }
-        pageParams: {
-          max,
-          offset
-        }
+      newStoreStateSlice.formFilter = cloneDeep(filter);
+      newStoreStateSlice.resultFilter = cloneDeep(filter);
+      newStoreStateSlice.sortParams = {
+        field: sort,
+        order
       };
-
+      newStoreStateSlice.pageParams = {
+        max,
+        offset
+      };
       newStoreStateSlice.totalCount = totalCount;
 
       // XXX: updeep-package does not check arrays for equality.
@@ -151,6 +139,7 @@ export default entityConfiguration => {
       const { instances } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => !instances.includes(ins));
       newStoreStateSlice.resultInstances = storeState.resultInstances.filter(ins => !instances.includes(ins));
+      newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -166,7 +155,7 @@ export default entityConfiguration => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_RESET) {
-      newStoreStateSlice.formFilter = getDefaultFormFilter();
+      newStoreStateSlice.formFilter = buildDefaultFormFilter();
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -177,7 +166,7 @@ export default entityConfiguration => {
       } = payload;
 
       newStoreStateSlice.formFilter = {
-        [fieldName]: fieldValue
+        [fieldName]: fieldValue || fieldValue === 0 || fieldValue === false ? fieldValue : EMPTY_FILTER_VALUE
       };
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -207,4 +196,4 @@ export default entityConfiguration => {
 
     return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
   };
-}
+};

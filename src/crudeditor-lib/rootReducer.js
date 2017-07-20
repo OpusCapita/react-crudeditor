@@ -1,13 +1,12 @@
 import { combineReducers } from 'redux';
 
-import common from './common';
+import common from './common/reducer';
+import { constants as commonConstants } from './common';
 import search from './views/search';
-//import create from './views/create';
-//import edit from './views/edit';
+import create from './views/create';
+import edit from './views/edit';
 //import show from './views/show';
 import error from './views/error';
-
-import { constants as commonConstants } from './common';
 
 const {
   VIEW_SEARCH,
@@ -21,8 +20,8 @@ export default entityConfiguration => combineReducers({
   common: common(entityConfiguration),
   views: combineReducers({
     [VIEW_SEARCH] : search(entityConfiguration),
-    //[VIEW_CREATE] : create(entityConfiguration),
-    //[VIEW_EDIT]   : edit(entityConfiguration),
+    [VIEW_CREATE] : create(entityConfiguration),
+    [VIEW_EDIT]   : edit(entityConfiguration),
     //[VIEW_SHOW]   : show(entityConfiguration),
     [VIEW_ERROR]  : error(entityConfiguration)
   })

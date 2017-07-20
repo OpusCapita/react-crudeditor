@@ -36,7 +36,7 @@ export default class extends PureComponent {
               Results per page: <b>{max}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <MenuItem eventKey={3} active={max === 3}>3</MenuItem>  {/* FIXME: remove the line */}
+              <MenuItem eventKey={3} active={max === 3}>3</MenuItem>  {/* FIXME: remove the line which is for testing only*/}
               <MenuItem eventKey={10} active={max === 10}>10</MenuItem>
               <MenuItem eventKey={30} active={max === 30}>30</MenuItem>
               <MenuItem eventKey={50} active={max === 50}>50</MenuItem>
@@ -55,7 +55,7 @@ export default class extends PureComponent {
             </div>
             <div className='pull-left'>
               <Pagination
-                activePage={(offset / max) + 1}
+                activePage={offset / max + 1}
                 onSelect={this.handlePaginate}
                 items={Math.ceil(totalCount / max)}
                 maxButtons={10}

@@ -46,12 +46,14 @@ export default {
   },
   api: {
     get(id) {
+      console.log('Making API-get call');
       return superagent.
         get('/api/contracts/' + encodeURIComponent(id)).
         accept('json').
         then(({ body }) => body);
     },
     search({ filter, sort, order, offset, max }) {
+      console.log('Making API-search call');
       return superagent.
         get('/api/contracts').
         query({ filter, sort, order, offset, max }).
@@ -67,6 +69,7 @@ export default {
         }));
     },
     delete(ids) {
+      console.log('Making API-delete call');
       return superagent.
         del('/api/contracts').
         send(ids).
@@ -74,12 +77,14 @@ export default {
         then(({ body: deletedCount }) => deletedCount);
     },
     create(instance) {
+      console.log('Making API-create call');
       return superagent.
         post('/api/contracts').
         send(instance).
         accept('json');
     },
     update(instance) {
+      console.log('Making API-update call');
       const {contractId} = instance;
       return superagent.
         put('/api/contracts/' + encodeURIComponent(contractId)).

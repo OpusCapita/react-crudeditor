@@ -3,7 +3,9 @@ import React from 'react';
 import connect from '../../../../connect';
 import SearchForm from '../SearchForm';
 import SearchResult from '../SearchResult';
-import { getEntityName } from '../../selectors';
+import { selectors as commonSelectors } from '../../../../common';
+
+const { getEntityName } = commonSelectors;
 
 const SearchView = ({ entityName }) =>
   <div>

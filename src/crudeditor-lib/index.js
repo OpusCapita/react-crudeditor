@@ -14,7 +14,10 @@ import {
   selectors as commonSelectors
 } from './common';
 
+import { selectors as searchSelectors } from './views/search';
+import { selectors as createSelectors } from './views/create';
 import { selectors as editSelectors } from './views/edit';
+//import { selectors as showSelectors } from './views/show';
 
 const {
   VIEW_SEARCH,
@@ -27,38 +30,20 @@ const {
 const { getIdField } = commonSelectors;
 const { getPersistentInstance } = editSelectors;
 
+const getViewState = {
+  [VIEW_SEARCH]: searchSelectors.getViewState,
+  [VIEW_CREATE]: createSelectors.getViewState,
+  [VIEW_EDIT  ]: editSelectors.getViewState,
+//[VIEW_SHOW  ]: showSelectors.getViewState
+}
+
 export default entityConfiguration => {
   const storeState2appState = storeState => {
     const activeView = storeState.common.activeView;
-    const viewStoreState = storeState.views[activeView];
 
     return {
       view: activeView,
-      state:
-        activeView === VIEW_SEARCH && {
-          filter : cloneDeep(viewStoreState.resultFilter),
-          sort   : viewStoreState.sortParams.sort,
-          order  : viewStoreState.sortParams.order,
-          max    : viewStoreState.pageParams.max,
-          offset : viewStoreState.pageParams.offset
-        } ||
-        activeView === VIEW_CREATE && {} ||
-        activeView === VIEW_EDIT && {
-          id: getPersistentInstance(storeState, entityConfiguration)[
-            getIdField(storeState, entityConfiguration)
-          ],
-          tab: viewStoreState.tab
-        } ||
-        activeView === VIEW_SHOW && {
-          //id: getInstance(storeState, entityConfiguration)[
-          //  getIdField(storeState, entityConfiguration)
-          //],
-          tab: viewStoreState.tab
-        } ||
-        activeView === VIEW_ERROR && {
-          code    : viewStoreState.code,
-          payload : cloneDeep(viewStoreState.payload)
-        }
+      state: cloneDeep(getViewState[activeView](storeState, entityConfiguration))
     }
   };
 
@@ -71,6 +56,10 @@ export default entityConfiguration => {
     const oldStoreState = getState();
     const rez = next(action);
     const newStoreState = getState();
+
+    if (newStoreState.common.activeView === VIEW_ERROR) {
+      return rez;
+    }
 
     // XXX: updeep must be used in reducers for below store states comparison to work as expected.
     if (oldStoreState === newStoreState) {

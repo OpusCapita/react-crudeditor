@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
 
 import {
@@ -11,7 +12,10 @@ import {
   INSTANCES_SEARCH,
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
-  INSTANCES_SEARCH_SUCCESS
+  INSTANCES_SEARCH_SUCCESS,
+
+  READY,
+  VIEW_NAME
 } from './constants';
 
 import {
@@ -20,13 +24,17 @@ import {
   getResultFilter,
   getResultInstances,
   getSortField,
-  getSortOrder
+  getSortOrder,
+  getStatus
 } from './selectors';
 
 import { searchInstances } from './actions';
 import { selectors as commonSelectors } from '../../common';
 
-const { getIdField } = commonSelectors;
+const {
+  getActiveView,
+  getIdField
+} = commonSelectors;
 
 function* onInstancesSearch(entityConfiguration, {
   payload: {
@@ -38,21 +46,35 @@ function* onInstancesSearch(entityConfiguration, {
   },
   meta: { source }
 }) {
-  filter = filter || (yield select(getResultFilter, entityConfiguration));
+  const currentFilter = yield select(getResultFilter, entityConfiguration);
+  const currentSort   = yield select(getSortField, entityConfiguration);
+  const currentOrder  = yield select(getSortOrder, entityConfiguration);
+  const currentMax    = yield select(getPageMax, entityConfiguration);
+  const currentOffset = yield select(getPageOffset, entityConfiguration);
 
-  const currentSort = yield select(getSortField, entityConfiguration);
-  const currentOrder = yield select(getSortOrder, entityConfiguration);
+  filter = filter || currentFilter;
+  sort   = sort   || currentSort;
+  order  = order  || currentOrder;
+  max    = max    || currentMax;
 
-  sort   = sort  || currentSort;
-  order  = order || currentOrder;
-  max    = max   || (yield select(getPageMax, entityConfiguration));
+  offset = sort === currentSort &&
+    order === currentOrder &&
+    max === currentMax &&
+    isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) ?
+      (offset || offset === 0 ?  offset : currentOffset) :
+      0;
 
-  offset = sort === currentSort && order === currentOrder ?
-    (offset || offset === 0 ?
-      offset :
-      (yield select(getPageOffset, entityConfiguration))
-    ) :
-    0;
+  if (source === 'owner' &&
+    isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) &&
+    sort === currentSort &&
+    order === currentOrder &&
+    max === currentMax &&
+    offset === currentOffset &&
+    (yield select(getStatus, entityConfiguration)) === READY &&
+    (yield select(getActiveView, entityConfiguration)) === VIEW_NAME
+  ) {  // Prevent duplicate API call when view/state props are received in response to onTransition({view,state}) call.
+    return;
+  }
 
   yield put({
     type: INSTANCES_SEARCH_REQUEST,

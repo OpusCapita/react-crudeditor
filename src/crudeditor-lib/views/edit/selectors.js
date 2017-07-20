@@ -7,4 +7,20 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
+  getStatus = wrapper(({ status }) => status),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getViewState = wrapper(({
+    persistentInstance,
+    tab
+  }, {
+    model: { idField }
+  }) => ({
+    id: persistentInstance[idField],
+    tab
+  })),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   getPersistentInstance = wrapper(({ persistentInstance }) => persistentInstance);

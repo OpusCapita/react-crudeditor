@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects'
 
-import { sagas as common } from './common';
+import common from './common/sagas';
 import { sagas as search } from './views/search';
 //import { sagas as create } from './views/create';
 import { sagas as edit   } from './views/edit';

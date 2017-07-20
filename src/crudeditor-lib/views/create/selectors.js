@@ -1,25 +1,32 @@
-import { buildCommonSelectorWrapper } from '../lib';
+import { VIEW_NAME } from './constants';
+import { buildViewSelectorWrapper } from '../../lib';
 
-const wrapper = buildCommonSelectorWrapper();
+const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getEntityConfigurationIndex = wrapper(({ entityConfigurationIndex }) => entityConfigurationIndex),
+  getStatus = wrapper(({ status }) => status),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getActiveView = wrapper(({ activeView }) => activeView),
+  getViewState = wrapper(_ => {}),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getEntityName = wrapper((_, {
-    model: { name }
-  }) => name),
+  getInstance = wrapper(({ instance }) => instance),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getIdField = wrapper((_, {
-    model: { idField }
-  }) => idField);
+  getInstanceDescription = wrapper(({ instance }, ui) => {
+    if (ui && ui.createEditShow) {
+      const instanceDescription = ui.createEditShow(VIEW_NAME).instanceDescription;
+
+      if (instanceDescription) {
+        return instanceDescription(instance);
+      }
+    }
+
+    return instance._objectLabel;
+  });

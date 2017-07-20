@@ -16,13 +16,33 @@ const getFieldType = (fields, name) => {
   return fields[name].type || DEFAULT_FIELD_TYPE;
 }
 
+const _getViewState = ({
+  resultFilter: filter,
+  sortParams: {
+    field: sort,
+    order
+  },
+  pageParams: {
+    max,
+    offset
+  }
+}) => ({
+  filter,
+  sort,
+  order,
+  max,
+  offset
+});
+
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getEntityName = wrapper((_, {
-    model: { name }
-  }) => name),
+  getStatus = wrapper(({ status }) => status),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getViewState = wrapper(_getViewState),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -71,20 +91,25 @@ export const
         fields
       },
       ui
-  }) => ui &&
-    ui.search &&
-    ui.search().searchableFields &&
-    ui.search().searchableFields.map(field => field.Component ?
-      field :
-      { ...field, type: getFieldType(fields, field.name) }
-    ) ||
-    Object.keys(fields).
+  }) => {
+    if (ui && ui.search) {
+      const searchableFields = ui.search().searchableFields;
+
+      if (searchableFields) {
+        return ui.search().searchableFields.map(field => field.Component ?
+          field :
+          { ...field, type: getFieldType(fields, field.name) }
+        );
+      }
+    }
+
+    return Object.keys(fields).
       filter(name => !AUDITABLE_FIELDS.includes(name)).
       map(name => ({
         name,
         type: getFieldType(fields, name)
-      }))
-  ),
+      }));
+  }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -93,28 +118,33 @@ export const
         fields
       },
       ui
-  }) => ui &&
-    ui.search &&
-    ui.search().resultFields &&
-    ui.search().resultFields.map(field => {
-      if (field.Component) {
-        return field;
-      }
+  }) => {
+    if (ui && ui.search) {
+      const resultFields = ui.search().resultFields;
 
-      if (!fields.hasOwnProperty(field.name)) {
-        throw `Composite field ${field.name} must have FieldRenderComponent specified`;
-      }
+      if (resultFields) {
+        return ui.search().resultFields.map(field => {
+          if (field.Component) {
+            return field;
+          }
 
-      return {
-        ...field,
-        type: getFieldType(fields, field.name)
-      };
-    }) ||
-    Object.keys(fields).map(name => ({
+          if (!fields.hasOwnProperty(field.name)) {
+            throw `Composite field ${field.name} must have FieldRenderComponent specified`;
+          }
+
+          return {
+            ...field,
+            type: getFieldType(fields, field.name)
+          };
+        });
+      }
+    }
+
+    return Object.keys(fields).map(name => ({
       name,
       type: getFieldType(fields, name)
-    }))
-  ),
+    }));
+  }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -126,4 +156,12 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getSelectedInstances = wrapper(({ selectedInstances }) => selectedInstances);
+  getSelectedInstances = wrapper(({ selectedInstances }) => selectedInstances),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getDefaultNewInstance = wrapper((storeState, { ui }) => ui &&
+    ui.defaultNewInstance &&
+    ui.defaultNewInstance(_getViewState(storeState))
+  );
+

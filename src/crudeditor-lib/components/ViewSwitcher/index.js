@@ -2,7 +2,7 @@ import React from 'react';
 import connect from '../../connect';
 
 import { Component as SearchView } from '../../views/search';
-//import { Component as CreateView } from '../../views/create';
+import { Component as CreateView } from '../../views/create';
 import { Component as EditView } from '../../views/edit';
 //import { Component as ShowView } from '../../views/show';
 import { Component as ErrorView } from '../../views/error';
@@ -30,6 +30,8 @@ const ViewSwitcher = ({ activeView }) => {
   switch (activeView) {
     case VIEW_SEARCH:
       return <SearchView />;
+    case VIEW_CREATE:
+      return <CreateView />;
     case VIEW_EDIT:
       return <EditView />;
     case VIEW_ERROR:

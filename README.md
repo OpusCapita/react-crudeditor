@@ -387,7 +387,7 @@ Entity Configuration is an object describing an entity. It has the following str
         /*
          * layout(), tab() and section() may accept false/undefined/null arguments which a ignored.
          * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
-         *
+         */
         ?formLayout({
           layout: <function>,
           tab: <function>,

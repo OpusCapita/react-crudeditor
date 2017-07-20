@@ -11,6 +11,7 @@ import {
 } from '../../actions';
 
 import {
+  getDefaultNewInstance,
   getResultFilter,
   getFormFilter,
   getSearchableFields
@@ -21,6 +22,7 @@ import { actions as createActions } from '../../../create';
 const { createInstance } = createActions;
 
 @connect({
+  defaultNewInstance: getDefaultNewInstance,
   resultFilter: getResultFilter,
   formFilter: getFormFilter,
   fields: getSearchableFields
@@ -45,7 +47,7 @@ export default class extends PureComponent {
     );
   }
 
-  handleCreate = _ => this.props.createInstance();
+  handleCreate = _ => this.props.createInstance(this.props.defaultNewInstance);
 
   handleSubmit = e => {
     e.preventDefault();

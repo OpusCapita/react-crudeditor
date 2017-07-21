@@ -385,8 +385,14 @@ Entity Configuration is an object describing an entity. It has the following str
         },
 
         /*
-         * layout(), tab() and section() may accept false/undefined/null arguments which a ignored.
+         * layout(), tab() and section() may accept false/undefined/null arguments which are ignored.
          * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
+         *
+         * If formLayout is not specified, create/edit/show View does not have any tabs/sections
+         * and displays all fields from the model. The following fields are read-only in such case:
+         * -- all fields in show View,
+         * -- auditable fields in edit/show View,
+         * -- idField in edit/show View.
          */
         ?formLayout({
           layout: <function>,
@@ -395,9 +401,10 @@ Entity Configuration is an object describing an entity. It has the following str
           field: <function>,
           instance: <object, entity instance>
         }) {
+          ...
           return layout(
-            ?tab({name: <string>, ?disabled: <boolean>, ?Component: <TabFormComponent>},
-              ?section({name: <string>},
+            ?tab({name: <string>, ?hidden: <boolean>, ?disabled: <boolean>, ?Component: <TabFormComponent>},
+              ?section({name: <string>, ?hidden: <boolean>},
                 ?field({name: <string>, ?hidden: <boolean>, ?readOnly: <boolean>, ?Component: <FieldInputComponent>}),
                 ...
               ),
@@ -491,7 +498,7 @@ Props:
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 view | string | mandatory | - | [View ID](#editorcomponent-propsview)
-state | object | mandatory | - | [View State](#editorcomponent-propsstate)
+instance | object | mandatory | - | row instance as displayed in Edit Form
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### ViewComponent

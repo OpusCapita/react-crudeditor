@@ -5,8 +5,8 @@ Table of Content
 - [Terminology](#terminology)
 - [Usage](#usage)
 - [*EditorComponent*](#editorcomponent)
-    * [props.view](#editorcomponent-propsview)
-    * [props.state](#editorcomponent-propsstate)
+    * [props.view.name](#editorcomponent-propsview)
+    * [props.view.state](#editorcomponent-propsstate)
     * [props.onTransition](#editorcomponent-propsontransition)
     * [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
 - [Entity Configuration](#entity-configuration)
@@ -32,7 +32,7 @@ Table of Content
 
 <dl>
   <dt>Logical ID</dt>
-  <dd>Entity instance's visible string ID, which may or may not be DB <i>Primary ID</i>.</dd>
+  <dd>Field(s) values constituting visible ID of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
@@ -51,7 +51,7 @@ Table of Content
   <dt id="store-state">Store State</dt>
   <dd>Redux <a href="#store">store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
-  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsview">ID</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsview">Name</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
 
 ## Usage
@@ -75,8 +75,7 @@ export default class extends React.Component {
     return (
       ...
       <ContractEditor
-        ?view={<string>}
-        ?state={<object>}
+        ?view={name: <string>, state: <object>}
         ?onTransition={<function>}
         ?onExternalOperation={<object>}
       />;
@@ -92,24 +91,24 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-[view](#editorcomponent-propsview) | "search" | View ID
+[view](#editorcomponent-propsview) | {<br />name: "search",<br />&nbsp;&nbsp;state: {}<br />}| View [Name](#editorcomponent-propsview)/[State](#editorcomponent-propsstate)
 [state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
 [onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
 
-### *EditorComponent* props.view
+### *EditorComponent* props.view.name
 
-ID of a custom/standard View. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
+Name of a custom/standard View. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
 
-View ID | Description
+View Name | Description
 ---|---
 search | Search criteria and result
 create | New entity instance creation
 edit | Existing entity instance editing
-show | The same as *edit* but in read-only mode
+show | The same as *edit* but read-only
 error | Error page
 
-### *EditorComponent* props.state
+### *EditorComponent* props.view.state
 
 Full/sliced State describing [props.view](#editorcomponent-propsview).  Its structure is determined by View it describes.
 
@@ -143,21 +142,23 @@ offset | `0`
 #### *EditorComponent* props.state for *"create"* View:
 
 ```javascript
-{}
+{
+  instance: <object, an entity instance with predefined field values>
+}
 ```
 
 #### *EditorComponent* props.state for *"edit"* and *"show"* Views:
 
 ```javascript
 {
-  id: <string, entity instance Ligical ID>,
+  instance: <object, an entity instance with Logical ID fields only>,
   ?tab: <string, active tab name>
 }
 ```
 
 Name | Default
 ---|---
-id | -
+instance | -
 tab | First tab name
 
 #### *EditorComponent* props.state for *"error"* View:
@@ -180,8 +181,8 @@ A transition handler to be called after [Editor State](#editor-state) changes. I
 
 ```javascript
 function ({
-  view: <string, View ID>,  // See EditorComponent props.view
-  state: <object, Full View State>  // See EditorComponent props.state
+  name: <string, View name>,  // See EditorComponent props.view.name
+  state: <object, Full View State>  // See EditorComponent props.view.state
 }) {
   ...
   return;  // Return value is ignored.
@@ -207,8 +208,7 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
-view | string | [View ID](#editorcomponent-propsview) at the time when [External Operation](#external-operation) was called
-state | object | Full [View State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
+view | {<br />name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [ID](#editorcomponent-propsview)/Full [State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
 
 ## Entity Configuration
 
@@ -220,7 +220,7 @@ Entity Configuration is an object describing an entity. It has the following str
 {
   model: {
     name: <string, usually singular entity name>,
-    idField: <string, Logical ID field name>,
+    logicalId: <array[string], names of Ligical ID fields>,
 
     /*
      * Persistent fields CRUD Editor is interested in.
@@ -273,7 +273,7 @@ Entity Configuration is an object describing an entity. It has the following str
     /*
      * get single entity instance by its Logical ID.
      */
-    async get: function(<string, Logical IDs>) {
+    async get: function(<object, an entity instance with Logical ID fields only>) {
       ...
       return {
         <field name>: <serializable, field value>,
@@ -307,7 +307,7 @@ Entity Configuration is an object describing an entity. It has the following str
     /*
      * delete entity instances transactionally by their Logical IDs.
      */
-    async delete: function(<array[string], Logical IDs>) {
+    async delete: function(<array[string], entity instances with Logical ID fields only>) {
       return {
         count: <whole number, how many entity instances where actually deleted>
       };
@@ -391,8 +391,8 @@ Entity Configuration is an object describing an entity. It has the following str
          * If formLayout is not specified, create/edit/show View does not have any tabs/sections
          * and displays all fields from the model. The following fields are read-only in such case:
          * -- all fields in show View,
-         * -- auditable fields in edit/show View,
-         * -- idField in edit/show View.
+         * -- auditable fields in edit View,
+         * -- idField in edit View.
          */
         ?formLayout({
           layout: <function>,
@@ -444,7 +444,7 @@ Entity Configuration is an object describing an entity. It has the following str
      * An operation handler is called by pressing a dedicated button.
      * Handlers are provided for Custom Operations.
      */
-    ?operations: function(<object, entity instance>, <string, View ID>) {
+    ?operations: function(<object, entity instance>, <string, View Name>) {
       ...
       return [{
         name: <string, operation ID>,
@@ -454,7 +454,7 @@ Entity Configuration is an object describing an entity. It has the following str
         ?handler: function() {
           ...
           return {
-            ?view: <string, View ID, active View by default>,
+            ?name: <string, View Name, active View by default>,
             ?state: <object, View State, empty object by default>
           };
         }
@@ -497,7 +497,7 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-view | string | mandatory | - | [View ID](#editorcomponent-propsview)
+viewName | string | mandatory | - | [View Name](#editorcomponent-propsview)
 instance | object | mandatory | - | row instance as displayed in Edit Form
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
@@ -521,7 +521,7 @@ This handler is called when
 
 ```javascript
 function ({
-  ?view: <string, View ID>,
+  ?name: <string, View Name>,
   ?state: <object, View State>
 }) {
   ...
@@ -533,7 +533,7 @@ Arguments:
 
 Name | Default | Description
 ---|---|---
-view | active View | To-be-displayed [View ID](#editorcomponent-propsview)
+name | active View Name | To-be-displayed [View Name](#editorcomponent-propsview)
 state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsstate).
 
 ## Store

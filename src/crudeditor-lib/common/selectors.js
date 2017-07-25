@@ -1,4 +1,4 @@
-import { buildCommonSelectorWrapper } from '../lib';
+import { buildCommonSelectorWrapper } from '../selectorWrapper';
 
 const wrapper = buildCommonSelectorWrapper();
 

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button, Form, FormGroup, FormControl, Col, ControlLabel } from 'react-bootstrap';
+import { Button, Form, FormGroup, Col, ControlLabel } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
 import connect from '../../../../connect';
@@ -62,19 +62,13 @@ export default class extends PureComponent {
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
-        {fields.map(({ name, Component, type }) =>
-          <FormGroup key={`form-group-${name}`} controlId='fg-${name}'>
+        {fields.map(({ name, Component }) =>
+          <FormGroup key={`form-group-${name}`} controlId={`fg-${name}`}>
             <Col componentClass={ControlLabel} sm={2}>
               {name}
             </Col>
             <Col sm={10}>
-              {
-                Component          && <Component   value={formFilter[name]}       onChange={this.handleFormFilterUpdate[name]}             /> ||
-                type === 'string'  && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
-                type === 'number'  && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
-                type === 'date'    && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' /> ||
-                type === 'boolean' && <FormControl value={formFilter[name] || ''} onChange={this.handleFormFilterUpdate[name]} type='text' />
-              }
+              <Component value={formFilter[name]} onChange={this.handleFormFilterUpdate[name]} />
             </Col>
           </FormGroup>
         )}

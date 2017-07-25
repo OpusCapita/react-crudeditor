@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Button } from 'react-bootstrap';
 
 import connect from '../../../../connect';
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../../../../components/ConfirmDialog';
 import { deleteInstances } from '../../actions';
 import { getSelectedInstances } from '../../selectors';
 

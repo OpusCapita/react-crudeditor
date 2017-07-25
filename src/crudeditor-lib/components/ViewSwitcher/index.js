@@ -33,7 +33,7 @@ const ViewSwitcher = ({ activeView }) => {
     case VIEW_CREATE:
       return <CreateView />;
     case VIEW_EDIT:
-      return <EditView />;
+      return <EditView view={VIEW_EDIT}/>;
     case VIEW_ERROR:
       return <ErrorView />;
     default:

@@ -8,8 +8,6 @@ export const
     'changedOn'
   ],
 
-  DEFAULT_FIELD_TYPE = 'string',
-
   /*
    * Value for a field's empty filter (even if the field is of type "string", "boolean", etc.)
    * => React Component (rendering particular field filter) may want to translate this value into more appropriate for itself.

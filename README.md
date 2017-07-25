@@ -75,7 +75,7 @@ export default class extends React.Component {
     return (
       ...
       <ContractEditor
-        ?view={name: <string>, state: <object>}
+        ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
         ?onExternalOperation={<object>}
       />;
@@ -91,7 +91,7 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-[view](#editorcomponent-propsview) | {<br />name: "search",<br />&nbsp;&nbsp;state: {}<br />}| View [Name](#editorcomponent-propsview)/[State](#editorcomponent-propsstate)
+[view](#editorcomponent-propsview) | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| View [Name](#editorcomponent-propsview)/[State](#editorcomponent-propsstate)
 [state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
 [onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
@@ -110,7 +110,7 @@ error | Error page
 
 ### *EditorComponent* props.view.state
 
-Full/sliced State describing [props.view](#editorcomponent-propsview).  Its structure is determined by View it describes.
+Full/sliced State describing [props.view.name](#editorcomponent-propsview).  Its structure is determined by View it describes.
 
 If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial [*EditorComponent*](#editorcomponent) rendering).
 
@@ -208,7 +208,7 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
-view | {<br />name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [ID](#editorcomponent-propsview)/Full [State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
+view | {<br />&nbsp;&nbsp;name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [ID](#editorcomponent-propsview)/Full [State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
 
 ## Entity Configuration
 
@@ -394,30 +394,22 @@ Entity Configuration is an object describing an entity. It has the following str
          * -- auditable fields in edit View,
          * -- idField in edit View.
          */
-        ?formLayout({
-          layout: <function>,
-          tab: <function>,
-          section: <function>,
-          field: <function>,
-          instance: <object, entity instance>
-        }) {
+        ?formLayout(instance) {
           ...
-          return layout(
-            ?tab({name: <string>, ?hidden: <boolean>, ?disabled: <boolean>, ?Component: <TabFormComponent>},
-              ?section({name: <string>, ?hidden: <boolean>},
-                ?field({name: <string>, ?hidden: <boolean>, ?readOnly: <boolean>, ?Component: <FieldInputComponent>}),
-                ...
-              ),
-              ?field({name: <string>, ?hidden: <boolean>, ?readOnly: <boolean>, ?Component: <FieldInputComponent>}),
-              ...
-            ),
-            ?section({name: <string>, ?hidden: <boolean>},
-              ?field({name: <string>, ?hidden: <boolean>, ?readOnly: <boolean>, ?Component: <FieldInputComponent>}),
-              ...
-            ),
-            ?field({name: <string>, ?hidden: <boolean>, ?readOnly: <boolean>, ?Component: <FieldInputComponent>}),
-            ...
-          );
+          return [{
+            tab: <string, tab name>,
+            ?mode: <"hidden"|"disabled"|"enabled">,  // "enabled" by default
+            ?Component: <function, React Component>,
+            entries: [{
+              section: <string, section name>,
+              ?mode: <"hidden"|"visible">,  // "visible" by default
+              entries: [{
+                field: <string, field name>,
+                ?mode: <"hidden"|"readonly"|"writable">,  // "writable" by default
+                ?Component: <function, React Component>
+              }...]
+            }, ...]
+          }, ...];
         }
       }
     },
@@ -509,7 +501,7 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-state | object | mandatory | - | Custom [View State](#editorcomponent-propsstate)
+viewState | object | mandatory | - | Custom [View State](#editorcomponent-propsstate)
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### doTransition

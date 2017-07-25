@@ -1,20 +1,11 @@
 import { VIEW_NAME } from './constants';
-import { buildViewSelectorWrapper } from '../../lib';
+import { buildViewSelectorWrapper } from '../../selectorWrapper';
+import { constants as commonConstants } from '../../common';
+import { AUDITABLE_FIELDS } from './constants';
+import buildFieldComponent from '../../components/DefaultFieldInput';
 
-import {
-  DEFAULT_FIELD_TYPE,
-  AUDITABLE_FIELDS
-} from './constants';
-
+const { DEFAULT_FIELD_TYPE } = commonConstants;
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
-
-const getFieldType = (fields, name) => {
-  if (!fields.hasOwnProperty(name)) {
-    throw new Error(`Unknown field ${name}`);
-  }
-
-  return fields[name].type || DEFAULT_FIELD_TYPE;
-}
 
 const _getViewState = ({
   resultFilter: filter,
@@ -96,10 +87,10 @@ export const
       const searchableFields = ui.search().searchableFields;
 
       if (searchableFields) {
-        return ui.search().searchableFields.map(field => field.Component ?
-          field :
-          { ...field, type: getFieldType(fields, field.name) }
-        );
+        return ui.search().searchableFields.map(field => ({
+          Component: buildFieldComponent(fields[field.name].type || DEFAULT_FIELD_TYPE),
+          ...field  // field.Component overwrites above default Component if exists.
+        }));
       }
     }
 
@@ -107,7 +98,7 @@ export const
       filter(name => !AUDITABLE_FIELDS.includes(name)).
       map(name => ({
         name,
-        type: getFieldType(fields, name)
+        Component: buildFieldComponent(fields[name].type || DEFAULT_FIELD_TYPE)
       }));
   }),
 
@@ -134,7 +125,7 @@ export const
 
           return {
             ...field,
-            type: getFieldType(fields, field.name)
+            type: fields[field.name].type || DEFAULT_FIELD_TYPE
           };
         });
       }
@@ -142,7 +133,7 @@ export const
 
     return Object.keys(fields).map(name => ({
       name,
-      type: getFieldType(fields, name)
+      type: fields[name].type || DEFAULT_FIELD_TYPE
     }));
   }),
 

@@ -3,9 +3,8 @@ import React from 'react';
 import buildModel from '../../../models';
 import createCrud from '../../../crudeditor-lib';
 import { hash2obj, query2obj, suffix2arr, buildURL } from './lib';
-import { constants as crudeditorConstants } from '../../../crudeditor-lib/common';
 
-const { VIEW_EDIT } = crudeditorConstants;
+const VIEW_EDIT = 'edit';
 
 function url2view({ hash, query, suffix }) {
   hash = hash2obj(hash);

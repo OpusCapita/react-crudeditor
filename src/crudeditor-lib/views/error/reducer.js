@@ -39,7 +39,7 @@ export default modelMetaData => (
     } = payload;
 
     newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = codePayload;
+    newStoreStateSlice.payload = u.constant(codePayload);
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -51,7 +51,7 @@ export default modelMetaData => (
     } = payload;
 
     newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = codePayload;
+    newStoreStateSlice.payload = u.constant(codePayload);
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

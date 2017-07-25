@@ -108,8 +108,8 @@ export default entityConfiguration => {
         totalCount
       } = payload;
 
-      newStoreStateSlice.formFilter = cloneDeep(filter);
-      newStoreStateSlice.resultFilter = cloneDeep(filter);
+      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+      newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
       newStoreStateSlice.sortParams = {
         field: sort,
         order
@@ -155,7 +155,7 @@ export default entityConfiguration => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_RESET) {
-      newStoreStateSlice.formFilter = buildDefaultFormFilter();
+      newStoreStateSlice.formFilter = u.constant(buildDefaultFormFilter());
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

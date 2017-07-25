@@ -1,21 +1,69 @@
-/*
- * A selector decorator allowing the wrapped selector to access particular subtree of Redux store
- * => selectors are namespaced just like reducers.
- */
-const buildSelectorWrapper = (...path) => selector => (storeState, entityConfiguration) => selector(
-  path.reduce(
-    (subtree, node) => subtree[node],
-    storeState
-  ),
-  entityConfiguration
-);
+import { constants as commonConstants } from './common';
+import buildFieldComponent from './components/DefaultFieldInput';
+
+const {
+  AUDITABLE_FIELDS,
+  DEFAULT_FIELD_TYPE,
+  FORM_ENTRY_MODE_HIDDEN,
+  FORM_ENTRY_MODE_READONLY,
+  FORM_ENTRY_MODE_WRITABLE,
+  VIEW_EDIT,
+  VIEW_SHOW
+} = commonConstants;
+
+function enhanceFormEntries(viewName, fieldsMeta, entries) {
+  return entries.reduce(
+    (rez, entry) => {
+      if (entry.mode === FORM_ENTRY_MODE_HIDDEN) {
+        return rez;
+      }
+
+      if (entry.entries) {  // entry is either tab or section
+        entry.entries = enhanceFormEntries(viewName, fieldsMeta, entry.entries);
+      } else if (entry.field) {
+        if (viewName === VIEW_SHOW) {
+          entry.mode = FORM_ENTRY_MODE_READONLY;
+        }
+
+        if (!entry.Component) {
+          entry.Component = buildFieldComponent(fieldsMeta[entry.field].type || DEFAULT_FIELD_TYPE)
+        }
+      }
+
+
+      return [
+        ...rez,
+        entry
+      ];
+    },
+    []
+  )
+}
 
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildViewSelectorWrapper = view => buildSelectorWrapper('views', view),
+  buildFormLayout = ( instance, viewName, {
+    view: viewMeta,
+    model: modelMeta
+  }) => enhanceFormEntries(viewName, modelMeta.fields, viewMeta && viewMeta.formLayout ?
+    viewMeta.formLayout(instance) :
+    Object.keys(modelMeta.fields).
+      filter(name => [VIEW_SHOW, VIEW_EDIT].includes(viewName) || !AUDITABLE_FIELDS.includes(name)).
+      map(name => ({
+        field: name,
+        mode: viewName === VIEW_EDIT && (
+            AUDITABLE_FIELDS.includes(name) ||
+            modelMeta.logicalId.includes[name]
+          ) &&
+          FORM_ENTRY_MODE_READONLY ||
+          FORM_ENTRY_MODE_WRITABLE
+      }))
+    ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildCommonSelectorWrapper = _ => buildSelectorWrapper('common');
+  buildInstanceDescription = (instance, { instanceDescription } = {}) => instanceDescription ?
+    instanceDescription(instance) :
+    instance._objectLabel;

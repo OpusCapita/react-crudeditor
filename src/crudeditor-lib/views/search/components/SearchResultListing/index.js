@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import connect from '../../../../connect';
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../../../../components/ConfirmDialog';
 
 import {
   getSortField,
@@ -107,11 +107,7 @@ export default class extends PureComponent {
                   sortable ?
                     <Button bsStyle='link' onClick={this.handleResort[name]}>
                       { name }
-                      {
-                        sortField === name ?
-                          <Glyphicon glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> :
-                          null
-                      }
+                      { sortField === name && <Glyphicon glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
                     </Button> :
                     name
                 }

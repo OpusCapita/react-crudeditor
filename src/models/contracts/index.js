@@ -2,6 +2,10 @@ import superagent from 'superagent'
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
 
+const VIEW_CREATE = 'create';
+const VIEW_EDIT = 'edit';
+const VIEW_SHOW = 'show';
+
 export default {
   model: {
     name: "Contract",
@@ -93,37 +97,79 @@ export default {
     }
   },
   ui: {
-    search() {
-      return {
-        searchableFields: [{
-          name: 'contractId',
-        }, {
-          name: 'description'
-        }, {
-          name: 'extContractId'
-        }, {
-          name: 'extContractLineId'
-        }, {
-          name: 'statusId',
-          Component: StatusField
-        }],
-        resultFields: [{
-          name: 'contractId',
-          sortable: true,
-        }, {
-          name: 'description',
-          sortable: true,
-        }, {
-          name: 'extContractId',
-          sortable: true,
-        }, {
-          name: 'extContractLineId',
-          sortable: true
-        }, {
-          name: 'validRange',
-          Component: DateRangeCellRender
-        }]
-      };
-    }
+    search: _ => ({
+      searchableFields: [
+        { name: 'contractId', },
+        { name: 'description' },
+        { name: 'extContractId' },
+        { name: 'extContractLineId' },
+        { name: 'statusId', Component: StatusField }
+      ],
+      resultFields: [
+        { name: 'contractId', sortable: true, },
+        { name: 'description', sortable: true, },
+        { name: 'extContractId', sortable: true, },
+        { name: 'extContractLineId', sortable: true },
+        { name: 'validRange', Component: DateRangeCellRender }]
+    }),
+    createEditShow: viewName => ({
+      instanceDescription: instance => viewName === VIEW_EDIT && instance ? instance._objectLabel : '',
+      formLayout: instance => [
+        {
+          tab: 'general',
+          entries: [
+            { field: 'contractId', mode: viewName === VIEW_CREATE ? 'writable' : 'readonly' },
+            { field: 'description' },
+            //{ field: 'translations', Component: TranslatableTextEditor },
+            { field: 'statusId', Component: StatusField },
+            //{ field: 'parentContract', Component: ContractReferenceSearch },
+            //{ field: 'currencyId', Component: CurrencyField },
+            {
+              section: 'auditable',
+              mode: viewName === VIEW_CREATE ? 'hidden' : 'visible',
+              entries: [
+                { field: 'createdBy', mode: 'readonly' },
+                { field: 'createdOn', mode: 'readonly' },
+                { field: 'changedBy', mode: 'readonly' },
+                { field: 'changedOn', mode: 'readonly' }
+              ]
+            }
+          ],
+        },
+        { tab: 'catalogs' },
+        { tab: 'customer' },
+        { tab: 'boilerplates' },
+        { tab: 'supplier' },
+        { tab: 'groups' },
+        {
+          tab: 'additional',
+          mode: viewName === VIEW_EDIT ? "enabled" : "disabled",
+          entries: [
+            {
+              section: 'order',
+              entries: [
+                { field: 'minOrderValue' },
+                { field: 'minOrderValueRequired' },
+                { field: 'maxOrderValue' },
+                { field: 'freeShippingBoundary' },
+                { field: 'freightSurcharge' },
+                { field: 'smallVolumeSurcharge' },
+                { field: 'totalContractedAmount' }
+              ]
+            },
+            {
+              section: 'type',
+              entries: [
+                { field: 'isStandard' },
+                { field: 'isPreferred' },
+                { field: 'isFrameContract' },
+                { field: 'isInternal' },
+                { field: 'isOffer' }
+              ]
+            }
+          ]
+        }
+      ]
+    })
   }
 };

@@ -34,7 +34,7 @@ export default modelMetaData => (
 
   if (type === INSTANCE_CREATE) {
     const { instance } = payload;
-    newStoreStateSlice.instance = instance;
+    newStoreStateSlice.instance = u.constant(instance);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

@@ -23,7 +23,7 @@ const {
 function* onInstanceEdit(entityConfiguration, {
   payload: {
     id,
-    tab = 0
+    activeTabName
   },
   meta: { source }
 }) {
@@ -50,7 +50,7 @@ function* onInstanceEdit(entityConfiguration, {
       type: INSTANCE_EDIT_SUCCESS,
       payload: {
         instance,
-        tab
+        activeTabName
       },
       meta: { source }
     });

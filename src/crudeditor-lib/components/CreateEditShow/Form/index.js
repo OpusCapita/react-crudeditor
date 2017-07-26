@@ -2,51 +2,29 @@ import React, { PureComponent } from 'react';
 import { Button, Form, FormGroup, Col } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
-import ConfirmDialog from '../../../../components/ConfirmDialog';
-import connect from '../../../../connect';
 import Section from '../Section';
-import Field from '../Field';
+import ConfirmDialog from '../../../../components/ConfirmDialog';
+import connect from '../../../connect';
 import { constants as commonConstants } from '../../../../common';
-//import { actions as searchActions } from '../../../search';
 
-import {
-  getActiveEntries,
-  getPersistentInstance,
-  getFormInstance
-} from '../../selectors';
-
-import {
-  saveInstance,
-  exitEdit
-} from '../../actions';
-
-import {
-  AFTER_ACTION_NEW,
-  AFTER_ACTION_NEXT
-} from '../../constants';
+import CreateField from '../../../views/create/components/Field';
+import EditField from '../../../views/edit/components/Field';
+import ShowField from '../../../views/show/components/Field';
 
 const {
+  AFTER_ACTION_NEW,
+  AFTER_ACTION_NEXT,
+
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW
 } = commonConstants;
 
-//const { deleteInstances } = searchActions;
-
-@connect({
-  activeEntries: getActiveEntries,
-  formInstance: getFormInstance,
-  persistentInstance: getPersistentInstance
-}, {
-  exitEdit,
-  saveInstance,
-//  deleteInstances
-})
 export default class extends PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
-    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.view)) {
+    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.viewName)) {
       this.props.saveInstance();
     }
   }
@@ -63,10 +41,15 @@ export default class extends PureComponent {
       exitEdit,
       formInstance,
       persistentInstance,
-      view: viewName
+      deleteInstances,
+      viewName
     } = this.props;
 
     const isChangedInstance = isEqual(formInstance, persistentInstance);
+
+    const Field = viewName === VIEW_CREATE && CreateField ||
+      viewName === VIEW_EDIT && EditField ||
+      viewName === VIEW_SHOW && ShowField;
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
@@ -95,7 +78,7 @@ export default class extends PureComponent {
           <Col smOffset={2} sm={10} className='text-right'>
             <Button bsStyle='link' onClick={exitEdit}>Cancel</Button>
             {
-              viewName === VIEW_EDIT && <ConfirmDialog
+              deleteInstances && <ConfirmDialog
                 trigger='click'
                 onConfirm={this.handleDelete}
                 title='Delete confirmation'

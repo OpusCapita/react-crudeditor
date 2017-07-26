@@ -14,19 +14,13 @@ export default (mapStoreStateToProps, ...args) => connect(
    *     2. entityConfiguration.
    */
 
-  /* Make the custom "connect" accept a function as 1st arg, just like original "connect":
-  mapStoreStateToProps && (storeState => mapStoreStateToProps({
-    ...storeState,
-    entityConfiguration: getEntityConfiguration(storeState.common.entityConfigurationIndex)
-  })),
-  */
   mapStoreStateToProps && (storeState => {
     const entityConfiguration = getEntityConfiguration(getEntityConfigurationIndex(storeState));
 
-    return Object.keys(mapStoreStateToProps).reduce(
-      (rez, prop) => ({
+    return Object.entries(mapStoreStateToProps).reduce(
+      (rez, [prop, selector]) => ({
         ...rez,
-        [prop]: mapStoreStateToProps[prop](storeState, entityConfiguration)
+        [prop]: selector(storeState, entityConfiguration)
       }),
       {}
     );

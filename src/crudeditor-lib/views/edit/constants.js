@@ -3,9 +3,6 @@ import { constants as commonConstants } from '../../common';
 export const
   VIEW_NAME = commonConstants.VIEW_EDIT,
 
-  AFTER_ACTION_NEW = VIEW_NAME + '/AFTER_ACTION_NEW',
-  AFTER_ACTION_NEXT = VIEW_NAME + '/AFTER_ACTION_NEXT',
-
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/

@@ -5,13 +5,12 @@ import { selectors as commonSelectors } from '../../../../common';
 
 const { getEntityName } = commonSelectors;
 
-const CreateView = ({ entityName }) =>
+export default connect({
+  entityName: getEntityName
+})(({ entityName }) =>
   <div>
     <h1>
       Create {entityName}
     </h1>
-  </div>;
-
-export default connect({
-  entityName: getEntityName
-})(CreateView);
+  </div>
+);

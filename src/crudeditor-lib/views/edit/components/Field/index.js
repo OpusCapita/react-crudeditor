@@ -50,7 +50,7 @@ export default class extends Component {  // XXX: Component, not PureComponent m
       <FormGroup key={key} controlId={fieldName} validationState={errors ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={2}>
           {
-            fieldName.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) +
+            fieldName.charAt(0).toUpperCase() + fieldName.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') +
               (required && '*' || '')
           }
         </Col>

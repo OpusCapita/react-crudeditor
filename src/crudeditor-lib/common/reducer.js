@@ -21,11 +21,12 @@ const {
   INSTANCES_SEARCH_FAIL
 } = searchConstants;
 
-const { INSTANCE_CREATE       } = createConstants;
+const { INSTANCE_CREATE } = createConstants;
 
 const {
   INSTANCE_EDIT_SUCCESS,
-  INSTANCE_EDIT_FAIL
+  INSTANCE_EDIT_FAIL,
+  EDIT_EXIT
 } = editConstants;
 
 //const { INSTANCE_SHOW_SUCCESS } = showConstants;
@@ -75,6 +76,11 @@ export default entityConfiguration => {
 
     } else if (type === INSTANCE_EDIT_FAIL) {
       newStoreStateSlice.activeView = VIEW_ERROR;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === EDIT_EXIT) {
+      newStoreStateSlice.activeView = VIEW_SEARCH;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     }

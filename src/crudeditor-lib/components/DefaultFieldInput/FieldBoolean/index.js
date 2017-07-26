@@ -1,17 +1,15 @@
 import React, { PureComponent } from 'react';
+import { Checkbox } from 'react-bootstrap';
 
 export default class extends PureComponent {
   constructor(...args) {
     super(...args);
 
     if (!this.props.readOnly) {
-      this.handleChange = ({
-        target: { value }
-      }) => this.props.onChange(value);
+      this.handleChange = _ => this.props.onChange(!this.props.value);
+      this.handleBlur = _ => this.props.onBlur();
     }
   }
-
-  handleBlur = _ => this.props.onBlur()
 
   render() {
     const { value, readOnly } = this.props;

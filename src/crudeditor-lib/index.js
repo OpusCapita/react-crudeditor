@@ -49,7 +49,7 @@ export default entityConfiguration => {
 
 
   const appStateChangeDetect = ({ getState }) => next => action => {
-    if (!action.meta || action.meta.source === 'owner' || !onTransition) {
+    if (action.meta && action.meta.source === 'owner' || !onTransition) {
       return next(action);
     }
 

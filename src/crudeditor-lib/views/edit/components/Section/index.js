@@ -19,11 +19,11 @@ export default class extends React.Component {
       expanded={!collapsed}
       onSelect={this.changeVisibility}
       header={
-        <div>
+        <span style={{ cursor: 'pointer' }}>
           <Glyphicon glyph={`menu-${collapsed ? 'down' : 'up'}`} />
           &nbsp;
           {title}
-        </div>
+        </span>
       }
     >
       { children }

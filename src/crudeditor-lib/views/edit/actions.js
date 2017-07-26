@@ -1,5 +1,5 @@
 import {
-  EDIT_CANCEL,
+  EDIT_EXIT,
   INSTANCE_EDIT,
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE,
@@ -57,8 +57,8 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   // TODO: implement reducer.
-  cancelEdit = _ => ({
-    type: EDIT_CANCEL
+  exitEdit = _ => ({
+    type: EDIT_EXIT
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -84,7 +84,7 @@ export default modelMetaData => (
       const { field, value } = payload;
 
       newStoreStateSlice.formInstance = {
-        [field]: value
+        [field]: value || value === 0 || value === false ? value : null
       };
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

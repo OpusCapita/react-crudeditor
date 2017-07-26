@@ -10,7 +10,7 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  EDIT_CANCEL = VIEW_NAME + '/EDIT_CANCEL',
+  EDIT_EXIT = VIEW_NAME + '/EDIT_EXIT',
 
   INSTANCE_EDIT         = VIEW_NAME + '/INSTANCE_EDIT',
   INSTANCE_EDIT_FAIL    = VIEW_NAME + '/INSTANCE_EDIT_FAIL',

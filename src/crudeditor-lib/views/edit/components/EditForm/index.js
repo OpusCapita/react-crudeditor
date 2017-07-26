@@ -17,7 +17,7 @@ import {
 
 import {
   saveInstance,
-  cancelEdit
+  exitEdit
 } from '../../actions';
 
 import {
@@ -38,7 +38,7 @@ const {
   formInstance: getFormInstance,
   persistentInstance: getPersistentInstance
 }, {
-  cancelEdit,
+  exitEdit,
   saveInstance,
 //  deleteInstances
 })
@@ -60,7 +60,7 @@ export default class extends PureComponent {
   render() {
     const {
       activeEntries,
-      cancelEdit,
+      exitEdit,
       formInstance,
       persistentInstance,
       view: viewName
@@ -93,7 +93,7 @@ export default class extends PureComponent {
 
         <FormGroup>
           <Col smOffset={2} sm={10} className='text-right'>
-            <Button bsStyle='link' onClick={cancelEdit}>Cancel</Button>
+            <Button bsStyle='link' onClick={exitEdit}>Cancel</Button>
             {
               viewName === VIEW_EDIT && <ConfirmDialog
                 trigger='click'

@@ -1,7 +1,7 @@
-import { constants as commonConstants } from '../../common';
+import { VIEW_ERROR } from '../../common/constants';
 
 export const
-  VIEW_NAME = commonConstants.VIEW_ERROR,
+  VIEW_NAME = VIEW_ERROR,
 
   /*████████████████████████████████████████████████████*\
    *███ STATUSES OF THE VIEW (in alphabetical order) ███*

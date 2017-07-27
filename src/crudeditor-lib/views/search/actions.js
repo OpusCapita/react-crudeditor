@@ -41,7 +41,9 @@ export const
 
   deleteInstances = instances => ({
     type: INSTANCES_DELETE,
-    payload: { instances }
+    payload: {
+      instances: Array.isArray(instances) ? instances : [instances]
+    }
   }),
 
   resetFormFilter = _ => ({

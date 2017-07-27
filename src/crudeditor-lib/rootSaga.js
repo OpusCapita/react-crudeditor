@@ -1,11 +1,11 @@
 import { all } from 'redux-saga/effects'
 
 import common from './common/sagas';
-import { sagas as search } from './views/search';
-//import { sagas as create } from './views/create';
-import { sagas as edit   } from './views/edit';
-//import { sagas as show   } from './views/show';
-//import { sagas as error  } from './views/error';
+import search from './views/search/sagas';
+//import create from './views/create/sagas';
+import edit from './views/edit/sagas';
+//import show from './views/show/sagas';
+//import error from './views/error/sagas';
 
 
 export default function*(entityConfiguration) {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Button, Form, FormGroup, Col, ControlLabel } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
@@ -17,9 +17,7 @@ import {
   getSearchableFields
 } from '../../selectors';
 
-import { actions as createActions } from '../../../create';
-
-const { createInstance } = createActions;
+import { createInstance } from '../../../create/actions';
 
 @connect({
   defaultNewInstance: getDefaultNewInstance,
@@ -32,16 +30,14 @@ const { createInstance } = createActions;
   updateFormFilter,
   createInstance
 })
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
     this.handleFormFilterUpdate = this.props.fields.reduce(
       (rez, { name }) => ({
         ...rez,
-        [name]: ({
-          target: { value }
-        }) => this.props.updateFormFilter({ name, value })
+        [name]: value => this.props.updateFormFilter({ name, value })
       }),
       {}
     );

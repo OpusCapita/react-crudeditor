@@ -29,12 +29,11 @@ import {
 } from './selectors';
 
 import { searchInstances } from './actions';
-import { selectors as commonSelectors } from '../../common';
 
-const {
+import {
   getActiveView,
   getIdField
-} = commonSelectors;
+} from '../../common/selectors';
 
 function* onInstancesSearch(entityConfiguration, {
   payload: {

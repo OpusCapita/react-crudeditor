@@ -1,6 +1,10 @@
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
 
-import { selectors as commonSelectors } from '../../common';
+import {
+  getActiveView,
+  getIdField
+} from '../../common/selectors';
+
 import {
   getPersistentInstance,
   getStatus
@@ -14,11 +18,6 @@ import {
   READY,
   VIEW_NAME
 } from './constants';
-
-const {
-  getActiveView,
-  getIdField
-} = commonSelectors;
 
 function* onInstanceEdit(entityConfiguration, {
   payload: {

@@ -1,7 +1,7 @@
-import { constants as commonConstants } from '../../common';
+import { VIEW_EDIT } from '../../common/constants';
 
 export const
-  VIEW_NAME = commonConstants.VIEW_EDIT,
+  VIEW_NAME = VIEW_EDIT,
 
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*

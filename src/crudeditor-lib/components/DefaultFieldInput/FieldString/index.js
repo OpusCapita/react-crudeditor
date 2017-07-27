@@ -1,21 +1,24 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { FormControl } from 'react-bootstrap';
 
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
     if (!this.props.readOnly) {
       this.handleChange = ({
         target: { value }
-      }) => this.props.onChange(value);
+      }) => this.props.onChange && this.props.onChange(value);
 
-      this.handleBlur = _ => this.props.onBlur();
+      this.handleBlur = _ => this.props.onBlur && this.props.onBlur();
     }
   }
 
   render() {
-    const { value } = this.props;
+    const {
+      value,
+      readOnly
+    } = this.props;
 
     return <FormControl
       value={value || ''}

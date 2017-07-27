@@ -52,7 +52,6 @@ module.exports = function (app) {
     result = result.data();
 
     res.header('Content-Range', `items ${offset + 1}-${offset + result.length}/${totalCount}`);
-    //console.log('===== SEARCH RESULTS =====', Object.values(result).map(value => value.contractId).join(', '));
     res.json(result);
   });
 

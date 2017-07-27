@@ -1,9 +1,9 @@
 import { put, takeLatest, all, select } from 'redux-saga/effects';
 
-import { actions as searchActions } from '../views/search';
-import { actions as createActions } from '../views/create';
-import { actions as editActions } from '../views/edit';
-//import { actions as showActions } from '../views/show';
+import { searchInstances } from '../views/search/actions';
+import { createInstance } from '../views/create/actions';
+import { editInstance } from '../views/edit/actions';
+//import { showInstance } from '../views/show/actions';
 
 import { getActiveView } from './selectors';
 
@@ -15,11 +15,6 @@ import {
   DEFAULT_VIEW,
   VIEW_INITIALIZE
 } from './constants';
-
-const { searchInstances } = searchActions;
-const { createInstance } = createActions;
-const { editInstance } = editActions;
-//const { showInstance } = showActions;
 
 function* onViewInitialize(entityConfiguration, {
   payload: {

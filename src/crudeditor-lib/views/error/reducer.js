@@ -2,16 +2,13 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import * as u from 'updeep';
 
-import { constants as searchConstants } from '../search';
-import { constants as editConstants } from '../edit';
+import { INSTANCES_SEARCH_FAIL } from '../search/constants';
+import { INSTANCE_EDIT_FAIL } from '../edit/constants';
 
 import {
   UNINITIALIZED,
   READY
 } from './constants';
-
-const { INSTANCES_SEARCH_FAIL } = searchConstants;
-const { INSTANCE_EDIT_FAIL } = editConstants;
 
 const defaultStoreStateTemplate = {
   code: undefined,

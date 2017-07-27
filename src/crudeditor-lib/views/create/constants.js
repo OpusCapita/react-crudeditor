@@ -1,7 +1,7 @@
-import { constants as commonConstants } from '../../common';
+import { VIEW_CREATE } from '../../common/constants';
 
 export const
-  VIEW_NAME = commonConstants.VIEW_CREATE,
+  VIEW_NAME = VIEW_CREATE,
 
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*

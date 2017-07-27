@@ -1,20 +1,19 @@
 import { combineReducers } from 'redux';
 
 import common from './common/reducer';
-import { constants as commonConstants } from './common';
-import search from './views/search';
-import create from './views/create';
-import edit from './views/edit';
-//import show from './views/show';
-import error from './views/error';
+import search from './views/search/reducer';
+import create from './views/create/reducer';
+import edit from './views/edit/reducer';
+//import show from './views/show/reducer';
+import error from './views/error/reducer';
 
-const {
+import {
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW,
   VIEW_ERROR
-} = commonConstants;
+} from './common/constants';
 
 export default entityConfiguration => combineReducers({
   common: common(entityConfiguration),

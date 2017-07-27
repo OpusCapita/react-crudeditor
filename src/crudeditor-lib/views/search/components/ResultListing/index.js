@@ -1,6 +1,6 @@
 // TODO: add operations (external, custom, ...) handlers.
 
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import connect from '../../../../connect';
@@ -21,11 +21,8 @@ import {
   toggleSelectedAll
 } from '../../actions';
 
-import { actions as editActions } from '../../../edit';
-import { selectors as commonSelectors } from '../../../../common';
-
-const { editInstance } = editActions;
-const { getIdField } = commonSelectors;
+import { editInstance } from '../../../edit/actions';
+import { getIdField } from '../../../../common/selectors';
 
 @connect({
   sortField: getSortField,
@@ -41,7 +38,7 @@ const { getIdField } = commonSelectors;
   toggleSelectedAll,
   searchInstances
 })
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   handleNewInstances = instances => {
     this.handleToggleSelected = new WeakMap(instances.map(instance => [
       instance,

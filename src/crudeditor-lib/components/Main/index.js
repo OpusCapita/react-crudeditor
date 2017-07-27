@@ -1,16 +1,14 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
 import connect from '../../connect';
 import ViewSwitcher from '../ViewSwitcher';
-import { actions as commonActions } from '../../common';
-
-const { initializeView } = commonActions;
+import { initializeView } from '../../common/actions';
 
 @connect(
   undefined,
   { initializeView }
 )
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 

@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-import { selectors as commonSelectors } from './common';
+import { getEntityConfigurationIndex } from './common/selectors';
 import { getEntityConfiguration } from './entityConfiguration';
-
-const { getEntityConfigurationIndex } = commonSelectors;
 
 export default (mapStoreStateToProps, ...args) => connect(
   /*

@@ -3,10 +3,19 @@ import isEqual from 'lodash/isEqual';
 import * as u from 'updeep';
 
 import { setEntityConfiguration } from '../entityConfiguration';
-import { constants as searchConstants } from '../views/search';
-import { constants as createConstants } from '../views/create';
-import { constants as editConstants   } from '../views/edit';
-//import { constants as showConstants   } from '../views/show';
+import { INSTANCE_CREATE } from '../views/create/constants';
+//import { INSTANCE_SHOW_SUCCESS } from '../views/show/constants';
+//
+import {
+  INSTANCES_SEARCH_SUCCESS,
+  INSTANCES_SEARCH_FAIL
+} from '../views/search/constants';
+
+import {
+  INSTANCE_EDIT_SUCCESS,
+  INSTANCE_EDIT_FAIL,
+  EDIT_EXIT
+} from '../views/edit/constants';
 
 import {
   VIEW_SEARCH,
@@ -15,21 +24,6 @@ import {
   VIEW_SHOW,
   VIEW_ERROR
 } from './constants';
-
-const {
-  INSTANCES_SEARCH_SUCCESS,
-  INSTANCES_SEARCH_FAIL
-} = searchConstants;
-
-const { INSTANCE_CREATE } = createConstants;
-
-const {
-  INSTANCE_EDIT_SUCCESS,
-  INSTANCE_EDIT_FAIL,
-  EDIT_EXIT
-} = editConstants;
-
-//const { INSTANCE_SHOW_SUCCESS } = showConstants;
 
 const getDefaultStoreState = entityConfiguration => ({
   activeView: undefined,  // XXX: must be undefined until initialization completes.

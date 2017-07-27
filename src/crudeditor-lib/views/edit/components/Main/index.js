@@ -5,6 +5,7 @@ import Form from '../Form';
 import connect from '../../../../connect';
 import { selectTab } from '../../actions';
 import { VIEW_NAME } from '../../constants';
+import { getEntityName } from '../../../../common/selectors';
 
 import {
   getActiveTab,
@@ -14,8 +15,12 @@ import {
   getViewName
 } from '../../selectors';
 
-const { getEntityName } = commonSelectors;
-const { FORM_ENTRY_MODE_DISABLED } = commonConstants;
+import {
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW,
+  FORM_ENTRY_MODE_DISABLED
+} from '../../../../common/constants';
 
 export default connect({
   entityName          : getEntityName,
@@ -35,35 +40,41 @@ export default connect({
   } = {},
   formInstance,
   selectTab
-}) =>
-  <div>
-    <h1>
-      {
-        VIEW_NAME.charAt(0).toUpperCase() + VIEW_NAME.slice(1) + ' ' + entityName
-      }
-      &nbsp;
-      {
-        instanceDescription && <small>{instanceDescription}</small>
-      }
-    </h1>
-    <br />
-    {
-      tabs.length && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+}) => {
+  const title = VIEW_NAME === VIEW_CREATE && 'Create' ||
+    VIEW_NAME === VIEW_EDIT && 'Edit' ||
+    VIEW_NAME === VIEW_SHOW && 'Show';
+
+  return (
+    <div>
+      <h1>
         {
-          tabs.map(({ tab: name, mode }, index) =>
-            <NavItem eventKey={name} disabled={mode === FORM_ENTRY_MODE_DISABLED} key={index}>
-              {
-                name.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
-              }
-            </NavItem>
-          )
+          title +' ' + entityName
         }
-      </Nav>
-    }
-    {
-      ActiveTabComponent ?
-        <ActiveTabComponent viewName={VIEW_NAME} instance={formInstance} /> :
-        <Form />
-    }
-  </div>
-);
+        &nbsp;
+        {
+          instanceDescription && <small>{instanceDescription}</small>
+        }
+      </h1>
+      <br />
+      {
+        tabs.length && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+          {
+            tabs.map(({ tab: name, mode }, index) =>
+              <NavItem eventKey={name} disabled={mode === FORM_ENTRY_MODE_DISABLED} key={index}>
+                {
+                  name.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
+                }
+              </NavItem>
+            )
+          }
+        </Nav>
+      }
+      {
+        ActiveTabComponent ?
+          <ActiveTabComponent viewName={VIEW_NAME} instance={formInstance} /> :
+          <Form />
+      }
+    </div>
+  );
+});

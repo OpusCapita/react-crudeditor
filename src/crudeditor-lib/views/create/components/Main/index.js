@@ -1,9 +1,7 @@
 import React from 'react';
 
 import connect from '../../../../connect';
-import { selectors as commonSelectors } from '../../../../common';
-
-const { getEntityName } = commonSelectors;
+import { getEntityName } from '../../../../common/selectors';
 
 export default connect({
   entityName: getEntityName

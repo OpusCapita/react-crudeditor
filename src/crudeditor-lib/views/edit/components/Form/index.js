@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Button, Form, FormGroup, Col } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
@@ -6,8 +6,16 @@ import ConfirmDialog from '../../../../components/ConfirmDialog';
 import connect from '../../../../connect';
 import Section from '../Section';
 import Field from '../Field';
-import { constants as commonConstants } from '../../../../common';
-//import { actions as searchActions } from '../../../search';
+import { deleteInstances } from '../../../search/actions';
+import { VIEW_NAME } from '../../constants';
+
+import {
+  AFTER_ACTION_NEW,
+  AFTER_ACTION_NEXT,
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW
+} from '../../../../common/constants';
 
 import {
   getActiveEntries,
@@ -20,20 +28,6 @@ import {
   exitEdit
 } from '../../actions';
 
-import {
-  AFTER_ACTION_NEW,
-  AFTER_ACTION_NEXT,
-  VIEW_NAME
-} from '../../constants';
-
-const {
-  VIEW_CREATE,
-  VIEW_EDIT,
-  VIEW_SHOW
-} = commonConstants;
-
-//const { deleteInstances } = searchActions;
-
 @connect({
   activeEntries: getActiveEntries,
   formInstance: getFormInstance,
@@ -41,9 +35,9 @@ const {
 }, {
   exitEdit,
   saveInstance,
-//  deleteInstances
+  deleteInstances
 })
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
@@ -52,7 +46,7 @@ export default class extends PureComponent {
     }
   }
 
-//  handleDelete = _ => this.props.deleteInstances(this.props.formInstance)
+  handleDelete = _ => this.props.deleteInstances(this.props.formInstance)
 
   handleSaveAndNew = _ => this.props.saveInstance(AFTER_ACTION_NEW)
 

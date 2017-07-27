@@ -1,7 +1,6 @@
-import { constants as commonConstants } from './common';
 import buildFieldComponent from './components/DefaultFieldInput';
 
-const {
+import {
   AUDITABLE_FIELDS,
   DEFAULT_FIELD_TYPE,
   FORM_ENTRY_MODE_HIDDEN,
@@ -9,7 +8,7 @@ const {
   FORM_ENTRY_MODE_WRITABLE,
   VIEW_EDIT,
   VIEW_SHOW
-} = commonConstants;
+} from './common/constants';
 
 function enhanceFormEntries(viewName, fieldsMeta, entries) {
   return entries.reduce(

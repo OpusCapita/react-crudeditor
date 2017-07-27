@@ -3,9 +3,7 @@ import React from 'react';
 import connect from '../../../../connect';
 import Form from '../Form';
 import Result from '../Result';
-import { selectors as commonSelectors } from '../../../../common';
-
-const { getEntityName } = commonSelectors;
+import { getEntityName } from '../../../../common/selectors';
 
 export default connect({
   entityName: getEntityName

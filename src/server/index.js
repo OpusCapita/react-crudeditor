@@ -29,6 +29,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.json());
+app.use((req, res, next) => setTimeout(next, 1000));  // Fake response timeout.
 require('./api')(app);
 
 // ███████████████████████████████████████████████████████████████████████

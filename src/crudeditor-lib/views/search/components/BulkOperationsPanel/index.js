@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import connect from '../../../../connect';
@@ -11,7 +11,7 @@ import { getSelectedInstances } from '../../selectors';
 }, {
   deleteInstances
 })
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   handleDelete = _ => this.props.deleteInstances(this.props.selectedInstances);
 
   render() {

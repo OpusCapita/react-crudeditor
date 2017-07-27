@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { Pagination, Dropdown, MenuItem } from 'react-bootstrap';
 
 import connect from '../../../../connect';
@@ -18,7 +18,7 @@ import {
 }, {
   searchInstances
 })
-export default class extends PureComponent {
+export default class extends React.PureComponent {
   handlePaginate = activePage => this.props.searchInstances({
     offset: (activePage - 1) * this.props.max
   })

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
@@ -8,33 +8,25 @@ import cloneDeep from 'lodash/cloneDeep';
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
+import { getIdField } from './common/selectors';
+import { getViewState as getSearchViewState } from './views/search/selectors';
+import { getViewState as getCreateViewState } from './views/create/selectors';
+import { getViewState as getEditViewState } from './views/edit/selectors';
+//import { getViewState as getShowViewState } from './views/show/selectors';
 
 import {
-  constants as commonConstants,
-  selectors as commonSelectors
-} from './common';
-
-import { selectors as searchSelectors } from './views/search';
-import { selectors as createSelectors } from './views/create';
-import { selectors as editSelectors } from './views/edit';
-//import { selectors as showSelectors } from './views/show';
-
-const {
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW,
   VIEW_ERROR
-} = commonConstants;
-
-const { getIdField } = commonSelectors;
-const { getPersistentInstance } = editSelectors;
+} from './common/constants';
 
 const getViewState = {
-  [VIEW_SEARCH]: searchSelectors.getViewState,
-  [VIEW_CREATE]: createSelectors.getViewState,
-  [VIEW_EDIT  ]: editSelectors.getViewState,
-//[VIEW_SHOW  ]: showSelectors.getViewState
+  [VIEW_SEARCH]: getSearchViewState,
+  [VIEW_CREATE]: getCreateViewState,
+  [VIEW_EDIT  ]: getEditViewState,
+//[VIEW_SHOW  ]: getShowViewState
 }
 
 export default entityConfiguration => {
@@ -91,7 +83,7 @@ export default entityConfiguration => {
 
   sagaMiddleware.run(rootSaga, entityConfiguration);
 
-  return class extends Component {
+  return class extends React.Component {
     constructor(...args) {
       super(...args);
       onTransition = this.props.onTransition;

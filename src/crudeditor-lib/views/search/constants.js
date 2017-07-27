@@ -1,21 +1,13 @@
-import { constants as commonConstants } from '../../common';
+import { VIEW_SEARCH } from '../../common/constants';
 
 export const
-  AUDITABLE_FIELDS = [
-    'createdBy',
-    'changedBy',
-    'createdOn',
-    'changedOn'
-  ],
+  VIEW_NAME = VIEW_SEARCH,
 
   /*
    * Value for a field's empty filter (even if the field is of type "string", "boolean", etc.)
    * => React Component (rendering particular field filter) may want to translate this value into more appropriate for itself.
    */
   EMPTY_FILTER_VALUE = undefined,
-
-  VIEW_NAME = commonConstants.VIEW_SEARCH,
-
 
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*

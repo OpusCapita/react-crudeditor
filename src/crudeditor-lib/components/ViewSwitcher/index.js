@@ -1,26 +1,21 @@
 import React from 'react';
 import connect from '../../connect';
 
-import { Component as SearchView } from '../../views/search';
-import { Component as CreateView } from '../../views/create';
-import { Component as EditView } from '../../views/edit';
-//import { Component as ShowView } from '../../views/show';
-import { Component as ErrorView } from '../../views/error';
+import { getActiveView } from '../../common/selectors';
+
+import SearchView from '../../views/search/components/Main';
+import CreateView from '../../views/create/components/Main';
+import EditView from '../../views/edit/components/Main';
+//import ShowView from '../../views/show/components/Main';
+import ErrorView from '../../views/error/components/Main';
 
 import {
-  selectors as commonSelectors,
-  constants as commonConstants
-} from '../../common';
-
-const { getActiveView } = commonSelectors;
-
-const {
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW,
   VIEW_ERROR
-} = commonConstants;
+} from '../../common/constants';
 
 const ViewSwitcher = ({ activeView }) => {
   if (!activeView) {

@@ -1,10 +1,12 @@
-import { VIEW_NAME } from './constants';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { constants as commonConstants } from '../../common';
-import { AUDITABLE_FIELDS } from './constants';
 import buildFieldComponent from '../../components/DefaultFieldInput';
+import { VIEW_NAME } from './constants';
 
-const { DEFAULT_FIELD_TYPE } = commonConstants;
+import {
+  AUDITABLE_FIELDS,
+  DEFAULT_FIELD_TYPE
+} from '../../common/constants';
+
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 const _getViewState = ({

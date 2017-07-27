@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 
-import { constants as commonConstants } from '../../../../common';
+import { FORM_ENTRY_MODE_READONLY } from '../../../../common/constants';
 import connect from '../../../../connect';
 
 import {
@@ -15,8 +15,6 @@ import {
   changeInstanceField
 } from '../../actions';
 
-const { FORM_ENTRY_MODE_READONLY } = commonConstants;
-
 @connect({
   fieldsErrors: getErrors,
   fieldsMeta: getFieldsMeta,
@@ -25,7 +23,7 @@ const { FORM_ENTRY_MODE_READONLY } = commonConstants;
   validateInstanceField,
   changeInstanceField
 })
-export default class extends Component {  // XXX: Component, not PureComponent must be used to catch instance's field value change.
+export default class extends React.Component {  // XXX: Component, not PureComponent must be used to catch instance's field value change.
   handleChange = value => this.props.changeInstanceField(this.props.entry.name, value)
 
   handleBlur = _ => this.props.validateInstanceField(this.props.entry.name);

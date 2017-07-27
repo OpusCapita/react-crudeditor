@@ -1,8 +1,7 @@
 import { VIEW_NAME } from './constants';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { constants as commonConstants } from '../../common';
+import { DEFAULT_FIELD_TYPE } from '../../common/constants';
 
-const { DEFAULT_FIELD_TYPE } = commonConstants;
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const

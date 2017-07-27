@@ -1,9 +1,10 @@
 import React from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 
-import EditForm from '../EditForm';
+import Form from '../Form';
 import connect from '../../../../connect';
 import { selectTab } from '../../actions';
+import { VIEW_NAME } from '../../constants';
 
 import {
   constants as commonConstants,
@@ -20,7 +21,15 @@ import {
 const { getEntityName } = commonSelectors;
 const { FORM_ENTRY_MODE_DISABLED } = commonConstants;
 
-const EditView = ({
+export default connect({
+  entityName          : getEntityName,
+  instanceDescription : getInstanceDescription,
+  tabs                : getTabs,
+  activeTab           : getActiveTab,
+  formInstance        : getFormInstance
+}, {
+  selectTab
+})(({
   entityName,
   instanceDescription,
   tabs,
@@ -29,13 +38,12 @@ const EditView = ({
     tab: activeTabName
   } = {},
   formInstance,
-  view: viewName,
   selectTab
 }) =>
   <div>
     <h1>
       {
-        viewName.charAt(0).toUpperCase() + viewName.slice(1) + ' ' + entityName
+        VIEW_NAME.charAt(0).toUpperCase() + VIEW_NAME.slice(1) + ' ' + entityName
       }
       &nbsp;
       {
@@ -58,18 +66,8 @@ const EditView = ({
     }
     {
       ActiveTabComponent ?
-        <ActiveTabComponent view={viewName} instance={formInstance} /> :
-        <EditForm view={viewName} />
+        <ActiveTabComponent viewName={VIEW_NAME} instance={formInstance} /> :
+        <Form />
     }
-  </div>;
-
-
-export default connect({
-  entityName          : getEntityName,
-  instanceDescription : getInstanceDescription,
-  tabs                : getTabs,
-  activeTab           : getActiveTab,
-  formInstance        : getFormInstance
-}, {
-  selectTab
-})(EditView);
+  </div>
+);

@@ -22,7 +22,8 @@ import {
 
 import {
   AFTER_ACTION_NEW,
-  AFTER_ACTION_NEXT
+  AFTER_ACTION_NEXT,
+  VIEW_NAME
 } from '../../constants';
 
 const {
@@ -46,7 +47,7 @@ export default class extends PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
-    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.view)) {
+    if ([VIEW_CREATE, VIEW_EDIT].includes(VIEW_NAME)) {
       this.props.saveInstance();
     }
   }
@@ -62,8 +63,7 @@ export default class extends PureComponent {
       activeEntries,
       exitEdit,
       formInstance,
-      persistentInstance,
-      view: viewName
+      persistentInstance
     } = this.props;
 
     const isChangedInstance = isEqual(formInstance, persistentInstance);
@@ -95,7 +95,7 @@ export default class extends PureComponent {
           <Col smOffset={2} sm={10} className='text-right'>
             <Button bsStyle='link' onClick={exitEdit}>Cancel</Button>
             {
-              viewName === VIEW_EDIT && <ConfirmDialog
+              VIEW_NAME === VIEW_EDIT && <ConfirmDialog
                 trigger='click'
                 onConfirm={this.handleDelete}
                 title='Delete confirmation'
@@ -106,7 +106,7 @@ export default class extends PureComponent {
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) && <Button
+              [VIEW_CREATE, VIEW_EDIT].includes(VIEW_NAME) && <Button
                 onClick={this.handleSaveAndNew}
                 disabled={isChangedInstance}
               >
@@ -115,7 +115,7 @@ export default class extends PureComponent {
             }
             {' '}
             {
-              viewName === VIEW_EDIT && <Button
+              VIEW_NAME === VIEW_EDIT && <Button
                 onClick={this.handleSaveAndNext}
                 disabled={isChangedInstance}
               >
@@ -124,7 +124,7 @@ export default class extends PureComponent {
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) && <Button
+              [VIEW_CREATE, VIEW_EDIT].includes(VIEW_NAME) && <Button
                 bsStyle='primary'
                 type='submit'
                 disabled={isChangedInstance}

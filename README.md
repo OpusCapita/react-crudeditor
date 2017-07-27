@@ -709,11 +709,9 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
         │   │   └── ...  # "search" view namespace dir content
         │   └── show/
         │       ├── components/
-        │       │   ├── index.js
         │       │   └── ....
         │       ├── actions.js  # action creators (always encapsulated inside a duck)
         │       ├── constants.js  # actions' types and other constants
-        │       ├── index.js  # public interface of the duck
         │       ├── reducer.js
         │       ├── sagas.js
         │       ├── selectors.js
@@ -724,13 +722,6 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
             └── ...
 
 Every view dir and *common* dir represents a [ducks](https://github.com/erikras/ducks-modular-redux)-complient namespace. All namespaces have similar dir structure (see *show* view for an example).
-
-Namespace's `index.js` file exports:
- - (as default) reducer function of the duck,
- - action creators,
- - constants,
- - sagas,
- - selectors.
 
 ## TODO
 

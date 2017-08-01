@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
-import * as u from 'updeep';
+import u from 'updeep';
 
 import { setEntityConfiguration } from '../entityConfiguration';
 import { INSTANCE_CREATE } from '../views/create/constants';

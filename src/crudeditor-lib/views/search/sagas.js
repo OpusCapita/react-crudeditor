@@ -35,7 +35,11 @@ import {
   getIdField
 } from '../../common/selectors';
 
-function* onInstancesSearch(entityConfiguration, {
+/*███████████████████*\
+ *███ WORKER SAGA ███*
+\*███████████████████*/
+
+export function* onInstancesSearch(entityConfiguration, {
   payload: {
     filter,
     sort,
@@ -45,11 +49,19 @@ function* onInstancesSearch(entityConfiguration, {
   },
   meta: { source }
 }) {
-  const currentFilter = yield select(getResultFilter, entityConfiguration);
-  const currentSort   = yield select(getSortField, entityConfiguration);
-  const currentOrder  = yield select(getSortOrder, entityConfiguration);
-  const currentMax    = yield select(getPageMax, entityConfiguration);
-  const currentOffset = yield select(getPageOffset, entityConfiguration);
+  const [
+    currentFilter,
+    currentSort,
+    currentOrder,
+    currentMax,
+    currentOffset
+  ] = yield all([
+    select(getResultFilter , entityConfiguration),
+    select(getSortField    , entityConfiguration),
+    select(getSortOrder    , entityConfiguration),
+    select(getPageMax      , entityConfiguration),
+    select(getPageOffset   , entityConfiguration)
+  ]);
 
   filter = filter || currentFilter;
   sort   = sort   || currentSort;
@@ -60,7 +72,7 @@ function* onInstancesSearch(entityConfiguration, {
     order === currentOrder &&
     max === currentMax &&
     isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) ?
-      (offset || offset === 0 ?  offset : currentOffset) :
+      (offset || offset === 0 ? offset : currentOffset) :
       0;
 
   if (source === 'owner' &&
@@ -114,7 +126,11 @@ function* onInstancesSearch(entityConfiguration, {
   }
 }
 
-function* onInstancesDelete(entityConfiguration, {
+/*███████████████████*\
+ *███ WORKER SAGA ███*
+\*███████████████████*/
+
+export function* onInstancesDelete(entityConfiguration, {
   payload: { instances }
 }) {
   const idField = yield select(getIdField, entityConfiguration);
@@ -156,6 +172,10 @@ function* onInstancesDelete(entityConfiguration, {
     });
   }
 }
+
+/*████████████████████*\
+ *███ WATCHER SAGA ███*
+\*████████████████████*/
 
 export default function*(entityConfiguration) {
   yield all([

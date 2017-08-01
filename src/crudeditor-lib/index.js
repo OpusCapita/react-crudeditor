@@ -23,10 +23,10 @@ import {
 } from './common/constants';
 
 const getViewState = {
-  [VIEW_SEARCH]: getSearchViewState,
-  [VIEW_CREATE]: getCreateViewState,
-  [VIEW_EDIT  ]: getEditViewState,
-//[VIEW_SHOW  ]: getShowViewState
+  [VIEW_SEARCH] : getSearchViewState,
+  [VIEW_CREATE] : getCreateViewState,
+  [VIEW_EDIT  ] : getEditViewState,
+//[VIEW_SHOW  ] : getShowViewState
 }
 
 export default entityConfiguration => {

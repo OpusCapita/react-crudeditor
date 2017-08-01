@@ -1,11 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
-import * as u from 'updeep';
+import u from 'updeep';
 
 import {
   buildFormLayout,
   buildInstanceDescription
-} from '../../lib';
+} from '../lib';
 
 import {
   INSTANCE_EDIT,

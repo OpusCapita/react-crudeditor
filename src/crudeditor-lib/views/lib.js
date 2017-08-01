@@ -1,4 +1,4 @@
-import buildFieldComponent from './components/DefaultFieldInput';
+import buildFieldComponent from '../components/DefaultFieldInput';
 
 import {
   AUDITABLE_FIELDS,
@@ -8,7 +8,7 @@ import {
   FORM_ENTRY_MODE_WRITABLE,
   VIEW_EDIT,
   VIEW_SHOW
-} from './common/constants';
+} from '../common/constants';
 
 function enhanceFormEntries(viewName, fieldsMeta, entries) {
   return entries.reduce(

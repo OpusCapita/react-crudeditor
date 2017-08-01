@@ -106,9 +106,9 @@ export default {
         { name: 'statusId', Component: StatusField }
       ],
       resultFields: [
-        { name: 'contractId', sortable: true, },
-        { name: 'description', sortable: true, },
-        { name: 'extContractId', sortable: true, },
+        { name: 'contractId', sortable: true },
+        { name: 'description', sortable: true },
+        { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', Component: DateRangeCellRender }]
     }),

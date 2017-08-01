@@ -19,7 +19,7 @@ import {
   VIEW_NAME
 } from './constants';
 
-function* onInstanceEdit(entityConfiguration, {
+export function* onInstanceEdit(entityConfiguration, {
   payload: {
     id,
     activeTabName
@@ -65,6 +65,6 @@ function* onInstanceEdit(entityConfiguration, {
 
 export default function*(entityConfiguration) {
   yield all([
-    takeEvery(INSTANCE_EDIT,  onInstanceEdit, entityConfiguration)
+    takeEvery(INSTANCE_EDIT, onInstanceEdit, entityConfiguration)
   ]);
 }

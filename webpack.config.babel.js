@@ -22,7 +22,8 @@ module.exports = {
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        query: {
+        options: {
+          babelrc: false,
           presets: [
             ["es2015", {"modules": false}],
             "es2016",

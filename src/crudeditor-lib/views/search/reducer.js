@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
-import * as u from 'updeep';
+import u from 'updeep';
 
 import {
   ALL_INSTANCES_SELECT,
@@ -53,13 +53,14 @@ const defaultStoreStateTemplate = {
 export default entityConfiguration => {
   const defaultStoreState = cloneDeep(defaultStoreStateTemplate);
 
-  const searchableFieldsMeta = entityConfiguration.ui &&
+  const uiSearch = entityConfiguration.ui &&
     entityConfiguration.ui.search &&
-    entityConfiguration.ui.search().searchableFields;
+    entityConfiguration.ui.search();
 
   const buildDefaultFormFilter = _ => (
-    searchableFieldsMeta &&
-    searchableFieldsMeta.map(({ name }) => name) ||
+    uiSearch &&
+    uiSearch.searchableFields &&
+    uiSearch.searchableFields.map(({ name }) => name) ||
     Object.keys(entityConfiguration.model.fields)
   ).reduce(
     (rez, name) => ({
@@ -72,14 +73,10 @@ export default entityConfiguration => {
   defaultStoreState.formFilter = buildDefaultFormFilter();
   defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
 
-  const resultFieldsMeta = entityConfiguration.ui &&
-    entityConfiguration.ui.search &&
-    entityConfiguration.ui.search().resultFields;
+  if (uiSearch && uiSearch.resultFields) {
+    const sortByDefaultIndex = uiSearch.resultFields.findIndex(field => field.sortByDefault);
 
-  if (resultFieldsMeta) {
-    const sortByDefaultIndex = resultFieldsMeta.findIndex(field => field.hasOwnProperty('sortByDefault'));
-
-    defaultStoreState.sortParams.field = resultFieldsMeta[sortByDefaultIndex === -1 ?
+    defaultStoreState.sortParams.field = uiSearch.resultFields[sortByDefaultIndex === -1 ?
       0 :
       sortByDefaultIndex
     ].name;

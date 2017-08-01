@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppContainer } from 'react-hot-loader';
-import ReactDOM  from 'react-dom';
+import ReactDOM from 'react-dom';
 import AppRouter from './routes';
 
 const render = Component =>

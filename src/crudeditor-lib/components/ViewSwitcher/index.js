@@ -1,7 +1,7 @@
 import React from 'react';
 import connect from '../../connect';
 
-import { getActiveView } from '../../common/selectors';
+import { getActiveViewName } from '../../common/selectors';
 
 import SearchView from '../../views/search/components/Main';
 import CreateView from '../../views/create/components/Main';
@@ -17,12 +17,12 @@ import {
   VIEW_ERROR
 } from '../../common/constants';
 
-const ViewSwitcher = ({ activeView }) => {
-  if (!activeView) {
+const ViewSwitcher = ({ activeViewName }) => {
+  if (!activeViewName) {
     return null;
   }
 
-  switch (activeView) {
+  switch (activeViewName) {
     case VIEW_SEARCH:
       return <SearchView />;
     case VIEW_CREATE:
@@ -32,10 +32,10 @@ const ViewSwitcher = ({ activeView }) => {
     case VIEW_ERROR:
       return <ErrorView />;
     default:
-      return <div>Unknown view <i>{activeView}</i></div>;
+      return <div>Unknown view <i>{activeViewName}</i></div>;
   }
 };
 
 export default connect({
-  activeView: getActiveView
+  activeViewName: getActiveViewName
 })(ViewSwitcher);

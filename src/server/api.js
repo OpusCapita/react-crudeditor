@@ -18,6 +18,21 @@ module.exports = function (app) {
    */
   app.get('/api/contracts', (req, res) => {
     const query = req.query || {};
+    let result;
+
+    if (query.logicalId) {
+      result = contracts.findOne(query.logicalId);
+
+      if (result) {
+        res.json(result);
+      } else {
+        res.status(404);
+        res.json({message: `Contract ${JSON.stringify(query.logicalId)} not found`});
+      }
+
+      return;
+    }
+
     const max = query.max ? Number.parseInt(query.max, 10) : 10;
     const offset = query.offset ? Number.parseInt(query.offset, 10) : 0;
     const filter = query.filter ?
@@ -32,7 +47,7 @@ module.exports = function (app) {
       {};
     let sort;
 
-    let result = contracts.chain()
+    result = contracts.chain()
       .find(filter);
 
     if (query.sort) {
@@ -53,20 +68,6 @@ module.exports = function (app) {
 
     res.header('Content-Range', `items ${offset + 1}-${offset + result.length}/${totalCount}`);
     res.json(result);
-  });
-
-  app.get('/api/contracts/:contractId', (req, res) => {
-    const {contractId} = req.params;
-
-    const result = contracts.findOne({contractId});
-
-    if (result) {
-      res.json(result);
-    } else {
-      res.status(404);
-
-      res.json({message: `Contract [${contractId}] not found`});
-    }
   });
 
   /**
@@ -118,17 +119,15 @@ module.exports = function (app) {
    * Delete contract
    */
   app.delete('/api/contracts', (req, res) => {
-    const ids = req.body;
+    const logicalIds = req.body;
 
     let result = contracts.chain()
       .find({
-        'contractId': {
-          '$in': ids
-        }
+        '$or': logicalIds
       })
       .remove();
 
-    return res.json(ids.length);
+    return res.json(logicalIds.length);
   });
 
   /**

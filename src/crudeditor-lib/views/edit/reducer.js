@@ -8,7 +8,6 @@ import {
 } from '../lib';
 
 import {
-  INSTANCE_EDIT,
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
@@ -57,20 +56,34 @@ export default modelMetaData => (
 
   } else if (type === INSTANCE_EDIT_SUCCESS) {
     const { instance, activeTabName } = payload;
+    let formLayout;
 
-    const viewMeta = modelMetaData.ui &&
-      modelMetaData.ui.createEditShow &&
-      modelMetaData.ui.createEditShow(VIEW_NAME);
+    if (instance && !isEqual(instance, storeState.persistentInstance)) {
+      const viewMeta = modelMetaData.ui &&
+        modelMetaData.ui.createEditShow &&
+        modelMetaData.ui.createEditShow(VIEW_NAME);
 
-    const formLayout = buildFormLayout(instance, VIEW_NAME, { view: viewMeta, model: modelMetaData.model });
-    const tabs = formLayout.filter(({ tab }) => tab);  // [] in case of no tabs.
-    const activeTab = tabs.find(({ tab: name }) => name === activeTabName) || tabs[0];  // undefined in case of no tabs.
+      formLayout = buildFormLayout({
+        instance,
+        viewName: VIEW_NAME,
+        viewMeta,
+        modelMeta: modelMetaData.model
+      });
 
-    newStoreStateSlice.formLayout = u.constant(formLayout);
-    newStoreStateSlice.activeTab = u.constant(activeTab);
-    newStoreStateSlice.persistentInstance = u.constant(instance);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-    newStoreStateSlice.instanceDescription = buildInstanceDescription(instance, viewMeta);
+      newStoreStateSlice.formLayout = u.constant(formLayout);
+      newStoreStateSlice.persistentInstance = u.constant(instance);
+      newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+      newStoreStateSlice.instanceDescription = buildInstanceDescription({ instance, viewMeta });
+    }
+
+    if (formLayout ||  // New instance has been received => new formLayout was built.
+      storeState.activeTab && storeState.activeTab.tab !== activeTabName  // New tab has been selected.
+    ) {
+      const tabs = (formLayout || storeState.formLayout).filter(({ tab }) => tab);  // [] in case of no tabs.
+      const activeTab = tabs.find(({ tab: name }) => name === activeTabName) || tabs[0];  // undefined in case of no tabs.
+      newStoreStateSlice.activeTab = u.constant(activeTab);
+    }
+
     newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -12,12 +12,12 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   editInstance = ({
-    id,
+    instance,
     tab: activeTabName
   }, source) => ({
     type: INSTANCE_EDIT,
     payload: {
-      id,
+      instance,
       activeTabName
     },
     meta: {

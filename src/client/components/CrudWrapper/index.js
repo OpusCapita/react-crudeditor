@@ -22,12 +22,12 @@ const entities2crud = {};
 const transitionHandlers = {};
 
 function handleTransition(historyPush, baseURL, { viewName, viewState }) {
-  if (viewName === VIEW_EDIT && viewState.tab === 3) {
-    const betterTab = Number(prompt('TAB 3 is not recommended. You may choose another one:'));
+  if (viewName === VIEW_EDIT && viewState.tab === 'customer') {
+    const betterTab = prompt('TAB "Customer" is not recommended. You may choose another one:');
 
-    if ([1,2].includes(betterTab)) {
+    if (betterTab) {
       viewState = cloneDeep(viewState);
-      viewState.tab = betterTab;
+      viewState.tab = betterTab.toLowerCase();
     }
   }
 
@@ -41,7 +41,7 @@ function handleTransition(historyPush, baseURL, { viewName, viewState }) {
 }
 
 const buildTransitionHandler = (historyPush, baseURL) =>
-  ({ view: viewName, state: viewState }) =>
+  ({ name: viewName, state: viewState }) =>
     handleTransition(historyPush, baseURL, { viewState, viewName });
 
 export default ({
@@ -77,10 +77,5 @@ export default ({
   }
 
   const Crud = entities2crud[entities];
-
-  return <Crud
-    view={viewName}
-    state={viewState}
-    onTransition={transitionHandlers[baseURL]}
-  />;
+  return <Crud view={{ name: viewName, state: viewState }} onTransition={transitionHandlers[baseURL]} />;
 }

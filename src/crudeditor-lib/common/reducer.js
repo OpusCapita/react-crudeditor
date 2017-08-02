@@ -26,7 +26,7 @@ import {
 } from './constants';
 
 const getDefaultStoreState = entityConfiguration => ({
-  activeView: undefined,  // XXX: must be undefined until initialization completes.
+  activeViewName: undefined,  // XXX: must be undefined until initialization completes.
   entityConfigurationIndex: setEntityConfiguration(entityConfiguration)
 });
 
@@ -44,37 +44,37 @@ export default entityConfiguration => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     if (type === INSTANCES_SEARCH_SUCCESS) {
-      newStoreStateSlice.activeView = VIEW_SEARCH;
+      newStoreStateSlice.activeViewName = VIEW_SEARCH;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_CREATE) {
-      newStoreStateSlice.activeView = VIEW_CREATE;
+      newStoreStateSlice.activeViewName = VIEW_CREATE;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_EDIT_SUCCESS) {
-      newStoreStateSlice.activeView = VIEW_EDIT;
+      newStoreStateSlice.activeViewName = VIEW_EDIT;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     //} else if (type === INSTANCE_SHOW_SUCCESS) {
-      //newStoreStateSlice.activeView = VIEW_SHOW;
+      //newStoreStateSlice.activeViewName = VIEW_SHOW;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCES_SEARCH_FAIL) {
-      newStoreStateSlice.activeView = VIEW_ERROR;
+      newStoreStateSlice.activeViewName = VIEW_ERROR;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_EDIT_FAIL) {
-      newStoreStateSlice.activeView = VIEW_ERROR;
+      newStoreStateSlice.activeViewName = VIEW_ERROR;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === EDIT_EXIT) {
-      newStoreStateSlice.activeView = VIEW_SEARCH;
+      newStoreStateSlice.activeViewName = VIEW_SEARCH;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     }

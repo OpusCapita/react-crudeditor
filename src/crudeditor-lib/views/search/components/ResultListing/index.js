@@ -22,7 +22,7 @@ import {
 } from '../../actions';
 
 import { editInstance } from '../../../edit/actions';
-import { getIdField } from '../../../../common/selectors';
+import { getLogicalIdBuilder } from '../../../../common/selectors';
 
 @connect({
   sortField: getSortField,
@@ -30,7 +30,7 @@ import { getIdField } from '../../../../common/selectors';
   instances: getResultInstances,
   selectedInstances: getSelectedInstances,
   fields: getResultFields,
-  idField: getIdField
+  logicalIdBuilder: getLogicalIdBuilder
 }, {
   editInstance,
   deleteInstances,
@@ -47,7 +47,7 @@ export default class extends React.PureComponent {
 
     this.handleEdit = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.editInstance({ id: instance[this.props.idField] })
+      _ => this.props.editInstance({ instance: this.props.logicalIdBuilder(instance) })
     ]));
 
     this.handleDelete = new WeakMap(instances.map(instance => [
@@ -85,7 +85,7 @@ export default class extends React.PureComponent {
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.toggleSelectedAll(checked)
 
   render() {
-    const { selectedInstances, instances, fields, sortField, sortOrder, idField } = this.props;
+    const { selectedInstances, instances, fields, sortField, sortOrder, logicalIdBuilder } = this.props;
 
     return (
       <Table responsive={true} condensed={true}>
@@ -117,7 +117,7 @@ export default class extends React.PureComponent {
         <tbody>
 
         {instances.map(instance =>
-          <tr key={`tr-${instance[idField]}`}>
+          <tr key={`tr-${JSON.stringify(logicalIdBuilder(instance))}`}>
             <td>
               <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected.get(instance)} />
             </td>

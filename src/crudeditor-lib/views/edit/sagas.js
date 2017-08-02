@@ -1,11 +1,13 @@
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
+import isEqual from 'lodash/isEqual';
 
 import {
-  getActiveView,
-  getIdField
+  getActiveViewName,
+  getLogicalIdBuilder
 } from '../../common/selectors';
 
 import {
+  getActiveTab,
   getPersistentInstance,
   getStatus
 } from './selectors';
@@ -21,19 +23,33 @@ import {
 
 export function* onInstanceEdit(entityConfiguration, {
   payload: {
-    id,
+    instance: logicalId,
     activeTabName
   },
   meta: { source }
 }) {
-  let instance;
+  let currentInstance;
+  let logicalIdBuilder;
 
   if (source === 'owner' &&
     (yield select(getStatus, entityConfiguration)) === READY &&
-    (yield select(getActiveView, entityConfiguration)) === VIEW_NAME &&
-    (instance = yield select(getPersistentInstance, entityConfiguration)) &&
-    instance[yield select(getIdField, entityConfiguration)] === id
-  ) {  // Prevent duplicate API call when view/state props are received in response to onTransition({view,state}) call.
+    (yield select(getActiveViewName, entityConfiguration)) === VIEW_NAME &&
+    (currentInstance = yield select(getPersistentInstance, entityConfiguration)) &&
+    (logicalIdBuilder = yield select(getLogicalIdBuilder, entityConfiguration)) &&
+    isEqual(logicalIdBuilder(currentInstance), logicalId)
+  ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
+    const currentActiveTab = yield select(getActiveTab, entityConfiguration);
+
+    if (activeTabName !== currentActiveTab.tab) {
+      yield put({
+        type: INSTANCE_EDIT_SUCCESS,
+        payload: {
+          activeTabName
+        },
+        meta: { source }
+      });
+    }
+
     return;
   }
 
@@ -43,7 +59,7 @@ export function* onInstanceEdit(entityConfiguration, {
   });
 
   try {
-    const instance = yield call(entityConfiguration.api.get, id);
+    const instance = yield call(entityConfiguration.api.get, logicalId);
 
     yield put({
       type: INSTANCE_EDIT_SUCCESS,

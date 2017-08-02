@@ -14,7 +14,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildViewSelectorWrapper = view => buildSelectorWrapper('views', view),
+  buildViewSelectorWrapper = viewName => buildSelectorWrapper('views', viewName),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

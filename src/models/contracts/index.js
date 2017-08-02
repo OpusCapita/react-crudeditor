@@ -9,7 +9,7 @@ const VIEW_SHOW = 'show';
 export default {
   model: {
     name: 'Contract',
-    idField: 'contractId',
+    logicalId: ['contractId'],
     fields: {
       'contractBoilerplates': {'type': 'collection', 'constraints': {'required': false}},
       'hierarchyCode': {'type': 'string', 'constraints': {'max': 100, 'required': false}},
@@ -49,10 +49,11 @@ export default {
     }
   },
   api: {
-    get(id) {
+    get(logicalId) {
       console.log('Making API-get call');
       return superagent.
-        get('/api/contracts/' + encodeURIComponent(id)).
+        get('/api/contracts/').
+        query({ logicalId }).
         accept('json').
         then(({ body }) => body);
     },
@@ -72,11 +73,11 @@ export default {
           instances
         }));
     },
-    delete(ids) {
+    delete(logicalIds) {
       console.log('Making API-delete call');
       return superagent.
         del('/api/contracts').
-        send(ids).
+        send(logicalIds).
         accept('json').
         then(({ body: deletedCount }) => deletedCount);
     },

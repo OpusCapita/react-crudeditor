@@ -43,9 +43,11 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildFormLayout = ( instance, viewName, {
-    view: viewMeta,
-    model: modelMeta
+  buildFormLayout = ({
+    instance,
+    viewName,
+    viewMeta,
+    modelMeta
   }) => enhanceFormEntries(viewName, modelMeta.fields, viewMeta && viewMeta.formLayout ?
     viewMeta.formLayout(instance) :
     Object.keys(modelMeta.fields).
@@ -63,6 +65,9 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildInstanceDescription = (instance, { instanceDescription } = {}) => instanceDescription ?
+  buildInstanceDescription = ({
+    instance,
+    viewMeta: { instanceDescription } = {}
+  }) => instanceDescription ?
     instanceDescription(instance) :
     instance._objectLabel;

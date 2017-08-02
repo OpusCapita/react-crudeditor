@@ -31,8 +31,8 @@ import {
 import { searchInstances } from './actions';
 
 import {
-  getActiveView,
-  getIdField
+  getActiveViewName,
+  getLogicalIdBuilder
 } from '../../common/selectors';
 
 /*███████████████████*\
@@ -82,8 +82,8 @@ export function* onInstancesSearch(entityConfiguration, {
     max === currentMax &&
     offset === currentOffset &&
     (yield select(getStatus, entityConfiguration)) === READY &&
-    (yield select(getActiveView, entityConfiguration)) === VIEW_NAME
-  ) {  // Prevent duplicate API call when view/state props are received in response to onTransition({view,state}) call.
+    (yield select(getActiveViewName, entityConfiguration)) === VIEW_NAME
+  ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
     return;
   }
 
@@ -133,7 +133,7 @@ export function* onInstancesSearch(entityConfiguration, {
 export function* onInstancesDelete(entityConfiguration, {
   payload: { instances }
 }) {
-  const idField = yield select(getIdField, entityConfiguration);
+  const logicalIdBuilder = yield select(getLogicalIdBuilder, entityConfiguration);
 
   yield put({
     type: INSTANCES_DELETE_REQUEST
@@ -142,7 +142,7 @@ export function* onInstancesDelete(entityConfiguration, {
   try {
     const { deletedCount } = yield call(
       entityConfiguration.api.delete,
-      instances.map(instance => instance[idField])
+      instances.map(instance => logicalIdBuilder(instance))
     );
 
     yield put({

@@ -32,7 +32,7 @@ Table of Content
 
 <dl>
   <dt>Logical ID</dt>
-  <dd>Field(s) values constituting visible ID of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
+  <dd>Field(s) and their value(s) constituting visible ID of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
@@ -91,8 +91,7 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-[view](#editorcomponent-propsview) | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| View [Name](#editorcomponent-propsview)/[State](#editorcomponent-propsstate)
-[state](#editorcomponent-propsstate) | `{}` | Full/sliced View State
+[view](#editorcomponent-propsview) | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsview) and full/sliced [View State](#editorcomponent-propsstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
 [onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
 
@@ -392,7 +391,7 @@ Entity Configuration is an object describing an entity. It has the following str
          * and displays all fields from the model. The following fields are read-only in such case:
          * -- all fields in show View,
          * -- auditable fields in edit View,
-         * -- idField in edit View.
+         * -- logicalId fields in edit View.
          */
         ?formLayout(instance) {
           ...

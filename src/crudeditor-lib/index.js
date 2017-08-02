@@ -8,7 +8,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-import { getIdField } from './common/selectors';
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
 import { getViewState as getEditViewState } from './views/edit/selectors';
@@ -31,11 +30,11 @@ const getViewState = {
 
 export default entityConfiguration => {
   const storeState2appState = storeState => {
-    const activeView = storeState.common.activeView;
+    const { activeViewName } = storeState.common;
 
     return {
-      view: activeView,
-      state: cloneDeep(getViewState[activeView](storeState, entityConfiguration))
+      name: activeViewName,
+      state: cloneDeep(getViewState[activeViewName](storeState, entityConfiguration))
     }
   };
 
@@ -49,7 +48,7 @@ export default entityConfiguration => {
     const rez = next(action);
     const newStoreState = getState();
 
-    if (newStoreState.common.activeView === VIEW_ERROR) {
+    if (newStoreState.common.activeViewName === VIEW_ERROR) {
       return rez;
     }
 
@@ -94,11 +93,11 @@ export default entityConfiguration => {
     }
 
     render() {
-      const { view, state } = this.props;
+      const { name, state } = this.props.view;
 
       return (
         <Provider store={store}>
-          <Main viewName={view} viewState={state} />
+          <Main viewName={name} viewState={state} />
         </Provider>
       );
     }

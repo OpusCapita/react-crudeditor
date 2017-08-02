@@ -22,9 +22,18 @@ export const
       tab
     } = {}
   }, {
-    model: { idField }
+    model: {
+      logicalId: logicalIdFields
+    }
   }) => ({
-    id: persistentInstance[idField],
+    instance: Object.entries(persistentInstance).reduce(
+      (rez, [fieldName, fieldValue]) => logicalIdFields.includes(fieldName) ? {
+        ...rez,
+        [fieldName]: fieldValue
+      } :
+      rez,
+      {}
+    ),
     tab
   })),
 

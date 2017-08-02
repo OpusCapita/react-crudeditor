@@ -4,6 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const PORT = 7700;
+const FAKE_RESPONSE_TIMEOUT = 1000;  // In milliseconds. 0 for no timeout.
 
 // ███████████████████████████████████
 // ███   WEBPACK INITIALIZATION    ███
@@ -29,7 +30,11 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.json());
-app.use((req, res, next) => setTimeout(next, 1000));  // Fake response timeout.
+
+if (FAKE_RESPONSE_TIMEOUT) {
+  app.use((req, res, next) => setTimeout(next, FAKE_RESPONSE_TIMEOUT));
+}
+
 require('./api')(app);
 
 // ███████████████████████████████████████████████████████████████████████

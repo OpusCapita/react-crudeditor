@@ -5,8 +5,6 @@ import { createInstance } from '../views/create/actions';
 import { editInstance } from '../views/edit/actions';
 //import { showInstance } from '../views/show/actions';
 
-import { getActiveView } from './selectors';
-
 import {
   VIEW_SEARCH,
   VIEW_CREATE,

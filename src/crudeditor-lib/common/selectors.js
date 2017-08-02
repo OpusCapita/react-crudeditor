@@ -10,7 +10,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getActiveView = wrapper(({ activeView }) => activeView),
+  getActiveViewName = wrapper(({ activeViewName }) => activeViewName),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -20,6 +20,15 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getIdField = wrapper((_, {
-    model: { idField }
-  }) => idField);
+  getLogicalIdBuilder = wrapper((_, {
+    model: {
+      logicalId: logicalIdFields
+    }
+  }) => instance => Object.entries(instance).reduce(
+    (rez, [fieldName, fieldValue]) => logicalIdFields.includes(fieldName) ? {
+      ...rez,
+      [fieldName]: fieldValue
+    } :
+    rez,
+    {}
+  ));

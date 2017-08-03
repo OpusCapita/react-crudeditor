@@ -4,8 +4,6 @@ import isEqual from 'lodash/isEqual';
 
 import ConfirmDialog from '../../../../components/ConfirmDialog';
 import connect from '../../../../connect';
-import Section from '../Section';
-import Field from '../Field';
 import { deleteInstances } from '../../../search/actions';
 import { VIEW_NAME } from '../../constants';
 
@@ -18,7 +16,6 @@ import {
 } from '../../../../common/constants';
 
 import {
-  getActiveEntries,
   getPersistentInstance,
   getFormInstance
 } from '../../selectors';
@@ -29,7 +26,6 @@ import {
 } from '../../actions';
 
 @connect({
-  activeEntries: getActiveEntries,
   formInstance: getFormInstance,
   persistentInstance: getPersistentInstance
 }, {
@@ -54,10 +50,10 @@ export default class extends React.PureComponent {
 
   render() {
     const {
-      activeEntries,
       exitEdit,
       formInstance,
-      persistentInstance
+      persistentInstance,
+      children: sectionsAndFields
     } = this.props;
 
     const isChangedInstance = isEqual(formInstance, persistentInstance);
@@ -65,24 +61,7 @@ export default class extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
         <Col md={10}>
-          {
-            activeEntries.map(({ section, field, mode, entries, Component }, index) =>
-              section && <Section key={index} title={section.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())}>
-                {
-                  entries.map(({ field, mode, Component }, fieldIndex) =>
-                    <Field
-                      entry={{ name: field, mode, Component }}
-                      key={`${index}_${fieldIndex}`}
-                    />
-                  )
-                }
-              </Section> ||
-              field && <Field
-                entry={{ name: field, mode, Component }}
-                key={index}
-              />
-            )
-          }
+          {sectionsAndFields}
         </Col>
 
         <FormGroup>

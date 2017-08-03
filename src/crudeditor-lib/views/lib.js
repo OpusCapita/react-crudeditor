@@ -11,15 +11,24 @@ import {
 } from '../common/constants';
 
 function enhanceFormEntries(viewName, fieldsMeta, entries) {
+  // 1. making all fields readonly in "show" view.
+  // 2. removing hidden entries.
+  // 3. removing empty tabs and sections.
+  // 4. assigning default Component to fields.
   return entries.reduce(
     (rez, entry) => {
       if (entry.mode === FORM_ENTRY_MODE_HIDDEN) {
         return rez;
       }
 
-      if (entry.entries) {  // entry is either tab or section
-        entry.entries = enhanceFormEntries(viewName, fieldsMeta, entry.entries);
-      } else if (entry.field) {
+      if (entry.tab || entry.section) {
+        if (entry.entries) {
+          entry.entries = enhanceFormEntries(viewName, fieldsMeta, entry.entries);
+        }
+        if (!entry.entries || entry.entries.length === 0) {
+          return rez;
+        }
+      } else {  // entry is field
         if (viewName === VIEW_SHOW) {
           entry.mode = FORM_ENTRY_MODE_READONLY;
         }

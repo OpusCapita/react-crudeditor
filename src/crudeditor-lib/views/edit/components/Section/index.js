@@ -11,7 +11,11 @@ export default class extends React.Component {
   })
 
   render() {
-    const { title, children } = this.props;
+    const {
+      title,
+      children: fields
+    } = this.props;
+
     const { collapsed } = this.state;
 
     return <Panel
@@ -26,7 +30,7 @@ export default class extends React.Component {
         </span>
       }
     >
-      { children }
+      {fields}
     </Panel>;
   }
 }

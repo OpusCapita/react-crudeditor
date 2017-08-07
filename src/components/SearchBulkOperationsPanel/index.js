@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
 
 export default class extends React.PureComponent {
-  handleDelete = _ => this.props.deleteInstances(this.props.selectedInstances);
+  handleDelete = _ => this.props.model.deleteInstances(this.props.model.selectedInstances);
 
   render() {
     return (
@@ -16,7 +16,7 @@ export default class extends React.PureComponent {
             onConfirm={this.handleDelete}
             message='Do you want to delete selected items?'
           >
-            <Button bsSize='sm' disabled={this.props.selectedInstances.length === 0}>
+            <Button bsSize='sm' disabled={this.props.model.selectedInstances.length === 0}>
               Delete selected
             </Button>
           </ConfirmDialog>

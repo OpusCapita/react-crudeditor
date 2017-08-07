@@ -9,31 +9,31 @@ export default class extends React.PureComponent {
   handleNewInstances = instances => {
     this.handleToggleSelected = new WeakMap(instances.map(instance => [
       instance,
-      ({ target: { checked } }) => this.props.toggleSelected(checked, instance)
+      ({ target: { checked } }) => this.props.model.toggleSelected(checked, instance)
     ]));
 
     this.handleEdit = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.editInstance({ instance: this.props.logicalIdBuilder(instance) })
+      _ => this.props.model.editInstance({ instance: this.props.model.logicalIdBuilder(instance) })
     ]));
 
     this.handleDelete = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.deleteInstances([instance])
+      _ => this.props.model.deleteInstances([instance])
     ]));
   }
 
   constructor(...args) {
     super(...args);
 
-    this.handleNewInstances(this.props.instances);
+    this.handleNewInstances(this.props.model.instances);
 
-    this.handleResort = this.props.fields.reduce((rez, { name }) => ({
+    this.handleResort = this.props.model.fields.reduce((rez, { name }) => ({
       ...rez,
-      [name]: _ => this.props.searchInstances({
+      [name]: _ => this.props.model.searchInstances({
         sort: name,
-        // XXX: sortField and sortOrder must be accessed with this.props for up to date values!
-        order: name === this.props.sortField && this.props.sortOrder === 'asc' ?
+        // XXX: sortField and sortOrder must be accessed with this.props.model for up to date values!
+        order: name === this.props.model.sortField && this.props.model.sortOrder === 'asc' ?
           'desc' :
           'asc'
       })
@@ -42,17 +42,17 @@ export default class extends React.PureComponent {
 
   componentWillReceiveProps({ instances }) {
     if (
-      instances.length !== this.props.instances.length ||
-      this.props.instances.some(instance => !instances.includes(instance))
+      instances.length !== this.props.model.instances.length ||
+      this.props.model.instances.some(instance => !instances.includes(instance))
     ) {
       this.handleNewInstances(instances);
     }
   }
 
-  handleToggleSelectedAll = ({ target: { checked } }) => this.props.toggleSelectedAll(checked)
+  handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.toggleSelectedAll(checked)
 
   render() {
-    const { selectedInstances, instances, fields, sortField, sortOrder, logicalIdBuilder } = this.props;
+    const { selectedInstances, instances, fields, sortField, sortOrder, logicalIdBuilder } = this.props.model;
 
     return (
       <Table responsive={true} condensed={true}>

@@ -6,22 +6,22 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleFormFilterUpdate = this.props.fields.reduce(
+    this.handleFormFilterUpdate = this.props.model.fields.reduce(
       (rez, { name }) => ({
         ...rez,
-        [name]: value => this.props.updateFormFilter({ name, value })
+        [name]: value => this.props.model.updateFormFilter({ name, value })
       }),
       {}
     );
   }
 
-  handleCreate = _ => this.props.createInstance(this.props.defaultNewInstance);
+  handleCreate = _ => this.props.model.createInstance(this.props.model.defaultNewInstance);
 
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.searchInstances({
-      filter: this.props.formFilter
+    this.props.model.searchInstances({
+      filter: this.props.model.formFilter
     });
   }
 
@@ -31,7 +31,7 @@ export default class extends React.PureComponent {
       formFilter,
       resultFilter,
       resetFormFilter
-    } = this.props;
+    } = this.props.model;
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>

@@ -1,8 +1,14 @@
 import React from 'react';
 
-export default ({ totalCount, children }) => totalCount > 0 ?
+import ResultListing from '../SearchResultListing';
+import BulkOperationsPanel from '../SearchBulkOperationsPanel';
+import PaginationPanel from '../SearchPaginationPanel';
+
+export default ({ model }) => model.totalCount > 0 ?
   <div>
-    {children}
+    <ResultListing model={model} />
+    <BulkOperationsPanel model={model} />
+    <PaginationPanel model={model} />
   </div> :
   <div className="bs-callout bs-callout-info">
     <span>0 items found</span>

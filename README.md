@@ -696,29 +696,28 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
     project-root/
     └── client/
         ├── common/
-        │   └── ...  # "common" namespace dir content
+        │   └── ...  # "common" namespace dir content.
         ├── views/
         │   ├── create/
-        │   │   └── ...  # "create" view namespace dir content
+        │   │   └── ...  # "create" view namespace dir content.
         │   ├── edit/
-        │   │   └── ...  # "edit" view namespace dir content
+        │   │   └── ...  # "edit" view namespace dir content.
         │   ├── error/
-        │   │   └── ...  # "error" view namespace dir content
+        │   │   └── ...  # "error" view namespace dir content.
         │   ├── search/
-        │   │   └── ...  # "search" view namespace dir content
+        │   │   └── ...  # "search" view namespace dir content.
         │   └── show/
-        │       ├── components/
+        │       ├── components/  # Presentational Components not aware of Redux.
+        │       ├── containers/  # Container Components aware of Redux and subscribing to Redux state.
         │       │   └── ....
-        │       ├── actions.js  # action creators (always encapsulated inside a duck)
-        │       ├── constants.js  # actions' types and other constants
+        │       ├── actions.js  # action creators (always encapsulated inside a duck).
+        │       ├── constants.js  # actions' types and other constants.
         │       ├── reducer.js
         │       ├── sagas.js
         │       ├── selectors.js
         │       └── tests.js
         ├── rootReducer.js
-        ├── rootSaga.js
-        └── services/
-            └── ...
+        └── rootSaga.js
 
 Every view dir and *common* dir represents a [ducks](https://github.com/erikras/ducks-modular-redux)-complient namespace. All namespaces have similar dir structure (see *show* view for an example).
 

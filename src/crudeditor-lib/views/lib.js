@@ -6,15 +6,22 @@ import {
   FORM_ENTRY_MODE_HIDDEN,
   FORM_ENTRY_MODE_READONLY,
   FORM_ENTRY_MODE_WRITABLE,
+  FORM_ENTRY_MODE_DISABLED,
   VIEW_EDIT,
   VIEW_SHOW
 } from '../common/constants';
 
 function enhanceFormEntries(viewName, fieldsMeta, entries) {
-  // 1. making all fields readonly in "show" view.
-  // 2. removing hidden entries.
-  // 3. removing empty tabs and sections.
-  // 4. assigning default Component to fields.
+  /*
+   * 1. making all fields readonly in "show" view.
+   * 2. removing hidden entries.
+   * 3. removing empty tabs and sections.
+   * 4. assigning default Component to fields.
+   * 5. Replace "mode" with
+   *    -- "readOnly" in fields,
+   *    -- "disabled" in tabs,
+   *    -- remove it altogether in sections.
+   */
   return entries.reduce(
     (rez, entry) => {
       if (entry.mode === FORM_ENTRY_MODE_HIDDEN) {
@@ -28,16 +35,20 @@ function enhanceFormEntries(viewName, fieldsMeta, entries) {
         if (!entry.entries || entry.entries.length === 0) {
           return rez;
         }
+        if (entry.tab) {
+          entry.disabled = entry.mode === FORM_ENTRY_MODE_DISABLED;
+        }
       } else {  // entry is field
         if (viewName === VIEW_SHOW) {
           entry.mode = FORM_ENTRY_MODE_READONLY;
         }
-
         if (!entry.Component) {
           entry.Component = buildFieldComponent(fieldsMeta[entry.field].type || DEFAULT_FIELD_TYPE)
         }
+        entry.readOnly = viewName === VIEW_SHOW || entry.mode === FORM_ENTRY_MODE_READONLY;
       }
 
+      delete entry.mode;
 
       return [
         ...rez,

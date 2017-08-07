@@ -7,6 +7,11 @@ import {
   TAB_SELECT
 } from './constants';
 
+import {
+  AFTER_ACTION_NEW,
+  AFTER_ACTION_NEXT
+} from '../../common/constants';
+
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -49,9 +54,24 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   // TODO: implement reducer.
-  saveInstance = afterAction => ({
+  saveInstance = _ => ({
+    type: INSTANCE_SAVE
+  }),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  // TODO: implement reducer.
+  saveAndNewInstance = _ => ({
     type: INSTANCE_SAVE,
-    payload: { afterAction }
+    payload: { AFTER_ACTION_NEW }
+  }),
+
+
+  // TODO: implement reducer.
+  saveAndNextInstance = _ => ({
+    type: INSTANCE_SAVE,
+    payload: { AFTER_ACTION_NEXT }
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

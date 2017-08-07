@@ -3,11 +3,11 @@ import connect from '../../connect';
 
 import { getActiveViewName } from '../../common/selectors';
 
-import SearchView from '../../views/search/components/Main';
-import CreateView from '../../views/create/components/Main';
-import EditView from '../../views/edit/components/Main';
-//import ShowView from '../../views/show/components/Main';
-import ErrorView from '../../views/error/components/Main';
+import SearchView from '../../views/search/containers/Main';
+import CreateView from '../../views/create/containers/Main';
+import EditView from '../../views/edit/containers/Main';
+//import ShowView from '../../views/show/containers/Main';
+import ErrorView from '../../views/error/containers/Main';
 
 import {
   VIEW_SEARCH,

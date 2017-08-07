@@ -1,5 +1,7 @@
-import FieldString from './FieldString';
-import FieldBoolean from './FieldBoolean';
+// Default field INPUT for Search/Edit/Create forms.
+
+import FieldString from '../../../components/FieldString';
+import FieldBoolean from '../../../components/FieldBoolean';
 
 export default fieldType =>
   fieldType === 'string'  && FieldString ||

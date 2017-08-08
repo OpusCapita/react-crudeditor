@@ -43,7 +43,7 @@ import {
   updateFormFilter
 } from '../actions';
 
-export default connect({
+const mapStateToProps = {
   defaultNewInstance: getDefaultNewInstance,
   entityName: getEntityName,
   formFilter: getFormFilter,
@@ -58,29 +58,9 @@ export default connect({
   sortField: getSortField,
   sortOrder: getSortOrder,
   totalCount: getTotalCount
-}, {
-  createInstance,
-  deleteInstances,
-  editInstance,
-  resetFormFilter,
-  searchInstances,
-  updateFormFilter
-})(({
-  defaultNewInstance,
-  entityName,
-  formFilter,
-  logicalIdBuilder,
-  max,
-  offset,
-  resultFields,
-  resultFilter,
-  resultInstances,
-  searchableFields,
-  selectedInstances,
-  sortField,
-  sortOrder,
-  totalCount,
+};
 
+const mapDispatchToProps = {
   createInstance,
   deleteInstances,
   editInstance,
@@ -88,34 +68,24 @@ export default connect({
   searchInstances,
   toggleSelected,
   toggleSelectedAll,
-  updateFormFilter,
+  updateFormFilter
+};
 
+// XXX: the container MUST NOT receive any props with the same names as ones from the model =>
+// the container MUST NOT receive any props at all because there is no guarantee that the same property
+// never appears in the model.
+export default connect(mapStateToProps, mapDispatchToProps)(({
   children,
   ...props
-}) =>
-  <Main {...props} model={{
-    defaultNewInstance,
-    entityName,
-    formFilter,
-    logicalIdBuilder,
-    max,
-    offset,
-    resultFields,
-    resultFilter,
-    resultInstances,
-    searchableFields,
-    selectedInstances,
-    sortField,
-    sortOrder,
-    totalCount,
+}) => {
+  const model = [...Object.keys(mapStateToProps), ...Object.keys(mapDispatchToProps)].reduce(
+    (rez, propName) => {
+      rez[propName] = props[propName];
+      delete props[propName];
+      return rez;
+    },
+    {}
+  );
 
-    createInstance,
-    deleteInstances,
-    editInstance,
-    resetFormFilter,
-    searchInstances,
-    toggleSelected,
-    toggleSelectedAll,
-    updateFormFilter
-  }}>{children}</Main>
-);
+  return <Main {...props} model={model}>{children}</Main>;
+});

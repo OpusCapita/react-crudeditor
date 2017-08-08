@@ -26,7 +26,7 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleNewInstances(this.props.model.instances);
+    this.handleNewInstances(this.props.model.resultInstances);
 
     this.handleResort = this.props.model.resultFields.reduce((rez, { name }) => ({
       ...rez,
@@ -40,10 +40,14 @@ export default class extends React.PureComponent {
     }), {});
   }
 
-  componentWillReceiveProps({ instances }) {
+  componentWillReceiveProps({
+    model: {
+      resultInstances: instances
+    }
+  }) {
     if (
-      instances.length !== this.props.model.instances.length ||
-      this.props.model.instances.some(instance => !instances.includes(instance))
+      instances.length !== this.props.model.resultInstances.length ||
+      this.props.model.resultInstances.some(instance => !instances.includes(instance))
     ) {
       this.handleNewInstances(instances);
     }
@@ -52,7 +56,14 @@ export default class extends React.PureComponent {
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.toggleSelectedAll(checked)
 
   render() {
-    const { selectedInstances, instances, resultFields, sortField, sortOrder, logicalIdBuilder } = this.props.model;
+    const {
+      selectedInstances,
+      resultInstances: instances,
+      resultFields,
+      sortField,
+      sortOrder,
+      logicalIdBuilder
+    } = this.props.model;
 
     return (
       <Table responsive={true} condensed={true}>

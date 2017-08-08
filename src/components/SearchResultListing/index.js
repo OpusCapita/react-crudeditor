@@ -28,7 +28,7 @@ export default class extends React.PureComponent {
 
     this.handleNewInstances(this.props.model.instances);
 
-    this.handleResort = this.props.model.fields.reduce((rez, { name }) => ({
+    this.handleResort = this.props.model.resultFields.reduce((rez, { name }) => ({
       ...rez,
       [name]: _ => this.props.model.searchInstances({
         sort: name,
@@ -52,7 +52,7 @@ export default class extends React.PureComponent {
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.toggleSelectedAll(checked)
 
   render() {
-    const { selectedInstances, instances, fields, sortField, sortOrder, logicalIdBuilder } = this.props.model;
+    const { selectedInstances, instances, resultFields, sortField, sortOrder, logicalIdBuilder } = this.props.model;
 
     return (
       <Table responsive={true} condensed={true}>
@@ -65,7 +65,7 @@ export default class extends React.PureComponent {
               />
             </th>
 
-            {fields.map(({ name, sortable }) =>
+            {resultFields.map(({ name, sortable }) =>
               <th key={`th-${name}`}>
                 {
                   sortable ?
@@ -89,7 +89,7 @@ export default class extends React.PureComponent {
               <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected.get(instance)} />
             </td>
 
-            {fields.map(({ name, Component, textAlignment }) =>
+            {resultFields.map(({ name, Component, textAlignment }) =>
               <td
                 key={`td-${name}`}
                 className={

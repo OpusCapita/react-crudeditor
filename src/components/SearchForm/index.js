@@ -6,7 +6,7 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleFormFilterUpdate = this.props.fields.reduce(
+    this.handleFormFilterUpdate = this.props.model.searchableFields.reduce(
       (rez, { name }) => ({
         ...rez,
         [name]: value => this.props.model.updateFormFilter({ name, value })
@@ -27,6 +27,7 @@ export default class extends React.PureComponent {
 
   render() {
     const {
+      searchableFields,
       formFilter,
       resultFilter,
       resetFormFilter
@@ -34,7 +35,7 @@ export default class extends React.PureComponent {
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
-        {this.props.fields.map(({ name, Component }) =>
+        {searchableFields.map(({ name, Component }) =>
           <FormGroup key={`form-group-${name}`} controlId={`fg-${name}`}>
             <Col componentClass={ControlLabel} sm={2}>
               {name}

@@ -4,7 +4,7 @@ import ResultListing from '../SearchResultListing';
 import BulkOperationsPanel from '../SearchBulkOperationsPanel';
 import PaginationPanel from '../SearchPaginationPanel';
 
-export default ({ model }) => model.totalCount > 0 ?
+export default ({ model }) => model.data.totalCount > 0 ?
   <div>
     <ResultListing model={model} />
     <BulkOperationsPanel model={model} />

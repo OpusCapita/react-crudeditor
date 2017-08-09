@@ -90,4 +90,15 @@ export const
     viewMeta: { instanceDescription } = {}
   }) => instanceDescription ?
     instanceDescription(instance) :
-    instance._objectLabel;
+  instance._objectLabel,
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getLogicalIdBuilder = logicalIdFields => instance => Object.entries(instance).reduce(
+    (rez, [fieldName, fieldValue]) => logicalIdFields.includes(fieldName) ? {
+      ...rez,
+      [fieldName]: fieldValue
+    } :
+    rez,
+    {}
+  );

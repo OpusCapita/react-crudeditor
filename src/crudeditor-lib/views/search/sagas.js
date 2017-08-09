@@ -1,5 +1,6 @@
 import isEqual from 'lodash/isEqual';
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
+import { getLogicalIdBuilder } from '../lib';
 
 import {
   EMPTY_FILTER_VALUE,
@@ -18,22 +19,7 @@ import {
   VIEW_NAME
 } from './constants';
 
-import {
-  getPageMax,
-  getPageOffset,
-  getResultFilter,
-  getResultInstances,
-  getSortField,
-  getSortOrder,
-  getStatus
-} from './selectors';
-
 import { searchInstances } from './actions';
-
-import {
-  getActiveViewName,
-  getLogicalIdBuilder
-} from '../../common/selectors';
 
 /*███████████████████*\
  *███ WORKER SAGA ███*
@@ -55,12 +41,26 @@ export function* onInstancesSearch(entityConfiguration, {
     currentOrder,
     currentMax,
     currentOffset
-  ] = yield all([
-    select(getResultFilter , entityConfiguration),
-    select(getSortField    , entityConfiguration),
-    select(getSortOrder    , entityConfiguration),
-    select(getPageMax      , entityConfiguration),
-    select(getPageOffset   , entityConfiguration)
+  ] = yield select(({
+    views: {
+      [VIEW_NAME]: {
+        resultFilter,
+        sortParams: {
+          field,
+          order
+        },
+        pageParams: {
+          max,
+          offset
+        }
+      }
+    }
+  }) => [
+    resultFilter,
+    field,
+    order,
+    max,
+    offset
   ]);
 
   filter = filter || currentFilter;
@@ -81,8 +81,8 @@ export function* onInstancesSearch(entityConfiguration, {
     order === currentOrder &&
     max === currentMax &&
     offset === currentOffset &&
-    (yield select(getStatus, entityConfiguration)) === READY &&
-    (yield select(getActiveViewName, entityConfiguration)) === VIEW_NAME
+    (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
+    (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME
   ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
     return;
   }
@@ -133,7 +133,7 @@ export function* onInstancesSearch(entityConfiguration, {
 export function* onInstancesDelete(entityConfiguration, {
   payload: { instances }
 }) {
-  const logicalIdBuilder = yield select(getLogicalIdBuilder, entityConfiguration);
+  const logicalIdBuilder = getLogicalIdBuilder(entityConfiguration.model.logicalId);
 
   yield put({
     type: INSTANCES_DELETE_REQUEST
@@ -150,15 +150,15 @@ export function* onInstancesDelete(entityConfiguration, {
       payload: { instances }
     });
 
-    const resultInstances = yield select(getResultInstances, entityConfiguration);
+    const resultInstances = yield select(storeState => storeState.views[VIEW_NAME].resultInstances);
     let searchParams;
 
     if (resultInstances.length === 0) {
-      const offset = yield select(getPageOffset, entityConfiguration);
+      const offset = yield select(storeState => storeState.views[VIEW_NAME].pageParams.offset);
 
       if (offset !== 0) {
         searchParams = {
-          offset: offset - (yield select(getPageMax, entityConfiguration))
+          offset: offset - (yield select(storeState => storeState.views[VIEW_NAME].pageParams.max))
         };
       }
     }

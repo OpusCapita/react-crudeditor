@@ -4,14 +4,20 @@ import { Pagination, Dropdown, MenuItem } from 'react-bootstrap';
 import './styles.css';
 
 export default class extends React.PureComponent {
-  handlePaginate = activePage => this.props.model.searchInstances({
-    offset: (activePage - 1) * this.props.model.max
+  handlePaginate = activePage => this.props.model.actions.searchInstances({
+    offset: (activePage - 1) * this.props.model.data.pageParams.max
   })
 
-  handleMaxChange = pageMax => this.props.model.searchInstances({ max: pageMax })
+  handleMaxChange = pageMax => this.props.model.actions.searchInstances({ max: pageMax })
 
   render() {
-    const {totalCount, max, offset } = this.props.model;
+    const {
+      totalCount,
+      pageParams: {
+        max,
+        offset
+      }
+    } = this.props.model.data;
 
     return (
       <div>

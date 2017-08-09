@@ -6,31 +6,35 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleFormFilterUpdate = this.props.model.searchableFields.reduce(
+    this.handleFormFilterUpdate = this.props.model.data.searchableFields.reduce(
       (rez, { name }) => ({
         ...rez,
-        [name]: value => this.props.model.updateFormFilter({ name, value })
+        [name]: value => this.props.model.actions.updateFormFilter({ name, value })
       }),
       {}
     );
   }
 
-  handleCreate = _ => this.props.model.createInstance(this.props.model.defaultNewInstance);
+  handleCreate = _ => this.props.model.actions.createInstance(this.props.model.data.defaultNewInstance);
 
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.model.searchInstances({
-      filter: this.props.model.formFilter
+    this.props.model.actions.searchInstances({
+      filter: this.props.model.data.formFilter
     });
   }
 
   render() {
     const {
-      searchableFields,
-      formFilter,
-      resultFilter,
-      resetFormFilter
+      data: {
+        searchableFields,
+        formFilter,
+        resultFilter,
+      },
+      actions: {
+        resetFormFilter
+      }
     } = this.props.model;
 
     return (

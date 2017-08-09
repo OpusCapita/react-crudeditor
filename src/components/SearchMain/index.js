@@ -5,7 +5,7 @@ import Result from '../SearchResult';
 
 export default ({ model }) =>
   <div>
-    <h1>Search {model.entityName}</h1>
+    <h1>Search {model.data.entityName}</h1>
     <Form model={model} />
     <Result model={model} />
   </div>;

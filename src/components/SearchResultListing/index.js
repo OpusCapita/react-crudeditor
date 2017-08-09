@@ -9,31 +9,31 @@ export default class extends React.PureComponent {
   handleNewInstances = instances => {
     this.handleToggleSelected = new WeakMap(instances.map(instance => [
       instance,
-      ({ target: { checked } }) => this.props.model.toggleSelected(checked, instance)
+      ({ target: { checked } }) => this.props.model.actions.toggleSelected(checked, instance)
     ]));
 
     this.handleEdit = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.model.editInstance({ instance: this.props.model.logicalIdBuilder(instance) })
+      _ => this.props.model.actions.editInstance({ instance: this.props.model.data.logicalIdBuilder(instance) })
     ]));
 
     this.handleDelete = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.model.deleteInstances([instance])
+      _ => this.props.model.actions.deleteInstances([instance])
     ]));
   }
 
   constructor(...args) {
     super(...args);
 
-    this.handleNewInstances(this.props.model.resultInstances);
+    this.handleNewInstances(this.props.model.data.resultInstances);
 
-    this.handleResort = this.props.model.resultFields.reduce((rez, { name }) => ({
+    this.handleResort = this.props.model.data.resultFields.reduce((rez, { name }) => ({
       ...rez,
-      [name]: _ => this.props.model.searchInstances({
+      [name]: _ => this.props.model.actions.searchInstances({
         sort: name,
-        // XXX: sortField and sortOrder must be accessed with this.props.model for up to date values!
-        order: name === this.props.model.sortField && this.props.model.sortOrder === 'asc' ?
+        // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+        order: name === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
           'desc' :
           'asc'
       })
@@ -42,28 +42,32 @@ export default class extends React.PureComponent {
 
   componentWillReceiveProps({
     model: {
-      resultInstances: instances
+      data: {
+        resultInstances: instances
+      }
     }
   }) {
     if (
-      instances.length !== this.props.model.resultInstances.length ||
-      this.props.model.resultInstances.some(instance => !instances.includes(instance))
+      instances.length !== this.props.model.data.resultInstances.length ||
+      this.props.model.data.resultInstances.some(instance => !instances.includes(instance))
     ) {
       this.handleNewInstances(instances);
     }
   }
 
-  handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.toggleSelectedAll(checked)
+  handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
 
   render() {
     const {
       selectedInstances,
       resultInstances: instances,
       resultFields,
-      sortField,
-      sortOrder,
+      sortParams: {
+        field: sortField,
+        order: sortOrder
+      },
       logicalIdBuilder
-    } = this.props.model;
+    } = this.props.model.data;
 
     return (
       <Table responsive={true} condensed={true}>

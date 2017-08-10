@@ -1,14 +1,7 @@
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
 import isEqual from 'lodash/isEqual';
 
-import { getActiveViewName } from '../../common/selectors';
 import { getLogicalIdBuilder } from '../lib';
-
-import {
-  getActiveTab,
-  getPersistentInstance,
-  getStatus
-} from './selectors';
 
 import {
   INSTANCE_EDIT,
@@ -30,13 +23,13 @@ export function* onInstanceEdit(entityConfiguration, {
   let logicalIdBuilder;
 
   if (source === 'owner' &&
-    (yield select(getStatus, entityConfiguration)) === READY &&
-    (yield select(getActiveViewName, entityConfiguration)) === VIEW_NAME &&
-    (currentInstance = yield select(getPersistentInstance, entityConfiguration)) &&
+    (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
+    (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME &&
+    (currentInstance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstances)) &&
     (logicalIdBuilder = getLogicalIdBuilder(entityConfiguration.model.logicalId)) &&
     isEqual(logicalIdBuilder(currentInstance), logicalId)
   ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
-    const currentActiveTab = yield select(getActiveTab, entityConfiguration);
+    const currentActiveTab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);
 
     if (activeTabName !== currentActiveTab.tab) {
       yield put({

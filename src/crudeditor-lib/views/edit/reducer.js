@@ -89,7 +89,7 @@ export default modelMetaData => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_EDIT_FAIL) {
-      newStoreStateSlice.status = storeState.resultInstances ? READY : UNINITIALIZED;
+      newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

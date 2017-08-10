@@ -14,24 +14,30 @@ export default class extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
-    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.viewName)) {
-      this.props.saveInstance();
+    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.model.data.viewName)) {
+      this.props.model.actions.saveInstance();
     }
   }
 
-  handleDelete = _ => this.props.deleteInstances(this.props.formInstance)
+  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.formInstance)
 
-  handleSaveAndNew = _ => this.props.saveAndNewInstance()
+  handleSaveAndNew = _ => this.props.model.actions.saveAndNewInstance()
 
-  handleSaveAndNext = _ => this.props.saveAndNextInstance()
+  handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance()
 
   render() {
     const {
-      exitEdit,
-      formInstance,
-      persistentInstance,
       children: sectionsAndFields,
-      viewName
+      model: {
+        actions: {
+          exitEdit
+        },
+        data: {
+          formInstance,
+          persistentInstance,
+          viewName
+        }
+      }
     } = this.props;
 
     const isChangedInstance = isEqual(formInstance, persistentInstance);

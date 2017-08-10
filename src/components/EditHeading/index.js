@@ -2,18 +2,24 @@ import React from 'react';
 import { Nav, NavItem } from 'react-bootstrap';
 
 export default ({
-  entityName,
-  instanceDescription,
-  tabs,
-  activeTab: {
-    tab: activeTabName
-  } = {},
-  selectTab,
-  title
+  model: {
+    data: {
+      activeTab: {
+        tab: activeTabName
+      } = {},
+      entityName,
+      instanceDescription,
+      tabs,
+      viewName
+    },
+    actions: {
+      selectTab
+    }
+  }
 }) =>
   <div>
     <h1>
-      { title + ' ' + entityName }
+      { viewName.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) + ' ' + entityName }
       &nbsp;
       { instanceDescription && <small>{instanceDescription}</small> }
     </h1>

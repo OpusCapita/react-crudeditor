@@ -8,10 +8,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getStatus = wrapper(({ status }) => status),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   getViewState = wrapper(({
     persistentInstance,
     activeTab: {
@@ -35,52 +31,30 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getPersistentInstance = wrapper(({ persistentInstance }) => persistentInstance),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getFormInstance = wrapper(({ formInstance }) => formInstance),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getInstanceDescription = wrapper(({ instanceDescription }) => instanceDescription),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getTabs = wrapper(({ formLayout }) => formLayout.filter(({ tab }) => tab)),  // [] in case of no tabs.
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getActiveTab = wrapper(({ activeTab }) => activeTab),
-
-  /* █████████████████████████████████████████████████████████████████████████████████████████████████████████
-   *
-   * An array of fields and sections. It is activeTab content when tabs exist or all sections/fields otherwise.
-   */
-  getActiveEntries = wrapper(({
-    formLayout,
-    activeTab
-  }) => activeTab ?
-    activeTab.entries || []:
-    formLayout
-  ),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getErrors = wrapper(({ errors }) => errors),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getFieldsMeta = wrapper((_, {
-    model: { fields }
-  }) => Object.entries(fields).reduce(
-    (rez, [ name, info ]) => ({
-      ...rez,
-      [name]: {
-        type: DEFAULT_FIELD_TYPE,
-        constraints: {},
-        ...info
-      }
-    }),
-    {}
-  ));
+  getViewModelData = wrapper((storeState, {
+    model: modelConfig,
+    ui: uiConfig
+  }) => ({
+    activeEntries: storeState.activeTab ?
+      storeState.activeTab.entries || [] :
+      storeState.formLayout,
+    activeTab: storeState.activeTab,
+    entityName: modelConfig.name,
+    formInstance: storeState.formInstance,
+    fieldsErrors: storeState.errors,
+    fieldsMeta: Object.entries(modelConfig.fields).reduce(
+      (rez, [ name, info ]) => ({
+        ...rez,
+        [name]: {
+          type: DEFAULT_FIELD_TYPE,
+          constraints: {},
+          ...info
+        }
+      }),
+      {}
+    ),
+    instanceDescription: storeState.instanceDescription,
+    persistentInstance: storeState.persistentInstance,
+    tabs: storeState.formLayout.filter(({ tab }) => tab),
+    viewName: VIEW_NAME
+  }));

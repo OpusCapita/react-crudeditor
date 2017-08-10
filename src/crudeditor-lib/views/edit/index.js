@@ -1,30 +1,29 @@
-// Edit View container component.
 import React from 'react';
 
 import connect from '../../connect';
-import Main from '../../../components/SearchMain';
+import Main from '../../../components/EditMain';
 import { getViewModelData } from './selectors';
-import { createInstance } from '../create/actions';
-import { editInstance } from '../edit/actions';
+import { deleteInstances } from '../search/actions';
 
 import {
-  deleteInstances,
-  resetFormFilter,
-  searchInstances,
-  toggleSelected,
-  toggleSelectedAll,
-  updateFormFilter
+  changeInstanceField,
+  exitEdit,
+  saveInstance,
+  saveAndNewInstance,
+  saveAndNextInstance,
+  selectTab,
+  validateInstanceField
 } from './actions';
 
 const actions = {
-  createInstance,
+  changeInstanceField,
   deleteInstances,
-  editInstance,
-  resetFormFilter,
-  searchInstances,
-  toggleSelected,
-  toggleSelectedAll,
-  updateFormFilter
+  exitEdit,
+  saveInstance,
+  saveAndNewInstance,
+  saveAndNextInstance,
+  selectTab,
+  validateInstanceField
 };
 
 export default connect({
@@ -45,5 +44,4 @@ export default connect({
   });
 
   return <Main {...props} model={model}>{children}</Main>;
-}
-);
+});

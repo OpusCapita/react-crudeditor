@@ -5,7 +5,7 @@ import { getActiveViewName } from '../../common/selectors';
 
 import SearchView from '../../views/search';
 import CreateView from '../../views/create/containers/Main';
-import EditView from '../../views/edit/containers/Main';
+import EditView from '../../views/edit';
 //import ShowView from '../../views/show/containers/Main';
 import ErrorView from '../../views/error/containers/Main';
 

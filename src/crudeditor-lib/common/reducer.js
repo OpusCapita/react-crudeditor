@@ -2,7 +2,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import { setEntityConfiguration } from '../entityConfiguration';
 import { INSTANCE_CREATE } from '../views/create/constants';
 //import { INSTANCE_SHOW_SUCCESS } from '../views/show/constants';
 //
@@ -27,7 +26,6 @@ import {
 
 const getDefaultStoreState = entityConfiguration => ({
   activeViewName: undefined,  // XXX: must be undefined until initialization completes.
-  entityConfigurationIndex: setEntityConfiguration(entityConfiguration)
 });
 
 /*

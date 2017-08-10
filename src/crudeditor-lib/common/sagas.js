@@ -1,4 +1,4 @@
-import { put, takeLatest, all, select } from 'redux-saga/effects';
+import { put, takeLatest, all } from 'redux-saga/effects';
 
 import { searchInstances } from '../views/search/actions';
 import { createInstance } from '../views/create/actions';

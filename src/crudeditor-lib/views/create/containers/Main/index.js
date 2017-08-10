@@ -1,15 +1,8 @@
 import React from 'react';
 
-import connect from '../../../../connect';
-import { getEntityName } from '../../../../common/selectors';
-
-const CreateView = ({ entityName }) =>
+export default _ =>
   <div>
     <h1>
-      Create {entityName}
+      Create instance
     </h1>
   </div>;
-
-export default connect({
-  entityName: getEntityName
-})(CreateView);

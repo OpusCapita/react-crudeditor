@@ -1,6 +1,6 @@
 import React from 'react';
 
-import connect from '../../connect';
+import { connect } from 'react-redux';
 import ViewSwitcher from '../ViewSwitcher';
 import { initializeView } from '../../common/actions';
 
@@ -31,6 +31,6 @@ export default class extends React.PureComponent {
   }
 
   render() {
-    return <ViewSwitcher />;
+    return <ViewSwitcher entityConfiguration={this.props.entityConfiguration}/>;
   }
 }

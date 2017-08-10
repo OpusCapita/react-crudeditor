@@ -1,6 +1,6 @@
 import React from 'react';
 
-import connect from '../../connect';
+import { connect } from 'react-redux';
 import Main from '../../../components/EditMain';
 import { getViewModelData } from './selectors';
 import { deleteInstances } from '../search/actions';
@@ -26,22 +26,30 @@ const actions = {
   validateInstanceField
 };
 
-export default connect({
-  viewModelData: getViewModelData
-}, actions)(({
+export default connect(
+  (storeState, { entityConfiguration }) => ({
+    viewModelData: getViewModelData(storeState, entityConfiguration)
+  }),
+  actions
+)(({
   children,
   viewModelData,
   ...props
-}) => {
-  const model = {
-    data: viewModelData,
-    actions: {}
-  };
-
-  Object.keys(actions).forEach(actionName => {
-    model.actions[actionName] = props[actionName];
-    delete props[actionName];
-  });
-
-  return <Main {...props} model={model}>{children}</Main>;
-});
+}) =>
+  <Main
+    model={{
+      data: viewModelData,
+      actions: Object.keys(actions).reduce(
+        (rez, actionName) => {
+          rez[actionName] = props[actionName];
+          delete props[actionName];
+          return rez;
+        },
+        {}
+      )
+    }}
+    {...props}
+  >
+    {children}
+  </Main>
+);

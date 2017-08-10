@@ -97,7 +97,7 @@ export default entityConfiguration => {
 
       return (
         <Provider store={store}>
-          <Main viewName={name} viewState={state} />
+          <Main viewName={name} viewState={state} entityConfiguration={entityConfiguration} />
         </Provider>
       );
     }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import connect from '../../../../connect';
+import { connect } from 'react-redux';
 import { getErrorInfo } from '../../selectors';
 
 const ErrorView = ({
@@ -14,6 +14,6 @@ const ErrorView = ({
     { payload }
   </div>;
 
-export default connect({
-  errorInfo: getErrorInfo
-})(ErrorView);
+export default connect(
+  storeState => getErrorInfo(storeState)
+)(ErrorView);

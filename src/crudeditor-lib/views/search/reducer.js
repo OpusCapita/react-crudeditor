@@ -127,12 +127,12 @@ export default entityConfiguration => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCES_DELETE_REQUEST) {
+    } else if (type === INSTANCES_DELETE_REQUEST && storeState.status !== UNINITIALIZED) {
       newStoreStateSlice.status = DELETING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCES_DELETE_SUCCESS) {
+    } else if (type === INSTANCES_DELETE_SUCCESS && storeState.status !== UNINITIALIZED) {
       const { instances } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => !instances.includes(ins));
       newStoreStateSlice.resultInstances = storeState.resultInstances.filter(ins => !instances.includes(ins));

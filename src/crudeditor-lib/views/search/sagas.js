@@ -15,6 +15,7 @@ import {
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
+  UNINITIALIZED,
   READY,
   VIEW_NAME
 } from './constants';
@@ -150,13 +151,16 @@ export function* onInstancesDelete(entityConfiguration, {
       payload: { instances }
     });
 
-    const resultInstances = yield select(storeState => storeState.views[VIEW_NAME].resultInstances);
     let searchParams;
 
-    if (resultInstances.length === 0) {
+    if (
+      (yield select(storeState => storeState.views[VIEW_NAME].status)) !== UNINITIALIZED &&
+      (yield select(storeState => storeState.views[VIEW_NAME].resultInstances)).length === 0
+    ) {
       const offset = yield select(storeState => storeState.views[VIEW_NAME].pageParams.offset);
 
-      if (offset !== 0) {
+      if (offset !== 0 && offset >= (yield select(storeState => storeState.views[VIEW_NAME].totalCount))) {
+        // All instances on the last page have been deleted => going to the previous page
         searchParams = {
           offset: offset - (yield select(storeState => storeState.views[VIEW_NAME].pageParams.max))
         };

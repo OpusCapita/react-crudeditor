@@ -92,14 +92,13 @@ export default entityConfiguration => {
       onTransition = props.onTransition;
     }
 
-    render() {
-      const { name, state } = this.props.view;
-
-      return (
-        <Provider store={store}>
-          <Main viewName={name} viewState={state} entityConfiguration={entityConfiguration} />
-        </Provider>
-      );
-    }
+    render = _ =>
+      <Provider store={store}>
+        <Main
+          viewName={this.props.view.name}
+          viewState={this.props.view.state}
+          entityConfiguration={entityConfiguration}
+        />
+      </Provider>
   }
 };

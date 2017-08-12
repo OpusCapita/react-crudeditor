@@ -21,6 +21,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
   }
 });
 
+app.set('etag', false);
 app.use(webpackDevMiddleware);
 app.use(require('webpack-hot-middleware')(compiler));
 

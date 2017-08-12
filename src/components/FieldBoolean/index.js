@@ -11,14 +11,11 @@ export default class extends React.PureComponent {
     }
   }
 
-  render() {
-    return (
-      <Checkbox
-        checked={!!this.props.value}
-        readOnly={!!this.props.readOnly}
-        onChange={this.handleChange}
-        onBlur={this.handleBlur}
-      />
-    );
-  }
+  render = _ =>
+    <Checkbox
+      checked={!!this.props.value}
+      readOnly={!!this.props.readOnly}
+      onChange={this.handleChange}
+      onBlur={this.handleBlur}
+    />
 }

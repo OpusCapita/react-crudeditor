@@ -30,7 +30,5 @@ export default class extends React.PureComponent {
     this.props.initializeView({ viewName, viewState });
   }
 
-  render() {
-    return <ViewSwitcher entityConfiguration={this.props.entityConfiguration}/>;
-  }
+  render = _ => <ViewSwitcher entityConfiguration={this.props.entityConfiguration}/>
 }

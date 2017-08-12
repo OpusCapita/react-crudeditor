@@ -55,7 +55,13 @@ export default {
         get('/api/contracts/').
         query({ logicalId }).
         accept('json').
-        then(({ body }) => body);
+        then(({ body }) => body).
+        catch(({ status, response: { body } }) => Promise.reject({
+          code: body && body.code || status,
+          payload: body ?
+            (body.message ? body.message : body) :
+            undefined
+        }));
     },
     search({ filter, sort, order, offset, max }) {
       console.log('Making API-search call');

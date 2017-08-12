@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { getErrorInfo } from '../../selectors';
 
 const ErrorView = ({
-  errorInfo: {
-    code,
-    payload
-  }
+  code,
+  payload
 }) =>
   <div>
     <h1>Error {code}</h1>

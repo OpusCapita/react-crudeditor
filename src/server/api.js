@@ -18,16 +18,15 @@ module.exports = function (app) {
    */
   app.get('/api/contracts', (req, res) => {
     const query = req.query || {};
-    let result;
 
-    if (query.logicalId) {
-      result = contracts.findOne(query.logicalId);
+    if (query.instance) {
+      const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
 
       if (result) {
         res.json(result);
       } else {
         res.status(404);
-        res.json({message: `Contract ${JSON.stringify(query.logicalId)} not found`});
+        res.json({message: `Contract ${JSON.stringify(query.instance)} not found`});
       }
 
       return;
@@ -47,7 +46,7 @@ module.exports = function (app) {
       {};
     let sort;
 
-    result = contracts.chain()
+    let result = contracts.chain()
       .find(filter);
 
     if (query.sort) {
@@ -67,7 +66,7 @@ module.exports = function (app) {
     result = result.data();
 
     res.header('Content-Range', `items ${offset + 1}-${offset + result.length}/${totalCount}`);
-    res.json(result);
+    res.json(result.map(({ $loki, meta, ...instance }) => instance));
   });
 
   /**
@@ -119,15 +118,13 @@ module.exports = function (app) {
    * Delete contract
    */
   app.delete('/api/contracts', (req, res) => {
-    const logicalIds = req.body;
+    const instances = req.body;
 
-    let result = contracts.chain()
-      .find({
-        '$or': logicalIds
-      })
-      .remove();
+    contracts.findAndRemove({
+        '$or': instances.map(({ contractId }) => ({ contractId }))
+      });
 
-    return res.json(logicalIds.length);
+    return res.json(instances.length);
   });
 
   /**

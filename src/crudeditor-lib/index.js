@@ -28,13 +28,13 @@ const getViewState = {
 //[VIEW_SHOW  ] : getShowViewState
 }
 
-export default entityConfiguration => {
+export default modelDefinition => {
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
 
     return {
       name: activeViewName,
-      state: cloneDeep(getViewState[activeViewName](storeState, entityConfiguration))
+      state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
     }
   };
 
@@ -71,7 +71,7 @@ export default entityConfiguration => {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    getReducer(entityConfiguration),
+    getReducer(modelDefinition),
     (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
       // XXX: ensure each middleware calls "next(action)" synchronously,
       // or else ensure that "redux-saga" is the last middleware in the call chain.
@@ -80,7 +80,7 @@ export default entityConfiguration => {
     ))
   );
 
-  sagaMiddleware.run(rootSaga, entityConfiguration);
+  sagaMiddleware.run(rootSaga, modelDefinition);
 
   return class extends React.Component {
     constructor(...args) {
@@ -97,7 +97,7 @@ export default entityConfiguration => {
         <Main
           viewName={this.props.view.name}
           viewState={this.props.view.state}
-          entityConfiguration={entityConfiguration}
+          modelDefinition={modelDefinition}
         />
       </Provider>
   }

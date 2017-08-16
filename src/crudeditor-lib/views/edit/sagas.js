@@ -1,7 +1,7 @@
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
 import isEqual from 'lodash/isEqual';
 
-import { getLogicalIdBuilder } from '../lib';
+import { getLogicalKeyBuilder } from '../lib';
 
 import {
   INSTANCE_EDIT,
@@ -12,22 +12,24 @@ import {
   VIEW_NAME
 } from './constants';
 
-export function* onInstanceEdit(entityConfiguration, {
+export function* onInstanceEdit(modelDefinition, {
   payload: {
-    instance: logicalId,
+    instance,
     activeTabName
   },
   meta: { source }
 }) {
-  let currentInstance;
-  let logicalIdBuilder;
+  const logicalKeyBuilder = getLogicalKeyBuilder(modelDefinition.model.fields);
+  const currentInstance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 
   if (source === 'owner' &&
     (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
     (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME &&
-    (currentInstance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstances)) &&
-    (logicalIdBuilder = getLogicalIdBuilder(entityConfiguration.model.logicalId)) &&
-    isEqual(logicalIdBuilder(currentInstance), logicalId)
+    currentInstance &&
+    isEqual(
+      logicalKeyBuilder(currentInstance),
+      logicalKeyBuilder(instance)
+    )
   ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
     const currentActiveTab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);
 
@@ -50,7 +52,7 @@ export function* onInstanceEdit(entityConfiguration, {
   });
 
   try {
-    const instance = yield call(entityConfiguration.api.get, logicalId);
+    instance = yield call(modelDefinition.api.get, { instance });
 
     yield put({
       type: INSTANCE_EDIT_SUCCESS,
@@ -70,8 +72,8 @@ export function* onInstanceEdit(entityConfiguration, {
   }
 }
 
-export default function*(entityConfiguration) {
+export default function*(modelDefinition) {
   yield all([
-    takeEvery(INSTANCE_EDIT, onInstanceEdit, entityConfiguration)
+    takeEvery(INSTANCE_EDIT, onInstanceEdit, modelDefinition)
   ]);
 }

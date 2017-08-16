@@ -1,6 +1,5 @@
 import isEqual from 'lodash/isEqual';
 import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
-import { getLogicalIdBuilder } from '../lib';
 
 import {
   EMPTY_FILTER_VALUE,
@@ -26,7 +25,7 @@ import { searchInstances } from './actions';
  *███ WORKER SAGA ███*
 \*███████████████████*/
 
-export function* onInstancesSearch(entityConfiguration, {
+export function* onInstancesSearch(modelDefinition, {
   payload: {
     filter,
     sort,
@@ -94,7 +93,7 @@ export function* onInstancesSearch(entityConfiguration, {
   });
 
   try {
-    const { instances, totalCount } = yield call(entityConfiguration.api.search, {
+    const { instances, totalCount } = yield call(modelDefinition.api.search, {
       filter: filter && Object.keys(filter).every(field => filter[field] === EMPTY_FILTER_VALUE) ?
         undefined :  // this option is also triggered when filter === {}
         filter,
@@ -131,19 +130,17 @@ export function* onInstancesSearch(entityConfiguration, {
  *███ WORKER SAGA ███*
 \*███████████████████*/
 
-export function* onInstancesDelete(entityConfiguration, {
+export function* onInstancesDelete(modelDefinition, {
   payload: { instances }
 }) {
-  const logicalIdBuilder = getLogicalIdBuilder(entityConfiguration.model.logicalId);
-
   yield put({
     type: INSTANCES_DELETE_REQUEST
   });
 
   try {
     const { deletedCount } = yield call(
-      entityConfiguration.api.delete,
-      instances.map(instance => logicalIdBuilder(instance))
+      modelDefinition.api.delete,
+      { instances }
     );
 
     yield put({
@@ -181,9 +178,9 @@ export function* onInstancesDelete(entityConfiguration, {
  *███ WATCHER SAGA ███*
 \*████████████████████*/
 
-export default function*(entityConfiguration) {
+export default function*(modelDefinition) {
   yield all([
-    takeLatest(INSTANCES_SEARCH, onInstancesSearch, entityConfiguration),
-    takeEvery(INSTANCES_DELETE,  onInstancesDelete, entityConfiguration)
+    takeLatest(INSTANCES_SEARCH, onInstancesSearch, modelDefinition),
+    takeEvery(INSTANCES_DELETE,  onInstancesDelete, modelDefinition)
   ]);
 }

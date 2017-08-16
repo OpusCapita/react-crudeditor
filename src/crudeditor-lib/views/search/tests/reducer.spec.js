@@ -12,7 +12,7 @@ const MIN_ENTITY_CONFIGURATION = {
 
 describe('search reducer', () => {
   it('should return the initial state', () => {
-    const entityConfiguration = {
+    const modelDefinition = {
       model: {
         fields: {
           'contractId': {},
@@ -40,7 +40,7 @@ describe('search reducer', () => {
       }
     };
 
-    const reducer = buildReducer(entityConfiguration);
+    const reducer = buildReducer(modelDefinition);
 
     expect(reducer(undefined, {})).toEqual({
       resultInstances: undefined,

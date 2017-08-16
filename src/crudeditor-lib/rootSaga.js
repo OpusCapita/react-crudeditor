@@ -8,13 +8,13 @@ import edit from './views/edit/sagas';
 //import error from './views/error/sagas';
 
 
-export default function*(entityConfiguration) {
+export default function*(modelDefinition) {
   yield all([
-    common(entityConfiguration),
-    search(entityConfiguration),
-    //create(entityConfiguration),
-    edit(entityConfiguration)
-    //show(entityConfiguration),
-    //error(entityConfiguration)
+    common(modelDefinition),
+    search(modelDefinition),
+    //create(modelDefinition),
+    edit(modelDefinition)
+    //show(modelDefinition),
+    //error(modelDefinition)
   ])
 }

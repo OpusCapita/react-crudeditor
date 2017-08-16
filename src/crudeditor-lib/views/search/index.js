@@ -28,8 +28,8 @@ const actions = {
 };
 
 export default connect(
-  (storeState, { entityConfiguration }) => ({
-    viewModelData: getViewModelData(storeState, entityConfiguration)
+  (storeState, { modelDefinition }) => ({
+    viewModelData: getViewModelData(storeState, modelDefinition)
   }),
   actions
 )(({

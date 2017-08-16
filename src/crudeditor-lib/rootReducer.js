@@ -15,13 +15,13 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-export default entityConfiguration => combineReducers({
-  common: common(entityConfiguration),
+export default modelDefinition => combineReducers({
+  common: common(modelDefinition),
   views: combineReducers({
-    [VIEW_SEARCH] : search(entityConfiguration),
-    [VIEW_CREATE] : create(entityConfiguration),
-    [VIEW_EDIT]   : edit(entityConfiguration),
-    //[VIEW_SHOW]   : show(entityConfiguration),
-    [VIEW_ERROR]  : error(entityConfiguration)
+    [VIEW_SEARCH] : search(modelDefinition),
+    [VIEW_CREATE] : create(modelDefinition),
+    [VIEW_EDIT]   : edit(modelDefinition),
+    //[VIEW_SHOW]   : show(modelDefinition),
+    [VIEW_ERROR]  : error(modelDefinition)
   })
 });

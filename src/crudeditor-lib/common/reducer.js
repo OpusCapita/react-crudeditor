@@ -24,7 +24,7 @@ import {
   VIEW_ERROR
 } from './constants';
 
-const getDefaultStoreState = entityConfiguration => ({
+const getDefaultStoreState = modelDefinition => ({
   activeViewName: undefined,  // XXX: must be undefined until initialization completes.
 });
 
@@ -33,8 +33,8 @@ const getDefaultStoreState = entityConfiguration => ({
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default entityConfiguration => {
-  const defaultStoreState = getDefaultStoreState(entityConfiguration);
+export default modelDefinition => {
+  const defaultStoreState = getDefaultStoreState(modelDefinition);
 
   return (storeState = defaultStoreState, { type, payload, error, meta }) => {
     const newStoreStateSlice = {};

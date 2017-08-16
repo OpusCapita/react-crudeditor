@@ -1,6 +1,5 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import buildFieldComponent from '../../components/DefaultFieldInput';
-import { getLogicalIdBuilder } from '../lib';
 import { VIEW_NAME } from './constants';
 
 import {
@@ -93,7 +92,6 @@ export const
       uiConfig.defaultNewInstance(_getViewState(storeState)),
     entityName: modelConfig.name,
     formFilter: storeState.formFilter,
-    logicalIdBuilder: getLogicalIdBuilder(modelConfig.logicalId),
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

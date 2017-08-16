@@ -9,8 +9,8 @@ Table of Content
     * [props.view.state](#editorcomponent-propsstate)
     * [props.onTransition](#editorcomponent-propsontransition)
     * [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
-- [Entity Configuration](#entity-configuration)
-    * [Configuration Object Structure](#configuration-object-structure)
+- [Model Definition](#model-definition)
+    * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
     * [FieldRenderComponent](#fieldrendercomponent)
     * [TabFormComponent](#tabformcomponent)
@@ -31,21 +31,21 @@ Table of Content
 ## Terminology
 
 <dl>
-  <dt>Logical ID</dt>
-  <dd>Field(s) and their value(s) constituting visible ID of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
+  <dt>Logical Key</dt>
+  <dd>Field(s) and their value(s) constituting visible unique identifier of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
     <ul>
       <li id="internal-operation"><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
       <br />
-      <li id="custom-operation"><i>Custom</i> - custom operation which handler is defined in <a href="#entity-configuration">Entity Configuration</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
+      <li id="custom-operation"><i>Custom</i> - custom operation which handler is defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
       <br />
       <li id="external-operation"><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
     </ul>
   </dd>
   <dt id="persistent-field">Persistent field</dt>
-  <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#entity-configuration">Entity Configuration</a>'s <b>model.fields</b>.</dd>
+  <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.</dd>
   <dt>Auditable field</dt>
   <dd>One of the following <a href="#persistent-field">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
   <dt id="store-state">Store State</dt>
@@ -61,7 +61,7 @@ Table of Content
 import React from 'react';
 import crudEditor from 'react-crudeditor';
 
-const ContractEditor = crudEditor(<Entity Configuration>);
+const ContractEditor = crudEditor(<Model Definition>);
 export default ContractEditor;
 ```
 
@@ -83,7 +83,7 @@ export default class extends React.Component {
     )
 ```
 
-`crudEditor` is a function which the only argument is [Entity Configuration](#entity-configuration) object. It returns [*EditorComponent*](#editorcomponent).
+`crudEditor` is a function which the only argument is [Model Definition](#model-definition) object. It returns [*EditorComponent*](#editorcomponent).
 
 ## *EditorComponent*
 
@@ -97,7 +97,7 @@ Name | Default | Description
 
 ### *EditorComponent* props.view.name
 
-Name of a custom/standard View. *Custom Views* are defined in [Entity Configuration](#entity-configuration)'s **ui.customViews**. *Standard View* is one of:
+Name of a custom/standard View. *Custom Views* are defined in [Model Definition](#model-definition)'s **ui.customViews**. *Standard View* is one of:
 
 View Name | Description
 ---|---
@@ -150,7 +150,7 @@ offset | `0`
 
 ```javascript
 {
-  instance: <object, an entity instance with Logical ID fields only>,
+  instance: <object, an entity instance with Logical Key fields only>,
   ?tab: <string, active tab name>
 }
 ```
@@ -209,30 +209,30 @@ Argument | Type | Description
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
 view | {<br />&nbsp;&nbsp;name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [ID](#editorcomponent-propsview)/Full [State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
 
-## Entity Configuration
+## Model Definition
 
-### Configuration Object Structure
+### Definition Object Structure
 
-Entity Configuration is an object describing an entity. It has the following structure:
+Model Definition is an object describing an entity. It has the following structure:
 
 ```javascript
 {
   model: {
     name: <string, usually singular entity name>,
-    logicalId: <array[string], names of Ligical ID fields>,
 
     /*
      * Persistent fields CRUD Editor is interested in.
      */
     fields: {
       <field name>: {
+        ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
 
         /*
          * Standard field type, "string" by default.
          * It defines a React Component for displaying a field value.
          * Types other than listed are ignored.
          * If a field does not hava a standard type and wants to be displayed, custom React
-         * Component(s) must be provided in corresponding sections of the configuration.
+         * Component(s) must be provided in corresponding sections of Model Definition.
          */
         ?type: <"string"|"number"|"date"|"boolean">,
 
@@ -270,9 +270,11 @@ Entity Configuration is an object describing an entity. It has the following str
    */
   api: {
     /*
-     * get single entity instance by its Logical ID.
+     * get single entity instance by its Logical Key.
      */
-    async get: function(<object, an entity instance with Logical ID fields only>) {
+    async get: function({
+      instance: <object, an entity instance with at least Logical Key fields>
+    }) {
       ...
       return {
         <field name>: <serializable, field value>,
@@ -304,9 +306,11 @@ Entity Configuration is an object describing an entity. It has the following str
     },
 
     /*
-     * delete entity instances transactionally by their Logical IDs.
+     * delete entity instances transactionally by their Logical Keys.
      */
-    async delete: function(<array[string], entity instances with Logical ID fields only>) {
+    async delete: function({
+      instances: <array[object], entity instances with at least Logical Key fields>
+    }) {
       return {
         count: <whole number, how many entity instances where actually deleted>
       };
@@ -316,8 +320,10 @@ Entity Configuration is an object describing an entity. It has the following str
      * create new entity instance and return its actial server copy.
      */
     async create: function({
-      <field name>: <serializable, field value>,
-      ...
+      instance: {
+        <field name>: <serializable, field value>,
+        ...
+      }
     }) {
       ...
       return {
@@ -330,8 +336,10 @@ Entity Configuration is an object describing an entity. It has the following str
      * update existing entity instance and return its actial server copy.
      */
     async update: function({
-      <field name>: <serializable, field value>,
-      ...
+      instance: {
+        <field name>: <serializable, field value>,
+        ...
+      }
     }) {
       ...
       return {
@@ -384,28 +392,29 @@ Entity Configuration is an object describing an entity. It has the following str
         },
 
         /*
-         * layout(), tab() and section() may accept false/undefined/null arguments which are ignored.
+         * Tabs, sections and fields with "hidden" mode are ignored.
+         *
          * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
          *
          * If formLayout is not specified, create/edit/show View does not have any tabs/sections
          * and displays all fields from the model. The following fields are read-only in such case:
          * -- all fields in show View,
-         * -- auditable fields in edit View,
-         * -- logicalId fields in edit View.
+         * -- Auditable fields in edit View,
+         * -- Logical Key fields in edit View.
          */
         ?formLayout(instance) {
           ...
           return [{
             tab: <string, tab name>,
             ?mode: <"hidden"|"disabled"|"enabled">,  // "enabled" by default
-            ?Component: <function, React Component>,
+            ?Component: <function, TabFormComponent>,
             entries: [{
               section: <string, section name>,
               ?mode: <"hidden"|"visible">,  // "visible" by default
               entries: [{
                 field: <string, field name>,
                 ?mode: <"hidden"|"readonly"|"writable">,  // "writable" by default
-                ?Component: <function, React Component>
+                ?Component: <function, FieldInputComponent>
               }...]
             }, ...]
           }, ...];
@@ -477,7 +486,7 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-name | string | mandatory | - | Field name from [Entity Configuration](#entity-configuration)'s **ui.search().resultFields**
+name | string | mandatory | - | Field name from [Model Definition](#model-definition)'s **ui.search().resultFields**
 instance | object | mandatory | - | Entity instance
 
 ### TabFormComponent
@@ -534,8 +543,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 ```javascript
 {
   common: {
-    activeView: <"search"|"create"|"edit"|"show"|"error">,
-    entityConfigurationIndex: <natural number>,  // an index for setting/getting entityConfiguration object by "entityConfiguration.js" module.
+    activeViewName: <"search"|"create"|"edit"|"show"|"error">,
   },
   views: {
     search: {

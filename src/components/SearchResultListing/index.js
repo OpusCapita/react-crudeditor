@@ -14,7 +14,7 @@ export default class extends React.PureComponent {
 
     this.handleEdit = new WeakMap(instances.map(instance => [
       instance,
-      _ => this.props.model.actions.editInstance({ instance: this.props.model.data.logicalIdBuilder(instance) })
+      _ => this.props.model.actions.editInstance({ instance })
     ]));
 
     this.handleDelete = new WeakMap(instances.map(instance => [
@@ -65,8 +65,7 @@ export default class extends React.PureComponent {
       sortParams: {
         field: sortField,
         order: sortOrder
-      },
-      logicalIdBuilder
+      }
     } = this.props.model.data;
 
     return (
@@ -99,7 +98,7 @@ export default class extends React.PureComponent {
         <tbody>
 
         {instances.map(instance =>
-          <tr key={`tr-${JSON.stringify(logicalIdBuilder(instance))}`}>
+          <tr key={`tr-${JSON.stringify(instance)}`}>
             <td>
               <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected.get(instance)} />
             </td>

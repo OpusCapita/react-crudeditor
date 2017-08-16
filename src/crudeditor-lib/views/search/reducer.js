@@ -50,18 +50,18 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default entityConfiguration => {
+export default modelDefinition => {
   const defaultStoreState = cloneDeep(defaultStoreStateTemplate);
 
-  const uiSearch = entityConfiguration.ui &&
-    entityConfiguration.ui.search &&
-    entityConfiguration.ui.search();
+  const uiSearch = modelDefinition.ui &&
+    modelDefinition.ui.search &&
+    modelDefinition.ui.search();
 
   const buildDefaultFormFilter = _ => (
     uiSearch &&
     uiSearch.searchableFields &&
     uiSearch.searchableFields.map(({ name }) => name) ||
-    Object.keys(entityConfiguration.model.fields)
+    Object.keys(modelDefinition.model.fields)
   ).reduce(
     (rez, name) => ({
       ...rez,
@@ -81,7 +81,7 @@ export default entityConfiguration => {
       sortByDefaultIndex
     ].name;
   } else {
-    defaultStoreState.sortParams.field = Object.keys(entityConfiguration.model.fields)[0];
+    defaultStoreState.sortParams.field = Object.keys(modelDefinition.model.fields)[0];
   }
 
   return (storeState = defaultStoreState, { type, payload, error, meta }) => {

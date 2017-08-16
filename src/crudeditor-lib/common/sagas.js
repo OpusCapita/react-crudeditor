@@ -14,7 +14,7 @@ import {
   VIEW_INITIALIZE
 } from './constants';
 
-function* onViewInitialize(entityConfiguration, {
+function* onViewInitialize(modelDefinition, {
   payload: {
     viewName,
     viewState
@@ -41,8 +41,8 @@ function* onViewInitialize(entityConfiguration, {
   yield put(actionCreator(viewState, source));
 }
 
-export default function*(entityConfiguration) {
+export default function*(modelDefinition) {
   yield all([
-    takeLatest(VIEW_INITIALIZE, onViewInitialize, entityConfiguration)  // TODO: cancel all running sagas.
+    takeLatest(VIEW_INITIALIZE, onViewInitialize, modelDefinition)  // TODO: cancel all running sagas.
   ]);
 }

@@ -9,7 +9,6 @@ const VIEW_SHOW = 'show';
 export default {
   model: {
     name: 'Contract',
-    logicalId: ['contractId'],
     fields: {
       'contractBoilerplates': {'type': 'collection', 'constraints': {'required': false}},
       'hierarchyCode': {'type': 'string', 'constraints': {'max': 100, 'required': false}},
@@ -43,17 +42,17 @@ export default {
       'statusId': {'type': 'string', 'constraints': {'max': 20, 'required': true}},
       'createdBy': {'type': 'string', 'constraints': {'required': true}},
       'extContractLineId': {'type': 'string', 'constraints': {'max': 10, 'required': false}},
-      'contractId': {'type': 'string', 'constraints': {'max': 100, 'required': true}},
+      'contractId': {unique: true, 'type': 'string', 'constraints': {'max': 100, 'required': true}},
       'parentContract': {'type': 'com.jcatalog.contract.Contract', 'constraints': {'required': false}},
       'minOrderValue': {'type': 'number', 'constraints': {'min': 0, 'max': 999999999, 'required': false}}
     }
   },
   api: {
-    get(logicalId) {
+    get({ instance }) {
       console.log('Making API-get call');
       return superagent.
         get('/api/contracts/').
-        query({ logicalId }).
+        query({ instance }).
         accept('json').
         then(({ body }) => body).
         catch(({ status, response: { body } }) => Promise.reject({
@@ -79,22 +78,22 @@ export default {
           instances
         }));
     },
-    delete(logicalIds) {
+    delete({ instances }) {
       console.log('Making API-delete call');
       return superagent.
         del('/api/contracts').
-        send(logicalIds).
+        send(instances).
         accept('json').
         then(({ body: deletedCount }) => deletedCount);
     },
-    create(instance) {
+    create({ instance }) {
       console.log('Making API-create call');
       return superagent.
         post('/api/contracts').
         send(instance).
         accept('json');
     },
-    update(instance) {
+    update({ instance }) {
       console.log('Making API-update call');
       const {contractId} = instance;
       return superagent.

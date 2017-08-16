@@ -75,10 +75,10 @@ export const
       map(name => ({
         field: name,
         mode: viewName === VIEW_EDIT && (
-            AUDITABLE_FIELDS.includes(name) ||
-            modelMeta.logicalId.includes[name]
-          ) &&
-          FORM_ENTRY_MODE_READONLY ||
+            AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
+            modelMeta.fields[name].unique  // Logical Key fields are read-only in Edit View.
+          ) ?
+          FORM_ENTRY_MODE_READONLY :
           FORM_ENTRY_MODE_WRITABLE
       }))
     ),
@@ -94,11 +94,14 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getLogicalIdBuilder = logicalIdFields => instance => Object.entries(instance).reduce(
-    (rez, [fieldName, fieldValue]) => logicalIdFields.includes(fieldName) ? {
-      ...rez,
-      [fieldName]: fieldValue
-    } :
-    rez,
-    {}
-  );
+  getLogicalKeyBuilder = fieldsMeta => {
+    const logicalKeyFields = Object.keys(fieldsMeta).filter(fieldName => fieldsMeta[fieldName].unique);
+
+    return instance => logicalKeyFields.reduce(
+      (rez, fieldName) => ({
+        ...rez,
+        [fieldName]: instance[fieldName]
+      }),
+      {}
+    )
+  };

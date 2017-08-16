@@ -1,6 +1,7 @@
 import { VIEW_NAME } from './constants';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { DEFAULT_FIELD_TYPE } from '../../common/constants';
+import { getLogicalKeyBuilder } from '../lib';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -10,22 +11,11 @@ export const
 
   getViewState = wrapper(({
     persistentInstance,
-    activeTab: {
-      tab
-    } = {}
+    activeTab: { tab } = {}
   }, {
-    model: {
-      logicalId: logicalIdFields
-    }
+    model: { fields }
   }) => ({
-    instance: Object.entries(persistentInstance).reduce(
-      (rez, [fieldName, fieldValue]) => logicalIdFields.includes(fieldName) ? {
-        ...rez,
-        [fieldName]: fieldValue
-      } :
-      rez,
-      {}
-    ),
+    instance: getLogicalKeyBuilder(fields)(persistentInstance),
     tab
   })),
 

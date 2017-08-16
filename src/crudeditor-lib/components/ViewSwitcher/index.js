@@ -17,7 +17,7 @@ import {
 
 const ViewSwitcher = ({
   activeViewName,
-  entityConfiguration
+  modelDefinition
 }) => {
   if (!activeViewName) {
     return null;
@@ -25,13 +25,13 @@ const ViewSwitcher = ({
 
   switch (activeViewName) {
     case VIEW_SEARCH:
-      return <SearchView entityConfiguration={entityConfiguration}/>;
+      return <SearchView modelDefinition={modelDefinition}/>;
     case VIEW_CREATE:
-      return <CreateView entityConfiguration={entityConfiguration}/>;
+      return <CreateView modelDefinition={modelDefinition}/>;
     case VIEW_EDIT:
-      return <EditView entityConfiguration={entityConfiguration}/>;
+      return <EditView modelDefinition={modelDefinition}/>;
     case VIEW_ERROR:
-      return <ErrorView entityConfiguration={entityConfiguration}/>;
+      return <ErrorView modelDefinition={modelDefinition}/>;
     default:
       return <div>Unknown view <i>{activeViewName}</i></div>;
   }

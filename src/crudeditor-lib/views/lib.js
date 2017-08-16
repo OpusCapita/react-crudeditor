@@ -85,12 +85,12 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildInstanceDescription = ({
+  buildObjectLabel = ({
     instance,
-    viewMeta: { instanceDescription } = {}
-  }) => instanceDescription ?
-    instanceDescription(instance) :
-  instance._objectLabel,
+    uiMeta: { objectLabel } = {}
+  }) => objectLabel ?
+    objectLabel(instance) :
+    instance._objectLabel,
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

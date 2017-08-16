@@ -8,7 +8,7 @@ export default ({
         tab: activeTabName
       } = {},
       entityName,
-      instanceDescription,
+      objectLabel,
       tabs,
       viewName
     },
@@ -21,7 +21,7 @@ export default ({
     <h1>
       { viewName.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) + ' ' + entityName }
       &nbsp;
-      { instanceDescription && <small>{instanceDescription}</small> }
+      { objectLabel && <small>{objectLabel}</small> }
     </h1>
     <br />
     {

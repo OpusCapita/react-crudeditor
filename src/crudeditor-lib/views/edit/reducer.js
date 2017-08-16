@@ -4,7 +4,7 @@ import u from 'updeep';
 
 import {
   buildFormLayout,
-  buildInstanceDescription
+  buildObjectLabel
 } from '../lib';
 
 import {
@@ -31,7 +31,7 @@ const defaultStoreStateTemplate = {
   // A ref to one of tabs element => it is undefined when and only when formLayout does not consist of tabs.
   activeTab: undefined,
 
-  instanceDescription: undefined,
+  objectLabel: undefined,
   errors: undefined,
   status: UNINITIALIZED
 };
@@ -73,7 +73,11 @@ export default modelMetaData => (
       newStoreStateSlice.formLayout = u.constant(formLayout);
       newStoreStateSlice.persistentInstance = u.constant(instance);
       newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-      newStoreStateSlice.instanceDescription = buildInstanceDescription({ instance, viewMeta });
+
+      newStoreStateSlice.objectLabel = buildObjectLabel({
+        instance,
+        uiMeta: modelMetaData.ui
+      });
     }
 
     if (formLayout ||  // New instance has been received => new formLayout was built.

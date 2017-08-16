@@ -118,8 +118,8 @@ export default {
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', Component: DateRangeCellRender }]
     }),
+    objectLabel: instance => instance._objectLabel || '',
     createEditShow: viewName => ({
-      instanceDescription: instance => viewName === VIEW_EDIT && instance ? instance._objectLabel : '',
       formLayout: instance => [
         {
           tab: 'general',

@@ -59,9 +59,7 @@ export default modelMetaData => (
     let formLayout;
 
     if (instance && !isEqual(instance, storeState.persistentInstance)) {
-      const viewMeta = modelMetaData.ui &&
-        modelMetaData.ui.createEditShow &&
-        modelMetaData.ui.createEditShow(VIEW_NAME);
+      const viewMeta = modelMetaData.ui && modelMetaData.ui.editLayout;
 
       formLayout = buildFormLayout({
         instance,

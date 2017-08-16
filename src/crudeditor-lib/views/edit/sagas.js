@@ -19,7 +19,7 @@ export function* onInstanceEdit(modelDefinition, {
   },
   meta: { source }
 }) {
-  const logicalKeyBuilder = getLogicalKeyBuilder(modelDefinition.model.fields);
+  const buildLogicalKey = getLogicalKeyBuilder(modelDefinition.model.fields);
   const currentInstance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 
   if (source === 'owner' &&
@@ -27,8 +27,8 @@ export function* onInstanceEdit(modelDefinition, {
     (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME &&
     currentInstance &&
     isEqual(
-      logicalKeyBuilder(currentInstance),
-      logicalKeyBuilder(instance)
+      buildLogicalKey(currentInstance),
+      buildLogicalKey(instance)
     )
   ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
     const currentActiveTab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);

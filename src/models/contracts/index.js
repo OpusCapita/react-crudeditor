@@ -6,6 +6,64 @@ const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
 
+const createEditShow = (viewName) => ({
+  formLayout: instance => [
+    {
+      tab: 'general',
+      entries: [
+        { field: 'contractId', mode: viewName === VIEW_CREATE ? 'writable' : 'readonly' },
+        { field: 'description' },
+        //{ field: 'translations', Component: TranslatableTextEditor },
+        { field: 'statusId', Component: StatusField },
+        //{ field: 'parentContract', Component: ContractReferenceSearch },
+        //{ field: 'currencyId', Component: CurrencyField },
+        {
+          section: 'auditable',
+          mode: viewName === VIEW_CREATE ? 'hidden' : 'visible',
+          entries: [
+            { field: 'createdBy', mode: 'readonly' },
+            { field: 'createdOn', mode: 'readonly' },
+            { field: 'changedBy', mode: 'readonly' },
+            { field: 'changedOn', mode: 'readonly' }
+          ]
+        }
+      ],
+    },
+    { tab: 'catalogs' },
+    { tab: 'customer' },
+    { tab: 'boilerplates' },
+    { tab: 'supplier' },
+    { tab: 'groups' },
+    {
+      tab: 'additional',
+      mode: viewName === VIEW_EDIT ? 'enabled' : 'disabled',
+      entries: [
+        {
+          section: 'order',
+          entries: [
+            { field: 'minOrderValue' },
+            { field: 'minOrderValueRequired' },
+            { field: 'maxOrderValue' },
+            { field: 'freeShippingBoundary' },
+            { field: 'freightSurcharge' },
+            { field: 'smallVolumeSurcharge' },
+            { field: 'totalContractedAmount' }
+          ]
+        },
+        {
+          section: 'type',
+          entries: [
+            { field: 'isStandard' },
+            { field: 'isPreferred' },
+            { field: 'isFrameContract' },
+            { field: 'isInternal' },
+            { field: 'isOffer' }
+          ]
+        }
+      ]
+    }
+  ]
+})
 export default {
   model: {
     name: 'Contract',
@@ -119,63 +177,8 @@ export default {
         { name: 'validRange', Component: DateRangeCellRender }]
     }),
     objectLabel: instance => instance._objectLabel || '',
-    createEditShow: viewName => ({
-      formLayout: instance => [
-        {
-          tab: 'general',
-          entries: [
-            { field: 'contractId', mode: viewName === VIEW_CREATE ? 'writable' : 'readonly' },
-            { field: 'description' },
-            //{ field: 'translations', Component: TranslatableTextEditor },
-            { field: 'statusId', Component: StatusField },
-            //{ field: 'parentContract', Component: ContractReferenceSearch },
-            //{ field: 'currencyId', Component: CurrencyField },
-            {
-              section: 'auditable',
-              mode: viewName === VIEW_CREATE ? 'hidden' : 'visible',
-              entries: [
-                { field: 'createdBy', mode: 'readonly' },
-                { field: 'createdOn', mode: 'readonly' },
-                { field: 'changedBy', mode: 'readonly' },
-                { field: 'changedOn', mode: 'readonly' }
-              ]
-            }
-          ],
-        },
-        { tab: 'catalogs' },
-        { tab: 'customer' },
-        { tab: 'boilerplates' },
-        { tab: 'supplier' },
-        { tab: 'groups' },
-        {
-          tab: 'additional',
-          mode: viewName === VIEW_EDIT ? 'enabled' : 'disabled',
-          entries: [
-            {
-              section: 'order',
-              entries: [
-                { field: 'minOrderValue' },
-                { field: 'minOrderValueRequired' },
-                { field: 'maxOrderValue' },
-                { field: 'freeShippingBoundary' },
-                { field: 'freightSurcharge' },
-                { field: 'smallVolumeSurcharge' },
-                { field: 'totalContractedAmount' }
-              ]
-            },
-            {
-              section: 'type',
-              entries: [
-                { field: 'isStandard' },
-                { field: 'isPreferred' },
-                { field: 'isFrameContract' },
-                { field: 'isInternal' },
-                { field: 'isOffer' }
-              ]
-            }
-          ]
-        }
-      ]
-    })
+    createLayout: createEditShow(VIEW_CREATE),
+    editLayout: createEditShow(VIEW_EDIT),
+    showLayout: createEditShow(VIEW_SHOW)
   }
 };

@@ -378,49 +378,54 @@ Model Definition is an object describing an entity. It has the following structu
       };
     },
 
-    ?createEditShow: function(<"create"|"edit"|"show">) {
-      ...
-      return {
+      /*
+       * Generate label for entity instance description.
+       * Default is instance._objectLabel
+       */
+      ?objectLabel(<object, entity instance>) {
+        ...
+        return <string, entity instance description>;
+      },
 
-        /*
-         * Generate label for entity instance description.
-         * Default is instance._objectLabel
-         */
-        ?instanceDescription(<object, entity instance>) {
-          ...
-          return <string, entity instance description>;
-        },
-
-        /*
-         * Tabs, sections and fields with "hidden" mode are ignored.
-         *
-         * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
-         *
-         * If formLayout is not specified, create/edit/show View does not have any tabs/sections
-         * and displays all fields from the model. The following fields are read-only in such case:
-         * -- all fields in show View,
-         * -- Auditable fields in edit View,
-         * -- Logical Key fields in edit View.
-         */
-        ?formLayout(instance) {
-          ...
-          return [{
-            tab: <string, tab name>,
-            ?mode: <"hidden"|"disabled"|"enabled">,  // "enabled" by default
-            ?Component: <function, TabFormComponent>,
+    ?createLayout: {
+      /*
+       * Tabs, sections and fields with "hidden" mode are ignored.
+       *
+       * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
+       *
+       * If formLayout is not specified, create/edit/show View does not have any tabs/sections
+       * and displays all fields from the model. The following fields are read-only in such case:
+       * -- all fields in show View,
+       * -- Auditable fields in edit View,
+       * -- Logical Key fields in edit View.
+       */
+      ?formLayout(instance) {
+        ...
+        return [{
+          tab: <string, tab name>,
+          ?mode: <"hidden"|"disabled"|"enabled">,  // "enabled" by default
+          ?Component: <function, TabFormComponent>,
+          entries: [{
+            section: <string, section name>,
+            ?mode: <"hidden"|"visible">,  // "visible" by default
             entries: [{
-              section: <string, section name>,
-              ?mode: <"hidden"|"visible">,  // "visible" by default
-              entries: [{
-                field: <string, field name>,
-                ?mode: <"hidden"|"readonly"|"writable">,  // "writable" by default
-                ?Component: <function, FieldInputComponent>
-              }...]
-            }, ...]
-          }, ...];
-        }
+              field: <string, field name>,
+              ?mode: <"hidden"|"readonly"|"writable">,  // "writable" by default
+              ?Component: <function, FieldInputComponent>
+            }...]
+          }, ...]
+        }, ...];
       }
     },
+
+    ?editLayout: {
+      ?formLayout: function  // see ui.createLayout.formLayout for details
+    },
+
+    ?showLayout: {
+      ?formLayout: function  // see ui.createLayout.formLayout for details
+    },
+
 
     /*
      * Views in addition to standard ones.

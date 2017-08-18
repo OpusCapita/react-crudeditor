@@ -8,7 +8,7 @@ export default ({
         tab: activeTabName
       } = {},
       entityName,
-      objectLabel,
+      instanceLabel,
       tabs,
       viewName
     },
@@ -21,14 +21,14 @@ export default ({
     <h1>
       { viewName.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) + ' ' + entityName }
       &nbsp;
-      { objectLabel && <small>{objectLabel}</small> }
+      { instanceLabel && <small>{instanceLabel}</small> }
     </h1>
     <br />
     {
       tabs.length && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
         {
           tabs.map(({ tab: name, disabled }, index) =>
-            <NavItem eventKey={name} disabled={disabled} key={index}>
+            <NavItem eventKey={name} disabled={!!disabled} key={index}>
               {
                 name.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
               }

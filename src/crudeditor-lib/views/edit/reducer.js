@@ -3,7 +3,7 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
-  buildObjectLabel,
+  buildInstanceLabel,
   buildFormLayout
 } from '../lib';
 
@@ -31,7 +31,7 @@ const defaultStoreStateTemplate = {
   // A ref to one of tabs element => it is undefined when and only when formLayout does not consist of tabs.
   activeTab: undefined,
 
-  objectLabel: undefined,
+  instanceLabel: undefined,
   errors: undefined,
   status: UNINITIALIZED
 };
@@ -41,17 +41,17 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelMetaData => {
-  if (!modelMetaData.ui.editLayout) {
-    modelMetaData.ui.editLayout = {};
+export default modelDefinition => {
+  if (!modelDefinition.ui.editLayout) {
+    modelDefinition.ui.editLayout = {};
   }
 
-  const editLayout = modelMetaData.ui.editLayout;
+  const editLayout = modelDefinition.ui.editLayout;
 
   editLayout.formLayout = buildFormLayout({
     customBuilder: editLayout.formLayout,
     viewName: VIEW_NAME,
-    fieldsMeta: modelMetaData.model.fields
+    fieldsMeta: modelDefinition.model.fields
   });
 
   return (storeState = cloneDeep(defaultStoreStateTemplate), { type, payload, error, meta }) => {
@@ -70,7 +70,7 @@ export default modelMetaData => {
 
       if (instance && !isEqual(instance, storeState.persistentInstance)) {
 
-        formLayout = modelMetaData.ui.editLayout.formLayout(instance).
+        formLayout = modelDefinition.ui.editLayout.formLayout(instance).
           filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
 
         let hasTabs;
@@ -89,9 +89,9 @@ export default modelMetaData => {
         newStoreStateSlice.persistentInstance = u.constant(instance);
         newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
 
-        newStoreStateSlice.objectLabel = buildObjectLabel({
+        newStoreStateSlice.instanceLabel = buildInstanceLabel({
           instance,
-          uiMeta: modelMetaData.ui
+          uiMeta: modelDefinition.ui
         });
       }
 

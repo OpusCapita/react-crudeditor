@@ -24,59 +24,58 @@ import {
   VIEW_ERROR
 } from './constants';
 
-const getDefaultStoreState = modelDefinition => ({
+const defaultStoreStateTemplate = {
   activeViewName: undefined,  // XXX: must be undefined until initialization completes.
-});
+};
 
 /*
  * XXX:
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => {
-  const defaultStoreState = getDefaultStoreState(modelDefinition);
+export default modelMetaData => (
+  storeState = cloneDeep(defaultStoreStateTemplate),
+  { type, payload, error, meta }
+) => {
+  const newStoreStateSlice = {};
 
-  return (storeState = defaultStoreState, { type, payload, error, meta }) => {
-    const newStoreStateSlice = {};
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  if (type === INSTANCES_SEARCH_SUCCESS) {
+    newStoreStateSlice.activeViewName = VIEW_SEARCH;
 
-    if (type === INSTANCES_SEARCH_SUCCESS) {
-      newStoreStateSlice.activeViewName = VIEW_SEARCH;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_CREATE) {
+    newStoreStateSlice.activeViewName = VIEW_CREATE;
 
-    } else if (type === INSTANCE_CREATE) {
-      newStoreStateSlice.activeViewName = VIEW_CREATE;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_EDIT_SUCCESS) {
+    newStoreStateSlice.activeViewName = VIEW_EDIT;
 
-    } else if (type === INSTANCE_EDIT_SUCCESS) {
-      newStoreStateSlice.activeViewName = VIEW_EDIT;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  //} else if (type === INSTANCE_SHOW_SUCCESS) {
+    //newStoreStateSlice.activeViewName = VIEW_SHOW;
 
-    //} else if (type === INSTANCE_SHOW_SUCCESS) {
-      //newStoreStateSlice.activeViewName = VIEW_SHOW;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCES_SEARCH_FAIL) {
+    newStoreStateSlice.activeViewName = VIEW_ERROR;
 
-    } else if (type === INSTANCES_SEARCH_FAIL) {
-      newStoreStateSlice.activeViewName = VIEW_ERROR;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_EDIT_FAIL) {
+    newStoreStateSlice.activeViewName = VIEW_ERROR;
 
-    } else if (type === INSTANCE_EDIT_FAIL) {
-      newStoreStateSlice.activeViewName = VIEW_ERROR;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === EDIT_EXIT) {
+    newStoreStateSlice.activeViewName = VIEW_SEARCH;
 
-    } else if (type === EDIT_EXIT) {
-      newStoreStateSlice.activeViewName = VIEW_SEARCH;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-    }
-
-    return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
-  };
+  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
 };

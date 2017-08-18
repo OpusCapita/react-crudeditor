@@ -24,7 +24,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelMetaData => (
+export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {

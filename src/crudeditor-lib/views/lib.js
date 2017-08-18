@@ -31,11 +31,10 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, C
   Component: Component || buildFieldComponent(fieldsMeta[fieldId].type || DEFAULT_FIELD_TYPE)
 });
 
-const sectionLayout = ({ name: sectionId, ...props }, ...entries) => {
+const sectionLayout = ({ name: sectionId }, ...entries) => {
   // entries is always an array, may be empty.
   entries = entries.filter(entry => !!entry);
   entries.section = sectionId;
-  Object.entries(props).forEach(([name, value]) => entries[name] = value);
   return entries.length ? entries : null;
 };
 
@@ -61,11 +60,11 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildObjectLabel = ({
+  buildInstanceLabel = ({
     instance,
-    uiMeta: { objectLabel } = {}
-  }) => objectLabel ?
-    objectLabel(instance) :
+    uiMeta: { instanceLabel } = {}
+  }) => instanceLabel ?
+    instanceLabel(instance) :
     instance._objectLabel,
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -27,7 +27,7 @@ const createEditShow = (viewName) => ({
     tab({ name: 'boilerplates' }),
     tab({ name: 'supplier' }),
     tab({ name: 'groups' }),
-    tab({ name: 'additional', disabled: viewName !== VIEW_EDIT },
+    tab({ name: 'additional', disabled: viewName === VIEW_EDIT },
       section({ name: 'order' },
         field({ name: 'minOrderValue' }),
         field({ name: 'minOrderValueRequired' }),
@@ -160,7 +160,7 @@ export default {
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', Component: DateRangeCellRender }]
     }),
-    objectLabel: instance => instance._objectLabel || '',
+    instanceLabel: instance => instance._objectLabel || '',
     createLayout: createEditShow(VIEW_CREATE),
     editLayout: createEditShow(VIEW_EDIT),
     showLayout: createEditShow(VIEW_SHOW)

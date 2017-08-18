@@ -40,7 +40,7 @@ export const
       }),
       {}
     ),
-    objectLabel: storeState.objectLabel,
+    instanceLabel: storeState.instanceLabel,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     viewName: VIEW_NAME

@@ -378,14 +378,14 @@ Model Definition is an object describing an entity. It has the following structu
       };
     },
 
-      /*
-       * Generate label for entity instance description.
-       * Default is instance._objectLabel
-       */
-      ?objectLabel(<object, entity instance>) {
-        ...
-        return <string, entity instance description>;
-      },
+    /*
+     * Generate label for entity instance description.
+     * Default is instance._objectLabel
+     */
+    ?instanceLabel(<object, entity instance>) {
+      ...
+      return <string, entity instance description>;
+    },
 
     ?createLayout: {
       /*
@@ -589,7 +589,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
         ...
       ],
       totalCount: <whole number, total number of filtered entity instances>,
-      status: <"ready"|"searching"|"deleting", search view status>
+      status: <"uninitialized"|"ready"|"searching"|"deleting", search view status>
     },
     create: {
       instance: {
@@ -622,8 +622,44 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
         ...
       },
 
-      tab: <string, active tab name>,
-      status: <"ready"|"extracting", edit view status>
+      /*
+       * Either an array of arrays (representing tabs) -- in case of tabs,
+       * or an array of arrays (representing sections) and objects (representing fields) -- otherwise.
+       */
+      formLayout: [
+
+          /*
+           * array representing a tab. Its elements are sections/fields. The array also has props:
+           * -- "tab", string with tab name,
+           * -- "disabled", boolean.
+           * -- "Component", optional custom React Component, see TabFormComponent subheading.
+           */
+          [
+
+            /*
+             * array representing a section. Its elements are fields. The array also has props:
+             * -- "section", string with section name.
+             */
+            [
+
+              /*
+               * object representing a field.
+               */
+              {
+                field: <string, field name>,
+                readOnly: <boolean>,
+                Component: <function, FieldInputComponent or default React Component for displaying the field>
+              },
+              ...
+            ],
+            ...
+          ]
+          ...
+      ],
+
+      activeTab: <array|undefined, a ref to one of tab elements or undefined when there are no tabs>,
+      instanceLabel: <string, entity instance description>,
+      status: <"uninitialized"|"ready"|"extracting", edit view status>
 
       /*
        * validation or internal error
@@ -637,11 +673,12 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
         ...
       },
       tab: <string, active tab name>,
-      status: <"ready"|"extracting", show view status>
+      status: <"uninitialized"|"ready"|"extracting", show view status>
     },
     error: {
       code: <natural number, error code>,
-      ?payload: <any, structure is defined by error code>
+      ?payload: <any, structure is defined by error code>,
+      status: <"uninitialized"|"ready", error view status>
     }
   }
 }

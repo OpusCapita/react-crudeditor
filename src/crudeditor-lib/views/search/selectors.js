@@ -10,7 +10,7 @@ import {
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 const _getResultFiels = (fields, ui) => {
-  if (ui && ui.search) {
+  if (ui.search) {
     const resultFields = ui.search().resultFields;
 
     if (resultFields) {
@@ -38,7 +38,7 @@ const _getResultFiels = (fields, ui) => {
 };
 
 const _getSearchableFields = (fields, ui) => {
-  if (ui && ui.search) {
+  if (ui.search) {
     const searchableFields = ui.search().searchableFields;
 
     if (searchableFields) {
@@ -87,9 +87,7 @@ export const
     model: modelConfig,
     ui: uiConfig
   }) => ({
-    defaultNewInstance: uiConfig &&
-      uiConfig.defaultNewInstance &&
-      uiConfig.defaultNewInstance(_getViewState(storeState)),
+    defaultNewInstance: uiConfig.defaultNewInstance && uiConfig.defaultNewInstance(_getViewState(storeState)),
     entityName: modelConfig.name,
     formFilter: storeState.formFilter,
     pageParams: {

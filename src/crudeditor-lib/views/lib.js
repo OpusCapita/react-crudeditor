@@ -3,85 +3,61 @@ import buildFieldComponent from '../components/DefaultFieldInput';
 import {
   AUDITABLE_FIELDS,
   DEFAULT_FIELD_TYPE,
-  FORM_ENTRY_MODE_HIDDEN,
-  FORM_ENTRY_MODE_READONLY,
-  FORM_ENTRY_MODE_WRITABLE,
-  FORM_ENTRY_MODE_DISABLED,
   VIEW_EDIT,
   VIEW_SHOW
 } from '../common/constants';
 
-function enhanceFormEntries(viewName, fieldsMeta, entries) {
-  /*
-   * 1. making all fields readonly in "show" view.
-   * 2. removing hidden entries.
-   * 3. removing empty tabs and sections.
-   * 4. assigning default Component to fields.
-   * 5. Replace "mode" with
-   *    -- "readOnly" in fields,
-   *    -- "disabled" in tabs,
-   *    -- remove it altogether in sections.
-   */
-  return entries.reduce(
-    (rez, entry) => {
-      if (entry.mode === FORM_ENTRY_MODE_HIDDEN) {
-        return rez;
-      }
+const buildDefaultFormLayout = ({
+  viewName,
+  fieldsMeta
+}) => Object.keys(fieldsMeta).
+  filter(name => [VIEW_SHOW, VIEW_EDIT].includes(viewName) || !AUDITABLE_FIELDS.includes(name)).
+  map(name => ({
+    field: name,
+    readOnly: viewName === VIEW_EDIT && (
+        AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
+        fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
+      ),
+    Component: buildFieldComponent(fieldsMeta[name].type || DEFAULT_FIELD_TYPE)
+  }));
 
-      if (entry.tab || entry.section) {
-        if (entry.entries) {
-          entry.entries = enhanceFormEntries(viewName, fieldsMeta, entry.entries);
-        }
-        if (!entry.entries || entry.entries.length === 0) {
-          return rez;
-        }
-        if (entry.tab) {
-          entry.disabled = entry.mode === FORM_ENTRY_MODE_DISABLED;
-        }
-      } else {  // entry is field
-        if (viewName === VIEW_SHOW) {
-          entry.mode = FORM_ENTRY_MODE_READONLY;
-        }
-        if (!entry.Component) {
-          entry.Component = buildFieldComponent(fieldsMeta[entry.field].type || DEFAULT_FIELD_TYPE)
-        }
-        entry.readOnly = viewName === VIEW_SHOW || entry.mode === FORM_ENTRY_MODE_READONLY;
-      }
+const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, Component }) => ({
+  field: fieldId,
 
-      delete entry.mode;
+  // making all fields read-only in "show" view.
+  readOnly: viewName === VIEW_SHOW || !!readOnly,
 
-      return [
-        ...rez,
-        entry
-      ];
-    },
-    []
-  )
-}
+  // assigning default Component to fields w/o custom component.
+  Component: Component || buildFieldComponent(fieldsMeta[fieldId].type || DEFAULT_FIELD_TYPE)
+});
+
+const sectionLayout = ({ name: sectionId, ...props }, ...entries) => {
+  // entries is always an array, may be empty.
+  entries = entries.filter(entry => !!entry);
+  entries.section = sectionId;
+  Object.entries(props).forEach(([name, value]) => entries[name] = value);
+  return entries.length ? entries : null;
+};
+
+const tabLayout = ({ name: tabId, ...props }, ...entries) => {
+  // entries is always an array, may be empty.
+  entries = entries.filter(entry => !!entry);
+  entries.tab = tabId;
+  Object.entries(props).forEach(([name, value]) => entries[name] = value);
+  return entries.length ? entries : null;
+};
 
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  buildFormLayout = ({
-    instance,
-    viewName,
-    viewMeta,
-    modelMeta
-  }) => enhanceFormEntries(viewName, modelMeta.fields, viewMeta && viewMeta.formLayout ?
-    viewMeta.formLayout(instance) :
-    Object.keys(modelMeta.fields).
-      filter(name => [VIEW_SHOW, VIEW_EDIT].includes(viewName) || !AUDITABLE_FIELDS.includes(name)).
-      map(name => ({
-        field: name,
-        mode: viewName === VIEW_EDIT && (
-            AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
-            modelMeta.fields[name].unique  // Logical Key fields are read-only in Edit View.
-          ) ?
-          FORM_ENTRY_MODE_READONLY :
-          FORM_ENTRY_MODE_WRITABLE
-      }))
-    ),
+  buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => customBuilder ?
+    customBuilder({
+      tab     : tabLayout,
+      section : sectionLayout,
+      field   : buildFieldLayout(viewName, fieldsMeta)
+    }) :
+    buildDefaultFormLayout(viewName, fieldsMeta),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

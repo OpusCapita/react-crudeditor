@@ -53,9 +53,7 @@ const defaultStoreStateTemplate = {
 export default modelDefinition => {
   const defaultStoreState = cloneDeep(defaultStoreStateTemplate);
 
-  const uiSearch = modelDefinition.ui &&
-    modelDefinition.ui.search &&
-    modelDefinition.ui.search();
+  const uiSearch = modelDefinition.ui.search && modelDefinition.ui.search();
 
   const buildDefaultFormFilter = _ => (
     uiSearch &&

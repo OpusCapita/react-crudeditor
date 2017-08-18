@@ -389,7 +389,7 @@ Model Definition is an object describing an entity. It has the following structu
 
     ?createLayout: {
       /*
-       * Tabs, sections and fields with "hidden" mode are ignored.
+       * tab(), section() and field() may be replaced with false/undefined/null which are ignored.
        *
        * See "TabFormComponent" and "FieldInputComponent" subheading for React components props.
        *
@@ -399,22 +399,24 @@ Model Definition is an object describing an entity. It has the following structu
        * -- Auditable fields in edit View,
        * -- Logical Key fields in edit View.
        */
-      ?formLayout(instance) {
+      ?formLayout: ({ tab, section, field }) => instance => {
         ...
-        return [{
-          tab: <string, tab name>,
-          ?mode: <"hidden"|"disabled"|"enabled">,  // "enabled" by default
-          ?Component: <function, TabFormComponent>,
-          entries: [{
-            section: <string, section name>,
-            ?mode: <"hidden"|"visible">,  // "visible" by default
-            entries: [{
-              field: <string, field name>,
-              ?mode: <"hidden"|"readonly"|"writable">,  // "writable" by default
-              ?Component: <function, FieldInputComponent>
-            }...]
-          }, ...]
-        }, ...];
+        return [
+          ?tab({ name: <string, tab name>, ?disabled: <boolean, false by default>, ?Component: <function, TabFormComponent },
+            ?section({ name: <string, section name> },
+              ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+              ...
+            ),
+            ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+            ...
+          )
+          ?section({ name: <string, section name> },
+            ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+            ...
+          ),
+          ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+          ...
+        ]
       }
     },
 

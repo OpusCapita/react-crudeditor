@@ -22,12 +22,9 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getViewModelData = wrapper((storeState, {
-    model: modelConfig,
-    ui: uiConfig
+    model: modelConfig
   }) => ({
-    activeEntries: storeState.activeTab ?
-      storeState.activeTab.entries || [] :
-      storeState.formLayout,
+    activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelConfig.name,
     formInstance: storeState.formInstance,

@@ -5,20 +5,20 @@ import Tab from '../EditTab';
 import Section from '../EditSection';
 import Field from '../EditField';
 
-const formatEntries = ({ section, field, readOnly, entries, Component }) => field ? {
+const formatEntry = entry => entry.field ? {
   Entry: Field,
   props: {
     entry: {
-      name: field,
-      readOnly,
-      Component
+      name: entry.field,
+      readOnly: entry.readOnly,
+      Component: entry.Component
     }
   }
 } : {
   Entry: Section,
-  fields: entries.map(formatEntries),  // Section always has at least one field.
+  fields: entry.map(formatEntry),  // Section always has at least one field.
   props: {
-    title: section.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
+    title: entry.section.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
   }
 };
 
@@ -31,7 +31,7 @@ export default ({ model }) => {
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.formInstance} /> :
       <Tab viewName={model.data.viewName} model={model}>
         {
-          model.data.activeEntries.map(formatEntries).map(({ Entry, props, fields }, supIndex) =>
+          model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
             <Entry key={supIndex} {...props} model={model}>  {/* either Section or top-level Field */}
               {
                 fields && fields.map(({ props }, subIndex) =>

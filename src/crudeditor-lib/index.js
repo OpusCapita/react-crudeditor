@@ -29,6 +29,10 @@ const getViewState = {
 }
 
 export default modelDefinition => {
+  if (!modelDefinition.ui) {
+    modelDefinition.ui = {};
+  }
+
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
 

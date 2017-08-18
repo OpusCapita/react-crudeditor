@@ -7,63 +7,47 @@ const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
 
 const createEditShow = (viewName) => ({
-  formLayout: instance => [
-    {
-      tab: 'general',
-      entries: [
-        { field: 'contractId', mode: viewName === VIEW_CREATE ? 'writable' : 'readonly' },
-        { field: 'description' },
-        //{ field: 'translations', Component: TranslatableTextEditor },
-        { field: 'statusId', Component: StatusField },
-        //{ field: 'parentContract', Component: ContractReferenceSearch },
-        //{ field: 'currencyId', Component: CurrencyField },
-        {
-          section: 'auditable',
-          mode: viewName === VIEW_CREATE ? 'hidden' : 'visible',
-          entries: [
-            { field: 'createdBy', mode: 'readonly' },
-            { field: 'createdOn', mode: 'readonly' },
-            { field: 'changedBy', mode: 'readonly' },
-            { field: 'changedOn', mode: 'readonly' }
-          ]
-        }
-      ],
-    },
-    { tab: 'catalogs' },
-    { tab: 'customer' },
-    { tab: 'boilerplates' },
-    { tab: 'supplier' },
-    { tab: 'groups' },
-    {
-      tab: 'additional',
-      mode: viewName === VIEW_EDIT ? 'enabled' : 'disabled',
-      entries: [
-        {
-          section: 'order',
-          entries: [
-            { field: 'minOrderValue' },
-            { field: 'minOrderValueRequired' },
-            { field: 'maxOrderValue' },
-            { field: 'freeShippingBoundary' },
-            { field: 'freightSurcharge' },
-            { field: 'smallVolumeSurcharge' },
-            { field: 'totalContractedAmount' }
-          ]
-        },
-        {
-          section: 'type',
-          entries: [
-            { field: 'isStandard' },
-            { field: 'isPreferred' },
-            { field: 'isFrameContract' },
-            { field: 'isInternal' },
-            { field: 'isOffer' }
-          ]
-        }
-      ]
-    }
+  formLayout: ({ tab, section, field }) => instance => [
+    tab({ name: 'general' },
+      field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
+      field({ name: 'description' }),
+      //field({ name: 'translations', Component: TranslatableTextEditor }),
+      field({ name: 'statusId', Component: StatusField }),
+      //field({ name: 'parentContract', Component: ContractReferenceSearch }),
+      //field({ name: 'currencyId', Component: CurrencyField }),
+      viewName !== VIEW_CREATE && section({ name: 'auditable' },
+        field({ name: 'createdBy', readOnly: true }),
+        field({ name: 'createdOn', readOnly: true }),
+        field({ name: 'changedOn', readOnly: true }),
+        field({ name: 'changedBy', readOnly: true })
+      )
+    ),
+    tab({ name: 'catalogs' }),
+    tab({ name: 'customer' }),
+    tab({ name: 'boilerplates' }),
+    tab({ name: 'supplier' }),
+    tab({ name: 'groups' }),
+    tab({ name: 'additional', disabled: viewName !== VIEW_EDIT },
+      section({ name: 'order' },
+        field({ name: 'minOrderValue' }),
+        field({ name: 'minOrderValueRequired' }),
+        field({ name: 'maxOrderValue' }),
+        field({ name: 'freeShippingBoundary' }),
+        field({ name: 'freightSurcharge' }),
+        field({ name: 'smallVolumeSurcharge' }),
+        field({ name: 'totalContractedAmount' })
+      ),
+      section({ name: 'type' },
+        field({ name: 'isStandard' }),
+        field({ name: 'isPreferred' }),
+        field({ name: 'isFrameContract' }),
+        field({ name: 'isInternal' }),
+        field({ name: 'isOffer' })
+      )
+    )
   ]
-})
+});
+
 export default {
   model: {
     name: 'Contract',

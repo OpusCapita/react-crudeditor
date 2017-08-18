@@ -3,8 +3,8 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
-  buildFormLayout,
-  buildObjectLabel
+  buildObjectLabel,
+  buildFormLayout
 } from '../lib';
 
 import {
@@ -41,78 +41,96 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelMetaData => (
-  storeState = cloneDeep(defaultStoreStateTemplate),
-  { type, payload, error, meta }
-) => {
-  const newStoreStateSlice = {};
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  if (type === INSTANCE_EDIT_REQUEST) {
-    newStoreStateSlice.status = EXTRACTING;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  } else if (type === INSTANCE_EDIT_SUCCESS) {
-    const { instance, activeTabName } = payload;
-    let formLayout;
-
-    if (instance && !isEqual(instance, storeState.persistentInstance)) {
-      const viewMeta = modelMetaData.ui && modelMetaData.ui.editLayout;
-
-      formLayout = buildFormLayout({
-        instance,
-        viewName: VIEW_NAME,
-        viewMeta,
-        modelMeta: modelMetaData.model
-      });
-
-      newStoreStateSlice.formLayout = u.constant(formLayout);
-      newStoreStateSlice.persistentInstance = u.constant(instance);
-      newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-
-      newStoreStateSlice.objectLabel = buildObjectLabel({
-        instance,
-        uiMeta: modelMetaData.ui
-      });
-    }
-
-    if (formLayout ||  // New instance has been received => new formLayout was built.
-      storeState.activeTab && storeState.activeTab.tab !== activeTabName  // New tab has been selected.
-    ) {
-      const tabs = (formLayout || storeState.formLayout).filter(({ tab }) => tab);  // [] in case of no tabs.
-      const activeTab = tabs.find(({ tab: name }) => name === activeTabName) || tabs[0];  // undefined in case of no tabs.
-      newStoreStateSlice.activeTab = u.constant(activeTab);
-    }
-
-    newStoreStateSlice.status = READY;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCE_EDIT_FAIL) {
-      newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCE_FIELD_CHANGE) {
-      const { field, value } = payload;
-
-      newStoreStateSlice.formInstance = {
-        [field]: value || value === 0 || value === false ? value : null
-      };
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === TAB_SELECT) {
-      const { activeTabName } = payload;
-
-      newStoreStateSlice.activeTab = u.constant(
-        storeState.formLayout.find(({ tab: name }) => name === activeTabName)
-      );
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+export default modelMetaData => {
+  if (!modelMetaData.ui.editLayout) {
+    modelMetaData.ui.editLayout = {};
   }
 
-  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
-};
+  const editLayout = modelMetaData.ui.editLayout;
+
+  editLayout.formLayout = buildFormLayout({
+    customBuilder: editLayout.formLayout,
+    viewName: VIEW_NAME,
+    fieldsMeta: modelMetaData.model.fields
+  });
+
+  return (storeState = cloneDeep(defaultStoreStateTemplate), { type, payload, error, meta }) => {
+    const newStoreStateSlice = {};
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    if (type === INSTANCE_EDIT_REQUEST) {
+      newStoreStateSlice.status = EXTRACTING;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_EDIT_SUCCESS) {
+      const { instance, activeTabName } = payload;
+      let formLayout;
+
+      if (instance && !isEqual(instance, storeState.persistentInstance)) {
+
+        formLayout = modelMetaData.ui.editLayout.formLayout(instance).
+          filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
+
+        let hasTabs;
+        let hasSectionsOrFields;
+
+        formLayout.forEach(entry => {
+          hasTabs = hasTabs || entry.tab;
+          hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
+
+          if (hasTabs && hasSectionsOrFields) {
+            throw new Error('formLayout must not have tabs together with sections/fields at top level');
+          }
+        });
+
+        newStoreStateSlice.formLayout = u.constant(formLayout);
+        newStoreStateSlice.persistentInstance = u.constant(instance);
+        newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+
+        newStoreStateSlice.objectLabel = buildObjectLabel({
+          instance,
+          uiMeta: modelMetaData.ui
+        });
+      }
+
+      if (formLayout ||  // New instance has been received => new formLayout has been built.
+        storeState.activeTab && storeState.activeTab.tab !== activeTabName  // New tab has been selected.
+      ) {
+        const tabs = (formLayout || storeState.formLayout).filter(({ tab }) => !!tab);  // [] in case of no tabs.
+        const activeTab = tabs.find(({ tab: name }) => name === activeTabName) || tabs[0];  // undefined in case of no tabs.
+        newStoreStateSlice.activeTab = u.constant(activeTab);
+      }
+
+      newStoreStateSlice.status = READY;
+
+      // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+      } else if (type === INSTANCE_EDIT_FAIL) {
+        newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
+
+      // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+      } else if (type === INSTANCE_FIELD_CHANGE) {
+        const { field, value } = payload;
+
+        newStoreStateSlice.formInstance = {
+          [field]: value || value === 0 || value === false ? value : null
+        };
+
+      // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+      } else if (type === TAB_SELECT) {
+        const { activeTabName } = payload;
+
+        newStoreStateSlice.activeTab = u.constant(
+          storeState.formLayout.find(({ tab: name }) => name === activeTabName)
+        );
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+    }
+
+    return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+  };
+}

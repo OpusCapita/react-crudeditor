@@ -3,12 +3,16 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
-import { getViewModelData } from './selectors';
 import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';
+import { deleteInstances } from '../../common/actions';
 
 import {
-  deleteInstances,
+  getDefaultNewInstance,
+  getViewModelData
+} from './selectors';
+
+import {
   resetFormFilter,
   searchInstances,
   toggleSelected,
@@ -16,41 +20,38 @@ import {
   updateFormFilter
 } from './actions';
 
-const actions = {
-  createInstance,
-  deleteInstances,
-  editInstance,
-  resetFormFilter,
-  searchInstances,
-  toggleSelected,
-  toggleSelectedAll,
-  updateFormFilter
-};
+const mergeProps = ({ defaultNewInstance, viewModelData }, { createInstance, ...dispatchProps }, ownProps) => ({
+  ...ownProps,
+  viewModel: {
+    data: viewModelData,
+    actions: {
+      ...dispatchProps,
+      createInstance: createInstance.bind(null, { instance: defaultNewInstance })
+    }
+  },
+});
 
 export default connect(
   (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
-  }),
-  actions
+    viewModelData: getViewModelData(storeState, modelDefinition),
+    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
+  }), {
+    createInstance,
+    deleteInstances,
+    editInstance,
+    resetFormFilter,
+    searchInstances,
+    toggleSelected,
+    toggleSelectedAll,
+    updateFormFilter
+  },
+  mergeProps
 )(({
+  viewModel,
   children,
-  viewModelData,
   ...props
 }) =>
-  <Main
-    model={{
-      data: viewModelData,
-      actions: Object.keys(actions).reduce(
-        (rez, actionName) => {
-          rez[actionName] = props[actionName];
-          delete props[actionName];
-          return rez;
-        },
-        {}
-      )
-    }}
-    {...props}
-  >
+  <Main model={viewModel} {...props}>
     {children}
   </Main>
 );

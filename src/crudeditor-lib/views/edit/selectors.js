@@ -1,6 +1,5 @@
 import { VIEW_NAME } from './constants';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { DEFAULT_FIELD_TYPE } from '../../common/constants';
 import { getLogicalKeyBuilder } from '../lib';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
@@ -22,24 +21,14 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getViewModelData = wrapper((storeState, {
-    model: modelConfig
+    model: modelMeta
   }) => ({
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
-    entityName: modelConfig.name,
+    entityName: modelMeta.name,
     formInstance: storeState.formInstance,
     fieldsErrors: storeState.errors,
-    fieldsMeta: Object.entries(modelConfig.fields).reduce(
-      (rez, [ name, info ]) => ({
-        ...rez,
-        [name]: {
-          type: DEFAULT_FIELD_TYPE,
-          constraints: {},
-          ...info
-        }
-      }),
-      {}
-    ),
+    fieldsMeta: modelMeta.fields,
     instanceLabel: storeState.instanceLabel,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),

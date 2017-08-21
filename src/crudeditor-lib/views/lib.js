@@ -2,7 +2,6 @@ import buildFieldComponent from '../components/DefaultFieldInput';
 
 import {
   AUDITABLE_FIELDS,
-  DEFAULT_FIELD_TYPE,
   VIEW_EDIT,
   VIEW_SHOW
 } from '../common/constants';
@@ -18,7 +17,7 @@ const buildDefaultFormLayout = ({
         AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
       ),
-    Component: buildFieldComponent(fieldsMeta[name].type || DEFAULT_FIELD_TYPE)
+    Component: buildFieldComponent(fieldsMeta[name].type)
   }));
 
 const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, Component }) => ({
@@ -28,7 +27,7 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, C
   readOnly: viewName === VIEW_SHOW || !!readOnly,
 
   // assigning default Component to fields w/o custom component.
-  Component: Component || buildFieldComponent(fieldsMeta[fieldId].type || DEFAULT_FIELD_TYPE)
+  Component: Component || buildFieldComponent(fieldsMeta[fieldId].type)
 });
 
 const sectionLayout = ({ name: sectionId }, ...entries) => {
@@ -57,15 +56,6 @@ export const
       field   : buildFieldLayout(viewName, fieldsMeta)
     }) :
     buildDefaultFormLayout(viewName, fieldsMeta),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  buildInstanceLabel = ({
-    instance,
-    uiMeta: { instanceLabel } = {}
-  }) => instanceLabel ?
-    instanceLabel(instance) :
-    instance._objectLabel,
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

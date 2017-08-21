@@ -1,14 +1,6 @@
-import buildReducer from '../reducer';
 //import '../../../../../tests/utils';
-
-const MIN_ENTITY_CONFIGURATION = {
-  model: {
-    fields: {
-      'contractId': {},
-      'description': {}
-    }
-  }
-};
+import buildReducer from '../reducer';
+import { MIN_ENTITY_CONFIGURATION } from './constants';
 
 describe('search reducer', () => {
   it('should return the initial state', () => {

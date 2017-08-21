@@ -2,6 +2,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
+import { getLogicalKeyBuilder } from '../lib';
+
 import {
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
@@ -10,10 +12,6 @@ import {
 
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
-
-  INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_REQUEST,
-  INSTANCES_DELETE_SUCCESS,
 
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
@@ -27,6 +25,12 @@ import {
   SEARCHING,
   UNINITIALIZED
 } from './constants';
+
+import {
+  INSTANCES_DELETE_FAIL,
+  INSTANCES_DELETE_REQUEST,
+  INSTANCES_DELETE_SUCCESS,
+} from '../../common/constants';
 
 const defaultStoreStateTemplate = {
   resultFilter: {},  // Active filter as displayed in Search Result and sent to URL/server.
@@ -52,16 +56,23 @@ const defaultStoreStateTemplate = {
  */
 export default modelDefinition => {
   const defaultStoreState = cloneDeep(defaultStoreStateTemplate);
+  const buildLogicalKey = getLogicalKeyBuilder(modelDefinition.model.fields);
 
-  const uiSearch = modelDefinition.ui.search && modelDefinition.ui.search();
+  // Remove benchmarkInstances from sourceInstances by comparing their Logical Keys.
+  const removeInstances = (sourceInstances, benchmarkInstances) =>
+    sourceInstances.filter(sourceInstance =>
+      !benchmarkInstances.find(benchmarkInstance =>
+        isEqual(
+          buildLogicalKey(sourceInstance),
+          buildLogicalKey(benchmarkInstance)
+        )
+      )
+    );
 
-  const buildDefaultFormFilter = _ => (
-    uiSearch &&
-    uiSearch.searchableFields &&
-    uiSearch.searchableFields.map(({ name }) => name) ||
-    Object.keys(modelDefinition.model.fields)
-  ).reduce(
-    (rez, name) => ({
+  const searchMeta = modelDefinition.ui.search;
+
+  const buildDefaultFormFilter = _ => searchMeta.searchableFields.reduce(
+    (rez, { name }) => ({
       ...rez,
       [name]: EMPTY_FILTER_VALUE
     }),
@@ -70,17 +81,12 @@ export default modelDefinition => {
 
   defaultStoreState.formFilter = buildDefaultFormFilter();
   defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
+  const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
 
-  if (uiSearch && uiSearch.resultFields) {
-    const sortByDefaultIndex = uiSearch.resultFields.findIndex(field => field.sortByDefault);
-
-    defaultStoreState.sortParams.field = uiSearch.resultFields[sortByDefaultIndex === -1 ?
-      0 :
-      sortByDefaultIndex
-    ].name;
-  } else {
-    defaultStoreState.sortParams.field = Object.keys(modelDefinition.model.fields)[0];
-  }
+  defaultStoreState.sortParams.field = searchMeta.resultFields[sortByDefaultIndex === -1 ?
+    0 :
+    sortByDefaultIndex
+  ].name;
 
   return (storeState = defaultStoreState, { type, payload, error, meta }) => {
     const newStoreStateSlice = {};
@@ -132,14 +138,14 @@ export default modelDefinition => {
 
     } else if (type === INSTANCES_DELETE_SUCCESS && storeState.status !== UNINITIALIZED) {
       const { instances } = payload;
-      newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => !instances.includes(ins));
-      newStoreStateSlice.resultInstances = storeState.resultInstances.filter(ins => !instances.includes(ins));
+      newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
+      newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
       newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCES_DELETE_FAIL) {
+    } else if (type === INSTANCES_DELETE_FAIL && storeState.status !== UNINITIALIZED) {
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

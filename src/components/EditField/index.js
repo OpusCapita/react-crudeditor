@@ -2,7 +2,10 @@ import React from 'react';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 export default class extends React.Component {  // XXX: Component, not PureComponent must be used to catch instance's field value change.
-  handleChange = value => this.props.model.actions.changeInstanceField(this.props.entry.name, value)
+  handleChange = value => this.props.model.actions.changeInstanceField({
+    name: this.props.entry.name,
+    value
+  })
 
   handleBlur = _ => this.props.model.actions.validateInstanceField(this.props.entry.name);
 

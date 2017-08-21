@@ -1,25 +1,17 @@
 import isEqual from 'lodash/isEqual';
-import { call, put, takeLatest, takeEvery, all, select } from 'redux-saga/effects';
+import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 
 import {
   EMPTY_FILTER_VALUE,
-
-  INSTANCES_DELETE,
-  INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_REQUEST,
-  INSTANCES_DELETE_SUCCESS,
 
   INSTANCES_SEARCH,
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
-  UNINITIALIZED,
   READY,
   VIEW_NAME
 } from './constants';
-
-import { searchInstances } from './actions';
 
 /*███████████████████*\
  *███ WORKER SAGA ███*
@@ -68,6 +60,7 @@ export function* onInstancesSearch(modelDefinition, {
   order  = order  || currentOrder;
   max    = max    || currentMax;
 
+  // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
   offset = sort === currentSort &&
     order === currentOrder &&
     max === currentMax &&
@@ -126,61 +119,12 @@ export function* onInstancesSearch(modelDefinition, {
   }
 }
 
-/*███████████████████*\
- *███ WORKER SAGA ███*
-\*███████████████████*/
-
-export function* onInstancesDelete(modelDefinition, {
-  payload: { instances }
-}) {
-  yield put({
-    type: INSTANCES_DELETE_REQUEST
-  });
-
-  try {
-    const { deletedCount } = yield call(
-      modelDefinition.api.delete,
-      { instances }
-    );
-
-    yield put({
-      type: INSTANCES_DELETE_SUCCESS,
-      payload: { instances }
-    });
-
-    let searchParams;
-
-    if (
-      (yield select(storeState => storeState.views[VIEW_NAME].status)) !== UNINITIALIZED &&
-      (yield select(storeState => storeState.views[VIEW_NAME].resultInstances)).length === 0
-    ) {
-      const offset = yield select(storeState => storeState.views[VIEW_NAME].pageParams.offset);
-
-      if (offset !== 0 && offset >= (yield select(storeState => storeState.views[VIEW_NAME].totalCount))) {
-        // All instances on the last page have been deleted => going to the previous page
-        searchParams = {
-          offset: offset - (yield select(storeState => storeState.views[VIEW_NAME].pageParams.max))
-        };
-      }
-    }
-
-    yield put(searchInstances(searchParams));
-  } catch (err) {
-    yield put({
-      type: INSTANCES_DELETE_FAIL,  // TODO: handle error
-      payload: err,
-      error: true
-    });
-  }
-}
-
 /*████████████████████*\
  *███ WATCHER SAGA ███*
 \*████████████████████*/
 
 export default function*(modelDefinition) {
   yield all([
-    takeLatest(INSTANCES_SEARCH, onInstancesSearch, modelDefinition),
-    takeEvery(INSTANCES_DELETE,  onInstancesDelete, modelDefinition)
+    takeLatest(INSTANCES_SEARCH, onInstancesSearch, modelDefinition)
   ]);
 }

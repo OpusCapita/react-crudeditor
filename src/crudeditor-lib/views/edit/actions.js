@@ -33,21 +33,24 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   // TODO: implement reducer.
-  changeInstanceField = (field, value) => ({
+  changeInstanceField = ({
+    name: fieldName,
+    value: fieldNewValue
+  }) => ({
     type: INSTANCE_FIELD_CHANGE,
     payload: {
-      field,
-      value
+      name: fieldName,
+      value: fieldNewValue
     }
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   // TODO: implement reducer.
-  validateInstanceField = field => ({
+  validateInstanceField = fieldName => ({
     type: INSTANCE_FIELD_VALIDATE,
     payload: {
-      field
+      name: fieldName
     }
   }),
 

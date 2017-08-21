@@ -1,5 +1,7 @@
-import { onInstancesSearch } from '../sagas';
 import { call, put, select, all } from 'redux-saga/effects';
+
+import { onInstancesSearch } from '../sagas';
+import { MIN_ENTITY_CONFIGURATION } from './constants';
 
 import {
   getResultFilter,
@@ -8,13 +10,6 @@ import {
   getPageMax,
   getPageOffset
 } from '../selectors';
-
-const MIN_ENTITY_CONFIGURATION = {
-  api: {
-    search() {},
-    delete() {}
-  }
-};
 
 describe('search sagas', () => {
   const gen = onInstancesSearch(MIN_ENTITY_CONFIGURATION, {

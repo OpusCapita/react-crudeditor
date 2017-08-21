@@ -1,7 +1,6 @@
 import {
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
-  INSTANCES_DELETE,
   INSTANCES_SEARCH,
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
@@ -39,22 +38,15 @@ export const
     }
   }),
 
-  deleteInstances = instances => ({
-    type: INSTANCES_DELETE,
-    payload: {
-      instances: Array.isArray(instances) ? instances : [instances]
-    }
-  }),
-
   resetFormFilter = _ => ({
     type: FORM_FILTER_RESET
   }),
 
-  toggleSelected = (isSelected, instance) => ({
-    type: isSelected ? INSTANCE_SELECT : INSTANCE_DESELECT,
+  toggleSelected = ({ selected, instance }) => ({
+    type: selected ? INSTANCE_SELECT : INSTANCE_DESELECT,
     payload: { instance }
   }),
 
-  toggleSelectedAll = isSelected => ({
-    type: isSelected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
+  toggleSelectedAll = selected => ({
+    type: selected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
   });

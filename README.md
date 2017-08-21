@@ -5,8 +5,8 @@ Table of Content
 - [Terminology](#terminology)
 - [Usage](#usage)
 - [*EditorComponent*](#editorcomponent)
-    * [props.view.name](#editorcomponent-propsview)
-    * [props.view.state](#editorcomponent-propsstate)
+    * [props.view.name](#editorcomponent-propsviewname)
+    * [props.view.state](#editorcomponent-propsviewstate)
     * [props.onTransition](#editorcomponent-propsontransition)
     * [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
 - [Model Definition](#model-definition)
@@ -16,10 +16,15 @@ Table of Content
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
     * [doTransition](#dotransition)
-- [Store](#store)
+- [Redux Store](#redux-store)
     * [State Structure](#state-structure)
     * [Validation Error](#validation-error)
     * [Internal Error](#internal-error)
+- [*model* Property](#model-property)
+    * [Search View *model* Property](#search-view-model-property)
+    * [Create View *model* Property](#create-view-model-property)
+    * [Edit View *model* Property](#edit-view-model-property)
+    * [Show View *model* Property](#show-view-model-property)
 - [Diagrams](#diagrams)
     * [Transitions of views and their states](#transitions-of-views-and-their-states)
     * [Data Flow](#data-flow)
@@ -49,7 +54,7 @@ Table of Content
   <dt>Auditable field</dt>
   <dd>One of the following <a href="#persistent-field">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
   <dt id="store-state">Store State</dt>
-  <dd>Redux <a href="#store">store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
+  <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsview">Name</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
@@ -387,7 +392,17 @@ Model Definition is an object describing an entity. It has the following structu
       return <string, entity instance description>;
     },
 
-    ?createLayout: {
+    ?create: {
+
+      /*
+       * Generate and return an entity instance with predefined field values.
+       * The instance is not persistent.
+       */
+      ?defaultNewInstance: function(<object, "search" View State>) {
+        ...
+        return <object, entity instance>;
+      },
+
       /*
        * tab(), section() and field() may be replaced with false/undefined/null which are ignored.
        *
@@ -420,12 +435,12 @@ Model Definition is an object describing an entity. It has the following structu
       }
     },
 
-    ?editLayout: {
-      ?formLayout: function  // see ui.createLayout.formLayout for details
+    ?edit: {
+      ?formLayout: function  // see ui.create.formLayout for details
     },
 
-    ?showLayout: {
-      ?formLayout: function  // see ui.createLayout.formLayout for details
+    ?show: {
+      ?formLayout: function  // see ui.create.formLayout for details
     },
 
 
@@ -435,15 +450,6 @@ Model Definition is an object describing an entity. It has the following structu
     ?customViews: {
       <view name>: <ViewComponent>,  // see "ViewComponent" subheading.
       ...
-    },
-
-    /*
-     * Generate and return an entity instance with predefined field values.
-     * The instance is not persistent.
-     */
-    ?defaultNewInstance: function(<object, "search" View State>) {
-      ...
-      return <object, entity instance>;
     },
 
     /*
@@ -543,7 +549,7 @@ Name | Default | Description
 name | active View Name | To-be-displayed [View Name](#editorcomponent-propsview)
 state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsstate).
 
-## Store
+## Redux Store
 
 ### State Structure
 
@@ -623,7 +629,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
       },
 
       /*
-       * Either an array of arrays (representing tabs) -- in case of tabs,
+       * Either an array of arrays (representing tabs) -- for tabbed layout,
        * or an array of arrays (representing sections) and objects (representing fields) -- otherwise.
        */
       formLayout: [
@@ -657,7 +663,12 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
           ...
       ],
 
-      activeTab: <array|undefined, a ref to one of tab elements or undefined when there are no tabs>,
+      /*
+       * a ref to array representing active tab - for tabbed form layout,
+       * undefined - otherwise.
+       */
+      activeTab: <array|undefined>,
+
       instanceLabel: <string, entity instance description>,
       status: <"uninitialized"|"ready"|"extracting", edit view status>
 
@@ -706,6 +717,161 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
   ?payload: <string, error message>
 }
 ```
+
+## *model* property
+
+Every view passes "model" property to external React Components it uses.  The property is designed for communication with CRUD Editor and is distinct for different views.  It's important to explicitly forward the property to children if they are designed to communicate with the editor. "model" property *must* never be modified by React Components.
+
+"model" property general structure:
+
+```javascript
+{
+  /*
+   * Dynamic collection of data from Redux store
+   * linked with selectors
+   * and updated every time the store state changes.
+   */
+  data: {...},
+
+  /*
+   * Static collection of event handlers
+   * triggering async actions and Redux store state changes.
+   */
+  actions: {...}
+}
+```
+
+### Search View *model* Property
+
+"model" property structure set by Search View:
+
+```javascript
+{
+  data: {
+    entityName: <Model Definition>.model.name,
+    formFilter: state.formFilter,
+    pageParams: {
+      max: state.pageParams.max,
+      offset: state.pageParams.offset
+    },
+    resultFields: <Model Definition>.ui.search().resultFields || <array, default Result Fields>,
+    resultFilter: state.resultFilter,
+    resultInstances: state.resultInstances,
+    searchableFields: <Model Definition>.ui.search().searchableFields || <array, default Searchable Fields>,
+    selectedInstances: state.selectedInstances,
+    sortParams: {
+      field: state.sortParams.field,
+      order: state.sortParams.order
+    },
+    totalCount: state.totalCount
+  },
+  actions: {
+    createInstance(),
+    deleteInstances([{
+      <field name>: <serializable, field value>,
+      ...
+    }, ...]),
+    editInstance({
+      instance: {
+        <field name>: <serializable, field value>,
+        ...
+      },
+      ?tab: <string, active tab name>
+    }),
+    resetFormFilter(),
+    searchInstances({
+      ?filter: {
+        <field name>: <serializable, filter value for the field>,
+        ...
+      },
+      ?sort: <string, sort field name>,
+      ?order: <"asc"|"desc", sort order>,
+      ?max: <natural number, search result limit>,
+      ?offset: <whole number, search result offset>
+    }),
+    toggleSelected({
+      instance: <object, ref to an element of resultInstances array>
+      selected: <boolean, desired selection state of the instance>,
+    }),
+    toggleSelectedAll(<boolean, desired selection state of all instances from resultInstances array>),
+    updateFormFilter({
+      name: <string, field name>,
+      value: <serializable, filter value for the field>
+    })
+  }
+}
+```
+
+, where `state` is `<Redux store state>.views.edit`.
+
+### Create View *model* Property
+
+"model" property structure set by Create View:
+
+```javascript
+{
+  data: {},
+  actions: {}
+```
+
+, where `state` is `<Redux store state>.views.create`.
+
+### Edit View *model* Property
+
+"model" property structure set by Edit View:
+
+```javascript
+{
+  data: {
+    activeEntries: state.activeTab || state.formLayout,
+    activeTab: state.activeTab,
+    entityName: <Model Definition>.model.name,
+    formInstance: state.formInstance,
+    fieldsErrors: state.errors,
+    fieldsMeta: <Model Definition>.model.fields,
+    instanceLabel: state.instanceLabel,
+    persistentInstance: state.persistentInstance,
+
+    /*
+     * Elements from state.formLayout representing tabs.
+     * Empy array in case of tabless form layout.
+     */
+    tabs: state.formLayout.filter(({ tab }) => tab),
+
+    viewName: VIEW_NAME
+  },
+  actions: {
+    changeInstanceField({
+      name: <string, field name>,
+      value: <serializable, field value>
+    }),
+    deleteInstances({
+      <field name>: <serializable, field value>,
+      ...
+    }),
+    exitEdit(),
+    saveInstance(),
+    saveAndNewInstance(),
+    saveAndNextInstance(),
+    selectTab(<string, name of tab to activate>),
+    validateInstanceField(<string, field name>)
+  }
+}
+```
+
+, where `state` is `<Redux store state>.views.edit`.
+
+### Show View *model* Property
+
+"model" property structure set by Show View:
+
+```javascript
+{
+  data: {},
+  actions: {}
+```
+
+, where `state` is `<Redux store state>.views.show`.
 
 ## Diagrams
 

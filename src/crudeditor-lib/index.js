@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 
+import buildFieldComponent from './components/DefaultFieldInput';
+import { buildFormLayout } from './views/lib';
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
@@ -14,6 +16,8 @@ import { getViewState as getEditViewState } from './views/edit/selectors';
 //import { getViewState as getShowViewState } from './views/show/selectors';
 
 import {
+  AUDITABLE_FIELDS,
+  DEFAULT_FIELD_TYPE,
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
@@ -28,10 +32,71 @@ const getViewState = {
 //[VIEW_SHOW  ] : getShowViewState
 }
 
-export default modelDefinition => {
+function fillDefaults(modelDefinition) {
+  // Filling modelDefinition with default values where necessary.
   if (!modelDefinition.ui) {
     modelDefinition.ui = {};
   }
+
+  modelDefinition.ui.instanceLabel = modelDefinition.ui.instanceLabel ?
+    modelDefinition.ui.instanceLabel :
+    ({ _objectLabel }) => _objectLabel;
+
+  const fieldsMeta = modelDefinition.model.fields;
+
+  Object.keys(fieldsMeta).forEach(fieldName => {
+    if (!fieldsMeta[fieldName].type) {
+      fieldsMeta[fieldName].type = DEFAULT_FIELD_TYPE;
+    }
+
+    if (!fieldsMeta[fieldName].constraints) {
+      fieldsMeta[fieldName].constraints = {};
+    }
+  });
+
+  const searchMeta = modelDefinition.ui.search = modelDefinition.ui.search ?
+    modelDefinition.ui.search() :
+    {};
+
+  if (!searchMeta.resultFields) {
+    searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  }
+
+  if (!searchMeta.searchableFields) {
+    searchMeta.searchableFields = Object.keys(fieldsMeta).
+      filter(name => !AUDITABLE_FIELDS.includes(name)).
+      map(name => ({ name }));
+  }
+
+  searchMeta.searchableFields.forEach(field => {
+    if (!field.Component) {
+      field.Component = buildFieldComponent(fieldsMeta[field.name].type);
+    }
+  });
+
+  if (!modelDefinition.ui.edit) {
+    modelDefinition.ui.edit = {};
+  }
+
+  const editMeta = modelDefinition.ui.edit;
+
+  editMeta.formLayout = buildFormLayout({
+    customBuilder: editMeta.formLayout,
+    viewName: VIEW_EDIT,
+    fieldsMeta: modelDefinition.model.fields
+  });
+
+  if (!modelDefinition.ui.create) {
+    modelDefinition.ui.create = {};
+  }
+
+  if (!modelDefinition.ui.show) {
+    modelDefinition.ui.show = {};
+  }
+}
+
+export default modelDefinition => {
+  fillDefaults(modelDefinition);
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;

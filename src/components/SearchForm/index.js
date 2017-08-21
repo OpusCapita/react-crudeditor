@@ -15,7 +15,7 @@ export default class extends React.PureComponent {
     );
   }
 
-  handleCreate = _ => this.props.model.actions.createInstance(this.props.model.data.defaultNewInstance);
+  handleCreate = _ => this.props.model.actions.createInstance();
 
   handleSubmit = e => {
     e.preventDefault();

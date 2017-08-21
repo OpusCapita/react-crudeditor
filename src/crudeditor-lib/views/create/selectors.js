@@ -7,4 +7,4 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(_ => {});
+  getViewState = wrapper(({ instance }) => ({ instance }));

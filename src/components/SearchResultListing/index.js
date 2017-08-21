@@ -9,7 +9,7 @@ export default class extends React.PureComponent {
   handleNewInstances = instances => {
     this.handleToggleSelected = new WeakMap(instances.map(instance => [
       instance,
-      ({ target: { checked } }) => this.props.model.actions.toggleSelected(checked, instance)
+      ({ target: { checked: selected } }) => this.props.model.actions.toggleSelected({ selected, instance })
     ]));
 
     this.handleEdit = new WeakMap(instances.map(instance => [

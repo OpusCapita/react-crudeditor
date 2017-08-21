@@ -29,7 +29,7 @@ export default ({ model }) => {
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.formInstance} /> :
-      <Tab viewName={model.data.viewName} model={model}>
+      <Tab model={model}>
         {
           model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
             <Entry key={supIndex} {...props} model={model}>  {/* either Section or top-level Field */}

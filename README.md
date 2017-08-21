@@ -718,11 +718,11 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsst
 }
 ```
 
-## *model* property
+## *model* Property
 
-Every view passes "model" property to external React Components it uses.  The property is designed for communication with CRUD Editor and is distinct for different views.  It's important to explicitly forward the property to children if they are designed to communicate with the editor. "model" property *must* never be modified by React Components.
+Every view passes *model* property to external React Components it uses.  The property is designed for communication with CRUD Editor and is distinct for different views.  It's important to explicitly forward the property to children if they are designed to communicate with the editor. *model* property must never be modified by React Components.
 
-"model" property general structure:
+*model* property general structure:
 
 ```javascript
 {
@@ -743,7 +743,7 @@ Every view passes "model" property to external React Components it uses.  The pr
 
 ### Search View *model* Property
 
-"model" property structure set by Search View:
+*model* property structure set by Search View:
 
 ```javascript
 {
@@ -806,19 +806,19 @@ Every view passes "model" property to external React Components it uses.  The pr
 
 ### Create View *model* Property
 
-"model" property structure set by Create View:
+*model* property structure set by Create View:
 
 ```javascript
 {
-  data: {},
-  actions: {}
+  data: {...},
+  actions: {...}
 ```
 
 , where `state` is `<Redux store state>.views.create`.
 
 ### Edit View *model* Property
 
-"model" property structure set by Edit View:
+*model* property structure set by Edit View:
 
 ```javascript
 {
@@ -838,7 +838,7 @@ Every view passes "model" property to external React Components it uses.  The pr
      */
     tabs: state.formLayout.filter(({ tab }) => tab),
 
-    viewName: VIEW_NAME
+    viewName: 'edit'
   },
   actions: {
     changeInstanceField({
@@ -863,12 +863,12 @@ Every view passes "model" property to external React Components it uses.  The pr
 
 ### Show View *model* Property
 
-"model" property structure set by Show View:
+*model* property structure set by Show View:
 
 ```javascript
 {
-  data: {},
-  actions: {}
+  data: {...},
+  actions: {...}
 ```
 
 , where `state` is `<Redux store state>.views.show`.

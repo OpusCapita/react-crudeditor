@@ -212,7 +212,7 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
-view | {<br />&nbsp;&nbsp;name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [Name](#editorcomponent-propsviewname)/Full [State](#editorcomponent-propsviewstate) at the time when [External Operation](#external-operation) was called
+view | {<br />&nbsp;&nbsp;name: &lt;string&gt;,<br />&nbsp;&nbsp;state: &lt;object&gt;<br />} | View [Name](#editorcomponent-propsviewname)/Full [State](#editorcomponent-propsviewstate) at the time when [External Operation](#external-operation) was called
 
 ## Model Definition
 

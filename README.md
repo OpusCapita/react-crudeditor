@@ -56,7 +56,7 @@ Table of Content
   <dt id="store-state">Store State</dt>
   <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
-  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsview">Name</a>/<a href="#editorcomponent-propsstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
+  <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
 </dl>
 
 ## Usage
@@ -96,7 +96,7 @@ React component with the following props:
 
 Name | Default | Description
 ---|---|---
-[view](#editorcomponent-propsview) | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsview) and full/sliced [View State](#editorcomponent-propsstate)
+view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
 [onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
 
@@ -114,7 +114,7 @@ error | Error page
 
 ### *EditorComponent* props.view.state
 
-Full/sliced State describing [props.view.name](#editorcomponent-propsview).  Its structure is determined by View it describes.
+Full/sliced State describing [props.view.name](#editorcomponent-propsviewname).  Its structure is determined by View it describes.
 
 If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial [*EditorComponent*](#editorcomponent) rendering).
 
@@ -212,7 +212,7 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity instance which [External Operation](#external-operation) was called upon.
-view | {<br />&nbsp;&nbsp;name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [ID](#editorcomponent-propsview)/Full [State](#editorcomponent-propsstate) at the time when [External Operation](#external-operation) was called
+view | {<br />&nbsp;&nbsp;name: <string>,<br />&nbsp;&nbsp;state: <object><br />} | View [Name](#editorcomponent-propsviewname)/Full [State](#editorcomponent-propsviewstate) at the time when [External Operation](#external-operation) was called
 
 ## Model Definition
 
@@ -234,10 +234,11 @@ Model Definition is an object describing an entity. It has the following structu
 
         /*
          * Standard field type, "string" by default.
-         * It defines a React Component for displaying a field value.
+         * It is used to define a React Component for displaying a field value.
          * Types other than listed are ignored.
          * If a field does not hava a standard type and wants to be displayed, custom React
-         * Component(s) must be provided in corresponding sections of Model Definition.
+         * Components (see FieldInputComponent and FieldRenderComponent) must be provided
+         * in corresponding sections of Model Definition.
          */
         ?type: <"string"|"number"|"date"|"boolean">,
 
@@ -510,7 +511,7 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-viewName | string | mandatory | - | [View Name](#editorcomponent-propsview)
+viewName | string | mandatory | - | [View Name](#editorcomponent-propsviewname)
 instance | object | mandatory | - | row instance as displayed in Edit Form
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
@@ -522,15 +523,15 @@ Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-viewState | object | mandatory | - | Custom [View State](#editorcomponent-propsstate)
+viewState | object | mandatory | - | Custom [View State](#editorcomponent-propsviewstate)
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### doTransition
 
 This handler is called when
 
- - active View changes its [State](#editorcomponent-propsstate), *view* argument is optional in such case;
- - another [View](#editorcomponent-propsview) must be displayed, *state* argument is optional in such case.
+ - active View changes its [State](#editorcomponent-propsviewstate), *name* argument is optional in such case;
+ - another [View](#editorcomponent-propsviewname) must be displayed, *state* argument is optional in such case.
 
 ```javascript
 function ({
@@ -546,8 +547,8 @@ Arguments:
 
 Name | Default | Description
 ---|---|---
-name | active View Name | To-be-displayed [View Name](#editorcomponent-propsview)
-state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsstate).
+name | active View Name | To-be-displayed [View Name](#editorcomponent-propsviewname)
+state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsviewstate).
 
 ## Redux Store
 

@@ -32,22 +32,37 @@ import {
   INSTANCES_DELETE_SUCCESS,
 } from '../../common/constants';
 
-const defaultStoreStateTemplate = {
-  resultFilter: {},  // Active filter as displayed in Search Result and sent to URL/server.
-  formFilter: {},  // Filter as displayed in Search Criteria.
-  sortParams: {
-    field: undefined,
-    order: 'asc'
-  },
-  pageParams: {
-    max: 30,
-    offset: 0
-  },
-  resultInstances: undefined,  // XXX: must be undefined until first extraction.
-  selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
-  totalCount: undefined,
-  status: UNINITIALIZED
-};
+const buildDefaultStoreState = searchMeta => {
+  const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
+
+  const defaultStoreState = {
+    resultFilter: {},  // Active filter as displayed in Search Result.
+    formFilter: searchMeta.searchableFields.reduce(  // Raw filter as displayed in Search Criteria.
+      (rez, { name }) => ({
+        ...rez,
+        [name]: EMPTY_FILTER_VALUE
+      }),
+      {}
+    ),
+    sortParams: {
+      field: searchMeta.resultFields[sortByDefaultIndex === -1 ? 0 : sortByDefaultIndex].name,
+      order: 'asc'
+    },
+    pageParams: {
+      max: 30,
+      offset: 0
+    },
+    resultInstances: undefined,  // XXX: must be undefined until first extraction.
+    selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
+    totalCount: undefined,
+    status: UNINITIALIZED
+  };
+
+  defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
+  return defaultStoreState;
+}
+
+export { buildDefaultStoreState };
 
 /*
  * XXX:
@@ -55,7 +70,6 @@ const defaultStoreStateTemplate = {
  * Only primitive data types are allowed at leaf nodes.
  */
 export default modelDefinition => {
-  const defaultStoreState = cloneDeep(defaultStoreStateTemplate);
   const buildLogicalKey = getLogicalKeyBuilder(modelDefinition.model.fields);
 
   // Remove benchmarkInstances from sourceInstances by comparing their Logical Keys.
@@ -69,26 +83,7 @@ export default modelDefinition => {
       )
     );
 
-  const searchMeta = modelDefinition.ui.search;
-
-  const buildDefaultFormFilter = _ => searchMeta.searchableFields.reduce(
-    (rez, { name }) => ({
-      ...rez,
-      [name]: EMPTY_FILTER_VALUE
-    }),
-    {}
-  );
-
-  defaultStoreState.formFilter = buildDefaultFormFilter();
-  defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
-  const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
-
-  defaultStoreState.sortParams.field = searchMeta.resultFields[sortByDefaultIndex === -1 ?
-    0 :
-    sortByDefaultIndex
-  ].name;
-
-  return (storeState = defaultStoreState, { type, payload, error, meta }) => {
+  return (storeState = buildDefaultStoreState(modelDefinition.ui.search), { type, payload, error, meta }) => {
     const newStoreStateSlice = {};
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -156,7 +151,7 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_RESET) {
-      newStoreStateSlice.formFilter = u.constant(buildDefaultFormFilter());
+      newStoreStateSlice.formFilter = u.constant(buildDefaultStoreState(modelDefinition.ui.search).formFilter);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

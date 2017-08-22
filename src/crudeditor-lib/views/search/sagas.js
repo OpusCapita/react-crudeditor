@@ -1,6 +1,8 @@
 import isEqual from 'lodash/isEqual';
 import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 
+import { buildDefaultStoreState } from './reducer';
+
 import {
   EMPTY_FILTER_VALUE,
 
@@ -55,29 +57,51 @@ export function* onInstancesSearch(modelDefinition, {
     offset
   ]);
 
-  filter = filter || currentFilter;
-  sort   = sort   || currentSort;
-  order  = order  || currentOrder;
-  max    = max    || currentMax;
+  if (source === 'owner') {
+    // Default search values are default values for the arguments in case of external searchInstances() call.
+    const {
+      resultFilter: defaultFilter,
+      sortParams: {
+        field: defaultSort,
+        order: defaultOrder
+      },
+      pageParams: {
+        max: defaultMax,
+        offset: defaultOffset
+      }
+    } = buildDefaultStoreState(modelDefinition.ui.search);
 
-  // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
-  offset = sort === currentSort &&
-    order === currentOrder &&
-    max === currentMax &&
-    isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) ?
-      (offset || offset === 0 ? offset : currentOffset) :
-      0;
+    filter = filter || defaultFilter;
+    sort   = sort   || defaultSort;
+    order  = order  || defaultOrder;
+    max    = max    || defaultMax;
+    offset = offset || defaultOffset;
 
-  if (source === 'owner' &&
-    isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) &&
-    sort === currentSort &&
-    order === currentOrder &&
-    max === currentMax &&
-    offset === currentOffset &&
-    (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
-    (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME
-  ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
-    return;
+    if (
+      isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) &&
+      sort === currentSort &&
+      order === currentOrder &&
+      max === currentMax &&
+      offset === currentOffset &&
+      (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
+      (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME
+    ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
+      return;
+    }
+  } else {
+    // Current values are default values for the arguments in case of internal searchInstances() call.
+    filter = filter || currentFilter;
+    sort   = sort   || currentSort;
+    order  = order  || currentOrder;
+    max    = max    || currentMax;
+
+    // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
+    offset = sort === currentSort &&
+      order === currentOrder &&
+      max === currentMax &&
+      isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) ?
+        (offset || offset === 0 ? offset : currentOffset) :
+        0;
   }
 
   yield put({

@@ -116,7 +116,7 @@ error | Error page
 
 Full/sliced State describing [props.view.name](#editorcomponent-propsviewname).  Its structure is determined by View it describes.
 
-If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial [*EditorComponent*](#editorcomponent) rendering).
+If View State is sliced, not given or `{}`, all not-mentioned properties have their default values.
 
 View State *must* be serializable.
 
@@ -137,10 +137,10 @@ View State *must* be serializable.
 
 Name | Default
 ---|---
-filter | <ul><li>`{}` - for initial View rendering,</li><li>CRUD Editor current value - otherwise.</li></ul>
-sort | <ul><li>Result field marked with `sortByDefault` (first result field if no `sortByDefault` marker is set) - for initial View rendering</li><li>CRUD Editor current value - otherwise.</li></ul>
-order | <ul><li>`"asc"` - for initial View rendering,</li><li>CRUD Editor current value - otherwise</li></ul>
-max | <ul><li>`30` - for initial View rendering,</li><li>CRUD Editor current value - otherwise.</li></ul>
+filter | `{}`
+sort | Result field marked with `sortByDefault` (first result field if no `sortByDefault` marker is set)
+order | `"asc"`
+max | `30`
 offset | `0`
 
 #### *EditorComponent* props.state for *"create"* View:
@@ -211,7 +211,7 @@ Every handler has the same set of arguments:
 
 Argument | Type | Description
 ---|---|---
-instance | object | An entity instance which [External Operation](#external-operation) was called upon.
+instance | object | An entity instance which [External Operation](#external-operation) was called upon
 view | {<br />&nbsp;&nbsp;name: &lt;string&gt;,<br />&nbsp;&nbsp;state: &lt;object&gt;<br />} | View [Name](#editorcomponent-propsviewname)/Full [State](#editorcomponent-propsviewstate) at the time when [External Operation](#external-operation) was called
 
 ## Model Definition
@@ -548,7 +548,9 @@ Arguments:
 Name | Default | Description
 ---|---|---
 name | active View Name | To-be-displayed [View Name](#editorcomponent-propsviewname)
-state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsviewstate).
+state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsviewstate)
+
+If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial View rendering).
 
 ## Redux Store
 

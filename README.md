@@ -479,7 +479,7 @@ Model Definition is an object describing an entity. It has the following structu
 
 ### FieldInputComponent
 
-React component for a custom rendering of entity instance field in Search Form or Create/Edit Form.
+React component for a custom rendering of entity instance field in Search Form or Create/Edit/Show Form.
 
 Props:
 
@@ -766,11 +766,27 @@ Every view passes *model* property to external React Components it uses.  The pr
     totalCount: state.totalCount
   },
   actions: {
+
+    /*
+     * Switch to Create View
+     * and populate its form fields with <Model Definition>.ui.create.defaultNewInstance if exists.
+     */
     createInstance(),
+
+    /*
+     * Delete instances by asynchronously calling the server with
+     * <Model Definition>.api.delete()
+     * and <Model Definition>.api.search() to refresh Result Listing.
+     * Only Logical Key fields are required, all others are ignored.
     deleteInstances([{
       <field name>: <serializable, field value>,
       ...
     }, ...]),
+
+    /*
+     * Load an instance in Edit View.
+     * Only Logical Key fields of the instance are required, all others are ignored.
+     */
     editInstance({
       instance: {
         <field name>: <serializable, field value>,
@@ -778,7 +794,15 @@ Every view passes *model* property to external React Components it uses.  The pr
       },
       ?tab: <string, active tab name>
     }),
+
+    /*
+     * Clear all filter fields without Result Listing change.
+     */
     resetFormFilter(),
+
+    /*
+     * Make <Model Definition>.api.search() call to the server and display response in Result Listing.
+     */
     searchInstances({
       ?filter: {
         <field name>: <serializable, filter value for the field>,
@@ -789,11 +813,16 @@ Every view passes *model* property to external React Components it uses.  The pr
       ?max: <natural number, search result limit>,
       ?offset: <whole number, search result offset>
     }),
+
     toggleSelected({
       instance: <object, ref to an element of resultInstances array>
-      selected: <boolean, desired selection state of the instance>,
+      selected: <boolean, new selection state of the instance>,
     }),
-    toggleSelectedAll(<boolean, desired selection state of all instances from resultInstances array>),
+    toggleSelectedAll(<boolean, new selection state of all instances from resultInstances array>),
+
+    /*
+     * Usually called with form field's onChange event. Result Listing is not automatically changed.
+     */
     updateFormFilter({
       name: <string, field name>,
       value: <serializable, filter value for the field>
@@ -841,19 +870,40 @@ Every view passes *model* property to external React Components it uses.  The pr
     viewName: 'edit'
   },
   actions: {
+
+    /*
+     * Usually called with field's onChange event.
+     */
     changeInstanceField({
       name: <string, field name>,
-      value: <serializable, field value>
+      value: <serializable, new field value>
     }),
+
+    /*
+     * Delete an instance by asynchronously calling the server with
+     * <Model Definition>.api.delete()
+     * and <Model Definition>.api.search() to exit to Search View and refresh its Result Listing.
+     * Only Logical Key fields are required, all others are ignored =>
+     * the action can be called either on formInstance or persistentInstance with the same effect.
+     */
     deleteInstances({
       <field name>: <serializable, field value>,
       ...
     }),
+
+    /*
+     * Exit to Search View.
+     */
     exitEdit(),
+
     saveInstance(),
     saveAndNewInstance(),
     saveAndNextInstance(),
     selectTab(<string, name of tab to activate>),
+
+    /*
+     * Usually called with field's onBlur event.
+     */
     validateInstanceField(<string, field name>)
   }
 }

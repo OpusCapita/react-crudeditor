@@ -32,7 +32,7 @@ import {
   INSTANCES_DELETE_SUCCESS,
 } from '../../common/constants';
 
-const buildDefaultStoreState = searchMeta => {
+export const buildDefaultStoreState = searchMeta => {
   const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
 
   const defaultStoreState = {
@@ -61,8 +61,6 @@ const buildDefaultStoreState = searchMeta => {
   defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
   return defaultStoreState;
 }
-
-export { buildDefaultStoreState };
 
 /*
  * XXX:

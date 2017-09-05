@@ -67,14 +67,18 @@ export const
   // TODO: implement reducer.
   saveAndNewInstance = _ => ({
     type: INSTANCE_SAVE,
-    payload: { AFTER_ACTION_NEW }
+    payload: {
+      afterAction: AFTER_ACTION_NEW
+    }
   }),
 
 
   // TODO: implement reducer.
   saveAndNextInstance = _ => ({
     type: INSTANCE_SAVE,
-    payload: { AFTER_ACTION_NEXT }
+    payload: {
+      afterAction: AFTER_ACTION_NEXT
+    }
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

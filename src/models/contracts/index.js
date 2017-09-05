@@ -26,7 +26,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'boilerplates' }),
   tab({ name: 'supplier' }),
   tab({ name: 'groups' }),
-  tab({ name: 'additional', disabled: viewName === VIEW_EDIT },
+  tab({ name: 'additional', disabled: viewName !== VIEW_EDIT },
     section({ name: 'order' },
       field({ name: 'minOrderValue' }),
       field({ name: 'minOrderValueRequired' }),
@@ -84,7 +84,14 @@ export default {
       'extContractLineId': {'type': 'string', 'constraints': {'max': 10, 'required': false}},
       'contractId': {unique: true, 'type': 'string', 'constraints': {'max': 100, 'required': true}},
       'parentContract': {'type': 'com.jcatalog.contract.Contract', 'constraints': {'required': false}},
-      'minOrderValue': {'type': 'number', 'constraints': {'min': 0, 'max': 999999999, 'required': false}}
+      'minOrderValue': {
+        'type': 'number',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': false
+        }
+      }
     }
   },
   api: {

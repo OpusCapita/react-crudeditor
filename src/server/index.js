@@ -37,6 +37,7 @@ if (FAKE_RESPONSE_TIMEOUT) {
 }
 
 require('./api')(app);
+app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
 // ███████████████████████████████████████████████████████████████████████
 // ███   index.html & bundle.js (must be the very last app.get(...))   ███

@@ -255,14 +255,40 @@ Model Definition is an object describing an entity. It has the following structu
           ?url: <boolean>,
 
           /*
-           * Custom validator returning a promise of boolean
-           * - true for pass,
-           * - false for fail.
+           * Custom field-validator usually called at input's onBlur() event.
+           * When the field-validator is unable even to understand field value, it throws errors array.
            */
-          ?async validate: function(<serializable, field value>, <object, entity instance>) {...}
+          validate(<serializable, field value>, <object, entity instance>) {
+            ...
+            return {
+              value: <serializable, field value which may be different from the input argument due, ex. to trim>,
+              errors: [{
+                name: <string, error id used by translation service>,
+                message: <string, default error description in English>,
+                ?params: [<serializable, parameter used by error message>, ...]
+              }]
+            };
+          }
         }
       },
       ...
+    },
+
+    /*
+     * Custom instance-validator, usually called after "Submit" button press but before sending the instance to the server for save/modify.
+     * Field-validation is done upon all fields just before calling the instance-validator.
+     * The function may be asyncronous and return a promise.
+     */
+    validate(<object, entity instance>) {
+      ...
+      return {  // Error object or null in case of successful validation.
+        <field name>: [{
+          name: <string, error id used by translation service>,
+          message: <string, default error description in English>,
+          ?params: [<serializable, parameter used by error message>, ...]
+        }],
+        ...
+      };
     }
   },
 
@@ -421,6 +447,8 @@ Model Definition is an object describing an entity. It has the following structu
           ?tab({ name: <string, tab name>, ?disabled: <boolean, false by default>, ?Component: <function, TabFormComponent },
             ?section({ name: <string, section name> },
               ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+              // Passing additional propName property to FieldInputComponent:
+              ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: props => <FieldInputComponent propName={propValue} {...props}> }),
               ...
             ),
             ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),

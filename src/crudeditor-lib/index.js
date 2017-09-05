@@ -32,8 +32,10 @@ const getViewState = {
 //[VIEW_SHOW  ] : getShowViewState
 }
 
-function fillDefaults(modelDefinition) {
+function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
+  const modelDefinition = cloneDeep(baseModelDefinition);
+
   if (!modelDefinition.ui) {
     modelDefinition.ui = {};
   }
@@ -93,10 +95,12 @@ function fillDefaults(modelDefinition) {
   if (!modelDefinition.ui.show) {
     modelDefinition.ui.show = {};
   }
+
+  return modelDefinition;
 }
 
-export default modelDefinition => {
-  fillDefaults(modelDefinition);
+export default baseModelDefinition => {
+  const modelDefinition = fillDefaults(baseModelDefinition);
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;

@@ -8,6 +8,12 @@ import {
   INSTANCE_EDIT_FAIL,
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
+
+  INSTANCE_SAVE,
+  INSTANCE_SAVE_FAIL,
+  INSTANCE_SAVE_REQUEST,
+  INSTANCE_SAVE_SUCCESS,
+
   READY,
   VIEW_NAME
 } from './constants';
@@ -72,8 +78,17 @@ export function* onInstanceEdit(modelDefinition, {
   }
 }
 
+export function* onInstanceSave(modelDefinition, {
+  payload: {
+    afterAction
+  } = {}
+}) {
+  console.log('afterAction', afterAction);
+}
+
 export default function*(modelDefinition) {
   yield all([
-    takeEvery(INSTANCE_EDIT, onInstanceEdit, modelDefinition)
+    takeEvery(INSTANCE_EDIT, onInstanceEdit, modelDefinition),
+    takeEvery(INSTANCE_SAVE, onInstanceSave, modelDefinition)
   ]);
 }

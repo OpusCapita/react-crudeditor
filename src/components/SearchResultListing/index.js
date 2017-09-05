@@ -7,20 +7,14 @@ import ConfirmDialog from '../ConfirmDialog';
 
 export default class extends React.PureComponent {
   handleNewInstances = instances => {
-    this.handleToggleSelected = new WeakMap(instances.map(instance => [
-      instance,
-      ({ target: { checked: selected } }) => this.props.model.actions.toggleSelected({ selected, instance })
-    ]));
+    this.handleToggleSelected = instance => ({
+      target: {
+        checked: selected
+      }
+    }) => this.props.model.actions.toggleSelected({ selected, instance });
 
-    this.handleEdit = new WeakMap(instances.map(instance => [
-      instance,
-      _ => this.props.model.actions.editInstance({ instance })
-    ]));
-
-    this.handleDelete = new WeakMap(instances.map(instance => [
-      instance,
-      _ => this.props.model.actions.deleteInstances([instance])
-    ]));
+    this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
+    this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
 
   constructor(...args) {
@@ -100,7 +94,7 @@ export default class extends React.PureComponent {
         {instances.map(instance =>
           <tr key={`tr-${JSON.stringify(instance)}`}>
             <td>
-              <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected.get(instance)} />
+              <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected(instance)} />
             </td>
 
             {resultFields.map(({ name, Component, textAlignment }) =>
@@ -122,7 +116,7 @@ export default class extends React.PureComponent {
 
             <td className='text-right'>
               <ButtonGroup bsSize='sm'>
-                <Button onClick={this.handleEdit.get(instance)}>
+                <Button onClick={this.handleEdit(instance)}>
                   <Glyphicon glyph='edit' />
                   {' '}
                   Edit
@@ -130,7 +124,7 @@ export default class extends React.PureComponent {
 
                 <ConfirmDialog
                   trigger='click'
-                  onConfirm={this.handleDelete.get(instance)}
+                  onConfirm={this.handleDelete(instance)}
                   title='Delete confirmation'
                   message='Do you want to delete this item?'
                 >

@@ -2,10 +2,13 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
+import validateField from '../../../data-types-lib';
+
 import {
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
+  INSTANCE_FIELD_VALIDATE,
 
   EXTRACTING,
   READY,
@@ -27,7 +30,7 @@ const defaultStoreStateTemplate = {
   activeTab: undefined,
 
   instanceLabel: undefined,
-  errors: undefined,
+  errors: {},
   status: UNINITIALIZED
 };
 
@@ -73,6 +76,7 @@ export default modelDefinition => (
       newStoreStateSlice.persistentInstance = u.constant(instance);
       newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
       newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
+      newStoreStateSlice.errors = {};
     }
 
     if (formLayout ||  // New instance has been received => new formLayout has been built.
@@ -93,11 +97,44 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_FIELD_CHANGE) {
-      const { field, value } = payload;
+      const { name, value } = payload;
 
       newStoreStateSlice.formInstance = {
-        [field]: value || value === 0 || value === false ? value : null
+        [name]: value || value === 0 || value === false ? u.constant(value) : null
       };
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_FIELD_VALIDATE) {
+      const { name: fieldName } = payload;
+      const fieldMeta = modelDefinition.model.fields[fieldName];
+
+      if (!fieldMeta.type) {
+        return;
+      }
+
+      const currentValue = storeState.formInstance[fieldName];
+
+      const {
+        value: newValue,
+        errors  // It is either undefined or an array with length > 0
+      } = validateField({
+        value: currentValue,
+        type: fieldMeta.type,
+        constraints: fieldMeta.constraints
+      }) || {};
+
+      if (newValue !== undefined && !isEqual(newValue, currentValue)) {
+        newStoreStateSlice.formInstance = {
+          [fieldName]: u.constant(newValue)
+        }
+      }
+
+      if (!isEqual(errors, storeState.errors[fieldName])) {
+        newStoreStateSlice.errors = errors ?
+          { [fieldName]: errors } :
+          u.omit(fieldName);
+      }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

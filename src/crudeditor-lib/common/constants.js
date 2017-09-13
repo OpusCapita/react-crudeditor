@@ -24,6 +24,14 @@ export const
   DEFAULT_FIELD_TYPE = 'string',
   DEFAULT_VIEW = VIEW_SEARCH,
 
+  /*
+   * Value for a empty field/filter (even if the field is of type "string", "boolean", etc.)
+   * => React Component (rendering particular field/filter) may want to translate this value into more appropriate for itself.
+   */
+  EMPTY_FIELD_VALUE = null,
+
+  UNPARSABLE_FIELD_VALUE = undefined,
+
   /*███████████████████████████████████████*\
    *███ ACTIONS (in alphabetical order) ███*
   \*███████████████████████████████████████*/

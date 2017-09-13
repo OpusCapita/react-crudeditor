@@ -1,10 +1,32 @@
-import buildFieldComponent from '../components/DefaultFieldInput';
+import FieldString from '../../components/FieldString';
+import FieldBoolean from '../../components/FieldBoolean';
 
 import {
   AUDITABLE_FIELDS,
   VIEW_EDIT,
   VIEW_SHOW
 } from '../common/constants';
+
+const defaultFieldRenders = {
+  'boolean': {
+    Component: FieldBoolean,
+    valueProp: {
+      type: 'boolean'
+    }
+  },
+  'date': {
+    Component: FieldString
+  },
+  'number': {
+    Component: FieldString,
+    valueProp: {
+      type: 'number'
+    }
+  },
+  'string': {
+    Component: FieldString
+  }
+};
 
 const buildDefaultFormLayout = ({
   viewName,
@@ -17,17 +39,20 @@ const buildDefaultFormLayout = ({
         AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
       ),
-    Component: buildFieldComponent(fieldsMeta[name].type)
+    render: buildFieldRender({ type: fieldsMeta[name].type })
   }));
 
-const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, Component }) => ({
+const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, render }) => ({
   field: fieldId,
 
   // making all fields read-only in "show" view.
   readOnly: viewName === VIEW_SHOW || !!readOnly,
 
   // assigning default Component to fields w/o custom component.
-  Component: Component || buildFieldComponent(fieldsMeta[fieldId].type)
+  render: buildFieldRender({
+    render,
+    type: fieldsMeta[fieldId].type
+  })
 });
 
 const sectionLayout = ({ name: sectionId }, ...entries) => {
@@ -46,6 +71,31 @@ const tabLayout = ({ name: tabId, ...props }, ...entries) => {
 };
 
 export const
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  buildFieldRender = ({
+    render: customRender,
+    type: fieldType
+  }) => {
+    const render = customRender ||
+      defaultFieldRenders[fieldType] ||
+      (_ => { throw new Error(`Unknown field type "${fieldType}"`); })();
+
+    if (!render.valueProp) {
+      render.valueProp = {};
+    }
+
+    if (!render.valueProp.name) {
+      render.valueProp.name = 'value';
+    }
+
+    if (!render.valueProp.type) {
+      render.valueProp.type = 'string';
+    }
+
+    return render;
+  },
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

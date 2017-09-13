@@ -13,6 +13,7 @@ import {
 } from './selectors';
 
 import {
+  parseFormFilter,
   resetFormFilter,
   searchInstances,
   toggleSelected,
@@ -39,6 +40,7 @@ export default connect(
     createInstance,
     deleteInstances,
     editInstance,
+    parseFormFilter,
     resetFormFilter,
     searchInstances,
     toggleSelected,

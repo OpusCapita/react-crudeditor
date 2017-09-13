@@ -10,10 +10,10 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'general' },
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
-    //field({ name: 'translations', Component: TranslatableTextEditor }),
-    field({ name: 'statusId', Component: StatusField }),
-    //field({ name: 'parentContract', Component: ContractReferenceSearch }),
-    //field({ name: 'currencyId', Component: CurrencyField }),
+    //field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
+    field({ name: 'statusId', render: { Component: StatusField }}),
+    //field({ name: 'parentContract', render: { Component: ContractReferenceSearch }}),
+    //field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable' },
       field({ name: 'createdBy', readOnly: true }),
       field({ name: 'createdOn', readOnly: true }),
@@ -79,7 +79,7 @@ export default {
       'contractCategory': {'type': 'com.jcatalog.contract.ContractCategory', 'constraints': {'required': false}},
       'freightSurcharge': {'type': 'number', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
       'isStandard': {'type': 'boolean', 'constraints': {'required': false}},
-      'statusId': {'type': 'string', 'constraints': {'max': 20, 'required': true}},
+      'statusId': {'type': 'number', 'constraints': {'min': 0, 'max': 800, 'integer': true, 'required': false}},
       'createdBy': {'type': 'string', 'constraints': {'required': true}},
       'extContractLineId': {'type': 'string', 'constraints': {'max': 10, 'required': false}},
       'contractId': {unique: true, 'type': 'string', 'constraints': {'max': 100, 'required': true}},
@@ -89,6 +89,7 @@ export default {
         'constraints': {
           'min': 0,
           'max': 999999999,
+          'integer': true,
           'required': false
         }
       }
@@ -156,7 +157,7 @@ export default {
         { name: 'description' },
         { name: 'extContractId' },
         { name: 'extContractLineId' },
-        { name: 'statusId', Component: StatusField }
+        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } }}
       ],
       resultFields: [
         { name: 'contractId', sortable: true },

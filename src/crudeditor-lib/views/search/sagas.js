@@ -4,8 +4,6 @@ import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 import { buildDefaultStoreState } from './reducer';
 
 import {
-  EMPTY_FILTER_VALUE,
-
   INSTANCES_SEARCH,
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
@@ -14,6 +12,8 @@ import {
   READY,
   VIEW_NAME
 } from './constants';
+
+import { EMPTY_FIELD_VALUE } from '../../common/constants';
 
 /*███████████████████*\
  *███ WORKER SAGA ███*
@@ -34,7 +34,8 @@ export function* onInstancesSearch(modelDefinition, {
     currentSort,
     currentOrder,
     currentMax,
-    currentOffset
+    currentOffset,
+    errors
   ] = yield select(({
     views: {
       [VIEW_NAME]: {
@@ -46,7 +47,8 @@ export function* onInstancesSearch(modelDefinition, {
         pageParams: {
           max,
           offset
-        }
+        },
+        errors
       }
     }
   }) => [
@@ -54,8 +56,13 @@ export function* onInstancesSearch(modelDefinition, {
     field,
     order,
     max,
-    offset
+    offset,
+    errors
   ]);
+
+  if (Object.keys(errors).length) {
+    return;
+  }
 
   if (source === 'owner') {
     // Default search values are default values for the arguments in case of external searchInstances() call.
@@ -69,7 +76,7 @@ export function* onInstancesSearch(modelDefinition, {
         max: defaultMax,
         offset: defaultOffset
       }
-    } = buildDefaultStoreState(modelDefinition.ui.search);
+    } = buildDefaultStoreState(modelDefinition);
 
     filter = filter || defaultFilter;
     sort   = sort   || defaultSort;
@@ -111,7 +118,7 @@ export function* onInstancesSearch(modelDefinition, {
 
   try {
     const { instances, totalCount } = yield call(modelDefinition.api.search, {
-      filter: filter && Object.keys(filter).every(field => filter[field] === EMPTY_FILTER_VALUE) ?
+      filter: filter && Object.keys(filter).every(field => filter[field] === EMPTY_FIELD_VALUE) ?
         undefined :  // this option is also triggered when filter === {}
         filter,
       sort,

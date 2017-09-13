@@ -2,7 +2,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import validateField from '../../../data-types-lib';
+import {
+  format as formatField,
+  parse as parseField,
+  validate as validateField
+} from '../../../data-types-lib';
 
 import {
   INSTANCE_EDIT_REQUEST,
@@ -19,9 +23,47 @@ import {
   TAB_SELECT
 } from './constants';
 
+import { UNPARSABLE_FIELD_VALUE } from '../../common/constants';
+
+const findFieldLayout = fieldName => {
+  const layoutWalker = layout => {
+    if (layout.field === fieldName) {
+      return layout;
+    }
+
+    let foundFieldLayout;
+
+    return Array.isArray(layout) &&
+      layout.some(entry => {
+        foundFieldLayout = layoutWalker(entry);
+        return foundFieldLayout;
+      }) &&
+      foundFieldLayout;
+  };
+
+  return layoutWalker;
+}
+
 const defaultStoreStateTemplate = {
+
+  // Instance as saved on server-side.
   persistentInstance: undefined,
+
+  /* Parsed instance as displayed in the form.
+   * {
+   *   <string, field name>: <serializable, field value for communication with the server>,
+   * }
+   */
   formInstance: undefined,
+
+  /* Formated instance as displayed in the form.
+   * {
+   *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
+   * }
+   * NOTE: formInstance values and formatedInstance values represent different values in case of parsing error
+   * (i.e. rendered value cannot be parsed into its string representation).
+   */
+  formatedInstance: undefined,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -30,7 +72,12 @@ const defaultStoreStateTemplate = {
   activeTab: undefined,
 
   instanceLabel: undefined,
-  errors: {},
+
+  errors: {
+    fields: undefined,  // object with keys as field names, values as arrays of field errors, may be empty.
+    instance: []  // Array of instance-wide errors, may be empty.
+  },
+
   status: UNINITIALIZED
 };
 
@@ -76,7 +123,32 @@ export default modelDefinition => (
       newStoreStateSlice.persistentInstance = u.constant(instance);
       newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
       newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
-      newStoreStateSlice.errors = {};
+
+      newStoreStateSlice.errors = u.constant({
+        instance: [],
+        fields: Object.keys(instance).reduce(
+          (rez, fieldName) => ({
+            ...rez,
+            [fieldName]: []
+          }),
+          {}
+        )
+      });
+
+      newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+        (rez, fieldName) => {
+          const fieldLayout = findFieldLayout(fieldName)(formLayout);
+          return fieldLayout ? {
+            ...rez,
+            [fieldName]: formatField({
+              value: instance[fieldName],
+              type: modelDefinition.model.fields[fieldName].type,
+              targetType: fieldLayout.render.valueProp.type
+            })
+          } : rez;  // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed  in Edit View.
+        },
+        {}
+      ));
     }
 
     if (formLayout ||  // New instance has been received => new formLayout has been built.
@@ -97,10 +169,13 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_FIELD_CHANGE) {
-      const { name, value } = payload;
+      const {
+        name: fieldName,
+        value: fieldValue
+      } = payload;
 
-      newStoreStateSlice.formInstance = {
-        [name]: value || value === 0 || value === false ? u.constant(value) : null
+      newStoreStateSlice.formatedInstance = {
+        [fieldName]: u.constant(fieldValue)
       };
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -108,32 +183,68 @@ export default modelDefinition => (
     } else if (type === INSTANCE_FIELD_VALIDATE) {
       const { name: fieldName } = payload;
       const fieldMeta = modelDefinition.model.fields[fieldName];
+      const componentType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
-      if (!fieldMeta.type) {
-        return;
-      }
+      try {
+        const newFormValue = parseField({
+          value: storeState.formatedInstance[fieldName],
+          type: fieldMeta.type,
+          sourceType: componentType
+        });
 
-      const currentValue = storeState.formInstance[fieldName];
-
-      const {
-        value: newValue,
-        errors  // It is either undefined or an array with length > 0
-      } = validateField({
-        value: currentValue,
-        type: fieldMeta.type,
-        constraints: fieldMeta.constraints
-      }) || {};
-
-      if (newValue !== undefined && !isEqual(newValue, currentValue)) {
-        newStoreStateSlice.formInstance = {
-          [fieldName]: u.constant(newValue)
+        if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
+          newStoreStateSlice.formInstance = {
+            [fieldName]: u.constant(newFormValue)
+          };
         }
-      }
 
-      if (!isEqual(errors, storeState.errors[fieldName])) {
-        newStoreStateSlice.errors = errors ?
-          { [fieldName]: errors } :
-          u.omit(fieldName);
+        const newFormatedValue = formatField({
+          value: newFormValue,
+          type: fieldMeta.type,
+          targetType: componentType
+        });
+
+        if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
+          newStoreStateSlice.formatedInstance = {
+            [fieldName]: u.constant(newFormatedValue)
+          };
+        }
+
+        try {
+          validateField({
+            value: newFormValue,
+            type: fieldMeta.type,
+            constraints: fieldMeta.constraints
+          });
+
+          if (storeState.errors.fields[fieldName].length) {
+            newStoreStateSlice.errors = {
+              fields: {
+                [fieldName]: []
+              }
+            };
+          }
+        } catch(errors) {
+          if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+            newStoreStateSlice.errors = {
+              fields: {
+                [fieldName]: errors
+              }
+            };
+          }
+        }
+      } catch(err) {
+        newStoreStateSlice.formInstance = {
+          [fieldName]: UNPARSABLE_FIELD_VALUE
+        };
+
+        if (!isEqual([err], storeState.errors.fields[fieldName])) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: [err]
+            }
+          };
+        }
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -22,16 +22,13 @@ export default class extends React.PureComponent {
 
     this.handleNewInstances(this.props.model.data.resultInstances);
 
-    this.handleResort = this.props.model.data.resultFields.reduce((rez, { name }) => ({
-      ...rez,
-      [name]: _ => this.props.model.actions.searchInstances({
-        sort: name,
-        // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
-        order: name === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
-          'desc' :
-          'asc'
-      })
-    }), {});
+    this.handleResort = fieldName => _ => this.props.model.actions.searchInstances({
+      sort: fieldName,
+      // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+      order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
+        'desc' :
+        'asc'
+    });
   }
 
   componentWillReceiveProps({
@@ -77,7 +74,7 @@ export default class extends React.PureComponent {
               <th key={`th-${name}`}>
                 {
                   sortable ?
-                    <Button bsStyle='link' onClick={this.handleResort[name]}>
+                    <Button bsStyle='link' onClick={this.handleResort(name)}>
                       { name }
                       { sortField === name && <Glyphicon glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
                     </Button> :

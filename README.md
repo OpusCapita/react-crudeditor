@@ -239,11 +239,13 @@ Model Definition is an object describing an entity. It has the following structu
          * If a field does not hava a standard type and wants to be displayed, custom React
          * Components (see FieldInputComponent and FieldRenderComponent) must be provided
          * in corresponding sections of Model Definition.
+         * NOTE: type has nothing to do with JavaScript types, ex. a value of field type "number" may be a string.
          */
         ?type: <"string"|"number"|"date"|"boolean">,
 
         /*
          * Constraints for field validation.
+         * Their allowed set and tuning parameters of each constraint depend on field type.
          * They are usually applied during entity instance creation/modification.
          */
         ?constraints: {
@@ -392,12 +394,18 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?searchableFields: [{
           name: <string, persistent field name>,
-          ?Component: <FieldInputComponent>  // see "FieldInputComponent" subheading.
+          ?render: {
+            Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
+            ?valueProp: {
+              ?name: <string, a name of Component's prop with field value, "value" by default>,
+              ?type: <string, a type of field value passed to the Component, "string" by default>
+            }
+          }
         }, ...],
 
         /*
          * Both persistent and composite fields are allowed.
-         * By default, all Persistent (including Auditable) fields from model.fields are used in result listing.
+         * By default, all Persistent (incl. Auditable) fields from model.fields are used in result listing.
          * Only one field may have "sortByDefault" set to true.
          */
         ?resultFields: [{
@@ -444,21 +452,77 @@ Model Definition is an object describing an entity. It has the following structu
       ?formLayout: ({ tab, section, field }) => instance => {
         ...
         return [
-          ?tab({ name: <string, tab name>, ?disabled: <boolean, false by default>, ?Component: <function, TabFormComponent },
-            ?section({ name: <string, section name> },
-              ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+          ?tab(
+            {
+              name: <string, tab name>,
+              ?disabled: <boolean, false by default>,
+              ?Component: <function, TabFormComponent>,
+            },
+            ?section(
+              { name: <string, section name> },
+              ?field({
+                name: <string, field name>,
+                ?readOnly: <boolean, false by default>,
+                ?render: {
+                  Component: <function, FieldInputComponent>,
+                  ?valueProp: {
+                    ?name: <string, a name of Component's prop with field value, "value" by default>,
+                    ?type: <string, a type of field value passed to the Component, "string" by default>
+                  }
+                }
+              }),
               // Passing additional propName property to FieldInputComponent:
-              ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: props => <FieldInputComponent propName={propValue} {...props}> }),
+              ?field({
+                name: <string, field name>,
+                ?readOnly: <boolean, false by default>,
+                render: {
+                  Component: props => <FieldInputComponent propName={propValue} {...props}>,
+                  ?valueProp: {
+                    ?name: <string, a name of Component's prop with field value, "value" by default>,
+                    ?type: <string, a type of field value passed to the Component, "string" by default>
+                  }
+                }
+              }),
               ...
             ),
-            ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+            ?field({
+              name: <string, field name>,
+              ?readOnly: <boolean, false by default>,
+              ?render: {
+                Component: <function, FieldInputComponent>,
+                ?valueProp: {
+                  ?name: <string, a name of Component's prop with field value, "value" by default>,
+                  ?type: <string, a type of field value passed to the Component, "string" by default>
+                }
+              }
+            }),
             ...
           )
           ?section({ name: <string, section name> },
-            ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+            ?field({
+              name: <string, field name>,
+              ?readOnly: <boolean, false by default>,
+              ?render: {
+                Component: <function, FieldInputComponent>,
+                ?valueProp: {
+                  ?name: <string, a name of Component's prop with field value, "value" by default>,
+                  ?type: <string, a type of field value passed to the Component, "string" by default>
+                }
+              }
+            }),
             ...
           ),
-          ?field({ name: <string, field name>, ?readOnly: <boolean, false by default>, ?Component: <function, FieldInputComponent> }),
+          ?field({
+            name: <string, field name>,
+            ?readOnly: <boolean, false by default>,
+            ?render: {
+              Component: <function, FieldInputComponent>,
+              ?valueProp: {
+                ?name: <string, a name of Component's prop with field value, "value" by default>,
+                ?type: <string, a type of field value passed to the Component, "string" by default>
+              }
+            }
+          }),
           ...
         ]
       }
@@ -540,7 +604,7 @@ Props:
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 viewName | string | mandatory | - | [View Name](#editorcomponent-propsviewname)
-instance | object | mandatory | - | row instance as displayed in Edit Form
+instance | object | mandatory | - | persistent instance
 [doTransition](#dotransition) | function | optional | - | [Editor State](#editor-state) change handler
 
 ### ViewComponent
@@ -993,30 +1057,32 @@ Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
 **NOTE**: It's entirely possible for a reducer defined in one folder to respond to an action defined in another folder[\[1\]](#footnote-1).
 
     project-root/
-    └── client/
-        ├── common/
-        │   └── ...  # "common" namespace dir content.
-        ├── views/
-        │   ├── create/
-        │   │   └── ...  # "create" view namespace dir content.
-        │   ├── edit/
-        │   │   └── ...  # "edit" view namespace dir content.
-        │   ├── error/
-        │   │   └── ...  # "error" view namespace dir content.
-        │   ├── search/
-        │   │   └── ...  # "search" view namespace dir content.
-        │   └── show/
-        │       ├── components/  # Presentational Components not aware of Redux.
-        │       ├── containers/  # Container Components aware of Redux and subscribing to Redux state.
-        │       │   └── ....
-        │       ├── actions.js  # action creators (always encapsulated inside a duck).
-        │       ├── constants.js  # actions' types and other constants.
-        │       ├── reducer.js
-        │       ├── sagas.js
-        │       ├── selectors.js
-        │       └── tests.js
-        ├── rootReducer.js
-        └── rootSaga.js
+    ├── common/
+    │   └── ...  # "common" namespace dir content.
+    ├── components/  # Editor-wide React Components.
+    │   └── ....
+    ├── views/
+    │   ├── create/
+    │   │   └── ...  # "create" view namespace dir content.
+    │   ├── edit/
+    │   │   └── ...  # "edit" view namespace dir content.
+    │   ├── error/
+    │   │   └── ...  # "error" view namespace dir content.
+    │   ├── search/
+    │   │   └── ...  # "search" view namespace dir content.
+    │   └── show/
+    │       ├── components/  # View-specific Presentational Components not aware of Redux.
+    │       │   └── ....
+    │       ├── actions.js  # action creators (always encapsulated inside a duck).
+    │       ├── constants.js  # actions' types and other constants.
+    │       ├── index.js  # View main Container Component aware of Redux and subscribing to Redux state.
+    │       ├── reducer.js
+    │       ├── sagas.js
+    │       ├── selectors.js
+    │       └── tests.js
+    ├── index.js  # Editor main React Component.
+    ├── rootReducer.js
+    └── rootSaga.js
 
 Every view dir and *common* dir represents a [ducks](https://github.com/erikras/ducks-modular-redux)-complient namespace. All namespaces have similar dir structure (see *show* view for an example).
 

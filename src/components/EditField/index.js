@@ -14,22 +14,26 @@ export default class extends React.Component {  // XXX: Component, not PureCompo
       entry: {
         name: fieldName,
         readOnly,
-        Component: FieldInput
+        Component: FieldInput,
+        valuePropName
       },
       model: {
         data: {
           fieldsMeta,
           fieldsErrors,
-          formInstance: instance
+          formatedInstance: instance
         }
       }
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
-    const errors = fieldsErrors && fieldsErrors[fieldName];
+
+    const errors = fieldsErrors && fieldsErrors[fieldName] && fieldsErrors[fieldName].length ?
+      fieldsErrors[fieldName].map(({ description }) => description).join('; ') :
+      null;
 
     return (
-      <FormGroup controlId={fieldName} validationState={errors ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={errors && 'error'}>
         <Col componentClass={ControlLabel} sm={2}>
           {
             fieldName.charAt(0).toUpperCase() + fieldName.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') +
@@ -41,7 +45,7 @@ export default class extends React.Component {  // XXX: Component, not PureCompo
           <FieldInput
             id={fieldName}
             readOnly={readOnly}
-            value={instance[fieldName]}
+            {...{ [valuePropName]: instance[fieldName] }}
             onBlur={this.handleBlur}
             onChange={this.handleChange}
           />

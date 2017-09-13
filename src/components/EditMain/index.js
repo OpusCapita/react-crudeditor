@@ -11,7 +11,8 @@ const formatEntry = entry => entry.field ? {
     entry: {
       name: entry.field,
       readOnly: entry.readOnly,
-      Component: entry.Component
+      Component: entry.render.Component,
+      valuePropName: entry.render.valueProp.name
     }
   }
 } : {
@@ -28,7 +29,7 @@ export default ({ model }) => {
   return <div>
     <Heading model={model} />
     {ActiveTabComponent ?
-      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.formInstance} /> :
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
       <Tab model={model}>
         {
           model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>

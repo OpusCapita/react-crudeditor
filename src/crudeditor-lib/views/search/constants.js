@@ -3,12 +3,6 @@ import { VIEW_SEARCH } from '../../common/constants';
 export const
   VIEW_NAME = VIEW_SEARCH,
 
-  /*
-   * Value for a field's empty filter (even if the field is of type "string", "boolean", etc.)
-   * => React Component (rendering particular field filter) may want to translate this value into more appropriate for itself.
-   */
-  EMPTY_FILTER_VALUE = undefined,
-
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
@@ -18,6 +12,7 @@ export const
 
   FORM_FILTER_RESET        = VIEW_NAME + '/FORM_FILTER_RESET',
   FORM_FILTER_UPDATE       = VIEW_NAME + '/FORM_FILTER_UPDATE',
+  FORM_FILTER_PARSE        = VIEW_NAME + '/FORM_FILTER_PARSE',
 
   INSTANCES_SEARCH         = VIEW_NAME + '/INSTANCES_SEARCH',
   INSTANCES_SEARCH_FAIL    = VIEW_NAME + '/INSTANCES_SEARCH_FAIL',

@@ -1,6 +1,7 @@
 import {
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
+  FORM_FILTER_PARSE,
   INSTANCES_SEARCH,
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
@@ -36,6 +37,11 @@ export const
       name,
       value
     }
+  }),
+
+  parseFormFilter = name => ({
+    type: FORM_FILTER_PARSE,
+    payload: { name }
   }),
 
   resetFormFilter = _ => ({

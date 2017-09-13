@@ -1,5 +1,4 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import buildFieldComponent from '../../components/DefaultFieldInput';
 import { VIEW_NAME } from './constants';
 
 import { AUDITABLE_FIELDS } from '../../common/constants';
@@ -47,7 +46,9 @@ export const
     ui: uiMeta
   }) => ({
     entityName: modelMeta.name,
+    errors: storeState.errors,
     formFilter: storeState.formFilter,
+    formatedFilter: storeState.formatedFilter,
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset
@@ -55,7 +56,19 @@ export const
     resultFields: uiMeta.search.resultFields,
     resultFilter: storeState.resultFilter,
     resultInstances: storeState.resultInstances,
-    searchableFields: uiMeta.search.searchableFields,
+    searchableFields: uiMeta.search.searchableFields.map(({
+      name,
+      render: {
+        Component,
+        valueProp: {
+          name: valuePropName
+        }
+      }
+    }) => ({
+      name,
+      Component,
+      valuePropName
+    })),
     selectedInstances: storeState.selectedInstances,
     sortParams: {
       field: storeState.sortParams.field,

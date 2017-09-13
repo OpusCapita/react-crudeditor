@@ -5,8 +5,11 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 
-import buildFieldComponent from './components/DefaultFieldInput';
-import { buildFormLayout } from './views/lib';
+import {
+  buildFieldRender,
+  buildFormLayout
+} from './views/lib';
+
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
@@ -71,9 +74,10 @@ function fillDefaults(baseModelDefinition) {
   }
 
   searchMeta.searchableFields.forEach(field => {
-    if (!field.Component) {
-      field.Component = buildFieldComponent(fieldsMeta[field.name].type);
-    }
+    field.render = buildFieldRender({
+      render: field.render,
+      type: fieldsMeta[field.name].type
+    });
   });
 
   if (!modelDefinition.ui.edit) {

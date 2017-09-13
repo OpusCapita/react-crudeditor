@@ -19,7 +19,7 @@ export default class extends React.PureComponent {
     }
   }
 
-  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.formInstance)
+  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
   handleSaveAndNew = _ => this.props.model.actions.saveAndNewInstance()
 
@@ -33,14 +33,11 @@ export default class extends React.PureComponent {
           exitEdit
         },
         data: {
-          formInstance,
           persistentInstance,
           viewName
         }
       }
     } = this.props;
-
-    const isChangedInstance = isEqual(formInstance, persistentInstance);
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
@@ -63,31 +60,24 @@ export default class extends React.PureComponent {
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) && <Button
-                onClick={this.handleSaveAndNew}
-                disabled={isChangedInstance}
-              >
-                Save and New
-              </Button>
+              [VIEW_CREATE, VIEW_EDIT].includes(viewName) &&
+                <Button onClick={this.handleSaveAndNew}>
+                  Save and New
+                </Button>
             }
             {' '}
             {
-              viewName === VIEW_EDIT && <Button
-                onClick={this.handleSaveAndNext}
-                disabled={isChangedInstance}
-              >
-                Save and Next
-              </Button>
+              viewName === VIEW_EDIT &&
+                <Button onClick={this.handleSaveAndNext}>
+                  Save and Next
+                </Button>
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) && <Button
-                bsStyle='primary'
-                type='submit'
-                disabled={isChangedInstance}
-              >
-                Save
-              </Button>
+              [VIEW_CREATE, VIEW_EDIT].includes(viewName) &&
+                <Button bsStyle='primary' type='submit'>
+                  Save
+                </Button>
             }
           </Col>
         </FormGroup>

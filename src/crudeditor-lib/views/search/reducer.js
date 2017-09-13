@@ -5,11 +5,15 @@ import u from 'updeep';
 import { getLogicalKeyBuilder } from '../lib';
 
 import {
+  format as formatField,
+  parse as parseField
+} from '../../../data-types-lib';
+
+import {
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
-  EMPTY_FILTER_VALUE,
-
+  FORM_FILTER_PARSE,
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
 
@@ -27,23 +31,65 @@ import {
 } from './constants';
 
 import {
+  EMPTY_FIELD_VALUE,
+
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_REQUEST,
   INSTANCES_DELETE_SUCCESS,
+
+  UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-export const buildDefaultStoreState = searchMeta => {
+const buildDefaultParsedFilter = searchableFields => searchableFields.reduce(
+  (rez, { name: fieldName }) => ({
+    ...rez,
+    [fieldName]: EMPTY_FIELD_VALUE
+  }),
+  {}
+);
+
+const buildDefaultFormatedFilter = ({
+  model: {
+    fields: fieldsMeta
+  },
+  ui: {
+    search: { searchableFields }
+  }
+}) => searchableFields.reduce(
+  (rez, {
+    name: fieldName,
+    render: {
+      valueProp: {
+        type: targetType
+      }
+    }
+  }) => ({
+    ...rez,
+    [fieldName]: formatField({
+      value: EMPTY_FIELD_VALUE,
+      type: fieldsMeta[fieldName].type,
+      targetType
+    })
+  }),
+  {}
+);
+
+export const buildDefaultStoreState = modelDefinition => {
+  const searchMeta = modelDefinition.ui.search;
+  const fieldsMeta = modelDefinition.model.fields;
   const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
 
   const defaultStoreState = {
-    resultFilter: {},  // Active filter as displayed in Search Result.
-    formFilter: searchMeta.searchableFields.reduce(  // Raw filter as displayed in Search Criteria.
-      (rez, { name }) => ({
-        ...rez,
-        [name]: EMPTY_FILTER_VALUE
-      }),
-      {}
-    ),
+
+    // Active filter as displayed in Search Result.
+    resultFilter: buildDefaultParsedFilter(searchMeta.searchableFields),
+
+    // Raw filter as displayed in Search Criteria.
+    formFilter: buildDefaultParsedFilter(searchMeta.searchableFields),
+
+    // Raw filter as communicated to Search fields React Components.
+    formatedFilter: buildDefaultFormatedFilter(modelDefinition),
+
     sortParams: {
       field: searchMeta.resultFields[sortByDefaultIndex === -1 ? 0 : sortByDefaultIndex].name,
       order: 'asc'
@@ -55,10 +101,14 @@ export const buildDefaultStoreState = searchMeta => {
     resultInstances: undefined,  // XXX: must be undefined until first extraction.
     selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
     totalCount: undefined,
+
+    // object with keys as field names, values as parse error objects.
+    // the object does not have keys for successfully parsed values.
+    errors: {},
+
     status: UNINITIALIZED
   };
 
-  defaultStoreState.resultFilter = cloneDeep(defaultStoreState.formFilter);
   return defaultStoreState;
 }
 
@@ -81,7 +131,7 @@ export default modelDefinition => {
       )
     );
 
-  return (storeState = buildDefaultStoreState(modelDefinition.ui.search), { type, payload, error, meta }) => {
+  return (storeState = buildDefaultStoreState(modelDefinition), { type, payload, error, meta }) => {
     const newStoreStateSlice = {};
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -102,16 +152,33 @@ export default modelDefinition => {
         totalCount
       } = payload;
 
-      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
       newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
+      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+
+      newStoreStateSlice.formatedFilter = u.constant(Object.keys(filter).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: formatField({
+            value: filter[fieldName],
+            type: modelDefinition.model.fields[fieldName].type,
+            targetType: modelDefinition.ui.search.searchableFields.find(
+              ({ name }) => name === fieldName
+            ).render.valueProp.type
+          })
+        }),
+        {}
+      ));
+
       newStoreStateSlice.sortParams = {
         field: sort,
         order
       };
+
       newStoreStateSlice.pageParams = {
         max,
         offset
       };
+
       newStoreStateSlice.totalCount = totalCount;
 
       // XXX: updeep-package does not check arrays for equality.
@@ -149,7 +216,8 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_RESET) {
-      newStoreStateSlice.formFilter = u.constant(buildDefaultStoreState(modelDefinition.ui.search).formFilter);
+      newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
+      newStoreStateSlice.formatedFilter = u.constant(buildDefaultFormatedFilter(modelDefinition));
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -159,9 +227,58 @@ export default modelDefinition => {
         value: fieldValue
       } = payload;
 
-      newStoreStateSlice.formFilter = {
-        [fieldName]: fieldValue || fieldValue === 0 || fieldValue === false ? fieldValue : EMPTY_FILTER_VALUE
-      };
+      newStoreStateSlice.formatedFilter = {
+        [fieldName]: u.constant(fieldValue)
+      }
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === FORM_FILTER_PARSE) {
+      const { name: fieldName } = payload;
+      const fieldType = modelDefinition.model.fields[fieldName].type;
+      const componentType = modelDefinition.ui.search.searchableFields.find(
+        ({ name }) => name === fieldName
+      ).render.valueProp.type;
+
+      try {
+        const newFormValue = parseField({
+          value: storeState.formatedFilter[fieldName],
+          type: fieldType,
+          sourceType: componentType
+        });
+
+        if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
+          newStoreStateSlice.formFilter = {
+            [fieldName]: u.constant(newFormValue)
+          };
+        }
+
+        const newFormatedFilter = formatField({
+          value: newFormValue,
+          type: fieldType,
+          targetType: componentType
+        });
+
+        if (!isEqual(newFormatedFilter, storeState.formatedFilter[fieldName])) {
+          newStoreStateSlice.formatedFilter = {
+            [fieldName]: u.constant(newFormatedFilter)
+          };
+        }
+
+        if (storeState.errors[fieldName]) {
+          newStoreStateSlice.errors = u.omit(fieldName);
+        }
+      } catch(err) {
+        newStoreStateSlice.formFilter = {
+          [fieldName]: UNPARSABLE_FIELD_VALUE
+        };
+
+        if (!isEqual(err, storeState.errors[fieldName])) {
+          newStoreStateSlice.errors = {
+            [fieldName]: err
+          };
+        }
+      }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

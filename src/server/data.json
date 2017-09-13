@@ -32,7 +32,7 @@
     },
     {
       "contractId": "car001",
-      "statusId": "400",
+      "statusId": "0",
       "currencyId": "EUR",
       "description": "Automobile",
       "_objectLabel": "Automobile (car001)",
@@ -152,7 +152,7 @@
     },
     {
       "contractId": "lap001",
-      "statusId": "400",
+      "statusId": null,
       "currencyId": "EUR",
       "description": "Laptops",
       "_objectLabel": "Laptops (lap001)",

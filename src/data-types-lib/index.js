@@ -1,55 +1,142 @@
-import Big from 'big.js';
+import { EMPTY_FIELD_VALUE } from '../crudeditor-lib/common/constants';
 
-const NATURAL = 'natural';
-const WHOLE = 'whole';
-const INTEGER = 'integer';
+import {
+  format as formatNumber,
+  parse as parseNumber,
+  validate as validateNumber
+} from './number';
+
+import {
+  format as formatString,
+  parse as parseString,
+  validate as validateString
+} from './string';
+
 const NUMBER = 'number';
+const STRING = 'string';
+const ERROR_UNKNOWN_CLASSIFICATION = 'unknownTypeError';
+const ERROR_REQUIRED_MISSING = 'requiredMissingError';
 
-export default ({ value, type, constraints }) => {
-  if ([NATURAL, WHOLE, INTEGER].includes(type)) {
-    // value may contain only 0-9 and '.' as a delimiter.
-    let v;
+export const
 
-    try {
-      v = new Big(value);
-    } catch(e) {
-      return {
-        errors: [{
-          id: INVALID_NUMBER,
-          description: 'Invalid number'
-        }]
-      }
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  format = ({
+    value: sourceValue,
+    type: classification,
+    targetType
+  }) => {
+    if (sourceValue === EMPTY_FIELD_VALUE) {
+      return EMPTY_FIELD_VALUE;
     }
 
-    if ([NATURAL, WHOLE, INTEGER].includes(type)) {
-      if (!v.eq(v.round())) {
-        return {
-          errors: [{
-            id: FORBIDDEN_FRACTIONAL_PART,
-            description: 'Fractional part is forbidden'
-          }]
-        };
-      }
+    let formatter;
 
-      if (type === NATURAL && v.lte(0)) {
-        return {
-          errors: [{
-            id: FORBIDDEN_FRACTIONAL_PART,
-            description: 'Fractional part is forbidden'
-          }]
+    switch (classification) {
+      case NUMBER:
+        formatter = formatNumber;
+        break;
+      case STRING:
+        formatter = formatString;
+        break;
+      default:
+        // Skip formating for unknown classifications and return original string value:
+        return sourceValue;
+        /*
+         * Only known classifications are allowed:
+        throw {
+          id: ERROR_UNKNOWN_CLASSIFICATION,
+          description: `Unknown type "${classification}"`
         };
-      }
-
-      if (type === WHOLE && v.lt(0)) {
-        return {
-          errors: [{
-            id: FORBIDDEN_FRACTIONAL_PART,
-            description: 'Fractional part is forbidden'
-          }]
-        };
-      }
+        */
     }
-  }
+    return formatter({
+      value: sourceValue,
+      targetType
+    });
+  },
 
-  return {};
-}
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  parse = ({
+    value: sourceValue,
+    type: classification,
+    sourceType
+  }) => {
+    if (sourceValue === EMPTY_FIELD_VALUE) {
+      return EMPTY_FIELD_VALUE;
+    }
+
+    let parser;
+
+    switch (classification) {
+      case NUMBER:
+        parser = parseNumber;
+        break;
+      case STRING:
+        parser = parseString;
+        break;
+      default:
+        // Skip parsing for unknown classifications and return React Component native value:
+        return sourceValue;
+        /*
+         * Only known classifications are allowed:
+        throw {
+          id: ERROR_UNKNOWN_CLASSIFICATION,
+          description: `Unknown type "${classification}"`
+        };
+        */
+    }
+    return parser({
+      value: sourceValue,
+      sourceType
+    });
+  },
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  validate = ({
+    value,
+    type: classification,
+    constraints: {
+      required,
+      ...constraints
+    }
+  }) => {
+    if (value === EMPTY_FIELD_VALUE) {
+      // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
+      if (required) {  // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+        throw [{
+          id: ERROR_REQUIRED_MISSING,
+          description: 'Required value must be set'
+        }];
+      }
+
+      return true;
+    }
+
+    let validator;
+
+    switch (classification) {
+      case NUMBER:
+        validator = validateNumber;
+        break;
+      case STRING:
+        validator = validateString;
+        break;
+      default:
+        /*
+         * Unknown classifications are ignored:
+         */
+        return true;
+        /*
+         * Only known classifications are allowed:
+        throw [{
+          id: ERROR_REQUIRED_MISSING,
+          description: 'Required value must be set'
+        }];
+        */
+    }
+
+    return validator({ value, constraints });
+  };

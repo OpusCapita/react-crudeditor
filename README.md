@@ -49,14 +49,49 @@ Table of Content
       <li id="external-operation"><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
     </ul>
   </dd>
-  <dt id="persistent-field">Persistent field</dt>
+  <dt id="persistent-field">Persistent Field</dt>
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.</dd>
+  <dt id="composite-field">Composite Field</dt>
+  <dd>In contrast to a <a href="#persistent-field">Persistent field</a>, <i>composite field</i> is not stored on server and represents some combination of <a href="#persistent-field">Persistent fields</a>.  It is only used for displaying an entity instance in Search Result listing.</dd>
   <dt>Auditable field</dt>
-  <dd>One of the following <a href="#persistent-field">Persistent fields</a>:<ul><li>createdBy</li><li>changedBy</li><li>createdOn</li><li>changedOn</li></ul></dd>
+  <dd>One of the following <a href="#persistent-field">Persistent fields</a>:
+    <ul>
+      <li>createdBy</li>
+      <li>changedBy</li>
+      <li>createdOn</li>
+      <li>changedOn</li>
+    </ul>
+  </dd>
   <dt id="store-state">Store State</dt>
   <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
+  <dt>Instance</dt>
+  <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:
+    <ul>
+      <li id="persistent-instance"><i>Persistent Instance</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
+      <br />
+      <li id="form-instance"><i>Form Instance</i> - custom operation which handler is defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
+      <br />
+      <li id="formated-instance"><i>Formated Instance</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
+    </ul>
+    </dd>
+  <dt>Field Type</dt>
+  <dd>Field classification, "string" by default. Standard types are
+    <ul>
+      <li>boolean,</li>
+      <li>date,</li>
+      <li>number,</li>
+      <li>string.</li>
+    </ul>
+    Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    <br />
+    React Components for displaying fields of standard types are predefined.  Rendering of non-standard types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b> properties.
+    <br />
+    <i>Field Type</i> has nothing to do with JavaScript types since field value is always a string; it is to allow correct interpretation of the string.
+  </dd>
+  <dt>Render Component API type</dt>
+  <dd></dd>
 </dl>
 
 ## Usage
@@ -231,22 +266,7 @@ Model Definition is an object describing an entity. It has the following structu
     fields: {
       <field name>: {
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
-
-        /*
-         * Field classification, "string" by default. Standard types are
-         *   - "string",
-         *   - "number",
-         *   - "date",
-         *   - "boolean".
-         * Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
-         * React Components for displaying fields of standard types are predefined.
-         * Rendering of non-standard types fields requires specifying custom React Components
-         * (see FieldInputComponent and FieldRenderComponent) in corresponding sections of Model Definition.
-         *
-         * NOTE: type has nothing to do with JavaScript types since field value is always a string;
-         *       it is to allow correct interpretation of the string.
-         */
-        ?type: <string>,
+        ?type: <string, field type (see "Termonology" section)>,
 
         /*
          * Constraints for field validation.
@@ -488,7 +508,7 @@ Model Definition is an object describing an entity. It has the following structu
                 render: {
                   Component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
-                    ?name: <string, a name of Component's prop with field value, "value" by default>,
+                    ?name: <string, a name of Component prop with field value, "value" by default>,
                     ?type: <string, a type of field value passed to the Component, "string" by default>
                   }
                 }
@@ -596,7 +616,7 @@ onBlur | function | optional | - | Handler called when Component loses focus.<pr
 
 ### FieldRenderComponent
 
-React component for a custom rendering of instance [persistent](#persistent-field)/composite field value in Search Result listing.
+React component for a custom rendering of instance [persistent](#persistent-field)/[composite](#composite-field) field value in Search Result listing.
 
 Props:
 

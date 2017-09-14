@@ -233,20 +233,26 @@ Model Definition is an object describing an entity. It has the following structu
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
 
         /*
-         * Standard field type, "string" by default.
-         * It is used to define a React Component for displaying a field value.
-         * Types other than listed are ignored.
-         * If a field does not hava a standard type and wants to be displayed, custom React
-         * Components (see FieldInputComponent and FieldRenderComponent) must be provided
-         * in corresponding sections of Model Definition.
-         * NOTE: type has nothing to do with JavaScript types, ex. a value of field type "number" may be a string.
+         * Field classification, "string" by default. Standard types are
+         *   - "string",
+         *   - "number",
+         *   - "date",
+         *   - "boolean".
+         * Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
+         * React Components for displaying fields of standard types are predefined.
+         * Rendering of non-standard types fields requires specifying custom React Components
+         * (see FieldInputComponent and FieldRenderComponent) in corresponding sections of Model Definition.
+         *
+         * NOTE: type has nothing to do with JavaScript types since field value is always a string;
+         *       it is to allow correct interpretation of the string.
          */
-        ?type: <"string"|"number"|"date"|"boolean">,
+        ?type: <string>,
 
         /*
          * Constraints for field validation.
          * Their allowed set and tuning parameters of each constraint depend on field type.
-         * They are usually applied during entity instance creation/modification.
+         * Constraints are usually called after field input's "onBlur" event
+         * and before saving instance modifications.
          */
         ?constraints: {
           ?max: <number|date, max length for strings or max value for dates/numbers>,
@@ -257,19 +263,18 @@ Model Definition is an object describing an entity. It has the following structu
           ?url: <boolean>,
 
           /*
-           * Custom field-validator usually called at input's onBlur() event.
-           * When the field-validator is unable even to understand field value, it throws errors array.
+           * Custom field-validator returning boolean true in case of successful validation,
+           * or throwing an array of errors if validation failed.
            */
           validate(<serializable, field value>, <object, entity instance>) {
             ...
-            return {
-              value: <serializable, field value which may be different from the input argument due, ex. to trim>,
-              errors: [{
-                name: <string, error id used by translation service>,
-                message: <string, default error description in English>,
-                ?params: [<serializable, parameter used by error message>, ...]
-              }]
-            };
+            throw [{
+              id: <string, error id used by translation service>,
+              description: <string, default error description in English>,
+              ?params: [<serializable, parameter used by error message>, ...]
+            }, ...];
+            ...
+            return true;
           }
         }
       },
@@ -277,20 +282,25 @@ Model Definition is an object describing an entity. It has the following structu
     },
 
     /*
-     * Custom instance-validator, usually called after "Submit" button press but before sending the instance to the server for save/modify.
+     * Custom instance-validator, usually called after "Submit" button press
+     * but before sending the instance to the server for save/modify.
      * Field-validation is done upon all fields just before calling the instance-validator.
-     * The function may be asyncronous and return a promise.
+     * The function returns boolean true in case of successful validation,
+     * or throws an object with errors if validation failed.
+     * The function may also be asyncronous and return a resolved/rejected promise.
      */
     validate(<object, entity instance>) {
       ...
-      return {  // Error object or null in case of successful validation.
+      throw {
         <field name>: [{
-          name: <string, error id used by translation service>,
-          message: <string, default error description in English>,
+          id: <string, error id used by translation service>,
+          description: <string, default error description in English>,
           ?params: [<serializable, parameter used by error message>, ...]
-        }],
+        }, ...],
         ...
-      };
+      }
+      ...
+      return true;
     }
   },
 
@@ -397,7 +407,7 @@ Model Definition is an object describing an entity. It has the following structu
           ?render: {
             Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
             ?valueProp: {
-              ?name: <string, a name of Component's prop with field value, "value" by default>,
+              ?name: <string, a name of Component prop with field value, "value" by default>,
               ?type: <string, a type of field value passed to the Component, "string" by default>
             }
           }

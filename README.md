@@ -612,7 +612,7 @@ Model Definition is an object describing an entity. It has the following structu
 
 ### FieldInputComponent
 
-Custom React component for rendering [Formated Instance](#formated-instance) field in Search Form or Create/Edit/Show Form.
+Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.
 
 Props:
 
@@ -626,7 +626,7 @@ onBlur | function | optional | - | Handler called when Component loses focus.<pr
 
 ### FieldRenderComponent
 
-Custom React component for rendering [Formated Instance](#formated-instance) [persistent](#persistent-field)/[composite](#composite-field) field value in Search Result listing.
+Custom React component for rendering [Formated Instance](#formated-instance)'s [persistent](#persistent-field)/[composite](#composite-field) field value in Search Result listing.
 
 Props:
 

@@ -438,7 +438,7 @@ Model Definition is an object describing an entity. It has the following structu
             Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
             ?valueProp: {
               ?name: <string, a name of Component prop with field value, "value" by default>,
-              ?type: <string, a type of field value passed to the Component, "string" by default>
+              ?type: <string, Component API Type (see corresponding "Terminology" section)>
             }
           }
         }, ...],
@@ -507,7 +507,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: <function, FieldInputComponent>,
                   ?valueProp: {
                     ?name: <string, a name of Component's prop with field value, "value" by default>,
-                    ?type: <string, a type of field value passed to the Component, "string" by default>
+                    ?type: <string, Component API Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -519,7 +519,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
                     ?name: <string, a name of Component prop with field value, "value" by default>,
-                    ?type: <string, a type of field value passed to the Component, "string" by default>
+                    ?type: <string, Component API Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -532,7 +532,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, a type of field value passed to the Component, "string" by default>
+                  ?type: <string, Component API Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -546,7 +546,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, a type of field value passed to the Component, "string" by default>
+                  ?type: <string, Component API Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -559,7 +559,7 @@ Model Definition is an object describing an entity. It has the following structu
               Component: <function, FieldInputComponent>,
               ?valueProp: {
                 ?name: <string, a name of Component's prop with field value, "value" by default>,
-                ?type: <string, a type of field value passed to the Component, "string" by default>
+                ?type: <string, Component API Type (see corresponding "Terminology" section)>
               }
             }
           }),
@@ -612,7 +612,7 @@ Model Definition is an object describing an entity. It has the following structu
 
 ### FieldInputComponent
 
-React component for a custom rendering of entity instance field in Search Form or Create/Edit/Show Form.
+Custom React component for rendering [Formated Instance](#formated-instance) field in Search Form or Create/Edit/Show Form.
 
 Props:
 
@@ -620,13 +620,13 @@ Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 id | string | optional | - | ID of DOM element which must be focused on label click
 readOnly | boolean | optional | false | Wheter field value can be changed
-value | serializable | mandatory | - | [Persistent field](#persistent-field) value
+value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [Component API Type](#component-api-type)
 onChange | function | mandatory | - | Handler called when Component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when Component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
 ### FieldRenderComponent
 
-React component for a custom rendering of instance [persistent](#persistent-field)/[composite](#composite-field) field value in Search Result listing.
+Custom React component for rendering [Formated Instance](#formated-instance) [persistent](#persistent-field)/[composite](#composite-field) field value in Search Result listing.
 
 Props:
 

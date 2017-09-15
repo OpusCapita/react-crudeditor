@@ -66,17 +66,7 @@ Table of Content
   <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
-  <dt>Instance</dt>
-  <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:
-    <ul>
-      <li id="persistent-instance"><i>Persistent Instance</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
-      <br />
-      <li id="form-instance"><i>Form Instance</i> - custom operation which handler is defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
-      <br />
-      <li id="formated-instance"><i>Formated Instance</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
-    </ul>
-    </dd>
-  <dt>Field Type</dt>
+  <dt id="field-type">Field Type</dt>
   <dd>Field classification, "string" by default. Standard types are
     <ul>
       <li>boolean,</li>
@@ -85,13 +75,21 @@ Table of Content
       <li>string.</li>
     </ul>
     Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
-    <br />
+    <br /><br />
     React Components for displaying fields of standard types are predefined.  Rendering of non-standard types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b> properties.
-    <br />
+    <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types since field value is always a string; it is to allow correct interpretation of the string.
   </dd>
-  <dt>Render Component API type</dt>
-  <dd></dd>
+  <dt id="component-api-type">Component API Type</dt>
+  <dd>Type a field value must be converted to/from for communication with React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>Component API Type</i> before sending to a React Component, and parsed from the <i>Component API Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.</dd>
+  <dt>Instance</dt>
+  <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:
+    <ul>
+      <li id="persistent-instance"><i>Persistent Instance</i> - an instance as stored on server.</li>
+      <li id="form-instance"><i>Form Instance</i> - an instance as displayed in Search/Create/Show/Edit Form.  It is distint from <a href="#persistent-instance">Persistent Instance</a> when a user modified the instance but has not saved changes yet.</li>
+      <li id="formated-instance"><i>Formated Instance</i> - <a href="#form-instance">Form Instance</a> with field values formated to <a href="#component-api-type">Component API Type</a>.</li>
+    </ul>
+    </dd>
 </dl>
 
 ## Usage
@@ -266,7 +264,7 @@ Model Definition is an object describing an entity. It has the following structu
     fields: {
       <field name>: {
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
-        ?type: <string, field type (see "Termonology" section)>,
+        ?type: <string, field type (see corresponding "Terminology" section)>,
 
         /*
          * Constraints for field validation.

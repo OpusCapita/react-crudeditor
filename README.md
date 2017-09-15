@@ -80,6 +80,8 @@ Table of Content
     React Components for displaying fields of standard types are predefined.  Rendering of non-standard types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types since field value is always a string; it is to allow correct interpretation of the string.
+    <br />
+    <br />
     <i>Field Types</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.
   </dd>
   <dt id="component-api-type">Component API Type</dt>
@@ -90,7 +92,7 @@ Table of Content
     <i>Component API Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
     <br/>
     <br/>
-    <i>Component API Types</i> are defined in render.valueProp.type of searchableFields and formLayout (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
+    <i>Component API Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
   </dd>
   <dt>Instance</dt>
   <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:

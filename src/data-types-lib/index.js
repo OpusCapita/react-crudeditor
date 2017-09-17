@@ -1,107 +1,178 @@
-import { EMPTY_FIELD_VALUE } from '../crudeditor-lib/common/constants';
+import isEqual from 'lodash/isEqual';
+
+import componentApiTypes from './componentApiTypes';
+import fieldTypes from './fieldTypes';
 
 import {
-  format as formatNumber,
-  parse as parseNumber,
-  validate as validateNumber
-} from './number';
+  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_STRING,
 
-import {
-  format as formatString,
-  parse as parseString,
-  validate as validateString
-} from './string';
+  EMPTY_FIELD_VALUE,
 
-const NUMBER = 'number';
-const STRING = 'string';
-const ERROR_UNKNOWN_CLASSIFICATION = 'unknownTypeError';
-const ERROR_REQUIRED_MISSING = 'requiredMissingError';
+  ERROR_REQUIRED_MISSING,
+  ERROR_UNKNOWN_CONSTRAINT,
+  ERROR_UNKNOWN_COMPONENT_API_TYPE,
+  ERROR_UNKNOWN_FIELD_TYPE
+} from './constants';
 
 export const
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+   *
+   * Input value is of fieldType.
+   * Ouput is the input value converted to componentApiType.
+   * An error is thrown in case of conversion failure.
+   */
 
   format = ({
-    value: sourceValue,
-    type: classification,
-    targetType
+    value,
+    type: fieldType,
+    targetType: componentApiType,
+
+    /*
+     * boolean, false by default, which means forwarding a value if
+     * (1) input Component API Type is inknown,
+     * or
+     * (2) input Field Type is unknown,
+     * or
+     * (3) input Component API Type is unknown to the Field Type's formatter.
+     */
+    throwOnUnknownType = false
   }) => {
-    if (sourceValue === EMPTY_FIELD_VALUE) {
-      return EMPTY_FIELD_VALUE;
-    }
-
-    let formatter;
-
-    switch (classification) {
-      case NUMBER:
-        formatter = formatNumber;
-        break;
-      case STRING:
-        formatter = formatString;
-        break;
-      default:
-        // Skip formating for unknown classifications and return original string value:
-        return sourceValue;
-        /*
-         * Only known classifications are allowed:
+    if (!fieldTypes[fieldType]) {
+      if (throwOnUnknownType) {
         throw {
-          id: ERROR_UNKNOWN_CLASSIFICATION,
-          description: `Unknown type "${classification}"`
+          id: ERROR_UNKNOWN_FIELD_TYPE,
+          description: `Unknown Field Type "${fieldType}"`
         };
-        */
+      }
+
+      return value;  // forward value of unknown Field Type.
     }
-    return formatter({
-      value: sourceValue,
-      targetType
-    });
+
+    if (!fieldTypes[fieldType].isValid(value)) {
+      throw {
+        id: ERROR_INVALID_FIELD_TYPE_VALUE,
+        description: `Invalid value "${value}" of Field Type "${fieldType}"`
+      };
+    }
+
+    if (!componentApiTypes[componentApiType]) {
+      if (throwOnUnknownType) {
+        throw {
+          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
+          description: `Unknown Target Type "${componentApiType}"`
+        };
+      }
+
+      return value;  // forward value of unknown Component API Type.
+    }
+
+    if (value === EMPTY_FIELD_VALUE && componentApiTypes[componentApiType].hasOwnProperty('EMPTY_VALUE')) {
+        return componentApiTypes[componentApiType].EMPTY_VALUE;
+    }
+
+    const formatter = fieldTypes[fieldType].formatter;
+
+    if (!formatter[componentApiType]) {
+      if (throwOnUnknownType) {
+        throw {
+          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
+          description: `Unknown Target Type "${componentApiType}" for the formatter`
+        };
+      }
+
+      return value;  // forward value when Component API Type is unknown to Field Type's formatter.
+    }
+
+    return formatter[componentApiType](value);
   },
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
+  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+   *
+   * Input value is of componentApiType.
+   * Output is value converted to fieldType.
+   * An error is thrown in case of conversion failure.
+   */
   parse = ({
-    value: sourceValue,
-    type: classification,
-    sourceType
+    value,
+    type: fieldType,
+    sourceType: componentApiType,
+
+    /*
+     * boolean, false by default, which means forwarding a value if
+     * (1) input Component API Type is inknown,
+     * or
+     * (2) input Field Type is unknown,
+     * or
+     * (3) input Component API Type is unknown to the Field Type's parser.
+     */
+    throwOnUnknownType = false
   }) => {
-    if (sourceValue === EMPTY_FIELD_VALUE) {
+    if (!componentApiTypes[componentApiType]) {
+      if (throwOnUnknownType) {
+        throw {
+          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
+          description: `Unknown Source Type "${componentApiType}"`
+        };
+      }
+
+      return value;  // forward value of unknown Component API Type.
+    }
+
+    if (!componentApiTypes[componentApiType].isValid(value)) {
+      throw {
+        id: ERROR_INVALID_COMPONENT_API_TYPE_VALUE,
+        description: `Invalid value "${value}" of Source Type "${componentApiType}"`
+      };
+    }
+
+    if (componentApiTypes[componentApiType].isEmpty(value)) {
       return EMPTY_FIELD_VALUE;
     }
 
-    let parser;
-
-    switch (classification) {
-      case NUMBER:
-        parser = parseNumber;
-        break;
-      case STRING:
-        parser = parseString;
-        break;
-      default:
-        // Skip parsing for unknown classifications and return React Component native value:
-        return sourceValue;
-        /*
-         * Only known classifications are allowed:
+    if (!fieldTypes[fieldType]) {
+      if (throwOnUnknownType) {
         throw {
-          id: ERROR_UNKNOWN_CLASSIFICATION,
-          description: `Unknown type "${classification}"`
+          id: ERROR_UNKNOWN_FIELD_TYPE,
+          description: `Unknown Field Type "${fieldType}"`
         };
-        */
+      }
+
+      return value;  // forward value of unknown Field Type.
     }
-    return parser({
-      value: sourceValue,
-      sourceType
-    });
+
+    const parser = fieldTypes[fieldType].parser;
+
+    if (!parser[componentApiType]) {
+      if (throwOnUnknownType) {
+        throw {
+          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
+          description: `Unknown Source Type "${componentApiType}" for the parser`
+        };
+      }
+
+      return value;  // forward value when Component API Type is unknown to the Field Type's parser.
+    }
+
+    return parser[componentApiType](value);
   },
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
+  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+   *
+   * Input value is of fieldType (output of parse-function).
+   * Output is true in case of successful validation.
+   * An array of errors is thrown in case of validation failure.
+   */
   validate = ({
     value,
-    type: classification,
+    type: fieldType,
     constraints: {
       required,
       ...constraints
-    }
+    },
+    throwOnUnknownType = false
   }) => {
     if (value === EMPTY_FIELD_VALUE) {
       // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
@@ -115,28 +186,50 @@ export const
       return true;
     }
 
-    let validator;
+    let buildValidator;
 
-    switch (classification) {
-      case NUMBER:
-        validator = validateNumber;
+    switch (fieldType) {
+      case FIELD_TYPE_NUMBER:
+        buildValidator = buildNumberValidator;
         break;
-      case STRING:
-        validator = validateString;
+      case FIELD_TYPE_STRING:
+        buildValidator = buildStringValidator;
         break;
       default:
-        /*
-         * Unknown classifications are ignored:
-         */
-        return true;
-        /*
-         * Only known classifications are allowed:
-        throw [{
-          id: ERROR_REQUIRED_MISSING,
-          description: 'Required value must be set'
-        }];
-        */
+        if (throwOnUnknownType) {
+          throw [{
+            id: ERROR_UNKNOWN_FIELD_TYPE,
+            description: `Unknown Field Type "${fieldType}"`
+          }];
+        }
+
+        return true;  // ignore unknown Field Type.
     }
 
-    return validator({ value, constraints });
+    const validator = buildValidator(value);
+
+    const errors = Object.keys(constraints).reduce(
+      (errors, name) => {
+        if (!validator.hasOwnProperty(name)) {
+          return [...errors, {
+            id: ERROR_UNKNOWN_CONSTRAINT,
+            description: `Unable to validate against unknown constraint "${name}"`
+          }];
+        }
+
+        try {
+          validator[name](constraints[name]);
+          return errors;
+        } catch(err) {
+          return [...errors, err];
+        }
+      },
+      []
+    );
+
+    if (errors.length) {
+      throw errors;
+    }
+
+    return true;
   };

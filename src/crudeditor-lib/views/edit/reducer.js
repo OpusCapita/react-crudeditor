@@ -183,13 +183,13 @@ export default modelDefinition => (
     } else if (type === INSTANCE_FIELD_VALIDATE) {
       const { name: fieldName } = payload;
       const fieldMeta = modelDefinition.model.fields[fieldName];
-      const componentType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
+      const componentApiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
       try {
         const newFormValue = parseField({
           value: storeState.formatedInstance[fieldName],
           type: fieldMeta.type,
-          sourceType: componentType
+          sourceType: componentApiType
         });
 
         if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
@@ -201,7 +201,7 @@ export default modelDefinition => (
         const newFormatedValue = formatField({
           value: newFormValue,
           type: fieldMeta.type,
-          targetType: componentType
+          targetType: componentApiType
         });
 
         if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {

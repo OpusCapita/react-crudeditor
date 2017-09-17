@@ -90,7 +90,7 @@ export default {
           'min': 0,
           'max': 999999999,
           'integer': true,
-          'required': false
+          'required': true
         }
       }
     }

@@ -7,23 +7,27 @@ import {
   VIEW_SHOW
 } from '../common/constants';
 
+import {
+  FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_DATE,
+  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_STRING
+} from '../../data-types-lib/constants';
+
 const defaultFieldRenders = {
-  'boolean': {
+  [FIELD_TYPE_BOOLEAN]: {
     Component: FieldBoolean,
     valueProp: {
       type: 'boolean'
     }
   },
-  'date': {
+  [FIELD_TYPE_DATE]: {
     Component: FieldString
   },
-  'number': {
-    Component: FieldString,
-    valueProp: {
-      type: 'number'
-    }
+  [FIELD_TYPE_NUMBER]: {
+    Component: FieldString
   },
-  'string': {
+  [FIELD_TYPE_STRING]: {
     Component: FieldString
   }
 };

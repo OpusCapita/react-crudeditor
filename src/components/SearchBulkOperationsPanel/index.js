@@ -2,12 +2,13 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
+import './SearchBulkOperationsPanel.less';
 
 export default class extends React.PureComponent {
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
 
   render = _ =>
-    <div className='navbar navbar-default navbar-sm'>
+    <div className='crud---search-bulk-operations-panel navbar navbar-default navbar-sm'>
       <div className='navbar-form pull-left'>
         <ConfirmDialog
           trigger='click'

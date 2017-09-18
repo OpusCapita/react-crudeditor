@@ -49,10 +49,8 @@ export default class extends React.PureComponent {
         controlId={`fg-${name}`}
         validationState={errors[name] ? 'error' : null}
         >
-        <Col componentClass={ControlLabel} sm={2}>
-          {name}
-        </Col>
-        <Col sm={4}>
+        <Col xs={12}>
+          <label>{name}</label>
           <Component
             {...{ [valuePropName]: formatedFilter[name] }}
             onChange={this.handleFormFilterUpdate(name)}

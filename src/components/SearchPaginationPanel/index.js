@@ -20,7 +20,7 @@ export default class extends React.PureComponent {
     } = this.props.model.data;
 
     return (
-      <div>
+      <div className="crud--search-pagination-panel clearfix">
         <div className='pull-right paginate'>
           <Dropdown
             id='max-dropdown'

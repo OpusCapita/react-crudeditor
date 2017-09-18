@@ -39,7 +39,8 @@
     "updeep": "1.0.0"
   },
   "devDependencies": {
-    "@opuscapita/styles": "1.1.1",
+    "@opuscapita/react-navigation": "0.0.17",
+    "@opuscapita/styles": "1.0.0",
     "autoprefixer": "7.1.2",
     "babel-cli": "6.24.1",
     "babel-core": "6.25.0",
@@ -65,9 +66,11 @@
     "nodemon": "1.11.0",
     "postcss-loader": "2.0.6",
     "precss": "2.0.0",
+    "raw-loader": "^0.5.1",
     "react-hot-loader": "3.0.0-beta.7",
     "sinon": "^2.4.1",
     "style-loader": "0.18.2",
+    "svg-icons": "1.0.13",
     "webpack": "3.4.1",
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "2.18.2"

@@ -41,10 +41,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.(css|less)$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'less-loader', options: { sourceMap: true } },
           { loader: 'postcss-loader', options: {
             plugins: (loader) => [
               require('precss')(),

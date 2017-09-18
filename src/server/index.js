@@ -30,6 +30,8 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use('/styles', express.static(path.resolve(__dirname, '../../node_modules/@opuscapita/styles/dist/npm')));
+
 app.use(bodyParser.json());
 
 if (FAKE_RESPONSE_TIMEOUT) {

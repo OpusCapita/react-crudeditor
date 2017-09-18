@@ -4,6 +4,7 @@ import React from 'react';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
+import './SearchResultListing.less';
 
 export default class extends React.PureComponent {
   handleNewInstances = instances => {
@@ -60,11 +61,12 @@ export default class extends React.PureComponent {
     } = this.props.model.data;
 
     return (
-      <Table responsive={true} condensed={true}>
+      <Table responsive={true} condensed={true} className="oc-search-result-listing">
         <thead>
           <tr>
             <th>
-              <Checkbox
+              <input
+		type="checkbox"
                 checked={selectedInstances.length === instances.length && instances.length !== 0}
                 onChange={this.handleToggleSelectedAll}
               />
@@ -74,9 +76,9 @@ export default class extends React.PureComponent {
               <th key={`th-${name}`}>
                 {
                   sortable ?
-                    <Button bsStyle='link' onClick={this.handleResort(name)}>
+                    <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
                       { name }
-                      { sortField === name && <Glyphicon glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
+                      { sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
                     </Button> :
                     name
                 }
@@ -111,8 +113,8 @@ export default class extends React.PureComponent {
               </td>
             )}
 
-            <td className='text-right'>
-              <ButtonGroup bsSize='sm'>
+            <td className="text-right">
+              <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
                 <Button onClick={this.handleEdit(instance)}>
                   <Glyphicon glyph='edit' />
                   {' '}

@@ -15,6 +15,14 @@ import {
 
 import { EMPTY_FIELD_VALUE } from '../../common/constants';
 
+const cleanFilter = filter => Object.keys(filter).reduce(
+  (rez, name) => filter[name] === EMPTY_FIELD_VALUE ? rez : {
+    ...(rez || {}),
+    [name]: filter[name]
+  },
+  undefined
+);
+
 /*███████████████████*\
  *███ WORKER SAGA ███*
 \*███████████████████*/
@@ -85,7 +93,7 @@ export function* onInstancesSearch(modelDefinition, {
     offset = offset || defaultOffset;
 
     if (
-      isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) &&
+      isEqual(cleanFilter(filter), cleanFilter(currentFilter)) &&
       sort === currentSort &&
       order === currentOrder &&
       max === currentMax &&
@@ -106,7 +114,7 @@ export function* onInstancesSearch(modelDefinition, {
     offset = sort === currentSort &&
       order === currentOrder &&
       max === currentMax &&
-      isEqual(JSON.parse(JSON.stringify(filter)), JSON.parse(JSON.stringify(currentFilter))) ?
+      isEqual(cleanFilter(filter), cleanFilter(currentFilter)) ?
         (offset || offset === 0 ? offset : currentOffset) :
         0;
   }
@@ -118,9 +126,7 @@ export function* onInstancesSearch(modelDefinition, {
 
   try {
     const { instances, totalCount } = yield call(modelDefinition.api.search, {
-      filter: filter && Object.keys(filter).every(field => filter[field] === EMPTY_FIELD_VALUE) ?
-        undefined :  // this option is also triggered when filter === {}
-        filter,
+      filter: cleanFilter(filter),
       sort,
       order,
       max,

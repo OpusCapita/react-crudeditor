@@ -4,15 +4,19 @@ import componentApiTypes from './componentApiTypes';
 import fieldTypes from './fieldTypes';
 
 import {
-  FIELD_TYPE_NUMBER,
-  FIELD_TYPE_STRING,
-
   EMPTY_FIELD_VALUE,
+
+  ERROR_CODE_FORMATING,
+  ERROR_CODE_PARSING,
+  ERROR_CODE_VALIDATION,
 
   ERROR_REQUIRED_MISSING,
   ERROR_UNKNOWN_CONSTRAINT,
   ERROR_UNKNOWN_COMPONENT_API_TYPE,
-  ERROR_UNKNOWN_FIELD_TYPE
+  ERROR_UNKNOWN_FIELD_TYPE,
+
+  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_STRING
 } from './constants';
 
 export const
@@ -42,8 +46,9 @@ export const
     if (!fieldTypes[fieldType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_FIELD_TYPE,
-          description: `Unknown Field Type "${fieldType}"`
+          message: `Unknown Field Type "${fieldType}"`
         };
       }
 
@@ -52,16 +57,18 @@ export const
 
     if (!fieldTypes[fieldType].isValid(value)) {
       throw {
+        code: ERROR_CODE_FORMATING,
         id: ERROR_INVALID_FIELD_TYPE_VALUE,
-        description: `Invalid value "${value}" of Field Type "${fieldType}"`
+        message: `Invalid value "${value}" of Field Type "${fieldType}"`
       };
     }
 
     if (!componentApiTypes[componentApiType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          description: `Unknown Target Type "${componentApiType}"`
+          message: `Unknown Target Type "${componentApiType}"`
         };
       }
 
@@ -77,8 +84,9 @@ export const
     if (!formatter[componentApiType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          description: `Unknown Target Type "${componentApiType}" for the formatter`
+          message: `Unknown Target Type "${componentApiType}" for the formatter`
         };
       }
 
@@ -113,8 +121,9 @@ export const
     if (!componentApiTypes[componentApiType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          description: `Unknown Source Type "${componentApiType}"`
+          message: `Unknown Source Type "${componentApiType}"`
         };
       }
 
@@ -123,8 +132,9 @@ export const
 
     if (!componentApiTypes[componentApiType].isValid(value)) {
       throw {
+        code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_COMPONENT_API_TYPE_VALUE,
-        description: `Invalid value "${value}" of Source Type "${componentApiType}"`
+        message: `Invalid value "${value}" of Source Type "${componentApiType}"`
       };
     }
 
@@ -135,8 +145,9 @@ export const
     if (!fieldTypes[fieldType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_FIELD_TYPE,
-          description: `Unknown Field Type "${fieldType}"`
+          message: `Unknown Field Type "${fieldType}"`
         };
       }
 
@@ -148,8 +159,9 @@ export const
     if (!parser[componentApiType]) {
       if (throwOnUnknownType) {
         throw {
+          code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          description: `Unknown Source Type "${componentApiType}" for the parser`
+          message: `Unknown Source Type "${componentApiType}" for the parser`
         };
       }
 
@@ -176,44 +188,39 @@ export const
   }) => {
     if (value === EMPTY_FIELD_VALUE) {
       // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
-      if (required) {  // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+      // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+      if (required) {
         throw [{
+          code: ERROR_CODE_VALIDATION,
           id: ERROR_REQUIRED_MISSING,
-          description: 'Required value must be set'
+          message: 'Required value must be set'
         }];
       }
 
       return true;
     }
 
-    let buildValidator;
+    if (!fieldTypes[fieldType]) {
+      if (throwOnUnknownType) {
+        throw {
+          code: ERROR_CODE_VALIDATION,
+          id: ERROR_UNKNOWN_FIELD_TYPE,
+          message: `Unknown Field Type "${fieldType}"`
+        };
+      }
 
-    switch (fieldType) {
-      case FIELD_TYPE_NUMBER:
-        buildValidator = buildNumberValidator;
-        break;
-      case FIELD_TYPE_STRING:
-        buildValidator = buildStringValidator;
-        break;
-      default:
-        if (throwOnUnknownType) {
-          throw [{
-            id: ERROR_UNKNOWN_FIELD_TYPE,
-            description: `Unknown Field Type "${fieldType}"`
-          }];
-        }
-
-        return true;  // ignore unknown Field Type.
+      return true;  // skip validation of unknown Field Type.
     }
 
-    const validator = buildValidator(value);
+    const validator = fieldTypes[fieldType].buildValidator(value);
 
     const errors = Object.keys(constraints).reduce(
       (errors, name) => {
         if (!validator.hasOwnProperty(name)) {
           return [...errors, {
+            code: ERROR_CODE_VALIDATION,
             id: ERROR_UNKNOWN_CONSTRAINT,
-            description: `Unable to validate against unknown constraint "${name}"`
+            message: `Unable to validate against unknown constraint "${name}"`
           }];
         }
 

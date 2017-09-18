@@ -1,6 +1,7 @@
 import Big from 'big.js';
 
 import {
+  ERROR_CODE_PARSING,
   EMPTY_FIELD_VALUE,
   ERROR_INVALID_NUMBER
 } from '../../constants';
@@ -32,8 +33,9 @@ export default {
       return new Big(optimized).toString();
     } catch(err) {
       throw {
+        code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_NUMBER,
-        description: 'Invalid number'
+        message: 'Invalid number'
       };
     }
   }

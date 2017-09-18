@@ -18,7 +18,7 @@ Table of Content
     * [doTransition](#dotransition)
 - [Redux Store](#redux-store)
     * [State Structure](#state-structure)
-    * [Validation Error](#validation-error)
+    * [Parsing Error and Field/Instance Validation Error](#validation-error)
     * [Internal Error](#internal-error)
 - [*model* Property](#model-property)
     * [Search View *model* Property](#search-view-model-property)
@@ -298,11 +298,7 @@ Model Definition is an object describing an entity. It has the following structu
            */
           validate(<serializable, field value>, <object, entity instance>) {
             ...
-            throw [{
-              id: <string, error id used by translation service>,
-              description: <string, default error description in English>,
-              ?params: [<serializable, parameter used by error message>, ...]
-            }, ...];
+            throw [<Field Validation Error>, ...];
             ...
             return true;
           }
@@ -321,14 +317,7 @@ Model Definition is an object describing an entity. It has the following structu
      */
     validate(<object, entity instance>) {
       ...
-      throw {
-        <field name>: [{
-          id: <string, error id used by translation service>,
-          description: <string, default error description in English>,
-          ?params: [<serializable, parameter used by error message>, ...]
-        }, ...],
-        ...
-      }
+      throw [<Instance Validation Error>, ...];
       ...
       return true;
     }
@@ -711,7 +700,15 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
       formFilter: {
         <field name>: <serializable, filter value for the field>,
         ...
-      }
+      },
+
+      /*
+       * raw filter as communicated to React Components rendering Search fields
+       */
+      formatedFilter: {
+        <field name>: <serializable, filter value for the field formated to corresponding Component API Type>,
+        ...
+      },
 
       sortParams: {
         field: <string, sort field name>,
@@ -730,20 +727,45 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
         ...
       ],
       totalCount: <whole number, total number of filtered entity instances>,
-      status: <"uninitialized"|"ready"|"searching"|"deleting", search view status>
+      status: <"uninitialized"|"ready"|"searching"|"deleting", search view status>,
+
+      /*
+       * Parsing and Internal Errors -- see relevant subheadings
+       * (all other errors are displayed on "error" view)
+       */
+      errors: {
+        fields: {
+          <field name>: <Parsing Error>,
+          ...
+        },
+        general: [
+          <Internal Error>,
+          ...
+        ]
+      }
     },
     create: {
-      instance: {
+      formInstance: {
         <field name>: <serializable, field value>,
+        ...
+      },
+      formatedInstance: {
+        <field name>: <serializable, field value formated to corresponding Component API Type>,
         ...
       },
       status: <"ready"|"saving">
 
       /*
-       * validation or internal error
+       * Parsing, Field/Instance Validation and Internal Errors -- see relevant subheadings
        * (all other errors are displayed on "error" view)
        */
-      error: <Validation Error|Internal Error>,  // See relevant subheadings.
+      errors: {
+        fields: {
+          <field name>: [<Parsing Error or Field Validation Error>, ...],
+          ...
+        },
+        general: [<Instance Validation Error or Internal Error>, ...]
+      }
     },
     edit: {
 
@@ -760,6 +782,14 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
        */
       formInstance: {
         <field name>: <serializable, field value>,
+        ...
+      },
+
+      /*
+       * raw instance as communicated to React Components rendering Edit Form fields
+       */
+      formatedInstance: {
+        <field name>: <serializable, field value formated to corresponding Component API Type>,
         ...
       },
 
@@ -808,10 +838,16 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
       status: <"uninitialized"|"ready"|"extracting", edit view status>
 
       /*
-       * validation or internal error
+       * Parsing, Field/Instance Validation and Internal Errors -- see relevant subheadings
        * (all other errors are displayed on "error" view)
        */
-      error: <Validation Error|Internal Error>  // See relevant subheadings.
+      errors: {
+        fields: {
+          <field name>: [<Parsing Error or Field Validation Error>, ...],
+          ...
+        },
+        general: [<Instance Validation Error or Internal Error>, ...]
+      }
     },
     show: {
       instance: {
@@ -830,17 +866,13 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 }
 ```
 
-### Validation Error
+### Parsing Error and Field/Instance Validation Error
 
 ```javascript
 {
   code: 400,
-  payload: {
-    <field name>: [{
-      code: <natural number, error code>,
-      ?message: <string, error message>
-    }, ...]
-  }
+  id: <string, error id used by translation service>,
+  message: <string, default error message in English>
 }
 ```
 
@@ -849,7 +881,8 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 ```javascript
 {
   code: 500,
-  ?payload: <string, error message>
+  id: <string, error id used by translation service>,
+  message: <string, default error message in English>
 }
 ```
 
@@ -885,6 +918,7 @@ Every view passes *model* property to external React Components it uses.  The pr
   data: {
     entityName: <Model Definition>.model.name,
     formFilter: state.formFilter,
+    formatedFilter: state.formatedFilter,
     pageParams: {
       max: state.pageParams.max,
       offset: state.pageParams.offset
@@ -990,9 +1024,10 @@ Every view passes *model* property to external React Components it uses.  The pr
     activeEntries: state.activeTab || state.formLayout,
     activeTab: state.activeTab,
     entityName: <Model Definition>.model.name,
-    formInstance: state.formInstance,
-    fieldsErrors: state.errors,
+    formatedInstance: state.formatedInstance,
+    fieldsErrors: state.errors.fields,
     fieldsMeta: <Model Definition>.model.fields,
+    generalErrors: storeState.errors.general,
     instanceLabel: state.instanceLabel,
     persistentInstance: state.persistentInstance,
 

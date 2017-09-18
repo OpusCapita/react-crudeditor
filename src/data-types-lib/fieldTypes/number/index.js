@@ -10,6 +10,8 @@ import {
 
   EMPTY_FIELD_VALUE,
 
+  ERROR_CODE_VALIDATION,
+
   ERROR_FORBIDDEN_FRACTIONAL_PART,
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
@@ -61,8 +63,9 @@ export default {
        * param is boolean.
        */
       [CONSTRAINT_INTEGER]: param => !param || value.eq(value.round()) || throwErr({
+        code: ERROR_CODE_VALIDATION,
         id: ERROR_FORBIDDEN_FRACTIONAL_PART,
-        description: 'Fractional part is forbidden'
+        message: 'Fractional part is forbidden'
       }),
 
       /*
@@ -70,8 +73,9 @@ export default {
        * param is number|string|Big.
        */
       [CONSTRAINT_MIN]: param => value.gte(param) || throwErr({
+        code: ERROR_CODE_VALIDATION,
         id: ERROR_MIN_DECEEDED,
-        description: `Min ${param} is deceeded`
+        message: `Min ${param} is deceeded`
       }),
 
       /*
@@ -79,8 +83,9 @@ export default {
        * param is number|string|Big.
        */
       [CONSTRAINT_MAX]: param => value.lte(param) || throwErr({
+        code: ERROR_CODE_VALIDATION,
         id: ERROR_MAX_EXCEEDED,
-        description: `Max ${param} is exceeded`
+        message: `Max ${param} is exceeded`
       })
     };
   }

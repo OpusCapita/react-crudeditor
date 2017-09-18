@@ -7,6 +7,8 @@ import {
 
   EMPTY_FIELD_VALUE,
 
+  ERROR_CODE_VALIDATION,
+
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
@@ -37,8 +39,9 @@ export default {
      * param is a number.
      */
     [CONSTRAINT_MIN]: param => value.length >= param || throwErr({
+      code: ERROR_CODE_VALIDATION,
       id: ERROR_MIN_DECEEDED,
-      description: `Min length ${param} is deceeded`
+      message: `Min length ${param} is deceeded`
     }),
 
     /*
@@ -46,8 +49,9 @@ export default {
      * param is a number.
      */
     [CONSTRAINT_MAX]: param => value.length <= param || throwErr({
+      code: ERROR_CODE_VALIDATION,
       id: ERROR_MAX_EXCEEDED,
-      description: `Max length ${param} is exceeded`
+      message: `Max length ${param} is exceeded`
     })
   })
 };

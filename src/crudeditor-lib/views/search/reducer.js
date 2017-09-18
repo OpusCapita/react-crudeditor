@@ -102,9 +102,16 @@ export const buildDefaultStoreState = modelDefinition => {
     selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
     totalCount: undefined,
 
-    // object with keys as field names, values as parse error objects.
-    // the object does not have keys for successfully parsed values.
-    errors: {},
+    errors: {
+
+      // object with keys as field names,
+      // values as arrays of Parsing Errors, may not be empty
+      // (the object does not have keys for successfully parsed values).
+      fields: {},
+
+      // Array of Internal Errors, may be empty.
+      general: []
+    },
 
     status: UNINITIALIZED
   };
@@ -265,17 +272,21 @@ export default modelDefinition => {
           };
         }
 
-        if (storeState.errors[fieldName]) {
-          newStoreStateSlice.errors = u.omit(fieldName);
+        if (storeState.errors.fields[fieldName]) {
+          newStoreStateSlice.errors = {
+            fields: u.omit(fieldName)
+          };
         }
       } catch(err) {
         newStoreStateSlice.formFilter = {
           [fieldName]: UNPARSABLE_FIELD_VALUE
         };
 
-        if (!isEqual(err, storeState.errors[fieldName])) {
+        if (!isEqual(err, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
-            [fieldName]: err
+            fields: {
+              [fieldName]: err
+            }
           };
         }
       }

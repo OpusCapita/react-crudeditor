@@ -29,7 +29,7 @@ export default class extends React.Component {  // XXX: Component, not PureCompo
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
 
     const errors = fieldsErrors && fieldsErrors[fieldName] && fieldsErrors[fieldName].length ?
-      fieldsErrors[fieldName].map(({ description }) => description).join('; ') :
+      fieldsErrors[fieldName].map(({ message }) => message).join('; ') :
       null;
 
     return (

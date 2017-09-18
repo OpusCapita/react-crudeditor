@@ -1,6 +1,7 @@
 import Big from 'big.js';
 
 import {
+  ERROR_CODE_FORMATING,
   ERROR_FORMAT,
   COMPONENT_API_TYPE_NUMBER,
 } from '../../constants';
@@ -21,8 +22,9 @@ export default {
     if (!value.eq(n)) {
       // ex. value is larger than Number.MAX_SAFE_INTEGER
       throw {
+        code: ERROR_CODE_FORMATING,
         id: ERROR_FORMAT,
-        description: `Unable to convert to "${COMPONENT_API_TYPE_NUMBER}" Component API Type`,
+        message: `Unable to convert to "${COMPONENT_API_TYPE_NUMBER}" Component API Type`,
       }
     }
 

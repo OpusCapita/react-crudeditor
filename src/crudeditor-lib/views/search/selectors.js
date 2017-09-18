@@ -46,9 +46,10 @@ export const
     ui: uiMeta
   }) => ({
     entityName: modelMeta.name,
-    errors: storeState.errors,
+    fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
+    generalErrors: storeState.errors.general,
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

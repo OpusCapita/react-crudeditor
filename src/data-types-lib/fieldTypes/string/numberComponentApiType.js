@@ -1,4 +1,7 @@
-import { ERROR_INVALID_NUMBER } from '../../constants';
+import {
+  ERROR_CODE_FORMATING,
+  ERROR_INVALID_NUMBER
+} from '../../constants';
 
 export default {
 
@@ -14,8 +17,9 @@ export default {
 
     if (n !== parseFloat(value)) {
       throw {
+        code: ERROR_CODE_FORMATING,
         id: ERROR_INVALID_NUMBER,
-        description: 'Invalid number'
+        message: 'Invalid number'
       };
     }
 

@@ -29,7 +29,7 @@ export default class extends React.PureComponent {
   render() {
     const {
       data: {
-        errors,
+        fieldErrors: errors,
         formatedFilter,
         resultFilter,
         searchableFields
@@ -56,7 +56,7 @@ export default class extends React.PureComponent {
                 onChange={this.handleFormFilterUpdate(name)}
                 onBlur={this.handleFormFilterBlur(name)}
               />
-              {errors[name] && <HelpBlock>{errors[name].description}</HelpBlock>}
+              {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
             </Col>
           </FormGroup>
         )}

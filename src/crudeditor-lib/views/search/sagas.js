@@ -60,7 +60,7 @@ export function* onInstancesSearch(modelDefinition, {
     errors
   ]);
 
-  if (Object.keys(errors).length) {
+  if (Object.keys(errors.fields).length) {
     return;
   }
 

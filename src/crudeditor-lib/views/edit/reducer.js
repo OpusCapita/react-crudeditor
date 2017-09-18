@@ -74,8 +74,13 @@ const defaultStoreStateTemplate = {
   instanceLabel: undefined,
 
   errors: {
-    fields: undefined,  // object with keys as field names, values as arrays of field errors, may be empty.
-    instance: []  // Array of instance-wide errors, may be empty.
+
+    // object with keys as field names,
+    // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
+    fields: {},
+
+    // Array of Internal Errors and Instance Validation Errors, may be empty.
+    general: []
   },
 
   status: UNINITIALIZED
@@ -125,7 +130,7 @@ export default modelDefinition => (
       newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
       newStoreStateSlice.errors = u.constant({
-        instance: [],
+        general: [],
         fields: Object.keys(instance).reduce(
           (rez, fieldName) => ({
             ...rez,

@@ -14,6 +14,10 @@ export const
 
   EMPTY_FIELD_VALUE = null,
 
+  ERROR_CODE_FORMATING = 400,
+  ERROR_CODE_PARSING = 400,
+  ERROR_CODE_VALIDATION = 400,
+
   ERROR_FORBIDDEN_FRACTIONAL_PART = 'forbiddenFractionalPartError',
   ERROR_FORMAT = 'formatError',
   ERROR_INVALID_COMPONENT_API_TYPE_VALUE = 'invalidComponentApiTypeValue',

@@ -7,7 +7,7 @@ import './SearchMain.less';
 
 export default ({ model }) => (
   <div className="crud--search-main">
-    <h4 className="crud--search-main__search-title">{model.data.entityName} Search</h4>
+    <h2 className="crud--search-main__search-title">{model.data.entityName} Search</h2>
 
     <div className="crud--search-main__container">
       <div className="crud--search-main__search-container">

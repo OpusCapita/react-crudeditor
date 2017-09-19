@@ -1,4 +1,4 @@
-import superagent from 'superagent'
+import superagent from 'superagent';
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
 

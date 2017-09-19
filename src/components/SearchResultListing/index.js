@@ -60,6 +60,8 @@ export default class extends React.PureComponent {
       }
     } = this.props.model.data;
 
+    console.log('model:', this.props.model);
+
     return (
       <Table responsive={true} condensed={true} className="oc-search-result-listing">
         <thead>

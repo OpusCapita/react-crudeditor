@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Button, Form, FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
@@ -20,10 +21,13 @@ export default class extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
+    ReactDOM.findDOMNode(this.submitBtn).focus();  // since this.submitBtn.focus(); does not work
 
-    this.props.model.actions.searchInstances({
+    // When pressing ENTER in form input,
+    // allow input.onBlur() event to be handled before searchInstances() call:
+    window.setTimeout(() => this.props.model.actions.searchInstances({
       filter: this.props.model.data.formFilter
-    });
+    }));
   }
 
   render() {
@@ -62,15 +66,35 @@ export default class extends React.PureComponent {
     ));
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix">
-        {searchableFieldsElement}
-        <Col xs={12} className="text-right form-submit">
-          <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
-          {' '}
-          <Button onClick={this.handleCreate}>Create</Button>
-          {' '}
-          <Button bsStyle='primary' type='submit'>Search</Button>
-        </Col>
+      <Form horizontal={true} onSubmit={this.handleSubmit}>
+        {searchableFields.map(({
+          name,
+          Component,
+          valuePropName
+        }) =>
+          <FormGroup key={`form-group-${name}`} controlId={`fg-${name}`} validationState={errors[name] ? 'error' : null}>
+            <Col componentClass={ControlLabel} sm={2}>
+              {name}
+            </Col>
+            <Col sm={10}>
+              <Component
+                {...{ [valuePropName]: formatedFilter[name] }}
+                onChange={this.handleFormFilterUpdate(name)}
+                onBlur={this.handleFormFilterBlur(name)}
+              />
+              {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
+            </Col>
+          </FormGroup>
+        )}
+        <FormGroup>
+          <Col smOffset={2} sm={10}>
+            <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
+            {' '}
+            <Button onClick={this.handleCreate}>Create</Button>
+            {' '}
+            <Button ref={btn => {this.submitBtn = btn;}} bsStyle='primary' type='submit'>Search</Button>
+          </Col>
+        </FormGroup>
       </Form>
     );
   }

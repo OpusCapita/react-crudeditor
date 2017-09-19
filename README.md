@@ -932,6 +932,7 @@ Every view passes *model* property to external React Components it uses.  The pr
       field: state.sortParams.field,
       order: state.sortParams.order
     },
+    status: state.status,
     totalCount: state.totalCount
   },
   actions: {
@@ -1037,6 +1038,7 @@ Every view passes *model* property to external React Components it uses.  The pr
      */
     tabs: state.formLayout.filter(({ tab }) => tab),
 
+    status: state.status,
     viewName: 'edit'
   },
   actions: {

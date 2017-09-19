@@ -65,6 +65,12 @@ const defaultStoreStateTemplate = {
    */
   formatedInstance: undefined,
 
+  // Field name a user is entering =>
+  // formatedFilter[fieldName] is up-to-date,
+  // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
+  // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
+  divergedField: null,
+
   // Must always be an array, may be empty.
   formLayout: [],
 
@@ -127,6 +133,7 @@ export default modelDefinition => (
       newStoreStateSlice.formLayout = u.constant(formLayout);
       newStoreStateSlice.persistentInstance = u.constant(instance);
       newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+      newStoreStateSlice.divergedField = null;
       newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
       newStoreStateSlice.errors = u.constant({
@@ -182,6 +189,8 @@ export default modelDefinition => (
       newStoreStateSlice.formatedInstance = {
         [fieldName]: u.constant(fieldValue)
       };
+
+      newStoreStateSlice.divergedField = fieldName;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -251,6 +260,8 @@ export default modelDefinition => (
           };
         }
       }
+
+      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Button, Form, FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 
@@ -21,13 +20,10 @@ export default class extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-    ReactDOM.findDOMNode(this.submitBtn).focus();  // since this.submitBtn.focus(); does not work
 
-    // When pressing ENTER in form input,
-    // allow input.onBlur() event to be handled before searchInstances() call:
-    window.setTimeout(() => this.props.model.actions.searchInstances({
+    this.props.model.actions.searchInstances({
       filter: this.props.model.data.formFilter
-    }));
+    });
   }
 
   render() {
@@ -70,7 +66,7 @@ export default class extends React.PureComponent {
             {' '}
             <Button onClick={this.handleCreate}>Create</Button>
             {' '}
-            <Button ref={btn => {this.submitBtn = btn;}} bsStyle='primary' type='submit'>Search</Button>
+            <Button bsStyle='primary' type='submit'>Search</Button>
           </Col>
         </FormGroup>
       </Form>

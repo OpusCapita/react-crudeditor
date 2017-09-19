@@ -4,6 +4,7 @@ import React from 'react';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
+import SpinnerOverlay from '../Spinner/SpinnerOverlay';
 import './SearchResultListing.less';
 
 export default class extends React.PureComponent {
@@ -57,19 +58,26 @@ export default class extends React.PureComponent {
       sortParams: {
         field: sortField,
         order: sortOrder
-      }
+      },
+      isLoading
     } = this.props.model.data;
 
-    console.log('model:', this.props.model);
+    const spinnerElement = isLoading ? (<SpinnerOverlay />) : null;
 
     return (
-      <div className="crud--search-result-listing">
+      <div className={`crud--search-result-listing`}>
+        {spinnerElement}
+        <div
+          className={`
+            crud--search-result-listing__table-container
+            ${isLoading ? 'crud--search-result-listing__table-container--with-spinner' : ''}
+          `}>
         <Table responsive={true} condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
               <th>
                 <input
-  		type="checkbox"
+  		            type="checkbox"
                   checked={selectedInstances.length === instances.length && instances.length !== 0}
                   onChange={this.handleToggleSelectedAll}
                 />
@@ -142,6 +150,7 @@ export default class extends React.PureComponent {
 
           </tbody>
         </Table>
+        </div>
       </div>
     );
   }

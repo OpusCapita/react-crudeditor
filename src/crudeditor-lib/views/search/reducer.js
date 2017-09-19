@@ -90,6 +90,12 @@ export const buildDefaultStoreState = modelDefinition => {
     // Raw filter as communicated to Search fields React Components.
     formatedFilter: buildDefaultFormatedFilter(modelDefinition),
 
+    // Field name a user is entering =>
+    // formatedFilter[fieldName] is up-to-date,
+    // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
+    // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
+    divergedField: null,
+
     sortParams: {
       field: searchMeta.resultFields[sortByDefaultIndex === -1 ? 0 : sortByDefaultIndex].name,
       order: 'asc'
@@ -159,9 +165,6 @@ export default modelDefinition => {
         totalCount
       } = payload;
 
-      newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
-      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
-
       newStoreStateSlice.formatedFilter = u.constant(Object.keys(filter).reduce(
         (rez, fieldName) => ({
           ...rez,
@@ -175,6 +178,10 @@ export default modelDefinition => {
         }),
         {}
       ));
+
+      newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
+      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+      newStoreStateSlice.divergedField = null;
 
       newStoreStateSlice.sortParams = {
         field: sort,
@@ -223,8 +230,9 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_RESET) {
-      newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
       newStoreStateSlice.formatedFilter = u.constant(buildDefaultFormatedFilter(modelDefinition));
+      newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
+      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -236,14 +244,16 @@ export default modelDefinition => {
 
       newStoreStateSlice.formatedFilter = {
         [fieldName]: u.constant(fieldValue)
-      }
+      };
+
+      newStoreStateSlice.divergedField = fieldName;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_PARSE) {
       const { name: fieldName } = payload;
       const fieldType = modelDefinition.model.fields[fieldName].type;
-      const componentApiType = modelDefinition.ui.search.searchableFields.find(
+      const uiType = modelDefinition.ui.search.searchableFields.find(
         ({ name }) => name === fieldName
       ).render.valueProp.type;
 
@@ -251,7 +261,7 @@ export default modelDefinition => {
         const newFormValue = parseField({
           value: storeState.formatedFilter[fieldName],
           type: fieldType,
-          sourceType: componentApiType
+          sourceType: uiType
         });
 
         if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
@@ -263,7 +273,7 @@ export default modelDefinition => {
         const newFormatedFilter = formatField({
           value: newFormValue,
           type: fieldType,
-          targetType: componentApiType
+          targetType: uiType
         });
 
         if (!isEqual(newFormatedFilter, storeState.formatedFilter[fieldName])) {
@@ -290,6 +300,8 @@ export default modelDefinition => {
           };
         }
       }
+
+      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

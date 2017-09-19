@@ -4,6 +4,8 @@ import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 import { buildDefaultStoreState } from './reducer';
 
 import {
+  FORM_FILTER_PARSE,
+
   INSTANCES_SEARCH,
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
@@ -37,6 +39,22 @@ export function* onInstancesSearch(modelDefinition, {
   },
   meta: { source }
 }) {
+  const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
+
+  if (divergedField) {
+    yield put({
+      type: FORM_FILTER_PARSE,
+      payload: {
+        name: divergedField
+      },
+      meta: { source }
+    });
+
+    if (filter) {
+      filter = yield select(storeState => storeState.views[VIEW_NAME].formFilter);
+    }
+  }
+
   const [
     currentFilter,
     currentSort,

@@ -65,6 +65,12 @@ const defaultStoreStateTemplate = {
    */
   formatedInstance: undefined,
 
+  // Field name a user is entering =>
+  // formatedFilter[fieldName] is up-to-date,
+  // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
+  // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
+  divergedField: null,
+
   // Must always be an array, may be empty.
   formLayout: [],
 
@@ -127,6 +133,7 @@ export default modelDefinition => (
       newStoreStateSlice.formLayout = u.constant(formLayout);
       newStoreStateSlice.persistentInstance = u.constant(instance);
       newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+      newStoreStateSlice.divergedField = null;
       newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
       newStoreStateSlice.errors = u.constant({
@@ -183,18 +190,20 @@ export default modelDefinition => (
         [fieldName]: u.constant(fieldValue)
       };
 
+      newStoreStateSlice.divergedField = fieldName;
+
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_FIELD_VALIDATE) {
       const { name: fieldName } = payload;
       const fieldMeta = modelDefinition.model.fields[fieldName];
-      const componentApiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
+      const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
       try {
         const newFormValue = parseField({
           value: storeState.formatedInstance[fieldName],
           type: fieldMeta.type,
-          sourceType: componentApiType
+          sourceType: uiType
         });
 
         if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
@@ -206,7 +215,7 @@ export default modelDefinition => (
         const newFormatedValue = formatField({
           value: newFormValue,
           type: fieldMeta.type,
-          targetType: componentApiType
+          targetType: uiType
         });
 
         if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
@@ -251,6 +260,8 @@ export default modelDefinition => (
           };
         }
       }
+
+      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

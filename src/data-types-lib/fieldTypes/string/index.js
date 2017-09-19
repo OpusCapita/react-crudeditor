@@ -1,5 +1,5 @@
-import typeNumber from './numberComponentApiType';
-import typeString from './stringComponentApiType';
+import typeNumber from './numberUiType';
+import typeString from './stringUiType';
 
 import {
   CONSTRAINT_MIN,
@@ -12,8 +12,8 @@ import {
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  COMPONENT_API_TYPE_NUMBER,
-  COMPONENT_API_TYPE_STRING
+  UI_TYPE_NUMBER,
+  UI_TYPE_STRING
 } from '../../constants';
 
 const throwErr = err => { throw err; };
@@ -23,13 +23,13 @@ export default {
   isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'string',
 
   formatter: {
-    [COMPONENT_API_TYPE_NUMBER]: typeNumber.formatter,
-    [COMPONENT_API_TYPE_STRING]: typeString.formatter
+    [UI_TYPE_NUMBER]: typeNumber.formatter,
+    [UI_TYPE_STRING]: typeString.formatter
   },
 
   parser: {
-    [COMPONENT_API_TYPE_NUMBER]: typeNumber.parser,
-    [COMPONENT_API_TYPE_STRING]: typeString.parser
+    [UI_TYPE_NUMBER]: typeNumber.parser,
+    [UI_TYPE_STRING]: typeString.parser
   },
 
   buildValidator: value => ({

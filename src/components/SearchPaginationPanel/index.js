@@ -43,14 +43,12 @@ export default class extends React.PureComponent {
           </Dropdown>
         </div>
 
-        &nbsp;
-
         <div>
           <div className='crud--search-pagination-panel__paginate paginate'>
             <div>
               <span>{totalCount} item(s) found</span>
             </div>
-            &nbsp;
+
             <Pagination
               activePage={offset / max + 1}
               onSelect={this.handlePaginate}

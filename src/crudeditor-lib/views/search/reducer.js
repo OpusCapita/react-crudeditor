@@ -243,7 +243,7 @@ export default modelDefinition => {
     } else if (type === FORM_FILTER_PARSE) {
       const { name: fieldName } = payload;
       const fieldType = modelDefinition.model.fields[fieldName].type;
-      const componentApiType = modelDefinition.ui.search.searchableFields.find(
+      const uiType = modelDefinition.ui.search.searchableFields.find(
         ({ name }) => name === fieldName
       ).render.valueProp.type;
 
@@ -251,7 +251,7 @@ export default modelDefinition => {
         const newFormValue = parseField({
           value: storeState.formatedFilter[fieldName],
           type: fieldType,
-          sourceType: componentApiType
+          sourceType: uiType
         });
 
         if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
@@ -263,7 +263,7 @@ export default modelDefinition => {
         const newFormatedFilter = formatField({
           value: newFormValue,
           type: fieldType,
-          targetType: componentApiType
+          targetType: uiType
         });
 
         if (!isEqual(newFormatedFilter, storeState.formatedFilter[fieldName])) {

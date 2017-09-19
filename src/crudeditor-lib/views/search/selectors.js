@@ -1,7 +1,11 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { VIEW_NAME } from './constants';
-
 import { AUDITABLE_FIELDS } from '../../common/constants';
+
+import {
+  DELETING,
+  SEARCHING,
+  VIEW_NAME
+} from './constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -50,6 +54,7 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     generalErrors: storeState.errors.general,
+    isLoading: [SEARCHING, DELETING].includes(storeState.status),
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

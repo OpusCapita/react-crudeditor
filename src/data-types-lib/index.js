@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual';
 
-import componentApiTypes from './componentApiTypes';
+import uiTypes from './uiTypes';
 import fieldTypes from './fieldTypes';
 
 import {
@@ -12,10 +12,10 @@ import {
 
   ERROR_REQUIRED_MISSING,
   ERROR_UNKNOWN_CONSTRAINT,
-  ERROR_UNKNOWN_COMPONENT_API_TYPE,
+  ERROR_UNKNOWN_UI_TYPE,
   ERROR_UNKNOWN_FIELD_TYPE,
 
-  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_NUMBER_STRING,
   FIELD_TYPE_STRING
 } from './constants';
 
@@ -24,14 +24,14 @@ export const
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
    *
    * Input value is of fieldType.
-   * Ouput is the input value converted to componentApiType.
+   * Ouput is the input value converted to uiType.
    * An error is thrown in case of conversion failure.
    */
 
   format = ({
     value,
     type: fieldType,
-    targetType: componentApiType,
+    targetType: uiType,
 
     /*
      * boolean, false by default, which means forwarding a value if
@@ -63,50 +63,50 @@ export const
       };
     }
 
-    if (!componentApiTypes[componentApiType]) {
+    if (!uiTypes[uiType]) {
       if (throwOnUnknownType) {
         throw {
           code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          message: `Unknown Target Type "${componentApiType}"`
+          id: ERROR_UNKNOWN_UI_TYPE,
+          message: `Unknown Target Type "${uiType}"`
         };
       }
 
       return value;  // forward value of unknown Component API Type.
     }
 
-    if (value === EMPTY_FIELD_VALUE && componentApiTypes[componentApiType].hasOwnProperty('EMPTY_VALUE')) {
-        return componentApiTypes[componentApiType].EMPTY_VALUE;
+    if (value === EMPTY_FIELD_VALUE && uiTypes[uiType].hasOwnProperty('EMPTY_VALUE')) {
+        return uiTypes[uiType].EMPTY_VALUE;
     }
 
     const formatter = fieldTypes[fieldType].formatter;
 
-    if (!formatter[componentApiType]) {
+    if (!formatter[uiType]) {
       if (throwOnUnknownType) {
         throw {
           code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          message: `Unknown Target Type "${componentApiType}" for the formatter`
+          id: ERROR_UNKNOWN_UI_TYPE,
+          message: `Unknown Target Type "${uiType}" for the formatter`
         };
       }
 
       return value;  // forward value when Component API Type is unknown to Field Type's formatter.
     }
 
-    return formatter[componentApiType](value);
+    return formatter[uiType](value);
   },
 
 
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
    *
-   * Input value is of componentApiType.
+   * Input value is of uiType.
    * Output is value converted to fieldType.
    * An error is thrown in case of conversion failure.
    */
   parse = ({
     value,
     type: fieldType,
-    sourceType: componentApiType,
+    sourceType: uiType,
 
     /*
      * boolean, false by default, which means forwarding a value if
@@ -118,27 +118,27 @@ export const
      */
     throwOnUnknownType = false
   }) => {
-    if (!componentApiTypes[componentApiType]) {
+    if (!uiTypes[uiType]) {
       if (throwOnUnknownType) {
         throw {
           code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          message: `Unknown Source Type "${componentApiType}"`
+          id: ERROR_UNKNOWN_UI_TYPE,
+          message: `Unknown Source Type "${uiType}"`
         };
       }
 
       return value;  // forward value of unknown Component API Type.
     }
 
-    if (!componentApiTypes[componentApiType].isValid(value)) {
+    if (!uiTypes[uiType].isValid(value)) {
       throw {
         code: ERROR_CODE_PARSING,
-        id: ERROR_INVALID_COMPONENT_API_TYPE_VALUE,
-        message: `Invalid value "${value}" of Source Type "${componentApiType}"`
+        id: ERROR_INVALID_UI_TYPE_VALUE,
+        message: `Invalid value "${value}" of Source Type "${uiType}"`
       };
     }
 
-    if (componentApiTypes[componentApiType].isEmpty(value)) {
+    if (uiTypes[uiType].isEmpty(value)) {
       return EMPTY_FIELD_VALUE;
     }
 
@@ -156,19 +156,19 @@ export const
 
     const parser = fieldTypes[fieldType].parser;
 
-    if (!parser[componentApiType]) {
+    if (!parser[uiType]) {
       if (throwOnUnknownType) {
         throw {
           code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_COMPONENT_API_TYPE,
-          message: `Unknown Source Type "${componentApiType}" for the parser`
+          id: ERROR_UNKNOWN_UI_TYPE,
+          message: `Unknown Source Type "${uiType}" for the parser`
         };
       }
 
       return value;  // forward value when Component API Type is unknown to the Field Type's parser.
     }
 
-    return parser[componentApiType](value);
+    return parser[uiType](value);
   },
 
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████

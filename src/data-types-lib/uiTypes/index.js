@@ -3,9 +3,9 @@ import numberType from './number';
 import stringType from './string';
 
 import {
-  COMPONENT_API_TYPE_BOOLEAN,
-  COMPONENT_API_TYPE_NUMBER,
-  COMPONENT_API_TYPE_STRING,
+  UI_TYPE_BOOLEAN,
+  UI_TYPE_NUMBER,
+  UI_TYPE_STRING,
 } from '../constants';
 
 /*
@@ -20,7 +20,7 @@ import {
  * Return boolean whether input value is indeed of specified Component API Type.
  */
 export default {
-  [COMPONENT_API_TYPE_BOOLEAN]: booleanType,
-  [COMPONENT_API_TYPE_NUMBER]: numberType,
-  [COMPONENT_API_TYPE_STRING]: stringType
+  [UI_TYPE_BOOLEAN]: booleanType,
+  [UI_TYPE_NUMBER]: numberType,
+  [UI_TYPE_STRING]: stringType
 };

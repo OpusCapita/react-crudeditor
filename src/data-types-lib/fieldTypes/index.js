@@ -1,8 +1,8 @@
-import numberType from './number';
+import numberStringType from './numberString';
 import stringType from './string';
 
 import {
-  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_NUMBER_STRING,
   FIELD_TYPE_STRING,
 } from '../constants';
 
@@ -34,6 +34,6 @@ import {
  * or throws error object otherwise.
  */
 export default {
-  [FIELD_TYPE_NUMBER]: numberType,
+  [FIELD_TYPE_NUMBER_STRING]: numberStringType,
   [FIELD_TYPE_STRING]: stringType
 };

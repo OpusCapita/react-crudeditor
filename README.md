@@ -84,22 +84,22 @@ Table of Content
     <br />
     <i>Field Types</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.
   </dd>
-  <dt id="component-api-type">Component API Type</dt>
+  <dt id="ui-type">UI Type</dt>
   <dd>
-    Type a field value must be converted to/from for communication with React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>Component API Type</i> before sending to a React Component, and parsed from the <i>Component API Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
+    Type a field value must be converted to/from for communication with React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>UI Type</i> before sending to a React Component, and parsed from the <i>UI Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
     <br/>
     <br/>
-    <i>Component API Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
+    <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
     <br/>
     <br/>
-    <i>Component API Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
+    <i>UI Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
   </dd>
   <dt>Instance</dt>
   <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:
     <ul>
       <li id="persistent-instance"><i>Persistent Instance</i> - an instance as stored on server.</li>
       <li id="form-instance"><i>Form Instance</i> - an instance as displayed in Search/Create/Show/Edit Form.  It is distint from <a href="#persistent-instance">Persistent Instance</a> when a user modified the instance but has not saved changes yet.</li>
-      <li id="formated-instance"><i>Formated Instance</i> - <a href="#form-instance">Form Instance</a> with field values formated to <a href="#component-api-type">Component API Type</a>.</li>
+      <li id="formated-instance"><i>Formated Instance</i> - <a href="#form-instance">Form Instance</a> with field values formated to <a href="#ui-type">UI Type</a>.</li>
     </ul>
     </dd>
 </dl>
@@ -427,7 +427,7 @@ Model Definition is an object describing an entity. It has the following structu
             Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
             ?valueProp: {
               ?name: <string, a name of Component prop with field value, "value" by default>,
-              ?type: <string, Component API Type (see corresponding "Terminology" section)>
+              ?type: <string, UI Type (see corresponding "Terminology" section)>
             }
           }
         }, ...],
@@ -496,7 +496,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: <function, FieldInputComponent>,
                   ?valueProp: {
                     ?name: <string, a name of Component's prop with field value, "value" by default>,
-                    ?type: <string, Component API Type (see corresponding "Terminology" section)>
+                    ?type: <string, UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -508,7 +508,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
                     ?name: <string, a name of Component prop with field value, "value" by default>,
-                    ?type: <string, Component API Type (see corresponding "Terminology" section)>
+                    ?type: <string, UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -521,7 +521,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, Component API Type (see corresponding "Terminology" section)>
+                  ?type: <string, UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -535,7 +535,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, Component API Type (see corresponding "Terminology" section)>
+                  ?type: <string, UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -548,7 +548,7 @@ Model Definition is an object describing an entity. It has the following structu
               Component: <function, FieldInputComponent>,
               ?valueProp: {
                 ?name: <string, a name of Component's prop with field value, "value" by default>,
-                ?type: <string, Component API Type (see corresponding "Terminology" section)>
+                ?type: <string, UI Type (see corresponding "Terminology" section)>
               }
             }
           }),
@@ -609,7 +609,7 @@ Name | Type | Necessity | Default | Description
 ---|---|---|---|---
 id | string | optional | - | ID of DOM element which must be focused on label click
 readOnly | boolean | optional | false | Wheter field value can be changed
-value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [Component API Type](#component-api-type)
+value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
 onChange | function | mandatory | - | Handler called when Component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when Component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
@@ -706,7 +706,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
        * raw filter as communicated to React Components rendering Search fields
        */
       formatedFilter: {
-        <field name>: <serializable, filter value for the field formated to corresponding Component API Type>,
+        <field name>: <serializable, filter value for the field formated to corresponding UI Type>,
         ...
       },
 
@@ -750,7 +750,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
         ...
       },
       formatedInstance: {
-        <field name>: <serializable, field value formated to corresponding Component API Type>,
+        <field name>: <serializable, field value formated to corresponding UI Type>,
         ...
       },
       status: <"ready"|"saving">
@@ -789,7 +789,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
        * raw instance as communicated to React Components rendering Edit Form fields
        */
       formatedInstance: {
-        <field name>: <serializable, field value formated to corresponding Component API Type>,
+        <field name>: <serializable, field value formated to corresponding UI Type>,
         ...
       },
 
@@ -919,6 +919,7 @@ Every view passes *model* property to external React Components it uses.  The pr
     entityName: <Model Definition>.model.name,
     formFilter: state.formFilter,
     formatedFilter: state.formatedFilter,
+    isLoading: <boolean, whether API async operation is in progress>,
     pageParams: {
       max: state.pageParams.max,
       offset: state.pageParams.offset
@@ -1030,6 +1031,7 @@ Every view passes *model* property to external React Components it uses.  The pr
     fieldsMeta: <Model Definition>.model.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: state.instanceLabel,
+    isLoading: <boolean, whether API async operation is in progress>,
     persistentInstance: state.persistentInstance,
 
     /*

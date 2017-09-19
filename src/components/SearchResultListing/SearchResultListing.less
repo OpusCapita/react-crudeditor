@@ -1,5 +1,10 @@
-.oc-search-result-listing td,
-.oc-search-result-listing th {
+.crud--search-result-listing {
+  overflow: auto;
+  flex: 1;
+}
+
+.crud--search-result-listing__table td,
+.crud--search-result-listing__table th {
   vertical-align: inherit !important;
 }
 
@@ -9,11 +14,11 @@
 }
 
 .crud--search-result-listing__sort-button {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .crud--search-result-listing__action-buttons {
-  display: flex;
+  display: flex !important;
   justify-content: flex-end;
 }

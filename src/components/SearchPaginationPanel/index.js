@@ -21,7 +21,7 @@ export default class extends React.PureComponent {
 
     return (
       <div className="crud--search-pagination-panel clearfix">
-        <div className='pull-right paginate'>
+        <div className='paginate'>
           <Dropdown
             id='max-dropdown'
             onSelect={this.handleMaxChange}
@@ -43,22 +43,23 @@ export default class extends React.PureComponent {
           </Dropdown>
         </div>
 
-        <div className='pull-right'>
-          <div className='paginate' style={{display: 'flex', alignItems: 'center'}}>
-            <div className='pull-left'>
-              {totalCount} item(s) found
+        &nbsp;
+
+        <div>
+          <div className='crud--search-pagination-panel__paginate paginate'>
+            <div>
+              <span>{totalCount} item(s) found</span>
             </div>
-            <div className='pull-left'>
-              <Pagination
-                activePage={offset / max + 1}
-                onSelect={this.handlePaginate}
-                items={Math.ceil(totalCount / max)}
-                maxButtons={10}
-                boundaryLinks
-                first
-                last
-              />
-            </div>
+            &nbsp;
+            <Pagination
+              activePage={offset / max + 1}
+              onSelect={this.handlePaginate}
+              items={Math.ceil(totalCount / max)}
+              maxButtons={10}
+              boundaryLinks
+              first
+              last
+            />
           </div>
         </div>
       </div>

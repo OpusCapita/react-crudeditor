@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Col, ControlLabel, HelpBlock } from 'react-boo
 import isEqual from 'lodash/isEqual';
 
 import { EMPTY_FIELD_VALUE } from '../../crudeditor-lib/common/constants';
+import './SearchForm.less';
 
 export default class extends React.PureComponent {
   constructor(...args) {
@@ -14,8 +15,6 @@ export default class extends React.PureComponent {
       value: newFieldValue
     });
   }
-
-  handleCreate = _ => this.props.model.actions.createInstance();
 
   handleFormFilterBlur = fieldName => _ => this.props.model.actions.parseFormFilter(fieldName);
 
@@ -67,12 +66,14 @@ export default class extends React.PureComponent {
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix">
-        {searchableFieldsElement}
+        <div className="crud--search-form__header">
+          <h4 className="crud--search-form__title">Search</h4>
+        </div>
+        <div className="crud--search-form__controls">
+          {searchableFieldsElement}
+        </div>
         <Col xs={12} className="text-right form-submit">
           <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
-          {' '}
-          <Button onClick={this.handleCreate}>Create</Button>
-          {' '}
           <Button
             bsStyle='primary'
             type='submit'

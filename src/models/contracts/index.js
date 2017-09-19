@@ -153,7 +153,7 @@ export default {
   ui: {
     search: _ => ({
       searchableFields: [
-        { name: 'contractId', },
+        { name: 'contractId' },
         { name: 'description' },
         { name: 'extContractId' },
         { name: 'extContractLineId' },

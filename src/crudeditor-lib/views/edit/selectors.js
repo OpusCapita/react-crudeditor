@@ -34,5 +34,6 @@ export const
     instanceLabel: storeState.instanceLabel,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
+    status: storeState.status,
     viewName: VIEW_NAME
   }));

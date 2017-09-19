@@ -75,5 +75,6 @@ export const
       field: storeState.sortParams.field,
       order: storeState.sortParams.order
     },
+    status: storeState.status,
     totalCount: storeState.totalCount
   }));

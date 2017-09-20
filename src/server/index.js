@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const PORT = 7700;
-const FAKE_RESPONSE_TIMEOUT = 1000;  // In milliseconds. 0 for no timeout.
+const FAKE_RESPONSE_TIMEOUT = 300;  // In milliseconds. 0 for no timeout.
 
 // ███████████████████████████████████
 // ███   WEBPACK INITIALIZATION    ███

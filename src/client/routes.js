@@ -10,7 +10,7 @@ import {
   Redirect
 } from 'react-router-dom';
 
-export default () =>
+export default () => (
   <Router>
     <Switch>
       <Redirect exact from='/' to='/home' />
@@ -18,4 +18,5 @@ export default () =>
       <Route path="/crud/:entities" component={CrudWrapper} />
       <Route path="/revisions/:entityId" component={Revisions} />
     </Switch>
-  </Router>;
+  </Router>
+);

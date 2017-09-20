@@ -82,6 +82,6 @@ export default class extends React.PureComponent {
           </Col>
         </FormGroup>
       </Form>
-    )
+    );
   }
 }

@@ -4,6 +4,8 @@ import React from 'react';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
+import SpinnerOverlay from '../Spinner/SpinnerOverlay';
+import './SearchResultListing.less';
 
 export default class extends React.PureComponent {
   handleNewInstances = instances => {
@@ -56,88 +58,100 @@ export default class extends React.PureComponent {
       sortParams: {
         field: sortField,
         order: sortOrder
-      }
+      },
+      isLoading
     } = this.props.model.data;
 
+    const spinnerElement = isLoading ? (<SpinnerOverlay />) : null;
+
     return (
-      <Table responsive={true} condensed={true}>
-        <thead>
-          <tr>
-            <th>
-              <Checkbox
-                checked={selectedInstances.length === instances.length && instances.length !== 0}
-                onChange={this.handleToggleSelectedAll}
-              />
-            </th>
-
-            {resultFields.map(({ name, sortable }) =>
-              <th key={`th-${name}`}>
-                {
-                  sortable ?
-                    <Button bsStyle='link' onClick={this.handleResort(name)}>
-                      { name }
-                      { sortField === name && <Glyphicon glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
-                    </Button> :
-                    name
-                }
+      <div className={`crud--search-result-listing`}>
+        {spinnerElement}
+        <div
+          className={`
+            crud--search-result-listing__table-container
+            ${isLoading ? 'crud--search-result-listing__table-container--with-spinner' : ''}
+          `}>
+        <Table condensed={true} className="crud--search-result-listing__table">
+          <thead>
+            <tr>
+              <th>
+                <input
+  		            type="checkbox"
+                  checked={selectedInstances.length === instances.length && instances.length !== 0}
+                  onChange={this.handleToggleSelectedAll}
+                />
               </th>
-            )}
 
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
+              {resultFields.map(({ name, sortable }) =>
+                 <th key={`th-${name}`}>
+                  {
+                    sortable ?
+                      <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
+                        { name }
+                        { sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
+                      </Button> :
+                      name
+                  }
+                </th>
+              )}
 
-        {instances.map(instance =>
-          <tr key={`tr-${JSON.stringify(instance)}`}>
-            <td>
-              <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected(instance)} />
-            </td>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
 
-            {resultFields.map(({ name, Component, textAlignment }) =>
-              <td
-                key={`td-${name}`}
-                className={
-                  textAlignment === 'right' && 'text-right' ||
-                  textAlignment === 'center' && 'text-center' ||
-                  'text-left'
-                }
-              >
-                {
-                  Component ?
-                    <Component name={name} instance={instance} /> :
-                    instance[name]
-                }
+          {instances.map(instance =>
+            <tr key={`tr-${JSON.stringify(instance)}`}>
+              <td>
+                <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected(instance)} />
               </td>
-            )}
-
-            <td className='text-right'>
-              <ButtonGroup bsSize='sm'>
-                <Button onClick={this.handleEdit(instance)}>
-                  <Glyphicon glyph='edit' />
-                  {' '}
-                  Edit
-                </Button>
-
-                <ConfirmDialog
-                  trigger='click'
-                  onConfirm={this.handleDelete(instance)}
-                  title='Delete confirmation'
-                  message='Do you want to delete this item?'
+                {resultFields.map(({ name, Component, textAlignment }) =>
+                <td
+                  key={`td-${name}`}
+                  className={
+                    textAlignment === 'right' && 'text-right' ||
+                    textAlignment === 'center' && 'text-center' ||
+                    'text-left'
+                  }
                 >
-                  <Button>
-                    <Glyphicon glyph='trash' />
-                    {' '}
-                    Delete
-                  </Button>
-                </ConfirmDialog>
-              </ButtonGroup>
-            </td>
-          </tr>
-        )}
+                  {
+                    Component ?
+                      <Component name={name} instance={instance} /> :
+                      instance[name]
+                  }
+                </td>
+              )}
 
-        </tbody>
-      </Table>
+              <td className="text-right">
+                <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
+                  <Button onClick={this.handleEdit(instance)}>
+                    <Glyphicon glyph='edit' />
+                    {' '}
+                    Edit
+                  </Button>
+
+                  <ConfirmDialog
+                    trigger='click'
+                    onConfirm={this.handleDelete(instance)}
+                    title='Delete confirmation'
+                    message='Do you want to delete this item?'
+                  >
+                    <Button>
+                      <Glyphicon glyph='trash' />
+                      {' '}
+                      Delete
+                    </Button>
+                  </ConfirmDialog>
+                </ButtonGroup>
+              </td>
+            </tr>
+          )}
+
+          </tbody>
+        </Table>
+        </div>
+      </div>
     );
   }
 }

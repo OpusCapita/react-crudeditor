@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple CRUD Editor</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+  <title>Simple CRUD Editor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.min.js"></script>
 </head>
-<body>
-<div id="app"></div>
+<body style="padding: 0; height: 100%;">
+  <div style="display: flex; flex-direction: column; height: 100%;">
+    <div id="navigation"></div>
+    <div id="app" style="display: flex; flex: 1; min-height: 0;"></div>
+  </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ import { Button, Form, FormGroup, Col, ControlLabel, HelpBlock } from 'react-boo
 import isEqual from 'lodash/isEqual';
 
 import { EMPTY_FIELD_VALUE } from '../../crudeditor-lib/common/constants';
+import './SearchForm.less';
 
 export default class extends React.PureComponent {
   constructor(...args) {
@@ -13,8 +14,6 @@ export default class extends React.PureComponent {
       value: newFieldValue
     });
   }
-
-  handleCreate = _ => this.props.model.actions.createInstance();
 
   handleFormFilterBlur = fieldName => _ => this.props.model.actions.parseFormFilter(fieldName);
 
@@ -39,36 +38,46 @@ export default class extends React.PureComponent {
       }
     } = this.props.model;
 
+    const searchableFieldsElement = searchableFields.map(({
+      name,
+      Component,
+      valuePropName
+    }) => (
+      <FormGroup
+        key={`form-group-${name}`}
+        controlId={`fg-${name}`}
+        validationState={errors[name] ? 'error' : null}
+        >
+        <Col xs={12}>
+          <label>{name}</label>
+          <Component
+            {...{ [valuePropName]: formatedFilter[name] }}
+            onChange={this.handleFormFilterUpdate(name)}
+            onBlur={this.handleFormFilterBlur(name)}
+            />
+          {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
+        </Col>
+      </FormGroup>
+    ));
+
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit}>
-        {searchableFields.map(({
-          name,
-          Component,
-          valuePropName
-        }) =>
-          <FormGroup key={`form-group-${name}`} controlId={`fg-${name}`} validationState={errors[name] ? 'error' : null}>
-            <Col componentClass={ControlLabel} sm={2}>
-              {name}
-            </Col>
-            <Col sm={10}>
-              <Component
-                {...{ [valuePropName]: formatedFilter[name] }}
-                onChange={this.handleFormFilterUpdate(name)}
-                onBlur={this.handleFormFilterBlur(name)}
-              />
-              {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
-            </Col>
-          </FormGroup>
-        )}
-        <FormGroup>
-          <Col smOffset={2} sm={10}>
-            <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
-            {' '}
-            <Button onClick={this.handleCreate}>Create</Button>
-            {' '}
-            <Button bsStyle='primary' type='submit'>Search</Button>
-          </Col>
-        </FormGroup>
+      <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix">
+        <div className="crud--search-form__header">
+          <h4 className="crud--search-form__title">Search</h4>
+        </div>
+        <div className="crud--search-form__controls">
+          {searchableFieldsElement}
+        </div>
+        <Col xs={12} className="text-right form-submit">
+          <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
+          <Button
+            bsStyle='primary'
+            type='submit'
+            ref={ref => (this.submitBtn = ref)}
+          >
+            Search
+          </Button>
+        </Col>
       </Form>
     );
   }

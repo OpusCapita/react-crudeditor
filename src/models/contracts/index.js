@@ -1,4 +1,4 @@
-import superagent from 'superagent'
+import superagent from 'superagent';
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
 
@@ -153,7 +153,7 @@ export default {
   ui: {
     search: _ => ({
       searchableFields: [
-        { name: 'contractId', },
+        { name: 'contractId' },
         { name: 'description' },
         { name: 'extContractId' },
         { name: 'extContractLineId' },

@@ -7,8 +7,6 @@ const precss = require('precss');
 module.exports = {
   context: resolve(__dirname, 'src'),
   entry: [
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
     './client/index.js'
   ],
   devtool: 'inline-source-map',
@@ -32,7 +30,6 @@ module.exports = {
             "stage-0"
           ],
           plugins: [
-            "react-hot-loader/babel",
             "transform-decorators-legacy",
             "transform-class-properties",
             "transform-runtime"
@@ -41,10 +38,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/,
+        test: /\.(css|less)$/,
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'less-loader', options: { sourceMap: true } },
           { loader: 'postcss-loader', options: {
             plugins: (loader) => [
               require('precss')(),
@@ -52,7 +50,33 @@ module.exports = {
             ]
           } }
         ]
-      }
+      },
+      {
+        test: /\.(scss)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          { loader: 'sass-loader', options: { sourceMap: true } }
+        ]
+      },
+      {
+        test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          'url-loader?limit=100&mimetype=application/font-woff&name=[name].[ext]',
+        ]
+      },
+      {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          'url-loader?limit=100&mimetype=application/octet-stream&name=[name].[ext]',
+        ]
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          'file-loader?name=[name].[ext]',
+        ]
+      },
     ]
   },
   plugins: [
@@ -60,7 +84,6 @@ module.exports = {
       template: './client/index.html',
       inject: "body"
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin()

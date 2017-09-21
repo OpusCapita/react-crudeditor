@@ -1,7 +1,8 @@
 import React from 'react';
 import { Panel, Glyphicon } from 'react-bootstrap';
 
-export default class extends React.Component {
+export default
+class EditSelection extends React.Component {
   state = {
     collapsed: false
   }
@@ -18,19 +19,20 @@ export default class extends React.Component {
 
     const { collapsed } = this.state;
 
-    return <Panel
-      collapsible={true}
-      expanded={!collapsed}
-      onSelect={this.changeVisibility}
-      header={
-        <span style={{ cursor: 'pointer' }}>
-          <Glyphicon glyph={`menu-${collapsed ? 'down' : 'up'}`} />
-          &nbsp;
-          {title}
-        </span>
-      }
-    >
-      {fields}
-    </Panel>;
+    return (
+      <Panel
+        collapsible={true}
+        expanded={!collapsed}
+        onSelect={this.changeVisibility}
+        header={(
+          <span style={{ cursor: 'pointer' }}>
+            <Glyphicon glyph={`menu-${collapsed ? 'down' : 'up'}`} />
+            &nbsp;
+            {title}
+          </span>
+        )}>
+        {fields}
+      </Panel>
+    );
   }
 }

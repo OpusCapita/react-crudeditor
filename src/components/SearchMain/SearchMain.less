@@ -1,0 +1,38 @@
+.crud--search-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.crud--search-main__container {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border-top: 1px solid #ddd;
+}
+
+.crud--search-main__search-container {
+  margin: 0;
+  width: 280px;
+  height: 100%;
+  border-right: 1px solid #ddd;
+}
+
+.crud--search-main__results-container {
+  flex: 1 0;
+  width: ~"calc(100% - 280px)";
+}
+
+.crud--search-main__page-title {
+  border-bottom: none;
+  margin: 0;
+  font-size: 24px;
+}
+
+.crud--search-main__page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+}

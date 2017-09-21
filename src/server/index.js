@@ -15,7 +15,6 @@ const webpackDevConfig = require('../../webpack.config.babel');
 const compiler = webpack(webpackDevConfig);
 
 const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
-  hot: true,
   stats: {
     colors: true
   }
@@ -23,7 +22,6 @@ const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
 
 app.set('etag', false);
 app.use(webpackDevMiddleware);
-app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(function (req, res, next) {
   console.info('===== [' + new Date().toUTCString() + '] ', req.originalUrl);

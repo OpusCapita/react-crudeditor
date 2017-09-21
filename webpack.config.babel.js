@@ -7,8 +7,6 @@ const precss = require('precss');
 module.exports = {
   context: resolve(__dirname, 'src'),
   entry: [
-    'react-hot-loader/patch',
-    'webpack-hot-middleware/client?reload=true',
     './client/index.js'
   ],
   devtool: 'inline-source-map',
@@ -32,7 +30,6 @@ module.exports = {
             "stage-0"
           ],
           plugins: [
-            "react-hot-loader/babel",
             "transform-decorators-legacy",
             "transform-class-properties",
             "transform-runtime"

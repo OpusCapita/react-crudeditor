@@ -53,7 +53,7 @@ export default class extends React.PureComponent {
               activePage={offset / max + 1}
               onSelect={this.handlePaginate}
               items={Math.ceil(totalCount / max)}
-              maxButtons={10}
+              maxButtons={5}
               boundaryLinks
               first
               last

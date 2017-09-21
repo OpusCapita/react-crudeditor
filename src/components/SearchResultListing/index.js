@@ -72,7 +72,7 @@ export default class extends React.PureComponent {
             crud--search-result-listing__table-container
             ${isLoading ? 'crud--search-result-listing__table-container--with-spinner' : ''}
           `}>
-        <Table responsive={true} condensed={true} className="crud--search-result-listing__table">
+        <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
               <th>

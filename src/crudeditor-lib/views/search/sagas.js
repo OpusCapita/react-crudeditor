@@ -11,19 +11,12 @@ import {
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
+  RANGE_FIELD_TYPES,
   READY,
   VIEW_NAME
 } from './constants';
 
 import { EMPTY_FIELD_VALUE } from '../../common/constants';
-
-const cleanFilter = filter => Object.keys(filter).reduce(
-  (rez, name) => filter[name] === EMPTY_FIELD_VALUE ? rez : {
-    ...(rez || {}),
-    [name]: filter[name]
-  },
-  undefined
-);
 
 /*███████████████████*\
  *███ WORKER SAGA ███*
@@ -39,6 +32,44 @@ export function* onInstancesSearch(modelDefinition, {
   },
   meta: { source }
 }) {
+  const cleanValue = ({ name, value }) => {
+    if (!RANGE_FIELD_TYPES.includes(modelDefinition.model.fields[name].type)) {
+      return value !== EMPTY_FIELD_VALUE && {
+        [name]: value
+      }
+    }
+
+    const valueCleansed = {};
+
+    if (value.from !== EMPTY_FIELD_VALUE) {
+      valueCleansed.from = value.from;
+    }
+
+    if (value.to !== EMPTY_FIELD_VALUE) {
+      valueCleansed.to = value.to;
+    }
+
+    return Object.keys(valueCleansed).length && {
+      [name]: valueCleansed
+    };
+  }
+
+  const cleanFilter = filter => Object.keys(filter).reduce(
+    (rez, name) => {
+      const valueCleansed = cleanValue({
+        name,
+        value: filter[name]
+      });
+
+      return valueCleansed ? {
+        ...(rez || {}),
+        ...valueCleansed
+      } :
+        rez;
+    },
+    undefined
+  );
+
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 
   if (divergedField) {

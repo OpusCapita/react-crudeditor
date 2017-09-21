@@ -10,6 +10,8 @@ import {
 } from '../../../data-types-lib';
 
 import {
+  RANGE_FIELD_TYPES,
+
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
@@ -40,10 +42,56 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-const buildDefaultParsedFilter = searchableFields => searchableFields.reduce(
+const isRangeValue => value => value &&
+  typeof value === 'object' &&
+  value.hasOwnProperty('from') &&
+  value.hasOwnProperty('to') &&
+  Object.keys(value) === 2;
+
+const getFieldValue = ({ filter, path }) => {
+  const [fieldName, subFieldName] = Array.isArray(path) ? path : [path, null];
+
+  return subFieldName ?
+    filter[fieldName][subFieldName] :
+    filter[fieldName];
+};
+
+/*
+ * path is either string with field name or array with field name and sub-field name.
+ * the function returns an object with field name as only key and appropriate field value.
+ */
+const setFieldValue = ({ type, path, value }) => {
+  const [fieldName, subFieldName] = Array.isArray(path) ? path : [path, null];
+
+  return {
+    [fieldName]: subFieldName ? {
+      [subFieldName]: value
+    } : (
+      !RANGE_FIELD_TYPES.includes(type) || isRangeValue(value) ?
+        value :
+        {  // Assign the same value to each sub-field.
+          from: cloneDeep(value),
+          to: cloneDeep(value)
+        };
+    )
+  };
+};
+
+const buildDefaultParsedFilter = ({
+  model: {
+    fields: fieldsMeta
+  },
+  ui: {
+    search: { searchableFields }
+  }
+}) => searchableFields.reduce(
   (rez, { name: fieldName }) => ({
     ...rez,
-    [fieldName]: EMPTY_FIELD_VALUE
+    ...setFieldValue({
+      type: fieldsMeta[fieldName].type,
+      path: fieldName,
+      value: EMPTY_FIELD_VALUE
+    })
   }),
   {}
 );
@@ -65,10 +113,14 @@ const buildDefaultFormatedFilter = ({
     }
   }) => ({
     ...rez,
-    [fieldName]: formatField({
-      value: EMPTY_FIELD_VALUE,
+    ...setFieldValue({
       type: fieldsMeta[fieldName].type,
-      targetType
+      path: fieldName,
+      value: formatField({
+        value: EMPTY_FIELD_VALUE,
+        type: fieldsMeta[fieldName].type,
+        targetType
+      })
     })
   }),
   {}
@@ -82,15 +134,15 @@ export const buildDefaultStoreState = modelDefinition => {
   const defaultStoreState = {
 
     // Active filter as displayed in Search Result.
-    resultFilter: buildDefaultParsedFilter(searchMeta.searchableFields),
+    resultFilter: buildDefaultParsedFilter(modelDefinition),
 
     // Raw filter as displayed in Search Criteria.
-    formFilter: buildDefaultParsedFilter(searchMeta.searchableFields),
+    formFilter: buildDefaultParsedFilter(modelDefinition),
 
     // Raw filter as communicated to Search fields React Components.
     formatedFilter: buildDefaultFormatedFilter(modelDefinition),
 
-    // Field name a user is entering =>
+    // Field name or array [fieldName, subFieldName] in case of range a user is entering =>
     // formatedFilter[fieldName] is up-to-date,
     // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
     // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
@@ -168,12 +220,16 @@ export default modelDefinition => {
       newStoreStateSlice.formatedFilter = u.constant(Object.keys(filter).reduce(
         (rez, fieldName) => ({
           ...rez,
-          [fieldName]: formatField({
-            value: filter[fieldName],
+          ...setFieldValue({
             type: modelDefinition.model.fields[fieldName].type,
-            targetType: modelDefinition.ui.search.searchableFields.find(
-              ({ name }) => name === fieldName
-            ).render.valueProp.type
+            path: fieldName,
+            value: formatField({
+              value: filter[fieldName],
+              type: modelDefinition.model.fields[fieldName].type,
+              targetType: modelDefinition.ui.search.searchableFields.find(
+                ({ name }) => name === fieldName
+              ).render.valueProp.type
+            })
           })
         }),
         {}
@@ -231,68 +287,104 @@ export default modelDefinition => {
 
     } else if (type === FORM_FILTER_RESET) {
       newStoreStateSlice.formatedFilter = u.constant(buildDefaultFormatedFilter(modelDefinition));
-      newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
+      newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition));
       newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_UPDATE) {
+      // TODO: rename payload.name to payload.path and make it array when necessary.
       const {
-        name: fieldName,
+        name: path,
         value: fieldValue
       } = payload;
 
-      newStoreStateSlice.formatedFilter = {
-        [fieldName]: u.constant(fieldValue)
-      };
+      const fieldName = Array.isArray(path) ? path[0] : path;
 
-      newStoreStateSlice.divergedField = fieldName;
+      newStoreStateSlice.formatedFilter = setFieldValue({  // FIXME: export or move to this file.
+        type: modelDefinition.model.fields[fieldName].type,
+        path,
+        value: u.constant(fieldValue)
+      });
+
+      newStoreStateSlice.divergedField = path;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_PARSE) {
-      const { name: fieldName } = payload;
+      // TODO: rename payload.name to payload.path and make it array when necessary.
+      const { path } = payload;
+
+      if (!isEqual(path, storeState.divergedField)) {
+        throw new Error(`payload.path ${payload.path} is expected to be the same as storeState.divergedField ${storeState.divergedField}`);
+      }
+
+      const fieldName = Array.isArray(path) ? path[0] : path;
       const fieldType = modelDefinition.model.fields[fieldName].type;
+
       const uiType = modelDefinition.ui.search.searchableFields.find(
         ({ name }) => name === fieldName
       ).render.valueProp.type;
 
+      const oldFormValue = getFieldValue({
+        filter: storeState.formFilter,
+        path
+      });
+
+      const oldFormatedValue = getFieldValue({
+        filter: storeState.formatedFilter,
+        path
+      });
+
+      const oldErrorValue = getFieldValue({
+        filter: storeState.errors,
+        path
+      });
+
       try {
         const newFormValue = parseField({
-          value: storeState.formatedFilter[fieldName],
+          value: oldFormatedValue,
           type: fieldType,
           sourceType: uiType
         });
 
         if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
-          newStoreStateSlice.formFilter = {
-            [fieldName]: u.constant(newFormValue)
-          };
+          newStoreStateSlice.formFilter = setFieldValue({
+            type: fieldType,
+            path,
+            value: u.constant(newFormValue)
+          });
         }
 
-        const newFormatedFilter = formatField({
+        const newFormatedValue = formatField({
           value: newFormValue,
           type: fieldType,
           targetType: uiType
         });
 
-        if (!isEqual(newFormatedFilter, storeState.formatedFilter[fieldName])) {
-          newStoreStateSlice.formatedFilter = {
-            [fieldName]: u.constant(newFormatedFilter)
-          };
+        if (!isEqual(newFormatedValue, oldFormatedValue)) {
+          newStoreStateSlice.formatedFilter = setFieldValue({
+            type: fieldType,
+            path,
+            value: u.constant(newFormatedValue)
+          });
         }
 
-        if (storeState.errors.fields[fieldName]) {
-          newStoreStateSlice.errors = {
-            fields: u.omit(fieldName)
-          };
+        if (oldErrorValue) {
+          newStoreStateSlice.errors = setFieldValue({
+            type: fieldType,
+            path,
+            value: u.omit(fieldName)
+          })
         }
       } catch(err) {
-        newStoreStateSlice.formFilter = {
-          [fieldName]: UNPARSABLE_FIELD_VALUE
-        };
+        newStoreStateSlice.formFilter = setFieldValue({
+          type: fieldType,
+          path,
+          value: UNPARSABLE_FIELD_VALUE
+        });
 
-        if (!isEqual(err, storeState.errors.fields[fieldName])) {
+        if (!isEqual(err, oldErrorValue)) {
           newStoreStateSlice.errors = {
             fields: {
               [fieldName]: err

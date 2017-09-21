@@ -84,7 +84,6 @@ module.exports = {
       template: './client/index.html',
       inject: "body"
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin()

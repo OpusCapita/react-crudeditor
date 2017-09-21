@@ -1,5 +1,4 @@
 import React from 'react';
-import { AppContainer } from 'react-hot-loader';
 import ReactDOM from 'react-dom';
 import AppRouter from './routes';
 import '../../styles/main.scss';
@@ -263,9 +262,7 @@ let NavigationElement = (
 
 const renderCrudEditor = Component =>
   ReactDOM.render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
+    <Component />,
     document.getElementById('app')
   );
 
@@ -277,10 +274,3 @@ const renderNavigation = () =>
 
 renderCrudEditor(AppRouter);
 renderNavigation();
-
-if (module.hot) {
-  module.hot.accept('./routes', () => {
-    renderCrudEditor(AppRouter);
-    renderNavigation();
-  });
-}

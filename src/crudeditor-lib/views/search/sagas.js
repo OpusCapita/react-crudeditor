@@ -76,7 +76,7 @@ export function* onInstancesSearch(modelDefinition, {
     yield put({
       type: FORM_FILTER_PARSE,
       payload: {
-        name: divergedField
+        path: divergedField
       },
       meta: { source }
     });

@@ -3,6 +3,7 @@ import { AUDITABLE_FIELDS } from '../../common/constants';
 
 import {
   DELETING,
+  RANGE_FIELD_TYPES,
   SEARCHING,
   VIEW_NAME
 } from './constants';
@@ -72,6 +73,7 @@ export const
       }
     }) => ({
       name,
+      isRange: RANGE_FIELD_TYPES.includes(modelMeta.fields[name].type),
       Component,
       valuePropName
     })),

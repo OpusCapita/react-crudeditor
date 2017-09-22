@@ -42,16 +42,16 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-const isRangeValue => value => value &&
+const isRangeValue = value => value &&
   typeof value === 'object' &&
   value.hasOwnProperty('from') &&
   value.hasOwnProperty('to') &&
-  Object.keys(value) === 2;
+  Object.keys(value).length === 2;
 
 const getFieldValue = ({ filter, path }) => {
   const [fieldName, subFieldName] = Array.isArray(path) ? path : [path, null];
 
-  return subFieldName ?
+  return subFieldName && filter[fieldName] !== undefined ?
     filter[fieldName][subFieldName] :
     filter[fieldName];
 };
@@ -72,7 +72,7 @@ const setFieldValue = ({ type, path, value }) => {
         {  // Assign the same value to each sub-field.
           from: cloneDeep(value),
           to: cloneDeep(value)
-        };
+        }
     )
   };
 };
@@ -217,21 +217,30 @@ export default modelDefinition => {
         totalCount
       } = payload;
 
+      const fieldsMeta = modelDefinition.model.fields;
+      const searchableFields = modelDefinition.ui.search.searchableFields;
+
       newStoreStateSlice.formatedFilter = u.constant(Object.keys(filter).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          ...setFieldValue({
-            type: modelDefinition.model.fields[fieldName].type,
-            path: fieldName,
-            value: formatField({
-              value: filter[fieldName],
-              type: modelDefinition.model.fields[fieldName].type,
-              targetType: modelDefinition.ui.search.searchableFields.find(
-                ({ name }) => name === fieldName
-              ).render.valueProp.type
+        (rez, fieldName) => {
+          const type = fieldsMeta[fieldName].type;
+
+          const targetType = searchableFields.find(
+            ({ name }) => name === fieldName
+          ).render.valueProp.type;
+
+          return {
+            ...rez,
+            ...setFieldValue({
+              type,
+              path: fieldName,
+              value: RANGE_FIELD_TYPES.includes(type) ? {
+                from: formatField({ type, targetType, value: filter[fieldName].from }),
+                to  : formatField({ type, targetType, value: filter[fieldName].to }),
+              } :
+              formatField({ type, targetType, value: filter[fieldName] })
             })
-          })
-        }),
+          };
+        },
         {}
       ));
 
@@ -293,15 +302,14 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_UPDATE) {
-      // TODO: rename payload.name to payload.path and make it array when necessary.
       const {
-        name: path,
+        path,
         value: fieldValue
       } = payload;
 
       const fieldName = Array.isArray(path) ? path[0] : path;
 
-      newStoreStateSlice.formatedFilter = setFieldValue({  // FIXME: export or move to this file.
+      newStoreStateSlice.formatedFilter = setFieldValue({
         type: modelDefinition.model.fields[fieldName].type,
         path,
         value: u.constant(fieldValue)
@@ -312,12 +320,7 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === FORM_FILTER_PARSE) {
-      // TODO: rename payload.name to payload.path and make it array when necessary.
       const { path } = payload;
-
-      if (!isEqual(path, storeState.divergedField)) {
-        throw new Error(`payload.path ${payload.path} is expected to be the same as storeState.divergedField ${storeState.divergedField}`);
-      }
 
       const fieldName = Array.isArray(path) ? path[0] : path;
       const fieldType = modelDefinition.model.fields[fieldName].type;

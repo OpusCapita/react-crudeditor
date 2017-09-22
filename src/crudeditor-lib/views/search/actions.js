@@ -29,19 +29,19 @@ export const
   }),
 
   updateFormFilter = ({
-    name,
+    path,
     value
   }) => ({
     type: FORM_FILTER_UPDATE,
     payload: {
-      name,
+      path,
       value
     }
   }),
 
-  parseFormFilter = name => ({
+  parseFormFilter = path => ({
     type: FORM_FILTER_PARSE,
-    payload: { name }
+    payload: { path }
   }),
 
   resetFormFilter = _ => ({

@@ -10,6 +10,7 @@ import {
   ERROR_CODE_PARSING,
   ERROR_CODE_VALIDATION,
 
+  ERROR_INVALID_FIELD_TYPE_VALUE,
   ERROR_REQUIRED_MISSING,
   ERROR_UNKNOWN_CONSTRAINT,
   ERROR_UNKNOWN_UI_TYPE,
@@ -34,11 +35,9 @@ export const
     targetType: uiType,
 
     /*
-     * boolean, false by default, which means forwarding a value if
+     * boolean, false by default, which means forwarding a value if (one of the following):
      * (1) input Component API Type is inknown,
-     * or
      * (2) input Field Type is unknown,
-     * or
      * (3) input Component API Type is unknown to the Field Type's formatter.
      */
     throwOnUnknownType = false

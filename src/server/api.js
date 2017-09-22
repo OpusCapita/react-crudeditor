@@ -20,6 +20,7 @@ module.exports = function (app) {
     const query = req.query || {};
 
     if (query.instance) {
+      // Request for single instance.
       const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
 
       if (result) {
@@ -32,14 +33,30 @@ module.exports = function (app) {
       return;
     }
 
+    // Request from Search Form.
+
     const max = query.max ? Number.parseInt(query.max, 10) : 10;
     const offset = query.offset ? Number.parseInt(query.offset, 10) : 0;
+
     const filter = query.filter ?
       Object.entries(query.filter).reduce(
         (rez, [name, value]) => ({
-          [name]: {
-            '$contains': value
-          }
+          ...rez,
+          [name]:
+            value.hasOwnProperty('from') &&
+            value.hasOwnProperty('to') &&
+            Object.keys(value).length === 2 &&
+            { '$between': [Number(value.from), Number(value.to)] }
+          ||
+            value.hasOwnProperty('from') &&
+            Object.keys(value) === 1 &&
+            { '$gte': Number(value) }
+          ||
+            value.hasOwnProperty('to') &&
+            Object.keys(value) === 1 &&
+            { '$lte': Number(value) }
+          ||
+            { '$contains': value }
         }),
         {}
       ) :

@@ -9,13 +9,13 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleFormFilterUpdate = fieldName => newFieldValue => this.props.model.actions.updateFormFilter({
-      name: fieldName,
+    this.handleFormFilterUpdate = path => newFieldValue => this.props.model.actions.updateFormFilter({
+      path,
       value: newFieldValue
     });
   }
 
-  handleFormFilterBlur = fieldName => _ => this.props.model.actions.parseFormFilter(fieldName);
+  handleFormFilterBlur = path => _ => this.props.model.actions.parseFormFilter(path);
 
   handleSubmit = e => {
     e.preventDefault();
@@ -40,14 +40,47 @@ export default class extends React.PureComponent {
 
     const searchableFieldsElement = searchableFields.map(({
       name,
+      isRange,
       Component,
       valuePropName
-    }) => (
+    }) => isRange ?
+      <div key={`div-form-group-${name}`}>
+        <FormGroup
+          key={`form-group-${name}-from`}
+          controlId={`fg-${name}-from`}
+          validationState={errors[name] && errors[name].from ? 'error' : null}
+        >
+          <Col xs={12}>
+            <label>{name + ' (from)'}</label>
+            <Component
+              {...{ [valuePropName]: formatedFilter[name].from }}
+              onChange={this.handleFormFilterUpdate([name, 'from'])}
+              onBlur={this.handleFormFilterBlur([name, 'from'])}
+            />
+            {errors[name] && errors[name].from && <HelpBlock>{errors[name].from.message}</HelpBlock>}
+          </Col>
+        </FormGroup>
+        <FormGroup
+          key={`form-group-${name}-to`}
+          controlId={`fg-${name}-to`}
+          validationState={errors[name] && errors[name].to ? 'error' : null}
+        >
+          <Col xs={12}>
+            <label>{name + ' (to)'}</label>
+            <Component
+              {...{ [valuePropName]: formatedFilter[name].to }}
+              onChange={this.handleFormFilterUpdate([name, 'to'])}
+              onBlur={this.handleFormFilterBlur([name, 'to'])}
+            />
+            {errors[name] && errors[name].to && <HelpBlock>{errors[name].to.message}</HelpBlock>}
+          </Col>
+        </FormGroup>
+      </div> :
       <FormGroup
         key={`form-group-${name}`}
         controlId={`fg-${name}`}
         validationState={errors[name] ? 'error' : null}
-        >
+      >
         <Col xs={12}>
           <label>{name}</label>
           <Component
@@ -58,7 +91,7 @@ export default class extends React.PureComponent {
           {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
         </Col>
       </FormGroup>
-    ));
+    );
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix">

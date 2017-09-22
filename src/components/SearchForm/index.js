@@ -70,10 +70,15 @@ export default class extends React.PureComponent {
           {searchableFieldsElement}
         </div>
         <div className="crud--search-form__submit-group">
-          <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
           <Button
-            bsStyle='primary'
-            type='submit'
+            bsStyle='link'
+            onClick={resetFormFilter}
+          >
+            Reset
+          </Button>
+          <Button
+            bsStyle="primary"
+            type="submit"
             ref={ref => (this.submitBtn = ref)}
           >
             Search

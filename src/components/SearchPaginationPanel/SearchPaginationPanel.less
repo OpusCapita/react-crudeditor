@@ -1,20 +1,20 @@
 .crud--search-pagination-panel {
-  display: flex;
+  display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   flex-direction: row-reverse;
-  padding-right: 15px;
+  padding-right: 12px;
+  margin-left: auto;
 }
 
-.crud--search-pagination-panel__per-page-dropdown,
-.crud--search-pagination-panel__paginate .pagination {
-  margin-left: 12px;
+.crud--search-pagination-panel__per-page-dropdown {
+  margin: 6px 0 6px 12px;
 }
 
 
 .crud--search-pagination-panel__per-page-dropdown .dropdown-menu {
   left: 0;
   right: 0;
-
   padding: 0;
 }
 
@@ -24,5 +24,10 @@
 
 .crud--search-pagination-panel__paginate  {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+}
+
+.crud--search-pagination-panel__pagination {
+  margin: 0 0 0 12px !important;
 }

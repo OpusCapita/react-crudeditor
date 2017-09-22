@@ -1,3 +1,10 @@
+.crud--search-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+
 .crud--search-form__title {
   margin: 0;
   line-height: 1;
@@ -6,9 +13,25 @@
 .crud--search-form__header {
   background-color: #3b4a56;
   color: #fff;
-  padding: 8px 12px;
+  padding: 12px 12px 8px;
 }
 
 .crud--search-form__controls {
+  flex: 1 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
   padding: 18px 12px 12px;
+}
+
+.crud--search-form__submit-group {
+  padding: 12px;
+  justify-content: flex-end;
+  display: flex;
+  border-top: 1px solid #e5e5e5;
+}
+
+.crud--search-form__form-group {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }

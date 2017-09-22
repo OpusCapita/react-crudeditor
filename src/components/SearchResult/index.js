@@ -16,7 +16,7 @@ export default ({ model }) => model.data.totalCount > 0 ? (
     </div>
   </div>
 ) : (
-  <div className="bs-callout bs-callout-info">
+  <div className="crud--search-result__no-items-found">
     <span>0 items found</span>
   </div>
 );

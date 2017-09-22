@@ -27,7 +27,7 @@ export default class extends React.PureComponent {
             onSelect={this.handleMaxChange}
             dropup={true}
             className="crud--search-pagination-panel__per-page-dropdown"
-          >
+            >
             <Dropdown.Toggle>
               Results per page: <b>{max}</b>
             </Dropdown.Toggle>
@@ -43,22 +43,21 @@ export default class extends React.PureComponent {
           </Dropdown>
         </div>
 
-        <div>
-          <div className='crud--search-pagination-panel__paginate paginate'>
-            <div>
-              <span>{totalCount} item(s) found</span>
-            </div>
-
-            <Pagination
-              activePage={offset / max + 1}
-              onSelect={this.handlePaginate}
-              items={Math.ceil(totalCount / max)}
-              maxButtons={5}
-              boundaryLinks
-              first
-              last
+        <div className="crud--search-pagination-panel__paginate">
+          <Pagination
+            activePage={offset / max + 1}
+            onSelect={this.handlePaginate}
+            items={Math.ceil(totalCount / max)}
+            className="crud--search-pagination-panel__pagination"
+            maxButtons={5}
+            boundaryLinks
+            first
+            last
             />
-          </div>
+        </div>
+
+        <div>
+          <span>{totalCount} item(s) found</span>
         </div>
       </div>
     );

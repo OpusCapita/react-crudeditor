@@ -47,8 +47,9 @@ export default class extends React.PureComponent {
         key={`form-group-${name}`}
         controlId={`fg-${name}`}
         validationState={errors[name] ? 'error' : null}
-        >
-        <Col xs={12}>
+        className="crud--search-form__form-group"
+      >
+        <div>
           <label>{name}</label>
           <Component
             {...{ [valuePropName]: formatedFilter[name] }}
@@ -56,19 +57,19 @@ export default class extends React.PureComponent {
             onBlur={this.handleFormFilterBlur(name)}
             />
           {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
-        </Col>
+        </div>
       </FormGroup>
     ));
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix">
+      <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__header">
           <h4 className="crud--search-form__title">Search</h4>
         </div>
         <div className="crud--search-form__controls">
           {searchableFieldsElement}
         </div>
-        <Col xs={12} className="text-right form-submit">
+        <div className="crud--search-form__submit-group">
           <Button bsStyle='link' onClick={resetFormFilter}>Reset</Button>
           <Button
             bsStyle='primary'
@@ -77,7 +78,7 @@ export default class extends React.PureComponent {
           >
             Search
           </Button>
-        </Col>
+        </div>
       </Form>
     );
   }

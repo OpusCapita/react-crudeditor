@@ -927,7 +927,20 @@ Every view passes *model* property to external React Components it uses.  The pr
     resultFields: <Model Definition>.ui.search().resultFields || <array, default Result Fields>,
     resultFilter: state.resultFilter,
     resultInstances: state.resultInstances,
-    searchableFields: <Model Definition>.ui.search().searchableFields || <array, default Searchable Fields>,
+    searchableFields: [{
+      name: <string, persistent field name>,
+      Component: <function, React Component for rendering Formated Instance's field>,
+      valuePropName: <string, a name of Component prop with field value>,
+
+      /*
+       * Boolean, whether two react Components for from-to ranging must be rendered.
+       * if true, filter field value consists of two keys, "from" and "to",
+       * and two distinct Components are rendered for each of them.
+       * NOTE: always false for custom Component.
+       */
+      isRange: <boolean>
+
+    }]
     selectedInstances: state.selectedInstances,
     sortParams: {
       field: state.sortParams.field,

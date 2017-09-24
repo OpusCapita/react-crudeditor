@@ -55,10 +55,7 @@ export default {
       'termsOfPaymentId': {'type': 'string', 'constraints': {'max': 20, 'required': false}},
       'description': {'type': 'string', 'constraints': {'max': 100, 'required': false}},
       'termsOfDeliveryId': {'type': 'string', 'constraints': {'max': 20, 'required': false}},
-
-      // ERROR: particular string and null
       'freeShippingBoundary': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
-
       'createdOn': {'type': 'date', 'constraints': {'required': true}},
       'changedOn': {'type': 'date', 'constraints': {'required': true}},
       'contractedCatalogs': {'type': 'collection', 'constraints': {'required': false}},
@@ -71,45 +68,29 @@ export default {
       'usages': {'type': 'collection', 'constraints': {'required': false}},
       'currencyId': {'type': 'string', 'constraints': {'max': 3, 'required': false}},
       'isFrameContract': {'type': 'boolean', 'constraints': {'required': false}},
-
-      // null
       'totalContractedAmount': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
-
-      //null
       'smallVolumeSurcharge': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
-
       'provisionings': {'type': 'collection', 'constraints': {'required': false}},
       'isOffer': {'type': 'boolean', 'constraints': {'required': false}},
-
-      // null
-      'maxOrderValue': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
-
+      'maxOrderValue': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': true}},
       'validRange': {'type': 'com.jcatalog.core.DateRange', 'constraints': {'required': false}},
       'isPreferred': {'type': 'boolean', 'constraints': {'required': false}},
       'isInternal': {'type': 'boolean', 'constraints': {'required': false}},
       'contractCategory': {'type': 'com.jcatalog.contract.ContractCategory', 'constraints': {'required': false}},
-
-      // ERROR: numbers and null
       'freightSurcharge': {'type': 'numberString', 'constraints': {'min': 0, 'max': 999999999, 'required': false}},
-
       'isStandard': {'type': 'boolean', 'constraints': {'required': false}},
-
-      // ERROR: random string, particular numberString and null
       'statusId': {'type': 'numberString', 'constraints': {'min': 0, 'max': 800, 'integer': true, 'required': false}},
-
       'createdBy': {'type': 'string', 'constraints': {'required': true}},
       'extContractLineId': {'type': 'string', 'constraints': {'max': 10, 'required': false}},
       'contractId': {unique: true, 'type': 'string', 'constraints': {'max': 100, 'required': true}},
       'parentContract': {'type': 'com.jcatalog.contract.Contract', 'constraints': {'required': false}},
-
-      // null
       'minOrderValue': {
         'type': 'numberString',
         'constraints': {
           'min': 0,
           'max': 999999999,
           'integer': true,
-          'required': true
+          'required': false
         }
       }
     }

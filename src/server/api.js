@@ -1,5 +1,17 @@
 import loki from 'lokijs';
+import cloneDeep from 'lodash/cloneDeep';
+
 import data from './data.json';
+
+const NUMBER_FIELDS = [
+  'maxOrderValue',
+  'minOrderValue',
+  'freeShippingBoundary',
+  'totalContractedAmount',
+  'smallVolumeSurcharge',
+  'freightSurcharge'
+];
+
 const db = new loki();
 
 const contracts = db.addCollection('contracts', {
@@ -7,8 +19,26 @@ const contracts = db.addCollection('contracts', {
 });
 const statuses = db.addCollection('statuses');
 
-data.contracts.forEach(contract => contracts.insert(contract));
+const existingContractIds = {};
+
+data.contracts.forEach(contract => {
+  if (!existingContractIds[contract.contractId]) {
+    existingContractIds[contract.contractId] = true;
+    contracts.insert(contract);
+  }
+});
+
 data.statuses.forEach(status => statuses.insert(status));
+
+const internal2api = contract => Object.entries(contract).reduce(
+  (rez, [fieldName, fieldValue]) => ({
+    ...rez,
+    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
+      fieldValue.toString() :
+      fieldValue)
+  }),
+  {}
+)
 
 module.exports = function (app) {
   /**
@@ -24,7 +54,7 @@ module.exports = function (app) {
       const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
 
       if (result) {
-        res.json(result);
+        res.json(internal2api(result));
       } else {
         res.status(404);
         res.json({message: `Contract ${JSON.stringify(query.instance)} not found`});
@@ -43,6 +73,9 @@ module.exports = function (app) {
         (rez, [name, value]) => ({
           ...rez,
           [name]:
+            ['statusId', 'isOffer', 'isPreferred', 'isInternal', 'isFrameContract', 'isStandard', 'minOrderValueRequired'].includes(name) &&
+            value
+          ||
             value.hasOwnProperty('from') &&
             value.hasOwnProperty('to') &&
             Object.keys(value).length === 2 &&
@@ -80,8 +113,7 @@ module.exports = function (app) {
       result = result.limit(max);
     }
 
-    result = result.data();
-
+    result = result.data().map(internal2api);
     res.header('Content-Range', `items ${offset + 1}-${offset + result.length}/${totalCount}`);
     res.json(result.map(({ $loki, meta, ...instance }) => instance));
   });

@@ -84,7 +84,7 @@ export const
   }) => {
     const render = customRender ||
       defaultFieldRenders[fieldType] ||
-      (_ => { throw new Error(`Unknown field type "${fieldType}"`); })();
+      (_ => { throw new TypeError(`Unknown field type "${fieldType}"`); })();
 
     if (!render.valueProp) {
       render.valueProp = {};

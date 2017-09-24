@@ -13,6 +13,8 @@ import {
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
+import { RANGE_FIELD_TYPES } from './views/search/constants';
+
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
 import { getViewState as getEditViewState } from './views/edit/selectors';
@@ -74,10 +76,17 @@ function fillDefaults(baseModelDefinition) {
   }
 
   searchMeta.searchableFields.forEach(field => {
-    field.render = buildFieldRender({
-      render: field.render,
-      type: fieldsMeta[field.name].type
-    });
+    if (field.render && !field.render.Component) {
+      throw new Error(`searchableField "${field.name}" must have render.Component if render is specified`);
+    }
+
+    field.render = {
+      isRender: !!field.render && RANGE_FIELD_TYPES.includes(fieldsMeta[field.name].type),
+      ...buildFieldRender({
+        render: field.render,
+        type: fieldsMeta[field.name].type
+      }),
+    };
   });
 
   if (!modelDefinition.ui.edit) {

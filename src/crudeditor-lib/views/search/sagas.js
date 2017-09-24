@@ -11,7 +11,6 @@ import {
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
-  RANGE_FIELD_TYPES,
   READY,
   VIEW_NAME
 } from './constants';
@@ -32,8 +31,16 @@ export function* onInstancesSearch(modelDefinition, {
   },
   meta: { source }
 }) {
+
+  /*
+   * The function receives filter field name/value and return
+   * false - if value must be cleaned out,
+   * object with filter field name as object only key and filter field value as object value - otherwise.
+   */
   const cleanValue = ({ name, value }) => {
-    if (!RANGE_FIELD_TYPES.includes(modelDefinition.model.fields[name].type)) {
+      if (!modelDefinition.ui.search.searchableFields.find(
+        ({ name: fieldName }) => fieldName === name
+      ).render.isRange) {
       return value !== EMPTY_FIELD_VALUE && {
         [name]: value
       }
@@ -49,11 +56,12 @@ export function* onInstancesSearch(modelDefinition, {
       valueCleansed.to = value.to;
     }
 
-    return Object.keys(valueCleansed).length && {
+    return !!Object.keys(valueCleansed).length && {
       [name]: valueCleansed
     };
   }
 
+  // The function returns new filter with EMPTY_FIELD_VALUE leaf nodes deleted.
   const cleanFilter = filter => Object.keys(filter).reduce(
     (rez, name) => {
       const valueCleansed = cleanValue({
@@ -73,6 +81,9 @@ export function* onInstancesSearch(modelDefinition, {
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 
   if (divergedField) {
+    // ENTER key was pressed in one of filter inputs =>
+    // the input's onBlur() was not called and vallues was not parsed as a result =>
+    // mimic onBlur() event handler.
     yield put({
       type: FORM_FILTER_PARSE,
       payload: {

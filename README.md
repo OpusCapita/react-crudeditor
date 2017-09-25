@@ -601,7 +601,7 @@ Model Definition is an object describing an entity. It has the following structu
 
 ### FieldInputComponent
 
-Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.
+Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct.
 
 Props:
 

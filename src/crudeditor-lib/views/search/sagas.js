@@ -84,7 +84,7 @@ export function* onInstancesSearch(modelDefinition, {
   if (divergedField) {
     // ENTER key was pressed in one of filter inputs =>
     // the input's onBlur() was not called and vallues was not parsed as a result =>
-    // mimic onBlur() event handler.
+    // mimic onBlur() event handler:
     yield put({
       type: FORM_FILTER_PARSE,
       payload: {

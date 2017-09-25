@@ -35,10 +35,21 @@ const internal2api = contract => Object.entries(contract).reduce(
     ...rez,
     [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
       fieldValue.toString() :
-      fieldValue)
+      fieldValue
+    )
   }),
   {}
-)
+);
+
+const api2internal = contract => Object.entries(contract).reduce(
+  (rez, [fieldName, fieldValue]) => ({
+    ...rez,
+    [fieldName]: fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
+      Number(fieldValue) :
+      fieldValue
+  }),
+  {}
+);
 
 module.exports = function (app) {
   /**
@@ -139,27 +150,24 @@ module.exports = function (app) {
    */
   app.put('/api/contracts/:contractId', (req, res) => {
     const doc = req.body;
-
-    const {contractId} = req.params;
-    const foundItem = contracts.findOne({contractId});
+    const { contractId } = req.params;
+    const foundItem = contracts.findOne({ contractId });
 
     if (foundItem) {
       try {
-        const result = contracts.update({
+        const { $loki, meta, ...result } = contracts.update({
           ...foundItem,
-          ...doc
+          ...api2internal(doc)
         });
 
-        res.json(result);
+        res.json(internal2api(result));
       } catch (error) {
         res.status(500);
-
-        res.json({error})
+        res.json({ error });
       }
     } else {
       res.status(404);
-
-      res.json({error: `Contract [${contractId}] not found`});
+      res.json({ error: `Contract [${contractId}] not found` });
     }
   });
 

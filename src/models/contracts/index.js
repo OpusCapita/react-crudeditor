@@ -11,7 +11,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     //field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { Component: StatusField }}),
+    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } }}),
     //field({ name: 'parentContract', render: { Component: ContractReferenceSearch }}),
     //field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable' },
@@ -93,6 +93,17 @@ export default {
           'required': false
         }
       }
+    },
+    validate(instance) {
+      if (instance.minOrderValueRequired && instance.minOrderValue === null) {
+        throw [{
+          code: 400,
+          id: 'requiredFieldMissing',
+          message: 'minOrderValue must be set when minOrderValueRequired is true'
+        }];
+      }
+
+      return true;
     }
   },
   api: {
@@ -102,7 +113,7 @@ export default {
         get('/api/contracts/').
         query({ instance }).
         accept('json').
-        then(({ body }) => body).
+        then(({ body: instance }) => instance).
         catch(({ status, response: { body } }) => Promise.reject({
           code: body && body.code || status,
           payload: body ?
@@ -142,12 +153,13 @@ export default {
         accept('json');
     },
     update({ instance }) {
-      console.log('Making API-update call');
-      const {contractId} = instance;
+      console.log('Making API-update call', JSON.stringify(instance));
+      const { contractId } = instance;
       return superagent.
         put('/api/contracts/' + encodeURIComponent(contractId)).
         send(instance).
-        accept('json');
+        accept('json').
+        then(({ body: instance }) => instance);
     }
   },
   ui: {

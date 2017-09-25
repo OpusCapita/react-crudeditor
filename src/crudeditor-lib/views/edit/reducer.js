@@ -12,11 +12,18 @@ import {
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
+
+  INSTANCE_SAVE_FAIL,
+  INSTANCE_SAVE_REQUEST,
+  INSTANCE_SAVE_SUCCESS,
+
   INSTANCE_FIELD_VALIDATE,
+  INSTANCE_VALIDATE,
 
   EXTRACTING,
   READY,
   UNINITIALIZED,
+  UPDATING,
 
   VIEW_NAME,
   INSTANCE_FIELD_CHANGE,
@@ -66,7 +73,7 @@ const defaultStoreStateTemplate = {
   formatedInstance: undefined,
 
   // Field name a user is entering =>
-  // formatedFilter[fieldName] is up-to-date,
+  // formatedFilter[fieldName] is up-to-date, but
   // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
   // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
   divergedField: null,
@@ -110,66 +117,61 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_SUCCESS) {
+  } else if (type === INSTANCE_EDIT_SUCCESS || type === INSTANCE_SAVE_SUCCESS) {
     const { instance, activeTabName } = payload;
-    let formLayout;
 
-    if (instance && !isEqual(instance, storeState.persistentInstance)) {
-      formLayout = modelDefinition.ui.edit.formLayout(instance).
-        filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
+    const formLayout = modelDefinition.ui.edit.formLayout(instance).
+      filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
 
-      let hasTabs;
-      let hasSectionsOrFields;
+    let hasTabs;
+    let hasSectionsOrFields;
 
-      formLayout.forEach(entry => {
-        hasTabs = hasTabs || entry.tab;
-        hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
+    formLayout.forEach(entry => {
+      hasTabs = hasTabs || entry.tab;
+      hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
 
-        if (hasTabs && hasSectionsOrFields) {
-          throw new Error('formLayout must not have tabs together with sections/fields at top level');
-        }
-      });
+      if (hasTabs && hasSectionsOrFields) {
+        throw new Error('formLayout must not have tabs together with sections/fields at top level');
+      }
+    });
 
-      newStoreStateSlice.formLayout = u.constant(formLayout);
-      newStoreStateSlice.persistentInstance = u.constant(instance);
-      newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-      newStoreStateSlice.divergedField = null;
-      newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
+    newStoreStateSlice.formLayout = u.constant(formLayout);
+    newStoreStateSlice.persistentInstance = u.constant(instance);
+    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+    newStoreStateSlice.divergedField = null;
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-      newStoreStateSlice.errors = u.constant({
-        general: [],
-        fields: Object.keys(instance).reduce(
-          (rez, fieldName) => ({
-            ...rez,
-            [fieldName]: []
-          }),
-          {}
-        )
-      });
-
-      newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
-        (rez, fieldName) => {
-          const fieldLayout = findFieldLayout(fieldName)(formLayout);
-          return fieldLayout ? {
-            ...rez,
-            [fieldName]: formatField({
-              value: instance[fieldName],
-              type: modelDefinition.model.fields[fieldName].type,
-              targetType: fieldLayout.render.valueProp.type
-            })
-          } : rez;  // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed  in Edit View.
-        },
+    newStoreStateSlice.errors = u.constant({
+      general: [],
+      fields: Object.keys(instance).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: []
+        }),
         {}
-      ));
-    }
+      )
+    });
 
-    if (formLayout ||  // New instance has been received => new formLayout has been built.
-      storeState.activeTab && storeState.activeTab.tab !== activeTabName  // New tab has been selected.
-    ) {
-      const tabs = (formLayout || storeState.formLayout).filter(({ tab }) => !!tab);  // [] in case of no tabs.
-      const activeTab = tabs.find(({ tab: name }) => name === activeTabName) || tabs[0];  // undefined in case of no tabs.
-      newStoreStateSlice.activeTab = u.constant(activeTab);
-    }
+    newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+      (rez, fieldName) => {
+        const fieldLayout = findFieldLayout(fieldName)(formLayout);
+        return fieldLayout ? {
+          ...rez,
+          [fieldName]: formatField({
+            value: instance[fieldName],
+            type: modelDefinition.model.fields[fieldName].type,
+            targetType: fieldLayout.render.valueProp.type
+          })
+        } : rez;  // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
+      },
+      {}
+    ));
+
+    const tabs = formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
+
+    newStoreStateSlice.activeTab = u.constant(
+      tabs.find(({ tab: name }) => name === activeTabName) || tabs[0]  // undefined in case of no tabs.
+    );
 
     newStoreStateSlice.status = READY;
 
@@ -263,6 +265,28 @@ export default modelDefinition => (
       }
 
       newStoreStateSlice.divergedField = null;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_VALIDATE) {
+      const { errors } = payload;
+
+      if (!isEqual(storeState.errors.general, errors)) {
+        newStoreStateSlice.errors = {
+          general: payload.errors
+        };
+      }
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_SAVE_REQUEST) {
+      newStoreStateSlice.status = UPDATING;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCE_SAVE_FAIL) {
+      newStoreStateSlice.errors.general = payload;
+      newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

@@ -49,6 +49,10 @@ function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.instanceLabel :
     ({ _objectLabel }) => _objectLabel;
 
+  if (!modelDefinition.model.validate) {
+    modelDefinition.model.validate = _ => true;
+  }
+
   const fieldsMeta = modelDefinition.model.fields;
 
   Object.keys(fieldsMeta).forEach(fieldName => {

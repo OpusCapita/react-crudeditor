@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 
 import { buildDefaultStoreState } from './reducer';
@@ -146,7 +147,7 @@ export function* onInstancesSearch(modelDefinition, {
       }
     } = buildDefaultStoreState(modelDefinition);
 
-    filter = filter || defaultFilter;
+    filter = merge(defaultFilter, filter);
     sort   = sort   || defaultSort;
     order  = order  || defaultOrder;
     max    = max    || defaultMax;

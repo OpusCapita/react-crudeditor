@@ -36,11 +36,11 @@ const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
 }) => Object.keys(fieldsMeta).
-  filter(name => [VIEW_SHOW, VIEW_EDIT].includes(viewName) || !AUDITABLE_FIELDS.includes(name)).
+  filter(name => ~[VIEW_SHOW, VIEW_EDIT].indexOf(viewName) || AUDITABLE_FIELDS.indexOf(name) === -1).
   map(name => ({
     field: name,
     readOnly: viewName === VIEW_EDIT && (
-        AUDITABLE_FIELDS.includes(name) ||  // Audiatable fields are read-only in Edit View.
+        ~AUDITABLE_FIELDS.indexOf(name) ||  // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
       ),
     render: buildFieldRender({ type: fieldsMeta[name].type })
@@ -70,7 +70,11 @@ const tabLayout = ({ name: tabId, ...props }, ...entries) => {
   // entries is always an array, may be empty.
   entries = entries.filter(entry => !!entry);
   entries.tab = tabId;
-  Object.entries(props).forEach(([name, value]) => entries[name] = value);
+
+  Object.keys(props).forEach(name => {
+    entries[name] = props[name];
+  });
+
   return entries.length ? entries : null;
 };
 

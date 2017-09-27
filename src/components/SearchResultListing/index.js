@@ -42,7 +42,7 @@ export default class extends React.PureComponent {
   }) {
     if (
       instances.length !== this.props.model.data.resultInstances.length ||
-      this.props.model.data.resultInstances.some(instance => !instances.includes(instance))
+      this.props.model.data.resultInstances.some(instance => instances.indexOf(instance) === -1)
     ) {
       this.handleNewInstances(instances);
     }
@@ -104,7 +104,7 @@ export default class extends React.PureComponent {
           {instances.map(instance =>
             <tr key={`tr-${JSON.stringify(instance)}`}>
               <td>
-                <Checkbox checked={selectedInstances.includes(instance)} onChange={this.handleToggleSelected(instance)} />
+                <Checkbox checked={~selectedInstances.indexOf(instance)} onChange={this.handleToggleSelected(instance)} />
               </td>
                 {resultFields.map(({ name, Component, textAlignment }) =>
                 <td

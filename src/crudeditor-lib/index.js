@@ -75,7 +75,7 @@ function fillDefaults(baseModelDefinition) {
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).
-      filter(name => !AUDITABLE_FIELDS.includes(name)).
+      filter(name => AUDITABLE_FIELDS.indexOf(name) === -1).
       map(name => ({ name }));
   }
 
@@ -85,7 +85,7 @@ function fillDefaults(baseModelDefinition) {
     }
 
     field.render = {
-      isRender: !!field.render && RANGE_FIELD_TYPES.includes(fieldsMeta[field.name].type),
+      isRender: !!field.render && ~RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type),
       ...buildFieldRender({
         render: field.render,
         type: fieldsMeta[field.name].type

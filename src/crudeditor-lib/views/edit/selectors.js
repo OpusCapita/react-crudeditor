@@ -38,7 +38,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: [EXTRACTING, DELETING, UPDATING].includes(storeState.status),
+    isLoading: ~[EXTRACTING, DELETING, UPDATING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

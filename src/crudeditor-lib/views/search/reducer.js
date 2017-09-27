@@ -126,7 +126,14 @@ const buildDefaultFormatedFilter = ({
 export const buildDefaultStoreState = modelDefinition => {
   const searchMeta = modelDefinition.ui.search;
   const fieldsMeta = modelDefinition.model.fields;
-  const sortByDefaultIndex = searchMeta.resultFields.findIndex(({ sortByDefault }) => !!sortByDefault);
+  let sortByDefaultIndex = 0;
+
+  searchMeta.resultFields.some(({ sortByDefault }, index) => {
+    if (!!sortByDefault) {
+      sortByDefaultIndex = index;
+      return true;
+    }
+  });
 
   const defaultStoreState = {
 
@@ -146,7 +153,7 @@ export const buildDefaultStoreState = modelDefinition => {
     divergedField: null,
 
     sortParams: {
-      field: searchMeta.resultFields[sortByDefaultIndex === -1 ? 0 : sortByDefaultIndex].name,
+      field: searchMeta.resultFields[sortByDefaultIndex].name,
       order: 'asc'
     },
     pageParams: {

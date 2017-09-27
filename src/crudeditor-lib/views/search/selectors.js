@@ -54,7 +54,7 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     generalErrors: storeState.errors.general,
-    isLoading: [SEARCHING, DELETING].includes(storeState.status),
+    isLoading: ~[SEARCHING, DELETING].indexOf(storeState.status),
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

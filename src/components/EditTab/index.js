@@ -14,7 +14,7 @@ export default class extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
-    if ([VIEW_CREATE, VIEW_EDIT].includes(this.props.model.data.viewName)) {
+    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
       this.props.model.actions.saveInstance();
     }
   }
@@ -60,7 +60,7 @@ export default class extends React.PureComponent {
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) &&
+              ~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName) &&
                 <Button onClick={this.handleSaveAndNew}>
                   Save and New
                 </Button>
@@ -74,7 +74,7 @@ export default class extends React.PureComponent {
             }
             {' '}
             {
-              [VIEW_CREATE, VIEW_EDIT].includes(viewName) &&
+              ~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName) &&
                 <Button bsStyle='primary' type='submit'>
                   Save
                 </Button>

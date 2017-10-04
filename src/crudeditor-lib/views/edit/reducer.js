@@ -22,6 +22,7 @@ import {
 
   EXTRACTING,
   READY,
+  REDIRECTING,
   UNINITIALIZED,
   UPDATING,
 
@@ -112,13 +113,38 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === INSTANCE_EDIT_REQUEST) {
-    newStoreStateSlice.status = EXTRACTING;
+  if (type === VIEW_REDIRECT_REQUEST && meta.requester === VIEW_NAME) {
+    newStoreStateSlice.status = REDIRECTING;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === VIEW_REDIRECT_SUCCESS && meta.requester === VIEW_NAME) {
+    newStoreStateSlice = cloneDeep(defaultStoreStateTemplate),
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === VIEW_REDIRECT_FAIL && meta.requester === VIEW_NAME) {
+    const errors = [payload];
+    newStoreStateSlice.status = READY;
+
+    newStoreStateSlice.errors = {
+      general: errors
+    };
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_EDIT_REQUEST) {
+  newStoreStateSlice.status = EXTRACTING;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_SAVE_REQUEST) {
+    newStoreStateSlice.status = UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   } else if (type === INSTANCE_EDIT_SUCCESS || type === INSTANCE_SAVE_SUCCESS) {
-    const { instance, activeTabName } = payload;
+    const { instance } = payload;
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
@@ -167,135 +193,155 @@ export default modelDefinition => (
       {}
     ));
 
-    const tabs = formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
+    newStoreStateSlice.status = READY;
 
-    newStoreStateSlice.activeTab = u.constant(
-      tabs.find(({ tab: name }) => name === activeTabName) || tabs[0]  // undefined in case of no tabs.
-    );
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_EDIT_FAIL) {
+    const errors = [payload];
+
+    newStoreStateSlice.errors = {
+      general: errors
+    };
+
+    newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_SAVE_FAIL) {
+    const errors = [payload];
+
+    newStoreStateSlice.errors = {
+      general: errors
+    };
 
     newStoreStateSlice.status = READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCE_EDIT_FAIL) {
-      newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
+  } else if (type === INSTANCE_FIELD_CHANGE) {
+    const {
+      name: fieldName,
+      value: fieldValue
+    } = payload;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    newStoreStateSlice.formatedInstance = {
+      [fieldName]: u.constant(fieldValue)
+    };
 
-    } else if (type === INSTANCE_FIELD_CHANGE) {
-      const {
-        name: fieldName,
-        value: fieldValue
-      } = payload;
+    newStoreStateSlice.divergedField = fieldName;
 
-      newStoreStateSlice.formatedInstance = {
-        [fieldName]: u.constant(fieldValue)
-      };
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-      newStoreStateSlice.divergedField = fieldName;
+  } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
+    // if storeState.divergedField is null, no data has changed.
+    const { name: fieldName } = payload;
+    const fieldMeta = modelDefinition.model.fields[fieldName];
+    const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    try {
+      const newFormValue = parseField({
+        value: storeState.formatedInstance[fieldName],
+        type: fieldMeta.type,
+        sourceType: uiType
+      });
 
-    } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-      // if storeState.divergedField is null, no data has changed.
-      const { name: fieldName } = payload;
-      const fieldMeta = modelDefinition.model.fields[fieldName];
-      const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
+      if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
+        newStoreStateSlice.formInstance = {
+          [fieldName]: u.constant(newFormValue)
+        };
+      }
+
+      const newFormatedValue = formatField({
+        value: newFormValue,
+        type: fieldMeta.type,
+        targetType: uiType
+      });
+
+      if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
+        newStoreStateSlice.formatedInstance = {
+          [fieldName]: u.constant(newFormatedValue)
+        };
+      }
 
       try {
-        const newFormValue = parseField({
-          value: storeState.formatedInstance[fieldName],
-          type: fieldMeta.type,
-          sourceType: uiType
-        });
-
-        if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
-          newStoreStateSlice.formInstance = {
-            [fieldName]: u.constant(newFormValue)
-          };
-        }
-
-        const newFormatedValue = formatField({
+        validateField({
           value: newFormValue,
           type: fieldMeta.type,
-          targetType: uiType
+          constraints: fieldMeta.constraints
         });
 
-        if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
-          newStoreStateSlice.formatedInstance = {
-            [fieldName]: u.constant(newFormatedValue)
-          };
-        }
-
-        try {
-          validateField({
-            value: newFormValue,
-            type: fieldMeta.type,
-            constraints: fieldMeta.constraints
-          });
-
-          if (storeState.errors.fields[fieldName].length) {
-            newStoreStateSlice.errors = {
-              fields: {
-                [fieldName]: []
-              }
-            };
-          }
-        } catch(errors) {
-          if (!isEqual(errors, storeState.errors.fields[fieldName])) {
-            newStoreStateSlice.errors = {
-              fields: {
-                [fieldName]: errors
-              }
-            };
-          }
-        }
-      } catch(err) {
-        newStoreStateSlice.formInstance = {
-          [fieldName]: UNPARSABLE_FIELD_VALUE
-        };
-
-        if (!isEqual([err], storeState.errors.fields[fieldName])) {
+        if (storeState.errors.fields[fieldName].length) {
           newStoreStateSlice.errors = {
             fields: {
-              [fieldName]: [err]
+              [fieldName]: []
+            }
+          };
+        }
+      } catch(errors) {
+        if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: errors
             }
           };
         }
       }
+    } catch(err) {
+      newStoreStateSlice.formInstance = {
+        [fieldName]: UNPARSABLE_FIELD_VALUE
+      };
 
-      newStoreStateSlice.divergedField = null;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCE_VALIDATE) {
-      const { errors } = payload;
-
-      if (!isEqual(storeState.errors.general, errors)) {
+      if (!isEqual([err], storeState.errors.fields[fieldName])) {
         newStoreStateSlice.errors = {
-          general: payload.errors
+          fields: {
+            [fieldName]: [err]
+          }
         };
       }
+    }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    newStoreStateSlice.divergedField = null;
 
-    } else if (type === INSTANCE_SAVE_REQUEST) {
-      newStoreStateSlice.status = UPDATING;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_VALIDATE_SUCCESS) {
+    if (!isEqual(storeState.errors.general, [])) {
+      newStoreStateSlice.errors = {
+        general: []
+      };
+    }
 
-    } else if (type === INSTANCE_SAVE_FAIL) {
-      newStoreStateSlice.errors.general = payload;
-      newStoreStateSlice.status = READY;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_VALIDATE_FAIL) {
+    const errors = payload;
 
-    } else if (type === TAB_SELECT) {
-      const { activeTabName } = payload;
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
+    }
 
-      newStoreStateSlice.activeTab = u.constant(
-        storeState.formLayout.find(({ tab: name }) => name === activeTabName)
-      );
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === TAB_SELECT) {
+    const { tabName } = payload;  // may be undefined.
+    const tabs = formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
+    let newActiveTab = tabs[0];  // default tab, undefined in case of no tabs.
+
+    if (tabName) {
+      storeState.formLayout.some(tab => {
+        if (tab.tab === tabName) {
+          newActiveTab = tab;
+          return true;
+        }
+
+        return false;
+      });
+    }
+
+    newStoreStateSlice.activeTab = u.constant(newActiveTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }

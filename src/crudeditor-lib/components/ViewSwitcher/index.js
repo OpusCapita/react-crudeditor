@@ -15,26 +15,22 @@ import {
   VIEW_ERROR
 } from '../../common/constants';
 
-const ViewSwitcher = ({
-  activeViewName,
-  modelDefinition
-}) => {
+const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   if (!activeViewName) {
     return null;
   }
 
-  switch (activeViewName) {
-    case VIEW_SEARCH:
-      return <SearchView modelDefinition={modelDefinition}/>;
-    case VIEW_CREATE:
-      return <CreateView modelDefinition={modelDefinition}/>;
-    case VIEW_EDIT:
-      return <EditView modelDefinition={modelDefinition}/>;
-    case VIEW_ERROR:
-      return <ErrorView modelDefinition={modelDefinition}/>;
-    default:
-      return <div>Unknown view <i>{activeViewName}</i></div>;
-  }
+  const ViewComponent = ({
+    [VIEW_SEARCH]: SearchView,
+    [VIEW_CREATE]: CreateView,
+    [VIEW_EDIT  ]: EditView,
+    //[VIEW_SHOW  ]: ShowView,
+    [VIEW_ERROR ]: ErrorView
+  })[activeViewName];
+
+  return ViewComponent ?
+    <ViewComponent modelDefinition={modelDefinition} /> :
+    <div>Unknown view <i>{activeViewName}</i></div>;
 };
 
 export default connect(

@@ -3,6 +3,9 @@ import { VIEW_EDIT } from '../../common/constants';
 export const
   VIEW_NAME = VIEW_EDIT,
 
+  AFTER_ACTION_NEW  = 'new',
+  AFTER_ACTION_NEXT = 'next',
+
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
@@ -32,5 +35,6 @@ export const
   EXTRACTING    = VIEW_NAME + '/EXTRACTING',
   DELETING      = VIEW_NAME + '/DELETING',
   READY         = VIEW_NAME + '/READY',
+  REDIRECTING   = VIEW_NAME + '/REDIRECTING',
   UPDATING      = VIEW_NAME + '/UPDATING',
   UNINITIALIZED = VIEW_NAME + '/UNINITIALIZED';

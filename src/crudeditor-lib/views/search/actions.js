@@ -16,7 +16,7 @@ export const
     order,
     max,
     offset
-  } = {}, source) => ({
+  } = {}) => ({
     type: INSTANCES_SEARCH,
     payload: {
       filter,
@@ -24,8 +24,7 @@ export const
       order,
       max,
       offset
-    },
-    meta: { source }
+    }
   }),
 
   updateFormFilter = ({

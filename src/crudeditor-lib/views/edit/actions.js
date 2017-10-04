@@ -1,4 +1,6 @@
 import {
+  AFTER_ACTION_NEW,
+  AFTER_ACTION_NEXT,
   EDIT_EXIT,
   INSTANCE_EDIT,
   INSTANCE_FIELD_VALIDATE,
@@ -7,11 +9,6 @@ import {
   TAB_SELECT
 } from './constants';
 
-import {
-  AFTER_ACTION_NEW,
-  AFTER_ACTION_NEXT
-} from '../../common/constants';
-
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -19,14 +16,11 @@ export const
   editInstance = ({
     instance,
     tab: activeTabName
-  }, source) => ({
+  }) => ({
     type: INSTANCE_EDIT,
     payload: {
       instance,
       activeTabName
-    },
-    meta: {
-      source
     }
   }),
 
@@ -90,7 +84,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   selectTab = activeTabName => ({
     type: TAB_SELECT,
     payload: { activeTabName }

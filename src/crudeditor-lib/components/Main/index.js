@@ -12,23 +12,17 @@ export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    let {
-      viewName,
-      viewState,  // its structure is unknown and depends on viewName value.
-      initializeView
-    } = this.props;
-
-    // Initial initialization:
-    initializeView({ viewName, viewState });
+    // Initial initialization (viewState structure is unknown and depends on viewName value):
+    this.props.initializeView({
+      viewName: this.props.viewName,
+      viewState: this.props.viewState
+    });
   }
 
-  componentWillReceiveProps({
-    viewName,
-    viewState  // its structure is unknown and depends on viewName value.
-  }) {
-    // Re-initialization:
+  componentWillReceiveProps({ viewName, viewState }) {
+    // Re-initialization (viewState structure is unknown and depends on viewName value):
     this.props.initializeView({ viewName, viewState });
   }
 
-  render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition}/>
+  render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition} />
 }

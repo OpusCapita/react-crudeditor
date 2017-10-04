@@ -3,8 +3,7 @@ import {
 } from './constants';
 
 export const
-  createInstance = ({ instance } = {}, source) => ({
+  createInstance = ({ instance } = {}) => ({
     type: INSTANCE_CREATE,
-    payload: { instance },
-    meta: { source }
+    payload: { instance }
   });

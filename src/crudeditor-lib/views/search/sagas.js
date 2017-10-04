@@ -3,6 +3,7 @@ import merge from 'lodash/merge';
 import { call, put, takeLatest, all, select } from 'redux-saga/effects';
 
 import { buildDefaultStoreState } from './reducer';
+import { cleanFilter } from './lib';
 
 import {
   FORM_FILTER_PARSE,
@@ -15,8 +16,6 @@ import {
   READY,
   VIEW_NAME
 } from './constants';
-
-import { EMPTY_FIELD_VALUE } from '../../common/constants';
 
 /*███████████████████*\
  *███ WORKER SAGA ███*
@@ -32,53 +31,7 @@ export function* onInstancesSearch(modelDefinition, {
   },
   meta: { source }
 }) {
-
-  /*
-   * The function receives filter field name/value and return
-   * false - if value must be cleaned out,
-   * object with filter field name as object only key and filter field value as object value - otherwise.
-   */
-  const cleanValue = ({ name, value }) => {
-      if (!modelDefinition.ui.search.searchableFields.find(
-        ({ name: fieldName }) => fieldName === name
-      ).render.isRange) {
-      return value !== EMPTY_FIELD_VALUE && {
-        [name]: value
-      }
-    }
-
-    const valueCleansed = {};
-
-    if (value.from !== EMPTY_FIELD_VALUE) {
-      valueCleansed.from = value.from;
-    }
-
-    if (value.to !== EMPTY_FIELD_VALUE) {
-      valueCleansed.to = value.to;
-    }
-
-    return !!Object.keys(valueCleansed).length && {
-      [name]: valueCleansed
-    };
-  }
-
-  // The function returns new filter with EMPTY_FIELD_VALUE leaf nodes deleted.
-  const cleanFilter = filter => Object.keys(filter).reduce(
-    (rez, name) => {
-      const valueCleansed = cleanValue({
-        name,
-        value: filter[name]
-      });
-
-      return valueCleansed ? {
-        ...(rez || {}),
-        ...valueCleansed
-      } :
-        rez;
-    },
-    undefined
-  );
-
+  const { searchableFields } = modelDefinition.ui.search;
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 
   if (divergedField) {
@@ -154,7 +107,7 @@ export function* onInstancesSearch(modelDefinition, {
     offset = offset || defaultOffset;
 
     if (
-      isEqual(cleanFilter(filter), cleanFilter(currentFilter)) &&
+      isEqual(cleanFilter({ searchableFields, filter }), cleanFilter({ searchableFields, currentFilter })) &&
       sort === currentSort &&
       order === currentOrder &&
       max === currentMax &&
@@ -175,7 +128,7 @@ export function* onInstancesSearch(modelDefinition, {
     offset = sort === currentSort &&
       order === currentOrder &&
       max === currentMax &&
-      isEqual(cleanFilter(filter), cleanFilter(currentFilter)) ?
+      isEqual(cleanFilter({ searchableFields, filter }), cleanFilter({ searchableFields, currentFilter })) ?
         (offset || offset === 0 ? offset : currentOffset) :
         0;
   }
@@ -187,7 +140,7 @@ export function* onInstancesSearch(modelDefinition, {
 
   try {
     const { instances, totalCount } = yield call(modelDefinition.api.search, {
-      filter: cleanFilter(filter),
+      filter: cleanFilter({ searchableFields, filter }),
       sort,
       order,
       max,

@@ -19,13 +19,21 @@ const _getViewState = ({
     max,
     offset
   }
-}) => ({
-  filter,
-  sort,
-  order,
-  max,
-  offset
-});
+}, {
+  ui: {
+    search: { searchableFields }
+  }
+}) => {
+  filter = cleanFilter({ searchableFields, filter });
+
+  return {
+    ...(filter ? { filter } : {}),
+    sort,
+    order,
+    max,
+    offset
+  };
+};
 
 export const
 
@@ -35,13 +43,9 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getDefaultNewInstance = wrapper((storeState, {
-    ui: {
-      create: {
-        defaultNewInstance
-      }
-    }
-  }) => defaultNewInstance && defaultNewInstance(_getViewState(storeState))),
+  getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
+    modelDefinition.ui.create.defaultNewInstance &&
+      modelDefinition.ui.create.defaultNewInstance(_getViewState(storeState, modelDefinition))),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

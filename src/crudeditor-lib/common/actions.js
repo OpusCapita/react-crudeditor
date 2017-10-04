@@ -1,6 +1,6 @@
 import {
   INSTANCES_DELETE,
-  VIEW_INITIALIZE
+  VIEW_REDIRECT_FORCE
 } from './constants';
 
 export const
@@ -8,7 +8,7 @@ export const
     viewName,
     viewState
   }) => ({
-    type: VIEW_INITIALIZE,
+    type: VIEW_REDIRECT_FORCE,
     payload: {
       viewName,
       viewState

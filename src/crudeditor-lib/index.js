@@ -151,6 +151,7 @@ export default baseModelDefinition => {
     const newAppState = storeState2appState(newStoreState);
 
     if (!isEqual(oldAppState, newAppState)) {
+      console.log('*** onTransition() call ***');
       onTransition(newAppState);
     }
 
@@ -180,6 +181,11 @@ export default baseModelDefinition => {
 
     componentWillReceiveProps(props) {
       onTransition = props.onTransition;
+    }
+
+    shouldComponentUpdate({ view: appState }) {
+      // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
+      return !isEqual(appState, storeState2appState(store.getState()));
     }
 
     render = _ =>

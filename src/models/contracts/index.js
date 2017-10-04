@@ -180,7 +180,16 @@ export default {
     }),
     instanceLabel: instance => instance._objectLabel || '',
     create: {
-      defaultNewInstance: (({ filter }) => filter),
+      defaultNewInstance: (({ filter }) => filter.reduce(
+        (rez, fieldName) => searchableFields.find(
+          ({ name }) => name === fieldName
+        ).render.isRange || filter[fieldName] === null ?
+          rez : {
+            ...rez,
+            [fieldName]: filter[fieldName]
+          },
+        {}
+      )),
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {

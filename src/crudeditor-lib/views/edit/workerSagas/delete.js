@@ -1,26 +1,49 @@
-import deleteManager from '../../../common/workerSagas/delete';
+import { call, put } from 'redux-saga/effects';
+
+import { VIEW_SEARCH } from '../../../common/constants';
+
+import {
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL
+} from '../constants';
+
+import deleteSaga from '../../../common/workerSagas/delete';
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
  */
-export default function* (modelDefinition, {
-  payload: { instances }
-}) {
-  try {
-    yield call(instancesDeleteManager, modelDefinition, instances);
-  } catch(err) {
-    throw err;
+export default function*({
+  modelDefinition,
+  softRedirectSaga,
+  action: {
+    payload: { instances },
+    meta: { source } = {}
   }
-
-  yield put({
-    type: VIEW_REDIRECT_REQUEST,
-    payload: {
-      viewName: VIEW_SEARCH
+}) {
+  yield call(deleteSaga, {  // Forwarding thrown errors to the parent saga.
+    modelDefinition,
+    action: {
+      payload: { instances },
+      meta: { source }
     }
   });
 
-  const action = yield take([VIEW_REDIRECT_SUCCESS, VIEW_REDIRECT_FAIL]);
+  yield put({
+    type: VIEW_REDIRECT_REQUEST,
+    meta: { source }
+  });
 
-  if (action.type === VIEW_REDIRECT_FAIL) {
-    throw action.payload;
+  try {
+    yield call(softRedirectSaga, {
+      viewName: VIEW_SEARCH
+    });
+  } catch(err) {
+    yield put({
+      type: VIEW_REDIRECT_FAIL,
+      payload: err,
+      error: true,
+      meta: { source }
+    });
+
+    throw err;
   }
 }

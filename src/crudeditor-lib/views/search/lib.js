@@ -6,9 +6,15 @@ import { EMPTY_FIELD_VALUE } from '../../common/constants';
  * object with filter field name as object only key and filter field value as object value - otherwise.
  */
 const cleanValue = ({ searchableFields, name, value }) => {
-    if (!searchableFields.find(
-      ({ name: fieldName }) => fieldName === name
-    ).render.isRange) {
+  if (
+    searchableFields.every(
+      ({
+        name: fieldName,
+        render: { isRange }
+      }) =>
+        fieldName !== name || !isRange
+    )
+  ) {
     return value !== EMPTY_FIELD_VALUE && {
       [name]: value
     }
@@ -29,7 +35,7 @@ const cleanValue = ({ searchableFields, name, value }) => {
   };
 }
 
-// The function returns new filter value with EMPTY_FIELD_VALUE leaf nodes deleted,
+// The function returns new filter value with EMPTY_FIELD_VALUE leaf nodes removed,
 // or undefined when all filter values get cleansed.
 export const cleanFilter = ({ searchableFields, filter }) => Object.keys(filter).reduce(
   (rez, name) => {

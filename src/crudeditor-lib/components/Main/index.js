@@ -2,18 +2,18 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 import ViewSwitcher from '../ViewSwitcher';
-import { initializeView } from '../../common/actions';
+import { hardRedirectView } from '../../common/actions';
 
 @connect(
   undefined,
-  { initializeView }
+  { hardRedirectView }
 )
 export default class extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
     // Initial initialization (viewState structure is unknown and depends on viewName value):
-    this.props.initializeView({
+    this.props.hardRedirectView({
       viewName: this.props.viewName,
       viewState: this.props.viewState
     });
@@ -21,7 +21,7 @@ export default class extends React.PureComponent {
 
   componentWillReceiveProps({ viewName, viewState }) {
     // Re-initialization (viewState structure is unknown and depends on viewName value):
-    this.props.initializeView({ viewName, viewState });
+    this.props.hardRedirectView({ viewName, viewState });
   }
 
   render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition} />

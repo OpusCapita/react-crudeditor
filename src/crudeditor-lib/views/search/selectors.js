@@ -1,8 +1,11 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { AUDITABLE_FIELDS } from '../../common/constants';
+import { cleanFilter } from './lib';
 
 import {
   DELETING,
+  INITIALIZING,
+  REDIRECTING,
   SEARCHING,
   VIEW_NAME
 } from './constants';
@@ -44,8 +47,13 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
-    modelDefinition.ui.create.defaultNewInstance &&
-      modelDefinition.ui.create.defaultNewInstance(_getViewState(storeState, modelDefinition))),
+    modelDefinition.ui.create.defaultNewInstance ?
+      modelDefinition.ui.create.defaultNewInstance({
+        filter: {},  // Setting filter to empty object if it is not specified in view state.
+        ..._getViewState(storeState, modelDefinition)
+      }) :
+      {}
+  ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -58,7 +66,7 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     generalErrors: storeState.errors.general,
-    isLoading: ~[SEARCHING, DELETING].indexOf(storeState.status),
+    isLoading: ~[DELETING, INITIALIZING, REDIRECTING, SEARCHING].indexOf(storeState.status),
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

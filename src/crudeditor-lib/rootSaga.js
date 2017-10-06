@@ -1,4 +1,4 @@
-import { put, fork, take, cancel, takeLatest } from 'redux-saga/effects';
+import { call, put, cancel, takeLatest } from 'redux-saga/effects';
 
 import searchViewScenario from './views/search/scenario';
 import createViewScenario from './views/create/scenario';
@@ -11,13 +11,7 @@ import {
   DEFAULT_VIEW,
   ERROR_UNKNOWN_VIEW,
 
-  VIEW_INITIALIZE_FAIL,
-  VIEW_INITIALIZE_SUCCESS,
-
-  VIEW_REDIRECT_FORCE,
-  VIEW_REDIRECT_REQUEST,
-  VIEW_REDIRECT_FAIL,
-  VIEW_REDIRECT_SUCCESS,
+  VIEW_HARD_REDIRECT,
 
   VIEW_SEARCH,
   VIEW_CREATE,
@@ -26,7 +20,9 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-const viewScenarios = {
+let activeViewScenarioTask;
+
+const initializeViewSagas = {
   [VIEW_SEARCH]: searchViewScenario,
   [VIEW_CREATE]: createViewScenario,
   [VIEW_EDIT  ]: editViewScenario,
@@ -34,127 +30,104 @@ const viewScenarios = {
   [VIEW_ERROR ]: errorViewScenario
 };
 
-let activeViewScenario;
-
-/*
- * The saga handles an active view request for replacements with another view.
- *
- * Communication with active view manager saga is conducted throught Redux actions,
- * i.e. the request is answered with dispatching either VIEW_REDIRECT_SUCCESS or VIEW_REDIRECT_FAIL actions.
- *
- * The saga attempts to initialize requested view without displaying it.
- * When successful, it dispatches VIEW_REDIRECT_SUCCESS action
- * and replaces currently active view with requested one
- * (by canceling active view manager saga and displaying requested view).
- * When view initialization failured, the saga dispatches VIEW_REDIRECT_FAIL.
- */
-function* viewRedirectRequestScenario({ modelDefinition, requester }, {
-  payload: {
-    viewName,
-    viewState
-  }
-}) {
-  const requestedViewScenario = viewScenarios[viewName];
-
-  if (!requestedViewScenario) {
-    yield put({
-      type: VIEW_REDIRECT_FAIL,
-      payload: ERROR_UNKNOWN_VIEW(viewName),
-      error: true,
-      meta: { requester }
-    });
-
-    return;
-  }
-
-  // Initialize the view and, if successful, handle charge over to the view.
-  // XXX: no errors are catched => the view itself must handle them.
-  const viewTask = yield fork(requestedViewScenario, {
-    modelDefinition,
-    viewState,
-    source: 'self'
-  });
-
-  const action = yield take([VIEW_INITIALIZE_FAIL, VIEW_INITIALIZE_SUCCESS]);
-
-  if (action.type === VIEW_INITIALIZE_FAIL) {
-    yield cancel(viewTask);
-
-    yield put({
-      type: VIEW_REDIRECT_FAIL,
-      payload: action.payload,
-      error: true,
-      meta: { requester }
-    });
-
-    return;
-  }
-
-  yield put({
-    type: VIEW_REDIRECT_SUCCESS,
-    meta: { requester }
-  });
-
-  yield cancel(activeViewScenario);
-
-  yield put({
-    type: ACTIVE_VIEW_CHANGE,
-    payload: { viewName }
-  });
-
-  activeViewScenario = requestedViewScenario;
-}
-
-/*
- * The saga handles initial view loading and view re-initialization,
- * i.e. cases when currently active view, if exists, must not remain.
- *
- * Requested view gets displayed immediately even if uninitialized.
- *
- * After initialization the view either remains or replaced with error view (if initialization failed).
- */
-function* viewRedirectForceScenario(modelDefinition, {
-  payload: {
-    viewName = DEFAULT_VIEW,
-    viewState
-  }
-}) {
-  activeViewScenario = viewScenarios[viewName];
-
-  if (!activeViewScenario) {
-    activeViewScenario = errorViewScenario;
-    viewState = ERROR_UNKNOWN_VIEW(viewName);
-    viewName = VIEW_ERROR;
-  }
-
-  yield put({
-    type: ACTIVE_VIEW_CHANGE,
-    payload: { viewName },
-    meta: {
-      source: 'owner'
-    }
-  });
-
-  // Handle charge over to the view.
-  // XXX: no errors are catched => the view itself must handle them.
-  const viewTask = yield fork(activeViewScenario, {
-    modelDefinition,
-    viewState,
-    source: 'owner'
-  });
-
-  const action = yield take([VIEW_INITIALIZE_FAIL, VIEW_INITIALIZE_SUCCESS]);
-
-  if (viewName !== VIEW_ERROR && action.type === VIEW_INITIALIZE_FAIL) {
-    yield cancel(viewTask);
-    activeViewScenario = errorViewScenario;
-    viewState = action.payload;  // Error is taken from action.payload
-    viewName = VIEW_ERROR;
-  }
-
-  yield takeLatest(VIEW_REDIRECT_REQUEST, viewRedirectRequestScenario, { modelDefinition, requester: viewName });
-}
-
 export default function*(modelDefinition) {
-  yield takeLatest(VIEW_REDIRECT_FORCE, viewRedirectForceScenario, modelDefinition);
+
+  /*
+   * The saga handles an active view request for replacements with another view.
+   *
+   * The saga attempts to initialize requested view without displaying it.
+   * When successful, it replaces currently active view with requested one
+   * (by canceling active activeViewScenarioTask and displaying requested view).
+   * When view initialization failured, the saga throws an error.
+   */
+  function* softRedirectSaga({ viewName, viewState }) {
+    const initializeViewSaga = initializeViewSagas[viewName];
+
+    if (!initializeViewSaga) {
+      throw ERROR_UNKNOWN_VIEW(viewName);
+    }
+
+    const oldViewScenarioTask = activeViewScenarioTask;
+
+    // Initialization errors are forwarded to the parent saga.
+    activeViewScenarioTask = yield call(initializeViewSaga, {
+      modelDefinition,
+      softRedirectSaga,
+      viewState
+    });
+
+    yield put({
+      type: ACTIVE_VIEW_CHANGE,
+      payload: { viewName }
+    });
+
+    // It must be the very last statement because it cancels this saga also,
+    // since it is an ancestor of oldViewScenarioTask.
+    yield cancel(oldViewScenarioTask);
+  }
+
+  /*
+   * The saga handles cases when currently active view, if exists, must not remain:
+   * -- initial CRUD Editor loading
+   * and
+   * -- CRID Editor reloading when forced by owner application.
+   *
+   * Requested view gets displayed immediately even if uninitialized.
+   *
+   * The view either remains or gets replaced with error view (if initialization failed).
+   */
+  function* hardRedirectSaga({
+    payload: {
+      viewName = DEFAULT_VIEW,
+      viewState = {}
+    }
+  }) {
+    let initializeViewSaga = initializeViewSagas[viewName];
+
+    if (!initializeViewSaga) {
+      initializeViewSaga = errorViewScenario;
+      viewState = ERROR_UNKNOWN_VIEW(viewName);
+      viewName = VIEW_ERROR;
+    }
+
+    yield put({
+      type: ACTIVE_VIEW_CHANGE,
+      payload: { viewName },
+      meta: {
+        source: 'owner'
+      }
+    });
+
+    if (activeViewScenarioTask) {
+      yield cancel(activeViewScenarioTask);
+    }
+
+    try {
+      activeViewScenarioTask = yield call(initializeViewSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        viewState,
+        source: 'owner'
+      });
+    } catch(err) {
+      viewName = VIEW_ERROR;
+
+      yield put({
+        type: ACTIVE_VIEW_CHANGE,
+        payload: { viewName },
+        meta: {
+          source: 'owner'
+        }
+      });
+
+      activeViewScenarioTask = yield call(errorViewScenario, {
+        modelDefinition,
+        softRedirectSaga,
+        viewState: err,
+        source: 'owner'
+      });
+    }
+  }
+
+  yield takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga);
 };

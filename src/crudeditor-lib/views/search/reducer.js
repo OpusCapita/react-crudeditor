@@ -10,6 +10,13 @@ import {
 } from '../../../data-types-lib';
 
 import {
+  DELETING,
+  INITIALIZING,
+  READY,
+  REDIRECTING,
+  SEARCHING,
+  UNINITIALIZED,
+
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
@@ -24,10 +31,13 @@ import {
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
 
-  DELETING,
-  READY,
-  SEARCHING,
-  UNINITIALIZED
+  VIEW_INITIALIZE_REQUEST,
+  VIEW_INITIALIZE_FAIL,
+  VIEW_INITIALIZE_SUCCESS,
+
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL,
+  VIEW_REDIRECT_SUCCESS,
 } from './constants';
 
 import {
@@ -123,6 +133,45 @@ const buildDefaultFormatedFilter = ({
   {}
 );
 
+const buildFormatedFilter = ({
+  modelDefinition: {
+    model: {
+      fields: fieldsMeta
+    },
+    ui: {
+      search: { searchableFields }
+    }
+  },
+  filter
+}) => Object.keys(filter).reduce(
+  (rez, fieldName) => {
+    const type = fieldsMeta[fieldName].type;
+    let isRange, targetType;
+
+    searchableFields.some(fieldMeta => {
+      if (fieldMeta.name === fieldName) {
+        isRange = fieldMeta.render.isRange;
+        targetType = fieldMeta.render.valueProp.type;
+        return true;
+      }
+    });
+
+    return {
+      ...rez,
+      ...setFieldValue({
+        isRange,
+        path: fieldName,
+        value: isRange ? {
+            from: formatField({ type, targetType, value: filter[fieldName].from }),
+            to  : formatField({ type, targetType, value: filter[fieldName].to }),
+          } :
+          formatField({ type, targetType, value: filter[fieldName] })
+      })
+    };
+  },
+  {}
+);
+
 export const buildDefaultStoreState = modelDefinition => {
   const searchMeta = modelDefinition.ui.search;
   const fieldsMeta = modelDefinition.model.fields;
@@ -192,7 +241,7 @@ export default modelDefinition => {
   // Remove benchmarkInstances from sourceInstances by comparing their Logical Keys.
   const removeInstances = (sourceInstances, benchmarkInstances) =>
     sourceInstances.filter(sourceInstance =>
-      !benchmarkInstances.find(benchmarkInstance =>
+      !benchmarkInstances.some(benchmarkInstance =>
         isEqual(
           buildLogicalKey(sourceInstance),
           buildLogicalKey(benchmarkInstance)
@@ -201,11 +250,68 @@ export default modelDefinition => {
     );
 
   return (storeState = buildDefaultStoreState(modelDefinition), { type, payload, error, meta }) => {
+    if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+      return storeState;
+    }
+
     const newStoreStateSlice = {};
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    if (type === VIEW_INITIALIZE_REQUEST) {
+      newStoreStateSlice.status = INITIALIZING;
+
+    } else if (type === VIEW_INITIALIZE_FAIL) {
+      newStoreStateSlice.status = UNINITIALIZED;
+
+    } else if (type === VIEW_INITIALIZE_SUCCESS) {
+      newStoreStateSlice.status = READY;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === VIEW_REDIRECT_REQUEST) {
+      newStoreStateSlice.status = REDIRECTING;
+
+    } else if (type === VIEW_REDIRECT_FAIL) {
+      newStoreStateSlice.status = READY;
+
+    } else if (type === VIEW_REDIRECT_SUCCESS) {
+      // Do not reset store to initial uninitialized state because
+      // filter, order, sort, etc. must remain after returning from other Views.
+      newStoreStateSlice.formFilter = u.constant(cloneDeep(storeState.resultFilter));
+      newStoreStateSlice.divergedField = null;
+      newStoreStateSlice.selectedInstances = [];
+
+      newStoreStateSlice.formatedFilter = u.constant(buildFormatedFilter({
+        modelDefinition,
+        filter: storeState.resultFilter
+      }));
+
+      newStoreStateSlice.errors = {
+        fields: {},
+        general: []
+      },
+
+      newStoreStateSlice.status = UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    if (type === INSTANCES_SEARCH_REQUEST) {
+    } else if (type === INSTANCES_DELETE_REQUEST) {
+      newStoreStateSlice.status = DELETING;
+
+    } else if (type === INSTANCES_DELETE_SUCCESS) {
+      const { instances } = payload;
+      newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
+      newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
+      newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
+      newStoreStateSlice.status = READY;
+
+    } else if (type === INSTANCES_DELETE_FAIL) {
+      newStoreStateSlice.status = READY;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCES_SEARCH_REQUEST && storeState.status !== INITIALIZING) {
       newStoreStateSlice.status = SEARCHING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -221,41 +327,14 @@ export default modelDefinition => {
         totalCount
       } = payload;
 
-      const fieldsMeta = modelDefinition.model.fields;
-      const searchableFields = modelDefinition.ui.search.searchableFields;
-
-      newStoreStateSlice.formatedFilter = u.constant(Object.keys(filter).reduce(
-        (rez, fieldName) => {
-          const type = fieldsMeta[fieldName].type;
-
-          const {
-            isRange,
-            valueProp: {
-              type: targetType
-            }
-          } = searchableFields.find(
-            ({ name }) => name === fieldName
-          ).render;
-
-          return {
-            ...rez,
-            ...setFieldValue({
-              isRange,
-              path: fieldName,
-              value: isRange ? {
-                  from: formatField({ type, targetType, value: filter[fieldName].from }),
-                  to  : formatField({ type, targetType, value: filter[fieldName].to }),
-                } :
-                formatField({ type, targetType, value: filter[fieldName] })
-            })
-          };
-        },
-        {}
-      ));
-
       newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
       newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
       newStoreStateSlice.divergedField = null;
+
+      newStoreStateSlice.formatedFilter = u.constant(buildFormatedFilter({
+        modelDefinition,
+        filter
+      }));
 
       newStoreStateSlice.sortParams = {
         field: sort,
@@ -275,31 +354,14 @@ export default modelDefinition => {
         newStoreStateSlice.selectedInstances = [];
       }
 
+      if (storeState.status !== INITIALIZING) {
+        newStoreStateSlice.status = READY;
+      }
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== INITIALIZING) {
       newStoreStateSlice.status = READY;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCES_DELETE_REQUEST && storeState.status !== UNINITIALIZED) {
-      newStoreStateSlice.status = DELETING;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCES_DELETE_SUCCESS && storeState.status !== UNINITIALIZED) {
-      const { instances } = payload;
-      newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
-      newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
-      newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
-      newStoreStateSlice.status = READY;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCES_DELETE_FAIL && storeState.status !== UNINITIALIZED) {
-      newStoreStateSlice.status = READY;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-    } else if (type === INSTANCES_SEARCH_FAIL) {
-      newStoreStateSlice.status = storeState.resultInstances ? READY : UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -319,9 +381,13 @@ export default modelDefinition => {
       const fieldName = Array.isArray(path) ? path[0] : path;
 
       newStoreStateSlice.formatedFilter = setFieldValue({
-        isRange: modelDefinition.ui.search.searchableFields.find(
-          ({ name }) => name === fieldName
-        ).render.isRange,
+        isRange: modelDefinition.ui.search.searchableFields.some(
+          ({
+            name,
+            render: { isRange }
+          }) =>
+            name === fieldName && isRange
+        ),
         path,
         value: u.constant(fieldValue)
       });
@@ -336,15 +402,15 @@ export default modelDefinition => {
 
       const fieldName = Array.isArray(path) ? path[0] : path;
       const fieldType = modelDefinition.model.fields[fieldName].type;
+      let isRange, uiType;
 
-      const {
-        isRange,
-        valueProp: {
-          type: uiType
+      modelDefinition.ui.search.searchableFields.some(fieldMeta => {
+        if (fieldMeta.name === fieldName) {
+          isRange = fieldMeta.render.isRange;
+          uiType = fieldMeta.render.valueProp.type;
+          return true;
         }
-      } = modelDefinition.ui.search.searchableFields.find(
-        ({ name }) => name === fieldName
-      ).render;
+      });
 
       const oldFormValue = getFieldValue({
         filter: storeState.formFilter,

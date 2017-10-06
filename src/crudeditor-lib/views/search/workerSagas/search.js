@@ -1,35 +1,35 @@
 import isEqual from 'lodash/isEqual';
 import merge from 'lodash/merge';
-import { call, put, takeLatest, all, select } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 
-import { buildDefaultStoreState } from './reducer';
-import { cleanFilter } from './lib';
+import { buildDefaultStoreState } from '../reducer';
+import { cleanFilter } from '../lib';
 
 import {
   FORM_FILTER_PARSE,
 
-  INSTANCES_SEARCH,
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
-  READY,
   VIEW_NAME
-} from './constants';
+} from '../constants';
 
-/*███████████████████*\
- *███ WORKER SAGA ███*
-\*███████████████████*/
-
-export function* onInstancesSearch(modelDefinition, {
-  payload: {
-    filter,
-    sort,
-    order,
-    max,
-    offset
-  },
-  meta: { source }
+/*
+ * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
+ */
+export default function*({
+  modelDefinition,
+  action: {
+    payload: {
+      filter,
+      sort,
+      order,
+      max,
+      offset
+    },
+    meta: { source } = {}
+  }
 }) {
   const { searchableFields } = modelDefinition.ui.search;
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
@@ -83,7 +83,7 @@ export function* onInstancesSearch(modelDefinition, {
   ]);
 
   if (Object.keys(errors.fields).length) {
-    return;
+    throw errors.fiels;
   }
 
   if (source === 'owner') {
@@ -105,18 +105,6 @@ export function* onInstancesSearch(modelDefinition, {
     order  = order  || defaultOrder;
     max    = max    || defaultMax;
     offset = offset || defaultOffset;
-
-    if (
-      isEqual(cleanFilter({ searchableFields, filter }), cleanFilter({ searchableFields, currentFilter })) &&
-      sort === currentSort &&
-      order === currentOrder &&
-      max === currentMax &&
-      offset === currentOffset &&
-      (yield select(storeState => storeState.views[VIEW_NAME].status)) === READY &&
-      (yield select(storeState => storeState.common.activeViewName)) === VIEW_NAME
-    ) {  // Prevent duplicate API call when view name/state props are received in response to onTransition({name,state}) call.
-      return;
-    }
   } else {
     // Current values are default values for the arguments in case of internal searchInstances() call.
     filter = filter || currentFilter;
@@ -128,7 +116,16 @@ export function* onInstancesSearch(modelDefinition, {
     offset = sort === currentSort &&
       order === currentOrder &&
       max === currentMax &&
-      isEqual(cleanFilter({ searchableFields, filter }), cleanFilter({ searchableFields, currentFilter })) ?
+      isEqual(
+        cleanFilter({
+          searchableFields,
+          filter
+        }),
+        cleanFilter({
+          searchableFields,
+          filter: currentFilter
+        })
+      ) ?
         (offset || offset === 0 ? offset : currentOffset) :
         0;
   }
@@ -167,15 +164,7 @@ export function* onInstancesSearch(modelDefinition, {
       error: true,
       meta: { source }
     });
+
+    throw err;
   }
-}
-
-/*████████████████████*\
- *███ WATCHER SAGA ███*
-\*████████████████████*/
-
-export default function*(modelDefinition) {
-  yield all([
-    takeLatest(INSTANCES_SEARCH, onInstancesSearch, modelDefinition)
-  ]);
 }

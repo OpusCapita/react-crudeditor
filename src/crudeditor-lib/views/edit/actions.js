@@ -1,7 +1,7 @@
 import {
   AFTER_ACTION_NEW,
   AFTER_ACTION_NEXT,
-  EDIT_EXIT,
+  VIEW_EXIT,
   INSTANCE_EDIT,
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE,
@@ -79,7 +79,7 @@ export const
 
   // TODO: implement reducer.
   exitEdit = _ => ({
-    type: EDIT_EXIT
+    type: VIEW_EXIT
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

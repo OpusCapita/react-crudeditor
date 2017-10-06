@@ -4,7 +4,7 @@ import u from 'updeep';
 import { ACTIVE_VIEW_CHANGE } from './constants';
 
 const defaultStoreStateTemplate = {
-  activeViewName: undefined,  // XXX: must be undefined until initialization completes.
+  activeViewName: null,  // XXX: must be null until initialization completes.
 };
 
 /*

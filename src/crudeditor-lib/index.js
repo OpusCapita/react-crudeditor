@@ -151,7 +151,6 @@ export default baseModelDefinition => {
     const newAppState = storeState2appState(newStoreState);
 
     if (!isEqual(oldAppState, newAppState)) {
-      console.log('*** onTransition() call ***');
       onTransition(newAppState);
     }
 

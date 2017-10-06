@@ -1,18 +1,32 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 
-import instanceEditManager from './edit';
+import editSaga from './edit';
+import { VIEW_CREATE } from '../../../common/constants';
 
 import {
+  AFTER_ACTION_NEXT,
+  AFTER_ACTION_NEW,
+
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL,
+
   INSTANCE_FIELD_VALIDATE,
 
-  INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
+  INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS,
 
-  VIEW_NAME
-} from './constants';
+  INSTANCE_VALIDATE_REQUEST,
+  INSTANCE_VALIDATE_FAIL,
+  INSTANCE_VALIDATE_SUCCESS,
 
-function* instanceValidateManager(modelDefinition) {
+  VIEW_NAME
+} from '../constants';
+
+/*
+ * Instance validation
+ */
+function* validateSaga(modelDefinition, source) {
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 
   if (divergedField) {
@@ -23,7 +37,8 @@ function* instanceValidateManager(modelDefinition) {
       type: INSTANCE_FIELD_VALIDATE,
       payload: {
         name: divergedField
-      }
+      },
+      meta: { source }
     });
   }
 
@@ -57,6 +72,7 @@ function* instanceValidateManager(modelDefinition) {
 
   yield put({
     type: INSTANCE_VALIDATE_REQUEST,
+    meta: { source }
   });
 
   try {
@@ -65,7 +81,8 @@ function* instanceValidateManager(modelDefinition) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL,
       payload: errors,
-      error: true
+      error: true,
+      meta: { source }
     });
 
     throw errors;
@@ -73,14 +90,16 @@ function* instanceValidateManager(modelDefinition) {
 
   yield put({
     type: INSTANCE_VALIDATE_SUCCESS,
+    meta: { source }
   });
 }
 
-function* instanceUpdateManager(modelDefinition) {
+function* updateSaga(modelDefinition, source) {
   const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
 
   yield put({
-    type: INSTANCE_SAVE_REQUEST
+    type: INSTANCE_SAVE_REQUEST,
+    meta: { source }
   });
 
   try {
@@ -90,13 +109,15 @@ function* instanceUpdateManager(modelDefinition) {
       type: INSTANCE_SAVE_SUCCESS,
       payload: {
         instance: updated
-      }
+      },
+      meta: { source }
     });
   } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
       payload: err,
-      error: true
+      error: true,
+      meta: { source }
     });
 
     throw err;
@@ -106,40 +127,55 @@ function* instanceUpdateManager(modelDefinition) {
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
  */
-export default function* (modelDefinition, {
-  payload: { afterAction } = {}
+export default function*({
+  modelDefinition,
+  softRedirectSaga,
+  action: {
+    payload: { afterAction } = {},
+    meta: { source } = {}
+  }
 }) {
-  try {
-    yield call(instanceValidateManager, modelDefinition);
-  } catch(err) {
-    throw err;
-  }
+  yield call(validateSaga, modelDefinition, source);  // Forwarding thrown errors to the parent saga.
 
-  try {
-    yield call(instanceUpdateManager, modelDefinition);
-  } catch(err) {
-    throw err;
-  }
+  yield call(updateSaga, modelDefinition, source);  // Forwarding thrown errors to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
       type: VIEW_REDIRECT_REQUEST,
-      payload: {
-        viewName: VIEW_CREATE,
-      }
+      meta: { source }
     });
 
-    const action = yield take([VIEW_REDIRECT_SUCCESS, VIEW_REDIRECT_FAIL]);
+    try {
+      yield call(softRedirectSaga, {
+        viewName: VIEW_CREATE,
+        viewState: {
+          instance: {}  // TODO: build correct pre-filled instance.
+        }
+      });
+    } catch(err) {
+      yield put({
+        type: VIEW_REDIRECT_FAIL,
+        payload: err,
+        error: true,
+        meta: { source }
+      });
 
-    if (action.type === VIEW_REDIRECT_FAIL) {
-      throw action.payload;
+      throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
     // TODO: get next instance
     const nextInstance = {};
 
     try {
-      yield call(instanceEditManager, modelDefinition, nextInstance);
+      yield call(editSaga, {
+        modelDefinition,
+        action: {
+          payload: {
+            instance: nextInstance
+          },
+          meta: { source }
+        }
+      });
     } catch(err) {
       throw err;
     }

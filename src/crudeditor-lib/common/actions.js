@@ -1,14 +1,14 @@
 import {
   INSTANCES_DELETE,
-  VIEW_REDIRECT_FORCE
+  VIEW_HARD_REDIRECT
 } from './constants';
 
 export const
-  initializeView = ({
+  hardRedirectView = ({
     viewName,
     viewState
   }) => ({
-    type: VIEW_REDIRECT_FORCE,
+    type: VIEW_HARD_REDIRECT,
     payload: {
       viewName,
       viewState

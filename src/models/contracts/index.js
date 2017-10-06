@@ -6,6 +6,14 @@ const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
 
+const searchableFields = [
+  { name: 'contractId' },
+  { name: 'description' },
+  { name: 'extContractId' },
+  { name: 'extContractLineId' },
+  { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } }}
+];
+
 const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'general' },
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
@@ -164,13 +172,7 @@ export default {
   },
   ui: {
     search: _ => ({
-      searchableFields: [
-        { name: 'contractId' },
-        { name: 'description' },
-        { name: 'extContractId' },
-        { name: 'extContractLineId' },
-        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } }}
-      ],
+      searchableFields,
       resultFields: [
         { name: 'contractId', sortable: true },
         { name: 'description', sortable: true },
@@ -180,14 +182,23 @@ export default {
     }),
     instanceLabel: instance => instance._objectLabel || '',
     create: {
-      defaultNewInstance: (({ filter }) => filter.reduce(
-        (rez, fieldName) => searchableFields.find(
-          ({ name }) => name === fieldName
-        ).render.isRange || filter[fieldName] === null ?
-          rez : {
-            ...rez,
-            [fieldName]: filter[fieldName]
-          },
+      defaultNewInstance: (({ filter }) => Object.keys(filter).reduce(
+        (rez, fieldName) => {
+          let isRange;
+
+          searchableFields.some(fieldMeta => {
+            if (fieldMeta.name === fieldName) {
+              isRange = fieldMeta.render.isRange;
+              return true;
+            }
+          });
+
+          return isRange || filter[fieldName] === null ?
+            rez : {
+              ...rez,
+              [fieldName]: filter[fieldName]
+            };
+        },
         {}
       )),
       formLayout: buildFormLayout(VIEW_CREATE)

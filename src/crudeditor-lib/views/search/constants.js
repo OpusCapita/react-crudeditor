@@ -1,5 +1,7 @@
 import { VIEW_SEARCH } from '../../common/constants';
 
+const namespace = VIEW_SEARCH;
+
 import {
   FIELD_TYPE_DATE,
   FIELD_TYPE_NUMBER_STRING,
@@ -13,27 +15,36 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  ALL_INSTANCES_SELECT     = VIEW_NAME + '/ALL_INSTANCES_SELECT',
-  ALL_INSTANCES_DESELECT   = VIEW_NAME + '/ALL_INSTANCES_DESELECT',
+  ALL_INSTANCES_SELECT     = namespace + '/ALL_INSTANCES_SELECT',
+  ALL_INSTANCES_DESELECT   = namespace + '/ALL_INSTANCES_DESELECT',
 
-  FORM_FILTER_RESET        = VIEW_NAME + '/FORM_FILTER_RESET',
-  FORM_FILTER_UPDATE       = VIEW_NAME + '/FORM_FILTER_UPDATE',
-  FORM_FILTER_PARSE        = VIEW_NAME + '/FORM_FILTER_PARSE',
+  FORM_FILTER_RESET        = namespace + '/FORM_FILTER_RESET',
+  FORM_FILTER_UPDATE       = namespace + '/FORM_FILTER_UPDATE',
+  FORM_FILTER_PARSE        = namespace + '/FORM_FILTER_PARSE',
 
-  INSTANCES_SEARCH         = VIEW_NAME + '/INSTANCES_SEARCH',
-  INSTANCES_SEARCH_FAIL    = VIEW_NAME + '/INSTANCES_SEARCH_FAIL',
-  INSTANCES_SEARCH_REQUEST = VIEW_NAME + '/INSTANCES_SEARCH_REQUEST',
-  INSTANCES_SEARCH_SUCCESS = VIEW_NAME + '/INSTANCES_SEARCH_SUCCESS',
+  INSTANCES_SEARCH         = namespace + '/INSTANCES_SEARCH',
+  INSTANCES_SEARCH_FAIL    = namespace + '/INSTANCES_SEARCH_FAIL',
+  INSTANCES_SEARCH_REQUEST = namespace + '/INSTANCES_SEARCH_REQUEST',
+  INSTANCES_SEARCH_SUCCESS = namespace + '/INSTANCES_SEARCH_SUCCESS',
 
-  INSTANCE_SELECT          = VIEW_NAME + '/INSTANCE_SELECT',
-  INSTANCE_DESELECT        = VIEW_NAME + '/INSTANCE_DESELECT',
+  INSTANCE_SELECT          = namespace + '/INSTANCE_SELECT',
+  INSTANCE_DESELECT        = namespace + '/INSTANCE_DESELECT',
+
+  VIEW_INITIALIZE_REQUEST  = namespace + '/VIEW_INITIALIZE_REQUEST',
+  VIEW_INITIALIZE_FAIL     = namespace + '/VIEW_INITIALIZE_FAIL',
+  VIEW_INITIALIZE_SUCCESS  = namespace + '/VIEW_INITIALIZE_SUCCESS',
+
+  VIEW_REDIRECT_REQUEST    = namespace + '/VIEW_REDIRECT_REQUEST',
+  VIEW_REDIRECT_FAIL       = namespace + '/VIEW_REDIRECT_FAIL',
+  VIEW_REDIRECT_SUCCESS    = namespace + '/VIEW_REDIRECT_SUCCESS',
 
   /*████████████████████████████████████████████████████*\
    *███ STATUSES OF THE VIEW (in alphabetical order) ███*
   \*████████████████████████████████████████████████████*/
 
-  DELETING      = VIEW_NAME + '/DELETING',
-  READY         = VIEW_NAME + '/READY',
-  REDIRECTING   = VIEW_NAME + '/REDIRECTING',
-  SEARCHING     = VIEW_NAME + '/SEARCHING',
-  UNINITIALIZED = VIEW_NAME + '/UNINITIALIZED';
+  DELETING      = namespace + '/DELETING',
+  INITIALIZING  = namespace + '/INITIALIZING',
+  READY         = namespace + '/READY',
+  REDIRECTING   = namespace + '/REDIRECTING',
+  SEARCHING     = namespace + '/SEARCHING',
+  UNINITIALIZED = namespace + '/UNINITIALIZED';

@@ -4,6 +4,7 @@ import { getLogicalKeyBuilder } from '../lib';
 import {
   EXTRACTING,
   DELETING,
+  INITIALIZING,
   REDIRECTING,
   UPDATING,
   VIEW_NAME
@@ -39,7 +40,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[EXTRACTING, DELETING, REDIRECTING, UPDATING].indexOf(storeState.status),
+    isLoading: ~[EXTRACTING, DELETING, INITIALIZING, REDIRECTING, UPDATING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

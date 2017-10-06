@@ -1,5 +1,7 @@
 import { VIEW_CREATE } from '../../common/constants';
 
+const namespace = VIEW_CREATE;
+
 export const
   VIEW_NAME = VIEW_CREATE,
 
@@ -7,16 +9,16 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  INSTANCE_CREATE       = VIEW_NAME + '/INSTANCE_CREATE',
+  INSTANCE_CREATE       = namespace + '/INSTANCE_CREATE',
 
-  INSTANCE_SAVE         = VIEW_NAME + '/INSTANCE_SAVE',
-  INSTANCE_SAVE_FAIL    = VIEW_NAME + '/INSTANCE_SAVE_FAIL',
-  INSTANCE_SAVE_REQUEST = VIEW_NAME + '/INSTANCE_SAVE_REQUEST',
-  INSTANCE_SAVE_SUCCESS = VIEW_NAME + '/INSTANCE_SAVE_SUCCESS',
+  INSTANCE_SAVE         = namespace + '/INSTANCE_SAVE',
+  INSTANCE_SAVE_FAIL    = namespace + '/INSTANCE_SAVE_FAIL',
+  INSTANCE_SAVE_REQUEST = namespace + '/INSTANCE_SAVE_REQUEST',
+  INSTANCE_SAVE_SUCCESS = namespace + '/INSTANCE_SAVE_SUCCESS',
 
   /*████████████████████████████████████████████████████*\
    *███ STATUSES OF THE VIEW (in alphabetical order) ███*
   \*████████████████████████████████████████████████████*/
 
-  READY  = VIEW_NAME + '/READY',
-  SAVING = VIEW_NAME + '/SAVING';
+  READY  = namespace + '/READY',
+  SAVING = namespace + '/SAVING';

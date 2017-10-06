@@ -1,17 +1,24 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 
 import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_REQUEST,
   INSTANCES_DELETE_SUCCESS,
-} from './constants';
+} from '../constants';
 
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
  */
-export default function*(modelDefinition, instances) {
+export default function*({
+  modelDefinition,
+  action: {
+    payload: { instances },
+    meta: { source } = {}
+  }
+}) {
   yield put({
-    type: INSTANCES_DELETE_REQUEST
+    type: INSTANCES_DELETE_REQUEST,
+    meta: { source }
   });
 
   try {
@@ -22,13 +29,15 @@ export default function*(modelDefinition, instances) {
 
     yield put({
       type: INSTANCES_DELETE_SUCCESS,
-      payload: { instances }
+      payload: { instances },
+      meta: { source }
     });
   } catch (err) {
     yield put({
       type: INSTANCES_DELETE_FAIL,  // TODO: handle error
       payload: err,
-      error: true
+      error: true,
+      meta: { source }
     });
 
     throw error;

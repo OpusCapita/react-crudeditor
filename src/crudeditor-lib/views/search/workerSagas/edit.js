@@ -1,9 +1,10 @@
 import { call, put } from 'redux-saga/effects';
 
+import { VIEW_EDIT } from '../../../common/constants';
+
 import {
-  INSTANCE_EDIT_FAIL,
-  INSTANCE_EDIT_REQUEST,
-  INSTANCE_EDIT_SUCCESS
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL
 } from '../constants';
 
 /*
@@ -11,21 +12,25 @@ import {
  */
 export default function*({
   modelDefinition,
+  softRedirectSaga,
   action: {
     payload: { instance },
     meta: { source } = {}
   }
 }) {
   yield put({
-    type: INSTANCE_EDIT_REQUEST,
+    type: VIEW_REDIRECT_REQUEST,
     meta: { source }
   });
 
   try {
-    instance = yield call(modelDefinition.api.get, { instance });
-  } catch (err) {
+    yield call(softRedirectSaga, {
+      viewName: VIEW_EDIT,
+      viewState: { instance }
+    });
+  } catch(err) {
     yield put({
-      type: INSTANCE_EDIT_FAIL,
+      type: VIEW_REDIRECT_FAIL,
       payload: err,
       error: true,
       meta: { source }
@@ -33,10 +38,4 @@ export default function*({
 
     throw err;
   }
-
-  yield put({
-    type: INSTANCE_EDIT_SUCCESS,
-    payload: { instance },
-    meta: { source }
-  });
 }

@@ -9,6 +9,14 @@ import {
 } from '../../../data-types-lib';
 
 import {
+  EXTRACTING,
+  DELETING,
+  INITIALIZING,
+  READY,
+  REDIRECTING,
+  UNINITIALIZED,
+  UPDATING,
+
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
@@ -18,20 +26,30 @@ import {
   INSTANCE_SAVE_SUCCESS,
 
   INSTANCE_FIELD_VALIDATE,
-  INSTANCE_VALIDATE,
 
-  EXTRACTING,
-  READY,
-  REDIRECTING,
-  UNINITIALIZED,
-  UPDATING,
+  INSTANCE_VALIDATE_FAIL,
+  INSTANCE_VALIDATE_SUCCESS,
+
+  VIEW_INITIALIZE_REQUEST,
+  VIEW_INITIALIZE_FAIL,
+  VIEW_INITIALIZE_SUCCESS,
+
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL,
+  VIEW_REDIRECT_SUCCESS,
 
   VIEW_NAME,
   INSTANCE_FIELD_CHANGE,
   TAB_SELECT
 } from './constants';
 
-import { UNPARSABLE_FIELD_VALUE } from '../../common/constants';
+import {
+  INSTANCES_DELETE_FAIL,
+  INSTANCES_DELETE_REQUEST,
+  INSTANCES_DELETE_SUCCESS,
+
+  UNPARSABLE_FIELD_VALUE,
+} from '../../common/constants';
 
 const findFieldLayout = fieldName => {
   const layoutWalker = layout => {
@@ -109,41 +127,57 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  const newStoreStateSlice = {};
+  if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+    return storeState;
+  }
+
+  let newStoreStateSlice = {};
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === VIEW_REDIRECT_REQUEST && meta.requester === VIEW_NAME) {
-    newStoreStateSlice.status = REDIRECTING;
+  if (type === VIEW_INITIALIZE_REQUEST) {
+    newStoreStateSlice.status = INITIALIZING;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === VIEW_INITIALIZE_FAIL) {
+    newStoreStateSlice.status = UNINITIALIZED;
 
-  } else if (type === VIEW_REDIRECT_SUCCESS && meta.requester === VIEW_NAME) {
-    newStoreStateSlice = cloneDeep(defaultStoreStateTemplate),
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  } else if (type === VIEW_REDIRECT_FAIL && meta.requester === VIEW_NAME) {
-    const errors = [payload];
+  } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = READY;
 
-    newStoreStateSlice.errors = {
-      general: errors
-    };
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === VIEW_REDIRECT_REQUEST) {
+    newStoreStateSlice.status = REDIRECTING;
+
+  } else if (type === VIEW_REDIRECT_FAIL) {
+    newStoreStateSlice.status = READY;
+
+  } else if (type === VIEW_REDIRECT_SUCCESS) {
+    // Reseting the store to initial uninitialized state.
+    newStoreStateSlice = cloneDeep(defaultStoreStateTemplate);
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCES_DELETE_REQUEST) {
+    newStoreStateSlice.status = DELETING;
+
+  } else if (type === INSTANCES_DELETE_FAIL) {
+    newStoreStateSlice.status = READY;
+
+  } else if (type === INSTANCES_DELETE_SUCCESS) {
+    newStoreStateSlice = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_REQUEST) {
-  newStoreStateSlice.status = EXTRACTING;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== INITIALIZING) {
+    newStoreStateSlice.status = EXTRACTING;
 
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_SUCCESS || type === INSTANCE_SAVE_SUCCESS) {
+  } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
     const { instance } = payload;
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
@@ -193,29 +227,20 @@ export default modelDefinition => (
       {}
     ));
 
-    newStoreStateSlice.status = READY;
+    if (storeState.status !== INITIALIZING) {
+      newStoreStateSlice.status = READY;
+    }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_FAIL) {
-    const errors = [payload];
-
+  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type)) {
     newStoreStateSlice.errors = {
-      general: errors
+      general: [payload]
     };
 
-    newStoreStateSlice.status = storeState.persistentInstance ? READY : UNINITIALIZED;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  } else if (type === INSTANCE_SAVE_FAIL) {
-    const errors = [payload];
-
-    newStoreStateSlice.errors = {
-      general: errors
-    };
-
-    newStoreStateSlice.status = READY;
+    if (storeState.status !== INITIALIZING) {
+      newStoreStateSlice.status = READY;
+    }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -327,7 +352,7 @@ export default modelDefinition => (
 
   } else if (type === TAB_SELECT) {
     const { tabName } = payload;  // may be undefined.
-    const tabs = formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
+    const tabs = storeState.formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
     let newActiveTab = tabs[0];  // default tab, undefined in case of no tabs.
 
     if (tabName) {

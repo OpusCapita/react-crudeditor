@@ -26,7 +26,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   changeInstanceField = ({
     name: fieldName,
     value: fieldNewValue
@@ -40,7 +39,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   validateInstanceField = fieldName => ({
     type: INSTANCE_FIELD_VALIDATE,
     payload: {
@@ -50,7 +48,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   saveInstance = _ => ({
     type: INSTANCE_SAVE
   }),
@@ -58,7 +55,6 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   saveAndNewInstance = _ => ({
     type: INSTANCE_SAVE,
     payload: {
@@ -67,7 +63,6 @@ export const
   }),
 
 
-  // TODO: implement reducer.
   saveAndNextInstance = _ => ({
     type: INSTANCE_SAVE,
     payload: {
@@ -77,7 +72,6 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // TODO: implement reducer.
   exitEdit = _ => ({
     type: VIEW_EXIT
   }),

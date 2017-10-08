@@ -152,7 +152,7 @@ export default modelDefinition => (
     newStoreStateSlice.status = REDIRECTING;
 
   } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = payload;
+    const errors = Array.isArray(payload) ? payload: [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -172,7 +172,7 @@ export default modelDefinition => (
     newStoreStateSlice.status = DELETING;
 
   } else if (type === INSTANCES_DELETE_FAIL) {
-    const errors = payload;
+    const errors = Array.isArray(payload) ? payload: [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -252,7 +252,7 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
   } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== INITIALIZING) {
-    const errors = payload;
+    const errors = Array.isArray(payload) ? payload: [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -324,6 +324,10 @@ export default modelDefinition => (
           };
         }
       } catch(errors) {
+        if (!Array.isArray(errors)) {
+          errors = [errors];
+        }
+
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
             fields: {
@@ -332,15 +336,19 @@ export default modelDefinition => (
           };
         }
       }
-    } catch(err) {
+    } catch(errors) {
+      if (!Array.isArray(errors)) {
+        errors = [errors];
+      }
+
       newStoreStateSlice.formInstance = {
         [fieldName]: UNPARSABLE_FIELD_VALUE
       };
 
-      if (!isEqual([err], storeState.errors.fields[fieldName])) {
+      if (!isEqual(errors, storeState.errors.fields[fieldName])) {
         newStoreStateSlice.errors = {
           fields: {
-            [fieldName]: [err]
+            [fieldName]: errors
           }
         };
       }
@@ -360,7 +368,7 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
   } else if (type === INSTANCE_VALIDATE_FAIL) {
-    const errors = payload;
+    const errors = Array.isArray(payload) ? payload: [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {

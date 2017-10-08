@@ -4,15 +4,16 @@ import u from 'updeep';
 
 import { INSTANCES_SEARCH_FAIL } from '../search/constants';
 import { INSTANCE_EDIT_FAIL } from '../edit/constants';
+import { ERROR_CODE_INTERNAL } from '../../common/constants';
 
 import {
-  UNINITIALIZED,
-  READY
+  READY,
+  REDIRECTING,
+  UNINITIALIZED
 } from './constants';
 
 const defaultStoreStateTemplate = {
-  code: undefined,
-  payload: undefined,
+  errors: undefined,
   status: UNINITIALIZED
 };
 
@@ -25,31 +26,34 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
+  if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE) {
+    return storeState;
+  }
+
   const newStoreStateSlice = {};
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === INSTANCES_SEARCH_FAIL) {
-    const {
-      code,
-      payload: codePayload
-    } = payload;
+  if (~[VIEW_INITIALIZE, VIEW_REDIRECT_FAIL].indexOf(type)) {
+    const errors = Array.isArray(payload) ? payload: [payload];
 
-    newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = u.constant(codePayload);
+    newStoreStateSlice.errors = u.constant(errors.map(({ code, ...rest }) => ({
+      code: code || ERROR_CODE_INTERNAL,
+      ...(Object.keys(rest).length ? { payload: rest.payload  || rest } : {})
+    })));
+
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === INSTANCE_EDIT_FAIL) {
-    const {
-      code,
-      payload: codePayload
-    } = payload;
+  } else if (type === VIEW_REDIRECT_REQUEST) {
+    newStoreStateSlice.status = REDIRECTING;
 
-    newStoreStateSlice.code = code;
-    newStoreStateSlice.payload = u.constant(codePayload);
-    newStoreStateSlice.status = READY;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === VIEW_REDIRECT_SUCCESS) {
+    // Reseting the store to initial uninitialized state.
+    newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }

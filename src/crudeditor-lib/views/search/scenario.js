@@ -23,7 +23,7 @@ import {
  *
  * When the view wants to exit during its life cycle, it must call softRedirectSaga
  * which cancels life cycle scenario-saga in case of successful redirect,
- * or throws an error otherwise
+ * or throws error(s) otherwise
  * => softRedirectSaga must be passed to all worker sagas.
  */
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
@@ -57,8 +57,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           softRedirectSaga,
           action
         });
-      } catch(err) {
-        //throw err;  // Comment out the line to swallow all errors in called task.
+      } catch(errors) {
+        //throw errors;  // Comment out the line to swallow all errors in called task.
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -68,8 +68,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             softRedirectSaga,
             action
           });
-        } catch(err) {
-          //throw err;  // Comment out the line to swallow all errors in forked task.
+        } catch(errors) {
+          //throw errors;  // Comment out the line to swallow all errors in forked task.
         }
       });
     }
@@ -80,7 +80,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
  * The saga initializes the view and
  * -- returns its life cycle scenario-saga in case of successful initialization
  * or
- * -- throws an error otherwise.
+ * -- throws error(s) otherwise.
  *
  *  source is relevant only for initialization but not for life cycle.
  *  It is because initialization process and its result must not be reported to owner app.
@@ -116,15 +116,15 @@ export default function*({
         meta: { source }
       }
     });
-  } catch(err) {
+  } catch(errors) {
     yield put({
       type: VIEW_INITIALIZE_FAIL,
-      payload: err,
+      payload: errors,
       error: true,
       meta: { source }
     });
 
-    throw err;  // Initialization errors are forwarded to the parent saga.
+    throw errors;  // Initialization errors are forwarded to the parent saga.
   }
 
   yield put({

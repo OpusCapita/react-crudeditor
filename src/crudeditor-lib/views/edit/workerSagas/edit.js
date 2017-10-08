@@ -7,7 +7,7 @@ import {
 } from '../constants';
 
 /*
- * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
+ * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).
  */
 export default function*({
   modelDefinition,
@@ -23,15 +23,15 @@ export default function*({
 
   try {
     instance = yield call(modelDefinition.api.get, { instance });
-  } catch (err) {
+  } catch (errors) {
     yield put({
       type: INSTANCE_EDIT_FAIL,
-      payload: err,
+      payload: errors,
       error: true,
       meta
     });
 
-    throw err;
+    throw errors;
   }
 
   yield put({

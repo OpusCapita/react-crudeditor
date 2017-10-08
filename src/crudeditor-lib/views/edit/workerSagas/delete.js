@@ -9,7 +9,7 @@ import {
 
 import deleteSaga from '../../../common/workerSagas/delete';
 /*
- * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing an error.
+ * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).
  */
 export default function*({
   modelDefinition,
@@ -36,14 +36,14 @@ export default function*({
     yield call(softRedirectSaga, {
       viewName: VIEW_SEARCH
     });
-  } catch(err) {
+  } catch(errors) {
     yield put({
       type: VIEW_REDIRECT_FAIL,
-      payload: err,
+      payload: errors,
       error: true,
       meta
     });
 
-    throw err;
+    throw errors;
   }
 }

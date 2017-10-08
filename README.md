@@ -25,6 +25,7 @@ Table of Content
     * [Create View *model* Property](#create-view-model-property)
     * [Edit View *model* Property](#edit-view-model-property)
     * [Show View *model* Property](#show-view-model-property)
+    * [Error View *model* Property](#error-view-model-property)
 - [Diagrams](#diagrams)
     * [Transitions of views and their states](#transitions-of-views-and-their-states)
     * [Data Flow](#data-flow)
@@ -217,6 +218,15 @@ tab | First tab name
   code: <natural number, error code>,
   ?payload: <any, structure is defined by error code>
 }
+```
+
+or
+
+```javascript
+[{
+  code: <natural number, error code>,
+  ?payload: <any, structure is defined by error code>
+}, ...]
 ```
 
 Name | Default
@@ -753,7 +763,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
         ...
       ],
       totalCount: <whole number, total number of filtered entity instances>,
-      status: <"uninitialized"|"ready"|"searching"|"deleting", search view status>,
+      status: <"uninitialized"|"initializing"|"ready"|"searching"|"deleting"|"redirecting", search view status>,
 
       /*
        * Parsing and Internal Errors -- see relevant subheadings
@@ -761,13 +771,10 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
        */
       errors: {
         fields: {
-          <field name>: <Parsing Error>,
+          <field name>: [<Parsing Error>, ...],
           ...
         },
-        general: [
-          <Internal Error>,
-          ...
-        ]
+        general: [<Internal Error>, ...]
       }
     },
     create: {
@@ -861,7 +868,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
       activeTab: <array|undefined>,
 
       instanceLabel: <string, entity instance description>,
-      status: <"uninitialized"|"ready"|"extracting", edit view status>
+      status: <"uninitialized"|"initializing"|"ready"|"extracting"|"updating"|"deleting"|"redirecting", edit view status>,
 
       /*
        * Parsing, Field/Instance Validation and Internal Errors -- see relevant subheadings
@@ -881,12 +888,14 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
         ...
       },
       tab: <string, active tab name>,
-      status: <"uninitialized"|"ready"|"extracting", show view status>
+      status: <"uninitialized"|"initializing"|"ready"|"redirecting", show view status>,
     },
     error: {
-      code: <natural number, error code>,
-      ?payload: <any, structure is defined by error code>,
-      status: <"uninitialized"|"ready", error view status>
+      errors: [{
+        code: <natural number, error code>,
+        ?payload: <any, structure is defined by error code>
+      }],
+      status: <"uninitialized"|"ready"|"redirecting", error view status>
     }
   }
 }
@@ -1132,6 +1141,27 @@ Every view passes *model* property to external React Components it uses.  The pr
 {
   data: {...},
   actions: {...}
+```
+
+, where `state` is `<Redux store state>.views.show`.
+
+### Error View *model* Property
+
+*model* property structure set by Error View:
+
+```javascript
+{
+  data: {
+    errors: state.errors,
+    isLoading: <boolean, whether API async operation is in progress>,
+  },
+  actions: {
+
+    /*
+     * Navigate to CRUD Editor home page, which is Search View with default View State.
+     */
+    goHome()
+  }
 ```
 
 , where `state` is `<Redux store state>.views.show`.

@@ -1,5 +1,9 @@
-import { VIEW_NAME } from './constants';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
+
+import {
+  REDIRECTING,
+  VIEW_NAME
+} from './constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -7,10 +11,11 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getErrorInfo = wrapper(({
-    code,
-    payload
-  }) => ({
-    code,
-    payload
-  }));
+  getViewState = wrapper(({ errors }) => errors),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getViewModelData = wrapper(storeState => {
+    errors: storeState.errors,
+    isLoading: storeState.status === REDIRECTING
+  });

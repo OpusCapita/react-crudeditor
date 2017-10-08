@@ -273,7 +273,7 @@ export default modelDefinition => {
       newStoreStateSlice.status = REDIRECTING;
 
     } else if (type === VIEW_REDIRECT_FAIL) {
-      const errors = payload;
+      const errors = Array.isArray(payload) ? payload: [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -321,7 +321,7 @@ export default modelDefinition => {
       newStoreStateSlice.status = READY;
 
     } else if (type === INSTANCES_DELETE_FAIL) {
-      const errors = payload;
+      const errors = Array.isArray(payload) ? payload: [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -389,7 +389,7 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== INITIALIZING) {
-      const errors = payload;
+      const errors = Array.isArray(payload) ? payload: [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -499,17 +499,21 @@ export default modelDefinition => {
             value: u.omit(fieldName)
           })
         }
-      } catch(err) {
+      } catch(errors) {
+        if (!Array.isArray(errors)) {
+          errors = [errors];
+        }
+
         newStoreStateSlice.formFilter = setFieldValue({
           isRange,
           path,
           value: UNPARSABLE_FIELD_VALUE
         });
 
-        if (!isEqual(err, oldErrorValue)) {
+        if (!isEqual(errors, oldErrorValue)) {
           newStoreStateSlice.errors = {
             fields: {
-              [fieldName]: err
+              [fieldName]: errors
             }
           };
         }

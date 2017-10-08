@@ -46,8 +46,10 @@ export const
    *███ ERRORS (in alphabetical order) ███*
   \*██████████████████████████████████████*/
 
+  ERROR_CODE_INTERNAL = 500,
+
   ERROR_UNKNOWN_VIEW = viewName => ({
-    code: 500,
+    code: ERROR_CODE_INTERNAL,
     id: 'unknownViewError',
     message: 'Unknown view:' + viewName
   });

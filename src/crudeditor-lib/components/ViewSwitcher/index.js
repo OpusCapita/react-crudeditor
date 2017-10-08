@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import SearchView from '../../views/search';
 import CreateView from '../../views/create/containers/Main';
 import EditView from '../../views/edit';
-//import ShowView from '../../views/show/containers/Main';
-import ErrorView from '../../views/error/containers/Main';
+//import ShowView from '../../views/show';
+import ErrorView from '../../views/error';
 
 import {
   VIEW_SEARCH,

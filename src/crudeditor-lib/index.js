@@ -19,6 +19,7 @@ import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
 import { getViewState as getEditViewState } from './views/edit/selectors';
 //import { getViewState as getShowViewState } from './views/show/selectors';
+import { getViewState as getErrorViewState } from './views/error/selectors';
 
 import {
   AUDITABLE_FIELDS,
@@ -34,7 +35,8 @@ const getViewState = {
   [VIEW_SEARCH] : getSearchViewState,
   [VIEW_CREATE] : getCreateViewState,
   [VIEW_EDIT  ] : getEditViewState,
-//[VIEW_SHOW  ] : getShowViewState
+//[VIEW_SHOW  ] : getShowViewState,
+  [VIEW_ERROR ] : getErrorViewState
 }
 
 function fillDefaults(baseModelDefinition) {
@@ -148,10 +150,6 @@ export default baseModelDefinition => {
     const oldStoreState = getState();
     const rez = next(action);
     const newStoreState = getState();
-
-    if (newStoreState.common.activeViewName === VIEW_ERROR) {
-      return rez;
-    }
 
     // XXX: updeep must be used in reducers for below store states comparison to work as expected.
     if (oldStoreState === newStoreState) {

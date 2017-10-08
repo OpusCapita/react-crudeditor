@@ -108,7 +108,7 @@ export default function*(modelDefinition) {
         viewState,
         source
       });
-    } catch(err) {
+    } catch(errors) {
       viewName = VIEW_ERROR;
 
       yield put({
@@ -120,7 +120,7 @@ export default function*(modelDefinition) {
       activeViewScenarioTask = yield call(errorViewScenario, {
         modelDefinition,
         softRedirectSaga,
-        viewState: err,
+        viewState: errors,
         source
       });
     }

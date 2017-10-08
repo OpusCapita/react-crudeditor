@@ -13,12 +13,12 @@ export default function*({
   modelDefinition,
   action: {
     payload: { instances },
-    meta: { source } = {}
+    meta
   }
 }) {
   yield put({
     type: INSTANCES_DELETE_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -30,16 +30,16 @@ export default function*({
     yield put({
       type: INSTANCES_DELETE_SUCCESS,
       payload: { instances },
-      meta: { source }
+      meta
     });
   } catch (err) {
     yield put({
       type: INSTANCES_DELETE_FAIL,  // TODO: handle error
       payload: err,
       error: true,
-      meta: { source }
+      meta
     });
 
-    throw error;
+    throw err;
   }
 }

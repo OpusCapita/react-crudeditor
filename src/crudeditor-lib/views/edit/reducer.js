@@ -110,6 +110,7 @@ const defaultStoreStateTemplate = {
 
     // object with keys as field names,
     // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
+    // (the object has keys for all fields).
     fields: {},
 
     // Array of Internal Errors and Instance Validation Errors, may be empty.
@@ -151,11 +152,19 @@ export default modelDefinition => (
     newStoreStateSlice.status = REDIRECTING;
 
   } else if (type === VIEW_REDIRECT_FAIL) {
+    const errors = payload;
+
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
+    }
+
     newStoreStateSlice.status = READY;
 
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
-    newStoreStateSlice = cloneDeep(defaultStoreStateTemplate);
+    newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -163,10 +172,18 @@ export default modelDefinition => (
     newStoreStateSlice.status = DELETING;
 
   } else if (type === INSTANCES_DELETE_FAIL) {
+    const errors = payload;
+
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
+    }
+
     newStoreStateSlice.status = READY;
 
   } else if (type === INSTANCES_DELETE_SUCCESS) {
-    newStoreStateSlice = READY;
+    newStoreStateSlice.status = READY;  // TODO: status must not be READY here.
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -202,17 +219,6 @@ export default modelDefinition => (
     newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-    newStoreStateSlice.errors = u.constant({
-      general: [],
-      fields: Object.keys(instance).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: []
-        }),
-        {}
-      )
-    });
-
     newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
       (rez, fieldName) => {
         const fieldLayout = findFieldLayout(fieldName)(formLayout);
@@ -228,20 +234,33 @@ export default modelDefinition => (
       {}
     ));
 
+    newStoreStateSlice.errors = u.constant({
+      general: [],
+      fields: Object.keys(instance).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: []
+        }),
+        {}
+      )
+    });
+
     if (storeState.status !== INITIALIZING) {
       newStoreStateSlice.status = READY;
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type)) {
-    newStoreStateSlice.errors = {
-      general: [payload]
-    };
+  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== INITIALIZING) {
+    const errors = payload;
 
-    if (storeState.status !== INITIALIZING) {
-      newStoreStateSlice.status = READY;
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
     }
+
+    newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -332,7 +351,7 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
   } else if (type === INSTANCE_VALIDATE_SUCCESS) {
-    if (!isEqual(storeState.errors.general, [])) {
+    if (storeState.errors.general.length) {
       newStoreStateSlice.errors = {
         general: []
       };
@@ -354,12 +373,12 @@ export default modelDefinition => (
   } else if (type === TAB_SELECT) {
     const { tabName } = payload;  // may be undefined.
     const tabs = storeState.formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
-    let newActiveTab = tabs[0];  // default tab, undefined in case of no tabs.
+    let activeTab = tabs[0];  // default tab, undefined in case of no tabs.
 
     if (tabName) {
       storeState.formLayout.some(tab => {
         if (tab.tab === tabName) {
-          newActiveTab = tab;
+          activeTab = tab;
           return true;
         }
 
@@ -367,7 +386,7 @@ export default modelDefinition => (
       });
     }
 
-    newStoreStateSlice.activeTab = u.constant(newActiveTab);
+    newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }

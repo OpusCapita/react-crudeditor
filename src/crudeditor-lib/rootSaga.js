@@ -80,7 +80,8 @@ export default function*(modelDefinition) {
     payload: {
       viewName = DEFAULT_VIEW,
       viewState = {}
-    }
+    },
+    meta: { source } = {}
   }) {
     let initializeViewSaga = initializeViewSagas[viewName];
 
@@ -93,9 +94,7 @@ export default function*(modelDefinition) {
     yield put({
       type: ACTIVE_VIEW_CHANGE,
       payload: { viewName },
-      meta: {
-        source: 'owner'
-      }
+      meta: { source }
     });
 
     if (activeViewScenarioTask) {
@@ -107,7 +106,7 @@ export default function*(modelDefinition) {
         modelDefinition,
         softRedirectSaga,
         viewState,
-        source: 'owner'
+        source
       });
     } catch(err) {
       viewName = VIEW_ERROR;
@@ -115,16 +114,14 @@ export default function*(modelDefinition) {
       yield put({
         type: ACTIVE_VIEW_CHANGE,
         payload: { viewName },
-        meta: {
-          source: 'owner'
-        }
+        meta: { source }
       });
 
       activeViewScenarioTask = yield call(errorViewScenario, {
         modelDefinition,
         softRedirectSaga,
         viewState: err,
-        source: 'owner'
+        source
       });
     }
   }

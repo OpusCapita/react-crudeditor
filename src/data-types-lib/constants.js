@@ -1,22 +1,50 @@
 export const
+
+  EMPTY_FIELD_VALUE = null,
+
+  /*███████████████████████████████████████████*\
+   *███ FIELD TYPES (in alphabetical order) ███*
+  \*███████████████████████████████████████████*/
+
+  FIELD_TYPE_BOOLEAN = 'boolean',  // JavaScript type "boolean".
+  FIELD_TYPE_DATE_STRING = 'dateString',  // JavaScript type "string" with date.
+
+  /*
+   * JavaScript type "string" with decimal number of any size,
+   * i.e. rational number written in Base 10 and having finite number of digits after decimal point.
+   * It may be in exponential, as well as normal (non-exponential) notation.
+   */
+  FIELD_TYPE_NUMBER_STRING = 'numberString',
+
+  FIELD_TYPE_STRING = 'string',  // JavaScript type "string".
+
+  /*███████████████████████████████████████████*\
+   *███  UI TYPES (in alphabetical order)   ███*
+  \*███████████████████████████████████████████*/
+
   UI_TYPE_BOOLEAN = 'boolean',  // JavaScript type "boolean".
   UI_TYPE_NUMBER = 'number',    // JavaScript type "number".
   UI_TYPE_STRING = 'string',    // JavaScript type "string".
+
+  /*███████████████████████████████████████████*\
+   *███ CONSTRAINTS (in alphabetical order) ███*
+  \*███████████████████████████████████████████*/
 
   CONSTRAINT_INTEGER = 'integer',
   CONSTRAINT_MIN = 'min',
   CONSTRAINT_MAX = 'max',
 
-  FIELD_TYPE_BOOLEAN = 'boolean',            // JavaScript type "boolean".
-  FIELD_TYPE_DATE = 'date',                  // JavaScript type "string" with date.
-  FIELD_TYPE_NUMBER_STRING = 'numberString', // JavaScript type "string" with number of any size.
-  FIELD_TYPE_STRING = 'string',              // JavaScript type "string".
-
-  EMPTY_FIELD_VALUE = null,
+  /*███████████████████████████████████████████*\
+   *███ ERROR CODES (in alphabetical order) ███*
+  \*███████████████████████████████████████████*/
 
   ERROR_CODE_FORMATING = 400,
   ERROR_CODE_PARSING = 400,
   ERROR_CODE_VALIDATION = 400,
+
+  /*███████████████████████████████████████████*\
+   *███  ERROR IDS (in alphabetical order)  ███*
+  \*███████████████████████████████████████████*/
 
   ERROR_FORBIDDEN_FRACTIONAL_PART = 'forbiddenFractionalPartError',
   ERROR_FORMAT = 'formatError',

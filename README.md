@@ -18,7 +18,7 @@ Table of Content
     * [doTransition](#dotransition)
 - [Redux Store](#redux-store)
     * [State Structure](#state-structure)
-    * [Parsing Error and Field/Instance Validation Error](#validation-error)
+    * [Parsing Error and Field/Instance Validation Error](#parsing-error-and-fieldinstance-validaton-error)
     * [Internal Error](#internal-error)
 - [*model* Property](#model-property)
     * [Search View *model* Property](#search-view-model-property)
@@ -423,10 +423,36 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?searchableFields: [{
           name: <string, persistent field name>,
+
+          /*
+           * Default render:
+           * {
+           *   // Default React Component for displaying particular field type.
+           *   // The following field types have default React Components:
+           *   // -- dateString,
+           *   // -- numberString,
+           *   // -- string,
+           *   // -- boolean.
+           *   // Custom render must be supplied for all other types.
+           *   Component: <function>,
+           *
+           *   valueProp: {
+           *     name: "value",
+           *     type: "string"
+           *   },
+           *
+           *   // Boolean, whether the field search is range search.
+           *   // It is true for numbers/dates and false for all other values.
+           *   // NOTE: it is inappropriate for custom render because custom Component is
+           *   //       fully responsible for composing searchable field filter value
+           *   //       => isRange is presupposed to be false in such case.
+           *   isRange: <boolean>
+           * }
+           */
           ?render: {
             Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
             ?valueProp: {
-              ?name: <string, a name of Component prop with field value, "value" by default>,
+              ?name: <string, a name of Component prop with field value>,
               ?type: <string, UI Type (see corresponding "Terminology" section)>
             }
           }
@@ -558,11 +584,11 @@ Model Definition is an object describing an entity. It has the following structu
     },
 
     ?edit: {
-      ?formLayout: function  // see ui.create.formLayout for details
+      ?formLayout: <function>  // see ui.create.formLayout for details
     },
 
     ?show: {
-      ?formLayout: function  // see ui.create.formLayout for details
+      ?formLayout: <function>  // see ui.create.formLayout for details
     },
 
 

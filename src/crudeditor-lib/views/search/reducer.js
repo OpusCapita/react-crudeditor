@@ -273,6 +273,14 @@ export default modelDefinition => {
       newStoreStateSlice.status = REDIRECTING;
 
     } else if (type === VIEW_REDIRECT_FAIL) {
+      const errors = payload;
+
+      if (!isEqual(storeState.errors.general, errors)) {
+        newStoreStateSlice.errors = {
+          general: errors
+        };
+      }
+
       newStoreStateSlice.status = READY;
 
     } else if (type === VIEW_REDIRECT_SUCCESS) {
@@ -287,10 +295,10 @@ export default modelDefinition => {
         filter: storeState.resultFilter
       }));
 
-      newStoreStateSlice.errors = {
+      newStoreStateSlice.errors = u.constant({
         fields: {},
         general: []
-      },
+      }),
 
       newStoreStateSlice.status = UNINITIALIZED;
 
@@ -304,9 +312,23 @@ export default modelDefinition => {
       newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
       newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
       newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
+
+      if (storeState.errors.general.length) {
+        newStoreStateSlice.errors = {
+          general: []
+        };
+      }
       newStoreStateSlice.status = READY;
 
     } else if (type === INSTANCES_DELETE_FAIL) {
+      const errors = payload;
+
+      if (!isEqual(storeState.errors.general, errors)) {
+        newStoreStateSlice.errors = {
+          general: errors
+        };
+      }
+
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -355,12 +377,26 @@ export default modelDefinition => {
       }
 
       if (storeState.status !== INITIALIZING) {
+        if (storeState.errors.general.length) {
+          newStoreStateSlice.errors = {
+            general: []
+          };
+        }
+
         newStoreStateSlice.status = READY;
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== INITIALIZING) {
+      const errors = payload;
+
+      if (!isEqual(storeState.errors.general, errors)) {
+        newStoreStateSlice.errors = {
+          general: errors
+        };
+      }
+
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

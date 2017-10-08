@@ -3,13 +3,13 @@ import { VIEW_SEARCH } from '../../common/constants';
 const namespace = VIEW_SEARCH;
 
 import {
-  FIELD_TYPE_DATE,
+  FIELD_TYPE_DATE_STRING,
   FIELD_TYPE_NUMBER_STRING,
 } from '../../../data-types-lib/constants';
 
 export const
   VIEW_NAME = VIEW_SEARCH,
-  RANGE_FIELD_TYPES = [FIELD_TYPE_DATE, FIELD_TYPE_NUMBER_STRING],
+  RANGE_FIELD_TYPES = [FIELD_TYPE_DATE_STRING, FIELD_TYPE_NUMBER_STRING],
 
   /*████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*

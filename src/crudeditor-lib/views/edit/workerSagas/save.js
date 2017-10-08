@@ -26,7 +26,7 @@ import {
 /*
  * Instance validation
  */
-function* validateSaga(modelDefinition, source) {
+function* validateSaga(modelDefinition, meta) {
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 
   if (divergedField) {
@@ -38,7 +38,7 @@ function* validateSaga(modelDefinition, source) {
       payload: {
         name: divergedField
       },
-      meta: { source }
+      meta
     });
   }
 
@@ -72,7 +72,7 @@ function* validateSaga(modelDefinition, source) {
 
   yield put({
     type: INSTANCE_VALIDATE_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -82,7 +82,7 @@ function* validateSaga(modelDefinition, source) {
       type: INSTANCE_VALIDATE_FAIL,
       payload: errors,
       error: true,
-      meta: { source }
+      meta
     });
 
     throw errors;
@@ -90,16 +90,16 @@ function* validateSaga(modelDefinition, source) {
 
   yield put({
     type: INSTANCE_VALIDATE_SUCCESS,
-    meta: { source }
+    meta
   });
 }
 
-function* updateSaga(modelDefinition, source) {
+function* updateSaga(modelDefinition, meta) {
   const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
 
   yield put({
     type: INSTANCE_SAVE_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -110,14 +110,14 @@ function* updateSaga(modelDefinition, source) {
       payload: {
         instance: updated
       },
-      meta: { source }
+      meta
     });
   } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
       payload: err,
       error: true,
-      meta: { source }
+      meta
     });
 
     throw err;
@@ -132,17 +132,17 @@ export default function*({
   softRedirectSaga,
   action: {
     payload: { afterAction } = {},
-    meta: { source } = {}
+    meta
   }
 }) {
-  yield call(validateSaga, modelDefinition, source);  // Forwarding thrown errors to the parent saga.
+  yield call(validateSaga, modelDefinition, meta);  // Forwarding thrown errors to the parent saga.
 
-  yield call(updateSaga, modelDefinition, source);  // Forwarding thrown errors to the parent saga.
+  yield call(updateSaga, modelDefinition, meta);  // Forwarding thrown errors to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
       type: VIEW_REDIRECT_REQUEST,
-      meta: { source }
+      meta
     });
 
     try {
@@ -157,7 +157,7 @@ export default function*({
         type: VIEW_REDIRECT_FAIL,
         payload: err,
         error: true,
-        meta: { source }
+        meta
       });
 
       throw err;
@@ -173,7 +173,7 @@ export default function*({
           payload: {
             instance: nextInstance
           },
-          meta: { source }
+          meta
         }
       });
     } catch(err) {

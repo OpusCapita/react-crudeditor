@@ -58,7 +58,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           action
         });
       } catch(err) {
-        throw err;  // Comment out the line to swallow all errors in called task.
+        //throw err;  // Comment out the line to swallow all errors in called task.
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -69,7 +69,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             action
           });
         } catch(err) {
-          throw err;  // Comment out the line to swallow all errors in forked task.
+          //throw err;  // Comment out the line to swallow all errors in forked task.
         }
       });
     }

@@ -80,12 +80,23 @@ function fillDefaults(baseModelDefinition) {
   }
 
   searchMeta.searchableFields.forEach(field => {
-    if (field.render && !field.render.Component) {
-      throw new Error(`searchableField "${field.name}" must have render.Component if render is specified`);
+    if (field.render) {
+      if (!field.render.Component) {
+        throw new Error(`searchableField "${field.name}" must have render.Component since custom render is specified`);
+      }
+      if (field.render.hasOwnProperty('isRange')) {
+        // field.render has isRange and it is set to true.
+        throw new Error(
+          `searchableField "${field.name}" must not have render.isRange since custom render is specified`
+        );
+      }
     }
 
     field.render = {
-      isRender: !!field.render && ~RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type),
+      isRange: field.render ?
+        false :
+        RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
+
       ...buildFieldRender({
         render: field.render,
         type: fieldsMeta[field.name].type
@@ -184,6 +195,11 @@ export default baseModelDefinition => {
 
     shouldComponentUpdate({ view: appState }) {
       // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
+
+      // TODO: more sofisticated comparison
+      // either by filling appState and storeState2appState()
+      // with default values and EMPTY_FIELD_VALUE in filter fields of Search View,
+      // or by removing default values and EMPTY_FIELD_VALUE in appState and storeState2appState().
       return !isEqual(appState, storeState2appState(store.getState()));
     }
 

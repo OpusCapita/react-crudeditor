@@ -13,12 +13,12 @@ export default function*({
   modelDefinition,
   action: {
     payload: { instance },
-    meta: { source } = {}
+    meta
   }
 }) {
   yield put({
     type: INSTANCE_EDIT_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -28,7 +28,7 @@ export default function*({
       type: INSTANCE_EDIT_FAIL,
       payload: err,
       error: true,
-      meta: { source }
+      meta
     });
 
     throw err;
@@ -37,6 +37,6 @@ export default function*({
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: { instance },
-    meta: { source }
+    meta
   });
 }

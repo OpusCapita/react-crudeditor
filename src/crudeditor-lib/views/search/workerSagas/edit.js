@@ -15,12 +15,12 @@ export default function*({
   softRedirectSaga,
   action: {
     payload: { instance },
-    meta: { source } = {}
+    meta
   }
 }) {
   yield put({
     type: VIEW_REDIRECT_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -33,7 +33,7 @@ export default function*({
       type: VIEW_REDIRECT_FAIL,
       payload: err,
       error: true,
-      meta: { source }
+      meta
     });
 
     throw err;

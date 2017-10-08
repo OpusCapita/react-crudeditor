@@ -78,7 +78,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  selectTab = activeTabName => ({
+  selectTab = tabName => ({
     type: TAB_SELECT,
-    payload: { activeTabName }
+    payload: { tabName }
   });

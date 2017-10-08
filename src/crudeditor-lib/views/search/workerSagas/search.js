@@ -28,7 +28,7 @@ export default function*({
       max,
       offset
     },
-    meta: { source } = {}
+    meta = {}
   }
 }) {
   const { searchableFields } = modelDefinition.ui.search;
@@ -43,7 +43,7 @@ export default function*({
       payload: {
         path: divergedField
       },
-      meta: { source }
+      meta
     });
 
     if (filter) {
@@ -83,10 +83,10 @@ export default function*({
   ]);
 
   if (Object.keys(errors.fields).length) {
-    throw errors.fiels;
+    throw errors.fields;
   }
 
-  if (source === 'owner') {
+  if (meta.source === 'owner') {
     // Default search values are default values for the arguments in case of external searchInstances() call.
     const {
       resultFilter: defaultFilter,
@@ -132,7 +132,7 @@ export default function*({
 
   yield put({
     type: INSTANCES_SEARCH_REQUEST,
-    meta: { source }
+    meta
   });
 
   try {
@@ -155,14 +155,14 @@ export default function*({
         max,
         offset
       },
-      meta: { source }
+      meta
     });
   } catch (err) {
     yield put({
       type: INSTANCES_SEARCH_FAIL,
       payload: err,
       error: true,
-      meta: { source }
+      meta
     });
 
     throw err;

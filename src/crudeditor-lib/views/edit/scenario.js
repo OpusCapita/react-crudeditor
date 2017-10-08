@@ -19,6 +19,7 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
+// See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
     blocking: {
@@ -51,7 +52,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           action
         });
       } catch(err) {
-        throw err;  // Comment out the line to swallow all errors in called task.
+        //throw err;  // Comment out the line to swallow all errors in called task.
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -62,13 +63,14 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             action
           });
         } catch(err) {
-          throw err;  // Comment out the line to swallow all errors in forked task.
+          //throw err;  // Comment out the line to swallow all errors in forked task.
         }
       });
     }
   }
 }
 
+// See Search View scenario for detailed description of the saga.
 export default function*({
   modelDefinition,
   softRedirectSaga,

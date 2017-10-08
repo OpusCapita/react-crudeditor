@@ -9,7 +9,7 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_DATE,
+  FIELD_TYPE_DATE_STRING,
   FIELD_TYPE_NUMBER_STRING,
   FIELD_TYPE_STRING
 } from '../../data-types-lib/constants';
@@ -21,7 +21,7 @@ const defaultFieldRenders = {
       type: 'boolean'
     }
   },
-  [FIELD_TYPE_DATE]: {
+  [FIELD_TYPE_DATE_STRING]: {
     Component: FieldString
   },
   [FIELD_TYPE_NUMBER_STRING]: {
@@ -43,7 +43,9 @@ const buildDefaultFormLayout = ({
         ~AUDITABLE_FIELDS.indexOf(name) ||  // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
       ),
-    render: buildFieldRender({ type: fieldsMeta[name].type })
+    render: buildFieldRender({
+      type: fieldsMeta[name].type
+    })
   }));
 
 const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, render }) => ({
@@ -52,7 +54,7 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, r
   // making all fields read-only in "show" view.
   readOnly: viewName === VIEW_SHOW || !!readOnly,
 
-  // assigning default Component to fields w/o custom component.
+  // assigning default Component to fields w/o custom Component.
   render: buildFieldRender({
     render,
     type: fieldsMeta[fieldId].type
@@ -88,7 +90,11 @@ export const
   }) => {
     const render = customRender ||
       defaultFieldRenders[fieldType] ||
-      (_ => { throw new TypeError(`Unknown field type "${fieldType}"`); })();
+      (_ => {
+        throw new TypeError(
+          `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
+        );
+      })();
 
     if (!render.valueProp) {
       render.valueProp = {};

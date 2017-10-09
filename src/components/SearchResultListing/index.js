@@ -8,18 +8,6 @@ import SpinnerOverlay from '../Spinner/SpinnerOverlay';
 import './SearchResultListing.less';
 
 export default class extends React.PureComponent {
-  handleNewInstances = instances => {
-    this.handleToggleSelected = instance => ({
-      target: {
-        checked: selected
-      }
-    }) => this.props.model.actions.toggleSelected({ selected, instance });
-
-    this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
-    this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
-    this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
-  }
-
   constructor(...args) {
     super(...args);
 
@@ -47,6 +35,18 @@ export default class extends React.PureComponent {
     ) {
       this.handleNewInstances(instances);
     }
+  }
+
+  handleNewInstances = instances => {
+    this.handleToggleSelected = instance => ({
+      target: {
+        checked: selected
+      }
+    }) => this.props.model.actions.toggleSelected({ selected, instance });
+
+    this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
+    this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
+    this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
@@ -89,9 +89,19 @@ export default class extends React.PureComponent {
                   (<th key={`th-${name}`}>
                     {
                       sortable ?
-                        <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
+                        <Button
+                          className="crud--search-result-listing__sort-button"
+                          bsStyle='link'
+                          onClick={this.handleResort(name)}
+                        >
                           {name}
-                          {sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} />}
+                          {
+                            sortField === name &&
+                            <Glyphicon
+                              className="crud--search-result-listing__sort-icon"
+                              glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`}
+                            />
+                          }
                         </Button> :
                         name
                     }
@@ -106,7 +116,10 @@ export default class extends React.PureComponent {
               {instances.map(instance =>
                 (<tr key={`tr-${JSON.stringify(instance)}`}>
                   <td>
-                    <Checkbox checked={~selectedInstances.indexOf(instance)} onChange={this.handleToggleSelected(instance)} />
+                    <Checkbox
+                      checked={~selectedInstances.indexOf(instance)}
+                      onChange={this.handleToggleSelected(instance)}
+                    />
                   </td>
                   {resultFields.map(({ name, Component, textAlignment }) =>
                     (<td

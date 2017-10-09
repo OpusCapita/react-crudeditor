@@ -20,15 +20,15 @@ import {
 } from './views/search/constants';
 
 import { READY as CREATE_STATUS_READY } from './views/create/constants';
-import { READY as EDIT_STATUS_READY   } from './views/edit/constants';
-import { READY as SHOW_STATUS_READY   } from './views/show/constants';
-import { READY as ERROR_STATUS_READY  } from './views/error/constants';
+import { READY as EDIT_STATUS_READY } from './views/edit/constants';
+import { READY as SHOW_STATUS_READY } from './views/show/constants';
+import { READY as ERROR_STATUS_READY } from './views/error/constants';
 
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
-import { getViewState as getEditViewState   } from './views/edit/selectors';
-import { getViewState as getShowViewState   } from './views/show/selectors';
-import { getViewState as getErrorViewState  } from './views/error/selectors';
+import { getViewState as getEditViewState } from './views/edit/selectors';
+import { getViewState as getShowViewState } from './views/show/selectors';
+import { getViewState as getErrorViewState } from './views/error/selectors';
 
 import {
   AUDITABLE_FIELDS,
@@ -111,7 +111,7 @@ function fillDefaults(baseModelDefinition) {
       }
     }
 
-    field.render = {
+    field.render = { // eslint-disable-line no-param-reassign
       isRange: field.render ?
         false :
         RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
@@ -148,6 +148,8 @@ function fillDefaults(baseModelDefinition) {
 
 export default baseModelDefinition => {
   const modelDefinition = fillDefaults(baseModelDefinition);
+  let onTransition = null;
+  let lastState = {};
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
@@ -157,8 +159,6 @@ export default baseModelDefinition => {
       state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
     }
   };
-
-  let lastState = {};
 
   const appStateChangeDetect = ({ getState }) => next => action => {
     const rez = next(action);
@@ -199,7 +199,6 @@ export default baseModelDefinition => {
     return rez;
   }
 
-  let onTransition = null;
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(

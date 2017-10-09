@@ -38,7 +38,6 @@ export default class extends React.PureComponent {
               <MenuItem eventKey={50} active={max === 50}>50</MenuItem>
               <MenuItem eventKey={30} active={max === 30}>30</MenuItem>
               <MenuItem eventKey={10} active={max === 10}>10</MenuItem>
-              <MenuItem eventKey={3} active={max === 3}>3</MenuItem>  {/* FIXME: remove the line which is for testing only*/}
             </Dropdown.Menu>
           </Dropdown>
         </div>

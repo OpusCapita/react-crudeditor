@@ -1,5 +1,5 @@
 export default {
-  isEmpty: value => false,  // No native empty value.
+  isEmpty: value => false, // No native empty value.
 
   isValid: value => typeof value === 'string'
 };

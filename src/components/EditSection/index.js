@@ -30,7 +30,8 @@ class EditSelection extends React.Component {
             &nbsp;
             {title}
           </span>
-        )}>
+        )}
+      >
         {fields}
       </Panel>
     );

@@ -51,7 +51,7 @@ const api2internal = contract => Object.entries(contract).reduce(
   {}
 );
 
-module.exports = function (app) {
+module.exports = function(app) {
   /**
    * =======================================================
    * = CONTRACTS
@@ -68,7 +68,7 @@ module.exports = function (app) {
         res.json(internal2api(result));
       } else {
         res.status(404);
-        res.json({message: `Contract ${JSON.stringify(query.instance)} not found`});
+        res.json({ message: `Contract ${JSON.stringify(query.instance)} not found` });
       }
 
       return;
@@ -85,21 +85,17 @@ module.exports = function (app) {
           ...rez,
           [name]:
             ['statusId', 'isOffer', 'isPreferred', 'isInternal', 'isFrameContract', 'isStandard', 'minOrderValueRequired'].includes(name) &&
-            value
-          ||
+            value ||
             value.hasOwnProperty('from') &&
             value.hasOwnProperty('to') &&
             Object.keys(value).length === 2 &&
-            { '$between': [Number(value.from), Number(value.to)] }
-          ||
+            { '$between': [Number(value.from), Number(value.to)] } ||
             value.hasOwnProperty('from') &&
             Object.keys(value) === 1 &&
-            { '$gte': Number(value) }
-          ||
+            { '$gte': Number(value) } ||
             value.hasOwnProperty('to') &&
             Object.keys(value) === 1 &&
-            { '$lte': Number(value) }
-          ||
+            { '$lte': Number(value) } ||
             { '$contains': value }
         }),
         {}
@@ -107,8 +103,8 @@ module.exports = function (app) {
       {};
     let sort;
 
-    let result = contracts.chain()
-      .find(filter);
+    let result = contracts.chain().
+      find(filter);
 
     if (query.sort) {
       result = result.simplesort(
@@ -141,7 +137,7 @@ module.exports = function (app) {
     } catch (error) {
       res.status(500);
 
-      res.json({error});
+      res.json({ error });
     }
   });
 
@@ -178,8 +174,8 @@ module.exports = function (app) {
     const instances = req.body;
 
     contracts.findAndRemove({
-        '$or': instances.map(({ contractId }) => ({ contractId }))
-      });
+      '$or': instances.map(({ contractId }) => ({ contractId }))
+    });
 
     return res.json(instances.length);
   });
@@ -194,10 +190,10 @@ module.exports = function (app) {
     const max = query.max ? Number.parseInt(query.max, 10) : 10;
     const offset = query.offset ? Number.parseInt(query.offset, 10) : 0;
 
-    const result = statuses.chain()
-      .find()
-      .offset(offset)
-      .limit(max).data();
+    const result = statuses.chain().
+      find().
+      offset(offset).
+      limit(max).data();
     const totalCount = statuses.count();
 
     res.header('Content-Range', `items ${offset + 1}-${offset + result.length}/${totalCount}`);

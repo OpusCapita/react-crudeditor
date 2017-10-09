@@ -23,11 +23,11 @@ describe('search sagas', () => {
     expect(
       gen.next().value
     ).toEqual(all([
-      select(getResultFilter , MIN_ENTITY_CONFIGURATION),
-      select(getSortField    , MIN_ENTITY_CONFIGURATION),
-      select(getSortOrder    , MIN_ENTITY_CONFIGURATION),
-      select(getPageMax      , MIN_ENTITY_CONFIGURATION),
-      select(getPageOffset   , MIN_ENTITY_CONFIGURATION)
+      select(getResultFilter, MIN_ENTITY_CONFIGURATION),
+      select(getSortField, MIN_ENTITY_CONFIGURATION),
+      select(getSortOrder, MIN_ENTITY_CONFIGURATION),
+      select(getPageMax, MIN_ENTITY_CONFIGURATION),
+      select(getPageOffset, MIN_ENTITY_CONFIGURATION)
     ]));
   });
 });

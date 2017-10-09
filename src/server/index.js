@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 const PORT = 7700;
-const FAKE_RESPONSE_TIMEOUT = 300;  // In milliseconds. 0 for no timeout.
+const FAKE_RESPONSE_TIMEOUT = 300; // In milliseconds. 0 for no timeout.
 
 // ███████████████████████████████████
 // ███   WEBPACK INITIALIZATION    ███
@@ -23,7 +23,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {
 app.set('etag', false);
 app.use(webpackDevMiddleware);
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   console.info('===== [' + new Date().toUTCString() + '] ', req.originalUrl);
   next();
 });
@@ -43,19 +43,19 @@ app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 // ███   index.html & bundle.js (must be the very last app.get(...))   ███
 // ███████████████████████████████████████████████████████████████████████
 
-app.get(`*/${webpackDevConfig.output.filename}`, function (req, res) {
+app.get(`*/${webpackDevConfig.output.filename}`, function(req, res) {
   // Get the bundle.js from the fileSystem
   const htmlBuffer = webpackDevMiddleware.fileSystem.readFileSync(`${webpackDevConfig.output.path}/${webpackDevConfig.output.filename}`)
   res.send(htmlBuffer.toString())
 });
 
-app.get('*', function (req, res) {
+app.get('*', function(req, res) {
   // Get the index.html from the fileSystem
   const htmlBuffer = webpackDevMiddleware.fileSystem.readFileSync(`${webpackDevConfig.output.path}/index.html`)
   res.send(htmlBuffer.toString())
 });
 
-let server = app.listen(PORT || 8081, function () {
+let server = app.listen(PORT || 8081, function() {
   let host = server.address().address;
   let port = server.address().port;
   console.info(`Server listening at http://${host === '::' ? 'localhost' : host}:${port}`);

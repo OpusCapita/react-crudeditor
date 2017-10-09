@@ -162,9 +162,9 @@ const buildFormatedFilter = ({
         isRange,
         path: fieldName,
         value: isRange ? {
-            from: formatField({ type, targetType, value: filter[fieldName].from }),
-            to  : formatField({ type, targetType, value: filter[fieldName].to }),
-          } :
+          from: formatField({ type, targetType, value: filter[fieldName].from }),
+          to: formatField({ type, targetType, value: filter[fieldName].to }),
+        } :
           formatField({ type, targetType, value: filter[fieldName] })
       })
     };
@@ -209,8 +209,8 @@ export const buildDefaultStoreState = modelDefinition => {
       max: 30,
       offset: 0
     },
-    resultInstances: undefined,  // XXX: must be undefined until first extraction.
-    selectedInstances: [],  // XXX: must be a sub-array of refs from resultInstances.
+    resultInstances: undefined, // XXX: must be undefined until first extraction.
+    selectedInstances: [], // XXX: must be a sub-array of refs from resultInstances.
     totalCount: undefined,
 
     errors: {
@@ -260,20 +260,16 @@ export default modelDefinition => {
 
     if (type === VIEW_INITIALIZE_REQUEST) {
       newStoreStateSlice.status = INITIALIZING;
-
     } else if (type === VIEW_INITIALIZE_FAIL) {
       newStoreStateSlice.status = UNINITIALIZED;
-
     } else if (type === VIEW_INITIALIZE_SUCCESS) {
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === VIEW_REDIRECT_REQUEST) {
       newStoreStateSlice.status = REDIRECTING;
-
     } else if (type === VIEW_REDIRECT_FAIL) {
-      const errors = Array.isArray(payload) ? payload: [payload];
+      const errors = Array.isArray(payload) ? payload : [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -282,7 +278,6 @@ export default modelDefinition => {
       }
 
       newStoreStateSlice.status = READY;
-
     } else if (type === VIEW_REDIRECT_SUCCESS) {
       // Do not reset store to initial uninitialized state because
       // filter, order, sort, etc. must remain after returning from other Views.
@@ -303,10 +298,8 @@ export default modelDefinition => {
       newStoreStateSlice.status = UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCES_DELETE_REQUEST) {
       newStoreStateSlice.status = DELETING;
-
     } else if (type === INSTANCES_DELETE_SUCCESS) {
       const { instances } = payload;
       newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
@@ -319,9 +312,8 @@ export default modelDefinition => {
         };
       }
       newStoreStateSlice.status = READY;
-
     } else if (type === INSTANCES_DELETE_FAIL) {
-      const errors = Array.isArray(payload) ? payload: [payload];
+      const errors = Array.isArray(payload) ? payload : [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -332,12 +324,10 @@ export default modelDefinition => {
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCES_SEARCH_REQUEST && storeState.status !== INITIALIZING) {
       newStoreStateSlice.status = SEARCHING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCES_SEARCH_SUCCESS) {
       const {
         filter,
@@ -387,9 +377,8 @@ export default modelDefinition => {
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== INITIALIZING) {
-      const errors = Array.isArray(payload) ? payload: [payload];
+      const errors = Array.isArray(payload) ? payload : [payload];
 
       if (!isEqual(storeState.errors.general, errors)) {
         newStoreStateSlice.errors = {
@@ -400,14 +389,12 @@ export default modelDefinition => {
       newStoreStateSlice.status = READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === FORM_FILTER_RESET) {
       newStoreStateSlice.formatedFilter = u.constant(buildDefaultFormatedFilter(modelDefinition));
       newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
       newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === FORM_FILTER_UPDATE) {
       const {
         path,
@@ -431,7 +418,6 @@ export default modelDefinition => {
       newStoreStateSlice.divergedField = path;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === FORM_FILTER_PARSE && storeState.divergedField) {
       // if storeState.divergedField is null, no data has changed.
       const { path } = payload;
@@ -499,7 +485,7 @@ export default modelDefinition => {
             value: u.omit(fieldName)
           })
         }
-      } catch(errors) {
+      } catch (errors) {
         if (!Array.isArray(errors)) {
           errors = [errors];
         }
@@ -522,23 +508,19 @@ export default modelDefinition => {
       newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === ALL_INSTANCES_SELECT) {
       newStoreStateSlice.selectedInstances = storeState.resultInstances;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === ALL_INSTANCES_DESELECT) {
       newStoreStateSlice.selectedInstances = [];
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCE_SELECT) {
       let { instance } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.concat([instance]);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     } else if (type === INSTANCE_DESELECT) {
       let { instance } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => ins !== instance);
@@ -546,6 +528,6 @@ export default modelDefinition => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     }
 
-    return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+    return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'
   };
 };

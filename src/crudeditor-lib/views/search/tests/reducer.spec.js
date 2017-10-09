@@ -1,4 +1,4 @@
-//import '../../../../../tests/utils';
+// import '../../../../../tests/utils';
 import buildReducer from '../reducer';
 import { MIN_ENTITY_CONFIGURATION } from './constants';
 
@@ -58,7 +58,7 @@ describe('search reducer', () => {
     });
   });
 
-  it ('should handle INSTANCES_SEARCH_SUCCESS', () => {
+  it('should handle INSTANCES_SEARCH_SUCCESS', () => {
     const reducer = buildReducer(MIN_ENTITY_CONFIGURATION);
 
     expect(reducer(undefined, {

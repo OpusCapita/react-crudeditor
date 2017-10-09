@@ -27,7 +27,7 @@ export default class extends React.PureComponent {
             onSelect={this.handleMaxChange}
             dropup={true}
             className="crud--search-pagination-panel__per-page-dropdown"
-            >
+          >
             <Dropdown.Toggle>
               Results per page: <b>{max}</b>
             </Dropdown.Toggle>
@@ -50,10 +50,10 @@ export default class extends React.PureComponent {
             items={Math.ceil(totalCount / max)}
             className="crud--search-pagination-panel__pagination"
             maxButtons={5}
-            boundaryLinks
-            first
-            last
-            />
+            boundaryLinks={true}
+            first={true}
+            last={true}
+          />
         </div>
 
         <div>

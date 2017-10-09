@@ -24,7 +24,7 @@ export default function*({
     yield call(softRedirectSaga, {
       viewName: VIEW_SEARCH
     });
-  } catch(errors) {
+  } catch (errors) {
     yield put({
       type: VIEW_REDIRECT_FAIL,
       payload: errors,

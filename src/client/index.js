@@ -24,9 +24,8 @@ function requireAll(requireContext) {
 let icons = requireAll(require.context('!!raw-loader!@opuscapita/svg-icons/lib', true, /.*\.svg$/));
 
 let getIcon = (name) => {
-    return icons.filter(icon => icon.name === name)[0].svg;
-  }
-
+  return icons.filter(icon => icon.name === name)[0].svg;
+}
 
 
 let NavigationElement = (
@@ -146,7 +145,7 @@ let NavigationElement = (
               message={<span>Your password will expire in 14 days. <a href="#">Change it now</a></span>}
               dateTime="20/02/2017"
             />
-              <Notification
+            <Notification
               svg={getIcon('warning')}
               svgClassName="fill-error"
               message={<span>Automatic currnency rate update failed. <a href="#">Try manual update</a></span>}
@@ -201,7 +200,7 @@ let NavigationElement = (
               },
               {
                 label: 'Settings',
-                  onClick: () => console.log('Settings click')
+                onClick: () => console.log('Settings click')
               },
               {
                 label: 'Help',

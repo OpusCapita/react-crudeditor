@@ -15,11 +15,11 @@ export default class extends React.PureComponent {
   }
 
   render = _ =>
-    <FormControl
+    (<FormControl
       value={this.props.value || ''}
       readOnly={!!this.props.readOnly}
       onChange={this.handleChange}
       onBlur={this.handleBlur}
       type='text'
-    />
+    />)
 }

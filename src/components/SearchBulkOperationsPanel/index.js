@@ -8,7 +8,7 @@ export default class extends React.PureComponent {
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
 
   render = _ =>
-    <div className='crud---search-bulk-operations-panel'>
+    (<div className='crud---search-bulk-operations-panel'>
       <div>
         <ConfirmDialog
           trigger='click'
@@ -22,7 +22,7 @@ export default class extends React.PureComponent {
         </ConfirmDialog>
       </div>
       <div>
-        {/*export menu here*/}
+        {/* export menu here*/}
       </div>
-    </div>
+    </div>)
 }

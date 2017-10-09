@@ -44,19 +44,19 @@ export default class ConfirmDialog extends React.Component {
 
   handleConfirm = (event) => {
     this.props.onConfirm();
-    this.setState({show: false});
+    this.setState({ show: false });
   };
 
   handleOpenDialog = (event) => {
     if (event && event.preventDefault) {
       event.preventDefault();
     }
-    this.setState({show: true});
+    this.setState({ show: true });
   };
 
   handleCancelDialog = () => {
     this.props.onCancel();
-    this.setState({show: false});
+    this.setState({ show: false });
   };
 
   renderDialog = () => {
@@ -66,7 +66,7 @@ export default class ConfirmDialog extends React.Component {
   };
 
   render() {
-    let {title, message, children, trigger} = this.props;
+    let { title, message, children, trigger } = this.props;
 
     let eventId = 'on' + upperFirst(trigger);
 

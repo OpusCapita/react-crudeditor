@@ -28,7 +28,7 @@ export default function*({
       viewName: VIEW_EDIT,
       viewState: { instance }
     });
-  } catch(errors) {
+  } catch (errors) {
     yield put({
       type: VIEW_REDIRECT_FAIL,
       payload: errors,

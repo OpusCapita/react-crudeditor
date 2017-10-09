@@ -40,9 +40,9 @@ const buildDefaultFormLayout = ({
   map(name => ({
     field: name,
     readOnly: viewName === VIEW_EDIT && (
-        ~AUDITABLE_FIELDS.indexOf(name) ||  // Audiatable fields are read-only in Edit View.
-        fieldsMeta[name].unique  // Logical Key fields are read-only in Edit View.
-      ),
+      ~AUDITABLE_FIELDS.indexOf(name) || // Audiatable fields are read-only in Edit View.
+        fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
+    ),
     render: buildFieldRender({
       type: fieldsMeta[name].type
     })
@@ -115,9 +115,9 @@ export const
 
   buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => customBuilder ?
     customBuilder({
-      tab     : tabLayout,
-      section : sectionLayout,
-      field   : buildFieldLayout(viewName, fieldsMeta)
+      tab: tabLayout,
+      section: sectionLayout,
+      field: buildFieldLayout(viewName, fieldsMeta)
     }) :
     buildDefaultFormLayout(viewName, fieldsMeta),
 

@@ -26,12 +26,12 @@ export default {
     const optimized = value.trim();
 
     if (!optimized) {
-      return EMPTY_FIELD_VALUE;  // Considering whitespaces-only strings to be empty value.
+      return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
     }
 
     try {
       return new Big(optimized).toString();
-    } catch(err) {
+    } catch (err) {
       throw {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_NUMBER,

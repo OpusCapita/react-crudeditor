@@ -37,8 +37,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           softRedirectSaga,
           action
         });
-      } catch(errors) {
-        //throw errors;  // Comment out the line to swallow all errors in called task.
+      } catch (errors) {
+        // throw errors;  // Comment out the line to swallow all errors in called task.
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -48,8 +48,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             softRedirectSaga,
             action
           });
-        } catch(errors) {
-          //throw errors;  // Comment out the line to swallow all errors in forked task.
+        } catch (errors) {
+          // throw errors;  // Comment out the line to swallow all errors in forked task.
         }
       });
     }
@@ -69,7 +69,7 @@ export default function*({
     meta: { source }
   });
 
-  return(yield spawn(function*() {
+  return (yield spawn(function*() {
     try {
       yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
     } finally {

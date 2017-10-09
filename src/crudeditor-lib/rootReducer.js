@@ -4,7 +4,7 @@ import common from './common/reducer';
 import search from './views/search/reducer';
 import create from './views/create/reducer';
 import edit from './views/edit/reducer';
-//import show from './views/show/reducer';
+// import show from './views/show/reducer';
 import error from './views/error/reducer';
 
 import {
@@ -18,10 +18,10 @@ import {
 export default modelDefinition => combineReducers({
   common: common(modelDefinition),
   views: combineReducers({
-    [VIEW_SEARCH] : search(modelDefinition),
-    [VIEW_CREATE] : create(modelDefinition),
-    [VIEW_EDIT]   : edit(modelDefinition),
-    //[VIEW_SHOW]   : show(modelDefinition),
-    [VIEW_ERROR]  : error(modelDefinition)
+    [VIEW_SEARCH]: search(modelDefinition),
+    [VIEW_CREATE]: create(modelDefinition),
+    [VIEW_EDIT]: edit(modelDefinition),
+    // [VIEW_SHOW]   : show(modelDefinition),
+    [VIEW_ERROR]: error(modelDefinition)
   })
 });

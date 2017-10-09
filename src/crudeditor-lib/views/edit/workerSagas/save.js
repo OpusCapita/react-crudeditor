@@ -77,7 +77,7 @@ function* validateSaga(modelDefinition, meta) {
 
   try {
     yield call(modelDefinition.model.validate, instance);
-  } catch(errors) {
+  } catch (errors) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL,
       payload: errors,
@@ -135,9 +135,9 @@ export default function*({
     meta
   }
 }) {
-  yield call(validateSaga, modelDefinition, meta);  // Forwarding thrown errors to the parent saga.
+  yield call(validateSaga, modelDefinition, meta); // Forwarding thrown errors to the parent saga.
 
-  yield call(updateSaga, modelDefinition, meta);  // Forwarding thrown errors to the parent saga.
+  yield call(updateSaga, modelDefinition, meta); // Forwarding thrown errors to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
@@ -149,10 +149,10 @@ export default function*({
       yield call(softRedirectSaga, {
         viewName: VIEW_CREATE,
         viewState: {
-          instance: {}  // TODO: build correct pre-filled instance.
+          instance: {} // TODO: build correct pre-filled instance.
         }
       });
-    } catch(errors) {
+    } catch (errors) {
       yield put({
         type: VIEW_REDIRECT_FAIL,
         payload: errors,
@@ -176,7 +176,7 @@ export default function*({
           meta
         }
       });
-    } catch(errors) {
+    } catch (errors) {
       throw errors;
     }
   }

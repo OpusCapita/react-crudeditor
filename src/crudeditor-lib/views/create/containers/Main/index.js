@@ -1,8 +1,8 @@
 import React from 'react';
 
 export default _ =>
-  <div>
+  (<div>
     <h1>
       Create instance
     </h1>
-  </div>;
+  </div>);

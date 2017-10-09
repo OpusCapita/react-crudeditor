@@ -2,12 +2,12 @@ export const
 
   EMPTY_FIELD_VALUE = null,
 
-  /*███████████████████████████████████████████*\
+  /* ███████████████████████████████████████████*\
    *███ FIELD TYPES (in alphabetical order) ███*
   \*███████████████████████████████████████████*/
 
-  FIELD_TYPE_BOOLEAN = 'boolean',  // JavaScript type "boolean".
-  FIELD_TYPE_DATE_STRING = 'dateString',  // JavaScript type "string" with date.
+  FIELD_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
+  FIELD_TYPE_DATE_STRING = 'dateString', // JavaScript type "string" with date.
 
   /*
    * JavaScript type "string" with decimal number of any size,
@@ -16,17 +16,17 @@ export const
    */
   FIELD_TYPE_NUMBER_STRING = 'numberString',
 
-  FIELD_TYPE_STRING = 'string',  // JavaScript type "string".
+  FIELD_TYPE_STRING = 'string', // JavaScript type "string".
 
-  /*███████████████████████████████████████████*\
+  /* ███████████████████████████████████████████*\
    *███  UI TYPES (in alphabetical order)   ███*
   \*███████████████████████████████████████████*/
 
-  UI_TYPE_BOOLEAN = 'boolean',  // JavaScript type "boolean".
-  UI_TYPE_NUMBER = 'number',    // JavaScript type "number".
-  UI_TYPE_STRING = 'string',    // JavaScript type "string".
+  UI_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
+  UI_TYPE_NUMBER = 'number', // JavaScript type "number".
+  UI_TYPE_STRING = 'string', // JavaScript type "string".
 
-  /*███████████████████████████████████████████*\
+  /* ███████████████████████████████████████████*\
    *███ CONSTRAINTS (in alphabetical order) ███*
   \*███████████████████████████████████████████*/
 
@@ -34,7 +34,7 @@ export const
   CONSTRAINT_MIN = 'min',
   CONSTRAINT_MAX = 'max',
 
-  /*███████████████████████████████████████████*\
+  /* ███████████████████████████████████████████*\
    *███ ERROR CODES (in alphabetical order) ███*
   \*███████████████████████████████████████████*/
 
@@ -42,7 +42,7 @@ export const
   ERROR_CODE_PARSING = 400,
   ERROR_CODE_VALIDATION = 400,
 
-  /*███████████████████████████████████████████*\
+  /* ███████████████████████████████████████████*\
    *███  ERROR IDS (in alphabetical order)  ███*
   \*███████████████████████████████████████████*/
 

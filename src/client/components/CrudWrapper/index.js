@@ -13,8 +13,8 @@ function url2view({ hash, query, suffix }) {
   let { viewName, viewState } = hash;
 
   return {
-    viewName,  // undefined or string with view name.
-    viewState  // Object, may be empty.
+    viewName, // undefined or string with view name.
+    viewState // Object, may be empty.
   };
 }
 
@@ -72,7 +72,7 @@ export default ({
   }
 
   if (!entities2crud[entities]) {
-    const model = buildModel(entities);  // TODO: handle unknown entities name.
+    const model = buildModel(entities); // TODO: handle unknown entities name.
     entities2crud[entities] = createCrud(model);
   }
 

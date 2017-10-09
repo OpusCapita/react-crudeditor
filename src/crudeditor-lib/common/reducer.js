@@ -4,7 +4,7 @@ import u from 'updeep';
 import { ACTIVE_VIEW_CHANGE } from './constants';
 
 const defaultStoreStateTemplate = {
-  activeViewName: null,  // XXX: must be null until initialization completes.
+  activeViewName: null, // XXX: must be null until initialization completes.
 };
 
 /*
@@ -26,5 +26,5 @@ export default modelMetaData => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   }
 
-  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+  return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'
 };

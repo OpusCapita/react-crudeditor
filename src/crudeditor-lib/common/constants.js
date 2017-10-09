@@ -8,15 +8,15 @@ export const
     'changedOn'
   ],
 
-  ROLE_FIELD   = 'field',
+  ROLE_FIELD = 'field',
   ROLE_SECTION = 'section',
-  ROLE_TAB     = 'tab',
+  ROLE_TAB = 'tab',
 
   VIEW_SEARCH = 'search',
   VIEW_CREATE = 'create',
-  VIEW_EDIT   = 'edit',
-  VIEW_SHOW   = 'show',
-  VIEW_ERROR  = 'error',
+  VIEW_EDIT = 'edit',
+  VIEW_SHOW = 'show',
+  VIEW_ERROR = 'error',
 
   DEFAULT_FIELD_TYPE = 'string',
   DEFAULT_VIEW = VIEW_SEARCH,
@@ -29,20 +29,20 @@ export const
 
   UNPARSABLE_FIELD_VALUE = undefined,
 
-  /*███████████████████████████████████████*\
+  /* ███████████████████████████████████████*\
    *███ ACTIONS (in alphabetical order) ███*
   \*███████████████████████████████████████*/
 
   ACTIVE_VIEW_CHANGE = namespace + '/ACTIVE_VIEW_CHANGE',
 
-  INSTANCES_DELETE         = namespace + '/INSTANCES_DELETE',
-  INSTANCES_DELETE_FAIL    = namespace + '/INSTANCES_DELETE_FAIL',
+  INSTANCES_DELETE = namespace + '/INSTANCES_DELETE',
+  INSTANCES_DELETE_FAIL = namespace + '/INSTANCES_DELETE_FAIL',
   INSTANCES_DELETE_REQUEST = namespace + '/INSTANCES_DELETE_REQUEST',
   INSTANCES_DELETE_SUCCESS = namespace + '/INSTANCES_DELETE_SUCCESS',
 
   VIEW_HARD_REDIRECT = namespace + '/VIEW_HARD_REDIRECT',
 
-  /*██████████████████████████████████████*\
+  /* ██████████████████████████████████████*\
    *███ ERRORS (in alphabetical order) ███*
   \*██████████████████████████████████████*/
 

@@ -36,7 +36,7 @@ export default {
     try {
       new Big(value);
       return true;
-    } catch(err) {
+    } catch (err) {
       return false;
     }
   },

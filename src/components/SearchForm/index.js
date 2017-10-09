@@ -90,7 +90,7 @@ export default class extends React.PureComponent {
             {...{ [valuePropName]: formatedFilter[name] }}
             onChange={this.handleFormFilterUpdate(name)}
             onBlur={this.handleFormFilterBlur(name)}
-            />
+          />
           {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
         </div>
       </FormGroup>

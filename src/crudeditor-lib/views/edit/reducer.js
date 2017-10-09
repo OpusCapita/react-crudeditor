@@ -138,20 +138,16 @@ export default modelDefinition => (
 
   if (type === VIEW_INITIALIZE_REQUEST) {
     newStoreStateSlice.status = INITIALIZING;
-
   } else if (type === VIEW_INITIALIZE_FAIL) {
     newStoreStateSlice.status = UNINITIALIZED;
-
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = REDIRECTING;
-
   } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = Array.isArray(payload) ? payload: [payload];
+    const errors = Array.isArray(payload) ? payload : [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -160,18 +156,15 @@ export default modelDefinition => (
     }
 
     newStoreStateSlice.status = READY;
-
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCES_DELETE_REQUEST) {
     newStoreStateSlice.status = DELETING;
-
   } else if (type === INSTANCES_DELETE_FAIL) {
-    const errors = Array.isArray(payload) ? payload: [payload];
+    const errors = Array.isArray(payload) ? payload : [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -182,20 +175,17 @@ export default modelDefinition => (
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== INITIALIZING) {
     newStoreStateSlice.status = EXTRACTING;
-
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
     const { instance } = payload;
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
-      filter(entry => !!entry);  // Removing empty tabs/sections and null tabs/sections/fields.
+      filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
 
     let hasTabs;
     let hasSectionsOrFields;
@@ -225,7 +215,7 @@ export default modelDefinition => (
             type: modelDefinition.model.fields[fieldName].type,
             targetType: fieldLayout.render.valueProp.type
           })
-        } : rez;  // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
+        } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
       },
       {}
     ));
@@ -246,9 +236,8 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== INITIALIZING) {
-    const errors = Array.isArray(payload) ? payload: [payload];
+    const errors = Array.isArray(payload) ? payload : [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -259,7 +248,6 @@ export default modelDefinition => (
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_FIELD_CHANGE) {
     const {
       name: fieldName,
@@ -273,7 +261,6 @@ export default modelDefinition => (
     newStoreStateSlice.divergedField = fieldName;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
     // if storeState.divergedField is null, no data has changed.
     const { name: fieldName } = payload;
@@ -319,7 +306,7 @@ export default modelDefinition => (
             }
           };
         }
-      } catch(errors) {
+      } catch (errors) {
         if (!Array.isArray(errors)) {
           errors = [errors];
         }
@@ -332,7 +319,7 @@ export default modelDefinition => (
           };
         }
       }
-    } catch(errors) {
+    } catch (errors) {
       if (!Array.isArray(errors)) {
         errors = [errors];
       }
@@ -353,7 +340,6 @@ export default modelDefinition => (
     newStoreStateSlice.divergedField = null;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_VALIDATE_SUCCESS) {
     if (storeState.errors.general.length) {
       newStoreStateSlice.errors = {
@@ -362,9 +348,8 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_VALIDATE_FAIL) {
-    const errors = Array.isArray(payload) ? payload: [payload];
+    const errors = Array.isArray(payload) ? payload : [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
       newStoreStateSlice.errors = {
@@ -373,11 +358,10 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === TAB_SELECT) {
-    const { tabName } = payload;  // may be undefined.
-    const tabs = storeState.formLayout.filter(({ tab }) => !!tab);  // [] in case of no tabs.
-    let activeTab = tabs[0];  // default tab, undefined in case of no tabs.
+    const { tabName } = payload; // may be undefined.
+    const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
+    let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
 
     if (tabName) {
       storeState.formLayout.some(tab => {
@@ -395,5 +379,5 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }
 
-  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+  return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'
 };

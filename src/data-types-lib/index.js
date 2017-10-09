@@ -52,7 +52,7 @@ export const
         };
       }
 
-      return value;  // forward value of unknown Field Type.
+      return value; // forward value of unknown Field Type.
     }
 
     if (!fieldTypes[fieldType].isValid(value)) {
@@ -72,11 +72,11 @@ export const
         };
       }
 
-      return value;  // forward value of unknown Component API Type.
+      return value; // forward value of unknown Component API Type.
     }
 
     if (value === EMPTY_FIELD_VALUE && uiTypes[uiType].hasOwnProperty('EMPTY_VALUE')) {
-        return uiTypes[uiType].EMPTY_VALUE;
+      return uiTypes[uiType].EMPTY_VALUE;
     }
 
     const formatter = fieldTypes[fieldType].formatter;
@@ -90,7 +90,7 @@ export const
         };
       }
 
-      return value;  // forward value when Component API Type is unknown to Field Type's formatter.
+      return value; // forward value when Component API Type is unknown to Field Type's formatter.
     }
 
     return formatter[uiType](value);
@@ -127,7 +127,7 @@ export const
         };
       }
 
-      return value;  // forward value of unknown Component API Type.
+      return value; // forward value of unknown Component API Type.
     }
 
     if (!uiTypes[uiType].isValid(value)) {
@@ -151,7 +151,7 @@ export const
         };
       }
 
-      return value;  // forward value of unknown Field Type.
+      return value; // forward value of unknown Field Type.
     }
 
     const parser = fieldTypes[fieldType].parser;
@@ -165,7 +165,7 @@ export const
         };
       }
 
-      return value;  // forward value when Component API Type is unknown to the Field Type's parser.
+      return value; // forward value when Component API Type is unknown to the Field Type's parser.
     }
 
     return parser[uiType](value);
@@ -209,7 +209,7 @@ export const
         };
       }
 
-      return true;  // skip validation of unknown Field Type.
+      return true; // skip validation of unknown Field Type.
     }
 
     const validator = fieldTypes[fieldType].buildValidator(value);
@@ -227,7 +227,7 @@ export const
         try {
           validator[name](constraints[name]);
           return errors;
-        } catch(err) {
+        } catch (err) {
           return [...errors, err];
         }
       },

@@ -101,16 +101,16 @@ export default function*({
     } = buildDefaultStoreState(modelDefinition);
 
     filter = merge(defaultFilter, filter);
-    sort   = sort   || defaultSort;
-    order  = order  || defaultOrder;
-    max    = max    || defaultMax;
+    sort = sort || defaultSort;
+    order = order || defaultOrder;
+    max = max || defaultMax;
     offset = offset || defaultOffset;
   } else {
     // Current values are default values for the arguments in case of internal searchInstances() call.
     filter = filter || currentFilter;
-    sort   = sort   || currentSort;
-    order  = order  || currentOrder;
-    max    = max    || currentMax;
+    sort = sort || currentSort;
+    order = order || currentOrder;
+    max = max || currentMax;
 
     // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
     offset = sort === currentSort &&
@@ -126,8 +126,8 @@ export default function*({
           filter: currentFilter
         })
       ) ?
-        (offset || offset === 0 ? offset : currentOffset) :
-        0;
+      (offset || offset === 0 ? offset : currentOffset) :
+      0;
   }
 
   yield put({

@@ -37,22 +37,19 @@ export default modelDefinition => (
     newStoreStateSlice.instance = u.constant(instance || {});
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = SAVING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   } else if (type === INSTANCE_SAVE_FAIL) {
     newStoreStateSlice.status = READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }
 
-  return u(newStoreStateSlice, storeState);  // returned object is frozen for NODE_ENV === 'development'
+  return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'
 };

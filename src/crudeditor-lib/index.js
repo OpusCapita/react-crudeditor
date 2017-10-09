@@ -18,7 +18,7 @@ import { RANGE_FIELD_TYPES } from './views/search/constants';
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
 import { getViewState as getEditViewState } from './views/edit/selectors';
-//import { getViewState as getShowViewState } from './views/show/selectors';
+// import { getViewState as getShowViewState } from './views/show/selectors';
 import { getViewState as getErrorViewState } from './views/error/selectors';
 
 import {
@@ -32,11 +32,11 @@ import {
 } from './common/constants';
 
 const getViewState = {
-  [VIEW_SEARCH] : getSearchViewState,
-  [VIEW_CREATE] : getCreateViewState,
-  [VIEW_EDIT  ] : getEditViewState,
-//[VIEW_SHOW  ] : getShowViewState,
-  [VIEW_ERROR ] : getErrorViewState
+  [VIEW_SEARCH]: getSearchViewState,
+  [VIEW_CREATE]: getCreateViewState,
+  [VIEW_EDIT]: getEditViewState,
+  // [VIEW_SHOW  ] : getShowViewState,
+  [VIEW_ERROR]: getErrorViewState
 }
 
 function fillDefaults(baseModelDefinition) {
@@ -202,12 +202,12 @@ export default baseModelDefinition => {
     }
 
     render = _ =>
-      <Provider store={store}>
+      (<Provider store={store}>
         <Main
           viewName={this.props.view.name}
           viewState={this.props.view.state}
           modelDefinition={modelDefinition}
         />
-      </Provider>
+      </Provider>)
   }
 };

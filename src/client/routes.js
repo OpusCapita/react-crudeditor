@@ -13,8 +13,8 @@ import {
 export default () => (
   <Router>
     <Switch>
-      <Redirect exact from='/' to='/home' />
-      <Route exact path='/home' component={Home} />
+      <Redirect exact={true} from='/' to='/home' />
+      <Route exact={true} path='/home' component={Home} />
       <Route path="/crud/:entities" component={CrudWrapper} />
       <Route path="/revisions/:entityId" component={Revisions} />
     </Switch>

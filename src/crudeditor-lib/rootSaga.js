@@ -25,13 +25,12 @@ let activeViewScenarioTask;
 const initializeViewSagas = {
   [VIEW_SEARCH]: searchViewScenario,
   [VIEW_CREATE]: createViewScenario,
-  [VIEW_EDIT  ]: editViewScenario,
-  [VIEW_SHOW  ]: showViewScenario,
-  [VIEW_ERROR ]: errorViewScenario
+  [VIEW_EDIT]: editViewScenario,
+  [VIEW_SHOW]: showViewScenario,
+  [VIEW_ERROR]: errorViewScenario
 };
 
 export default function*(modelDefinition) {
-
   /*
    * The saga handles an active view request for replacements with another view.
    *
@@ -108,7 +107,7 @@ export default function*(modelDefinition) {
         viewState,
         source
       });
-    } catch(errors) {
+    } catch (errors) {
       viewName = VIEW_ERROR;
 
       yield put({
@@ -127,4 +126,4 @@ export default function*(modelDefinition) {
   }
 
   yield takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga);
-};
+}

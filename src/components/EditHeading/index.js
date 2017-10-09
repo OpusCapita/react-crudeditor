@@ -17,7 +17,7 @@ export default ({
     }
   }
 }) =>
-  <div>
+  (<div>
     <h1>
       { viewName.replace(/(^|\s)[a-z]/g, char => char.toUpperCase()) + ' ' + entityName }
       &nbsp;
@@ -28,13 +28,13 @@ export default ({
       tabs.length && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
         {
           tabs.map(({ tab: name, disabled }, index) =>
-            <NavItem eventKey={name} disabled={!!disabled} key={index}>
+            (<NavItem eventKey={name} disabled={!!disabled} key={index}>
               {
                 name.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
               }
-            </NavItem>
+            </NavItem>)
           )
         }
       </Nav>
     }
-  </div>;
+  </div>);

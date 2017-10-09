@@ -71,85 +71,86 @@ export default class extends React.PureComponent {
           className={`
             crud--search-result-listing__table-container
             ${isLoading ? 'crud--search-result-listing__table-container--with-spinner' : ''}
-          `}>
-        <Table condensed={true} className="crud--search-result-listing__table">
-          <thead>
-            <tr>
-              <th>
-                <input
-  		            type="checkbox"
-                  checked={selectedInstances.length === instances.length && instances.length !== 0}
-                  onChange={this.handleToggleSelectedAll}
-                />
-              </th>
-
-              {resultFields.map(({ name, sortable }) =>
-                 <th key={`th-${name}`}>
-                  {
-                    sortable ?
-                      <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
-                        { name }
-                        { sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
-                      </Button> :
-                      name
-                  }
+          `}
+        >
+          <Table condensed={true} className="crud--search-result-listing__table">
+            <thead>
+              <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    checked={selectedInstances.length === instances.length && instances.length !== 0}
+                    onChange={this.handleToggleSelectedAll}
+                  />
                 </th>
-              )}
 
-              <th>&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
+                {resultFields.map(({ name, sortable }) =>
+                  (<th key={`th-${name}`}>
+                    {
+                      sortable ?
+                        <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
+                          { name }
+                          { sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
+                        </Button> :
+                        name
+                    }
+                  </th>)
+                )}
 
-          {instances.map(instance =>
-            <tr key={`tr-${JSON.stringify(instance)}`}>
-              <td>
-                <Checkbox checked={~selectedInstances.indexOf(instance)} onChange={this.handleToggleSelected(instance)} />
-              </td>
-                {resultFields.map(({ name, Component, textAlignment }) =>
-                <td
-                  key={`td-${name}`}
-                  className={
-                    textAlignment === 'right' && 'text-right' ||
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              {instances.map(instance =>
+                (<tr key={`tr-${JSON.stringify(instance)}`}>
+                  <td>
+                    <Checkbox checked={~selectedInstances.indexOf(instance)} onChange={this.handleToggleSelected(instance)} />
+                  </td>
+                  {resultFields.map(({ name, Component, textAlignment }) =>
+                    (<td
+                      key={`td-${name}`}
+                      className={
+                        textAlignment === 'right' && 'text-right' ||
                     textAlignment === 'center' && 'text-center' ||
                     'text-left'
-                  }
-                >
-                  {
-                    Component ?
-                      <Component name={name} instance={instance} /> :
-                      instance[name]
-                  }
-                </td>
+                      }
+                    >
+                      {
+                        Component ?
+                          <Component name={name} instance={instance} /> :
+                          instance[name]
+                      }
+                    </td>)
+                  )}
+
+                  <td className="text-right">
+                    <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
+                      <Button onClick={this.handleEdit(instance)}>
+                        <Glyphicon glyph='edit' />
+                        {' '}
+                    Edit
+                      </Button>
+
+                      <ConfirmDialog
+                        trigger='click'
+                        onConfirm={this.handleDelete(instance)}
+                        title='Delete confirmation'
+                        message='Do you want to delete this item?'
+                      >
+                        <Button>
+                          <Glyphicon glyph='trash' />
+                          {' '}
+                      Delete
+                        </Button>
+                      </ConfirmDialog>
+                    </ButtonGroup>
+                  </td>
+                </tr>)
               )}
 
-              <td className="text-right">
-                <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-                  <Button onClick={this.handleEdit(instance)}>
-                    <Glyphicon glyph='edit' />
-                    {' '}
-                    Edit
-                  </Button>
-
-                  <ConfirmDialog
-                    trigger='click'
-                    onConfirm={this.handleDelete(instance)}
-                    title='Delete confirmation'
-                    message='Do you want to delete this item?'
-                  >
-                    <Button>
-                      <Glyphicon glyph='trash' />
-                      {' '}
-                      Delete
-                    </Button>
-                  </ConfirmDialog>
-                </ButtonGroup>
-              </td>
-            </tr>
-          )}
-
-          </tbody>
-        </Table>
+            </tbody>
+          </Table>
         </div>
       </div>
     );

@@ -13,13 +13,22 @@ import {
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-import { RANGE_FIELD_TYPES } from './views/search/constants';
+
+import {
+  RANGE_FIELD_TYPES,
+  READY as SEARCH_STATUS_READY
+} from './views/search/constants';
+
+import { READY as CREATE_STATUS_READY } from './views/create/constants';
+import { READY as EDIT_STATUS_READY   } from './views/edit/constants';
+import { READY as SHOW_STATUS_READY   } from './views/show/constants';
+import { READY as ERROR_STATUS_READY  } from './views/error/constants';
 
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
-import { getViewState as getEditViewState } from './views/edit/selectors';
-// import { getViewState as getShowViewState } from './views/show/selectors';
-import { getViewState as getErrorViewState } from './views/error/selectors';
+import { getViewState as getEditViewState   } from './views/edit/selectors';
+import { getViewState as getShowViewState   } from './views/show/selectors';
+import { getViewState as getErrorViewState  } from './views/error/selectors';
 
 import {
   AUDITABLE_FIELDS,
@@ -35,9 +44,17 @@ const getViewState = {
   [VIEW_SEARCH]: getSearchViewState,
   [VIEW_CREATE]: getCreateViewState,
   [VIEW_EDIT]: getEditViewState,
-  // [VIEW_SHOW  ] : getShowViewState,
+  [VIEW_SHOW]: getShowViewState,
   [VIEW_ERROR]: getErrorViewState
-}
+};
+
+const READY = [
+  SEARCH_STATUS_READY,
+  CREATE_STATUS_READY,
+  EDIT_STATUS_READY,
+  SHOW_STATUS_READY,
+  ERROR_STATUS_READY
+];
 
 function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
@@ -141,27 +158,43 @@ export default baseModelDefinition => {
     }
   };
 
+  let lastState = {};
 
   const appStateChangeDetect = ({ getState }) => next => action => {
-    if (action.meta && action.meta.source === 'owner' || !onTransition) {
-      return next(action);
-    }
-
-    const oldStoreState = getState();
     const rez = next(action);
-    const newStoreState = getState();
+    const storeState = getState();
 
-    // XXX: updeep must be used in reducers for below store states comparison to work as expected.
-    if (oldStoreState === newStoreState) {
+    if (READY.indexOf(storeState.views[storeState.common.activeViewName].status) === -1) {
       return rez;
     }
 
-    const oldAppState = storeState2appState(oldStoreState);
-    const newAppState = storeState2appState(newStoreState);
+    if (action.meta && action.meta.source === 'owner' || !onTransition) {
+      lastState = {
+        store: storeState
+      };
 
-    if (!isEqual(oldAppState, newAppState)) {
-      onTransition(newAppState);
+      return rez;
     }
+
+    // XXX: updeep must be used in reducers for below store states comparison to work as expected.
+    if (storeState === lastState.store) {
+      return rez;
+    }
+
+    if (lastState.store && !lastState.app) {
+      lastState.app = storeState2appState(lastState.store);
+    }
+
+    const appState = storeState2appState(storeState);
+
+    if (!isEqual(appState, lastState.app)) {
+      onTransition(appState);
+    }
+
+    lastState = {
+      store: storeState,
+      app: appState
+    };
 
     return rez;
   }

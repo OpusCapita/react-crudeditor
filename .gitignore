@@ -3,6 +3,7 @@
 *.kate-swp
 *.out
 *.iml
+*.lock
 
 /resources/jcatalog/less/jquery-ui-bundle.css
 /resources/jcatalog/less/jcatalog-bootstrap-bundle.css

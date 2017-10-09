@@ -3,7 +3,8 @@ import { getLogicalKeyBuilder } from '../lib';
 
 import {
   VIEW_NAME,
-  EXTRACTING
+  INITIALIZING,
+  REDIRECTING
 } from './constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
@@ -19,7 +20,7 @@ export const
     model: { fields }
   }) => ({
     instance: getLogicalKeyBuilder(fields)(persistentInstance),
-    tab
+    ...(tab ? { tab } : {})
   })),
 
   getViewModelData = wrapper((storeState, {
@@ -29,15 +30,14 @@ export const
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
     formatedInstance: storeState.formatedInstance,
-    formInstance: storeState.formInstance,
-    fieldsErrors: storeState.errors.fields,
+    formInstance: storeState.formInstance, // TODO: either formInstance or persistentInstance is irrelevant for Show View => remove from the store.
+    fieldsErrors: storeState.errors.fields, // TODO: irrelevant for Show View => remove from the store.
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[EXTRACTING].indexOf(storeState.status),
+    isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME
-  })
-  );
+  }));

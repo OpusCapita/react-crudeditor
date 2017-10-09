@@ -200,6 +200,7 @@ export default modelDefinition => (
     });
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
+    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
     newStoreStateSlice.divergedField = null;

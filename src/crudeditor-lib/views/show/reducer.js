@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
@@ -6,13 +7,11 @@ import {
 } from '../../../data-types-lib';
 
 import {
-  EXTRACTING,
   INITIALIZING,
   READY,
   REDIRECTING,
   UNINITIALIZED,
 
-  INSTANCE_SHOW_REQUEST,
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_FAIL,
 
@@ -81,6 +80,8 @@ const defaultStoreStateTemplate = {
 
   instanceLabel: undefined,
 
+  // TODO: make errors in Show View the same as errors.general in Edit View, and comment as:
+  // Array of Internal Errors, may be empty.
   errors: {
 
     // object with keys as field names,
@@ -123,16 +124,20 @@ export default modelDefinition => (
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
+    const errors = Array.isArray(payload) ? payload : [payload];
+
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
+    }
+
     newStoreStateSlice.status = READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
-    newStoreStateSlice = cloneDeep(defaultStoreStateTemplate);
+    newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_SHOW_REQUEST && storeState.status !== INITIALIZING) {
-    newStoreStateSlice.status = EXTRACTING;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SHOW_SUCCESS) {
     const { instance } = payload;
 
@@ -152,6 +157,7 @@ export default modelDefinition => (
     });
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
+    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
     newStoreStateSlice.divergedField = null;
@@ -191,14 +197,14 @@ export default modelDefinition => (
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
-    const { activeTabName } = payload; // may be undefined.
+    const { tabName } = payload; // may be undefined.
     const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
-    let newActiveTab = tabs[0]; // default tab, undefined in case of no tabs.
+    let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
 
-    if (activeTabName) {
+    if (tabName) {
       storeState.formLayout.some(tab => {
-        if (tab.tab === activeTabName) {
-          newActiveTab = tab;
+        if (tab.tab === tabName) {
+          activeTab = tab;
           return true;
         }
 
@@ -206,12 +212,14 @@ export default modelDefinition => (
       });
     }
 
-    newStoreStateSlice.activeTab = u.constant(newActiveTab);
+    newStoreStateSlice.activeTab = u.constant(activeTab);
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SHOW_FAIL) {
+    const errors = Array.isArray(payload) ? payload : [payload];
+
     newStoreStateSlice.errors = {
-      general: [payload]
+      general: errors
     };
   }
 

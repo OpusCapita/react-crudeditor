@@ -12,8 +12,10 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
+// See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
+    blocking: {},
     nonBlocking: {
       [VIEW_EXIT]: exitSaga
     }
@@ -23,6 +25,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
 
   while (true) {
     const action = yield take([
+      ...Object.keys(choices.blocking),
       ...Object.keys(choices.nonBlocking)
     ]);
 
@@ -31,7 +34,17 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
       yield cancel(lastTask);
     }
 
-    if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
+    if (~Object.keys(choices.blocking).indexOf(action.type)) {
+      try {
+        yield call(choices.blocking[action.type], {
+          modelDefinition,
+          softRedirectSaga,
+          action
+        });
+      } catch (errors) {
+        // throw errors;  // Comment out the line to swallow all errors in called task.
+      }
+    } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
         try {
           yield call(choices.nonBlocking[action.type], {
@@ -39,14 +52,15 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             softRedirectSaga,
             action
           });
-        } catch (err) {
-          throw err; // Comment out the line to swallow all errors in forked task.
+        } catch (errors) {
+          // throw errors;  // Comment out the line to swallow all errors in forked task.
         }
       });
     }
   }
 }
 
+// See Search View scenario for detailed description of the saga.
 export default function*({
   modelDefinition,
   softRedirectSaga,
@@ -69,15 +83,15 @@ export default function*({
         meta: { source }
       }
     });
-  } catch (err) {
+  } catch (errors) {
     yield put({
       type: VIEW_INITIALIZE_FAIL,
-      payload: err,
+      payload: errors,
       error: true,
       meta: { source }
     });
 
-    throw err; // Initialization errors are forwarded to the parent saga.
+    throw errors; // Initialization errors are forwarded to the parent saga.
   }
 
   yield put({

@@ -6,21 +6,18 @@ import {
 
 export const showInstance = ({
   instance,
-  tab: activeTabName
-}, source) => ({
+  tab
+}) => ({
   type: INSTANCE_SHOW,
   payload: {
     instance,
-    activeTabName
-  },
-  meta: {
-    source
+    tab
   }
 })
 
-export const selectTab = activeTabName => ({
+export const selectTab = tabName => ({
   type: TAB_SELECT,
-  payload: { activeTabName }
+  payload: { tabName }
 });
 
 export const exitView = _ => ({

@@ -5,11 +5,11 @@ import Main from '../../../components/ShowMain'
 import { getViewModelData } from './selectors'
 import { selectTab, exitView } from './actions'
 
-const mergeProps = ({ viewModelData }, { ...dispatchProps }, ownProps) => ({
+const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: { ...dispatchProps }
+    actions: dispatchProps
   },
 });
 
@@ -20,8 +20,8 @@ export default connect(
     selectTab,
     exitView,
     // mute onChange & onBlur handlers
-    changeInstanceField: _ => null,
-    validateInstanceField: _ => null
+    changeInstanceField: _ => null, // TODO: remove as irrelevant for Show View and change str/components accordingly.
+    validateInstanceField: _ => null // TODO: remove as irrelevant for Show View and change str/components accordingly.
   },
   mergeProps
 )(({

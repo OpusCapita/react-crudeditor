@@ -15,24 +15,15 @@ export default class CreateView extends Component {
 
   render() {
     const { model } = this.props;
-    const { modelDefinition: { model: { fields } } } = this.props;
+
+    const { createInstance } = model.actions;
+    console.log("------CREATE: \n" + JSON.stringify(createInstance(), null, 2) + "\n-----------")
+    // const { modelDefinition: { model: { fields } } } = this.props;
     const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
-
-
-    console.log("0000000000000000: \n" + JSON.stringify(fields, null, 2))
+    console.log("active tab: " + ActiveTabComponent)
 
     return (<div>
-      <form>
-        { Object.keys(fields).map(fieldName => (
-          <div className="form-group" key={fieldName}>
-            <label htmlFor={fieldName}>{fieldName}</label>
-            <input type="email" className="form-control" id={fieldName} />
-          </div>
-        ))
-
-        }
-        <button type="submit" className="btn btn-primary">Submit</button>
-      </form>
+      hi
     </div>);
   }
 }

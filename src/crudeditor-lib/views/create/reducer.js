@@ -4,12 +4,11 @@ import u from 'updeep';
 
 import {
   format as formatField,
-  parse as parseField,
-  validate as validateField
 } from '../../../data-types-lib';
 
 import {
   INITIALIZING,
+  EXTRACTING,
   READY,
   REDIRECTING,
   UNINITIALIZED,
@@ -19,15 +18,9 @@ import {
   INSTANCE_CREATE_SUCCESS,
   INSTANCE_CREATE_FAIL,
 
-  INSTANCE_FIELD_CHANGE,
-  INSTANCE_FIELD_VALIDATE,
-
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
-
-  INSTANCE_VALIDATE_FAIL,
-  INSTANCE_VALIDATE_SUCCESS,
 
   TAB_SELECT,
 
@@ -39,10 +32,6 @@ import {
   VIEW_REDIRECT_FAIL,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
-
-import {
-  UNPARSABLE_FIELD_VALUE
-} from '../../common/constants';
 
 const findFieldLayout = fieldName => {
   const layoutWalker = layout => {
@@ -155,7 +144,7 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_CREATE_REQUEST && storeState.status !== INITIALIZING) {
-    newStoreStateSlice.status = INITIALIZING;
+    newStoreStateSlice.status = EXTRACTING;
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = UPDATING;
 
@@ -163,8 +152,10 @@ export default modelDefinition => (
   } else if (~[INSTANCE_CREATE_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
     const { instance } = payload;
 
-    const formLayout = modelDefinition.ui.edit.formLayout(instance).
+    const formLayout = modelDefinition.ui.create.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
+
+    console.log("000000000000 create/reducer/formLayout\n" + JSON.stringify(formLayout, null, 2) + "\n00000000")
 
     let hasTabs;
     let hasSectionsOrFields;
@@ -225,116 +216,6 @@ export default modelDefinition => (
     }
 
     newStoreStateSlice.status = READY;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_FIELD_CHANGE) {
-    const {
-      name: fieldName,
-      value: fieldValue
-    } = payload;
-
-    newStoreStateSlice.formatedInstance = {
-      [fieldName]: u.constant(fieldValue)
-    };
-
-    newStoreStateSlice.divergedField = fieldName;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-    // if storeState.divergedField is null, no data has changed.
-    const { name: fieldName } = payload;
-    const fieldMeta = modelDefinition.model.fields[fieldName];
-    const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
-
-    try {
-      const newFormValue = parseField({
-        value: storeState.formatedInstance[fieldName],
-        type: fieldMeta.type,
-        sourceType: uiType
-      });
-
-      if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
-        newStoreStateSlice.formInstance = {
-          [fieldName]: u.constant(newFormValue)
-        };
-      }
-
-      const newFormatedValue = formatField({
-        value: newFormValue,
-        type: fieldMeta.type,
-        targetType: uiType
-      });
-
-      if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
-        newStoreStateSlice.formatedInstance = {
-          [fieldName]: u.constant(newFormatedValue)
-        };
-      }
-
-      try {
-        validateField({
-          value: newFormValue,
-          type: fieldMeta.type,
-          constraints: fieldMeta.constraints
-        });
-
-        if (storeState.errors.fields[fieldName].length) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: []
-            }
-          };
-        }
-      } catch (errors) {
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
-
-        if (!isEqual(errors, storeState.errors.fields[fieldName])) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: errors
-            }
-          };
-        }
-      }
-    } catch (errors) {
-      if (!Array.isArray(errors)) {
-        errors = [errors];
-      }
-
-      newStoreStateSlice.formInstance = {
-        [fieldName]: UNPARSABLE_FIELD_VALUE
-      };
-
-      if (!isEqual(errors, storeState.errors.fields[fieldName])) {
-        newStoreStateSlice.errors = {
-          fields: {
-            [fieldName]: errors
-          }
-        };
-      }
-    }
-
-    newStoreStateSlice.divergedField = null;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_SUCCESS) {
-    if (storeState.errors.general.length) {
-      newStoreStateSlice.errors = {
-        general: []
-      };
-    }
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {

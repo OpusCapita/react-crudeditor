@@ -3,24 +3,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Main from '../../../components/CreateMain';
 import { getViewModelData } from './selectors';
+import { getDefaultNewInstance } from '../search/selectors';
+import { createInstance } from './actions';
 
-// import {
-//
-// } from './actions';
+import {
+  exitView,
+  saveInstance
+} from './actions';
 
-const mergeProps = ({ viewModelData }, { ...dispatchProps }, ownProps) => ({
+const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps }, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: dispatchProps
+    actions: {
+      ...dispatchProps,
+      createInstance: createInstance.bind(null, { instance: defaultNewInstance })
+    }
   }
 });
 
 export default connect(
   (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
+    viewModelData: getViewModelData(storeState, modelDefinition),
+    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
   }), {
-    // action creators aka dispatchProps
+    exitView,
+    saveInstance
   },
   mergeProps
 )(({

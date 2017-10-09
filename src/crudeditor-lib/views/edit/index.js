@@ -5,6 +5,7 @@ import Main from '../../../components/EditMain';
 import { getViewModelData } from './selectors';
 import { deleteInstances } from '../../common/actions';
 
+
 import {
   changeInstanceField,
   exitEdit,
@@ -15,11 +16,11 @@ import {
   validateInstanceField
 } from './actions';
 
-const mergeProps = ({ viewModelData }, { ...dispatchPorps }, ownProps) => ({
+const mergeProps = ({ viewModelData }, { ...dispatchProps }, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: dispatchPorps
+    actions: dispatchProps
   }
 });
 

@@ -14,7 +14,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({
+  getViewState = wrapper(({ // TBD HOW DO WE CREATE AN EMPTY THING HERE?
     persistentInstance,
     activeTab: { tab } = {}
   }, {

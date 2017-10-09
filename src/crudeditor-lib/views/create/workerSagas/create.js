@@ -1,7 +1,7 @@
-import { call, put } from 'redux-saga/effects';
+import { put } from 'redux-saga/effects';
 
 import {
-  INSTANCE_CREATE_FAIL,
+  // INSTANCE_CREATE_FAIL,
   INSTANCE_CREATE_REQUEST,
   INSTANCE_CREATE_SUCCESS
 } from '../constants';
@@ -12,7 +12,7 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    // payload: { instance },
+    payload: { instance },
     meta
   }
 }) {
@@ -21,15 +21,22 @@ export default function*({
     meta
   });
 
-  console.log("create saga modelDefinition: \n");
-  console.log(JSON.stringify(modelDefinition, null, 2))
-  console.log("create saga meta: \n");
-  console.log(JSON.stringify(meta, null, 2))
+  // try {
+  //   instance = yield call(modelDefinition.api.get, { instance });
+  // } catch (errors) {
+  //   yield put({
+  //     type: INSTANCE_CREATE_FAIL,
+  //     payload: errors,
+  //     error: true,
+  //     meta
+  //   });
 
-  const instance = {};
+  //   throw errors;
+  // }
 
   yield put({
     type: INSTANCE_CREATE_SUCCESS,
+    payload: { instance },
     meta
   });
 }

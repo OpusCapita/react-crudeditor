@@ -29,7 +29,7 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitEdit,
+    exitView: exitEdit,
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

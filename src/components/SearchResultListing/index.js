@@ -15,6 +15,7 @@ export default class extends React.PureComponent {
       }
     }) => this.props.model.actions.toggleSelected({ selected, instance });
 
+    this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
     this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
     this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
@@ -89,8 +90,8 @@ export default class extends React.PureComponent {
                     {
                       sortable ?
                         <Button className="crud--search-result-listing__sort-button" bsStyle='link' onClick={this.handleResort(name)}>
-                          { name }
-                          { sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} /> }
+                          {name}
+                          {sortField === name && <Glyphicon className="crud--search-result-listing__sort-icon" glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`} />}
                         </Button> :
                         name
                     }
@@ -112,8 +113,8 @@ export default class extends React.PureComponent {
                       key={`td-${name}`}
                       className={
                         textAlignment === 'right' && 'text-right' ||
-                    textAlignment === 'center' && 'text-center' ||
-                    'text-left'
+                        textAlignment === 'center' && 'text-center' ||
+                        'text-left'
                       }
                     >
                       {
@@ -126,10 +127,16 @@ export default class extends React.PureComponent {
 
                   <td className="text-right">
                     <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
+                      <Button onClick={this.handleShow(instance)}>
+                        <Glyphicon glyph='glyphicon-eye-open' />
+                        {' '}
+                        Show
+                      </Button>
+
                       <Button onClick={this.handleEdit(instance)}>
                         <Glyphicon glyph='edit' />
                         {' '}
-                    Edit
+                        Edit
                       </Button>
 
                       <ConfirmDialog
@@ -141,7 +148,7 @@ export default class extends React.PureComponent {
                         <Button>
                           <Glyphicon glyph='trash' />
                           {' '}
-                      Delete
+                          Delete
                         </Button>
                       </ConfirmDialog>
                     </ButtonGroup>

@@ -1,4 +1,4 @@
-const {resolve } = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const autoprefixer = require('autoprefixer');
@@ -23,7 +23,7 @@ module.exports = {
         options: {
           babelrc: false,
           presets: [
-            ["es2015", {"modules": false}],
+            ["es2015", { "modules": false }],
             "es2016",
             "es2017",
             "react",

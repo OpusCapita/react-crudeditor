@@ -39,9 +39,7 @@ import {
 
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_FAIL,
-  VIEW_REDIRECT_SUCCESS,
-
-  VIEW_NAME
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 import {
@@ -306,10 +304,8 @@ export default modelDefinition => (
             }
           };
         }
-      } catch (errors) {
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
+      } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
@@ -319,10 +315,8 @@ export default modelDefinition => (
           };
         }
       }
-    } catch (errors) {
-      if (!Array.isArray(errors)) {
-        errors = [errors];
-      }
+    } catch (err) {
+      const errors = Array.isArray(err) ? err : [err];
 
       newStoreStateSlice.formInstance = {
         [fieldName]: UNPARSABLE_FIELD_VALUE

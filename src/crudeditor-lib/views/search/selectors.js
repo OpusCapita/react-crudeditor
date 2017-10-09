@@ -1,5 +1,4 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { AUDITABLE_FIELDS } from '../../common/constants';
 import { cleanFilter } from './lib';
 
 import {
@@ -13,7 +12,7 @@ import {
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 const _getViewState = ({
-  resultFilter: filter,
+  resultFilter,
   sortParams: {
     field: sort,
     order
@@ -27,7 +26,10 @@ const _getViewState = ({
     search: { searchableFields }
   }
 }) => {
-  filter = cleanFilter({ searchableFields, filter });
+  const filter = cleanFilter({
+    searchableFields,
+    filter: resultFilter
+  });
 
   return {
     ...(filter ? { filter } : {}),

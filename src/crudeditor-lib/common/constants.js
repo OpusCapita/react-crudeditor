@@ -23,7 +23,8 @@ export const
 
   /*
    * Value for a empty field/filter (even if the field is of type "string", "boolean", etc.)
-   * => React Component (rendering particular field/filter) may want to translate this value into more appropriate for itself.
+   * => React Component (rendering particular field/filter) may want to translate this value
+   *    into more appropriate for itself.
    */
   EMPTY_FIELD_VALUE = null,
 

@@ -1,4 +1,4 @@
-import { call, put, select, all } from 'redux-saga/effects';
+import { select, all } from 'redux-saga/effects';
 
 import { onInstancesSearch } from '../sagas';
 import { MIN_ENTITY_CONFIGURATION } from './constants';

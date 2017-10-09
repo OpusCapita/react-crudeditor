@@ -22,7 +22,7 @@ export default function*({
   });
 
   try {
-    const { deletedCount } = yield call(
+    yield call(
       modelDefinition.api.delete,
       { instances }
     );

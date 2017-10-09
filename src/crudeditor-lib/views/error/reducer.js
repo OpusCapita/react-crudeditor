@@ -1,9 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import { INSTANCES_SEARCH_FAIL } from '../search/constants';
-import { INSTANCE_EDIT_FAIL } from '../edit/constants';
 import { ERROR_CODE_INTERNAL } from '../../common/constants';
 
 import {

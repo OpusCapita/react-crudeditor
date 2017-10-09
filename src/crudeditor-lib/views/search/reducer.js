@@ -154,6 +154,8 @@ const buildFormatedFilter = ({
         targetType = fieldMeta.render.valueProp.type;
         return true;
       }
+
+      return false;
     });
 
     return {
@@ -174,7 +176,6 @@ const buildFormatedFilter = ({
 
 export const buildDefaultStoreState = modelDefinition => {
   const searchMeta = modelDefinition.ui.search;
-  const fieldsMeta = modelDefinition.model.fields;
   let sortByDefaultIndex = 0;
 
   searchMeta.resultFields.some(({ sortByDefault }, index) => {
@@ -182,6 +183,8 @@ export const buildDefaultStoreState = modelDefinition => {
       sortByDefaultIndex = index;
       return true;
     }
+
+    return false;
   });
 
   const defaultStoreState = {
@@ -293,7 +296,7 @@ export default modelDefinition => {
       newStoreStateSlice.errors = u.constant({
         fields: {},
         general: []
-      }),
+      });
 
       newStoreStateSlice.status = UNINITIALIZED;
 
@@ -432,6 +435,8 @@ export default modelDefinition => {
           uiType = fieldMeta.render.valueProp.type;
           return true;
         }
+
+        return false;
       });
 
       const oldFormValue = getFieldValue({
@@ -456,7 +461,7 @@ export default modelDefinition => {
           sourceType: uiType
         });
 
-        if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
+        if (!isEqual(newFormValue, oldFormValue)) {
           newStoreStateSlice.formFilter = setFieldValue({
             isRange,
             path,
@@ -485,10 +490,8 @@ export default modelDefinition => {
             value: u.omit(fieldName)
           })
         }
-      } catch (errors) {
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
+      } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
 
         newStoreStateSlice.formFilter = setFieldValue({
           isRange,

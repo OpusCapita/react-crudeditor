@@ -4,6 +4,5 @@ import {
 
 export const
   createInstance = ({ instance } = {}) => ({
-    type: INSTANCE_CREATE,
-    payload: { instance }
+    type: INSTANCE_CREATE
   });

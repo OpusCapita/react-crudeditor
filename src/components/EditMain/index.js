@@ -5,7 +5,7 @@ import Tab from '../EditTab';
 import Section from '../EditSection';
 import Field from '../EditField';
 
-const formatEntry = entry => entry.field ? {
+export const formatEntry = entry => entry.field ? {
   Entry: Field,
   props: {
     entry: {

@@ -21,19 +21,6 @@ export default function*({
     meta
   });
 
-  // try {
-  //   instance = yield call(modelDefinition.api.get, { instance });
-  // } catch (errors) {
-  //   yield put({
-  //     type: INSTANCE_CREATE_FAIL,
-  //     payload: errors,
-  //     error: true,
-  //     meta
-  //   });
-
-  //   throw errors;
-  // }
-
   console.log("create saga modelDefinition: \n");
   console.log(JSON.stringify(modelDefinition, null, 2))
   console.log("create saga meta: \n");
@@ -43,7 +30,6 @@ export default function*({
 
   yield put({
     type: INSTANCE_CREATE_SUCCESS,
-    payload: { instance },
     meta
   });
 }

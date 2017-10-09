@@ -19,11 +19,8 @@ import {
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
-    blocking: {
-      // [INSTANCES_DELETE]: deleteSaga,
-    },
+    blocking: {},
     nonBlocking: {
-      [INSTANCE_SAVE]: saveSaga,
       [INSTANCE_SAVE]: saveSaga,
       [VIEW_EXIT]: exitSaga
     }
@@ -72,10 +69,6 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
 export default function*({
   modelDefinition,
   softRedirectSaga,
-  viewState: {
-    instance,
-    tab: tabName
-  },
   source
 }) {
   yield put({
@@ -87,7 +80,6 @@ export default function*({
     yield call(createSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
         meta: { source }
       }
     });
@@ -101,12 +93,6 @@ export default function*({
 
     throw errors; // Initialization errors are forwarded to the parent saga.
   }
-
-  yield put({
-    type: TAB_SELECT,
-    payload: { tabName },
-    meta: { source }
-  });
 
   yield put({
     type: VIEW_INITIALIZE_SUCCESS,

@@ -56,6 +56,7 @@ let NavigationElement = (
           }
         ]
       },
+      { children: 'Contracts', href: '/crud/contracts' },
       {
         children: 'Reports',
         subItems: [

@@ -3,9 +3,11 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 import deleteSaga from '../../common/workerSagas/delete';
 import searchSaga from './workerSagas/search';
 import editSaga from './workerSagas/edit';
+import createSaga from './workerSagas/create';
 
 import { INSTANCES_DELETE } from '../../common/constants';
 import { INSTANCE_EDIT } from '../edit/constants';
+import { INSTANCE_CREATE } from '../create/constants';
 
 import {
   INSTANCES_SEARCH,
@@ -33,7 +35,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
     },
     nonBlocking: {
       [INSTANCES_SEARCH]: searchSaga,
-      [INSTANCE_EDIT]: editSaga
+      [INSTANCE_EDIT]: editSaga,
+      [INSTANCE_CREATE]: createSaga
     }
   }
 

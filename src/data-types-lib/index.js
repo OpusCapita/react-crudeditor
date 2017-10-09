@@ -1,5 +1,3 @@
-import isEqual from 'lodash/isEqual';
-
 import uiTypes from './uiTypes';
 import fieldTypes from './fieldTypes';
 
@@ -15,10 +13,7 @@ import {
   ERROR_REQUIRED_MISSING,
   ERROR_UNKNOWN_CONSTRAINT,
   ERROR_UNKNOWN_UI_TYPE,
-  ERROR_UNKNOWN_FIELD_TYPE,
-
-  FIELD_TYPE_NUMBER_STRING,
-  FIELD_TYPE_STRING
+  ERROR_UNKNOWN_FIELD_TYPE
 } from './constants';
 
 export const

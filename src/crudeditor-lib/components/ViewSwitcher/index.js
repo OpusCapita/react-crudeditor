@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import SearchView from '../../views/search';
-import CreateView from '../../views/create/containers/Main';
+import CreateView from '../../views/create';
 import EditView from '../../views/edit';
 // import ShowView from '../../views/show';
 import ErrorView from '../../views/error';

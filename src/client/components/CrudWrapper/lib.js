@@ -60,7 +60,6 @@ export
 
   suffix2arr = suffix => {
     // Input string, ouput array.
-    if (!suffixArr) return [];
     let suffixArr = suffix.replace(/^\/|\/$/g, '');
     return suffixArr ? suffixArr.split('/') : [];
   },

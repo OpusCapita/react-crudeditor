@@ -1,12 +1,13 @@
 import React from 'react';
 import { FormControl } from 'react-bootstrap';
 
-export default ({ value, onChange, onBlur }) =>
+export default ({ value, onChange, onBlur, readOnly }) =>
   (<FormControl
     componentClass='select'
     value={value || value === 0 ? value : ''}
     onChange={({ target: { value } }) => onChange && onChange(value ? Number(value) : null)}
     onBlur={onBlur}
+    disabled={readOnly}
   >
     <option value={''}></option>
     <option value={0}>0 (pending)</option>

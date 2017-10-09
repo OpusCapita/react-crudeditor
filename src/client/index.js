@@ -76,7 +76,8 @@ let NavigationElement = (
             href: 'http://opuscapita.com'
           }
         ]
-      }
+      },
+      { children: 'Contracts', href: '/crud/contracts' }
     ]}
     iconsBarItems={[
       (

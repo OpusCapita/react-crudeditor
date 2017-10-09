@@ -4,7 +4,8 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden;
+    // overflow: hidden; // TBD: why? removes scrollbar entirely
+    overflow: auto;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
@@ -19,4 +20,13 @@ html, body {
     border: $oc-color-site-background $oc-space-content solid;
     min-height: 100%;
     background-color: $oc-color-content-background;
+}
+
+.showview {
+    width: 100%;
+    margin: 30px;
+}
+
+.editHeading {
+    margin-bottom: 20px;
 }

@@ -9,7 +9,12 @@ import { ERROR_CODE_INTERNAL } from '../../common/constants';
 import {
   READY,
   REDIRECTING,
-  UNINITIALIZED
+  UNINITIALIZED,
+
+  VIEW_INITIALIZE,
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL,
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 const defaultStoreStateTemplate = {
@@ -30,7 +35,7 @@ export default modelDefinition => (
     return storeState;
   }
 
-  const newStoreStateSlice = {};
+  let newStoreStateSlice = {};
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 

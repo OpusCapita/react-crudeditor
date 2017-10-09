@@ -47,9 +47,8 @@ import {
 import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_REQUEST,
-  INSTANCES_DELETE_SUCCESS,
 
-  UNPARSABLE_FIELD_VALUE,
+  UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
 const findFieldLayout = fieldName => {
@@ -181,9 +180,6 @@ export default modelDefinition => (
     }
 
     newStoreStateSlice.status = READY;
-
-  } else if (type === INSTANCES_DELETE_SUCCESS) {
-    newStoreStateSlice.status = READY;  // TODO: status must not be READY here.
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

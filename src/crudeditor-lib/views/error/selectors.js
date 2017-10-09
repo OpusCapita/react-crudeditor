@@ -15,7 +15,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewModelData = wrapper(storeState => {
+  getViewModelData = wrapper(storeState => ({
     errors: storeState.errors,
     isLoading: storeState.status === REDIRECTING
-  });
+  }));

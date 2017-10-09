@@ -340,7 +340,7 @@ export default {
         }));
     },
     delete({ instances }) {
-      console.log('Making API-delete call');
+      console.log('Making API-delete call', JSON.stringify(instances));
       return superagent.
         del('/api/contracts').
         send(instances).

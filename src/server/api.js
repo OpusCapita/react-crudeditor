@@ -62,9 +62,9 @@ module.exports = function(app) {
 
     if (query.instance) {
       // Request for single instance.
-      const result = contracts.findOne({ contractId: query.instance.contractId });
-      delete result.$loki;
-      delete result.meta;
+
+      // eslint-disable-next-line no-unused-vars
+      const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
 
       if (result) {
         res.json(internal2api(result));
@@ -157,13 +157,11 @@ module.exports = function(app) {
 
     if (foundItem) {
       try {
-        const result = contracts.update({
+        // eslint-disable-next-line no-unused-vars
+        const { $loki, meta, ...result } = contracts.update({
           ...foundItem,
           ...api2internal(doc)
         });
-
-        delete result.$loki;
-        delete result.meta;
 
         res.json(internal2api(result));
       } catch (error) {

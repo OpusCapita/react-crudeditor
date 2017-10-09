@@ -26,7 +26,7 @@ const formatEntry = entry => entry.field ? {
 export default ({ model }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
-  return (<div className="showview">
+  return (<div>
     {model.data.generalErrors.length !== 0 && <div style={{ color: 'red' }}>{JSON.stringify(model.data.generalErrors)}</div>}
     <Heading model={model} />
     {ActiveTabComponent ?

@@ -7,7 +7,7 @@ import { deleteInstances } from '../../common/actions';
 
 import {
   changeInstanceField,
-  exitEdit,
+  exitView,
   saveInstance,
   saveAndNewInstance,
   saveAndNextInstance,
@@ -29,7 +29,7 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitView: exitEdit,
+    exitView,
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

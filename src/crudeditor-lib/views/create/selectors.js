@@ -14,13 +14,11 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getViewState = wrapper(({ // TBD HOW DO WE CREATE AN EMPTY THING HERE?
-    persistentInstance,
-    activeTab: { tab } = {}
+    instance
   }, {
     model: { fields }
   }) => ({
-    instance: getLogicalKeyBuilder(fields)(persistentInstance),
-    ...(tab ? { tab } : {})
+    instance: getLogicalKeyBuilder(fields)(instance)
   })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -37,7 +35,7 @@ export const
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
     isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),
-    // tabs: storeState.formLayout.filter(({ tab }) => tab),
+    tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME
   }));

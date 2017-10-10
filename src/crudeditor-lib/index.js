@@ -229,17 +229,15 @@ export default baseModelDefinition => {
       return !isEqual(appState, storeState2appState(store.getState()));
     }
 
-    render = _ => {
-      console.log("crudlib index view + state props: " + this.props.view.name + " " + this.props.view.state)
-
-      return (<Provider store={store}>
+    render = _ => (
+      <Provider store={store}>
         <Main
-          viewName={this.props.view.name} // TBD viewName & viewState are always undefined
-          viewState={this.props.view.state} // TBD same
+          viewName={this.props.view.name}
+          viewState={this.props.view.state}
           modelDefinition={modelDefinition}
         />
-      </Provider>)
-    }
+      </Provider>
+    )
   }
 
   CrudWrapper.propTypes = {

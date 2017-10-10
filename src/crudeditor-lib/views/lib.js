@@ -125,7 +125,7 @@ export const buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => cust
     section: sectionLayout,
     field: buildFieldLayout(viewName, fieldsMeta)
   }) :
-  buildDefaultFormLayout(viewName, fieldsMeta);
+  buildDefaultFormLayout(viewName, fieldsMeta); // TODO test if it works
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

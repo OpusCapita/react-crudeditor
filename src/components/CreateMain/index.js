@@ -10,7 +10,7 @@ export default class CreateView extends Component {
   constructor(props) {
     super(props)
 
-    // console.log("Create receives props: \n" + JSON.stringify(this.props, null, 2))
+    console.log("Create receives props: \n" + JSON.stringify(this.props, null, 2))
   }
 
   render() {

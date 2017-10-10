@@ -203,6 +203,7 @@ export default modelDefinition => (
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
     newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
+    console.log('instanceLabel', JSON.stringify(newStoreStateSlice.instanceLabel), 'type', typeof newStoreStateSlice.instanceLabel);
 
     newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
       (rez, fieldName) => {

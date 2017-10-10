@@ -149,7 +149,7 @@ export default baseModelDefinition => {
     const rez = next(action);
     const storeState = getState();
 
-    if (storeState.views[storeState.common.activeViewName].status === STATUS_READY) {
+    if (storeState.views[storeState.common.activeViewName].status !== STATUS_READY) {
       return rez;
     }
 

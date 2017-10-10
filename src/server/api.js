@@ -63,12 +63,11 @@ module.exports = function(app) {
     if (query.instance) {
       // Request for single instance.
 
-      // eslint-disable-next-line no-unused-vars
-      const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
-
-      if (result) {
+      try {
+        // eslint-disable-next-line no-unused-vars
+        const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
         res.json(internal2api(result));
-      } else {
+      } catch (err) {
         res.status(404);
         res.json({ message: `Contract ${JSON.stringify(query.instance)} not found` });
       }

@@ -28,14 +28,14 @@ export default function*({
       viewName: VIEW_SHOW,
       viewState: { instance }
     });
-  } catch (errors) {
+  } catch (err) {
     yield put({
       type: VIEW_REDIRECT_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
 }

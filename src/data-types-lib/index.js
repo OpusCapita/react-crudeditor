@@ -40,37 +40,37 @@ export const
   }) => {
     if (!fieldTypes[fieldType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_FIELD_TYPE,
           message: `Unknown Field Type "${fieldType}"`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value of unknown Field Type.
     }
 
     if (!fieldTypes[fieldType].isValid(value)) {
-      const err = {
+      const error = {
         code: ERROR_CODE_FORMATING,
         id: ERROR_INVALID_FIELD_TYPE_VALUE,
         message: `Invalid value "${value}" of Field Type "${fieldType}"`
       };
 
-      throw err;
+      throw error;
     }
 
     if (!uiTypes[uiType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_UI_TYPE,
           message: `Unknown Target Type "${uiType}"`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value of unknown Component API Type.
@@ -84,13 +84,13 @@ export const
 
     if (!formatter[uiType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_FORMATING,
           id: ERROR_UNKNOWN_UI_TYPE,
           message: `Unknown Target Type "${uiType}" for the formatter`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value when Component API Type is unknown to Field Type's formatter.
@@ -123,26 +123,26 @@ export const
   }) => {
     if (!uiTypes[uiType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_UI_TYPE,
           message: `Unknown Source Type "${uiType}"`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value of unknown Component API Type.
     }
 
     if (!uiTypes[uiType].isValid(value)) {
-      const err = {
+      const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_UI_TYPE_VALUE,
         message: `Invalid value "${value}" of Source Type "${uiType}"`
       };
 
-      throw err;
+      throw error;
     }
 
     if (uiTypes[uiType].isEmpty(value)) {
@@ -151,13 +151,13 @@ export const
 
     if (!fieldTypes[fieldType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_FIELD_TYPE,
           message: `Unknown Field Type "${fieldType}"`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value of unknown Field Type.
@@ -167,13 +167,13 @@ export const
 
     if (!parser[uiType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_PARSING,
           id: ERROR_UNKNOWN_UI_TYPE,
           message: `Unknown Source Type "${uiType}" for the parser`
         };
 
-        throw err;
+        throw error;
       }
 
       return value; // forward value when Component API Type is unknown to the Field Type's parser.
@@ -201,13 +201,13 @@ export const
       // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
       // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
       if (required) {
-        const err = [{
+        const error = [{
           code: ERROR_CODE_VALIDATION,
           id: ERROR_REQUIRED_MISSING,
           message: 'Required value must be set'
         }];
 
-        throw err;
+        throw error;
       }
 
       return true;
@@ -215,13 +215,13 @@ export const
 
     if (!fieldTypes[fieldType]) {
       if (throwOnUnknownType) {
-        const err = {
+        const error = {
           code: ERROR_CODE_VALIDATION,
           id: ERROR_UNKNOWN_FIELD_TYPE,
           message: `Unknown Field Type "${fieldType}"`
         };
 
-        throw err;
+        throw error;
       }
 
       return true; // skip validation of unknown Field Type.
@@ -242,8 +242,8 @@ export const
         try {
           validator[name](constraints[name]);
           return errors;
-        } catch (err) {
-          return [...errors, err];
+        } catch (error) {
+          return [...errors, error];
         }
       },
       []

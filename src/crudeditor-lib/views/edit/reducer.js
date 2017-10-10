@@ -266,12 +266,32 @@ export default modelDefinition => (
     const fieldMeta = modelDefinition.model.fields[fieldName];
     const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
-    try {
-      const newFormValue = parseField({
-        value: storeState.formatedInstance[fieldName],
-        type: fieldMeta.type,
-        sourceType: uiType
-      });
+    PARSE_LABEL: {
+      let newFormValue;
+
+      try {
+        newFormValue = parseField({
+          value: storeState.formatedInstance[fieldName],
+          type: fieldMeta.type,
+          sourceType: uiType
+        });
+      } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
+
+        newStoreStateSlice.formInstance = {
+          [fieldName]: UNPARSABLE_FIELD_VALUE
+        };
+
+        if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: errors
+            }
+          };
+        }
+
+        break PARSE_LABEL;
+      }
 
       if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
         newStoreStateSlice.formInstance = {
@@ -297,14 +317,6 @@ export default modelDefinition => (
           type: fieldMeta.type,
           constraints: fieldMeta.constraints
         });
-
-        if (storeState.errors.fields[fieldName].length) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: []
-            }
-          };
-        }
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -315,18 +327,14 @@ export default modelDefinition => (
             }
           };
         }
+
+        break PARSE_LABEL;
       }
-    } catch (err) {
-      const errors = Array.isArray(err) ? err : [err];
 
-      newStoreStateSlice.formInstance = {
-        [fieldName]: UNPARSABLE_FIELD_VALUE
-      };
-
-      if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+      if (storeState.errors.fields[fieldName].length) {
         newStoreStateSlice.errors = {
           fields: {
-            [fieldName]: errors
+            [fieldName]: []
           }
         };
       }

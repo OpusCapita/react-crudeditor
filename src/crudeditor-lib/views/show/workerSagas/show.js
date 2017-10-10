@@ -21,16 +21,10 @@ export default function*({
     meta
   });
 
-  try {
-    const persistentInstance = yield call(modelDefinition.api.get, { instance });
+  let persistentInstance;
 
-    yield put({
-      type: INSTANCE_SHOW_SUCCESS,
-      payload: {
-        instance: persistentInstance
-      },
-      meta
-    });
+  try {
+    persistentInstance = yield call(modelDefinition.api.get, { instance });
   } catch (err) {
     yield put({
       type: INSTANCE_SHOW_FAIL,
@@ -41,4 +35,12 @@ export default function*({
 
     throw err;
   }
+
+  yield put({
+    type: INSTANCE_SHOW_SUCCESS,
+    payload: {
+      instance: persistentInstance
+    },
+    meta
+  });
 }

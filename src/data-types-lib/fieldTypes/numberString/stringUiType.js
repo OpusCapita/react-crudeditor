@@ -32,13 +32,13 @@ export default {
     try {
       return new Big(optimized).toString();
     } catch (ignoredError) {
-      const err = {
+      const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_NUMBER,
         message: 'Invalid number'
       };
 
-      throw err;
+      throw error;
     }
   }
 };

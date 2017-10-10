@@ -454,12 +454,34 @@ export default modelDefinition => {
         path
       });
 
-      try {
-        const newFormValue = parseField({
-          value: oldFormatedValue,
-          type: fieldType,
-          sourceType: uiType
-        });
+      PARSE_LABEL: {
+        let newFormValue;
+
+        try {
+          newFormValue = parseField({
+            value: oldFormatedValue,
+            type: fieldType,
+            sourceType: uiType
+          });
+        } catch (err) {
+          const errors = Array.isArray(err) ? err : [err];
+
+          newStoreStateSlice.formFilter = setFieldValue({
+            isRange,
+            path,
+            value: UNPARSABLE_FIELD_VALUE
+          });
+
+          if (!isEqual(errors, oldErrorValue)) {
+            newStoreStateSlice.errors = {
+              fields: {
+                [fieldName]: errors
+              }
+            };
+          }
+
+          break PARSE_LABEL;
+        }
 
         if (!isEqual(newFormValue, oldFormValue)) {
           newStoreStateSlice.formFilter = setFieldValue({
@@ -489,22 +511,6 @@ export default modelDefinition => {
             path,
             value: u.omit(fieldName)
           })
-        }
-      } catch (err) {
-        const errors = Array.isArray(err) ? err : [err];
-
-        newStoreStateSlice.formFilter = setFieldValue({
-          isRange,
-          path,
-          value: UNPARSABLE_FIELD_VALUE
-        });
-
-        if (!isEqual(errors, oldErrorValue)) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: errors
-            }
-          };
         }
       }
 

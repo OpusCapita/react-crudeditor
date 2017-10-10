@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
@@ -23,7 +24,7 @@ const formatEntry = entry => entry.field ? {
   }
 };
 
-export default (props) => {
+const ShowMain = (props) => {
   const { model } = props;
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
@@ -51,3 +52,9 @@ export default (props) => {
     }
   </div>);
 };
+
+ShowMain.propTypes = {
+  model: PropTypes.object.isRequired
+}
+
+export default ShowMain

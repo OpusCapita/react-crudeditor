@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, HelpBlock } from 'react-bootstrap';
 
 import './SearchForm.less';
 
-export default class extends React.PureComponent {
+class SearchForm extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -120,3 +121,14 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+SearchForm.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      formFilter: PropTypes.object
+    }),
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default SearchForm;

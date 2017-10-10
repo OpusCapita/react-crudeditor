@@ -1,11 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
+// import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
   INSTANCE_CREATE,
 
-  INSTANCE_SAVE,
+  // INSTANCE_SAVE,
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
   INSTANCE_SAVE_FAIL

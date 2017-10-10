@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
@@ -149,7 +150,7 @@ export default baseModelDefinition => {
     const rez = next(action);
     const storeState = getState();
 
-    if (storeState.views[storeState.common.activeViewName].status === STATUS_READY) {
+    if (storeState.views[storeState.common.activeViewName].status !== STATUS_READY) {
       return rez;
     }
 
@@ -198,7 +199,7 @@ export default baseModelDefinition => {
 
   sagaMiddleware.run(rootSaga, modelDefinition);
 
-  return class extends React.Component {
+  class CrudWrapper extends React.Component {
     constructor(...args) {
       super(...args);
       onTransition = this.props.onTransition;
@@ -227,4 +228,15 @@ export default baseModelDefinition => {
         />
       </Provider>)
   }
+
+  CrudWrapper.propTypes = {
+    view: PropTypes.shape({
+      name: PropTypes.string,
+      state: PropTypes.object
+    }),
+    onTransition: PropTypes.func
+  }
+
+  return CrudWrapper
 };
+

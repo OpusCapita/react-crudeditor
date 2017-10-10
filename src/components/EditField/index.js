@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
-export default class extends React.Component {
-  handleChange = value => this.props.model.actions.changeInstanceField({
-    name: this.props.entry.name,
-    value
-  })
+class EditField extends Component {
+  handleValidation = _ => this.props.model.actions.validateInstanceField ?
+    this.props.model.actions.validateInstanceField(this.props.entry.name) :
+    null;
 
-  handleBlur = _ => this.props.model.actions.validateInstanceField(this.props.entry.name);
+  handleChange = value => this.props.model.actions.changeInstanceField ?
+    this.props.model.actions.changeInstanceField({
+      name: this.props.entry.name,
+      value
+    }) :
+    null;
 
   render() {
     const {
@@ -33,6 +38,14 @@ export default class extends React.Component {
       fieldsErrors[fieldName].map(({ message }) => message).join('; ') :
       null;
 
+    const fieldInputProps = {
+      id: fieldName,
+      readOnly,
+      [valuePropName]: instance[fieldName],
+      onBlur: this.handleValidation,
+      onChange: this.handleChange
+    }
+
     return (
       <FormGroup controlId={fieldName} validationState={errors && 'error'}>
         <Col componentClass={ControlLabel} sm={2}>
@@ -43,16 +56,21 @@ export default class extends React.Component {
         </Col>
         <Col sm={1} className='text-right' />
         <Col sm={9}>
-          <FieldInput
-            id={fieldName}
-            readOnly={readOnly}
-            {...{ [valuePropName]: instance[fieldName] }}
-            onBlur={this.handleBlur}
-            onChange={this.handleChange}
-          />
+          <FieldInput {...fieldInputProps} />
           {errors && <HelpBlock>{errors}</HelpBlock>}
         </Col>
       </FormGroup>
     );
   }
 }
+
+EditField.propTypes = {
+  model: PropTypes.shape({
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired,
+  entry: PropTypes.shape({
+    name: PropTypes.string.isRequired
+  })
+}
+
+export default EditField;

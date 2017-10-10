@@ -11,7 +11,7 @@ export const
 
   HOME_GO = namespace + '/HOME_GO',
 
-  VIEW_INITIALIZE = namespace + '/VIEW_INITIALIZE_REQUEST',
+  VIEW_INITIALIZE = namespace + '/VIEW_INITIALIZE',
 
   VIEW_REDIRECT_REQUEST = namespace + '/VIEW_REDIRECT_REQUEST',
   VIEW_REDIRECT_FAIL = namespace + '/VIEW_REDIRECT_FAIL',

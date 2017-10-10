@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Checkbox } from 'react-bootstrap';
 
-export default class extends React.PureComponent {
+class FieldBoolean extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -19,3 +20,12 @@ export default class extends React.PureComponent {
       onBlur={this.handleBlur}
     />)
 }
+
+FieldBoolean.propTypes = {
+  readOnly: PropTypes.bool,
+  value: PropTypes.bool,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
+}
+
+export default FieldBoolean;

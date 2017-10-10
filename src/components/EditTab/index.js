@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
@@ -9,7 +10,7 @@ import {
   VIEW_SHOW
 } from '../../crudeditor-lib/common/constants';
 
-export default class extends React.PureComponent {
+class EditTab extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
@@ -83,3 +84,15 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+EditTab.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      viewName: PropTypes.string,
+      persistentInstance: PropTypes.object
+    }),
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default EditTab;

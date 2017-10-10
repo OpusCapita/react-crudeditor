@@ -1,8 +1,8 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-const precss = require('precss');
+// const autoprefixer = require('autoprefixer');
+// const precss = require('precss');
 
 module.exports = {
   context: resolve(__dirname, 'src'),

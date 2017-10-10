@@ -37,7 +37,7 @@ describe('search reducer', () => {
     expect(reducer(undefined, {})).toEqual({
       resultInstances: undefined,
       selectedInstances: [],
-      status: 'search/UNINITIALIZED',
+      status: 'uninitialized',
       totalCount: undefined,
       sortParams: {
         field: 'extContractLineId',
@@ -119,7 +119,7 @@ describe('search reducer', () => {
       ],
       selectedInstances: [],
       totalCount: 4,
-      status: 'search/READY'
+      status: 'ready'
     });
   });
 });

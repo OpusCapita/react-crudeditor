@@ -13,16 +13,7 @@ import {
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-
-import {
-  RANGE_FIELD_TYPES,
-  READY as SEARCH_STATUS_READY
-} from './views/search/constants';
-
-import { READY as CREATE_STATUS_READY } from './views/create/constants';
-import { READY as EDIT_STATUS_READY } from './views/edit/constants';
-import { READY as SHOW_STATUS_READY } from './views/show/constants';
-import { READY as ERROR_STATUS_READY } from './views/error/constants';
+import { RANGE_FIELD_TYPES } from './views/search/constants';
 
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
@@ -33,6 +24,8 @@ import { getViewState as getErrorViewState } from './views/error/selectors';
 import {
   AUDITABLE_FIELDS,
   DEFAULT_FIELD_TYPE,
+  STATUS_READY,
+
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
@@ -47,14 +40,6 @@ const getViewState = {
   [VIEW_SHOW]: getShowViewState,
   [VIEW_ERROR]: getErrorViewState
 };
-
-const READY = [
-  SEARCH_STATUS_READY,
-  CREATE_STATUS_READY,
-  EDIT_STATUS_READY,
-  SHOW_STATUS_READY,
-  ERROR_STATUS_READY
-];
 
 function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
@@ -164,7 +149,7 @@ export default baseModelDefinition => {
     const rez = next(action);
     const storeState = getState();
 
-    if (READY.indexOf(storeState.views[storeState.common.activeViewName].status) === -1) {
+    if (storeState.views[storeState.common.activeViewName].status === STATUS_READY) {
       return rez;
     }
 

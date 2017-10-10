@@ -1,13 +1,13 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { cleanFilter } from './lib';
+import { VIEW_NAME } from './constants';
 
 import {
-  DELETING,
-  INITIALIZING,
-  REDIRECTING,
-  SEARCHING,
-  VIEW_NAME
-} from './constants';
+  STATUS_DELETING,
+  STATUS_INITIALIZING,
+  STATUS_REDIRECTING,
+  STATUS_SEARCHING,
+} from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -68,7 +68,12 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     generalErrors: storeState.errors.general,
-    isLoading: ~[DELETING, INITIALIZING, REDIRECTING, SEARCHING].indexOf(storeState.status),
+    isLoading: ~[
+      STATUS_DELETING,
+      STATUS_INITIALIZING,
+      STATUS_REDIRECTING,
+      STATUS_SEARCHING
+    ].indexOf(storeState.status),
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

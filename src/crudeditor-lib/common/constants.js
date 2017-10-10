@@ -30,6 +30,20 @@ export const
 
   UNPARSABLE_FIELD_VALUE = undefined,
 
+  /* █████████████████████████████████████████████*\
+   *███ VIEW STATUSES (in alphabetical order) ███*
+  \*█████████████████████████████████████████████*/
+
+  STATUS_CREATING = 'creating',
+  STATUS_EXTRACTING = 'extracting',
+  STATUS_DELETING = 'deleting',
+  STATUS_INITIALIZING = 'initializing',
+  STATUS_READY = 'ready',
+  STATUS_REDIRECTING = 'redirecting',
+  STATUS_SEARCHING = 'searching',
+  STATUS_UNINITIALIZED = 'uninitialized',
+  STATUS_UPDATING = 'updating',
+
   /* ███████████████████████████████████████*\
    *███ ACTIONS (in alphabetical order) ███*
   \*███████████████████████████████████████*/

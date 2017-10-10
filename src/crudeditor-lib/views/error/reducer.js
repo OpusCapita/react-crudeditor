@@ -1,13 +1,15 @@
 import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
 
-import { ERROR_CODE_INTERNAL } from '../../common/constants';
+import {
+  STATUS_READY,
+  STATUS_REDIRECTING,
+  STATUS_UNINITIALIZED,
+
+  ERROR_CODE_INTERNAL
+} from '../../common/constants';
 
 import {
-  READY,
-  REDIRECTING,
-  UNINITIALIZED,
-
   VIEW_INITIALIZE,
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_FAIL,
@@ -16,7 +18,7 @@ import {
 
 const defaultStoreStateTemplate = {
   errors: undefined,
-  status: UNINITIALIZED
+  status: STATUS_UNINITIALIZED
 };
 
 /*
@@ -28,7 +30,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE) {
     return storeState;
   }
 
@@ -44,11 +46,11 @@ export default modelDefinition => (
       ...(Object.keys(rest).length ? { payload: rest.payload || rest } : {})
     })));
 
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
-    newStoreStateSlice.status = REDIRECTING;
+    newStoreStateSlice.status = STATUS_REDIRECTING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_SUCCESS) {

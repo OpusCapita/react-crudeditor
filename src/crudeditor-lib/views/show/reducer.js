@@ -7,11 +7,6 @@ import {
 } from '../../../data-types-lib';
 
 import {
-  INITIALIZING,
-  READY,
-  REDIRECTING,
-  UNINITIALIZED,
-
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_FAIL,
 
@@ -25,6 +20,13 @@ import {
 
   TAB_SELECT
 } from './constants';
+
+import {
+  STATUS_INITIALIZING,
+  STATUS_READY,
+  STATUS_REDIRECTING,
+  STATUS_UNINITIALIZED
+} from '../../common/constants';
 
 const findFieldLayout = fieldName => {
   const layoutWalker = layout => {
@@ -93,7 +95,7 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: UNINITIALIZED
+  status: STATUS_UNINITIALIZED
 };
 
 /*
@@ -105,7 +107,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
     return storeState;
   }
 
@@ -114,15 +116,15 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
-    newStoreStateSlice.status = INITIALIZING;
+    newStoreStateSlice.status = STATUS_INITIALIZING;
   } else if (type === VIEW_INITIALIZE_FAIL) {
-    newStoreStateSlice.status = UNINITIALIZED;
+    newStoreStateSlice.status = STATUS_UNINITIALIZED;
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
-    newStoreStateSlice.status = REDIRECTING;
+    newStoreStateSlice.status = STATUS_REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -132,7 +134,7 @@ export default modelDefinition => (
       };
     }
 
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
@@ -191,8 +193,8 @@ export default modelDefinition => (
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    if (storeState.status !== INITIALIZING) {
-      newStoreStateSlice.status = READY;
+    if (storeState.status !== STATUS_INITIALIZING) {
+      newStoreStateSlice.status = STATUS_READY;
     }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

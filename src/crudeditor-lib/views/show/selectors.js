@@ -1,11 +1,11 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { getLogicalKeyBuilder } from '../lib';
+import { VIEW_NAME } from './constants';
 
 import {
-  VIEW_NAME,
-  INITIALIZING,
-  REDIRECTING
-} from './constants';
+  STATUS_INITIALIZING,
+  STATUS_REDIRECTING
+} from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -35,7 +35,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),
+    isLoading: ~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

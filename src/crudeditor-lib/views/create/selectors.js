@@ -37,7 +37,7 @@ export const
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
     isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),
-    tabs: storeState.formLayout.filter(({ tab }) => tab),
+    // tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME
   }));

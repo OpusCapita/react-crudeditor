@@ -34,7 +34,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'boilerplates' }),
   tab({ name: 'supplier' }),
   tab({ name: 'groups' }),
-  tab({ name: 'additional', disabled: viewName !== VIEW_EDIT },
+  tab({ name: 'additional' },
     section({ name: 'order' },
       field({ name: 'minOrderValue' }),
       field({ name: 'minOrderValueRequired' }),

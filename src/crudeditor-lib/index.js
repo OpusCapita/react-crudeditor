@@ -113,14 +113,6 @@ function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.edit = {};
   }
 
-  const editMeta = modelDefinition.ui.edit;
-
-  editMeta.formLayout = buildFormLayout({
-    customBuilder: editMeta.formLayout,
-    viewName: VIEW_EDIT,
-    fieldsMeta: modelDefinition.model.fields
-  });
-
   if (!modelDefinition.ui.create) {
     modelDefinition.ui.create = {};
   }
@@ -128,6 +120,24 @@ function fillDefaults(baseModelDefinition) {
   if (!modelDefinition.ui.show) {
     modelDefinition.ui.show = {};
   }
+
+  modelDefinition.ui.edit.formLayout = buildFormLayout({
+    customBuilder: modelDefinition.ui.edit.formLayout,
+    viewName: VIEW_EDIT,
+    fieldsMeta: modelDefinition.model.fields
+  });
+
+  modelDefinition.ui.create.formLayout = buildFormLayout({
+    customBuilder: modelDefinition.ui.create.formLayout,
+    viewName: VIEW_CREATE,
+    fieldsMeta: modelDefinition.model.fields
+  });
+
+  modelDefinition.ui.show.formLayout = buildFormLayout({
+    customBuilder: modelDefinition.ui.show.formLayout,
+    viewName: VIEW_SHOW,
+    fieldsMeta: modelDefinition.model.fields
+  });
 
   return modelDefinition;
 }
@@ -219,14 +229,17 @@ export default baseModelDefinition => {
       return !isEqual(appState, storeState2appState(store.getState()));
     }
 
-    render = _ =>
-      (<Provider store={store}>
+    render = _ => {
+      console.log("crudlib index view + state props: " + this.props.view.name + " " + this.props.view.state)
+
+      return (<Provider store={store}>
         <Main
           viewName={this.props.view.name} // TBD viewName & viewState are always undefined
           viewState={this.props.view.state} // TBD same
           modelDefinition={modelDefinition}
         />
       </Provider>)
+    }
   }
 
   CrudWrapper.propTypes = {

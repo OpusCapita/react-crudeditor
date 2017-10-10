@@ -9,7 +9,7 @@ function date2str(arg) {
   return [date.getDate(), date.getMonth(), date.getFullYear()].join('/');
 }
 
-const dateRangeCellRender = ({ name, instance }) => {
+const DateRangeCellRender = ({ name, instance }) => {
   const value = instance[name];
 
   return (
@@ -21,9 +21,9 @@ const dateRangeCellRender = ({ name, instance }) => {
   );
 };
 
-dateRangeCellRender.propTypes = {
+DateRangeCellRender.propTypes = {
   name: PropTypes.string,
   instance: PropTypes.object
 }
 
-export default dateRangeCellRender;
+export default DateRangeCellRender;

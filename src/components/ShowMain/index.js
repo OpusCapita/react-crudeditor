@@ -11,7 +11,7 @@ const formatEntry = entry => entry.field ? {
   props: {
     entry: {
       name: entry.field,
-      readOnly: true, // mute all fields
+      readOnly: entry.readOnly,
       Component: entry.render.Component,
       valuePropName: entry.render.valueProp.name
     }

@@ -10,17 +10,17 @@ export default class CreateView extends Component {
   constructor(props) {
     super(props)
 
-    console.log("Create receives props: \n" + JSON.stringify(this.props, null, 2))
+    // console.log("Create receives props: \n" + JSON.stringify(this.props, null, 2))
   }
 
   render() {
     const { model } = this.props;
 
     const { createInstance } = model.actions;
-    console.log("------CREATE: \n" + JSON.stringify(createInstance(), null, 2) + "\n-----------")
+    // console.log("------CREATE: \n" + JSON.stringify(createInstance(), null, 2) + "\n-----------")
     // const { modelDefinition: { model: { fields } } } = this.props;
     const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
-    console.log("active tab: " + ActiveTabComponent)
+    // console.log("active tab: " + ActiveTabComponent)
 
     return (<div>
       hi

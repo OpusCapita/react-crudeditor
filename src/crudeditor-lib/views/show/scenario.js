@@ -110,7 +110,7 @@ export default function*({
       yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
     } finally {
       if (yield cancelled()) {
-        yield put({ // TBD
+        yield put({
           type: VIEW_REDIRECT_SUCCESS
         });
       }

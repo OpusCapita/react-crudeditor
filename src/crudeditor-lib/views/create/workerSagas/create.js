@@ -12,6 +12,7 @@ import {
 export default function*({
   modelDefinition,
   action: {
+    payload: { instance },
     meta
   }
 }) {
@@ -19,19 +20,6 @@ export default function*({
     type: INSTANCE_CREATE_REQUEST,
     meta
   });
-
-  // try {
-  //   instance = yield call(modelDefinition.api.get, { instance });
-  // } catch (errors) {
-  //   yield put({
-  //     type: INSTANCE_CREATE_FAIL,
-  //     payload: errors,
-  //     error: true,
-  //     meta
-  //   });
-
-  //   throw errors;
-  // }
 
   yield put({
     type: INSTANCE_CREATE_SUCCESS,

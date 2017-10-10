@@ -22,7 +22,10 @@ export default function*({
 
   try {
     yield call(softRedirectSaga, {
-      viewName: VIEW_CREATE
+      viewName: VIEW_CREATE,
+      viewState: {
+        instance: {} // TODO make a cool predefined instance
+      }
     });
   } catch (errors) {
     yield put({

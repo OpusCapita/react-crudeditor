@@ -70,8 +70,7 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   viewState: {
-    instance,
-    tab: tabName
+    instance
   },
   source
 }) {
@@ -98,12 +97,6 @@ export default function*({
 
     throw errors; // Initialization errors are forwarded to the parent saga.
   }
-
-  yield put({
-    type: TAB_SELECT,
-    payload: { tabName },
-    meta: { source }
-  });
 
   yield put({
     type: VIEW_INITIALIZE_SUCCESS,

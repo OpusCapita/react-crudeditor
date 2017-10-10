@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
-const statusField = ({ value, onChange, onBlur, readOnly }) =>
+const StatusField = ({ value, onChange, onBlur, readOnly }) =>
   (<FormControl
     componentClass='select'
     value={value || value === 0 ? value : ''}
@@ -18,7 +18,7 @@ const statusField = ({ value, onChange, onBlur, readOnly }) =>
     <option value={800}>800 (deleted)</option>
   </FormControl>);
 
-statusField.propTypes = {
+StatusField.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
@@ -28,4 +28,4 @@ statusField.propTypes = {
   readOnly: PropTypes.bool
 }
 
-export default statusField;
+export default StatusField;

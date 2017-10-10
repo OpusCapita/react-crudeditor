@@ -31,7 +31,6 @@ class SearchResultListing extends React.PureComponent {
     }
   }) {
     if (
-      // TBD instances.length !== instances.length ?
       instances.length !== this.props.model.data.resultInstances.length ||
       this.props.model.data.resultInstances.some(instance => instances.indexOf(instance) === -1)
     ) {

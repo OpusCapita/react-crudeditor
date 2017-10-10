@@ -37,7 +37,7 @@ export default function*(modelDefinition) {
    * The saga attempts to initialize requested view without displaying it.
    * When successful, it replaces currently active view with requested one
    * (by canceling active activeViewScenarioTask and displaying requested view).
-   * When view initialization failured, the saga throws an error.
+   * When view initialization failured, the saga throws error(s).
    */
   function* softRedirectSaga({ viewName, viewState }) {
     const initializeViewSaga = initializeViewSagas[viewName];
@@ -48,7 +48,7 @@ export default function*(modelDefinition) {
 
     const oldViewScenarioTask = activeViewScenarioTask;
 
-    // Initialization errors are forwarded to the parent saga.
+    // Initialization error(s) are forwarded to the parent saga.
     activeViewScenarioTask = yield call(initializeViewSaga, {
       modelDefinition,
       softRedirectSaga,
@@ -109,7 +109,7 @@ export default function*(modelDefinition) {
         viewState,
         source
       });
-    } catch (errors) {
+    } catch (err) {
       viewName = VIEW_ERROR;
 
       yield put({
@@ -121,7 +121,7 @@ export default function*(modelDefinition) {
       activeViewScenarioTask = yield call(errorViewScenario, {
         modelDefinition,
         softRedirectSaga,
-        viewState: errors,
+        viewState: err,
         source
       });
     }

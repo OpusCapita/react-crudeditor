@@ -21,13 +21,13 @@ export default {
 
     if (!value.eq(n)) {
       // ex. value is larger than Number.MAX_SAFE_INTEGER
-      const err = {
+      const error = {
         code: ERROR_CODE_FORMATING,
         id: ERROR_FORMAT,
         message: `Unable to convert to "${UI_TYPE_NUMBER}" Component API Type`,
       };
 
-      throw err;
+      throw error;
     }
 
     return n;

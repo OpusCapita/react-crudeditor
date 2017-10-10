@@ -41,8 +41,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           softRedirectSaga,
           action
         });
-      } catch (errors) {
-        // throw errors;  // Comment out the line to swallow all errors in called task.
+      } catch (err) {
+        // throw err;  // Comment out the line to swallow error(s) in called task.
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -52,8 +52,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             softRedirectSaga,
             action
           });
-        } catch (errors) {
-          // throw errors;  // Comment out the line to swallow all errors in forked task.
+        } catch (err) {
+          // throw err;  // Comment out the line to swallow error(s) in forked task.
         }
       });
     }
@@ -83,15 +83,15 @@ export default function*({
         meta: { source }
       }
     });
-  } catch (errors) {
+  } catch (err) {
     yield put({
       type: VIEW_INITIALIZE_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta: { source }
     });
 
-    throw errors; // Initialization errors are forwarded to the parent saga.
+    throw err; // Initialization error(s) are forwarded to the parent saga.
   }
 
   yield put({

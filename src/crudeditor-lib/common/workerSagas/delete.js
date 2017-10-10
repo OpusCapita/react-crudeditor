@@ -26,20 +26,20 @@ export default function*({
       modelDefinition.api.delete,
       { instances }
     );
-
-    yield put({
-      type: INSTANCES_DELETE_SUCCESS,
-      payload: { instances },
-      meta
-    });
-  } catch (errors) {
+  } catch (err) {
     yield put({
       type: INSTANCES_DELETE_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
+
+  yield put({
+    type: INSTANCES_DELETE_SUCCESS,
+    payload: { instances },
+    meta
+  });
 }

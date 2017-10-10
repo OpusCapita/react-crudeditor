@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
-export default class extends React.PureComponent {
+class FieldString extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -23,3 +24,12 @@ export default class extends React.PureComponent {
       type='text'
     />)
 }
+
+FieldString.propTypes = {
+  readOnly: PropTypes.bool,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
+}
+
+export default FieldString;

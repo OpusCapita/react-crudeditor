@@ -1,13 +1,14 @@
 // TODO: add operations (external, custom, ...) handlers.
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 import SpinnerOverlay from '../Spinner/SpinnerOverlay';
 import './SearchResultListing.less';
 
-export default class extends React.PureComponent {
+class SearchResultListing extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -30,6 +31,7 @@ export default class extends React.PureComponent {
     }
   }) {
     if (
+      // TBD instances.length !== instances.length ?
       instances.length !== this.props.model.data.resultInstances.length ||
       this.props.model.data.resultInstances.some(instance => instances.indexOf(instance) === -1)
     ) {
@@ -176,3 +178,18 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+SearchResultListing.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      resultInstances: PropTypes.array,
+      selectedInstances: PropTypes.array,
+      resultFields: PropTypes.array,
+      sortParams: PropTypes.object,
+      isLoading: PropTypes.number
+    }),
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default SearchResultListing;

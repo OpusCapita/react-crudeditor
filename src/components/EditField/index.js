@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
-export default class extends Component {
+class EditField extends Component {
+  handleValidation = _ => this.props.model.actions.validateInstanceField ?
+    this.props.model.actions.validateInstanceField(this.props.entry.name) :
+    null;
+
+  handleChange = value => this.props.model.actions.changeInstanceField ?
+    this.props.model.actions.changeInstanceField({
+      name: this.props.entry.name,
+      value
+    }) :
+    null;
+
   render() {
     const {
       entry: {
@@ -16,10 +28,6 @@ export default class extends Component {
           fieldsMeta,
           fieldsErrors,
           formatedInstance: instance
-        },
-        actions: {
-          changeInstanceField,
-          validateInstanceField
         }
       }
     } = this.props;
@@ -33,18 +41,9 @@ export default class extends Component {
     const fieldInputProps = {
       id: fieldName,
       readOnly,
-      [valuePropName]: instance[fieldName]
-    }
-
-    if (validateInstanceField) {
-      fieldInputProps.onBlur = _ => validateInstanceField(fieldName);
-    }
-
-    if (changeInstanceField) {
-      fieldInputProps.onChange = value => changeInstanceField({
-        name: fieldName,
-        value
-      })
+      [valuePropName]: instance[fieldName],
+      onBlur: this.handleValidation,
+      onChange: this.handleChange
     }
 
     return (
@@ -64,3 +63,14 @@ export default class extends Component {
     );
   }
 }
+
+EditField.propTypes = {
+  model: PropTypes.shape({
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired,
+  entry: PropTypes.shape({
+    name: PropTypes.string.isRequired
+  })
+}
+
+export default EditField;

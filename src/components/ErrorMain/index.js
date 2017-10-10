@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default ({
+const ErrorMain = ({
   model: {
     data: errors
   }
@@ -13,3 +14,13 @@ export default ({
       </div>)
     )}
   </div>);
+
+ErrorMain.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      errors: PropTypes.object
+    })
+  })
+}
+
+export default ErrorMain;

@@ -1,14 +1,10 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
 
-@connect(
-  undefined,
-  { hardRedirectView }
-)
-export default class extends React.PureComponent {
+class CrudMain extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -26,3 +22,12 @@ export default class extends React.PureComponent {
 
   render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition} />
 }
+
+CrudMain.propTypes = {
+  viewName: PropTypes.string,
+  viewState: PropTypes.object,
+  modelDefinition: PropTypes.object,
+  hardRedirectView: PropTypes.func
+}
+
+export default connect(undefined, { hardRedirectView })(CrudMain)

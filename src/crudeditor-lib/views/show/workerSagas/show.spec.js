@@ -1,12 +1,10 @@
-import { call, put, select, all } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import 'regenerator-runtime/runtime'
 import assert from 'assert'
 
-import { VIEW_SEARCH } from '../../../common/constants';
 import showSaga from './show';
 
 import {
-  INSTANCE_SHOW_FAIL,
   INSTANCE_SHOW_REQUEST,
   INSTANCE_SHOW_SUCCESS
 } from '../constants';

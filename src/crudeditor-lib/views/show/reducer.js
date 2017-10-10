@@ -52,13 +52,6 @@ const defaultStoreStateTemplate = {
   // Instance as saved on server-side.
   persistentInstance: undefined,
 
-  /* Parsed instance as displayed in the form.
-   * {
-   *   <string, field name>: <serializable, field value for communication with the server>,
-   * }
-   */
-  formInstance: undefined,
-
   /* Formated instance as displayed in the form.
    * {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,

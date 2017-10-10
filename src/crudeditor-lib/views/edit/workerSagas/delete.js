@@ -19,7 +19,7 @@ export default function*({
     meta
   }
 }) {
-  yield call(deleteSaga, { // Forwarding thrown errors to the parent saga.
+  yield call(deleteSaga, { // Forwarding thrown error(s) to the parent saga.
     modelDefinition,
     action: {
       payload: { instances },
@@ -36,10 +36,10 @@ export default function*({
     yield call(softRedirectSaga, {
       viewName: VIEW_SEARCH
     });
-  } catch (errors) {
+  } catch (err) {
     yield call(softRedirectSaga, {
       viewName: VIEW_ERROR,
-      viewState: errors
+      viewState: err
     });
   }
 }

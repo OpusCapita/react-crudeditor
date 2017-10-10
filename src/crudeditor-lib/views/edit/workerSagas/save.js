@@ -77,15 +77,15 @@ function* validateSaga(modelDefinition, meta) {
 
   try {
     yield call(modelDefinition.model.validate, instance);
-  } catch (errors) {
+  } catch (err) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
 
   yield put({
@@ -102,26 +102,28 @@ function* updateSaga(modelDefinition, meta) {
     meta
   });
 
-  try {
-    const updated = yield call(modelDefinition.api.update, { instance });
+  let updated;
 
-    yield put({
-      type: INSTANCE_SAVE_SUCCESS,
-      payload: {
-        instance: updated
-      },
-      meta
-    });
-  } catch (errors) {
+  try {
+    updated = yield call(modelDefinition.api.update, { instance });
+  } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
+
+  yield put({
+    type: INSTANCE_SAVE_SUCCESS,
+    payload: {
+      instance: updated
+    },
+    meta
+  });
 }
 
 /*
@@ -135,9 +137,9 @@ export default function*({
     meta
   }
 }) {
-  yield call(validateSaga, modelDefinition, meta); // Forwarding thrown errors to the parent saga.
+  yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  yield call(updateSaga, modelDefinition, meta); // Forwarding thrown errors to the parent saga.
+  yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
@@ -152,15 +154,15 @@ export default function*({
           instance: {} // TODO: build correct pre-filled instance.
         }
       });
-    } catch (errors) {
+    } catch (err) {
       yield put({
         type: VIEW_REDIRECT_FAIL,
-        payload: errors,
+        payload: err,
         error: true,
         meta
       });
 
-      throw errors;
+      throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
     // TODO: get next instance
@@ -176,8 +178,8 @@ export default function*({
           meta
         }
       });
-    } catch (errors) {
-      throw errors;
+    } catch (err) {
+      throw err;
     }
   }
 }

@@ -137,36 +137,38 @@ export default function*({
     meta
   });
 
+  let instances, totalCount;
+
   try {
-    const { instances, totalCount } = yield call(modelDefinition.api.search, {
+    ({ instances, totalCount } = yield call(modelDefinition.api.search, {
       filter: cleanFilter({ searchableFields, filter }),
       sort,
       order,
       max,
       offset
-    });
-
-    yield put({
-      type: INSTANCES_SEARCH_SUCCESS,
-      payload: {
-        instances,
-        totalCount,
-        filter,
-        sort,
-        order,
-        max,
-        offset
-      },
-      meta
-    });
-  } catch (errors) {
+    }));
+  } catch (err) {
     yield put({
       type: INSTANCES_SEARCH_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
+
+  yield put({
+    type: INSTANCES_SEARCH_SUCCESS,
+    payload: {
+      instances,
+      totalCount,
+      filter,
+      sort,
+      order,
+      max,
+      offset
+    },
+    meta
+  });
 }

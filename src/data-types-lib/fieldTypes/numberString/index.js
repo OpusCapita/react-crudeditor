@@ -20,7 +20,7 @@ import {
   UI_TYPE_STRING
 } from '../../constants';
 
-const throwErr = err => { throw err; };
+const throwError = error => { throw error; };
 
 export default {
 
@@ -36,7 +36,7 @@ export default {
     try {
       new Big(value); // eslint-disable-line no-new
       return true;
-    } catch (err) {
+    } catch (error) {
       return false;
     }
   },
@@ -62,7 +62,7 @@ export default {
        * Requires value to be an integer (no floating point).
        * param is boolean.
        */
-      [CONSTRAINT_INTEGER]: param => !param || value.eq(value.round()) || throwErr({
+      [CONSTRAINT_INTEGER]: param => !param || value.eq(value.round()) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_FORBIDDEN_FRACTIONAL_PART,
         message: 'Fractional part is forbidden'
@@ -72,7 +72,7 @@ export default {
        * Specifies the minimum value allowed.
        * param is number|string|Big.
        */
-      [CONSTRAINT_MIN]: param => value.gte(param) || throwErr({
+      [CONSTRAINT_MIN]: param => value.gte(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MIN_DECEEDED,
         message: `Min ${param} is deceeded`
@@ -82,7 +82,7 @@ export default {
        * Specifies the maximum value allowed.
        * param is number|string|Big.
        */
-      [CONSTRAINT_MAX]: param => value.lte(param) || throwErr({
+      [CONSTRAINT_MAX]: param => value.lte(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MAX_EXCEEDED,
         message: `Max ${param} is exceeded`

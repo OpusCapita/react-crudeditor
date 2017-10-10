@@ -16,7 +16,7 @@ import {
   UI_TYPE_STRING
 } from '../../constants';
 
-const throwErr = err => { throw err; };
+const throwError = error => { throw error; };
 
 export default {
 
@@ -38,7 +38,7 @@ export default {
      * Specifies the minimum length allowed.
      * param is a number.
      */
-    [CONSTRAINT_MIN]: param => value.length >= param || throwErr({
+    [CONSTRAINT_MIN]: param => value.length >= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MIN_DECEEDED,
       message: `Min length ${param} is deceeded`
@@ -48,7 +48,7 @@ export default {
      * Specifies the maximum length allowed.
      * param is a number.
      */
-    [CONSTRAINT_MAX]: param => value.length <= param || throwErr({
+    [CONSTRAINT_MAX]: param => value.length <= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MAX_EXCEEDED,
       message: `Max length ${param} is exceeded`

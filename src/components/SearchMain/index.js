@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 
 import './SearchMain.less';
 
-export default
 class SearchMain extends Component {
   handleCreate = (e) => {
     this.props.model.actions.createInstance();
@@ -40,3 +39,11 @@ class SearchMain extends Component {
     );
   }
 }
+
+SearchMain.propTypes = {
+  model: PropTypes.shape({
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default SearchMain;

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
-export default ({
+const ErrorMain = ({
   model: {
     data: { errors },
     actions: { goHome }
@@ -22,3 +23,13 @@ export default ({
     <Button bsStyle='link' onClick={goHome} key="Cancel">Home</Button>
   </div>
 );
+
+ErrorMain.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      errors: PropTypes.array
+    })
+  })
+}
+
+export default ErrorMain;

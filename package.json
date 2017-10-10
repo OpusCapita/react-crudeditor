@@ -7,8 +7,6 @@
     "start": "cross-env NODE_ENV=development && nodemon --watch src/server src/server --exec babel-node --presets es2015,es2016,es2017,stage-0",
     "test": "node ./node_modules/jest/bin/jest.js --no-cache",
     "test:watch": "npm test -- --watch",
-    "babel-node": "node ./node_modules/babel-cli/bin/babel-node.js --presets es2015,es2016,es2017,stage-0",
-    "serve:watch": "cross-env NODE_ENV=development && nodemon --exec yarn babel-node --watch ./src ./src/server/index.js",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./src --fix",
     "test:mocha": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js"
   },
@@ -32,7 +30,7 @@
     "body-parser": "1.17.2",
     "express": "4.15.3",
     "lodash": "4.17.4",
-    "prop-types": "15.5.10",
+    "prop-types": "^15.5.10",
     "query-string": "5.0.0",
     "react": "15.6.1",
     "react-bootstrap": "0.31.1",

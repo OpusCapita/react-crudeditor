@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Panel, Glyphicon } from 'react-bootstrap';
 
-export default
 class EditSelection extends React.Component {
   state = {
     collapsed: false
@@ -37,3 +37,9 @@ class EditSelection extends React.Component {
     );
   }
 }
+
+EditSelection.propTypes = {
+  title: PropTypes.string
+}
+
+export default EditSelection;

@@ -9,14 +9,6 @@ import {
 } from '../../../data-types-lib';
 
 import {
-  EXTRACTING,
-  DELETING,
-  INITIALIZING,
-  READY,
-  REDIRECTING,
-  UNINITIALIZED,
-  UPDATING,
-
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
@@ -39,12 +31,18 @@ import {
 
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_FAIL,
-  VIEW_REDIRECT_SUCCESS,
-
-  VIEW_NAME
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 import {
+  STATUS_EXTRACTING,
+  STATUS_DELETING,
+  STATUS_INITIALIZING,
+  STATUS_READY,
+  STATUS_REDIRECTING,
+  STATUS_UNINITIALIZED,
+  STATUS_UPDATING,
+
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_REQUEST,
 
@@ -116,7 +114,7 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: UNINITIALIZED
+  status: STATUS_UNINITIALIZED
 };
 
 /*
@@ -128,7 +126,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
     return storeState;
   }
 
@@ -137,15 +135,15 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
-    newStoreStateSlice.status = INITIALIZING;
+    newStoreStateSlice.status = STATUS_INITIALIZING;
   } else if (type === VIEW_INITIALIZE_FAIL) {
-    newStoreStateSlice.status = UNINITIALIZED;
+    newStoreStateSlice.status = STATUS_UNINITIALIZED;
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
-    newStoreStateSlice.status = REDIRECTING;
+    newStoreStateSlice.status = STATUS_REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -155,14 +153,14 @@ export default modelDefinition => (
       };
     }
 
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCES_DELETE_REQUEST) {
-    newStoreStateSlice.status = DELETING;
+    newStoreStateSlice.status = STATUS_DELETING;
   } else if (type === INSTANCES_DELETE_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -172,13 +170,13 @@ export default modelDefinition => (
       };
     }
 
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== INITIALIZING) {
-    newStoreStateSlice.status = EXTRACTING;
+  } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== STATUS_INITIALIZING) {
+    newStoreStateSlice.status = STATUS_EXTRACTING;
   } else if (type === INSTANCE_SAVE_REQUEST) {
-    newStoreStateSlice.status = UPDATING;
+    newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
@@ -200,6 +198,7 @@ export default modelDefinition => (
     });
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
+    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
     newStoreStateSlice.divergedField = null;
@@ -231,12 +230,12 @@ export default modelDefinition => (
       )
     });
 
-    if (storeState.status !== INITIALIZING) {
-      newStoreStateSlice.status = READY;
+    if (storeState.status !== STATUS_INITIALIZING) {
+      newStoreStateSlice.status = STATUS_READY;
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== INITIALIZING) {
+  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== STATUS_INITIALIZING) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
     if (!isEqual(storeState.errors.general, errors)) {
@@ -245,7 +244,7 @@ export default modelDefinition => (
       };
     }
 
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_FIELD_CHANGE) {
@@ -306,10 +305,8 @@ export default modelDefinition => (
             }
           };
         }
-      } catch (errors) {
-        if (!Array.isArray(errors)) {
-          errors = [errors];
-        }
+      } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
@@ -319,10 +316,8 @@ export default modelDefinition => (
           };
         }
       }
-    } catch (errors) {
-      if (!Array.isArray(errors)) {
-        errors = [errors];
-      }
+    } catch (err) {
+      const errors = Array.isArray(err) ? err : [err];
 
       newStoreStateSlice.formInstance = {
         [fieldName]: UNPARSABLE_FIELD_VALUE

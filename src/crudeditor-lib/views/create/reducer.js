@@ -8,15 +8,17 @@ import {
   INSTANCE_SAVE,
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
-  INSTANCE_SAVE_FAIL,
-
-  READY,
-  SAVING
+  INSTANCE_SAVE_FAIL
 } from './constants';
+
+import {
+  STATUS_READY,
+  STATUS_CREATING
+} from '../../common/constants';
 
 const defaultStoreStateTemplate = {
   instance: {},
-  status: READY
+  status: STATUS_READY
 };
 
 /*
@@ -38,15 +40,15 @@ export default modelDefinition => (
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_REQUEST) {
-    newStoreStateSlice.status = SAVING;
+    newStoreStateSlice.status = STATUS_CREATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_SUCCESS) {
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
-    newStoreStateSlice.status = READY;
+    newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }

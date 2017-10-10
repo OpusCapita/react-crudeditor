@@ -7,7 +7,7 @@ class EditSelection extends React.Component {
     collapsed: false
   }
 
-  changeVisibility = _ => this.setState({
+  handleSelect = _ => this.setState({
     collapsed: !this.state.collapsed
   })
 
@@ -23,7 +23,7 @@ class EditSelection extends React.Component {
       <Panel
         collapsible={true}
         expanded={!collapsed}
-        onSelect={this.changeVisibility}
+        onSelect={this.handleSelect}
         header={(
           <span style={{ cursor: 'pointer' }}>
             <Glyphicon glyph={`menu-${collapsed ? 'down' : 'up'}`} />

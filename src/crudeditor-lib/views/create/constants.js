@@ -14,11 +14,4 @@ export const
   INSTANCE_SAVE = namespace + '/INSTANCE_SAVE',
   INSTANCE_SAVE_FAIL = namespace + '/INSTANCE_SAVE_FAIL',
   INSTANCE_SAVE_REQUEST = namespace + '/INSTANCE_SAVE_REQUEST',
-  INSTANCE_SAVE_SUCCESS = namespace + '/INSTANCE_SAVE_SUCCESS',
-
-  /* ████████████████████████████████████████████████████*\
-   *███ STATUSES OF THE VIEW (in alphabetical order) ███*
-  \*████████████████████████████████████████████████████*/
-
-  READY = namespace + '/READY',
-  SAVING = namespace + '/SAVING';
+  INSTANCE_SAVE_SUCCESS = namespace + '/INSTANCE_SAVE_SUCCESS';

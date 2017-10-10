@@ -1,45 +1,44 @@
 import { call, put } from 'redux-saga/effects';
 
 import {
-  INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_REQUEST,
-  INSTANCES_DELETE_SUCCESS,
+  INSTANCE_SHOW_FAIL,
+  INSTANCE_SHOW_REQUEST,
+  INSTANCE_SHOW_SUCCESS
 } from '../constants';
 
-/*
+/* //
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).
  */
 export default function*({
   modelDefinition,
   action: {
-    payload: { instances },
+    payload: { instance },
     meta
   }
 }) {
   yield put({
-    type: INSTANCES_DELETE_REQUEST,
+    type: INSTANCE_SHOW_REQUEST,
     meta
   });
 
   try {
-    yield call(
-      modelDefinition.api.delete,
-      { instances }
-    );
+    const persistentInstance = yield call(modelDefinition.api.get, { instance });
 
     yield put({
-      type: INSTANCES_DELETE_SUCCESS,
-      payload: { instances },
+      type: INSTANCE_SHOW_SUCCESS,
+      payload: {
+        instance: persistentInstance
+      },
       meta
     });
-  } catch (errors) {
+  } catch (err) {
     yield put({
-      type: INSTANCES_DELETE_FAIL,
-      payload: errors,
+      type: INSTANCE_SHOW_FAIL,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
 }

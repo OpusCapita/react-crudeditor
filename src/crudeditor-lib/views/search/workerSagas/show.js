@@ -1,9 +1,10 @@
 import { call, put } from 'redux-saga/effects';
 
+import { VIEW_SHOW } from '../../../common/constants';
+
 import {
-  INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_REQUEST,
-  INSTANCES_DELETE_SUCCESS,
+  VIEW_REDIRECT_REQUEST,
+  VIEW_REDIRECT_FAIL
 } from '../constants';
 
 /*
@@ -11,30 +12,25 @@ import {
  */
 export default function*({
   modelDefinition,
+  softRedirectSaga,
   action: {
-    payload: { instances },
+    payload: { instance },
     meta
   }
 }) {
   yield put({
-    type: INSTANCES_DELETE_REQUEST,
+    type: VIEW_REDIRECT_REQUEST,
     meta
   });
 
   try {
-    yield call(
-      modelDefinition.api.delete,
-      { instances }
-    );
-
-    yield put({
-      type: INSTANCES_DELETE_SUCCESS,
-      payload: { instances },
-      meta
+    yield call(softRedirectSaga, {
+      viewName: VIEW_SHOW,
+      viewState: { instance }
     });
   } catch (errors) {
     yield put({
-      type: INSTANCES_DELETE_FAIL,
+      type: VIEW_REDIRECT_FAIL,
       payload: errors,
       error: true,
       meta

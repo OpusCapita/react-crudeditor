@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button, Form, FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
-import isEqual from 'lodash/isEqual';
+import { Button, Form, FormGroup, HelpBlock } from 'react-bootstrap';
 
-import { EMPTY_FIELD_VALUE } from '../../crudeditor-lib/common/constants';
 import './SearchForm.less';
 
 export default class extends React.PureComponent {
@@ -30,7 +28,6 @@ export default class extends React.PureComponent {
       data: {
         fieldErrors: errors,
         formatedFilter,
-        resultFilter,
         searchableFields
       },
       actions: {

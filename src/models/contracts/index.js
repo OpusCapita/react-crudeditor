@@ -58,40 +58,232 @@ export default {
   model: {
     name: 'Contract',
     fields: {
-      'contractBoilerplates': { 'type': 'collection', 'constraints': { 'required': false } },
-      'hierarchyCode': { 'type': 'string', 'constraints': { 'max': 100, 'required': false } },
-      'termsOfPaymentId': { 'type': 'string', 'constraints': { 'max': 20, 'required': false } },
-      'description': { 'type': 'string', 'constraints': { 'max': 100, 'required': false } },
-      'termsOfDeliveryId': { 'type': 'string', 'constraints': { 'max': 20, 'required': false } },
-      'freeShippingBoundary': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 999999999, 'required': false } },
-      'createdOn': { 'type': 'dateString', 'constraints': { 'required': true } },
-      'changedOn': { 'type': 'dateString', 'constraints': { 'required': true } },
-      'contractedCatalogs': { 'type': 'collection', 'constraints': { 'required': false } },
-      'minOrderValueRequired': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'contractedClassificationGroups': { 'type': 'collection', 'constraints': { 'required': false } },
-      'extContractId': { 'type': 'string', 'constraints': { 'max': 10, 'required': false } },
-      'children': { 'type': 'collection', 'constraints': { 'required': false } },
-      'changedBy': { 'type': 'string', 'constraints': { 'required': true } },
-      'translations': { 'type': 'collection', 'constraints': { 'required': false } },
-      'usages': { 'type': 'collection', 'constraints': { 'required': false } },
-      'currencyId': { 'type': 'string', 'constraints': { 'max': 3, 'required': false } },
-      'isFrameContract': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'totalContractedAmount': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 999999999, 'required': false } },
-      'smallVolumeSurcharge': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 999999999, 'required': false } },
-      'provisionings': { 'type': 'collection', 'constraints': { 'required': false } },
-      'isOffer': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'maxOrderValue': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 999999999, 'required': true } },
-      'validRange': { 'type': 'com.jcatalog.core.DateRange', 'constraints': { 'required': false } },
-      'isPreferred': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'isInternal': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'contractCategory': { 'type': 'com.jcatalog.contract.ContractCategory', 'constraints': { 'required': false } },
-      'freightSurcharge': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 999999999, 'required': false } },
-      'isStandard': { 'type': 'boolean', 'constraints': { 'required': false } },
-      'statusId': { 'type': 'numberString', 'constraints': { 'min': 0, 'max': 800, 'integer': true, 'required': false } },
-      'createdBy': { 'type': 'string', 'constraints': { 'required': true } },
-      'extContractLineId': { 'type': 'string', 'constraints': { 'max': 10, 'required': false } },
-      'contractId': { unique: true, 'type': 'string', 'constraints': { 'max': 100, 'required': true } },
-      'parentContract': { 'type': 'com.jcatalog.contract.Contract', 'constraints': { 'required': false } },
+      'contractBoilerplates': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'hierarchyCode': {
+        'type': 'string',
+        'constraints': {
+          'max': 100,
+          'required': false
+        }
+      },
+      'termsOfPaymentId': {
+        'type': 'string',
+        'constraints': {
+          'max': 20,
+          'required': false
+        }
+      },
+      'description': {
+        'type': 'string',
+        'constraints': {
+          'max': 100,
+          'required': false
+        }
+      },
+      'termsOfDeliveryId': {
+        'type': 'string',
+        'constraints': {
+          'max': 20,
+          'required': false
+        }
+      },
+      'freeShippingBoundary': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': false
+        }
+      },
+      'createdOn': {
+        'type': 'dateString',
+        'constraints': {
+          'required': true
+        }
+      },
+      'changedOn': {
+        'type': 'dateString',
+        'constraints': {
+          'required': true
+        }
+      },
+      'contractedCatalogs': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'minOrderValueRequired': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'contractedClassificationGroups': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'extContractId': {
+        'type': 'string',
+        'constraints': {
+          'max': 10,
+          'required': false
+        }
+      },
+      'children': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'changedBy': {
+        'type': 'string',
+        'constraints': {
+          'required': true
+        }
+      },
+      'translations': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'usages': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'currencyId': {
+        'type': 'string',
+        'constraints': {
+          'max': 3,
+          'required': false
+        }
+      },
+      'isFrameContract': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'totalContractedAmount': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': false
+        }
+      },
+      'smallVolumeSurcharge': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': false
+        }
+      },
+      'provisionings': {
+        'type': 'collection',
+        'constraints': {
+          'required': false
+        }
+      },
+      'isOffer': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'maxOrderValue': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': true
+        }
+      },
+      'validRange': {
+        'type': 'com.jcatalog.core.DateRange',
+        'constraints': {
+          'required': false
+        }
+      },
+      'isPreferred': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'isInternal': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'contractCategory': {
+        'type': 'com.jcatalog.contract.ContractCategory',
+        'constraints': {
+          'required': false
+        }
+      },
+      'freightSurcharge': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 999999999,
+          'required': false
+        }
+      },
+      'isStandard': {
+        'type': 'boolean',
+        'constraints': {
+          'required': false
+        }
+      },
+      'statusId': {
+        'type': 'numberString',
+        'constraints': {
+          'min': 0,
+          'max': 800,
+          'integer': true,
+          'required': false
+        }
+      },
+      'createdBy': {
+        'type': 'string',
+        'constraints': {
+          'required': true
+        }
+      },
+      'extContractLineId': {
+        'type': 'string',
+        'constraints': {
+          'max': 10,
+          'required': false
+        }
+      },
+      'contractId': {
+        unique: true,
+        'type': 'string',
+        'constraints': {
+          'max': 100,
+          'required': true
+        }
+      },
+      'parentContract': {
+        'type': 'com.jcatalog.contract.Contract',
+        'constraints': {
+          'required': false
+        }
+      },
       'minOrderValue': {
         'type': 'numberString',
         'constraints': {
@@ -104,11 +296,13 @@ export default {
     },
     validate(instance) {
       if (instance.minOrderValueRequired && instance.minOrderValue === null) {
-        throw [{
+        const err = [{
           code: 400,
           id: 'requiredFieldMissing',
           message: 'minOrderValue must be set when minOrderValueRequired is true'
         }];
+
+        throw err;
       }
 
       return true;
@@ -146,7 +340,7 @@ export default {
         }));
     },
     delete({ instances }) {
-      console.log('Making API-delete call');
+      console.log('Making API-delete call', JSON.stringify(instances));
       return superagent.
         del('/api/contracts').
         send(instances).
@@ -191,6 +385,8 @@ export default {
               isRange = fieldMeta.render.isRange;
               return true;
             }
+
+            return false;
           });
 
           return isRange || filter[fieldName] === null ?

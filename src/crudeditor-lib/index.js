@@ -18,12 +18,14 @@ import { RANGE_FIELD_TYPES } from './views/search/constants';
 import { getViewState as getSearchViewState } from './views/search/selectors';
 import { getViewState as getCreateViewState } from './views/create/selectors';
 import { getViewState as getEditViewState } from './views/edit/selectors';
-// import { getViewState as getShowViewState } from './views/show/selectors';
+import { getViewState as getShowViewState } from './views/show/selectors';
 import { getViewState as getErrorViewState } from './views/error/selectors';
 
 import {
   AUDITABLE_FIELDS,
   DEFAULT_FIELD_TYPE,
+  STATUS_READY,
+
   VIEW_SEARCH,
   VIEW_CREATE,
   VIEW_EDIT,
@@ -35,9 +37,9 @@ const getViewState = {
   [VIEW_SEARCH]: getSearchViewState,
   [VIEW_CREATE]: getCreateViewState,
   [VIEW_EDIT]: getEditViewState,
-  // [VIEW_SHOW  ] : getShowViewState,
+  [VIEW_SHOW]: getShowViewState,
   [VIEW_ERROR]: getErrorViewState
-}
+};
 
 function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
@@ -94,7 +96,7 @@ function fillDefaults(baseModelDefinition) {
       }
     }
 
-    field.render = {
+    field.render = { // eslint-disable-line no-param-reassign
       isRange: field.render ?
         false :
         RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
@@ -131,6 +133,8 @@ function fillDefaults(baseModelDefinition) {
 
 export default baseModelDefinition => {
   const modelDefinition = fillDefaults(baseModelDefinition);
+  let onTransition = null;
+  let lastState = {};
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
@@ -141,32 +145,45 @@ export default baseModelDefinition => {
     }
   };
 
-
   const appStateChangeDetect = ({ getState }) => next => action => {
-    if (action.meta && action.meta.source === 'owner' || !onTransition) {
-      return next(action);
-    }
-
-    const oldStoreState = getState();
     const rez = next(action);
-    const newStoreState = getState();
+    const storeState = getState();
 
-    // XXX: updeep must be used in reducers for below store states comparison to work as expected.
-    if (oldStoreState === newStoreState) {
+    if (storeState.views[storeState.common.activeViewName].status === STATUS_READY) {
       return rez;
     }
 
-    const oldAppState = storeState2appState(oldStoreState);
-    const newAppState = storeState2appState(newStoreState);
+    if (action.meta && action.meta.source === 'owner' || !onTransition) {
+      lastState = {
+        store: storeState
+      };
 
-    if (!isEqual(oldAppState, newAppState)) {
-      onTransition(newAppState);
+      return rez;
     }
+
+    // XXX: updeep must be used in reducers for below store states comparison to work as expected.
+    if (storeState === lastState.store) {
+      return rez;
+    }
+
+    if (lastState.store && !lastState.app) {
+      lastState.app = storeState2appState(lastState.store);
+    }
+
+    const appState = storeState2appState(storeState);
+
+    if (!isEqual(appState, lastState.app)) {
+      onTransition(appState);
+    }
+
+    lastState = {
+      store: storeState,
+      app: appState
+    };
 
     return rez;
   }
 
-  let onTransition = null;
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(

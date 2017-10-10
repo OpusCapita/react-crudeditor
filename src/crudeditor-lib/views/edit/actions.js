@@ -15,12 +15,12 @@ export const
 
   editInstance = ({
     instance,
-    tab: activeTabName
+    tab
   }) => ({
     type: INSTANCE_EDIT,
     payload: {
       instance,
-      activeTabName
+      tab
     }
   }),
 
@@ -71,7 +71,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  exitEdit = _ => ({
+  exitView = _ => ({
     type: VIEW_EXIT
   }),
 

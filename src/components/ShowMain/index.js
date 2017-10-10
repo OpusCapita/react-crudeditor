@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
@@ -10,7 +10,7 @@ const formatEntry = entry => entry.field ? {
   props: {
     entry: {
       name: entry.field,
-      readOnly: entry.readOnly,
+      readOnly: true, // mute all fields
       Component: entry.render.Component,
       valuePropName: entry.render.valueProp.name
     }
@@ -23,14 +23,15 @@ const formatEntry = entry => entry.field ? {
   }
 };
 
-export default ({ model }) => {
+export default (props) => {
+  const { model } = props;
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
-  return (<div>
-    {
-      model.data.generalErrors.length !== 0 &&
-      <div style={{ color: 'red' }}>{JSON.stringify(model.data.generalErrors)}</div>
-    }
+  return (<div className="showview">
+    {model.data.generalErrors.length !== 0 &&
+      <div style={{ color: 'red' }}>
+        {JSON.stringify(model.data.generalErrors)}
+      </div>}
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :

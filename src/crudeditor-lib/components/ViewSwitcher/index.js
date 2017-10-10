@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import SearchView from '../../views/search';
 import CreateView from '../../views/create/containers/Main';
 import EditView from '../../views/edit';
-// import ShowView from '../../views/show';
+import ShowView from '../../views/show';
 import ErrorView from '../../views/error';
 
 import {
@@ -24,7 +24,7 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
     [VIEW_SEARCH]: SearchView,
     [VIEW_CREATE]: CreateView,
     [VIEW_EDIT]: EditView,
-    // [VIEW_SHOW  ]: ShowView,
+    [VIEW_SHOW]: ShowView,
     [VIEW_ERROR]: ErrorView
   })[activeViewName];
 

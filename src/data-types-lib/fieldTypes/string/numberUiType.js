@@ -16,11 +16,13 @@ export default {
     const n = Number(value);
 
     if (n !== parseFloat(value)) {
-      throw {
+      const err = {
         code: ERROR_CODE_FORMATING,
         id: ERROR_INVALID_NUMBER,
         message: 'Invalid number'
       };
+
+      throw err;
     }
 
     return n;

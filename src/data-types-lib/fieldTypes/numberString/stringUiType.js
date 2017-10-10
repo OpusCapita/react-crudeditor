@@ -31,12 +31,14 @@ export default {
 
     try {
       return new Big(optimized).toString();
-    } catch (err) {
-      throw {
+    } catch (ignoredError) {
+      const err = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_NUMBER,
         message: 'Invalid number'
       };
+
+      throw err;
     }
   }
 };

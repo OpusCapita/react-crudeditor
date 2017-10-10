@@ -6,6 +6,7 @@ import Main from '../../../components/SearchMain';
 import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';
 import { deleteInstances } from '../../common/actions';
+import { showInstance } from '../show/actions';
 
 import {
   getDefaultNewInstance,
@@ -45,7 +46,8 @@ export default connect(
     searchInstances,
     toggleSelected,
     toggleSelectedAll,
-    updateFormFilter
+    updateFormFilter,
+    showInstance
   },
   mergeProps
 )(({

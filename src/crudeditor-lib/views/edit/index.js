@@ -8,7 +8,7 @@ import { deleteInstances } from '../../common/actions';
 
 import {
   changeInstanceField,
-  exitEdit,
+  exitView,
   saveInstance,
   saveAndNewInstance,
   saveAndNextInstance,
@@ -16,7 +16,11 @@ import {
   validateInstanceField
 } from './actions';
 
+<<<<<<< HEAD
 const mergeProps = ({ viewModelData }, { ...dispatchProps }, ownProps) => ({
+=======
+const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
+>>>>>>> origin/master
   ...ownProps,
   viewModel: {
     data: viewModelData,
@@ -30,7 +34,7 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitEdit,
+    exitView,
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

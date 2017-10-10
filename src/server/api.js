@@ -1,4 +1,4 @@
-import loki from 'lokijs';
+import Loki from 'lokijs';
 import cloneDeep from 'lodash/cloneDeep';
 
 import data from './data.json';
@@ -12,7 +12,7 @@ const NUMBER_FIELDS = [
   'freightSurcharge'
 ];
 
-const db = new loki();
+const db = new Loki();
 
 const contracts = db.addCollection('contracts', {
   unique: ['contractId']
@@ -62,6 +62,8 @@ module.exports = function(app) {
 
     if (query.instance) {
       // Request for single instance.
+
+      // eslint-disable-next-line no-unused-vars
       const { $loki, meta, ...result } = contracts.findOne({ contractId: query.instance.contractId });
 
       if (result) {
@@ -83,25 +85,29 @@ module.exports = function(app) {
       Object.entries(query.filter).reduce(
         (rez, [name, value]) => ({
           ...rez,
-          [name]:
-            ['statusId', 'isOffer', 'isPreferred', 'isInternal', 'isFrameContract', 'isStandard', 'minOrderValueRequired'].includes(name) &&
-            value ||
-            value.hasOwnProperty('from') &&
-            value.hasOwnProperty('to') &&
-            Object.keys(value).length === 2 &&
-            { '$between': [Number(value.from), Number(value.to)] } ||
-            value.hasOwnProperty('from') &&
-            Object.keys(value) === 1 &&
-            { '$gte': Number(value) } ||
-            value.hasOwnProperty('to') &&
-            Object.keys(value) === 1 &&
-            { '$lte': Number(value) } ||
-            { '$contains': value }
+          [name]: [
+            'statusId',
+            'isOffer',
+            'isPreferred',
+            'isInternal',
+            'isFrameContract',
+            'isStandard',
+            'minOrderValueRequired'
+          ].includes(name) && value ||
+          value.hasOwnProperty('from') && value.hasOwnProperty('to') && Object.keys(value).length === 2 && {
+            '$between': [Number(value.from), Number(value.to)]
+          } ||
+          value.hasOwnProperty('from') && Object.keys(value) === 1 && {
+            '$gte': Number(value)
+          } ||
+          value.hasOwnProperty('to') && Object.keys(value) === 1 && {
+            '$lte': Number(value)
+          } ||
+          { '$contains': value }
         }),
         {}
       ) :
       {};
-    let sort;
 
     let result = contracts.chain().
       find(filter);
@@ -151,6 +157,7 @@ module.exports = function(app) {
 
     if (foundItem) {
       try {
+        // eslint-disable-next-line no-unused-vars
         const { $loki, meta, ...result } = contracts.update({
           ...foundItem,
           ...api2internal(doc)

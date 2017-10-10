@@ -2,15 +2,12 @@ import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import buildModel from '../../../models';
 import createCrud from '../../../crudeditor-lib';
-import { hash2obj, query2obj, suffix2arr, buildURL } from './lib';
+import { hash2obj, buildURL } from './lib';
 
 const VIEW_EDIT = 'edit';
 
-function url2view({ hash, query, suffix }) {
-  hash = hash2obj(hash);
-  query = query2obj(query);
-  suffix = suffix2arr(suffix);
-  let { viewName, viewState } = hash;
+function url2view({ hash }) {
+  let { viewName, viewState } = hash2obj(hash);
 
   return {
     viewName, // undefined or string with view name.
@@ -19,9 +16,11 @@ function url2view({ hash, query, suffix }) {
 }
 
 const entities2crud = {};
-const transitionHandlers = {};
+const handleTransition = {};
 
-function handleTransition(historyPush, baseURL, { viewName, viewState }) {
+function transitionHandler(historyPush, baseURL, view) {
+  let { viewName, viewState } = view;
+
   if (viewName === VIEW_EDIT && viewState.tab === 'customer') {
     const betterTab = prompt('TAB "Customer" is not recommended. You may choose another one:');
 
@@ -42,7 +41,7 @@ function handleTransition(historyPush, baseURL, { viewName, viewState }) {
 
 const buildTransitionHandler = (historyPush, baseURL) =>
   ({ name: viewName, state: viewState }) =>
-    handleTransition(historyPush, baseURL, { viewState, viewName });
+    transitionHandler(historyPush, baseURL, { viewState, viewName });
 
 export default ({
   history: {
@@ -67,8 +66,8 @@ export default ({
   const suffix = pathname.slice(baseURL.length);
   const { viewName, viewState } = url2view({ hash, query, suffix });
 
-  if (!transitionHandlers[baseURL]) {
-    transitionHandlers[baseURL] = buildTransitionHandler(push, baseURL);
+  if (!handleTransition[baseURL]) {
+    handleTransition[baseURL] = buildTransitionHandler(push, baseURL);
   }
 
   if (!entities2crud[entities]) {
@@ -77,5 +76,5 @@ export default ({
   }
 
   const Crud = entities2crud[entities];
-  return <Crud view={{ name: viewName, state: viewState }} onTransition={transitionHandlers[baseURL]} />;
+  return <Crud view={{ name: viewName, state: viewState }} onTransition={handleTransition[baseURL]} />;
 }

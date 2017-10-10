@@ -77,11 +77,13 @@ let NavigationElement = (
             href: 'http://opuscapita.com'
           }
         ]
-      }
+      },
+      { children: 'Contracts', href: '/crud/contracts' }
     ]}
     iconsBarItems={[
       (
         <MenuIcon
+          key={'menu-icon-1'}
           onClick={() => console.log('click!')}
           svg={getIcon('shopping_cart')}
           supTitle="42"
@@ -89,12 +91,14 @@ let NavigationElement = (
         />
       ), (
         <MenuIcon
+          key={'menu-icon-2'}
           onClick={() => console.log('click!')}
           svg={getIcon('list')}
           title="My lists"
         />
       ), (
         <MenuIcon
+          key={'menu-icon-3'}
           onClick={() => console.log('click!')}
           svg={getIcon('apps')}
           title="Applications"
@@ -132,6 +136,7 @@ let NavigationElement = (
         </MenuIcon>
       ), (
         <MenuIcon
+          key={'menu-icon-4'}
           onClick={() => console.log('click!')}
           svg={getIcon('notifications')}
           supTitle="10"
@@ -157,7 +162,11 @@ let NavigationElement = (
             <Notification
               svg={getIcon('check')}
               svgClassName="fill-success"
-              message={<span>Full report for Neon Lights Oy you requester is ready. <a href="#">See full results</a></span>}
+              message={
+                <span>
+                  Full report for Neon Lights Oy you requester is ready. <a href="#">See full results</a>
+                </span>
+              }
               dateTime="20/02/2017"
             />
             <Notification
@@ -169,7 +178,11 @@ let NavigationElement = (
             <Notification
               svg={getIcon('notifications_active')}
               svgClassName="fill-warning"
-              message={<span>Your 5 invoices are highlighted as urgent for approval <a href="#">Show me those</a></span>}
+              message={
+                <span>
+                  Your 5 invoices are highlighted as urgent for approval <a href="#">Show me those</a>
+                </span>
+              }
               dateTime="20/02/2017"
             />
             <div className="oc-notifications__more-container">
@@ -182,6 +195,7 @@ let NavigationElement = (
       ),
       (
         <MenuIcon
+          key={'menu-icon-5'}
           onClick={() => console.log('click!')}
           title="Account settings"
           label="Alexey"

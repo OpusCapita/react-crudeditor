@@ -34,7 +34,7 @@ export default {
     }
 
     try {
-      new Big(value);
+      new Big(value); // eslint-disable-line no-new
       return true;
     } catch (err) {
       return false;
@@ -53,8 +53,8 @@ export default {
   },
 
 
-  buildValidator(value) {
-    value = new Big(value);
+  buildValidator(origValue) {
+    const value = new Big(origValue);
 
     return {
 

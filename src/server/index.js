@@ -1,4 +1,4 @@
-const path = require('path');
+// const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -45,7 +45,10 @@ app.get('/favicon.ico', (req, res) => res.sendStatus(204));
 
 app.get(`*/${webpackDevConfig.output.filename}`, function(req, res) {
   // Get the bundle.js from the fileSystem
-  const htmlBuffer = webpackDevMiddleware.fileSystem.readFileSync(`${webpackDevConfig.output.path}/${webpackDevConfig.output.filename}`)
+  const htmlBuffer = webpackDevMiddleware.fileSystem.readFileSync(
+    `${webpackDevConfig.output.path}/${webpackDevConfig.output.filename}`
+  );
+
   res.send(htmlBuffer.toString())
 });
 

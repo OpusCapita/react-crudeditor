@@ -66,17 +66,17 @@ let buildURL = ({ base, query, hash }) => {
 
   // ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
-  toNaturalNumber = str => {
+  toNaturalNumber = arg => {
     // The function returns natural number if input argument is natural number or natural number string,
     // undefined otherwise.
-    let n;
+    let n, str;
 
-    if (typeof str === 'string') {
-      str = trimLeadingZeros(str);
+    if (typeof arg === 'string') {
+      str = trimLeadingZeros(arg);
       n = Math.floor(Number(str));
-    } else if (typeof str === 'number') {
-      str = String(n);
-      n = Math.floor(str);
+    } else if (typeof arg === 'number') {
+      str = String(arg);
+      n = Math.floor(arg);
     } else {
       return undefined;
     }
@@ -88,17 +88,17 @@ let buildURL = ({ base, query, hash }) => {
 
   // ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
-  toWholeNumber = str => {
+  toWholeNumber = arg => {
     // The function returns whole number if input argument is whole number or whole number string,
     // undefined otherwise.
-    let n;
+    let n, str;
 
-    if (typeof str === 'string') {
-      str = trimLeadingZeros(str);
+    if (typeof arg === 'string') {
+      str = trimLeadingZeros(arg);
       n = Math.floor(Number(str));
-    } else if (typeof str === 'number') {
-      str = String(n);
-      n = Math.floor(str);
+    } else if (typeof arg === 'number') {
+      str = String(arg);
+      n = Math.floor(arg);
     } else {
       return undefined;
     }
@@ -110,17 +110,17 @@ let buildURL = ({ base, query, hash }) => {
 
   // ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
-  toInteger = str => {
+  toInteger = arg => {
     // The function returns integer if input argument is integer or integer string,
     // undefined otherwise.
-    let n;
+    let n, str;
 
-    if (typeof str === 'string') {
-      str = trimLeadingZeros(str);
+    if (typeof arg === 'string') {
+      str = trimLeadingZeros(arg);
       n = Math.floor(Number(str));
-    } else if (typeof str === 'number') {
-      str = String(n);
-      n = Math.floor(str);
+    } else if (typeof arg === 'number') {
+      str = String(arg);
+      n = Math.floor(arg);
     } else {
       return undefined;
     }

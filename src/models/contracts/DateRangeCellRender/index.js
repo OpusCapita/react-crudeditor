@@ -1,9 +1,9 @@
 import React from 'react';
 
-function date2str(date) {
-  if (typeof date === 'string') {
-    date = new Date(Date.parse(date));
-  }
+function date2str(arg) {
+  const date = typeof arg === 'string' ?
+    new Date(Date.parse(arg)) :
+    arg;
 
   return [date.getDate(), date.getMonth(), date.getFullYear()].join('/');
 }

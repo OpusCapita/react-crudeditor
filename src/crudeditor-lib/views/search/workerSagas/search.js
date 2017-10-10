@@ -21,16 +21,18 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: {
-      filter,
-      sort,
-      order,
-      max,
-      offset
-    },
+    payload,
     meta = {}
   }
 }) {
+  let {
+    filter,
+    sort,
+    order,
+    max,
+    offset
+  } = payload;
+
   const { searchableFields } = modelDefinition.ui.search;
   const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
 

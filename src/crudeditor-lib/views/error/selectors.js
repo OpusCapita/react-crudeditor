@@ -1,9 +1,6 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-
-import {
-  REDIRECTING,
-  VIEW_NAME
-} from './constants';
+import { VIEW_NAME } from './constants';
+import { STATUS_REDIRECTING } from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -17,5 +14,5 @@ export const
 
   getViewModelData = wrapper(storeState => ({
     errors: storeState.errors,
-    isLoading: storeState.status === REDIRECTING
+    isLoading: storeState.status === STATUS_REDIRECTING
   }));

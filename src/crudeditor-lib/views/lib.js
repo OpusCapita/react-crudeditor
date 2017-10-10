@@ -32,6 +32,37 @@ const defaultFieldRenders = {
   }
 };
 
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+export const buildFieldRender = ({
+  render: customRender,
+  type: fieldType
+}) => {
+  const render = customRender ||
+    defaultFieldRenders[fieldType] ||
+    (_ => {
+      throw new TypeError(
+        `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
+      );
+    })();
+
+  if (!render.valueProp) {
+    render.valueProp = {};
+  }
+
+  if (!render.valueProp.name) {
+    render.valueProp.name = 'value';
+  }
+
+  if (!render.valueProp.type) {
+    render.valueProp.type = 'string';
+  }
+
+  return render;
+};
+
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
 const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
@@ -48,6 +79,8 @@ const buildDefaultFormLayout = ({
     })
   }));
 
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
 const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, render }) => ({
   field: fieldId,
 
@@ -61,16 +94,20 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, r
   })
 });
 
-const sectionLayout = ({ name: sectionId }, ...entries) => {
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+const sectionLayout = ({ name: sectionId }, ...allEntries) => {
   // entries is always an array, may be empty.
-  entries = entries.filter(entry => !!entry);
+  const entries = allEntries.filter(entry => !!entry);
   entries.section = sectionId;
   return entries.length ? entries : null;
 };
 
-const tabLayout = ({ name: tabId, ...props }, ...entries) => {
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+const tabLayout = ({ name: tabId, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
-  entries = entries.filter(entry => !!entry);
+  const entries = allEntries.filter(entry => !!entry);
   entries.tab = tabId;
 
   Object.keys(props).forEach(name => {
@@ -80,57 +117,26 @@ const tabLayout = ({ name: tabId, ...props }, ...entries) => {
   return entries.length ? entries : null;
 };
 
-export const
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+export const buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => customBuilder ?
+  customBuilder({
+    tab: tabLayout,
+    section: sectionLayout,
+    field: buildFieldLayout(viewName, fieldsMeta)
+  }) :
+  buildDefaultFormLayout(viewName, fieldsMeta);
 
-  buildFieldRender = ({
-    render: customRender,
-    type: fieldType
-  }) => {
-    const render = customRender ||
-      defaultFieldRenders[fieldType] ||
-      (_ => {
-        throw new TypeError(
-          `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
-        );
-      })();
+// █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    if (!render.valueProp) {
-      render.valueProp = {};
-    }
+export const getLogicalKeyBuilder = fieldsMeta => {
+  const logicalKeyFields = Object.keys(fieldsMeta).filter(fieldName => fieldsMeta[fieldName].unique);
 
-    if (!render.valueProp.name) {
-      render.valueProp.name = 'value';
-    }
-
-    if (!render.valueProp.type) {
-      render.valueProp.type = 'string';
-    }
-
-    return render;
-  },
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => customBuilder ?
-    customBuilder({
-      tab: tabLayout,
-      section: sectionLayout,
-      field: buildFieldLayout(viewName, fieldsMeta)
-    }) :
-    buildDefaultFormLayout(viewName, fieldsMeta),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  getLogicalKeyBuilder = fieldsMeta => {
-    const logicalKeyFields = Object.keys(fieldsMeta).filter(fieldName => fieldsMeta[fieldName].unique);
-
-    return instance => logicalKeyFields.reduce(
-      (rez, fieldName) => ({
-        ...rez,
-        [fieldName]: instance[fieldName]
-      }),
-      {}
-    )
-  };
+  return instance => logicalKeyFields.reduce(
+    (rez, fieldName) => ({
+      ...rez,
+      [fieldName]: instance[fieldName]
+    }),
+    {}
+  )
+};

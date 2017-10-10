@@ -236,7 +236,7 @@ payload | -
 
 ### *EditorComponent* props.onTransition
 
-A transition handler to be called after [Editor State](#editor-state) changes. Its only argument is [Editor State](#editor-state) object. Usually the function reflects [Editor State](#editor-state) to URL.  It may also change [Editor State](#editor-state) by rendering [*EditorComponent*](#editorcomponent) with new *props*.
+A transition handler to be called after [Editor State](#editor-state) changes to the one with "ready" status. Its only argument is [Editor State](#editor-state) object. Usually the function reflects [Editor State](#editor-state) to URL.  It may also change [Editor State](#editor-state) by rendering [*EditorComponent*](#editorcomponent) with new *props*.
 
 ```javascript
 function ({
@@ -713,6 +713,8 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 
 ### State Structure
 
+Every view *must* have "ready" status defined in its *constants.js* file for [onTransition](#editorcomponent-propsontransition) call to work properly.
+
 ```javascript
 {
   common: {
@@ -786,7 +788,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
         <field name>: <serializable, field value formated to corresponding UI Type>,
         ...
       },
-      status: <"ready"|"saving">
+      status: <"ready"|"saving", create view status>
 
       /*
        * Parsing, Field/Instance Validation and Internal Errors -- see relevant subheadings

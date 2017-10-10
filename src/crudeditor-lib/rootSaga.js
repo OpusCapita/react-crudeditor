@@ -76,12 +76,14 @@ export default function*(modelDefinition) {
    * The view either remains or gets replaced with error view (if initialization failed).
    */
   function* hardRedirectSaga({
-    payload: {
-      viewName = DEFAULT_VIEW,
-      viewState = {}
-    },
+    payload,
     meta: { source } = {}
   }) {
+    let {
+      viewName = DEFAULT_VIEW,
+      viewState = {}
+    } = payload;
+
     let initializeViewSaga = initializeViewSagas[viewName];
 
     if (!initializeViewSaga) {

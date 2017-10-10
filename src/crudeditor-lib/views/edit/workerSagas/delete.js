@@ -1,16 +1,12 @@
 import { call, put } from 'redux-saga/effects';
 
 import deleteSaga from '../../../common/workerSagas/delete';
+import { VIEW_REDIRECT_REQUEST } from '../constants';
 
 import {
   VIEW_ERROR,
   VIEW_SEARCH
 } from '../../../common/constants';
-
-import {
-  VIEW_REDIRECT_REQUEST,
-  VIEW_REDIRECT_FAIL
-} from '../constants';
 
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).

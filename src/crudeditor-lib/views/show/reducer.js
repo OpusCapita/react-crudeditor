@@ -82,16 +82,8 @@ const defaultStoreStateTemplate = {
 
   instanceLabel: undefined,
 
-  // TODO: make errors in Show View the same as errors.general in Edit View, and comment as:
-  // Array of Internal Errors, may be empty.
   errors: {
-
-    // object with keys as field names,
-    // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
-    // (the object has keys for all fields).
-    fields: {},
-
-    // Array of Internal Errors and Instance Validation Errors, may be empty.
+    // Array of Internal Errors, may be empty.
     general: []
   },
 
@@ -161,19 +153,10 @@ export default modelDefinition => (
     newStoreStateSlice.formLayout = u.constant(formLayout);
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
     newStoreStateSlice.persistentInstance = u.constant(instance);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-    newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice.errors = u.constant({
       general: [],
-      fields: Object.keys(instance).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: []
-        }),
-        {}
-      )
     });
 
     newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(

@@ -30,8 +30,6 @@ export const
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
     formatedInstance: storeState.formatedInstance,
-    formInstance: storeState.formInstance, // TODO: either formInstance or persistentInstance is irrelevant for Show View => remove from the store.
-    fieldsErrors: storeState.errors.fields, // TODO: irrelevant for Show View => remove from the store.
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,

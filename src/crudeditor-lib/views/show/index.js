@@ -18,10 +18,7 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition)
   }), {
     selectTab,
-    exitView,
-    // mute onChange & onBlur handlers
-    changeInstanceField: _ => null, // TODO: remove as irrelevant for Show View and change str/components accordingly.
-    validateInstanceField: _ => null // TODO: remove as irrelevant for Show View and change str/components accordingly.
+    exitView
   },
   mergeProps
 )(({

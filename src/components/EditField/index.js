@@ -1,15 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
-export default class extends React.Component {
-  handleChange = value => this.props.model.actions.changeInstanceField({
-    name: this.props.entry.name,
-    value
-  })
-
-  handleBlur = _ => this.props.model.actions.validateInstanceField(this.props.entry.name);
-
+export default class extends Component {
   render() {
     const {
       entry: {
@@ -23,6 +16,10 @@ export default class extends React.Component {
           fieldsMeta,
           fieldsErrors,
           formatedInstance: instance
+        },
+        actions: {
+          changeInstanceField,
+          validateInstanceField
         }
       }
     } = this.props;
@@ -32,6 +29,23 @@ export default class extends React.Component {
     const errors = fieldsErrors && fieldsErrors[fieldName] && fieldsErrors[fieldName].length ?
       fieldsErrors[fieldName].map(({ message }) => message).join('; ') :
       null;
+
+    const fieldInputProps = {
+      id: fieldName,
+      readOnly,
+      [valuePropName]: instance[fieldName]
+    }
+
+    if (validateInstanceField) {
+      fieldInputProps.onBlur = _ => validateInstanceField(fieldName);
+    }
+
+    if (changeInstanceField) {
+      fieldInputProps.onChange = value => changeInstanceField({
+        name: fieldName,
+        value
+      })
+    }
 
     return (
       <FormGroup controlId={fieldName} validationState={errors && 'error'}>
@@ -43,13 +57,7 @@ export default class extends React.Component {
         </Col>
         <Col sm={1} className='text-right' />
         <Col sm={9}>
-          <FieldInput
-            id={fieldName}
-            readOnly={readOnly}
-            {...{ [valuePropName]: instance[fieldName] }}
-            onBlur={this.handleBlur}
-            onChange={this.handleChange}
-          />
+          <FieldInput {...fieldInputProps} />
           {errors && <HelpBlock>{errors}</HelpBlock>}
         </Col>
       </FormGroup>

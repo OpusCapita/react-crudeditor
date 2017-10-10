@@ -12,7 +12,6 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: { instance },
     meta
   }
 }) {
@@ -36,7 +35,6 @@ export default function*({
 
   yield put({
     type: INSTANCE_CREATE_SUCCESS,
-    payload: { instance },
     meta
   });
 }

@@ -17,7 +17,16 @@ import {
 } from './constants';
 
 const defaultStoreStateTemplate = {
-  errors: undefined,
+
+  /*
+   * An array of errors, may be empty. Each error has the following structure:
+   * {
+   *   code: <natural number, error code>,
+   *   ?payload: <any, structure is defined by error code>
+   * }
+   */
+  errors: [],
+
   status: STATUS_UNINITIALIZED
 };
 
@@ -41,10 +50,10 @@ export default modelDefinition => (
   if (~[VIEW_INITIALIZE, VIEW_REDIRECT_FAIL].indexOf(type)) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
-    newStoreStateSlice.errors = u.constant(errors.map(({ code, ...rest }) => ({
+    newStoreStateSlice.errors = errors.map(({ code, ...rest }) => ({
       code: code || ERROR_CODE_INTERNAL,
       ...(Object.keys(rest).length ? { payload: rest.payload || rest } : {})
-    })));
+    }));
 
     newStoreStateSlice.status = STATUS_READY;
 

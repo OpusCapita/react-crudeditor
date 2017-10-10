@@ -9,11 +9,9 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  createInstance = ({ instance }) => {
-    console.log("___createInstance______INSTANCE______\n" + JSON.stringify(instance, null, 2) + "\n__________")
+  createInstance = _ => {
     return ({
-      type: INSTANCE_CREATE,
-      payload: { instance }
+      type: INSTANCE_CREATE
     })
   },
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function date2str(arg) {
   const date = typeof arg === 'string' ?
@@ -8,7 +9,7 @@ function date2str(arg) {
   return [date.getDate(), date.getMonth(), date.getFullYear()].join('/');
 }
 
-export default ({ name, instance }) => {
+const dateRangeCellRender = ({ name, instance }) => {
   const value = instance[name];
 
   return (
@@ -19,3 +20,10 @@ export default ({ name, instance }) => {
     </span>
   );
 };
+
+dateRangeCellRender.propTypes = {
+  name: PropTypes.string,
+  instance: PropTypes.object
+}
+
+export default dateRangeCellRender;

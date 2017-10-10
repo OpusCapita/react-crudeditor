@@ -16,11 +16,7 @@ import {
   validateInstanceField
 } from './actions';
 
-<<<<<<< HEAD
-const mergeProps = ({ viewModelData }, { ...dispatchProps }, ownProps) => ({
-=======
 const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
->>>>>>> origin/master
   ...ownProps,
   viewModel: {
     data: viewModelData,

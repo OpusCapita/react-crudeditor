@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 import './SearchBulkOperationsPanel.less';
 
-export default class extends React.PureComponent {
+class SearchBulkOperationsPanel extends React.PureComponent {
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
 
   render = _ =>
@@ -26,3 +27,14 @@ export default class extends React.PureComponent {
       </div>
     </div>)
 }
+
+SearchBulkOperationsPanel.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      selectedInstances: PropTypes.array
+    }),
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default SearchBulkOperationsPanel;

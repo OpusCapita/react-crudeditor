@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Pagination, Dropdown, MenuItem } from 'react-bootstrap';
 
 import './SearchPaginationPanel.less';
 
-export default class extends React.PureComponent {
+class SearchResultPaginationPanel extends React.PureComponent {
   handlePaginate = activePage => this.props.model.actions.searchInstances({
     offset: (activePage - 1) * this.props.model.data.pageParams.max
   })
@@ -62,3 +63,17 @@ export default class extends React.PureComponent {
     );
   }
 }
+
+SearchResultPaginationPanel.propTypes = {
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      pageParams: PropTypes.shape({
+        max: PropTypes.number
+      }),
+      totalCount: PropTypes.number
+    }),
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
+}
+
+export default SearchResultPaginationPanel;

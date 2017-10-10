@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Nav, NavItem } from 'react-bootstrap';
 
-export default ({
+const EditHeading = ({
   model: {
     data: {
       activeTab: {
@@ -38,3 +39,9 @@ export default ({
       </Nav>
     }
   </div>);
+
+EditHeading.propTypes = {
+  model: PropTypes.object.isRequired
+}
+
+export default EditHeading;

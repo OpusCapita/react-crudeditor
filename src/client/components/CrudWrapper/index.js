@@ -1,5 +1,6 @@
-import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
+import PropTypes from 'prop-types';
+import cloneDeep from 'lodash/cloneDeep';
 import buildModel from '../../../models';
 import createCrud from '../../../crudeditor-lib';
 import { hash2obj, buildURL } from './lib';
@@ -43,7 +44,7 @@ const buildTransitionHandler = (historyPush, baseURL) =>
   ({ name: viewName, state: viewState }) =>
     transitionHandler(historyPush, baseURL, { viewState, viewName });
 
-export default ({
+const CrudWrapper = ({
   history: {
     push
   },
@@ -78,3 +79,10 @@ export default ({
   const Crud = entities2crud[entities];
   return <Crud view={{ name: viewName, state: viewState }} onTransition={handleTransition[baseURL]} />;
 }
+
+CrudWrapper.propTypes = {
+  history: PropTypes.object,
+  match: PropTypes.object
+}
+
+export default CrudWrapper;

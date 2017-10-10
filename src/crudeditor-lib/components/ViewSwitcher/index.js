@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import SearchView from '../../views/search';
@@ -32,6 +33,11 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
     <ViewComponent modelDefinition={modelDefinition} /> :
     <div>Unknown view <i>{activeViewName}</i></div>;
 };
+
+ViewSwitcher.propTypes = {
+  activeViewName: PropTypes.string,
+  modelDefinition: PropTypes.object
+}
 
 export default connect(
   storeState => ({ activeViewName: storeState.common.activeViewName })

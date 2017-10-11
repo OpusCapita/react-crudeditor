@@ -9,7 +9,8 @@ import {
   saveInstance,
   selectTab,
   validateInstanceField,
-  changeInstanceField
+  changeInstanceField,
+  saveAndNewInstance
 } from './actions';
 
 const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps }, ownProps) => ({
@@ -28,7 +29,8 @@ export default connect(
     saveInstance,
     selectTab,
     validateInstanceField,
-    changeInstanceField
+    changeInstanceField,
+    saveAndNewInstance
   },
   mergeProps
 )(({

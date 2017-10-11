@@ -4,7 +4,9 @@ import {
   INSTANCE_SAVE,
   TAB_SELECT,
   INSTANCE_FIELD_VALIDATE,
-  INSTANCE_FIELD_CHANGE
+  INSTANCE_FIELD_CHANGE,
+  AFTER_ACTION_NEW,
+  RESET_FORM
 } from './constants';
 
 export const
@@ -20,9 +22,8 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  saveInstance = ({ instance }) => ({
-    type: INSTANCE_SAVE,
-    payload: { instance }
+  saveInstance = _ => ({
+    type: INSTANCE_SAVE
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -45,6 +46,13 @@ export const
     }
   }),
 
+  saveAndNewInstance = _ => ({
+    type: INSTANCE_SAVE,
+    payload: {
+      afterAction: AFTER_ACTION_NEW
+    }
+  }),
+
   changeInstanceField = ({
     name: fieldName,
     value: fieldNewValue
@@ -54,4 +62,8 @@ export const
       name: fieldName,
       value: fieldNewValue
     }
-  });
+  }),
+
+  resetForm = _ => ({
+    type: RESET_FORM
+  })

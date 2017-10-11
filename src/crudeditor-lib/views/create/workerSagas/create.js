@@ -1,8 +1,6 @@
 import { put } from 'redux-saga/effects';
 
 import {
-  // INSTANCE_CREATE_FAIL,
-  // INSTANCE_CREATE_REQUEST,
   INSTANCE_CREATE_SUCCESS
 } from '../constants';
 
@@ -16,11 +14,6 @@ export default function*({
     meta
   }
 }) {
-  // yield put({
-  //   type: INSTANCE_CREATE_REQUEST,
-  //   meta
-  // });
-
   yield put({
     type: INSTANCE_CREATE_SUCCESS,
     payload: { instance },

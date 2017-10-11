@@ -9,7 +9,6 @@ import {
   VIEW_EXIT,
   TAB_SELECT,
   VIEW_INITIALIZE_REQUEST,
-  VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
 
   VIEW_REDIRECT_SUCCESS
@@ -79,24 +78,13 @@ export default function*({
     meta: { source }
   });
 
-  try {
-    yield call(createSaga, {
-      modelDefinition,
-      action: {
-        payload: { instance },
-        meta: { source }
-      }
-    });
-  } catch (errors) {
-    yield put({
-      type: VIEW_INITIALIZE_FAIL,
-      payload: errors,
-      error: true,
+  yield call(createSaga, {
+    modelDefinition,
+    action: {
+      payload: { instance },
       meta: { source }
-    });
-
-    throw errors; // Initialization errors are forwarded to the parent saga.
-  }
+    }
+  });
 
   yield put({
     type: TAB_SELECT,

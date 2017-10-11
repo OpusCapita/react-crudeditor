@@ -184,6 +184,8 @@ export default baseModelDefinition => {
     const appState = storeState2appState(storeState);
 
     if (!isEqual(appState, lastState.app)) {
+      console.log("sending");
+      console.log(appState);
       onTransition(appState);
     }
 
@@ -226,7 +228,13 @@ export default baseModelDefinition => {
       // either by filling appState and storeState2appState()
       // with default values and EMPTY_FIELD_VALUE in filter fields of Search View,
       // or by removing default values and EMPTY_FIELD_VALUE in appState and storeState2appState().
-      return !isEqual(appState, storeState2appState(store.getState()));
+      console.log("s")
+      console.log(appState);
+      console.log(storeState2appState(store.getState()));
+      console.log("e")
+      const eq = isEqual(appState, storeState2appState(store.getState()));
+      console.log(eq)
+      return !eq
     }
 
     render = _ =>

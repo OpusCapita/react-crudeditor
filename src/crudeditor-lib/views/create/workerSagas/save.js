@@ -96,10 +96,8 @@ function* saveSaga(modelDefinition, meta) {
     meta
   });
 
-  let updated;
-
   try {
-    updated = yield call(modelDefinition.api.create, { instance });
+    yield call(modelDefinition.api.create, { instance });
   } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
@@ -113,9 +111,6 @@ function* saveSaga(modelDefinition, meta) {
 
   yield put({
     type: INSTANCE_SAVE_SUCCESS,
-    payload: {
-      instance: updated
-    },
     meta
   });
 }

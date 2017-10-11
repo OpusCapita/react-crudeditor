@@ -142,14 +142,10 @@ export default modelDefinition => (
   } else if (type === INSTANCE_CREATE_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING; // TODO maybe remove this line
   } else if (type === INSTANCE_CREATE_SUCCESS) {
-    // instance arrived here, holy js
     const { instance } = payload;
 
     newStoreStateSlice.status = STATUS_READY;
 
-    // newStoreStateSlice.instance = u.constant(instance);
-
-    // edit copypaste
     const formLayout = modelDefinition.ui.create.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
 
@@ -187,7 +183,7 @@ export default modelDefinition => (
       },
       {}
     );
-
+    console.log("instance >>>>>>>>>" + JSON.stringify(instance, null, 2) + "<<<<<<<< instance")
     console.log("formatedInstance >>>>>>>>>" + JSON.stringify(formatedInstance, null, 2) + "<<<<<<<< formatedInstance")
 
     newStoreStateSlice.formatedInstance = u.constant(formatedInstance);
@@ -210,10 +206,8 @@ export default modelDefinition => (
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
     }
-    // -- edit copypaste
-    //
-  } else if (type === INSTANCE_SAVE_REQUEST) {
-    newStoreStateSlice.status = STATUS_CREATING;
+  // } else if (type === INSTANCE_SAVE_REQUEST) {
+  //   newStoreStateSlice.status = STATUS_CREATING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_SUCCESS) {

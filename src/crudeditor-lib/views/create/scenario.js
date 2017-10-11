@@ -7,7 +7,6 @@ import saveSaga from './workerSagas/save';
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-  TAB_SELECT,
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_SUCCESS,
 
@@ -84,12 +83,6 @@ export default function*({
       payload: { instance },
       meta: { source }
     }
-  });
-
-  yield put({
-    type: TAB_SELECT,
-    payload: { tabName },
-    meta: { source }
   });
 
   yield put({

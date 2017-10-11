@@ -209,7 +209,7 @@ export default baseModelDefinition => {
 
   sagaMiddleware.run(rootSaga, modelDefinition);
 
-  class CrudWrapper extends React.Component {
+  class CrudProvider extends React.Component {
     constructor(...args) {
       super(...args);
       onTransition = this.props.onTransition;
@@ -240,7 +240,7 @@ export default baseModelDefinition => {
     )
   }
 
-  CrudWrapper.propTypes = {
+  CrudProvider.propTypes = {
     view: PropTypes.shape({
       name: PropTypes.string,
       state: PropTypes.object
@@ -248,6 +248,6 @@ export default baseModelDefinition => {
     onTransition: PropTypes.func
   }
 
-  return CrudWrapper
+  return CrudProvider
 };
 

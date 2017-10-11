@@ -11,7 +11,6 @@ import {
 
   INSTANCE_CREATE_REQUEST,
   INSTANCE_CREATE_SUCCESS,
-  INSTANCE_CREATE_FAIL,
 
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
@@ -111,7 +110,7 @@ export default modelDefinition => (
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = READY;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
@@ -128,21 +127,69 @@ export default modelDefinition => (
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_CREATE_REQUEST && storeState.status !== INITIALIZING) {
     newStoreStateSlice.status = EXTRACTING; // TODO maybe remove this line
+  } else if (type === INSTANCE_CREATE_SUCCESS) {
+    // instance arrived here, holy js
+    const { instance } = payload;
+    console.log("instance >>>>>>>>>" + JSON.stringify(instance, null, 2) + "<<<<<<<< instance")
+    newStoreStateSlice.status = READY;
+
+    newStoreStateSlice.instance = u.constant(instance);
+
+    // edit copypaste
+    const formLayout = modelDefinition.ui.create.formLayout(instance).
+      filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
+
+    let hasTabs;
+    let hasSectionsOrFields;
+
+    formLayout.forEach(entry => {
+      hasTabs = hasTabs || entry.tab;
+      hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
+
+      if (hasTabs && hasSectionsOrFields) {
+        throw new Error('formLayout must not have tabs together with sections/fields at top level');
+      }
+    });
+
+    console.log("formLayout >>>>>>>>>" + JSON.stringify(formLayout, null, 2) + "<<<<<<<< formLayout")
+    newStoreStateSlice.formLayout = u.constant(formLayout);
+    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
+    // newStoreStateSlice.persistentInstance = u.constant(instance);
+    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+    // newStoreStateSlice.divergedField = null;
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
+
+    newStoreStateSlice.errors = u.constant({
+      general: [],
+      fields: Object.keys(instance).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: []
+        }),
+        {}
+      )
+    });
+
+    if (storeState.status !== INITIALIZING) {
+      newStoreStateSlice.status = STATUS_READY;
+    }
+    // -- edit copypaste
+    //
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

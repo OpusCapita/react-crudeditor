@@ -3,8 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Main from '../../../components/CreateMain';
 import { getViewModelData } from './selectors';
-import { getDefaultNewInstance } from '../search/selectors';
-import { createInstance } from './actions';
+// import { getDefaultNewInstance } from '../search/selectors';
+// import { createInstance } from './actions';
 
 import {
   exitView,
@@ -17,7 +17,7 @@ const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps },
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      createInstance: createInstance.bind(null, { instance: defaultNewInstance })
+      // createInstance: createInstance.bind(null, { instance: defaultNewInstance })
     }
   }
 });
@@ -25,7 +25,7 @@ const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps },
 export default connect(
   (storeState, { modelDefinition }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
+    // defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
   }), {
     exitView,
     saveInstance

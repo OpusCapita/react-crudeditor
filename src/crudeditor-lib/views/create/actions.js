@@ -9,11 +9,12 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  createInstance = _ => {
-    return ({
-      type: INSTANCE_CREATE
-    })
-  },
+  // search component dispatches it with a newely created instance
+  // listener: search/workerSagas/create.js
+  createInstance = ({ instance }) => ({
+    type: INSTANCE_CREATE,
+    payload: { instance }
+  }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

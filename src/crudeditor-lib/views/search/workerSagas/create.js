@@ -13,18 +13,24 @@ import {
 export default function*({
   modelDefinition,
   softRedirectSaga,
-  action: { meta }
+  action: {
+    // instance should arrive here from search scenario through create/actions.js/createInstance action
+    payload: { instance },
+    meta
+  }
 }) {
   yield put({
     type: VIEW_REDIRECT_REQUEST,
     meta
   });
 
+  console.log("---expect a brand new instance:\n" + JSON.stringify(instance, null, 2) + "\n-------")
+
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_CREATE,
       viewState: {
-        instance: {} // TODO make a cool predefined instance
+        instance
       }
     });
   } catch (errors) {

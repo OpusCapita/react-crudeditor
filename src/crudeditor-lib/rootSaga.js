@@ -1,4 +1,4 @@
-import { call, put, cancel, takeLatest, all, takeEvery } from 'redux-saga/effects';
+import { call, put, cancel, takeLatest } from 'redux-saga/effects';
 
 import searchViewScenario from './views/search/scenario';
 import createViewScenario from './views/create/scenario';
@@ -127,5 +127,5 @@ export default function*(modelDefinition) {
     }
   }
 
-  yield takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga)
+  yield takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga);
 }

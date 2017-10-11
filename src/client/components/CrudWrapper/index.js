@@ -72,7 +72,7 @@ const CrudWrapper = ({
   }
 
   if (!entities2crud[entities]) {
-    const model = buildModel(entities); // TODO: handle unknown entities name. TBD entities?
+    const model = buildModel(entities);
     entities2crud[entities] = createCrud(model);
   }
 

@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime'
 import assert from 'assert'
 
 import showSaga from './show';
+import { getLogicalKeyBuilder } from '../../lib';
 
 import {
   INSTANCE_SHOW_REQUEST,
@@ -11,7 +12,12 @@ import {
 
 describe('show: show saga', () => {
   const arg = {
-    modelDefinition: { api: { get: _ => null } },
+    modelDefinition: {
+      api: { get: _ => null },
+      model: {
+        fields: []
+      }
+    },
     softRedirectSaga: _ => null,
     action: {
       payload: { instance: {
@@ -36,7 +42,9 @@ describe('show: show saga', () => {
   it('should call arg.modelDefinition.api.get', () => {
     assert.deepEqual(
       gen.next().value,
-      call(arg.modelDefinition.api.get, arg.action.payload)
+      call(arg.modelDefinition.api.get, {
+        instance: getLogicalKeyBuilder(arg.modelDefinition.model.fields)(arg.action.payload.instance)
+      })
     );
   });
 

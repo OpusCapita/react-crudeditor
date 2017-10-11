@@ -13,7 +13,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({ // TBD HOW DO WE CREATE AN EMPTY THING HERE?
+  getViewState = wrapper(({
     instance
   }, {
     model: { fields }

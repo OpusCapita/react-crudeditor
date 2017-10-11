@@ -34,9 +34,7 @@ const defaultStoreStateTemplate = {
 
   // instance: <object, an entity instance with predefined field values>
 
-  instance: {
-    // todo...
-  },
+  instance: {},
 
   /* Parsed instance as displayed in the form.
    * {

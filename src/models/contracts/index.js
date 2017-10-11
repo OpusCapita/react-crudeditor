@@ -374,7 +374,7 @@ export default {
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', Component: DateRangeCellRender }]
     }),
-    instanceLabel: instance => instance._objectLabel || '', // TBD what is it? never defined
+    instanceLabel: instance => instance._objectLabel || '',
     create: {
       defaultNewInstance: (({ filter }) => Object.keys(filter).reduce(
         (rez, fieldName) => {

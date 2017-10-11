@@ -7,7 +7,6 @@ import saveSaga from './workerSagas/save';
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-  TAB_SELECT,
 
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,

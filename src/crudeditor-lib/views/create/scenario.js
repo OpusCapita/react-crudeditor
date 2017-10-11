@@ -78,8 +78,6 @@ export default function*({
     meta: { source }
   });
 
-  console.log("create scenario instance: \n" + JSON.stringify(instance) + "\n.......")
-
   try {
     yield call(createSaga, {
       modelDefinition,

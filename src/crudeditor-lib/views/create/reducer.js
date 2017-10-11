@@ -189,7 +189,7 @@ export default modelDefinition => (
     newStoreStateSlice.formatedInstance = u.constant(formatedInstance);
 
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+    newStoreStateSlice.formInstance = u.constant(cloneDeep(formatedInstance));
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice.errors = u.constant({

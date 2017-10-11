@@ -2,10 +2,13 @@ import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { getLogicalKeyBuilder } from '../lib';
 
 import {
-  INITIALIZING,
-  REDIRECTING,
   VIEW_NAME
 } from './constants';
+
+import {
+  STATUS_INITIALIZING,
+  STATUS_REDIRECTING
+} from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -35,7 +38,7 @@ export const
     formatedInstance: storeState.formatedInstance,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),
+    isLoading: ~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME

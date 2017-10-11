@@ -35,15 +35,8 @@ export const
 
   VIEW_REDIRECT_REQUEST = namespace + '/VIEW_REDIRECT_REQUEST',
   VIEW_REDIRECT_FAIL = namespace + '/VIEW_REDIRECT_FAIL',
-  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS',
+  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS'
 
   /* ████████████████████████████████████████████████████*\
    *███ STATUSES OF THE VIEW (in alphabetical order) ███*
   \*████████████████████████████████████████████████████*/
-
-  INITIALIZING = namespace + '/INITIALIZING',
-  READY = namespace + '/READY',
-  REDIRECTING = namespace + '/REDIRECTING',
-  UNINITIALIZED = namespace + '/UNINITIALIZED',
-  UPDATING = namespace + '/UPDATING',
-  EXTRACTING = namespace + '/EXTRACTING';

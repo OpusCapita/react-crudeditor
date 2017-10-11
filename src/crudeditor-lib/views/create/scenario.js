@@ -7,7 +7,7 @@ import saveSaga from './workerSagas/save';
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-
+  TAB_SELECT,
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
@@ -69,7 +69,8 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   viewState: {
-    instance
+    instance,
+    tab: tabName
   },
   source
 }) {
@@ -96,6 +97,12 @@ export default function*({
 
     throw errors; // Initialization errors are forwarded to the parent saga.
   }
+
+  yield put({
+    type: TAB_SELECT,
+    payload: { tabName },
+    meta: { source }
+  });
 
   yield put({
     type: VIEW_INITIALIZE_SUCCESS,

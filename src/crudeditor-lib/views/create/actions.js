@@ -2,7 +2,9 @@ import {
   VIEW_EXIT,
   INSTANCE_CREATE,
   INSTANCE_SAVE,
-  TAB_SELECT
+  TAB_SELECT,
+  INSTANCE_FIELD_VALIDATE,
+  INSTANCE_FIELD_CHANGE
 } from './constants';
 
 export const
@@ -34,4 +36,22 @@ export const
   selectTab = tabName => ({
     type: TAB_SELECT,
     payload: { tabName }
+  }),
+
+  validateInstanceField = fieldName => ({
+    type: INSTANCE_FIELD_VALIDATE,
+    payload: {
+      name: fieldName
+    }
+  }),
+
+  changeInstanceField = ({
+    name: fieldName,
+    value: fieldNewValue
+  }) => ({
+    type: INSTANCE_FIELD_CHANGE,
+    payload: {
+      name: fieldName,
+      value: fieldNewValue
+    }
   });

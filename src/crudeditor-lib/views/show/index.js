@@ -1,32 +1,16 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import { VIEW_NAME } from './constants';
+import { buildFormLayout } from '../lib';
 
-import Main from '../../../components/ShowMain'
-import { getViewModelData } from './selectors'
-import { selectTab, exitView } from './actions'
+export { getViewState } from './selectors';
 
-const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
-  ...ownProps,
-  viewModel: {
-    data: viewModelData,
-    actions: dispatchProps
-  },
-});
+export const getUi = modelDefinition => {
+  const showMeta = modelDefinition.ui.show || {};
 
-export default connect(
-  (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
-  }), {
-    selectTab,
-    exitView
-  },
-  mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
-    {children}
-  </Main>)
-);
+  showMeta.formLayout = buildFormLayout({
+    customBuilder: showMeta.formLayout,
+    viewName: VIEW_NAME,
+    fieldsMeta: modelDefinition.model.fields
+  });
+
+  return showMeta;
+}

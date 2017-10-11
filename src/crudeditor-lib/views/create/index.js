@@ -1,36 +1,16 @@
-import React from 'react';
+import { VIEW_NAME } from './constants';
+import { buildFormLayout } from '../lib';
 
-import { connect } from 'react-redux';
-import Main from '../../../components/CreateMain';
-import { getViewModelData } from './selectors';
+export { getViewState } from './selectors';
 
-import {
-  exitView,
-  saveInstance
-} from './actions';
+export const getUi = modelDefinition => {
+  const createMeta = modelDefinition.ui.create || {};
 
-const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps }, ownProps) => ({
-  ...ownProps,
-  viewModel: {
-    data: viewModelData,
-    actions: dispatchProps
-  }
-});
+  createMeta.formLayout = buildFormLayout({
+    customBuilder: createMeta.formLayout,
+    viewName: VIEW_NAME,
+    fieldsMeta: modelDefinition.model.fields
+  });
 
-export default connect(
-  (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
-  }), {
-    exitView,
-    saveInstance
-  },
-  mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
-    {children}
-  </Main>)
-);
+  return createMeta;
+}

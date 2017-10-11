@@ -6,24 +6,17 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 
-import {
-  buildFieldRender,
-  buildFormLayout
-} from './views/lib';
-
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
-import { RANGE_FIELD_TYPES } from './views/search/constants';
 
-import { getViewState as getSearchViewState } from './views/search/selectors';
-import { getViewState as getCreateViewState } from './views/create/selectors';
-import { getViewState as getEditViewState } from './views/edit/selectors';
-import { getViewState as getShowViewState } from './views/show/selectors';
-import { getViewState as getErrorViewState } from './views/error/selectors';
+import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
+import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
+import { getViewState as getEditViewState, getUi as getEditUi } from './views/edit';
+import { getViewState as getShowViewState, getUi as getShowUi } from './views/show';
+import { getViewState as getErrorViewState } from './views/error';
 
 import {
-  AUDITABLE_FIELDS,
   DEFAULT_FIELD_TYPE,
   STATUS_READY,
 
@@ -42,22 +35,16 @@ const getViewState = {
   [VIEW_ERROR]: getErrorViewState
 };
 
+const getUi = {
+  [VIEW_SEARCH]: getSearchUi,
+  [VIEW_CREATE]: getCreateUi,
+  [VIEW_EDIT]: getEditUi,
+  [VIEW_SHOW]: getShowUi
+};
+
 function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
-
-  if (!modelDefinition.ui) {
-    modelDefinition.ui = {};
-  }
-
-  modelDefinition.ui.instanceLabel = modelDefinition.ui.instanceLabel ?
-    modelDefinition.ui.instanceLabel :
-    ({ _objectLabel }) => _objectLabel;
-
-  if (!modelDefinition.model.validate) {
-    modelDefinition.model.validate = _ => true;
-  }
-
   const fieldsMeta = modelDefinition.model.fields;
 
   Object.keys(fieldsMeta).forEach(fieldName => {
@@ -70,74 +57,23 @@ function fillDefaults(baseModelDefinition) {
     }
   });
 
-  const searchMeta = modelDefinition.ui.search = modelDefinition.ui.search ?
-    modelDefinition.ui.search() :
-    {};
-
-  if (!searchMeta.resultFields) {
-    searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  if (!modelDefinition.model.validate) {
+    modelDefinition.model.validate = _ => true;
   }
 
-  if (!searchMeta.searchableFields) {
-    searchMeta.searchableFields = Object.keys(fieldsMeta).
-      filter(name => AUDITABLE_FIELDS.indexOf(name) === -1).
-      map(name => ({ name }));
+  if (!modelDefinition.ui) {
+    modelDefinition.ui = {};
   }
 
-  searchMeta.searchableFields.forEach(field => {
-    if (field.render) {
-      if (!field.render.Component) {
-        throw new Error(`searchableField "${field.name}" must have render.Component since custom render is specified`);
-      }
-      if (field.render.hasOwnProperty('isRange')) {
-        // field.render has isRange and it is set to true.
-        throw new Error(
-          `searchableField "${field.name}" must not have render.isRange since custom render is specified`
-        );
-      }
+  modelDefinition.ui.instanceLabel = modelDefinition.ui.instanceLabel ?
+    modelDefinition.ui.instanceLabel :
+    ({ _objectLabel }) => _objectLabel;
+
+  Object.keys(getUi).forEach(viewName => {
+    if (getUi[viewName]) {
+      modelDefinition.ui[viewName] = getUi[viewName](modelDefinition);
     }
-
-    field.render = { // eslint-disable-line no-param-reassign
-      isRange: field.render ?
-        false :
-        RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
-
-      ...buildFieldRender({
-        render: field.render,
-        type: fieldsMeta[field.name].type
-      }),
-    };
-  });
-
-  if (!modelDefinition.ui.edit) {
-    modelDefinition.ui.edit = {};
-  }
-
-  if (!modelDefinition.ui.create) {
-    modelDefinition.ui.create = {};
-  }
-
-  if (!modelDefinition.ui.show) {
-    modelDefinition.ui.show = {};
-  }
-
-  modelDefinition.ui.edit.formLayout = buildFormLayout({
-    customBuilder: modelDefinition.ui.edit.formLayout,
-    viewName: VIEW_EDIT,
-    fieldsMeta: modelDefinition.model.fields
-  });
-
-  modelDefinition.ui.create.formLayout = buildFormLayout({
-    customBuilder: modelDefinition.ui.create.formLayout,
-    viewName: VIEW_CREATE,
-    fieldsMeta: modelDefinition.model.fields
-  });
-
-  modelDefinition.ui.show.formLayout = buildFormLayout({
-    customBuilder: modelDefinition.ui.show.formLayout,
-    viewName: VIEW_SHOW,
-    fieldsMeta: modelDefinition.model.fields
-  });
+  })
 
   return modelDefinition;
 }

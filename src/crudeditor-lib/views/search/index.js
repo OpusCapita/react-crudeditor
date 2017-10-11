@@ -1,61 +1,50 @@
-// Edit View container component.
-import React from 'react';
+import { RANGE_FIELD_TYPES } from './constants';
+import { buildFieldRender } from '../lib';
+import { AUDITABLE_FIELDS } from '../../common/constants';
 
-import { connect } from 'react-redux';
-import Main from '../../../components/SearchMain';
-import { createInstance } from '../create/actions';
-import { editInstance } from '../edit/actions';
-import { deleteInstances } from '../../common/actions';
-import { showInstance } from '../show/actions';
+export { getViewState } from './selectors';
 
-import {
-  getDefaultNewInstance,
-  getViewModelData
-} from './selectors';
+export const getUi = modelDefinition => {
+  const fieldsMeta = modelDefinition.model.fields;
 
-import {
-  parseFormFilter,
-  resetFormFilter,
-  searchInstances,
-  toggleSelected,
-  toggleSelectedAll,
-  updateFormFilter
-} from './actions';
+  const searchMeta = modelDefinition.ui.search ?
+    modelDefinition.ui.search() :
+    {};
 
-const mergeProps = ({ defaultNewInstance, viewModelData }, { createInstance, ...dispatchProps }, ownProps) => ({
-  ...ownProps,
-  viewModel: {
-    data: viewModelData,
-    actions: {
-      ...dispatchProps,
-      createInstance: createInstance.bind(null, { instance: defaultNewInstance })
+  if (!searchMeta.resultFields) {
+    searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  }
+
+  if (!searchMeta.searchableFields) {
+    searchMeta.searchableFields = Object.keys(fieldsMeta).
+      filter(name => AUDITABLE_FIELDS.indexOf(name) === -1).
+      map(name => ({ name }));
+  }
+
+  searchMeta.searchableFields.forEach(field => {
+    if (field.render) {
+      if (!field.render.Component) {
+        throw new Error(`searchableField "${field.name}" must have render.Component since custom render is specified`);
+      }
+      if (field.render.hasOwnProperty('isRange')) {
+        // field.render has isRange and it is set to true.
+        throw new Error(
+          `searchableField "${field.name}" must not have render.isRange since custom render is specified`
+        );
+      }
     }
-  },
-});
 
-export default connect(
-  (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition),
-    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
-  }), {
-    createInstance,
-    deleteInstances,
-    editInstance,
-    parseFormFilter,
-    resetFormFilter,
-    searchInstances,
-    toggleSelected,
-    toggleSelectedAll,
-    updateFormFilter,
-    showInstance
-  },
-  mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
-    {children}
-  </Main>)
-);
+    field.render = { // eslint-disable-line no-param-reassign
+      isRange: field.render ?
+        false :
+        RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
+
+      ...buildFieldRender({
+        render: field.render,
+        type: fieldsMeta[field.name].type
+      }),
+    };
+  });
+
+  return searchMeta;
+}

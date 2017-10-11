@@ -68,8 +68,7 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     generalErrors: storeState.errors.general,
-    // TBD maybe cast to boolean?
-    isLoading: ~[
+    isLoading: !!~[
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,

@@ -33,7 +33,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
+    isLoading: !!~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

@@ -32,6 +32,7 @@ export const
     formInstance: storeState.formInstance,
     fieldsErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
+    formatedInstance: storeState.formatedInstance,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
     isLoading: ~[INITIALIZING, REDIRECTING].indexOf(storeState.status),

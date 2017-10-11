@@ -28,24 +28,7 @@ import {
   STATUS_UNINITIALIZED
 } from '../../common/constants';
 
-const findFieldLayout = fieldName => {
-  const layoutWalker = layout => {
-    if (layout.field === fieldName) {
-      return layout;
-    }
-
-    let foundFieldLayout;
-
-    return Array.isArray(layout) &&
-      layout.some(entry => {
-        foundFieldLayout = layoutWalker(entry);
-        return foundFieldLayout;
-      }) &&
-      foundFieldLayout;
-  };
-
-  return layoutWalker;
-}
+import { findFieldLayout } from '../lib';
 
 const defaultStoreStateTemplate = {
 

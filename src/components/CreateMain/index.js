@@ -1,29 +1,42 @@
-import React, { Component } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-// import { formatEntry } from '../lib';
-// import Heading from '../EditHeading';
-// import Tab from '../EditTab';
-// import Section from '../EditSection';
-// import Field from '../EditField';
+import Heading from '../EditHeading';
+import Tab from '../EditTab';
+import Field from '../EditField';
+import { formatEntry } from '../lib';
 
-export default class CreateView extends Component {
-  constructor(props) {
-    super(props)
+const CreateMain = (props) => {
+  const { model } = props;
+  const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
-    // console.log("Create receives props: \n" + JSON.stringify(this.props, null, 2))
-  }
+  return (<div className="showview">
+    {model.data.generalErrors.length !== 0 &&
+      <div style={{ color: 'red' }}>
+        {JSON.stringify(model.data.generalErrors)}
+      </div>}
+    <Heading model={model} />
+    {ActiveTabComponent ?
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+      <Tab model={model}>
+        {
+          model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
+            (<Entry key={supIndex} {...props} model={model}>  {/* either Section or top-level Field */}
+              {
+                fields && fields.map(({ props }, subIndex) =>
+                  <Field key={`${supIndex}_${subIndex}`} {...props} model={model} />
+                )
+              }
+            </Entry>)
+          )
+        }
+      </Tab>
+    }
+  </div>);
+};
 
-  render() {
-    // const { model } = this.props;
-
-    // const { createInstance } = model.actions;
-    // // console.log("------CREATE: \n" + JSON.stringify(createInstance(), null, 2) + "\n-----------")
-    // // const { modelDefinition: { model: { fields } } } = this.props;
-    // const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
-    // console.log("active tab: " + ActiveTabComponent)
-
-    return (<div>
-      hi
-    </div>);
-  }
+CreateMain.propTypes = {
+  model: PropTypes.object.isRequired
 }
+
+export default CreateMain;

@@ -27,8 +27,17 @@ import {
 import {
   STATUS_READY,
   STATUS_CREATING,
-  STATUS_UNINITIALIZED
+  STATUS_UNINITIALIZED,
+  EMPTY_FIELD_VALUE
 } from '../../common/constants';
+
+import { findFieldLayout } from '../lib';
+
+import {
+  format as formatField,
+  // parse as parseField,
+  // validate as validateField
+} from '../../../data-types-lib';
 
 const defaultStoreStateTemplate = {
 
@@ -131,10 +140,10 @@ export default modelDefinition => (
   } else if (type === INSTANCE_CREATE_SUCCESS) {
     // instance arrived here, holy js
     const { instance } = payload;
-    console.log("instance >>>>>>>>>" + JSON.stringify(instance, null, 2) + "<<<<<<<< instance")
+
     newStoreStateSlice.status = READY;
 
-    newStoreStateSlice.instance = u.constant(instance);
+    // newStoreStateSlice.instance = u.constant(instance);
 
     // edit copypaste
     const formLayout = modelDefinition.ui.create.formLayout(instance).
@@ -152,12 +161,35 @@ export default modelDefinition => (
       }
     });
 
-    console.log("formLayout >>>>>>>>>" + JSON.stringify(formLayout, null, 2) + "<<<<<<<< formLayout")
     newStoreStateSlice.formLayout = u.constant(formLayout);
+
+    const defaultInstance = {
+      ...Object.keys(modelDefinition.model.fields).
+        reduce((obj, field) => ({ ...obj, [field]: EMPTY_FIELD_VALUE }), {}),
+      ...instance
+    };
+
+    const formatedInstance = Object.keys(defaultInstance).reduce(
+      (rez, fieldName) => {
+        const fieldLayout = findFieldLayout(fieldName)(formLayout);
+        return fieldLayout ? {
+          ...rez,
+          [fieldName]: formatField({
+            value: defaultInstance[fieldName],
+            type: modelDefinition.model.fields[fieldName].type,
+            targetType: fieldLayout.render.valueProp.type
+          })
+        } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
+      },
+      {}
+    );
+
+    console.log("formatedInstance >>>>>>>>>" + JSON.stringify(formatedInstance, null, 2) + "<<<<<<<< formatedInstance")
+
+    newStoreStateSlice.formatedInstance = u.constant(formatedInstance);
+
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
-    // newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-    // newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice.errors = u.constant({

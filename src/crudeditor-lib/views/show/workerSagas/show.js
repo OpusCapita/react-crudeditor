@@ -1,5 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 
+import { getLogicalKeyBuilder } from '../../lib';
+
 import {
   INSTANCE_SHOW_FAIL,
   INSTANCE_SHOW_REQUEST,
@@ -24,7 +26,9 @@ export default function*({
   let persistentInstance;
 
   try {
-    persistentInstance = yield call(modelDefinition.api.get, { instance });
+    persistentInstance = yield call(modelDefinition.api.get, {
+      instance: getLogicalKeyBuilder(modelDefinition.model.fields)(instance)
+    });
   } catch (err) {
     yield put({
       type: INSTANCE_SHOW_FAIL,

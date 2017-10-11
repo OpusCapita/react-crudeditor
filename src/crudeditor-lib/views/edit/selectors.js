@@ -40,7 +40,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[
+    isLoading: !!~[
       STATUS_EXTRACTING,
       STATUS_DELETING,
       STATUS_INITIALIZING,

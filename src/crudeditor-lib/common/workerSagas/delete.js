@@ -1,4 +1,5 @@
 import { call, put } from 'redux-saga/effects';
+import { getLogicalKeyBuilder } from '../../views/lib';
 
 import {
   INSTANCES_DELETE_FAIL,
@@ -21,11 +22,12 @@ export default function*({
     meta
   });
 
+  const logicalKeyBuilder = getLogicalKeyBuilder(modelDefinition.model.fields);
+
   try {
-    yield call(
-      modelDefinition.api.delete,
-      { instances }
-    );
+    yield call(modelDefinition.api.delete, {
+      instances: instances.map(logicalKeyBuilder)
+    });
   } catch (err) {
     yield put({
       type: INSTANCES_DELETE_FAIL,

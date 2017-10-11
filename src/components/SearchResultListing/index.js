@@ -119,7 +119,7 @@ class SearchResultListing extends React.PureComponent {
                 (<tr key={`tr-${JSON.stringify(instance)}`}>
                   <td>
                     <Checkbox
-                      checked={~selectedInstances.indexOf(instance)}
+                      checked={!!~selectedInstances.indexOf(instance)}
                       onChange={this.handleToggleSelected(instance)}
                     />
                   </td>
@@ -186,7 +186,7 @@ SearchResultListing.propTypes = {
       selectedInstances: PropTypes.array,
       resultFields: PropTypes.array,
       sortParams: PropTypes.object,
-      isLoading: PropTypes.number
+      isLoading: PropTypes.bool
     }),
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired

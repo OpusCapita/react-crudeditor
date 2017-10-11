@@ -66,12 +66,12 @@ export const buildFieldRender = ({
 const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
-}) => Object.keys(fieldsMeta).
+}) => _ => Object.keys(fieldsMeta).
   filter(name => ~[VIEW_SHOW, VIEW_EDIT].indexOf(viewName) || AUDITABLE_FIELDS.indexOf(name) === -1).
   map(name => ({
     field: name,
     readOnly: viewName === VIEW_EDIT && (
-      ~AUDITABLE_FIELDS.indexOf(name) || // Audiatable fields are read-only in Edit View.
+      !!~AUDITABLE_FIELDS.indexOf(name) || // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
     ),
     render: buildFieldRender({
@@ -125,7 +125,7 @@ export const buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => cust
     section: sectionLayout,
     field: buildFieldLayout(viewName, fieldsMeta)
   }) :
-  buildDefaultFormLayout(viewName, fieldsMeta);
+  buildDefaultFormLayout({ viewName, fieldsMeta });
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

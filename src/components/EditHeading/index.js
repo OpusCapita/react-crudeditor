@@ -26,7 +26,7 @@ const EditHeading = ({
     </h1>
     <br />
     {
-      tabs.length && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+      tabs.length !== 0 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
         {
           tabs.map(({ tab: name, disabled }, index) =>
             (<NavItem eventKey={name} disabled={!!disabled} key={index}>

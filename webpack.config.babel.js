@@ -5,10 +5,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const precss = require('precss');
 const webpackConfigUtils = require('webpack-config-utils');
 
-const { getIfUtils, removeEmpty } = webpackConfigUtils;
+const { getIfUtils } = webpackConfigUtils;
 
 module.exports = env => {
-  const { ifProd, ifNotProd } = getIfUtils(env);
+  const { ifNotProd } = getIfUtils(env);
 
   return {
     context: resolve(__dirname, 'src'),

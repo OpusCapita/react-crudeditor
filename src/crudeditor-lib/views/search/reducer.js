@@ -2,7 +2,10 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import { getLogicalKeyBuilder } from '../lib';
+import {
+  getDefaultSortField,
+  getLogicalKeyBuilder
+} from '../lib';
 
 import {
   format as formatField,
@@ -10,6 +13,10 @@ import {
 } from '../../../data-types-lib';
 
 import {
+  DEFAULT_MAX,
+  DEFAULT_OFFSET,
+  DEFAULT_ORDER,
+
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
@@ -174,64 +181,48 @@ const buildFormatedFilter = ({
   {}
 );
 
-export const buildDefaultStoreState = modelDefinition => {
-  const searchMeta = modelDefinition.ui.search;
-  let sortByDefaultIndex = 0;
+export const buildDefaultStoreState = modelDefinition => ({
 
-  searchMeta.resultFields.some(({ sortByDefault }, index) => {
-    if (!!sortByDefault) {
-      sortByDefaultIndex = index;
-      return true;
-    }
+  // Active filter as displayed in Search Result.
+  resultFilter: buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields),
 
-    return false;
-  });
+  // Raw filter as displayed in Search Criteria.
+  formFilter: buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields),
 
-  const defaultStoreState = {
+  // Raw filter as communicated to Search fields React Components.
+  formatedFilter: buildDefaultFormatedFilter(modelDefinition),
 
-    // Active filter as displayed in Search Result.
-    resultFilter: buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields),
+  // Field name or array [fieldName, subFieldName] in case of range a user is entering =>
+  // formatedFilter[fieldName] is up-to-date,
+  // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
+  // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
+  divergedField: null,
 
-    // Raw filter as displayed in Search Criteria.
-    formFilter: buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields),
+  sortParams: {
+    field: getDefaultSortField(modelDefinition.ui.search),
+    order: DEFAULT_ORDER
+  },
+  pageParams: {
+    max: DEFAULT_MAX,
+    offset: DEFAULT_OFFSET
+  },
+  resultInstances: undefined, // XXX: must be undefined until first extraction.
+  selectedInstances: [], // XXX: must be a sub-array of refs from resultInstances.
+  totalCount: undefined,
 
-    // Raw filter as communicated to Search fields React Components.
-    formatedFilter: buildDefaultFormatedFilter(modelDefinition),
+  errors: {
 
-    // Field name or array [fieldName, subFieldName] in case of range a user is entering =>
-    // formatedFilter[fieldName] is up-to-date,
-    // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
-    // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
-    divergedField: null,
+    // object with keys as field names,
+    // values as arrays of Parsing Errors, may not be empty
+    // (the object does not have keys for successfully parsed values).
+    fields: {},
 
-    sortParams: {
-      field: searchMeta.resultFields[sortByDefaultIndex].name,
-      order: 'asc'
-    },
-    pageParams: {
-      max: 30,
-      offset: 0
-    },
-    resultInstances: undefined, // XXX: must be undefined until first extraction.
-    selectedInstances: [], // XXX: must be a sub-array of refs from resultInstances.
-    totalCount: undefined,
+    // Array of Internal Errors, may be empty.
+    general: []
+  },
 
-    errors: {
-
-      // object with keys as field names,
-      // values as arrays of Parsing Errors, may not be empty
-      // (the object does not have keys for successfully parsed values).
-      fields: {},
-
-      // Array of Internal Errors, may be empty.
-      general: []
-    },
-
-    status: STATUS_UNINITIALIZED
-  };
-
-  return defaultStoreState;
-}
+  status: STATUS_UNINITIALIZED
+});
 
 /*
  * XXX:

@@ -193,9 +193,13 @@ offset | `0`
 
 ```javascript
 {
-  instance: <object, an entity instance with predefined field values>
+  ?instance: <object, an entity instance with predefined field values>
 }
 ```
+
+Name | Default
+---|---
+instance | {}
 
 #### *EditorComponent* props.state for *"edit"* and *"show"* Views:
 

@@ -17,6 +17,7 @@ import { getViewState as getShowViewState, getUi as getShowUi } from './views/sh
 import { getViewState as getErrorViewState } from './views/error';
 
 import {
+  DEFAULT_VIEW,
   DEFAULT_FIELD_TYPE,
   STATUS_READY,
 
@@ -85,11 +86,15 @@ export default baseModelDefinition => {
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
+    let viewState = cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
 
-    return {
-      name: activeViewName,
-      state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
+    if (viewState && typeof viewState === 'object' && !Object.keys(viewState)) {
+      viewState = null;
     }
+
+    return viewState ?
+      { name: activeViewName, state: viewState } :
+      (activeViewName === DEFAULT_VIEW ? undefined : { name: activeViewName });
   };
 
   const appStateChangeDetect = ({ getState }) => next => action => {
@@ -149,27 +154,51 @@ export default baseModelDefinition => {
     constructor(...args) {
       super(...args);
       onTransition = this.props.onTransition;
+      console.log('constructor view', this.props.view);
     }
 
     componentWillReceiveProps(props) {
       onTransition = props.onTransition;
     }
 
-    shouldComponentUpdate({ view: appState }) {
+    shouldComponentUpdate({ view }) {
       // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
 
-      // TODO: more sofisticated comparison
-      // either by filling appState and storeState2appState()
-      // with default values and EMPTY_FIELD_VALUE in filter fields of Search View,
-      // or by removing default values and EMPTY_FIELD_VALUE in appState and storeState2appState().
-      return !isEqual(appState, storeState2appState(store.getState()));
+      console.log('shouldComponentUpdate view', view);
+      let newView = cloneDeep(view);
+
+      if (newView) {
+        if (newView.state && typeof newView.state === 'object' && !Object.keys(newView.state).length) {
+          delete newView.state;
+        }
+        if (!newView.state && (!newView.name || newView.name === DEFAULT_VIEW)) {
+          newView = null;
+        } else if (newView.state && !newView.name) {
+          newView.name = DEFAULT_VIEW;
+        }
+      }
+
+      /*
+       * By now, newView can
+       *   -- be falsy, if name is DEFAULT_VIEW and state is {},
+       *   -- have only name, if name is not DEFAULT_VIEW and state is {},
+       *   -- have both name and state, if state is not {}.
+       * => newView cannot have only state.
+       */
+
+      const currentView = storeState2appState(store.getState());
+
+      // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
+      return !newView && !currentView ?
+        false :
+        !isEqual(newView, currentView);
     }
 
     render = _ =>
       (<Provider store={store}>
         <Main
-          viewName={this.props.view.name}
-          viewState={this.props.view.state}
+          viewName={this.props.view ? this.props.view.name : undefined}
+          viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
         />
       </Provider>)

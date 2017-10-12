@@ -7,14 +7,7 @@ import { hash2obj, buildURL } from './lib';
 
 const VIEW_EDIT = 'edit';
 
-function url2view({ hash }) {
-  let { viewName, viewState } = hash2obj(hash);
-
-  return {
-    viewName, // undefined or string with view name.
-    viewState // Object, may be empty.
-  };
-}
+const url2view = ({ hash }) => hash2obj(hash);
 
 const entities2crud = {};
 const handleTransition = {};
@@ -40,9 +33,7 @@ function transitionHandler(historyPush, baseURL, view) {
   }));
 }
 
-const buildTransitionHandler = (historyPush, baseURL) =>
-  ({ name: viewName, state: viewState }) =>
-    transitionHandler(historyPush, baseURL, { viewState, viewName });
+const buildTransitionHandler = (historyPush, baseURL) => view => transitionHandler(historyPush, baseURL, view);
 
 const CrudWrapper = ({
   history: {
@@ -65,7 +56,7 @@ const CrudWrapper = ({
   }
 
   const suffix = pathname.slice(baseURL.length);
-  const { viewName, viewState } = url2view({ hash, query, suffix });
+  const view = url2view({ hash, query, suffix });
 
   if (!handleTransition[baseURL]) {
     handleTransition[baseURL] = buildTransitionHandler(push, baseURL);
@@ -77,7 +68,7 @@ const CrudWrapper = ({
   }
 
   const Crud = entities2crud[entities];
-  return <Crud view={{ name: viewName, state: viewState }} onTransition={handleTransition[baseURL]} />;
+  return <Crud view={view} onTransition={handleTransition[baseURL]} />;
 }
 
 CrudWrapper.propTypes = {

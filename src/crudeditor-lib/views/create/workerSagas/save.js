@@ -130,13 +130,13 @@ export default function*({
 
   yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  // if (afterAction === AFTER_ACTION_NEW) {
-  //   yield call(createSaga, {
-  //     modelDefinition,
-  //     action: {
-  //       payload: { instance: {} },
-  //       meta
-  //     }
-  //   })
-  // }
+  if (afterAction === AFTER_ACTION_NEW) {
+    yield call(createSaga, {
+      modelDefinition,
+      action: {
+        payload: { instance: {} },
+        meta
+      }
+    })
+  }
 }

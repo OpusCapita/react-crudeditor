@@ -85,7 +85,7 @@ export default baseModelDefinition => {
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
-
+    console.log("activeViewName: " + activeViewName)
     return {
       name: activeViewName,
       state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
@@ -122,6 +122,7 @@ export default baseModelDefinition => {
     if (!isEqual(appState, lastState.app)) {
       console.log("sending");
       console.log(appState);
+      console.log(lastState.app);
       onTransition(appState);
     }
 

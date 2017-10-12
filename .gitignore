@@ -5,6 +5,8 @@
 *.iml
 *.lock
 
+public
+
 /resources/jcatalog/less/jquery-ui-bundle.css
 /resources/jcatalog/less/jcatalog-bootstrap-bundle.css
 /resources/jcatalog/less/jcatalog-bootstrap-extensions-bundle.css

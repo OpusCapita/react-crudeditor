@@ -4,12 +4,12 @@ const namespace = VIEW_CREATE;
 
 export const
   VIEW_NAME = VIEW_CREATE,
+  AFTER_ACTION_NEW = 'new',
 
   /* ████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  AFTER_ACTION_NEW = 'new',
   INSTANCE_CREATE = namespace + '/INSTANCE_CREATE',
   INSTANCE_CREATE_FAIL = namespace + '/INSTANCE_CREATE_FAIL',
   INSTANCE_CREATE_REQUEST = namespace + '/INSTANCE_CREATE_REQUEST',
@@ -36,8 +36,4 @@ export const
 
   VIEW_REDIRECT_REQUEST = namespace + '/VIEW_REDIRECT_REQUEST',
   VIEW_REDIRECT_FAIL = namespace + '/VIEW_REDIRECT_FAIL',
-  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS'
-
-  /* ████████████████████████████████████████████████████*\
-   *███ STATUSES OF THE VIEW (in alphabetical order) ███*
-  \*████████████████████████████████████████████████████*/
+  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS';

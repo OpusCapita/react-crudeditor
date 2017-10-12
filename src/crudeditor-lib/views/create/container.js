@@ -13,7 +13,7 @@ import {
   saveAndNewInstance
 } from './actions';
 
-const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps }, ownProps) => ({
+const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,

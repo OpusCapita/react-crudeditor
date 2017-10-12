@@ -6,7 +6,11 @@ import { getViewModelData } from './selectors';
 
 import {
   exitView,
-  saveInstance
+  saveInstance,
+  selectTab,
+  validateInstanceField,
+  changeInstanceField,
+  saveAndNewInstance
 } from './actions';
 
 const mergeProps = ({ viewModelData, defaultNewInstance }, { ...dispatchProps }, ownProps) => ({
@@ -22,7 +26,11 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition)
   }), {
     exitView,
-    saveInstance
+    saveInstance,
+    selectTab,
+    validateInstanceField,
+    changeInstanceField,
+    saveAndNewInstance
   },
   mergeProps
 )(({

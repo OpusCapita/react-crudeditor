@@ -3,15 +3,11 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
-  INSTANCE_CREATE_REQUEST,
-  INSTANCE_CREATE_SUCCESS,
-
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
 
-  VIEW_INITIALIZE_REQUEST,
-  VIEW_INITIALIZE_SUCCESS,
+  VIEW_INITIALIZED,
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_SUCCESS,
   VIEW_REDIRECT_FAIL,
@@ -28,7 +24,6 @@ import {
   STATUS_UNINITIALIZED,
   EMPTY_FIELD_VALUE,
   STATUS_INITIALIZING,
-  STATUS_EXTRACTING,
   STATUS_REDIRECTING,
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
@@ -97,7 +92,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZED) {
     return storeState;
   }
 
@@ -105,35 +100,11 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === VIEW_INITIALIZE_REQUEST) {
-    newStoreStateSlice.status = STATUS_INITIALIZING;
-  } else if (type === VIEW_INITIALIZE_SUCCESS) {
+  if (type === VIEW_INITIALIZED) {
+    console.log('inside reducer')
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === VIEW_REDIRECT_REQUEST) {
-    newStoreStateSlice.status = STATUS_REDIRECTING;
-  } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
-    newStoreStateSlice.status = STATUS_READY;
-  } else if (type === VIEW_REDIRECT_SUCCESS) {
-    // Reseting the store to initial uninitialized state.
-    newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_CREATE_REQUEST && storeState.status !== STATUS_INITIALIZING) {
-    newStoreStateSlice.status = STATUS_EXTRACTING; // TODO maybe remove this line
-  } else if (type === INSTANCE_CREATE_SUCCESS) {
     const { predefinedFields } = payload;
-
-    newStoreStateSlice.status = STATUS_READY;
 
     const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
@@ -192,9 +163,24 @@ export default modelDefinition => (
       )
     });
 
-    if (storeState.status !== STATUS_INITIALIZING) {
-      newStoreStateSlice.status = STATUS_READY;
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === VIEW_REDIRECT_REQUEST) {
+    newStoreStateSlice.status = STATUS_REDIRECTING;
+  } else if (type === VIEW_REDIRECT_FAIL) {
+    const errors = Array.isArray(payload) ? payload : [payload];
+
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
     }
+
+    newStoreStateSlice.status = STATUS_READY;
+  } else if (type === VIEW_REDIRECT_SUCCESS) {
+    // Reseting the store to initial uninitialized state.
+    newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
 

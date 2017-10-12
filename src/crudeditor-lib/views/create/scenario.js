@@ -1,15 +1,12 @@
 import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
 
-import createSaga from './workerSagas/create';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
 
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-  VIEW_INITIALIZE_REQUEST,
-  VIEW_INITIALIZE_SUCCESS,
-  VIEW_INITIALIZE_FAIL,
+  VIEW_INITIALIZED,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
@@ -76,32 +73,11 @@ export default function*({
   viewState: { predefinedFields },
   source
 }) {
-  yield put({
-    type: VIEW_INITIALIZE_REQUEST,
-    meta: { source }
-  });
-
-  try {
-    yield call(createSaga, {
-      modelDefinition,
-      action: {
-        payload: { predefinedFields },
-        meta: { source }
-      }
-    });
-  } catch (err) {
-    yield put({
-      type: VIEW_INITIALIZE_FAIL,
-      payload: err,
-      error: true,
-      meta: { source }
-    });
-
-    throw err; // Initialization error(s) are forwarded to the parent saga.
-  }
+  console.log('create scenario');
 
   yield put({
-    type: VIEW_INITIALIZE_SUCCESS,
+    type: VIEW_INITIALIZED,
+    payload: { predefinedFields },
     meta: { source }
   });
 

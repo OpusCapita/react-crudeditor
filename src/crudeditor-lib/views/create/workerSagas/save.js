@@ -15,7 +15,7 @@ import {
   VIEW_NAME
 } from '../constants';
 
-import createSaga from './create';
+// import createSaga from './create';
 import editSaga from './edit';
 
 /*
@@ -136,13 +136,13 @@ export default function*({
   const savedInstance = yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
-    yield call(createSaga, {
-      modelDefinition,
-      action: {
-        payload: { instance: {} },
-        meta
-      }
-    })
+    // yield call(createSaga, {
+    //   modelDefinition,
+    //   action: {
+    //     payload: { predefinedFields: {} },
+    //     meta
+    //   }
+    // })
   } else {
     yield call(editSaga, {
       modelDefinition,

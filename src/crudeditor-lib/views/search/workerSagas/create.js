@@ -24,8 +24,6 @@ export default function*({
     meta
   });
 
-  console.log("---expect a brand new instance:\n" + JSON.stringify(instance, null, 2) + "\n-------")
-
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_CREATE,

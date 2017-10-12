@@ -5,8 +5,7 @@ import {
   TAB_SELECT,
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE,
-  AFTER_ACTION_NEW,
-  RESET_FORM
+  AFTER_ACTION_NEW
 } from './constants';
 
 export const
@@ -62,8 +61,4 @@ export const
       name: fieldName,
       value: fieldNewValue
     }
-  }),
-
-  resetForm = _ => ({
-    type: RESET_FORM
-  })
+  });

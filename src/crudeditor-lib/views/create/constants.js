@@ -36,8 +36,7 @@ export const
 
   VIEW_REDIRECT_REQUEST = namespace + '/VIEW_REDIRECT_REQUEST',
   VIEW_REDIRECT_FAIL = namespace + '/VIEW_REDIRECT_FAIL',
-  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS',
-  RESET_FORM = namespace + '/RESET_FORM'
+  VIEW_REDIRECT_SUCCESS = namespace + '/VIEW_REDIRECT_SUCCESS'
 
   /* ████████████████████████████████████████████████████*\
    *███ STATUSES OF THE VIEW (in alphabetical order) ███*

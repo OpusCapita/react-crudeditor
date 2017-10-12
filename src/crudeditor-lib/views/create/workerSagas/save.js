@@ -42,12 +42,12 @@ function* validateSaga(modelDefinition, meta) {
   ] = yield select(({
     views: {
       [VIEW_NAME]: {
-        formInstance,
+        formatedInstance,
         errors
       }
     }
   }) => [
-    formInstance,
+    formatedInstance,
     errors
   ]);
 

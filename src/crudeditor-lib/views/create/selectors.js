@@ -1,5 +1,4 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { getLogicalKeyBuilder } from '../lib';
 
 import {
   VIEW_NAME
@@ -7,7 +6,8 @@ import {
 
 import {
   STATUS_INITIALIZING,
-  STATUS_REDIRECTING
+  STATUS_REDIRECTING,
+  STATUS_EXTRACTING
 } from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
@@ -18,10 +18,8 @@ export const
 
   getViewState = wrapper(({
     instance
-  }, {
-    model: { fields }
   }) => ({
-    instance: getLogicalKeyBuilder(fields)(instance)
+    instance
   })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -38,7 +36,7 @@ export const
     formatedInstance: storeState.formatedInstance,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: ~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
+    isLoading: ~[STATUS_INITIALIZING, STATUS_REDIRECTING, STATUS_EXTRACTING].indexOf(storeState.status),
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME

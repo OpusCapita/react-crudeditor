@@ -127,8 +127,5 @@ export default function*(modelDefinition) {
     }
   }
 
-  yield all([
-    takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga),
-    takeEvery('*', function* (action) { console.log(action.type) })
-  ]);
+  yield takeLatest(VIEW_HARD_REDIRECT, hardRedirectSaga);
 }

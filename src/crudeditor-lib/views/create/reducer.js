@@ -20,8 +20,7 @@ import {
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_VALIDATE_SUCCESS,
   INSTANCE_VALIDATE_FAIL,
-  INSTANCE_FIELD_CHANGE,
-  RESET_FORM
+  INSTANCE_FIELD_CHANGE
 } from './constants';
 
 import {
@@ -105,19 +104,10 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
-  // newStoreStateSlice.formLayout = modelDefinition.ui.create.formLayout({});
-  // newStoreStateSlice.instance = modelDefinition.ui.create.defaultNewInstance(modelDefinition);
-
-  // console.log("TYPES\n" + typeof modelDefinition.ui +
-  // " " + typeof modelDefinition.ui.create +
-  // " " + typeof modelDefinition.ui.create.formLayout);
-
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
     newStoreStateSlice.status = STATUS_INITIALIZING;
-  } else if (type === VIEW_INITIALIZE_FAIL) {
-    newStoreStateSlice.status = STATUS_UNINITIALIZED;
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
 
@@ -163,6 +153,8 @@ export default modelDefinition => (
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
 
+    // create default instance using all existing fields
+    // then rewrite defined values coming from search view
     const defaultInstance = {
       ...Object.keys(modelDefinition.model.fields).
         reduce((obj, field) => ({ ...obj, [field]: EMPTY_FIELD_VALUE }), {}),
@@ -183,13 +175,11 @@ export default modelDefinition => (
       },
       {}
     );
-    console.log("instance >>>>>>>>>" + JSON.stringify(instance, null, 2) + "<<<<<<<< instance")
-    console.log("formatedInstance >>>>>>>>>" + JSON.stringify(formatedInstance, null, 2) + "<<<<<<<< formatedInstance")
 
     newStoreStateSlice.formatedInstance = u.constant(formatedInstance);
 
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(formatedInstance));
+    newStoreStateSlice.formInstance = u.constant(cloneDeep(defaultInstance));
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice.errors = u.constant({
@@ -206,8 +196,8 @@ export default modelDefinition => (
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
     }
-  // } else if (type === INSTANCE_SAVE_REQUEST) {
-  //   newStoreStateSlice.status = STATUS_CREATING;
+  } else if (type === INSTANCE_SAVE_REQUEST) {
+    newStoreStateSlice.status = STATUS_CREATING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_SUCCESS) {

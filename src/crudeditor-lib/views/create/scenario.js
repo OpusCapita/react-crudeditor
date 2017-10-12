@@ -9,7 +9,7 @@ import {
   VIEW_EXIT,
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_SUCCESS,
-
+  VIEW_INITIALIZE_FAIL,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
@@ -80,13 +80,24 @@ export default function*({
     meta: { source }
   });
 
-  yield call(createSaga, {
-    modelDefinition,
-    action: {
-      payload: { instance },
+  try {
+    yield call(createSaga, {
+      modelDefinition,
+      action: {
+        payload: { instance },
+        meta: { source }
+      }
+    });
+  } catch (err) {
+    yield put({
+      type: VIEW_INITIALIZE_FAIL,
+      payload: err,
+      error: true,
       meta: { source }
-    }
-  });
+    });
+
+    throw err; // Initialization error(s) are forwarded to the parent saga.
+  }
 
   yield put({
     type: VIEW_INITIALIZE_SUCCESS,

@@ -85,7 +85,7 @@ export default baseModelDefinition => {
 
   const storeState2appState = storeState => {
     const { activeViewName } = storeState.common;
-    console.log("activeViewName: " + activeViewName)
+
     return {
       name: activeViewName,
       state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
@@ -120,9 +120,6 @@ export default baseModelDefinition => {
     const appState = storeState2appState(storeState);
 
     if (!isEqual(appState, lastState.app)) {
-      console.log("sending");
-      console.log(appState);
-      console.log(lastState.app);
       onTransition(appState);
     }
 
@@ -165,13 +162,7 @@ export default baseModelDefinition => {
       // either by filling appState and storeState2appState()
       // with default values and EMPTY_FIELD_VALUE in filter fields of Search View,
       // or by removing default values and EMPTY_FIELD_VALUE in appState and storeState2appState().
-      console.log("s")
-      console.log(appState);
-      console.log(storeState2appState(store.getState()));
-      console.log("e")
-      const eq = isEqual(appState, storeState2appState(store.getState()));
-      console.log(eq)
-      return !eq
+      return !isEqual(appState, storeState2appState(store.getState()));
     }
 
     render = _ =>

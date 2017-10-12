@@ -15,9 +15,8 @@ import {
   VIEW_NAME
 } from '../constants';
 
-import { INSTANCE_EDIT } from '../constants';
-
 import createSaga from './create';
+import editSaga from './edit';
 
 /*
  * Instance validation
@@ -118,13 +117,7 @@ function* saveSaga(modelDefinition, meta) {
     meta
   });
 
-  if (savedInstance) {
-    yield put({
-      type: INSTANCE_EDIT,
-      payload: { instance: savedInstance },
-      meta
-    });
-  }
+  return savedInstance
 }
 
 /*
@@ -140,13 +133,22 @@ export default function*({
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  const savedInstance = yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield call(createSaga, {
       modelDefinition,
       action: {
         payload: { instance: {} },
+        meta
+      }
+    })
+  } else {
+    yield call(editSaga, {
+      modelDefinition,
+      softRedirectSaga,
+      action: {
+        payload: { instance: savedInstance },
         meta
       }
     })

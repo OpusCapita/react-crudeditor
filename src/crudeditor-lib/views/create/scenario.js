@@ -3,7 +3,6 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 import createSaga from './workerSagas/create';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
-import editSaga from './workerSagas/edit';
 
 import {
   INSTANCE_SAVE,
@@ -11,18 +10,17 @@ import {
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_SUCCESS,
   VIEW_INITIALIZE_FAIL,
-  VIEW_REDIRECT_SUCCESS,
-  INSTANCE_EDIT
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
-    blocking: {},
+    blocking: {
+      [INSTANCE_SAVE]: saveSaga
+    },
     nonBlocking: {
-      [INSTANCE_SAVE]: saveSaga,
-      [VIEW_EXIT]: exitSaga,
-      [INSTANCE_EDIT]: editSaga
+      [VIEW_EXIT]: exitSaga
     }
   }
 

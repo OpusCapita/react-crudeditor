@@ -10,13 +10,13 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: { instance },
+    payload: { predefinedFields },
     meta
   }
 }) {
   yield put({
     type: INSTANCE_CREATE_SUCCESS,
-    payload: { instance },
+    payload: { predefinedFields },
     meta
   });
 }

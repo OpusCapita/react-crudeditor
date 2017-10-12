@@ -11,7 +11,6 @@ import {
   INSTANCE_SAVE_SUCCESS,
 
   VIEW_INITIALIZE_REQUEST,
-  VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_SUCCESS,
@@ -44,9 +43,9 @@ import {
 
 const defaultStoreStateTemplate = {
 
-  // instance: <object, an entity instance with predefined field values>
+  // predefinedFields: <object, an entity instance with predefined field values>
 
-  instance: {},
+  predefinedFields: {},
 
   /* Parsed instance as displayed in the form.
    * {
@@ -132,11 +131,11 @@ export default modelDefinition => (
   } else if (type === INSTANCE_CREATE_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING; // TODO maybe remove this line
   } else if (type === INSTANCE_CREATE_SUCCESS) {
-    const { instance } = payload;
+    const { predefinedFields } = payload;
 
     newStoreStateSlice.status = STATUS_READY;
 
-    const formLayout = modelDefinition.ui.create.formLayout(instance).
+    const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
 
     let hasTabs;
@@ -158,7 +157,7 @@ export default modelDefinition => (
     const defaultInstance = {
       ...Object.keys(modelDefinition.model.fields).
         reduce((obj, field) => ({ ...obj, [field]: EMPTY_FIELD_VALUE }), {}),
-      ...instance
+      ...predefinedFields
     };
 
     const formatedInstance = Object.keys(defaultInstance).reduce(
@@ -180,7 +179,7 @@ export default modelDefinition => (
 
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(defaultInstance));
-    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(defaultInstance);
 
     newStoreStateSlice.errors = u.constant({
       general: [],

@@ -14,9 +14,9 @@ export const
 
   // search component dispatches it with a newely created instance
   // listener: search/workerSagas/create.js
-  createInstance = ({ instance }) => ({
+  createInstance = ({ predefinedFields }) => ({
     type: INSTANCE_CREATE,
-    payload: { instance }
+    payload: { predefinedFields }
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

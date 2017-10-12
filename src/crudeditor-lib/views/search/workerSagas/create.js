@@ -15,7 +15,7 @@ export default function*({
   softRedirectSaga,
   action: {
     // instance should arrive here from search scenario through create/actions.js/createInstance action
-    payload: { instance },
+    payload: { predefinedFields },
     meta
   }
 }) {
@@ -27,7 +27,7 @@ export default function*({
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_CREATE,
-      viewState: { instance }
+      viewState: { predefinedFields }
     });
   } catch (err) {
     yield put({

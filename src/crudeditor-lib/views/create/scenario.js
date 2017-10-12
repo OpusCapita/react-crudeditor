@@ -72,7 +72,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
 export default function*({
   modelDefinition,
   softRedirectSaga,
-  viewState: { instance },
+  viewState: { predefinedFields },
   source
 }) {
   yield put({
@@ -84,7 +84,7 @@ export default function*({
     yield call(createSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
+        payload: { predefinedFields },
         meta: { source }
       }
     });

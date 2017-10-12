@@ -11,7 +11,7 @@ import {
   INSTANCE_VALIDATE_REQUEST,
   INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS,
-
+  VIEW_INITIALIZE,
   VIEW_NAME
 } from '../constants';
 
@@ -136,13 +136,12 @@ export default function*({
   const savedInstance = yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
-    // yield call(createSaga, {
-    //   modelDefinition,
-    //   action: {
-    //     payload: { predefinedFields: {} },
-    //     meta
-    //   }
-    // })
+    // create another instance
+    yield put({
+      type: VIEW_INITIALIZE,
+      payload: { predefinedFields: {} },
+      meta
+    });
   } else {
     yield call(editSaga, {
       modelDefinition,

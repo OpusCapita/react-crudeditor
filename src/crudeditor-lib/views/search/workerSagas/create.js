@@ -29,18 +29,16 @@ export default function*({
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_CREATE,
-      viewState: {
-        instance
-      }
+      viewState: { instance }
     });
-  } catch (errors) {
+  } catch (err) {
     yield put({
       type: VIEW_REDIRECT_FAIL,
-      payload: errors,
+      payload: err,
       error: true,
       meta
     });
 
-    throw errors;
+    throw err;
   }
 }

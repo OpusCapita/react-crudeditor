@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import SearchView from '../../views/search';
-import CreateView from '../../views/create';
-import EditView from '../../views/edit';
-import ShowView from '../../views/show';
-import ErrorView from '../../views/error';
+import SearchView from '../../views/search/container';
+import CreateView from '../../views/create/container';
+import EditView from '../../views/edit/container';
+import ShowView from '../../views/show/container';
+import ErrorView from '../../views/error/container';
 
 import {
   VIEW_SEARCH,

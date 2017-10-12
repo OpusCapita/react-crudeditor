@@ -43,8 +43,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           softRedirectSaga,
           action
         });
-      } catch (errors) {
-        // throw errors;  // Comment out the line to swallow all errors in called task.
+      } catch (err) {
+        // Swallow custom errors.
+        if (err instanceof Error) {
+          throw err;
+        }
       }
     } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
       lastTask = yield fork(function*() {
@@ -54,8 +57,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
             softRedirectSaga,
             action
           });
-        } catch (errors) {
-          // throw errors;  // Comment out the line to swallow all errors in forked task.
+        } catch (err) {
+          // Swallow custom errors.
+          if (err instanceof Error) {
+            throw err;
+          }
         }
       });
     }
@@ -66,10 +72,14 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
 export default function*({
   modelDefinition,
   softRedirectSaga,
+<<<<<<< HEAD
   viewState: {
     instance,
     tab: tabName
   },
+=======
+  viewState: { instance },
+>>>>>>> master
   source
 }) {
   yield put({
@@ -77,6 +87,7 @@ export default function*({
     meta: { source }
   });
 
+<<<<<<< HEAD
   yield call(createSaga, {
     modelDefinition,
     action: {
@@ -84,6 +95,26 @@ export default function*({
       meta: { source }
     }
   });
+=======
+  try {
+    yield call(createSaga, {
+      modelDefinition,
+      action: {
+        payload: { instance },
+        meta: { source }
+      }
+    });
+  } catch (err) {
+    yield put({
+      type: VIEW_INITIALIZE_FAIL,
+      payload: err,
+      error: true,
+      meta: { source }
+    });
+
+    throw err; // Initialization error(s) are forwarded to the parent saga.
+  }
+>>>>>>> master
 
   yield put({
     type: VIEW_INITIALIZE_SUCCESS,

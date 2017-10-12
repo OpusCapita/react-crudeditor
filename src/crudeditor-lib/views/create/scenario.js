@@ -6,7 +6,7 @@ import saveSaga from './workerSagas/save';
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-  VIEW_INITIALIZED,
+  VIEW_INITIALIZE,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
@@ -73,10 +73,8 @@ export default function*({
   viewState: { predefinedFields },
   source
 }) {
-  console.log('create scenario');
-
   yield put({
-    type: VIEW_INITIALIZED,
+    type: VIEW_INITIALIZE,
     payload: { predefinedFields },
     meta: { source }
   });

@@ -7,7 +7,7 @@ import {
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
 
-  VIEW_INITIALIZED,
+  VIEW_INITIALIZE,
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_SUCCESS,
   VIEW_REDIRECT_FAIL,
@@ -23,7 +23,6 @@ import {
   STATUS_CREATING,
   STATUS_UNINITIALIZED,
   EMPTY_FIELD_VALUE,
-  STATUS_INITIALIZING,
   STATUS_REDIRECTING,
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
@@ -92,7 +91,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZED) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE) {
     return storeState;
   }
 
@@ -100,11 +99,9 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (type === VIEW_INITIALIZED) {
-    console.log('inside reducer')
-    newStoreStateSlice.status = STATUS_READY;
-
+  if (type === VIEW_INITIALIZE) {
     const { predefinedFields } = payload;
+    newStoreStateSlice.status = STATUS_READY;
 
     const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
@@ -124,7 +121,7 @@ export default modelDefinition => (
     newStoreStateSlice.formLayout = u.constant(formLayout);
 
     // create default instance using all existing fields
-    // then rewrite defined values coming from search view
+    // then rewrite predefined values coming from search view
     const defaultInstance = {
       ...Object.keys(modelDefinition.model.fields).
         reduce((obj, field) => ({ ...obj, [field]: EMPTY_FIELD_VALUE }), {}),
@@ -141,7 +138,7 @@ export default modelDefinition => (
             type: modelDefinition.model.fields[fieldName].type,
             targetType: fieldLayout.render.valueProp.type
           })
-        } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
+        } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed.
       },
       {}
     );
@@ -189,7 +186,7 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_SAVE_FAIL && storeState.status !== STATUS_INITIALIZING) {
+  } else if (type === INSTANCE_SAVE_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

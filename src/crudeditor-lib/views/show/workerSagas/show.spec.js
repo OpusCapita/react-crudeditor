@@ -10,7 +10,7 @@ import {
   INSTANCE_SHOW_SUCCESS
 } from '../constants';
 
-describe('show: show saga', () => {
+describe('show view: show saga', () => {
   const arg = {
     modelDefinition: {
       api: { get: _ => null },

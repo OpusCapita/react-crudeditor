@@ -1,4 +1,4 @@
-import { call, put, cancel, takeLatest, all, takeEvery } from 'redux-saga/effects';
+import { call, put, cancel, takeLatest } from 'redux-saga/effects';
 
 import searchViewScenario from './views/search/scenario';
 import createViewScenario from './views/create/scenario';

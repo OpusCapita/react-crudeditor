@@ -15,6 +15,8 @@ import {
   VIEW_NAME
 } from '../constants';
 
+import { INSTANCE_EDIT } from '../constants';
+
 import createSaga from './create';
 
 /*
@@ -96,8 +98,10 @@ function* saveSaga(modelDefinition, meta) {
     meta
   });
 
+  let savedInstance;
+
   try {
-    yield call(modelDefinition.api.create, { instance });
+    savedInstance = yield call(modelDefinition.api.create, { instance });
   } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
@@ -113,6 +117,14 @@ function* saveSaga(modelDefinition, meta) {
     type: INSTANCE_SAVE_SUCCESS,
     meta
   });
+
+  if (savedInstance) {
+    yield put({
+      type: INSTANCE_EDIT,
+      payload: { instance: savedInstance },
+      meta
+    });
+  }
 }
 
 /*

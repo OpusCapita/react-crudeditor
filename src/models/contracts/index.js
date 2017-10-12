@@ -349,11 +349,11 @@ export default {
     },
     create({ instance }) {
       console.log('Making API-create call');
-      console.log("----instance-----\n" + JSON.stringify(instance, null, 2) + "\n-------")
       return superagent.
         post('/api/contracts').
         send(instance).
-        accept('json');
+        accept('json').
+        then(({ body: instance }) => instance);
     },
     update({ instance }) {
       console.log('Making API-update call', JSON.stringify(instance));

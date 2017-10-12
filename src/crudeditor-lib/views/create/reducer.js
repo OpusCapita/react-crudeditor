@@ -92,7 +92,7 @@ export default modelDefinition => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
-  if (storeState.status === STATUS_UNINITIALIZED) {
+  if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZED) {
     return storeState;
   }
 
@@ -101,12 +101,10 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZED) {
-    console.log('here')
+    console.log('inside reducer')
     newStoreStateSlice.status = STATUS_READY;
 
     const { predefinedFields } = payload;
-
-    newStoreStateSlice.status = STATUS_READY;
 
     const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
@@ -164,10 +162,6 @@ export default modelDefinition => (
         {}
       )
     });
-
-    if (storeState.status !== STATUS_INITIALIZING) {
-      newStoreStateSlice.status = STATUS_READY;
-    }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {

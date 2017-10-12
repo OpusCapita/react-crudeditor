@@ -74,6 +74,7 @@ export default function*({
   source
 }) {
   console.log('create scenario');
+
   yield put({
     type: VIEW_INITIALIZED,
     payload: { predefinedFields },

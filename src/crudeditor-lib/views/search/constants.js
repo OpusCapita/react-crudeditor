@@ -11,6 +11,10 @@ export const
   VIEW_NAME = VIEW_SEARCH,
   RANGE_FIELD_TYPES = [FIELD_TYPE_DATE_STRING, FIELD_TYPE_NUMBER_STRING],
 
+  DEFAULT_MAX = 30,
+  DEFAULT_OFFSET = 0,
+  DEFAULT_ORDER = 'asc',
+
   /* ████████████████████████████████████████████*\
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/

@@ -53,3 +53,18 @@ export const cleanFilter = ({ searchableFields, filter }) => Object.keys(filter)
   },
   undefined
 );
+
+export const getDefaultSortField = searchMeta => {
+  let sortByDefaultIndex = 0;
+
+  searchMeta.resultFields.some(({ sortByDefault }, index) => {
+    if (sortByDefault) {
+      sortByDefaultIndex = index;
+      return true;
+    }
+
+    return false;
+  });
+
+  return searchMeta.resultFields[sortByDefaultIndex].name;
+};

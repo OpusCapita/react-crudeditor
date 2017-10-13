@@ -1,6 +1,17 @@
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-import { cleanFilter } from './lib';
-import { VIEW_NAME } from './constants';
+
+import {
+  cleanFilter,
+  getDefaultSortField
+} from './lib';
+
+import {
+  DEFAULT_MAX,
+  DEFAULT_OFFSET,
+  DEFAULT_ORDER,
+
+  VIEW_NAME
+} from './constants';
 
 import {
   STATUS_DELETING,
@@ -23,20 +34,20 @@ const _getViewState = ({
   }
 }, {
   ui: {
-    search: { searchableFields }
+    search: searchMeta
   }
 }) => {
   const filter = cleanFilter({
-    searchableFields,
+    searchableFields: searchMeta.searchableFields,
     filter: resultFilter
   });
 
   return {
     ...(filter ? { filter } : {}),
-    sort,
-    order,
-    max,
-    offset
+    ...(sort === getDefaultSortField(searchMeta) ? {} : { sort }),
+    ...(order === DEFAULT_ORDER ? {} : { order }),
+    ...(max === DEFAULT_MAX ? {} : { max }),
+    ...(offset === DEFAULT_OFFSET ? {} : { offset })
   };
 };
 

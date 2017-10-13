@@ -17,6 +17,7 @@ import { getViewState as getShowViewState, getUi as getShowUi } from './views/sh
 import { getViewState as getErrorViewState } from './views/error';
 
 import {
+  DEFAULT_VIEW,
   DEFAULT_FIELD_TYPE,
   STATUS_READY,
 
@@ -83,14 +84,10 @@ export default baseModelDefinition => {
   let onTransition = null;
   let lastState = {};
 
-  const storeState2appState = storeState => {
-    const { activeViewName } = storeState.common;
-
-    return {
-      name: activeViewName,
-      state: cloneDeep(getViewState[activeViewName](storeState, modelDefinition))
-    }
-  };
+  const storeState2appState = storeState => ({
+    name: storeState.common.activeViewName,
+    state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
+  });
 
   const appStateChangeDetect = ({ getState }) => next => action => {
     const rez = next(action);
@@ -155,21 +152,20 @@ export default baseModelDefinition => {
       onTransition = props.onTransition;
     }
 
-    shouldComponentUpdate({ view: appState }) {
-      // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
-
-      // TODO: more sofisticated comparison
-      // either by filling appState and storeState2appState()
-      // with default values and EMPTY_FIELD_VALUE in filter fields of Search View,
-      // or by removing default values and EMPTY_FIELD_VALUE in appState and storeState2appState().
-      return !isEqual(appState, storeState2appState(store.getState()));
-    }
+    // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
+    // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
+    shouldComponentUpdate = ({
+      view: {
+        name = DEFAULT_VIEW,
+        state = {}
+      } = {}
+    }) => !isEqual(storeState2appState(store.getState()), { name, state })
 
     render = _ =>
       (<Provider store={store}>
         <Main
-          viewName={this.props.view.name}
-          viewState={this.props.view.state}
+          viewName={this.props.view ? this.props.view.name : undefined}
+          viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
         />
       </Provider>)

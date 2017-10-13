@@ -135,16 +135,7 @@ export default function*({
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  let savedInstance = {};
-
-  try {
-    savedInstance = yield call(saveSaga, modelDefinition, meta);
-  } catch (err) {
-    yield call(softRedirectSaga, {
-      viewName: VIEW_ERROR,
-      viewState: err
-    });
-  }
+  const savedInstance = yield call(saveSaga, modelDefinition, meta);
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance

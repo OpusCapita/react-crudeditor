@@ -1,26 +1,22 @@
 import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
 
-import createSaga from './workerSagas/create';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
 
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
-
-  VIEW_INITIALIZE_REQUEST,
-  VIEW_INITIALIZE_FAIL,
-  VIEW_INITIALIZE_SUCCESS,
-
+  VIEW_INITIALIZE,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
-    blocking: {},
+    blocking: {
+      [INSTANCE_SAVE]: saveSaga
+    },
     nonBlocking: {
-      [INSTANCE_SAVE]: saveSaga,
       [VIEW_EXIT]: exitSaga
     }
   }
@@ -74,35 +70,12 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
 export default function*({
   modelDefinition,
   softRedirectSaga,
-  viewState: { instance },
+  viewState: { predefinedFields },
   source
 }) {
   yield put({
-    type: VIEW_INITIALIZE_REQUEST,
-    meta: { source }
-  });
-
-  try {
-    yield call(createSaga, {
-      modelDefinition,
-      action: {
-        payload: { instance },
-        meta: { source }
-      }
-    });
-  } catch (err) {
-    yield put({
-      type: VIEW_INITIALIZE_FAIL,
-      payload: err,
-      error: true,
-      meta: { source }
-    });
-
-    throw err; // Initialization error(s) are forwarded to the parent saga.
-  }
-
-  yield put({
-    type: VIEW_INITIALIZE_SUCCESS,
+    type: VIEW_INITIALIZE,
+    payload: { predefinedFields },
     meta: { source }
   });
 

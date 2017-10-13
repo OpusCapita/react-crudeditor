@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import { VIEW_CREATE } from '../../../common/constants';
+import { VIEW_EDIT } from '../../../common/constants';
 
 import {
   VIEW_REDIRECT_REQUEST,
@@ -14,8 +14,7 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   action: {
-    // instance should arrive here from search scenario through create/actions.js/createInstance action
-    payload: { predefinedFields },
+    payload: { instance },
     meta
   }
 }) {
@@ -26,8 +25,8 @@ export default function*({
 
   try {
     yield call(softRedirectSaga, {
-      viewName: VIEW_CREATE,
-      viewState: { predefinedFields }
+      viewName: VIEW_EDIT,
+      viewState: { instance }
     });
   } catch (err) {
     yield put({

@@ -28,7 +28,7 @@ const mergeProps = ({ defaultNewInstance, viewModelData }, { createInstance, ...
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      createInstance: createInstance.bind(null, { instance: defaultNewInstance })
+      createInstance: createInstance.bind(null, { predefinedFields: defaultNewInstance })
     }
   },
 });

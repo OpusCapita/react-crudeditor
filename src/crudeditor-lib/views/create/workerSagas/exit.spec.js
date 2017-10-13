@@ -9,7 +9,7 @@ import {
   VIEW_REDIRECT_REQUEST
 } from '../constants';
 
-describe('show view: exit saga', () => {
+describe('create view: exit saga', () => {
   const arg = {
     modelDefinition: {},
     softRedirectSaga: _ => null,

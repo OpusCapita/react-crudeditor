@@ -352,7 +352,8 @@ export default {
       return superagent.
         post('/api/contracts').
         send(instance).
-        accept('json');
+        accept('json').
+        then(({ body: instance }) => instance);
     },
     update({ instance }) {
       console.log('Making API-update call', JSON.stringify(instance));

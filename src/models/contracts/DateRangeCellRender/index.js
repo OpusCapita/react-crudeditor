@@ -12,13 +12,15 @@ function date2str(arg) {
 const DateRangeCellRender = ({ name, instance }) => {
   const value = instance[name];
 
-  return (
-    <span>
-      {
-        `${value.from ? date2str(value.from) : '...'} - ${value.to ? date2str(value.to) : '...'}`
-      }
-    </span>
-  );
+  return value ?
+    (
+      <span>
+        {
+          `${value.from ? date2str(value.from) : '...'} - ${value.to ? date2str(value.to) : '...'}`
+        }
+      </span>
+    ) :
+    null
 };
 
 DateRangeCellRender.propTypes = {

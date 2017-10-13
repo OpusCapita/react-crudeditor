@@ -54,7 +54,7 @@ class EditTab extends React.PureComponent {
       )
     }
 
-    if (~[VIEW_CREATE, VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
+    if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
       buttons.push(<Button disabled={true} key="Revisions">Revisions</Button>)
     }
 

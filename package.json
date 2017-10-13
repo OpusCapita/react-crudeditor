@@ -9,8 +9,8 @@
     "test:watch": "npm test -- --watch",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./src --fix",
     "test:mocha": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
-    "test:api": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/client/client-side-data/*.spec.js",
-    "build": "webpack --env.prod"
+    "test:api": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/client/api/*.spec.js",
+    "build": "webpack --env.prod -p"
   },
   "jest": {
     "moduleNameMapper": {

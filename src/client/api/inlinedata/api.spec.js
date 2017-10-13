@@ -10,6 +10,8 @@ import {
   getContracts
 } from './api';
 
+import asyncApi from './';
+
 import { fields } from '../../models/contracts';
 
 if (!Object.entries) {
@@ -307,3 +309,20 @@ describe('client-side api functions:', () => {
     });
   });
 });
+
+describe('Async (converted to fake timeout promise) api', _ => {
+  describe('async get', _ => {
+    it('should return a proper instance', done => {
+      asyncApi.get({ instance: { "contractId": realInstance.contractId } }).
+        then(res => {
+          assert.deepEqual(
+            res,
+            realInstance
+          );
+          done()
+        }).
+        catch(done)
+    });
+  });
+});
+

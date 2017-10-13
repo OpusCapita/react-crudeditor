@@ -58,8 +58,8 @@ app.get('*', function(req, res) {
   res.send(htmlBuffer.toString())
 });
 
-let server = app.listen(PORT || 8081, function() {
-  let host = server.address().address;
-  let port = server.address().port;
+const server = app.listen(PORT || 8081, function() {
+  const host = server.address().address;
+  const port = server.address().port;
   console.info(`Server listening at http://${host === '::' ? 'localhost' : host}:${port}`);
 });

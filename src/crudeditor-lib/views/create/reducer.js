@@ -5,7 +5,6 @@ import u from 'updeep';
 import {
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
-  INSTANCE_SAVE_SUCCESS,
 
   VIEW_INITIALIZE,
   VIEW_REDIRECT_REQUEST,
@@ -180,10 +179,6 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_SAVE_SUCCESS) {
-    newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {

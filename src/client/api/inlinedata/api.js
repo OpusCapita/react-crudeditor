@@ -19,7 +19,6 @@ export const
 
   get = ({ instance }) => internal2api(
     data.contracts.find(({ contractId }) => {
-      console.log("get: instance: " + JSON.stringify(instance))
       return contractId === instance.contractId
     })
   ),

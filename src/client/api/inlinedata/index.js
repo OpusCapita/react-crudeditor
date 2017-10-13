@@ -1,4 +1,5 @@
 import * as api from './api';
+import { fields } from '../../../models/contracts';
 
 const FAKE_RESPONSE_TIMEOUT = 10; // In milliseconds. 0 for no timeout.
 
@@ -23,22 +24,21 @@ const syncApi = {
   create: api.create,
   update: api.update,
   delete: api.deleteMany,
-  search: api.search
+  search: api.search(fields)
 }
 
 export const asyncApi = wrapApi(FAKE_RESPONSE_TIMEOUT)(syncApi);
 
 export default {
   get({ instance }) {
-    console.log('Making API-get call', JSON.stringify(instance));
+    console.log('Making inlinedata API-get call', JSON.stringify(instance));
     return asyncApi.get({ instance }).
       then(instance => instance);
   },
   search({ filter, sort, order, offset, max }) {
-    console.log('Making API-search call', JSON.stringify({ filter, sort, order, offset, max }));
+    console.log('Making inlinedata API-search call', JSON.stringify({ filter, sort, order, offset, max }));
     return asyncApi.search({ filter, sort, order, offset, max }).
       then(instances => {
-        console.log("search: instances: " + JSON.stringify(instances))
         return ({
           totalCount: instances.length,
           instances
@@ -46,12 +46,12 @@ export default {
       });
   },
   delete({ instances }) {
-    console.log('Making API-delete call', JSON.stringify(instances));
+    console.log('Making inlinedata API-delete call', JSON.stringify(instances));
     return asyncApi.delete({ instances }).
       then(deletedCount => deletedCount);
   },
   create({ instance }) {
-    console.log('Making API-create call', JSON.stringify(instance));
+    console.log('Making inlinedata API-create call', JSON.stringify(instance));
     return asyncApi.create({ instance }).
       then(instance => instance).
       catch(_ => ({
@@ -60,7 +60,7 @@ export default {
       }))
   },
   update({ instance }) {
-    console.log('Making API-update call', JSON.stringify(instance));
+    console.log('Making inlinedata API-update call', JSON.stringify(instance));
     return asyncApi.update({ instance }).
       then(instance => instance);
   }

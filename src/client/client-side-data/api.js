@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash/cloneDeep';
 import initialData from './data';
 import {
   FIELD_TYPE_BOOLEAN,
@@ -6,36 +5,7 @@ import {
   FIELD_TYPE_STRING,
   FIELD_TYPE_NUMBER_STRING
 } from '../../data-types-lib/constants';
-
-const NUMBER_FIELDS = [
-  'maxOrderValue',
-  'minOrderValue',
-  'freeShippingBoundary',
-  'totalContractedAmount',
-  'smallVolumeSurcharge',
-  'freightSurcharge'
-];
-
-const internal2api = contract => Object.entries(contract).reduce(
-  (rez, [fieldName, fieldValue]) => ({
-    ...rez,
-    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      fieldValue.toString() :
-      fieldValue
-    )
-  }),
-  {}
-);
-
-const api2internal = contract => Object.entries(contract).reduce(
-  (rez, [fieldName, fieldValue]) => ({
-    ...rez,
-    [fieldName]: fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      Number(fieldValue) :
-      fieldValue
-  }),
-  {}
-);
+import { api2internal, internal2api } from '../../server/lib';
 
 const data = { // remove doubles
   contracts: [...new Set(initialData.contracts.map(({ contractId }) => contractId))].
@@ -78,6 +48,7 @@ export const
     }
   )(data, instances),
 
+  // TODO handle filter by range fields (from...to)
   search = fields => ({ filter, sort, order, offset, max }) => {
     const searchableData = data.contracts;
 

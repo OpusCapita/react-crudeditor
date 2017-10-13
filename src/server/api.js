@@ -1,16 +1,7 @@
 import Loki from 'lokijs';
-import cloneDeep from 'lodash/cloneDeep';
 
 import data from './data.json';
-
-const NUMBER_FIELDS = [
-  'maxOrderValue',
-  'minOrderValue',
-  'freeShippingBoundary',
-  'totalContractedAmount',
-  'smallVolumeSurcharge',
-  'freightSurcharge'
-];
+import { internal2api, api2internal } from './lib'
 
 const db = new Loki();
 
@@ -29,27 +20,6 @@ data.contracts.forEach(contract => {
 });
 
 data.statuses.forEach(status => statuses.insert(status));
-
-const internal2api = contract => Object.entries(contract).reduce(
-  (rez, [fieldName, fieldValue]) => ({
-    ...rez,
-    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      fieldValue.toString() :
-      fieldValue
-    )
-  }),
-  {}
-);
-
-const api2internal = contract => Object.entries(contract).reduce(
-  (rez, [fieldName, fieldValue]) => ({
-    ...rez,
-    [fieldName]: fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      Number(fieldValue) :
-      fieldValue
-  }),
-  {}
-);
 
 module.exports = function(app) {
   /**

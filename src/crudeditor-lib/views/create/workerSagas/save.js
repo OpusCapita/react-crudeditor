@@ -15,6 +15,8 @@ import {
   VIEW_NAME
 } from '../constants';
 
+import { VIEW_ERROR } from '../../../common/constants'
+
 // import createSaga from './create';
 import editSaga from './edit';
 
@@ -133,7 +135,16 @@ export default function*({
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  const savedInstance = yield call(saveSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  let savedInstance = {};
+
+  try {
+    savedInstance = yield call(saveSaga, modelDefinition, meta);
+  } catch (err) {
+    yield call(softRedirectSaga, {
+      viewName: VIEW_ERROR,
+      viewState: err
+    });
+  }
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance
@@ -143,13 +154,20 @@ export default function*({
       meta
     });
   } else {
-    yield call(editSaga, {
-      modelDefinition,
-      softRedirectSaga,
-      action: {
-        payload: { instance: savedInstance },
-        meta
-      }
-    })
+    try {
+      yield call(editSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        action: {
+          payload: { instance: savedInstance },
+          meta
+        }
+      })
+    } catch (err) {
+      yield call(softRedirectSaga, {
+        viewName: VIEW_ERROR,
+        viewState: err
+      });
+    }
   }
 }

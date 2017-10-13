@@ -1,0 +1,32 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:7
+    steps:
+      - checkout
+
+      - run:
+          name: install-dependencies
+          command: yarn install
+
+      - run:
+          name: lint
+          command: yarn lint
+
+      - run:
+          name: test
+          command: |
+            yarn test:mocha -- --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: ./junit/test-results.xml
+
+
+      - store_artifacts:
+          path: ./junit/test-results.xml
+          prefix: tests
+
+      - store_test_results:
+          path: ./junit
+
+

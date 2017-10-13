@@ -76,6 +76,7 @@
     "less-loader": "4.0.5",
     "lokijs": "1.5.0",
     "mocha": "^4.0.1",
+    "mocha-junit-reporter": "^1.15.0",
     "node-sass": "4.5.3",
     "nodemon": "1.11.0",
     "nyc": "^11.2.1",

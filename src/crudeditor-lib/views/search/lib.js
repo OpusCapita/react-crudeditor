@@ -67,4 +67,4 @@ export const getDefaultSortField = searchMeta => {
   });
 
   return searchMeta.resultFields[sortByDefaultIndex].name;
-}
+};

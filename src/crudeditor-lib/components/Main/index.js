@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
 
-class CrudMain extends React.PureComponent {
+class CrudMain extends React.Component {
   constructor(...args) {
     super(...args);
 
@@ -30,4 +30,9 @@ CrudMain.propTypes = {
   hardRedirectView: PropTypes.func
 }
 
-export default connect(undefined, { hardRedirectView })(CrudMain)
+export default connect(
+  undefined,
+  { hardRedirectView },
+  undefined,
+  { areOwnPropsEqual: _ => false }
+)(CrudMain);

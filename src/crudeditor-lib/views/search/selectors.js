@@ -38,7 +38,7 @@ const _getViewState = ({
   }
 }) => {
   const filter = cleanFilter({
-    searchableField: searchMeta.searchableFields,
+    searchableFields: searchMeta.searchableFields,
     filter: resultFilter
   });
 

@@ -13,27 +13,28 @@ const entities2crud = {};
 const handleTransition = {};
 
 function transitionHandler(historyPush, baseURL, view) {
-  let { viewName, viewState } = view;
+  const modifiedView = cloneDeep(view || {});
 
-  if (viewName === VIEW_EDIT && viewState.tab === 'customer') {
+  if (
+    modifiedView.name === VIEW_EDIT &&
+    modifiedView.state &&
+    typeof modifiedView.state === 'object' &&
+    modifiedView.state.tab === 'customer'
+  ) {
     const betterTab = prompt('TAB "Customer" is not recommended. You may choose another one:');
 
     if (betterTab) {
-      viewState = cloneDeep(viewState);
-      viewState.tab = betterTab.toLowerCase();
+      modifiedView.state.tab = betterTab.toLowerCase();
     }
   }
 
   historyPush(buildURL({
     base: baseURL,
-    hash: {
-      viewName,
-      viewState
-    }
+    hash: modifiedView
   }));
 }
 
-const buildTransitionHandler = (historyPush, baseURL) => view => transitionHandler(historyPush, baseURL, view);
+const buildTransitionHandler = (historyPush, baseURL) => view => transitionHandler(historyPush, baseURL, view)
 
 const CrudWrapper = ({
   history: {

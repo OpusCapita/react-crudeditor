@@ -1,5 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep';
 import initialData from './data';
+import {
+  FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_DATE_STRING,
+  FIELD_TYPE_STRING,
+  FIELD_TYPE_NUMBER_STRING
+} from '../../data-types-lib/constants';
 
 const NUMBER_FIELDS = [
   'maxOrderValue',
@@ -72,9 +78,63 @@ export const
     }
   )(data, instances),
 
-  search = ({ filter, sort, order, offset, max }) => {
-    //
-    // const max = max ? Number.parseInt(max, 10) : 10;
-    // const offset = offset ? Number.parseInt(offset, 10) : 0;
+  search = fields => ({ filter, sort, order, offset, max }) => {
+    const searchableData = data.contracts;
+
+    let result = searchableData.slice();
+
+    const filterFields = filter && Object.keys(filter).
+      map(key => ({
+        [key]: (
+          (v, t) => t === FIELD_TYPE_BOOLEAN ?
+            Boolean(v) : // cast to boolean
+            v // assume string otherwise
+        )(filter[key], fields[key].type)
+      })).
+      reduce((obj, el) => ({ ...obj, ...el }), {});
+
+    const filteredData = filter && searchableData.filter(
+      item => Object.keys(filterFields).reduce(
+        (rez, field) => {
+          const fieldType = fields[field].type;
+
+          if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_DATE_STRING, FIELD_TYPE_NUMBER_STRING].indexOf(fieldType)) {
+            const match = item[field] === filterFields[field];
+            return rez && match
+          } else if (fieldType === FIELD_TYPE_STRING) {
+            const match = item[field] && item[field].indexOf(filterFields[field]) > -1;
+            return rez && match
+          }
+
+          return false
+        }, true
+      )
+    );
+
+    if (filter) {
+      result = filteredData.slice()
+    }
+
+    if (sort) {
+      // default sort returns ascending ordered array
+      let orderedSortFieldValues = result.map(el => el[sort]).sort();
+      if (order && order === 'desc') {
+        orderedSortFieldValues.reverse();
+      }
+      result = orderedSortFieldValues.map(v => result.find(el => el[sort] === v))
+    }
+
+    if (Number(offset) === parseInt(offset, 10)) {
+      const offsetNum = parseInt(offset, 10);
+      result = result.length > offsetNum ?
+        result.slice(offsetNum) :
+        []
+    }
+
+    if (Number(max) === parseInt(max, 10)) {
+      result = result.slice(0, parseInt(max, 10))
+    }
+
+    return result
   };
 

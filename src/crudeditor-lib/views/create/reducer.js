@@ -187,6 +187,14 @@ export default modelDefinition => (
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
+    const errors = Array.isArray(payload) ? payload : [payload];
+
+    if (!isEqual(storeState.errors.general, errors)) {
+      newStoreStateSlice.errors = {
+        general: errors
+      };
+    }
+
     newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

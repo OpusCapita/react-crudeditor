@@ -128,7 +128,7 @@ export default class extends React.Component {
       <ContractEditor
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
-        ?onExternalOperation={<object>}
+        ?onExternalOperation={<object>}  // TODO
       />;
       ...
     )
@@ -286,7 +286,7 @@ Model Definition is an object describing an entity. It has the following structu
     fields: {
       <field name>: {
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
-        ?type: <string, field type (see corresponding "Terminology" section)>,
+        ?type: <string, field type (see corresponding "Terminology" section)>,  // TODO more types and their constraints.
 
         /*
          * Constraints for field validation.
@@ -604,6 +604,7 @@ Model Definition is an object describing an entity. It has the following structu
 
     /*
      * Views in addition to standard ones.
+     * TODO
      */
     ?customViews: {
       <view name>: <ViewComponent>,  // see "ViewComponent" subheading.
@@ -614,6 +615,7 @@ Model Definition is an object describing an entity. It has the following structu
      * Internal, Custom and External operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
      * Handlers are provided for Custom Operations.
+     * TODO
      */
     ?operations: function(<object, entity instance>, <string, View Name>) {
       ...
@@ -1186,9 +1188,9 @@ An action symbolizes not a command but an effect, i.e. a change already happened
 
 All actions are [FSA](https://github.com/acdlite/flux-standard-action)-compliant.
 
-Action types are in `CONSTANT_CASE` and follow `<NOUN>_<VERB>` pattern, e.g. `TODO_ADD`. `VERB` is in the *present* tense. Putting `NOUN` first makes sorting actions more efficient.
+Action types are in `CONSTANT_CASE` and follow `<NOUN>_<VERB>` pattern, e.g. ``INSTANCE_ADD`. `VERB` is in the *present* tense. Putting `NOUN` first makes sorting actions more efficient.
 
-An action creator name follows `<verb><Noun>` pattern, e.g. `createTodo()`.
+An action creator name follows `<verb><Noun>` pattern, e.g. `createInstance()`.
 
 Async actions are suffixed with
  - _REQUEST - for when you first send the api call,
@@ -1198,7 +1200,7 @@ Async actions are suffixed with
 
 !!!TBD: "_SUCCESS" and "_FAIL" are not needed when [FSA](https://github.com/acdlite/flux-standard-action) convention is followed.
 
-Action types are saved in a separate file as *sorted* constants (e.g. `var TODO_ADD = 'TODO_ADD';`) and used them from there. This avoids spelling errors, since if the variable doesn't exist, you'll get an error immediately, especially if you're linting.
+Action types are saved in a separate file as *sorted* constants (e.g. `var INSTANCE_ADD = 'INSTANCE_ADD';`) and used them from there. This avoids spelling errors, since if the variable doesn't exist, you'll get an error immediately, especially if you're linting.
 
 Inner-view actions are scoped to their view, e.g. `'search/MY_ACTION_TYPE'`.
 

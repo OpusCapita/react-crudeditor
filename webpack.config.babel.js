@@ -94,9 +94,7 @@ module.exports = env => {
       new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: env
-        },
+        __WEBPACK__APISERVICE: env === 'dev' ? JSON.stringify("devServer") : JSON.stringify("inlineData")
       }),
     ]
   }

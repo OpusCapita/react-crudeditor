@@ -10,9 +10,9 @@ import {
   getContracts
 } from './api';
 
-import asyncApi from './';
+import { asyncApi } from './';
 
-import { fields } from '../../models/contracts';
+import { fields } from '../../../models/contracts';
 
 if (!Object.entries) {
   entries.shim();
@@ -310,7 +310,7 @@ describe('client-side api functions:', () => {
   });
 });
 
-describe('Async (converted to fake timeout promise) api', _ => {
+describe('Async (converted to a promise with fake timeout) api', _ => {
   describe('async get', _ => {
     it('should return a proper instance', done => {
       asyncApi.get({ instance: { "contractId": realInstance.contractId } }).

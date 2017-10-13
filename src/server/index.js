@@ -11,7 +11,7 @@ const FAKE_RESPONSE_TIMEOUT = 300; // In milliseconds. 0 for no timeout.
 // ███████████████████████████████████
 
 const webpack = require('webpack');
-const webpackDevConfig = require('../../webpack.config.babel')('dev');
+const webpackDevConfig = require('../../webpack.config.babel')('prod');
 const compiler = webpack(webpackDevConfig);
 
 const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, {

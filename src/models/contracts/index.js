@@ -1,4 +1,4 @@
-import devServerApi from '../../client/api/devserver';
+import api from '../../client/api';
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
 
@@ -310,7 +310,7 @@ export default {
       return true;
     }
   },
-  api: devServerApi,
+  api,
   ui: {
     search: _ => ({
       searchableFields,

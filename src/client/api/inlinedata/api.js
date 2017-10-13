@@ -4,8 +4,8 @@ import {
   FIELD_TYPE_DATE_STRING,
   FIELD_TYPE_STRING,
   FIELD_TYPE_NUMBER_STRING
-} from '../../data-types-lib/constants';
-import { api2internal, internal2api } from '../../server/lib';
+} from '../../../data-types-lib/constants';
+import { api2internal, internal2api } from '../../../server/lib';
 
 const data = { // remove doubles
   contracts: [...new Set(initialData.contracts.map(({ contractId }) => contractId))].
@@ -18,7 +18,10 @@ export const
   getContracts = _ => data.contracts,
 
   get = ({ instance }) => internal2api(
-    data.contracts.find(({ contractId }) => contractId === instance.contractId)
+    data.contracts.find(({ contractId }) => {
+      console.log("get: instance: " + JSON.stringify(instance))
+      return contractId === instance.contractId
+    })
   ),
 
   create = ({ instance }) => data.contracts.find(({ contractId }) => contractId === instance.contractId) ?

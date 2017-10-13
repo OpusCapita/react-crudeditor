@@ -27999,7 +27999,7 @@ export default {
     "smallVolumeSurcharge": 50728,
     "freightSurcharge": 974
   }
-],
+  ],
   "statuses": [
     {
       "statusId": "100",

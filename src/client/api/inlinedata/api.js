@@ -34,7 +34,7 @@ export const
   update = ({ instance }) => (
     (data, instance) => {
       const formattedInstance = api2internal(instance);
-      data.contracts = data.contracts.map(
+      data.contracts = data.contracts.map( // eslint-disable-line no-param-reassign
         contract => contract.contractId === instance.contractId ?
           formattedInstance :
           contract
@@ -46,7 +46,9 @@ export const
   deleteMany = ({ instances }) => (
     (data, instances) => {
       const idsToDelete = instances.map(({ contractId }) => contractId);
-      data.contracts = data.contracts.filter(({ contractId }) => !idsToDelete.includes(contractId));
+      data.contracts = data.contracts.filter( // eslint-disable-line no-param-reassign
+        ({ contractId }) => !idsToDelete.includes(contractId)
+      );
       return instances.length;
     }
   )(data, instances),

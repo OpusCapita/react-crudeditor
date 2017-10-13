@@ -48,7 +48,6 @@ const realInstance = {
 };
 
 describe('client-side api functions:', () => {
-
   describe('get ', () => {
     const before = getNumberOfInstances();
     it('should get a contract instance', () => {

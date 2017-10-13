@@ -6,6 +6,7 @@ import {
   FIELD_TYPE_NUMBER_STRING
 } from '../../../data-types-lib/constants';
 import { api2internal, internal2api } from '../../../server/lib';
+import { fields } from '../../../models/contracts'
 
 const data = { // remove doubles
   contracts: [...new Set(initialData.contracts.map(({ contractId }) => contractId))].
@@ -14,7 +15,7 @@ const data = { // remove doubles
 
 export const
 
-  getNumberOfInstances = _ => data.contracts.length, // for testing
+  getNumberOfInstances = _ => data.contracts.length,
   getContracts = _ => data.contracts,
 
   get = ({ instance }) => internal2api(
@@ -53,7 +54,7 @@ export const
   )(data, instances),
 
   // TODO handle filter by range fields (from...to)
-  search = fields => ({ filter, sort, order, offset, max }) => {
+  search = ({ filter, sort, order, offset, max }) => {
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
@@ -90,6 +91,15 @@ export const
       result = filteredData.slice()
     }
 
+    // TODO add a variable to hold a size of the result set (= result in line 93),
+    // and return a object rather than just an array of results
+    //
+    // blueprint:
+    // {
+    //   totalCount<int>
+    //   instances<array>
+    // }
+
     if (sort) {
       // default sort returns ascending ordered array
       let orderedSortFieldValues = result.map(el => el[sort]).sort();
@@ -111,5 +121,5 @@ export const
     }
 
     return result
-  };
+  }
 

@@ -92,10 +92,7 @@ module.exports = env => {
       }),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.NoEmitOnErrorsPlugin(),
-      new webpack.DefinePlugin({
-        __WEBPACK__APISERVICE: env === 'dev' ? JSON.stringify("devServer") : JSON.stringify("inlineData")
-      }),
+      new webpack.NoEmitOnErrorsPlugin()
     ]
   }
 };

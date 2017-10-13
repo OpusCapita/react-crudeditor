@@ -1,33 +1,5 @@
-import * as api from './api';
-import { fields } from '../../../models/contracts';
-
-const FAKE_RESPONSE_TIMEOUT = 10; // In milliseconds. 0 for no timeout.
-
-// create Promise wrappers for sync api functions
-
-const sync2promise = timeout => fn => (...args) => new Promise((resolve, reject) => setTimeout(
-  _ => {
-    const res = fn(...args);
-    if (res instanceof Error) {
-      reject(res)
-    }
-    resolve(res)
-  }, timeout
-));
-
-const wrapApi = timeout => apiObj => Object.keys(apiObj).reduce(
-  (rez, apiName) => ({ ...rez, [apiName]: sync2promise(timeout)(apiObj[apiName]) }), {}
-)
-
-const syncApi = {
-  get: api.get,
-  create: api.create,
-  update: api.update,
-  delete: api.deleteMany,
-  search: api.search(fields)
-}
-
-export const asyncApi = wrapApi(FAKE_RESPONSE_TIMEOUT)(syncApi);
+import asyncApi from './asyncApi';
+import { getNumberOfInstances } from './api'
 
 export default {
   get({ instance }) {
@@ -38,12 +10,11 @@ export default {
   search({ filter, sort, order, offset, max }) {
     console.log('Making inlinedata API-search call', JSON.stringify({ filter, sort, order, offset, max }));
     return asyncApi.search({ filter, sort, order, offset, max }).
-      then(instances => {
-        return ({
-          totalCount: instances.length,
-          instances
-        })
-      });
+      then(instances => ({
+        totalCount: getNumberOfInstances(), // temporary thing; more info in api/search TODO
+        instances
+      })
+      );
   },
   delete({ instances }) {
     console.log('Making inlinedata API-delete call', JSON.stringify(instances));

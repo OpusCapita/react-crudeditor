@@ -5,7 +5,7 @@ import {
   FIELD_TYPE_STRING,
   FIELD_TYPE_NUMBER_STRING
 } from '../../../data-types-lib/constants';
-import { api2internal, internal2api } from '../../../server/lib';
+// import { api2internal, internal2api } from '../../../server/lib';
 import { fields } from '../../../models/contracts'
 
 const data = { // remove doubles
@@ -20,11 +20,9 @@ export const
   getNumberOfInstances = _ => data.contracts.length,
   getContracts = _ => data.contracts,
 
-  get = ({ instance }) => internal2api(
-    data.contracts.find(({ contractId }) => {
-      return contractId === instance.contractId
-    })
-  ),
+  get = ({ instance }) => data.contracts.find(({ contractId }) => {
+    return contractId === instance.contractId
+  }),
 
   create = ({ instance }) => data.contracts.find(({ contractId }) => contractId === instance.contractId) ?
     {
@@ -39,13 +37,12 @@ export const
   update = ({ instance }) => (
     (data, instance) => {
       if (data.contracts.find(({ contractId }) => contractId === instance.contractId)) {
-        const formattedInstance = api2internal(instance);
         data.contracts = data.contracts.map( // eslint-disable-line no-param-reassign
           contract => contract.contractId === instance.contractId ?
-            formattedInstance :
+            instance :
             contract
         );
-        return formattedInstance
+        return instance
       } else {
         return { error: `Contract [${instance.contractId}] not found` }
       }

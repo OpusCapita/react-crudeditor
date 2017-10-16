@@ -1,4 +1,4 @@
-import api from '../../client/api';
+import api from './api';
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
 

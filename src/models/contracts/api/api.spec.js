@@ -10,7 +10,7 @@ import {
   getContracts
 } from './api';
 
-import asyncApi from './asyncApi';
+import asyncApi from './';
 
 if (!Object.entries) {
   entries.shim();

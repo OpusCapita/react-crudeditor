@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash/cloneDeep';
 import initialData from './data';
 import {
   FIELD_TYPE_BOOLEAN,
@@ -5,8 +6,27 @@ import {
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_NUMBER
 } from '../../../data-types-lib/constants';
-import { internal2api } from '../../../server/lib';
-import { fields } from '../../../models/contracts'
+import { fields } from '../'
+
+const NUMBER_FIELDS = [
+  'maxOrderValue',
+  'minOrderValue',
+  'freeShippingBoundary',
+  'totalContractedAmount',
+  'smallVolumeSurcharge',
+  'freightSurcharge'
+];
+
+const internal2api = contract => Object.entries(contract).reduce(
+  (rez, [fieldName, fieldValue]) => ({
+    ...rez,
+    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
+      fieldValue.toString() :
+      fieldValue
+    )
+  }),
+  {}
+);
 
 const data = { // remove doubles
   contracts: [...new Set(initialData.contracts.map(({ contractId }) => contractId))].

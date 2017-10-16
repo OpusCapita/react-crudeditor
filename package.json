@@ -4,11 +4,11 @@
   "private": true,
   "description": "react.js CRUD Editor",
   "scripts": {
-    "start": "cross-env NODE_ENV=development && nodemon --watch src/server src/server --exec babel-node --presets es2015,es2016,es2017,stage-0",
     "lint": "node ./node_modules/eslint/bin/eslint.js ./src --fix",
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
-    "build": "webpack --env.dev --config webpack.config.babel.js",
-    "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
+    "build": "webpack --config webpack.config.babel.js",
+    "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "start": "yarn build && node ./node_modules/http-server/bin/http-server -o"
   },
   "keywords": [
     "react",
@@ -67,6 +67,7 @@
     "eslint-plugin-react": "^7.4.0",
     "file-loader": "0.11.2",
     "html-webpack-plugin": "2.29.0",
+    "http-server": "^0.10.0",
     "joi-browser": "10.6.1",
     "jsdom": "^11.3.0",
     "less-loader": "4.0.5",
@@ -87,9 +88,7 @@
     "style-loader": "0.18.2",
     "svg-icons": "1.0.13",
     "url-loader": "0.5.9",
-    "webpack": "3.4.1",
-    "webpack-config-utils": "^2.3.0",
-    "webpack-dev-middleware": "1.11.0"
+    "webpack": "3.4.1"
   },
   "nyc": {
     "sourceMap": false,

@@ -1,25 +1,25 @@
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const autoprefixer = require('autoprefixer');
 // const precss = require('precss');
-const webpackConfigUtils = require('webpack-config-utils');
+// const webpackConfigUtils = require('webpack-config-utils');
 
-const { getIfUtils } = webpackConfigUtils;
+// const { getIfUtils } = webpackConfigUtils;
 
 module.exports = env => {
-  const { ifNotProd } = getIfUtils(env);
+  // const { ifNotProd } = getIfUtils(env);
 
   return {
     context: resolve(__dirname, 'src'),
     entry: [
       './client/index.js'
     ],
-    devtool: ifNotProd('inline-source-map'),
+    // devtool: ifNotProd('inline-source-map'),
     output: {
-      path: resolve(__dirname, 'public'),
+      path: resolve(__dirname, './public'),
       filename: 'bundle.js',
-      publicPath: ''
+      // publicPath: '/'
     },
     module: {
       rules: [
@@ -92,7 +92,10 @@ module.exports = env => {
       }),
       new webpack.NamedModulesPlugin(),
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.NoEmitOnErrorsPlugin(),
+      new webpack.DefinePlugin({
+        __WEBPACK__BASE_URL: JSON.stringify(join(__dirname, 'public'))
+      })
     ]
   }
 };

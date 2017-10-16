@@ -10,13 +10,16 @@ import {
   Redirect
 } from 'react-router-dom';
 
+const baseUrl = __WEBPACK__BASE_URL
+console.log("dir: " + baseUrl);
+
 export default () => (
   <Router>
     <Switch>
-      <Redirect exact={true} from='/' to='/home' />
-      <Route exact={true} path='/home' component={Home} />
-      <Route path="/crud/:entities" component={CrudWrapper} />
-      <Route path="/revisions/:entityId" component={Revisions} />
+      <Redirect exact={true} from={baseUrl + "/"} to={baseUrl + "/home"} />
+      <Route exact={true} path={baseUrl + "/home"} component={Home} />
+      <Route path={baseUrl + "/crud/:entities"} component={CrudWrapper} />
+      <Route path={baseUrl + "/revisions/:entityId"} component={Revisions} />
     </Switch>
   </Router>
 );

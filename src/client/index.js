@@ -57,7 +57,7 @@ let NavigationElement = (
           }
         ]
       },
-      { children: 'Contracts', href: '/crud/contracts' },
+      { children: 'Contracts', href: __WEBPACK__BASE_URL + '/crud/contracts' },
       {
         children: 'Reports',
         subItems: [

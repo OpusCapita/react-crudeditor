@@ -1,9 +1,9 @@
 import initialData from './data';
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_DATE_STRING,
+  FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_NUMBER_STRING
+  FIELD_TYPE_STRING_NUMBER
 } from '../../../data-types-lib/constants';
 import { internal2api } from '../../../server/lib';
 import { fields } from '../../../models/contracts'
@@ -80,7 +80,7 @@ export const
         (rez, field) => {
           const fieldType = fields[field].type;
 
-          if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_DATE_STRING, FIELD_TYPE_NUMBER_STRING].indexOf(fieldType)) {
+          if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
             const match = item[field] === filterFields[field];
             return rez && match
           } else if (fieldType === FIELD_TYPE_STRING) {

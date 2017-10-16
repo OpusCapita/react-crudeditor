@@ -14,7 +14,7 @@ global.window = window;
 Enzyme.configure({ adapter: new Adapter() });
 
 describe("StatusField", _ => {
-  it("renders with a passed value", () => {
+  it("properly renders a date range", () => {
     const props = {
       value: 100,
       readOnly: false,

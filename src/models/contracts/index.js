@@ -50,7 +50,7 @@ export const fields = {
     }
   },
   'freeShippingBoundary': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -58,13 +58,13 @@ export const fields = {
     }
   },
   'createdOn': {
-    'type': 'dateString',
+    'type': 'stringDate',
     'constraints': {
       'required': true
     }
   },
   'changedOn': {
-    'type': 'dateString',
+    'type': 'stringDate',
     'constraints': {
       'required': true
     }
@@ -132,7 +132,7 @@ export const fields = {
     }
   },
   'totalContractedAmount': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -140,7 +140,7 @@ export const fields = {
     }
   },
   'smallVolumeSurcharge': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -160,7 +160,7 @@ export const fields = {
     }
   },
   'maxOrderValue': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -192,7 +192,7 @@ export const fields = {
     }
   },
   'freightSurcharge': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -206,7 +206,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 800,
@@ -242,7 +242,7 @@ export const fields = {
     }
   },
   'minOrderValue': {
-    'type': 'numberString',
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 999999999,

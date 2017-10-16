@@ -93,7 +93,7 @@ export default {
         }
       },
       'freeShippingBoundary': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,
@@ -101,13 +101,13 @@ export default {
         }
       },
       'createdOn': {
-        'type': 'dateString',
+        'type': 'stringDate',
         'constraints': {
           'required': true
         }
       },
       'changedOn': {
-        'type': 'dateString',
+        'type': 'stringDate',
         'constraints': {
           'required': true
         }
@@ -175,7 +175,7 @@ export default {
         }
       },
       'totalContractedAmount': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,
@@ -183,7 +183,7 @@ export default {
         }
       },
       'smallVolumeSurcharge': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,
@@ -203,7 +203,7 @@ export default {
         }
       },
       'maxOrderValue': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,
@@ -235,7 +235,7 @@ export default {
         }
       },
       'freightSurcharge': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,
@@ -249,7 +249,7 @@ export default {
         }
       },
       'statusId': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 800,
@@ -285,7 +285,7 @@ export default {
         }
       },
       'minOrderValue': {
-        'type': 'numberString',
+        'type': 'stringNumber',
         'constraints': {
           'min': 0,
           'max': 999999999,

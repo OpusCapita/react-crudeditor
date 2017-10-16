@@ -9,8 +9,8 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_DATE_STRING,
-  FIELD_TYPE_NUMBER_STRING,
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_NUMBER,
   FIELD_TYPE_STRING
 } from '../../data-types-lib/constants';
 
@@ -21,10 +21,10 @@ const defaultFieldRenders = {
       type: 'boolean'
     }
   },
-  [FIELD_TYPE_DATE_STRING]: {
+  [FIELD_TYPE_STRING_DATE]: {
     Component: FieldString
   },
-  [FIELD_TYPE_NUMBER_STRING]: {
+  [FIELD_TYPE_STRING_NUMBER]: {
     Component: FieldString
   },
   [FIELD_TYPE_STRING]: {

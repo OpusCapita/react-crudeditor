@@ -13,6 +13,8 @@ const data = { // remove doubles
     map(id => initialData.contracts.find(({ contractId }) => contractId === id))
 }
 
+// TODO remove api2internal, internal2api
+
 export const
 
   getNumberOfInstances = _ => data.contracts.length,

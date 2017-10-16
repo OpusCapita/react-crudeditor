@@ -37,7 +37,6 @@ let buildURL = ({ base, query, hash }) => {
       }
     }
 
-    console.log('buildURL for hash', hash, 'new URL', url);
     return url;
   },
 

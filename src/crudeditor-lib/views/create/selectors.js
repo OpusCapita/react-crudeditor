@@ -5,7 +5,8 @@ import {
 } from './constants';
 
 import {
-  STATUS_REDIRECTING
+  STATUS_REDIRECTING,
+  STATUS_CREATING
 } from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
@@ -17,7 +18,7 @@ export const
   getViewState = wrapper(({
     predefinedFields
   }) => ({
-    predefinedFields
+    instance: predefinedFields
   })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -34,7 +35,7 @@ export const
     formatedInstance: storeState.formatedInstance,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    isLoading: (storeState.status === STATUS_REDIRECTING),
+    isLoading: ([STATUS_REDIRECTING, STATUS_CREATING].indexOf(storeState.status) > -1),
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME

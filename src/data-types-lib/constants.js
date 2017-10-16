@@ -7,14 +7,14 @@ export const
   \*███████████████████████████████████████████*/
 
   FIELD_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
-  FIELD_TYPE_DATE_STRING = 'dateString', // JavaScript type "string" with date.
+  FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with date.
 
   /*
    * JavaScript type "string" with decimal number of any size,
    * i.e. rational number written in Base 10 and having finite number of digits after decimal point.
    * It may be in exponential, as well as normal (non-exponential) notation.
    */
-  FIELD_TYPE_NUMBER_STRING = 'numberString',
+  FIELD_TYPE_STRING_NUMBER = 'stringNumber',
 
   FIELD_TYPE_STRING = 'string', // JavaScript type "string".
 

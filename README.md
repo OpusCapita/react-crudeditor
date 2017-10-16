@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/OpusCapita/react-crudeditor.svg?style=svg)](https://circleci.com/gh/OpusCapita/react-crudeditor)
+[![CircleCI](https://circleci.com/gh/OpusCapita/react-crudeditor.svg?style=svg&circle-token=d9a917e9d6b76fc2d83928b2ec06e2297b3e05a4)](https://circleci.com/gh/OpusCapita/react-crudeditor)
 ![badge-npm-version](https://img.shields.io/npm/v/@opuscapita/react-crudeditor.svg)
 [![Dependency Status](https://img.shields.io/david/OpusCapita/react-crudeditor.svg)](https://david-dm.org/OpusCapita/react-crudeditor)
 

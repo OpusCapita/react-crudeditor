@@ -19,7 +19,7 @@ module.exports = env => {
     output: {
       path: resolve(__dirname, 'public'),
       filename: 'bundle.js',
-      publicPath: '/'
+      publicPath: ''
     },
     module: {
       rules: [

@@ -76,9 +76,12 @@ describe('client-side api functions:', () => {
     it('should return Error if contract already exists', () => {
       const error = create({ instance });
 
-      assert.equal(
-        error instanceof Error,
-        true
+      assert.deepEqual(
+        error,
+        {
+          code: 403,
+          message: "Instance with this contractId already exists in the database"
+        }
       );
     });
   });
@@ -329,11 +332,6 @@ describe('client-side api functions:', () => {
   });
 });
 
-// TODO
-// write tests for async api functions
-// TEST BELOW WORKED BUT NOW BROKEN ;(
-// TODO: investigate and fix
-
 describe('Async (converted to a promise with fake timeout) api', _ => {
   describe('async get', _ => {
     it('should return a proper instance', done => {
@@ -348,5 +346,146 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         catch(done)
     });
   });
-});
 
+  describe('async create ', _ => {
+    const instance = { "contractId": "t0tALly RanD0m ContracT ID 2", "description": "random description" };
+
+    it('should return a saved contract instance', done => {
+      const before = getNumberOfInstances();
+      asyncApi.create({ instance }).then(
+        result => {
+          const after = getNumberOfInstances();
+          assert.deepEqual(
+            result,
+            instance
+          );
+          assert.equal(before + 1, after, 'Source data length changed unexpectedly!');
+          done()
+        }
+      ).catch(done)
+    });
+
+    it('should return Error if contract already exists', done => {
+      const before = getNumberOfInstances();
+      asyncApi.create({ instance }).then(
+        result => {
+          const after = getNumberOfInstances();
+          assert.deepEqual(
+            result,
+            {
+              code: 403,
+              message: "Instance with this contractId already exists in the database"
+            }
+          );
+          assert.equal(before, after, 'Source data length changed unexpectedly!');
+          done()
+        }
+      ).catch(done)
+    });
+  });
+
+  describe('async update ', _ => {
+    const updatedInstance = {
+      ...realInstance,
+      description: "UPDATED!"
+    }
+
+    it('should return an updated instance', done => {
+      const before = getNumberOfInstances();
+      asyncApi.update({ instance: updatedInstance }).
+        then(result => {
+          const after = getNumberOfInstances();
+
+          assert.deepEqual(
+            result,
+            updatedInstance
+          );
+
+          assert.equal(before, after, 'Source data length changed unexpectedly!')
+
+          // restore updated value
+          update({ instance: realInstance });
+          done()
+        }).
+        catch(done)
+    });
+
+    it('should return an error for unknown contractId', done => {
+      const before = getNumberOfInstances();
+      const instance = { contractId: "mP%*}RSI{E6>g~}~}(4|.NdJ]9w&<q-c-suS56G/f#oB(zXR=xHq1BlB*T}GJssU" };
+
+      asyncApi.update({ instance }).
+        then(result => {
+          const after = getNumberOfInstances();
+
+          assert.deepEqual(
+            result,
+            { error: `Contract [${instance.contractId}] not found` }
+          );
+
+          assert.equal(before, after, 'Source data length changed unexpectedly!')
+          done()
+        }).
+        catch(done)
+    });
+  });
+
+  describe('async delete ', _ => {
+    const numToDelete = 14;
+    it('should return a number of deleted instances', done => {
+      const before = getNumberOfInstances();
+      const itemsToDelete = getContracts().slice(100, 100 + numToDelete)
+
+      asyncApi.delete({ instances: itemsToDelete }).
+        then(
+          numDeleted => {
+            const after = getNumberOfInstances();
+            assert.equal(
+              numDeleted,
+              numToDelete
+            );
+            assert.equal(before - numToDelete, after, "Deleted wrong number of items")
+
+            // restore deleted items
+            for (const instance of itemsToDelete) {
+              create({ instance })
+            }
+            const afterRestore = getNumberOfInstances();
+            assert.equal(before, afterRestore, "Not properly restored deleted items")
+            done()
+          }
+        ).
+        catch(done)
+    });
+  });
+
+  describe('async search ', _ => {
+    it('should find and sort by field', done => {
+      const before = getNumberOfInstances();
+      const filter = { extContractId: 'Replacement' };
+      const sort = 'statusId';
+
+      asyncApi.search({ filter, sort }).
+        then(({ instances }) => {
+          const after = getNumberOfInstances();
+
+          assert.equal(
+            instances.length,
+            getContracts().filter(
+              c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+            ).length
+          );
+
+          assert.deepEqual(
+            instances.map(e => e[sort]),
+            instances.map(e => e[sort]).sort(),
+            "Result was not sorted properly"
+          )
+
+          assert.equal(before, after, 'Source data length changed unexpectedly!')
+          done()
+        }).
+        catch(done)
+    });
+  });
+});

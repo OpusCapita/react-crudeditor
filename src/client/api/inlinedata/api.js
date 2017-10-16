@@ -25,7 +25,10 @@ export const
   ),
 
   create = ({ instance }) => data.contracts.find(({ contractId }) => contractId === instance.contractId) ?
-    new Error("Contract with id " + instance.contractId + " already exists in database!") :
+    {
+      code: 403,
+      message: "Instance with this contractId already exists in the database"
+    } :
     ((data, instance) => {
       data.contracts.push(instance);
       return instance

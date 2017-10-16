@@ -27,7 +27,7 @@ jobs:
       - run:
           name: test
           command: |
-            yarn test:mocha -- --reporter mocha-junit-reporter
+            yarn test -- --reporter mocha-junit-reporter
           environment:
             MOCHA_FILE: ./junit/test-results.xml
 

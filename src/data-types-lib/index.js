@@ -32,7 +32,7 @@ export const
 
     /*
      * boolean, false by default, which means forwarding a value if (one of the following):
-     * (1) input Component API Type is inknown,
+     * (1) input Component API Type is unknown,
      * (2) input Field Type is unknown,
      * (3) input Component API Type is unknown to the Field Type's formatter.
      */

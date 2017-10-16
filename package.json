@@ -96,5 +96,25 @@
     "webpack": "3.4.1",
     "webpack-config-utils": "^2.3.0",
     "webpack-dev-middleware": "1.11.0"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false,
+    "exclude": [
+      "src/external_modules"
+    ],
+    "check-coverage": true,
+    "reporter": [
+      "lcov",
+      "text",
+      "text-summary"
+    ],
+    "require": [
+      "./mocha-config.js"
+    ],
+    "lines": 0,
+    "statements": 0,
+    "functions": 0,
+    "branches": 0
   }
 }

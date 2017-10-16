@@ -33,13 +33,17 @@ export const
 
   update = ({ instance }) => (
     (data, instance) => {
-      const formattedInstance = api2internal(instance);
-      data.contracts = data.contracts.map( // eslint-disable-line no-param-reassign
-        contract => contract.contractId === instance.contractId ?
-          formattedInstance :
-          contract
-      );
-      return formattedInstance
+      if (data.contracts.find(({ contractId }) => contractId === instance.contractId)) {
+        const formattedInstance = api2internal(instance);
+        data.contracts = data.contracts.map( // eslint-disable-line no-param-reassign
+          contract => contract.contractId === instance.contractId ?
+            formattedInstance :
+            contract
+        );
+        return formattedInstance
+      } else {
+        return { error: `Contract [${instance.contractId}] not found` }
+      }
     }
   )(data, instance),
 
@@ -91,14 +95,7 @@ export const
       result = filteredData.slice()
     }
 
-    // TODO add a variable to hold a size of the result set (= result in line 93),
-    // and return a object rather than just an array of results
-    //
-    // blueprint:
-    // {
-    //   totalCount<int>
-    //   instances<array>
-    // }
+    const totalCount = result.length;
 
     if (sort) {
       // default sort returns ascending ordered array
@@ -120,6 +117,9 @@ export const
       result = result.slice(0, parseInt(max, 10))
     }
 
-    return result
+    return {
+      totalCount,
+      instances: result
+    }
   }
 

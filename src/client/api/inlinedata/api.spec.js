@@ -10,7 +10,7 @@ import {
   getContracts
 } from './api';
 
-// import asyncApi from './asyncApi';
+import asyncApi from './asyncApi';
 
 if (!Object.entries) {
   entries.shim();
@@ -102,6 +102,18 @@ describe('client-side api functions:', () => {
       // restore updated value
       update({ instance: realInstance });
     });
+
+    it('should return an error for unknown contractId', () => {
+      const before = getNumberOfInstances();
+      const instance = { contractId: "mP%*}RSI{E6>g~}~}(4|.NdJ]9w&<q-c-suS56G/f#oB(zXR=xHq1BlB*T}GJssU" };
+      const result = update({ instance });
+      const after = getNumberOfInstances();
+      assert.deepEqual(
+        result,
+        { error: `Contract [${instance.contractId}] not found` }
+      );
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
   });
 
   describe('deleteMany ', () => {
@@ -136,11 +148,11 @@ describe('client-side api functions:', () => {
 
     it('should find proper instance', () => {
       const before = getNumberOfInstances();
-      const result = search({ filter })
+      const { instances } = search({ filter })
       const after = getNumberOfInstances();
 
       assert.deepEqual(
-        result[0],
+        instances[0],
         realInstance
       );
 
@@ -152,13 +164,18 @@ describe('client-side api functions:', () => {
       const filter = {
         description: 'cavity'
       }
-      const result = search({ filter })
+      const { instances, totalCount } = search({ filter })
       const after = getNumberOfInstances();
 
       assert.deepEqual(
-        result,
+        instances,
         getContracts().filter(c => c.description && ~c.description.indexOf(filter.description))
       );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
@@ -168,11 +185,11 @@ describe('client-side api functions:', () => {
       const filter = {
         createdOn: "2012-06-02T09:28:45Z"
       }
-      const result = search({ filter })
+      const { instances } = search({ filter })
       const after = getNumberOfInstances();
 
       assert.deepEqual(
-        result,
+        instances,
         getContracts().filter(c => c.createdOn && c.createdOn === filter.createdOn)
       );
 
@@ -185,11 +202,11 @@ describe('client-side api functions:', () => {
         isOffer: true,
         isPreferred: false
       }
-      const result = search({ filter })
+      const { instances } = search({ filter })
       const after = getNumberOfInstances();
 
       assert.deepEqual(
-        result,
+        instances,
         getContracts().filter(c => c.isOffer === filter.isOffer && c.isPreferred === filter.isPreferred)
       );
 
@@ -200,19 +217,19 @@ describe('client-side api functions:', () => {
       const before = getNumberOfInstances();
       const filter = { extContractId: 'Replacement' };
       const sort = 'statusId';
-      const result = search({ filter, sort })
+      const { instances } = search({ filter, sort })
       const after = getNumberOfInstances();
 
       assert.equal(
-        result.length,
+        instances.length,
         getContracts().filter(
           c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
         ).length
       );
 
       assert.deepEqual(
-        result.map(e => e[sort]),
-        result.map(e => e[sort]).sort(),
+        instances.map(e => e[sort]),
+        instances.map(e => e[sort]).sort(),
         "Result was not sorted properly"
       )
 
@@ -223,19 +240,19 @@ describe('client-side api functions:', () => {
       const before = getNumberOfInstances();
       const filter = { extContractId: 'Replacement' };
       const sort = 'statusId';
-      const result = search({ filter, sort, order: 'asc' })
+      const { instances } = search({ filter, sort, order: 'asc' })
       const after = getNumberOfInstances();
 
       assert.equal(
-        result.length,
+        instances.length,
         getContracts().filter(
           c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
         ).length
       );
 
       assert.deepEqual(
-        result.map(e => e[sort]),
-        result.map(e => e[sort]).sort(),
+        instances.map(e => e[sort]),
+        instances.map(e => e[sort]).sort(),
         "Result was not sorted properly"
       )
 
@@ -246,19 +263,19 @@ describe('client-side api functions:', () => {
       const before = getNumberOfInstances();
       const filter = { extContractId: 'Replacement' };
       const sort = 'statusId';
-      const result = search({ filter, sort, order: 'desc' })
+      const { instances } = search({ filter, sort, order: 'desc' })
       const after = getNumberOfInstances();
 
       assert.equal(
-        result.length,
+        instances.length,
         getContracts().filter(
           c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
         ).length
       );
 
       assert.deepEqual(
-        result.map(e => e[sort]),
-        result.map(e => e[sort]).sort().reverse(),
+        instances.map(e => e[sort]),
+        instances.map(e => e[sort]).sort().reverse(),
         "Result was not sorted properly"
       )
 
@@ -268,18 +285,23 @@ describe('client-side api functions:', () => {
     it('should handle offset properly', () => {
       const before = getNumberOfInstances();
       const offset = 13;
-      const result = search({ offset })
+      const { instances, totalCount } = search({ offset })
       const after = getNumberOfInstances();
 
       assert.equal(
-        result.length,
+        instances.length,
         getContracts().length - offset
       );
 
       assert.deepEqual(
-        result,
+        instances,
         getContracts().slice(offset),
         "Returned array is not the one expected"
+      )
+
+      assert.equal(
+        totalCount,
+        instances.length + offset
       )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -288,16 +310,16 @@ describe('client-side api functions:', () => {
     it('should handle max properly', () => {
       const before = getNumberOfInstances();
       const max = 23;
-      const result = search({ max })
+      const { instances } = search({ max })
       const after = getNumberOfInstances();
 
       assert.equal(
-        result.length,
+        instances.length,
         max
       );
 
       assert.deepEqual(
-        result,
+        instances,
         getContracts().slice(0, max),
         "Returned array is not the one expected"
       )
@@ -312,19 +334,19 @@ describe('client-side api functions:', () => {
 // TEST BELOW WORKED BUT NOW BROKEN ;(
 // TODO: investigate and fix
 
-// describe('Async (converted to a promise with fake timeout) api', _ => {
-//   describe('async get', _ => {
-//     it('should return a proper instance', done => {
-//       asyncApi.get({ instance: { "contractId": realInstance.contractId } }).
-//         then(res => {
-//           assert.deepEqual(
-//             res,
-//             realInstance
-//           );
-//           done()
-//         }).
-//         catch(done)
-//     });
-//   });
-// });
+describe('Async (converted to a promise with fake timeout) api', _ => {
+  describe('async get', _ => {
+    it('should return a proper instance', done => {
+      asyncApi.get({ instance: { "contractId": realInstance.contractId } }).
+        then(res => {
+          assert.deepEqual(
+            res,
+            realInstance
+          );
+          done()
+        }).
+        catch(done)
+    });
+  });
+});
 

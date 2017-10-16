@@ -1,4 +1,10 @@
-import * as api from './api';
+import {
+  get,
+  create,
+  update,
+  search,
+  deleteMany
+} from './api';
 
 const FAKE_RESPONSE_TIMEOUT = 300; // In milliseconds. 0 for no timeout.
 
@@ -15,16 +21,21 @@ const sync2promise = timeout => fn => (...args) => new Promise((resolve, reject)
 ));
 
 const wrapApi = timeout => apiObj => Object.keys(apiObj).reduce(
-  (rez, apiName) => ({ ...rez, [apiName]: sync2promise(timeout)(apiObj[apiName]) }), {}
+  (rez, apiName) => {
+    console.log(apiName + " of obj " + JSON.stringify(Object.keys(apiObj)) + ": " + typeof apiObj[apiName])
+    return ({ ...rez, [apiName]: sync2promise(timeout)(apiObj[apiName]) })
+  }, {}
 )
 
 const syncApi = {
-  get: api.get,
-  create: api.create,
-  update: api.update,
-  delete: api.deleteMany,
-  search: api.search
+  get,
+  create,
+  update,
+  delete: deleteMany,
+  search
 }
 
 // the same as syncApi object, but with Promise-wrapped functions
-export default wrapApi(FAKE_RESPONSE_TIMEOUT)(syncApi);
+const asyncApi = wrapApi(FAKE_RESPONSE_TIMEOUT)(syncApi);
+
+export default asyncApi;

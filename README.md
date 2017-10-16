@@ -1,8 +1,6 @@
 [![CircleCI Status](https://circleci.com/gh/OpusCapita/react-crudeditor/tree/master.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/OpusCapita/react-crudeditor)
 ![badge-npm-version](https://img.shields.io/npm/v/@opuscapita/react-crudeditor.svg)
 [![Dependency Status](https://img.shields.io/david/OpusCapita/react-crudeditor.svg)](https://david-dm.org/OpusCapita/react-crudeditor)
-[![NPM Downloads](https://img.shields.io/npm/dm/@opuscapita/react-crudeditor.svg)](https://npmjs.org/package/@opuscapita/react-crudeditor)
-![badge-license](https://img.shields.io/github/license/OpusCapita/react-crudeditor.svg)
 
 # CRUD Editor
 

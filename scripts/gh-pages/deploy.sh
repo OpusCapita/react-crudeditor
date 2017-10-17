@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # ideas used from https://gist.github.com/motemen/8595451
 
 # abort the script if there is a non-zero error

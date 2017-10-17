@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 rm -rf .gh-pages-tmp &&
 node node_modules/webpack/bin/webpack.js --config ./scripts/gh-pages/webpack.config.js &&

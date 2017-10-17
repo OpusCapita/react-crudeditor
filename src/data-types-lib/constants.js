@@ -7,6 +7,8 @@ export const
   \*███████████████████████████████████████████*/
 
   FIELD_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
+  FIELD_TYPE_NUMBER = 'number', // JavaScript type "number".
+  FIELD_TYPE_STRING = 'string', // JavaScript type "string".
   FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with date.
 
   /*
@@ -16,13 +18,12 @@ export const
    */
   FIELD_TYPE_STRING_NUMBER = 'stringNumber',
 
-  FIELD_TYPE_STRING = 'string', // JavaScript type "string".
-
   /* ███████████████████████████████████████████*\
    *███  UI TYPES (in alphabetical order)   ███*
   \*███████████████████████████████████████████*/
 
   UI_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
+  UI_TYPE_DATE = 'date', // JavaScript type "object" which is an instance of Date.
   UI_TYPE_NUMBER = 'number', // JavaScript type "number".
   UI_TYPE_STRING = 'string', // JavaScript type "string".
 

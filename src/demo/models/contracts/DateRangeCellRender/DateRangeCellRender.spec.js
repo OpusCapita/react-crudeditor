@@ -13,7 +13,7 @@ global.window = window;
 Enzyme.configure({ adapter: new Adapter() });
 
 describe("DateRangeCellRender", _ => {
-  it("properly displays Date range", () => {
+  it("should properly display the Date range", () => {
     const props = {
       name: "dateRange",
       instance: {

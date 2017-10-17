@@ -45,9 +45,10 @@ const realInstance = {
   "freightSurcharge": 36792
 };
 
-describe('client-side api functions:', () => {
+describe('Sync api functions:', () => {
   describe('get ', () => {
     const before = getNumberOfInstances();
+
     it('should get a contract instance', () => {
       const instance = get({ instance: { "contractId": realInstance.contractId } });
       const after = getNumberOfInstances();
@@ -55,6 +56,17 @@ describe('client-side api functions:', () => {
         instance,
         realInstance
       );
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
+    it('should throw for unknown contractId', () => {
+      try {
+        const i = get({ instance: { "contractId": "TotallyRANDOMcontractId000003-_1934ir23" } });
+        assert.fail(i);
+      } catch (e) {
+        assert.ok(true);
+      }
+      const after = getNumberOfInstances();
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
   });
@@ -73,16 +85,13 @@ describe('client-side api functions:', () => {
       assert.equal(before + 1, after, 'Source data length changed unexpectedly!')
     });
 
-    it('should return Error if contract already exists', () => {
-      const error = create({ instance });
-
-      assert.deepEqual(
-        error,
-        {
-          code: 403,
-          message: "Instance with this contractId already exists in the database"
-        }
-      );
+    it('should throw if contract already exists', () => {
+      try {
+        const i = create({ instance });
+        assert.fail(i);
+      } catch (e) {
+        assert.ok(true);
+      }
     });
   });
 
@@ -106,16 +115,19 @@ describe('client-side api functions:', () => {
       update({ instance: realInstance });
     });
 
-    it('should return an error for unknown contractId', () => {
+    it('should throw for unknown contractId', () => {
       const before = getNumberOfInstances();
       const instance = { contractId: "mP%*}RSI{E6>g~}~}(4|.NdJ]9w&<q-c-suS56G/f#oB(zXR=xHq1BlB*T}GJssU" };
-      const result = update({ instance });
-      const after = getNumberOfInstances();
-      assert.deepEqual(
-        result,
-        { error: `Contract [${instance.contractId}] not found` }
-      );
-      assert.equal(before, after, 'Source data length changed unexpectedly!')
+
+      try {
+        const i = update({ instance });
+        assert.fail(i);
+      } catch (e) {
+        assert.ok(true);
+      } finally {
+        const after = getNumberOfInstances();
+        assert.equal(before, after, 'Source data length changed unexpectedly!')
+      }
     });
   });
 
@@ -345,10 +357,23 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         }).
         catch(done)
     });
+
+    it('should reject for unknown contractId', done => {
+      const instance = { contractId: "TotallyRANDOMcontractId000003-_1934ir23" };
+      asyncApi.get({ instance }).
+        then(done).
+        catch(err => {
+          assert.deepEqual(
+            err,
+            { code: 404, message: `Contract "${instance.contractId}" not found` }
+          );
+          done()
+        })
+    });
   });
 
   describe('async create ', _ => {
-    const instance = { "contractId": "t0tALly RanD0m ContracT ID 2", "description": "random description" };
+    const instance = { contractId: "t0tALly RanD0m ContracT ID 2", "description": "random description" };
 
     it('should return a saved contract instance', done => {
       const before = getNumberOfInstances();
@@ -365,22 +390,23 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
       ).catch(done)
     });
 
-    it('should return Error if contract already exists', done => {
+    it('should return error if contract already exists', done => {
       const before = getNumberOfInstances();
-      asyncApi.create({ instance }).then(
-        result => {
+      asyncApi.create({ instance }).
+        then(done).
+        catch(err => {
           const after = getNumberOfInstances();
           assert.deepEqual(
-            result,
+            err,
             {
               code: 403,
-              message: "Instance with this contractId already exists in the database"
+              message: `Instance with contractId="${instance.contractId}" already exists in the database`
             }
           );
           assert.equal(before, after, 'Source data length changed unexpectedly!');
           done()
         }
-      ).catch(done)
+        )
     });
   });
 
@@ -410,17 +436,18 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         catch(done)
     });
 
-    it('should return an error for unknown contractId', done => {
+    it('should reject for unknown contractId', done => {
       const before = getNumberOfInstances();
       const instance = { contractId: "mP%*}RSI{E6>g~}~}(4|.NdJ]9w&<q-c-suS56G/f#oB(zXR=xHq1BlB*T}GJssU" };
 
       asyncApi.update({ instance }).
-        then(result => {
+        then(done).
+        catch(err => {
           const after = getNumberOfInstances();
 
           assert.deepEqual(
-            result,
-            { error: `Contract [${instance.contractId}] not found` }
+            err,
+            { code: 400, message: `Contract "${instance.contractId}" not found` }
           );
 
           assert.equal(before, after, 'Source data length changed unexpectedly!')

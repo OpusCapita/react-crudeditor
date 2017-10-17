@@ -38,21 +38,28 @@ export const
   getNumberOfInstances = _ => data.contracts.length,
   getContracts = _ => data.contracts,
 
-  get = ({ instance }) => internal2api(
-    data.contracts.find(({ contractId }) => {
+  get = ({ instance }) => {
+    const item = data.contracts.find(({ contractId }) => {
       return contractId === instance.contractId
-    })
-  ),
+    });
 
-  create = ({ instance }) => data.contracts.find(({ contractId }) => contractId === instance.contractId) ?
-    {
-      code: 403,
-      message: "Instance with this contractId already exists in the database"
-    } :
-    ((data, instance) => {
+    if (item) {
+      return internal2api(item)
+    }
+
+    throw new Error("404")
+  },
+
+  create = ({ instance }) => {
+    if (data.contracts.find(({ contractId }) => contractId === instance.contractId)) {
+      throw new Error("403")
+    }
+
+    return ((data, instance) => {
       data.contracts.push(instance);
       return instance
-    })(data, instance),
+    })(data, instance)
+  },
 
   update = ({ instance }) => (
     (data, instance) => {
@@ -63,9 +70,8 @@ export const
             contract
         );
         return internal2api(instance)
-      } else {
-        return { error: `Contract [${instance.contractId}] not found` }
       }
+      throw new Error("404")
     }
   )(data, instance),
 

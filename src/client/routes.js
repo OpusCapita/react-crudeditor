@@ -11,7 +11,7 @@ import {
 } from 'react-router-dom';
 
 export default () => (
-  <Router>
+  <Router basename="/react-crudeditor/branches/serverless">
     <Switch>
       <Redirect exact={true} from="/" to="/home" />
       <Route exact={true} path="/home" component={Home} />

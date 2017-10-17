@@ -51,7 +51,7 @@ export default {
 
       /*
        * Specifies the minimum value allowed.
-       * param is number|string|Big.
+       * param is string.
        */
       [CONSTRAINT_MIN]: param => value >= new Date(param) || throwError({
         code: ERROR_CODE_VALIDATION,
@@ -61,7 +61,7 @@ export default {
 
       /*
        * Specifies the maximum value allowed.
-       * param is number|string|Big.
+       * param is string.
        */
       [CONSTRAINT_MAX]: param => value <= new Date(param) || throwError({
         code: ERROR_CODE_VALIDATION,

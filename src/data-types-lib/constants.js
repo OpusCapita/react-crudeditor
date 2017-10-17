@@ -49,6 +49,7 @@ export const
 
   ERROR_FORBIDDEN_FRACTIONAL_PART = 'forbiddenFractionalPartError',
   ERROR_FORMAT = 'formatError',
+  ERROR_INVALID_DATE = 'invalidDateValue',
   ERROR_INVALID_FIELD_TYPE_VALUE = 'invalidFieldTypeValue',
   ERROR_INVALID_UI_TYPE_VALUE = 'invalidUiTypeValue',
   ERROR_INVALID_NUMBER = 'invalidNumberError',

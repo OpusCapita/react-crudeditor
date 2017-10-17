@@ -1,9 +1,11 @@
 import booleanType from './boolean';
+import dateType from './date';
 import numberType from './number';
 import stringType from './string';
 
 import {
   UI_TYPE_BOOLEAN,
+  UI_TYPE_DATE,
   UI_TYPE_NUMBER,
   UI_TYPE_STRING,
 } from '../constants';
@@ -22,6 +24,7 @@ import {
  */
 export default {
   [UI_TYPE_BOOLEAN]: booleanType,
+  [UI_TYPE_DATE]: dateType,
   [UI_TYPE_NUMBER]: numberType,
   [UI_TYPE_STRING]: stringType
 };

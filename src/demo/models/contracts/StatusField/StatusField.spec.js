@@ -27,8 +27,7 @@ describe("StatusField", _ => {
   });
 
   it("properly renders a date range 2", () => {
-
-    var callback = sinon.spy();
+    let callback = sinon.spy();
     const props = {
       value: 0,
       readOnly: false,
@@ -38,6 +37,6 @@ describe("StatusField", _ => {
     const wrapper = Enzyme.mount(<StatusField {...props} />);
     wrapper.setProps({ value: 100 });
 
-    expect(callback.calledWith(null)).to.be.true
+    expect(callback.calledWith(null)).to.be.true // eslint-disable-line no-unused-expressions
   });
 });

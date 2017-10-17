@@ -13,7 +13,7 @@ export default {
     console.log('Making inlinedata API-get call', JSON.stringify(instance));
     return new Promise((resolve, reject) => {
       setTimeout(_ => resolve(get({ instance })), FAKE_RESPONSE_TIMEOUT)
-    })
+    })//
   },
   search({ filter, sort, order, offset, max }) {
     console.log('Making inlinedata API-search call', JSON.stringify({ filter, sort, order, offset, max }));
@@ -31,12 +31,12 @@ export default {
     console.log('Making inlinedata API-create call', JSON.stringify(instance));
     return new Promise((resolve, reject) => {
       setTimeout(_ => resolve(create({ instance })), FAKE_RESPONSE_TIMEOUT)
-    })
+    })//
   },
   update({ instance }) {
     console.log('Making inlinedata API-update call', JSON.stringify(instance));
     return new Promise((resolve, reject) => {
       setTimeout(_ => resolve(update({ instance })), FAKE_RESPONSE_TIMEOUT)
-    })
+    })//
   }
 }

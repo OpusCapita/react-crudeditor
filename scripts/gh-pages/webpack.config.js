@@ -1,17 +1,15 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const autoprefixer = require('autoprefixer');
-// const precss = require('precss');
 
 module.exports = {
   context: resolve(__dirname, 'src'),
   entry: [
-    './client/index.js'
+    '../../../src/client/index.js'
   ],
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   output: {
-    path: resolve(__dirname, './public'),
+    path: resolve(__dirname, '../../.gh-pages-tmp'),
     filename: 'bundle.js',
     publicPath: '/'
   },
@@ -83,7 +81,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: '../../../src/client/index.js',
       inject: "body"
     }),
     new webpack.NamedModulesPlugin(),

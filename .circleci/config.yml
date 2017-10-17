@@ -1,0 +1,69 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:7
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install-dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: lint
+          command: yarn lint
+
+      - run:
+          name: test
+          command: |
+            yarn test -- --reporter mocha-junit-reporter
+          environment:
+            MOCHA_FILE: ./junit/test-results.xml
+
+
+      - store_test_results:
+          path: junit
+
+      - store_artifacts:
+          path: junit
+
+
+  update-gh-pages:
+    docker:
+      - image: circleci/node:6
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install-dependencies
+          command: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: build-gh-pages
+          command: ./scripts/gh-pages/build.sh
+
+      - run:
+          name: deploy-gh-pages
+          command: ./scripts/gh-pages/deploy.sh .gh-pages-tmp

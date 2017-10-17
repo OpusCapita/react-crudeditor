@@ -5,7 +5,7 @@ import {
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_NUMBER
-} from '../../../data-types-lib/constants';
+} from '../../../../data-types-lib/constants';
 import { fields } from '../'
 
 const NUMBER_FIELDS = [

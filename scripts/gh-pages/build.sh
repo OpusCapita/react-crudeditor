@@ -1,4 +1,4 @@
 #!/bin/bash
 
 rm -rf public &&
-node node_modules/webpack/bin/webpack.js --config ./webpack.config.babel.js
+node node_modules/webpack/bin/webpack.js --config ./config/webpack.config.babel.js

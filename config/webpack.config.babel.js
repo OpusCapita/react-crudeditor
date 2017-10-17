@@ -5,13 +5,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const precss = require('precss');
 
 module.exports = {
-  context: resolve(__dirname, 'src'),
+  context: resolve(__dirname, '../src'),
   entry: [
-    './client/index.js'
+    './demo/client/index.js'
   ],
   // devtool: 'inline-source-map',
   output: {
-    path: resolve(__dirname, './public'),
+    path: resolve(__dirname, '../public'),
     filename: 'bundle.js',
     // publicPath: '/'
   },
@@ -83,7 +83,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './demo/client/index.html',
       inject: "body"
     }),
     new webpack.NamedModulesPlugin(),

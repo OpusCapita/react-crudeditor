@@ -14,6 +14,29 @@ const searchableFields = [
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }
 ];
 
+export const defaultNewInstance = ({ filter }) => Object.keys(filter).reduce(
+  (rez, fieldName) => {
+    let isRange;
+
+    searchableFields.some(fieldMeta => {
+      if (fieldMeta.name === fieldName) {
+        isRange = fieldMeta.render && fieldMeta.render.isRange;
+        return true;
+      }
+
+      return false;
+    });
+
+    return isRange || filter[fieldName] === null ?
+      rez :
+      {
+        ...rez,
+        [fieldName]: filter[fieldName]
+      };
+  },
+  {}
+);
+
 export const fields = {
   'contractBoilerplates': {
     'type': 'collection',
@@ -323,28 +346,7 @@ export default {
     }),
     instanceLabel: instance => instance._objectLabel || '',
     create: {
-      defaultNewInstance: (({ filter }) => Object.keys(filter).reduce(
-        (rez, fieldName) => {
-          let isRange;
-
-          searchableFields.some(fieldMeta => {
-            if (fieldMeta.name === fieldName) {
-              isRange = fieldMeta.render.isRange;
-              return true;
-            }
-
-            return false;
-          });
-
-          return isRange || filter[fieldName] === null ?
-            rez :
-            {
-              ...rez,
-              [fieldName]: filter[fieldName]
-            };
-        },
-        {}
-      )),
+      defaultNewInstance,
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {

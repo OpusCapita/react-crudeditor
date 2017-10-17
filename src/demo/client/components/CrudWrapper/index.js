@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import buildModel from '../../../models';
-import createCrud from '../../../crudeditor-lib';
+import createCrud from '../../../../crudeditor-lib';
 import { hash2obj, buildURL } from './lib';
 
 const VIEW_EDIT = 'edit';

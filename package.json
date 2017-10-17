@@ -4,9 +4,9 @@
   "private": true,
   "description": "react.js CRUD Editor",
   "scripts": {
-    "lint": "node ./node_modules/eslint/bin/eslint.js ./src --fix",
+    "lint": "node ./node_modules/eslint/bin/eslint.js ./src --config ./config/.eslintrc --fix",
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
-    "build": "webpack --config webpack.config.babel.js",
+    "build": "webpack --config config/webpack.config.babel.js",
     "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "start": "yarn build && node ./node_modules/http-server/bin/http-server -o"
   },
@@ -85,6 +85,7 @@
     "regenerator-runtime": "^0.11.0",
     "rimraf": "^2.6.2",
     "sass-loader": "6.0.6",
+    "sinon": "^4.0.1",
     "style-loader": "0.18.2",
     "svg-icons": "1.0.13",
     "url-loader": "0.5.9",
@@ -103,7 +104,7 @@
       "text-summary"
     ],
     "require": [
-      "./mocha-config.js"
+      "./config/mocha-config.js"
     ],
     "lines": 0,
     "statements": 0,

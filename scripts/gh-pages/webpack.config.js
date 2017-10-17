@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   context: resolve(__dirname, 'src'),
@@ -80,10 +80,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: '../../../src/client/index.js',
-      inject: "body"
-    }),
+    // new HtmlWebpackPlugin({
+    //   template: '../../../src/client/index.js',
+    //   inject: "body"
+    // }),
     new webpack.NamedModulesPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin()

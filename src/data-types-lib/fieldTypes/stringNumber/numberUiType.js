@@ -24,7 +24,7 @@ export default {
       const error = {
         code: ERROR_CODE_FORMATING,
         id: ERROR_FORMAT,
-        message: `Unable to convert to "${UI_TYPE_NUMBER}" Component API Type`,
+        message: `Unable to convert to "${UI_TYPE_NUMBER}" UI Type`,
       };
 
       throw error;

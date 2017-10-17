@@ -9,11 +9,11 @@ module.exports = {
   entry: [
     './client/index.js'
   ],
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
   output: {
     path: resolve(__dirname, './public'),
     filename: 'bundle.js',
-    publicPath: '/'
+    // publicPath: '/'
   },
   module: {
     rules: [

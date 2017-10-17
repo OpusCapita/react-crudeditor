@@ -67,3 +67,20 @@ jobs:
       - run:
           name: deploy-gh-pages
           command: ./scripts/gh-pages/deploy.sh .gh-pages-tmp
+
+workflows:
+  version: 2
+  build-all:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - gh-pages
+      - update-gh-pages:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - gh-pages

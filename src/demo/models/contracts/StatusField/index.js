@@ -6,7 +6,8 @@ const StatusField = ({ value, onChange, onBlur, readOnly }) =>
   (<FormControl
     componentClass='select'
     value={value || value === 0 ? value : ''}
-    onChange={({ target: { value } }) => onChange && onChange(value ? Number(value) : null)}
+    onChange={({ target: { value } }) => onChange &&
+      onChange(Number(value) === parseInt(value, 10) ? Number(value) : null)}
     onBlur={onBlur}
     disabled={readOnly}
   >

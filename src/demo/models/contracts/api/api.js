@@ -29,8 +29,10 @@ const internal2api = contract => Object.entries(contract).reduce(
 );
 
 const data = { // remove doubles
-  contracts: [...new Set(initialData.contracts.map(({ contractId }) => contractId))].
-    map(id => initialData.contracts.find(({ contractId }) => contractId === id))
+  contracts: Object.keys(
+    initialData.contracts.map(({ contractId }) => contractId).
+      reduce((obj, id) => ({ ...obj, [id]: '' }), {})
+  ).map(id => initialData.contracts.find(({ contractId }) => contractId === id))
 }
 
 const setCreatedFields = instance => {

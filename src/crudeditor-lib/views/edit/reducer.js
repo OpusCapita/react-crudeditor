@@ -49,7 +49,7 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-import { findFieldLayout } from '../lib';
+import { findFieldLayout, getActiveTab } from '../lib';
 
 const defaultStoreStateTemplate = {
 
@@ -181,7 +181,12 @@ export default modelDefinition => (
     });
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
-    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
+
+    const activeTab = storeState.activeTab ?
+      getActiveTab(storeState, storeState.activeTab.tab) :
+      formLayout.filter(({ tab }) => !!tab)[0];
+
+    newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
     newStoreStateSlice.divergedField = null;
@@ -346,19 +351,7 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be undefined.
-    const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
-    let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
-
-    if (tabName) {
-      storeState.formLayout.some(tab => {
-        if (tab.tab === tabName) {
-          activeTab = tab;
-          return true;
-        }
-
-        return false;
-      });
-    }
+    const activeTab = getActiveTab(storeState, tabName);
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
 

@@ -146,11 +146,15 @@ export default function*({
     });
   } else {
     try {
+      const tab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);
       yield call(editSaga, {
         modelDefinition,
         softRedirectSaga,
         action: {
-          payload: { instance: savedInstance },
+          payload: {
+            instance: savedInstance,
+            tab: tab ? tab.tab : null
+          },
           meta
         }
       })

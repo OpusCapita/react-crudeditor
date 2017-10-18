@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './components/Home';
 import CrudWrapper from './components/CrudWrapper';
 import Revisions from './components/Revisions';
+import { baseUrl } from '../../../config/client';
 
 import {
   BrowserRouter as Router,
@@ -11,7 +12,7 @@ import {
 } from 'react-router-dom';
 
 export default () => (
-  <Router basename="/react-crudeditor/branches/serverless">
+  <Router basename={baseUrl}>
     <Switch>
       <Redirect exact={true} from="/" to="/home" />
       <Route exact={true} path="/home" component={Home} />

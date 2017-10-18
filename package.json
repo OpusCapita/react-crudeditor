@@ -8,7 +8,8 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
     "build": "webpack --config config/webpack.config.babel.js",
     "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "start": "yarn build && node ./node_modules/http-server/bin/http-server -o"
+    "start": "rimraf ./public && yarn build && node ./node_modules/http-server/bin/http-server -o",
+    "dev": "webpack-dev-server --config config/webpack.config.babel.js --open"
   },
   "keywords": [
     "react",
@@ -89,7 +90,8 @@
     "style-loader": "0.18.2",
     "svg-icons": "1.0.13",
     "url-loader": "0.5.9",
-    "webpack": "3.4.1"
+    "webpack": "3.4.1",
+    "webpack-dev-server": "^2.9.2"
   },
   "nyc": {
     "sourceMap": false,

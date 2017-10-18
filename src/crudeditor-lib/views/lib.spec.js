@@ -4,7 +4,8 @@ import {
   buildFieldRender,
   buildFormLayout,
   getLogicalKeyBuilder,
-  findFieldLayout
+  findFieldLayout,
+  getActiveTab
 } from './lib'
 
 import models, { fields } from '../../demo/models/contracts'
@@ -309,6 +310,41 @@ describe('Crudeditor-lib / views / lib', () => {
       assert(
         typeof result,
         "object"
+      )
+    });
+  });
+
+  describe('getActiveTab', () => {
+    const storeState = {
+      formLayout: [
+        [{ field: "one" }],
+        [{ field: "two" }]
+      ]
+    };
+    storeState.formLayout[0].tab = "general";
+    storeState.formLayout[1].tab = "additional";
+
+    it('should return a tab from formLayout', () => {
+      const result = getActiveTab(storeState, 'additional');
+      assert.deepEqual(
+        result,
+        storeState.formLayout[1]
+      )
+    });
+
+    it('should return the first tab if name is not specified', () => {
+      const result = getActiveTab(storeState);
+      assert.deepEqual(
+        result,
+        storeState.formLayout[0]
+      )
+    });
+
+    it('should return the first tab if name is unknown', () => {
+      const result = getActiveTab(storeState, 'kwhe8923o23y8[023');
+      assert.deepEqual(
+        result,
+        storeState.formLayout[0]
       )
     });
   });

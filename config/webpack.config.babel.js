@@ -9,11 +9,14 @@ module.exports = {
   entry: [
     './demo/client/index.js'
   ],
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   output: {
     path: resolve(__dirname, '../public'),
     filename: 'bundle.js',
     // publicPath: '/'
+  },
+  devServer: {
+    contentBase: './public'
   },
   module: {
     rules: [

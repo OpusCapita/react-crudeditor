@@ -26,7 +26,7 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-import { findFieldLayout } from '../lib';
+import { findFieldLayout, getActiveTab } from '../lib';
 
 import {
   format as formatField,
@@ -195,19 +195,7 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be undefined.
-    const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
-    let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
-
-    if (tabName) {
-      storeState.formLayout.some(tab => {
-        if (tab.tab === tabName) {
-          activeTab = tab;
-          return true;
-        }
-
-        return false;
-      });
-    }
+    const activeTab = getActiveTab(storeState, tabName);
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
 

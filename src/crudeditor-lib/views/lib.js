@@ -159,3 +159,21 @@ export const findFieldLayout = fieldName => {
 
   return layoutWalker;
 };
+
+export const getActiveTab = (storeState, tabName) => {
+  const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
+  let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
+
+  if (tabName) {
+    storeState.formLayout.some(tab => {
+      if (tab.tab === tabName) {
+        activeTab = tab;
+        return true;
+      }
+
+      return false;
+    });
+  }
+
+  return activeTab
+}

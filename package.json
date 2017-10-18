@@ -8,8 +8,7 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
     "build": "webpack --config config/webpack.config.babel.js",
     "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "start": "rimraf ./public && yarn build && node ./node_modules/http-server/bin/http-server -o",
-    "dev": "webpack-dev-server --config config/webpack.config.babel.js --open"
+    "start": "webpack-dev-server --config config/webpack.config.babel.js"
   },
   "keywords": [
     "react",
@@ -68,7 +67,6 @@
     "eslint-plugin-react": "^7.4.0",
     "file-loader": "0.11.2",
     "html-webpack-plugin": "2.29.0",
-    "http-server": "^0.10.0",
     "joi-browser": "10.6.1",
     "jsdom": "^11.3.0",
     "less-loader": "4.0.5",

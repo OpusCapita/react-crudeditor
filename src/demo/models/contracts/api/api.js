@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import find from 'lodash/find';
 import initialData from './data';
 import {
   FIELD_TYPE_BOOLEAN,
@@ -32,7 +33,7 @@ const data = { // remove doubles
   contracts: Object.keys(
     initialData.contracts.map(({ contractId }) => contractId).
       reduce((obj, id) => ({ ...obj, [id]: '' }), {})
-  ).map(id => initialData.contracts.find(({ contractId }) => contractId === id))
+  ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id))
 }
 
 const setCreatedFields = instance => {
@@ -65,7 +66,7 @@ export const
   getContracts = _ => data.contracts,
 
   get = ({ instance }) => {
-    const item = data.contracts.find(({ contractId }) => {
+    const item = find(data.contracts, ({ contractId }) => {
       return contractId === instance.contractId
     });
 
@@ -77,7 +78,7 @@ export const
   },
 
   create = ({ instance }) => {
-    if (data.contracts.find(({ contractId }) => contractId === instance.contractId)) {
+    if (find(data.contracts, ({ contractId }) => contractId === instance.contractId)) {
       throw new Error("403")
     }
 
@@ -90,7 +91,7 @@ export const
 
   update = ({ instance }) => (
     (data, instance) => {
-      if (data.contracts.find(({ contractId }) => contractId === instance.contractId)) {
+      if (find(data.contracts, ({ contractId }) => contractId === instance.contractId)) {
         data.contracts = data.contracts.map( // eslint-disable-line no-param-reassign
           contract => contract.contractId === instance.contractId ?
             instance :
@@ -159,7 +160,7 @@ export const
       if (order && order === 'desc') {
         orderedSortFieldValues.reverse();
       }
-      result = orderedSortFieldValues.map(v => result.find(el => el[sort] === v))
+      result = orderedSortFieldValues.map(v => find(result, el => el[sort] === v))
     }
 
     if (Number(offset) === parseInt(offset, 10)) {

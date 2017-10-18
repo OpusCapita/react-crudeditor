@@ -16,6 +16,10 @@ if (!Object.entries) {
   entries.shim();
 }
 
+const stripAuditable = obj => Object.keys(obj).
+  filter(key => ['createdOn', 'createdBy', 'changedOn', 'changedBy'].indexOf(key) === -1).
+  reduce((o, cur) => ({ ...o, [cur]: obj[cur] }), {});
+
 const realInstance = {
   "contractId": "Excision of mouth NEC",
   "extContractId": "Dilation of R Fem Art with 4+ Intralum Dev, Perc Approach",
@@ -80,7 +84,7 @@ describe('Sync api functions:', () => {
       const after = getNumberOfInstances();
       assert.deepEqual(
         instance,
-        savedInstance
+        stripAuditable(savedInstance)
       );
       assert.equal(before + 1, after, 'Source data length changed unexpectedly!')
     });
@@ -106,8 +110,8 @@ describe('Sync api functions:', () => {
       const result = update({ instance: updatedInstance });
       const after = getNumberOfInstances();
       assert.deepEqual(
-        result,
-        updatedInstance
+        stripAuditable(result),
+        stripAuditable(updatedInstance)
       );
       assert.equal(before, after, 'Source data length changed unexpectedly!')
 
@@ -167,8 +171,8 @@ describe('Sync api functions:', () => {
       const after = getNumberOfInstances();
 
       assert.deepEqual(
-        instances[0],
-        realInstance
+        stripAuditable(instances[0]),
+        stripAuditable(realInstance)
       );
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -350,8 +354,8 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
       asyncApi.get({ instance: { "contractId": realInstance.contractId } }).
         then(res => {
           assert.deepEqual(
-            res,
-            realInstance
+            stripAuditable(res),
+            stripAuditable(realInstance)
           );
           done()
         }).
@@ -381,8 +385,8 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         result => {
           const after = getNumberOfInstances();
           assert.deepEqual(
-            result,
-            instance
+            stripAuditable(result),
+            stripAuditable(instance)
           );
           assert.equal(before + 1, after, 'Source data length changed unexpectedly!');
           done()
@@ -423,8 +427,8 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           const after = getNumberOfInstances();
 
           assert.deepEqual(
-            result,
-            updatedInstance
+            stripAuditable(result),
+            stripAuditable(updatedInstance)
           );
 
           assert.equal(before, after, 'Source data length changed unexpectedly!')

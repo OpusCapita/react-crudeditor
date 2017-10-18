@@ -33,6 +33,30 @@ const data = { // remove doubles
     map(id => initialData.contracts.find(({ contractId }) => contractId === id))
 }
 
+const setCreatedFields = instance => {
+  data.contracts = data.contracts.map(
+    contract => contract.contractId === instance.contractId ?
+      {
+        ...contract,
+        createdOn: (new Date()).toISOString(),
+        createdBy: 'Alexey Sergeev'
+      } :
+      contract
+  )
+}
+
+const setChangedFields = instance => {
+  data.contracts = data.contracts.map(
+    contract => contract.contractId === instance.contractId ?
+      {
+        ...contract,
+        changedOn: (new Date()).toISOString(),
+        changedBy: 'Alexey The Editor'
+      } :
+      contract
+  )
+}
+
 export const
 
   getNumberOfInstances = _ => data.contracts.length,
@@ -57,7 +81,8 @@ export const
 
     return ((data, instance) => {
       data.contracts.push(instance);
-      return instance
+      setCreatedFields(instance);
+      return get({ instance })
     })(data, instance)
   },
 
@@ -69,7 +94,8 @@ export const
             instance :
             contract
         );
-        return internal2api(instance)
+        setChangedFields(instance);
+        return get({ instance })
       }
       throw new Error("404")
     }

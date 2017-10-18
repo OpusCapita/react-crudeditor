@@ -14,8 +14,8 @@ class FieldBoolean extends React.PureComponent {
 
   render = _ =>
     (<Checkbox
-      checked={this.props.value}
-      readOnly={this.props.readOnly}
+      checked={!!this.props.value}
+      readOnly={!!this.props.readOnly}
       onChange={this.handleChange}
       onBlur={this.handleBlur}
     />)

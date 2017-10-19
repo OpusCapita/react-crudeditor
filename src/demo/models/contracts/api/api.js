@@ -156,10 +156,10 @@ export const
           ) {
             const itemFrom = item[fieldName] !== undefined ?
               Number(item[fieldName]) :
-              Number.MAX_SAFE_INTEGER * -0.99
+              Number.MAX_SAFE_INTEGER * -0.99 // todo remove as obsolete
             const itemTo = item[fieldName] !== undefined ?
               Number(item[fieldName]) :
-              Number.MAX_SAFE_INTEGER
+              Number.MAX_SAFE_INTEGER // todo remove as obsolete
 
             let match = true;
 

@@ -69,6 +69,7 @@ const CrudWrapper = ({
   }
 
   const Crud = entities2crud[entities];
+  console.log(JSON.stringify(view, null, 2))
   return <Crud view={view} onTransition={handleTransition[baseURL]} />;
 }
 

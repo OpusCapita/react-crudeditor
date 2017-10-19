@@ -1,8 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const autoprefixer = require('autoprefixer');
-// const precss = require('precss');
 
 module.exports = {
   context: resolve(__dirname, '../src'),
@@ -12,7 +10,8 @@ module.exports = {
   devtool: 'inline-source-map',
   output: {
     path: resolve(__dirname, '../public'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   devServer: {
     contentBase: './public',

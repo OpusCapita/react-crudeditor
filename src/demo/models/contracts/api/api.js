@@ -5,8 +5,14 @@ import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_STRING_NUMBER
+  FIELD_TYPE_STRING_NUMBER,
+  FIELD_TYPE_NUMBER
 } from '../../../../data-types-lib/constants';
+
+import {
+  RANGE_FIELD_TYPES
+} from '../../../../crudeditor-lib/views/search/constants';
+
 import { fields } from '../'
 
 const NUMBER_FIELDS = [
@@ -116,6 +122,7 @@ export const
 
   // TODO handle filter by range fields (from...to)
   search = ({ filter, sort, order, offset, max }) => {
+    console.log(JSON.stringify({ filter, sort, order, offset, max }, null, 2))
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
@@ -125,21 +132,48 @@ export const
         [key]: (
           (v, t) => t === FIELD_TYPE_BOOLEAN ?
             Boolean(v) : // cast to boolean
-            v // assume string otherwise
+            v // assume string or object otherwise
         )(filter[key], fields[key].type)
       })).
       reduce((obj, el) => ({ ...obj, ...el }), {});
 
+    console.log("\nfilter fields:\n" + JSON.stringify(filterFields, null, 2))
+
     const filteredData = filter && searchableData.filter(
       item => Object.keys(filterFields).reduce(
-        (rez, field) => {
-          const fieldType = fields[field].type;
+        (rez, fieldName) => {
+          const fieldValue = filterFields[fieldName];
+          const fieldType = fields[fieldName].type;
 
-          if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
-            const match = item[field] === filterFields[field];
+          if (
+            ~RANGE_FIELD_TYPES.indexOf(fieldType) &&
+            typeof fieldValue === 'object' &&
+            Object.keys(fieldValue).some(key => ~['from', 'to'].indexOf(key))
+          ) {
+            // handle Range fields
+
+            let match = true;
+
+            if (fieldValue.from !== undefined) {
+              match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
+                match && Number(item[fieldName]) >= Number(fieldValue.from) :
+                match && true // TODO implement for stringDate type
+            }
+
+            if (fieldValue.to !== undefined) {
+              match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
+                match && Number(item[fieldName]) <= Number(fieldValue.to) :
+                match && true // TODO implement for stringDate type
+            }
+
+            return rez && match
+
+            //
+          } else if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
+            const match = item[fieldName] === fieldValue;
             return rez && match
           } else if (fieldType === FIELD_TYPE_STRING) {
-            const match = item[field] && item[field].indexOf(filterFields[field]) > -1;
+            const match = item[fieldName] && item[fieldName].indexOf(fieldValue) > -1;
             return rez && match
           }
 

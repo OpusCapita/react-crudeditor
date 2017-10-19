@@ -11,7 +11,8 @@ import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_STRING
+  FIELD_TYPE_STRING,
+  FIELD_TYPE_NUMBER
 } from '../../data-types-lib/constants';
 
 const defaultFieldRenders = {
@@ -29,6 +30,9 @@ const defaultFieldRenders = {
   },
   [FIELD_TYPE_STRING]: {
     Component: FieldString
+  },
+  [FIELD_TYPE_NUMBER]: {
+    Component: FieldString // TODO FieldNumber
   }
 };
 

@@ -32,9 +32,9 @@ export const
 
     /*
      * boolean, false by default, which means forwarding a value if (one of the following):
-     * (1) input Component API Type is unknown,
-     * (2) input Field Type is unknown,
-     * (3) input Component API Type is unknown to the Field Type's formatter.
+     * -- input UI Type is unknown,
+     * -- input Field Type is unknown,
+     * -- input UI Type is unknown to the Field Type's formatter.
      */
     throwOnUnknownType = false
   }) => {
@@ -73,7 +73,7 @@ export const
         throw error;
       }
 
-      return value; // forward value of unknown Component API Type.
+      return value; // forward value of unknown UI Type.
     }
 
     if (value === EMPTY_FIELD_VALUE && uiTypes[uiType].hasOwnProperty('EMPTY_VALUE')) {
@@ -93,7 +93,7 @@ export const
         throw error;
       }
 
-      return value; // forward value when Component API Type is unknown to Field Type's formatter.
+      return value; // forward value when UI Type is unknown to Field Type's formatter.
     }
 
     return formatter[uiType](value);
@@ -112,12 +112,10 @@ export const
     sourceType: uiType,
 
     /*
-     * boolean, false by default, which means forwarding a value if
-     * (1) input Component API Type is inknown,
-     * or
-     * (2) input Field Type is unknown,
-     * or
-     * (3) input Component API Type is unknown to the Field Type's parser.
+     * boolean, false by default, which means forwarding a value if (one of the following):
+     * -- input UI Type is unknown,
+     * -- input Field Type is unknown,
+     * -- input UI Type is unknown to the Field Type's parser.
      */
     throwOnUnknownType = false
   }) => {
@@ -132,7 +130,7 @@ export const
         throw error;
       }
 
-      return value; // forward value of unknown Component API Type.
+      return value; // forward value of unknown UI Type.
     }
 
     if (!uiTypes[uiType].isValid(value)) {
@@ -176,7 +174,7 @@ export const
         throw error;
       }
 
-      return value; // forward value when Component API Type is unknown to the Field Type's parser.
+      return value; // forward value when UI Type is unknown to the Field Type's parser.
     }
 
     return parser[uiType](value);
@@ -185,7 +183,7 @@ export const
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
    *
    * Input value is of fieldType (output of parse-function).
-   * Output is true in case of successful validation.
+   * Output is boolean true in case of successful validation.
    * An array of errors is thrown in case of validation failure.
    */
   validate = ({

@@ -1,9 +1,11 @@
-import stringNumberType from './stringNumber';
 import stringType from './string';
+import stringDateType from './stringDate';
+import stringNumberType from './stringNumber';
 
 import {
-  FIELD_TYPE_STRING_NUMBER,
   FIELD_TYPE_STRING,
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_NUMBER
 } from '../constants';
 
 /*
@@ -13,15 +15,15 @@ import {
  * Method returning boolean whether input value is indeed of specified Field Type.
  *
  * formatter
- * An object with Component API Types as keys and formatters to the corresponding Component API Types as values.
+ * An object with UI Types as keys and formatters to the corresponding UI Types as values.
  * Each formatter accepts valid value of specified Field Type
- * (may be empty in case of no native empty value in the specified Component API Type)
- * and converts it to the specified Component API Type
+ * (may be EMPTY_FIELD_VALUE in case of no native EMPTY_VALUE in the specified UI Type)
+ * and converts it to the specified UI Type
  * or throws an error when unable to convert.
  *
  * parser
- * An object with Component API Types as keys and parsers to the corresponding Component API Types as values.
- * Each parser accepts a valid, natively non-empty value of specified Component API Type
+ * An object with UI Types as keys and parsers to the corresponding UI Types as values.
+ * Each parser accepts a valid, natively non-EMPTY_VALUE of specified UI Type
  * and parses it to the specified Field Type
  * or throws an error when unable to convert.
  *
@@ -34,6 +36,7 @@ import {
  * or throws error object otherwise.
  */
 export default {
-  [FIELD_TYPE_STRING_NUMBER]: stringNumberType,
-  [FIELD_TYPE_STRING]: stringType
+  [FIELD_TYPE_STRING]: stringType,
+  [FIELD_TYPE_STRING_DATE]: stringDateType,
+  [FIELD_TYPE_STRING_NUMBER]: stringNumberType
 };

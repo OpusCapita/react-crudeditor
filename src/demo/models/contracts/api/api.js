@@ -35,11 +35,18 @@ const internal2api = contract => Object.entries(contract).reduce(
   {}
 );
 
+export const testNumberFieldType = "testNumberTypeField";
+
 const data = { // remove doubles
   contracts: Object.keys(
     initialData.contracts.map(({ contractId }) => contractId).
       reduce((obj, id) => ({ ...obj, [id]: '' }), {})
-  ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id))
+  ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).map(
+    c => ({
+      [testNumberFieldType]: Math.random() * 1000000,
+      ...c
+    })
+  )
 }
 
 const setCreatedFields = instance => {
@@ -122,7 +129,6 @@ export const
 
   // TODO handle filter by range fields (from...to)
   search = ({ filter, sort, order, offset, max }) => {
-    console.log(JSON.stringify({ filter, sort, order, offset, max }, null, 2))
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
@@ -137,8 +143,6 @@ export const
       })).
       reduce((obj, el) => ({ ...obj, ...el }), {});
 
-    console.log("\nfilter fields:\n" + JSON.stringify(filterFields, null, 2))
-
     const filteredData = filter && searchableData.filter(
       item => Object.keys(filterFields).reduce(
         (rez, fieldName) => {
@@ -150,25 +154,28 @@ export const
             typeof fieldValue === 'object' &&
             Object.keys(fieldValue).some(key => ~['from', 'to'].indexOf(key))
           ) {
-            // handle Range fields
+            const itemFrom = item[fieldName] !== undefined ?
+              Number(item[fieldName]) :
+              Number.MAX_SAFE_INTEGER * -0.99
+            const itemTo = item[fieldName] !== undefined ?
+              Number(item[fieldName]) :
+              Number.MAX_SAFE_INTEGER
 
             let match = true;
 
             if (fieldValue.from !== undefined) {
               match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
-                match && Number(item[fieldName]) >= Number(fieldValue.from) :
+                match && itemFrom >= Number(fieldValue.from) :
                 match && true // TODO implement for stringDate type
             }
 
             if (fieldValue.to !== undefined) {
               match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
-                match && Number(item[fieldName]) <= Number(fieldValue.to) :
+                match && itemTo <= Number(fieldValue.to) :
                 match && true // TODO implement for stringDate type
             }
 
             return rez && match
-
-            //
           } else if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
             const match = item[fieldName] === fieldValue;
             return rez && match

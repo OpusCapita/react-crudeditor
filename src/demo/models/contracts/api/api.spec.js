@@ -7,7 +7,8 @@ import {
   search,
   deleteMany,
   getNumberOfInstances,
-  getContracts
+  getContracts,
+  testNumberFieldType
 } from './api';
 
 import asyncApi from './';
@@ -15,6 +16,10 @@ import asyncApi from './';
 if (!Object.entries) {
   entries.shim();
 }
+
+const removeTestField = obj => Object.keys(obj).
+  filter(key => testNumberFieldType.indexOf(key) === -1).
+  reduce((o, cur) => ({ ...o, [cur]: obj[cur] }), {});
 
 const stripAuditable = obj => Object.keys(obj).
   filter(key => ['createdOn', 'createdBy', 'changedOn', 'changedBy'].indexOf(key) === -1).
@@ -57,7 +62,7 @@ describe('Sync api functions:', () => {
       const instance = get({ instance: { "contractId": realInstance.contractId } });
       const after = getNumberOfInstances();
       assert.deepEqual(
-        instance,
+        removeTestField(instance),
         realInstance
       );
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -189,6 +194,35 @@ describe('Sync api functions:', () => {
       assert.deepEqual(
         instances,
         getContracts().filter(c => c.description && ~c.description.indexOf(filter.description))
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
+    it('should find by stringNumber from..to range (maxOrderValue)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        maxOrderValue: {
+          from: "5000",
+          to: "13000"
+        }
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert(instances.length > 0)
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(
+          c => Number(c.maxOrderValue) >= filter.maxOrderValue.from &&
+            Number(c.maxOrderValue) <= filter.maxOrderValue.to
+        )
       );
 
       assert.equal(

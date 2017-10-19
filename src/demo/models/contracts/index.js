@@ -12,11 +12,18 @@ const searchableFields = [
   { name: 'extContractId' },
   { name: 'extContractLineId' },
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
-  { name: 'maxOrderValue' }
-  // { name: 'maxOrderValue', render: { isRange: true, valueProp: { type: 'number' } } }
+  { name: 'maxOrderValue' },
+  { name: 'testNumberTypeField' }
 ];
 
 export const fields = {
+  'testNumberTypeField': {
+    'type': 'number',
+    'constraints': {
+      'required': false,
+      'max': Number.MAX_VALUE
+    }
+  },
   'contractBoilerplates': {
     'type': 'collection',
     'constraints': {
@@ -275,6 +282,9 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'supplier' }),
   tab({ name: 'groups' }),
   tab({ name: 'additional' },
+    section({ name: 'test' },
+      field({ name: 'testNumberTypeField' })
+    ),
     section({ name: 'order' },
       field({ name: 'minOrderValue' }),
       field({ name: 'minOrderValueRequired' }),

@@ -1,11 +1,13 @@
 import stringType from './string';
 import stringDateType from './stringDate';
 import stringNumberType from './stringNumber';
+import numberType from './number';
 
 import {
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER
+  FIELD_TYPE_STRING_NUMBER,
+  FIELD_TYPE_NUMBER
 } from '../constants';
 
 /*
@@ -38,5 +40,6 @@ import {
 export default {
   [FIELD_TYPE_STRING]: stringType,
   [FIELD_TYPE_STRING_DATE]: stringDateType,
-  [FIELD_TYPE_STRING_NUMBER]: stringNumberType
+  [FIELD_TYPE_STRING_NUMBER]: stringNumberType,
+  [FIELD_TYPE_NUMBER]: numberType
 };

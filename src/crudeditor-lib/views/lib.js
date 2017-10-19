@@ -1,5 +1,6 @@
 import FieldString from '../../components/FieldString';
 import FieldBoolean from '../../components/FieldBoolean';
+import FieldNumber from '../../components/FieldNumber';
 
 import {
   AUDITABLE_FIELDS,
@@ -32,7 +33,7 @@ const defaultFieldRenders = {
     Component: FieldString
   },
   [FIELD_TYPE_NUMBER]: {
-    Component: FieldString // TODO FieldNumber
+    Component: FieldNumber
   }
 };
 

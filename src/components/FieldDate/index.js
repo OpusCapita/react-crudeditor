@@ -7,18 +7,24 @@ class FieldDate extends React.PureComponent {
     super(...args);
 
     if (!this.props.readOnly) {
-      this.handleChange = value => this.props.onChange && this.props.onChange(value);
-
-      this.handleBlur = _ => this.props.onBlur && this.props.onBlur();
+      this.handleChange = value => {
+        // see description in render() function
+        return (this.props.onChange && this.props.onChange(value)) &&
+          (this.props.onBlur && this.props.onBlur());
+      }
     }
   }
 
   render = _ =>
+    // in DateInput component onBlur fires defore onChange
+    // it break fields parsing logic
+    // we won't listen to onBlur on the component
+    // instead we'll manually call props.onBlur in onChange listener
+    // right after we call props.onChange
     (<DateInput
       value={this.props.value || null}
       dateFormat="dd/MM/yyyy"
       onChange={this.handleChange}
-      onBlur={this.handleBlur}
       disabled={!!this.props.readOnly}
       showToLeft={false}
       showToTop={true}

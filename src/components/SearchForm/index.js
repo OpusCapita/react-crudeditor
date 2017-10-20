@@ -18,7 +18,6 @@ class SearchForm extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-
     this.props.model.actions.searchInstances({
       filter: this.props.model.data.formFilter
     });

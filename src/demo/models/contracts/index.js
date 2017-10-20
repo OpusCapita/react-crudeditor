@@ -13,7 +13,8 @@ const searchableFields = [
   { name: 'extContractLineId' },
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
   { name: 'maxOrderValue' },
-  { name: 'testNumberTypeField' }
+  { name: 'testNumberTypeField' },
+  { name: 'createdOn' }
 ];
 
 export const fields = {

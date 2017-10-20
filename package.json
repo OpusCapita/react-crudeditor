@@ -5,7 +5,7 @@
   "description": "react.js CRUD Editor",
   "scripts": {
     "lint": "node ./node_modules/eslint/bin/eslint.js ./src --config ./config/.eslintrc --fix",
-    "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js",
+    "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js  --require ignore-styles",
     "upload-coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "start": "webpack-dev-server --config config/webpack.config.babel.js",
     "build": "webpack --config config/webpack.config.babel.js",
@@ -19,6 +19,7 @@
   "author": "a.ryashentsev",
   "license": "ISC",
   "dependencies": {
+    "@opuscapita/react-dates": "^0.3.0-beta.13",
     "@opuscapita/react-svg": "2.0.0",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-runtime": "6.25.0",
@@ -72,6 +73,7 @@
     "file-loader": "0.11.2",
     "html-webpack-plugin": "2.29.0",
     "http-server": "^0.10.0",
+    "ignore-styles": "^5.0.1",
     "joi-browser": "10.6.1",
     "jsdom": "^11.3.0",
     "less-loader": "4.0.5",
@@ -100,7 +102,8 @@
     "sourceMap": false,
     "instrument": false,
     "exclude": [
-      "src/external_modules"
+      "src/external_modules",
+      "node_modules"
     ],
     "check-coverage": true,
     "reporter": [

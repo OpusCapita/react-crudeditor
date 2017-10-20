@@ -11,6 +11,7 @@ module.exports = {
     path: resolve(__dirname, '../.gh-pages-tmp'),
     filename: 'bundle.js'
   },
+  // if we need to start showroom on our computer
   devServer: {
     contentBase: './.gh-pages-tmp',
     historyApiFallback: true,

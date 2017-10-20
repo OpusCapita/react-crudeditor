@@ -1,6 +1,7 @@
 import FieldString from '../../components/FieldString';
 import FieldBoolean from '../../components/FieldBoolean';
 import FieldNumber from '../../components/FieldNumber';
+import FieldDate from '../../components/FieldDate';
 
 import {
   AUDITABLE_FIELDS,
@@ -24,7 +25,10 @@ const defaultFieldRenders = {
     }
   },
   [FIELD_TYPE_STRING_DATE]: {
-    Component: FieldString
+    Component: FieldDate,
+    valueProp: {
+      type: 'date'
+    }
   },
   [FIELD_TYPE_STRING_NUMBER]: {
     Component: FieldString

@@ -4,13 +4,7 @@ import Adapter from 'enzyme-adapter-react-15';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FieldBoolean from "./";
-import { JSDOM } from 'jsdom';
 import { Checkbox } from 'react-bootstrap';
-
-const doc = new JSDOM('<!doctype html><html><body></body></html>')
-const { window } = doc;
-global.document = window.document;
-global.window = window;
 
 Enzyme.configure({ adapter: new Adapter() });
 

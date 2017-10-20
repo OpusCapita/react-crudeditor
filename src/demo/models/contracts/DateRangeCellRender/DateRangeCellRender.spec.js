@@ -3,12 +3,6 @@ import Enzyme from "enzyme";
 import Adapter from 'enzyme-adapter-react-15';
 import { expect } from 'chai';
 import DateRangeCellRender from "./";
-import { JSDOM } from 'jsdom'
-
-const doc = new JSDOM('<!doctype html><html><body></body></html>')
-const { window } = doc;
-global.document = window.document;
-global.window = window;
 
 Enzyme.configure({ adapter: new Adapter() });
 

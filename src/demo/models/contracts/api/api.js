@@ -149,33 +149,61 @@ export const
           const fieldValue = filterFields[fieldName];
           const fieldType = fields[fieldName].type;
 
+          // Handle range from..to fields
           if (
             ~RANGE_FIELD_TYPES.indexOf(fieldType) &&
             typeof fieldValue === 'object' &&
             Object.keys(fieldValue).some(key => ~['from', 'to'].indexOf(key))
           ) {
-            const itemFrom = item[fieldName] !== undefined ?
-              Number(item[fieldName]) :
-              Number.MAX_SAFE_INTEGER * -0.99 // todo remove as obsolete
-            const itemTo = item[fieldName] !== undefined ?
-              Number(item[fieldName]) :
-              Number.MAX_SAFE_INTEGER // todo remove as obsolete
-
             let match = true;
 
-            if (fieldValue.from !== undefined) {
-              match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
-                match && itemFrom >= Number(fieldValue.from) :
-                match && true // TODO implement for stringDate type
-            }
+            let itemFrom, itemTo;
 
-            if (fieldValue.to !== undefined) {
-              match = ~[FIELD_TYPE_NUMBER, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType) ?
-                match && itemTo <= Number(fieldValue.to) :
-                match && true // TODO implement for stringDate type
+            switch (fieldType) {
+              // Number and stringNumber fieldTypes are treated and compared as Numbers
+              case FIELD_TYPE_NUMBER:
+              case FIELD_TYPE_STRING_NUMBER:
+                itemFrom = item[fieldName] !== undefined ?
+                  Number(item[fieldName]) :
+                  Number.MAX_SAFE_INTEGER * -0.99 // todo remove as obsolete
+                itemTo = item[fieldName] !== undefined ?
+                  Number(item[fieldName]) :
+                  Number.MAX_SAFE_INTEGER // todo remove as obsolete
+
+                if (fieldValue.from !== undefined) {
+                  match = match && itemFrom >= Number(fieldValue.from)
+                }
+
+                if (fieldValue.to !== undefined) {
+                  match = match && itemTo <= Number(fieldValue.to)
+                }
+
+                break;
+              // Handle stringDate fieldType
+              case FIELD_TYPE_STRING_DATE:
+                itemFrom = item[fieldName] !== undefined ? // TODO maybe better handling
+                new Date(item[fieldName]) :
+                  new Date('1900-01-01') // TBD choice of lower boundary
+                itemTo = item[fieldName] !== undefined ?
+                  new Date(item[fieldName]) :
+                  new Date('2900-01-01') // TBD choice of upper boundary
+
+                if (fieldValue.from !== undefined) {
+                  match = match && itemFrom >= new Date(fieldValue.from)
+                }
+
+                if (fieldValue.to !== undefined) {
+                  match = match && itemTo <= new Date(fieldValue.to)
+                }
+
+                break;
+              default:
+                console.log("search switch: unknown field type " + fieldType)
             }
 
             return rez && match
+
+            // Now handle non-range fields
           } else if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
             const match = item[fieldName] === fieldValue;
             return rez && match

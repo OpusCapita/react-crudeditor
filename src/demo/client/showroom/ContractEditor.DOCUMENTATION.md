@@ -1,8 +1,8 @@
-# ContractsEditor
+# ContractEditor
 
 ## Synopsis
 
-ContractsEditor react component. Provides general CRUD functionality for Contracts database.
+ContractEditor react component. Provides general CRUD functionality for Contracts database.
 
 ### Props Reference
 
@@ -30,7 +30,7 @@ ContractsEditor react component. Provides general CRUD functionality for Contrac
 ## Code Example
 
 ```js
-<ContractsEditor
+<ContractEditor
   view={{name: 'search', state: {} }}
   onTransition={() => {}}
 />;
@@ -42,7 +42,7 @@ Alexey Sergeev, Dmitry Divin, Daniel Zhitomirsky
 
 ## Component Name
 
-ContractsEditor
+ContractEditor
 
 ## License
 

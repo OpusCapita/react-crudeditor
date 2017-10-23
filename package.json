@@ -19,6 +19,7 @@
   "author": "a.ryashentsev",
   "license": "ISC",
   "dependencies": {
+    "@opuscapita/i18n": "^1.1.0",
     "@opuscapita/react-dates": "^0.3.0-beta.13",
     "@opuscapita/react-svg": "2.0.0",
     "babel-plugin-istanbul": "^4.1.5",

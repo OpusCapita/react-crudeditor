@@ -22,7 +22,7 @@ class SearchMain extends Component {
             className="btn btn-sm btn-primary"
             onClick={this.handleCreate}
           >
-            Create new
+            {this.context.i18n.getMessage('crudEditor.create.button')}
           </button>
         </div>
 
@@ -45,5 +45,9 @@ SearchMain.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchMain.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchMain;

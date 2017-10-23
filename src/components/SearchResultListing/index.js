@@ -144,13 +144,13 @@ class SearchResultListing extends React.PureComponent {
                       <Button onClick={this.handleShow(instance)}>
                         <Glyphicon glyph='glyphicon-eye-open' />
                         {' '}
-                        Show
+                        {this.context.i18n.getMessage('crudEditor.view.button')}
                       </Button>
 
                       <Button onClick={this.handleEdit(instance)}>
                         <Glyphicon glyph='edit' />
                         {' '}
-                        Edit
+                        {this.context.i18n.getMessage('crudEditor.edit.button')}
                       </Button>
 
                       <ConfirmDialog
@@ -162,7 +162,7 @@ class SearchResultListing extends React.PureComponent {
                         <Button>
                           <Glyphicon glyph='trash' />
                           {' '}
-                          Delete
+                          {this.context.i18n.getMessage('crudEditor.delete.button')}
                         </Button>
                       </ConfirmDialog>
                     </ButtonGroup>
@@ -190,5 +190,9 @@ SearchResultListing.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchResultListing.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchResultListing;

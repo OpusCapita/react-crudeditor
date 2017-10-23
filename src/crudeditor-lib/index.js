@@ -5,6 +5,8 @@ import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
+import { I18nManager } from '@opuscapita/i18n';
+import translations from './i18n'
 
 import Main from './components/Main';
 import getReducer from './rootReducer';
@@ -143,13 +145,35 @@ export default baseModelDefinition => {
   sagaMiddleware.run(rootSaga, modelDefinition);
 
   class CrudWrapper extends React.Component {
-    constructor(...args) {
-      super(...args);
+    constructor(props, context) {
+      super(props, context);
       onTransition = this.props.onTransition;
+
+      this.initI18n(props);
     }
 
     componentWillReceiveProps(props) {
       onTransition = props.onTransition;
+    }
+
+    getChildContext() {
+      const i18n = (this.context && this.context.i18n) || this.i18n;
+      return ({ i18n });
+    }
+
+    // create our own i18n context
+    // if i18n context is already passed from the outside -> oughter one is used
+    initI18n(props) {
+      const {
+        locale,
+        fallbackLocale,
+        localeFormattingInfo
+      } = props;
+      const i18n = new I18nManager({ locale, fallbackLocale, localeFormattingInfo });
+
+      // core crud translations
+      i18n.register('CrudEditor', translations);
+      this.i18n = i18n;
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
@@ -178,6 +202,22 @@ export default baseModelDefinition => {
     }),
     onTransition: PropTypes.func
   }
+
+  CrudWrapper.contextTypes = {
+    i18n: PropTypes.object
+  };
+  CrudWrapper.childContextTypes = {
+    i18n: PropTypes.object
+  };
+  CrudWrapper.propTypes = {
+    locale: PropTypes.string,
+    fallbackLocale: PropTypes.string,
+    localeFormattingInfo: PropTypes.object
+  };
+  CrudWrapper.defaultProps = {
+    locale: 'de',
+    fallbackLocale: 'en'
+  };
 
   return CrudWrapper
 };

@@ -96,7 +96,7 @@ class SearchForm extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__header">
-          <h4 className="crud--search-form__title">Search</h4>
+          <h4 className="crud--search-form__title">{this.context.i18n.getMessage('crudEditor.search.header')}</h4>
         </div>
         <div className="crud--search-form__controls">
           {searchableFieldsElement}
@@ -106,14 +106,14 @@ class SearchForm extends React.PureComponent {
             bsStyle='link'
             onClick={resetFormFilter}
           >
-            Reset
+          {this.context.i18n.getMessage('crudEditor.reset.button')}
           </Button>
           <Button
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
           >
-            Search
+          {this.context.i18n.getMessage('crudEditor.search.button')}
           </Button>
         </div>
       </Form>
@@ -129,5 +129,9 @@ SearchForm.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchForm.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchForm;

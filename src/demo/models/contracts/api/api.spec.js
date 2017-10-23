@@ -81,14 +81,17 @@ describe('Sync api functions:', () => {
   });
 
   describe('create ', () => {
-    const instance = { "contractId": "t0tALly RanD0m ContracT ID", "description": "random description" };
+    const instance = {
+      ...realInstance,
+      "contractId": "t0tALly RanD0m ContracT ID",
+      "description": "random description" };
 
     it('should return a saved contract instance', () => {
       const before = getNumberOfInstances();
       const savedInstance = create({ instance });
       const after = getNumberOfInstances();
       assert.deepEqual(
-        instance,
+        stripAuditable(instance),
         stripAuditable(savedInstance)
       );
       assert.equal(before + 1, after, 'Source data length changed unexpectedly!')
@@ -233,22 +236,6 @@ describe('Sync api functions:', () => {
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
 
-    it('should find by stringDate', () => {
-      const before = getNumberOfInstances();
-      const filter = {
-        createdOn: "2012-06-02T09:28:45Z"
-      }
-      const { instances } = search({ filter })
-      const after = getNumberOfInstances();
-
-      assert.deepEqual(
-        instances,
-        getContracts().filter(c => c.createdOn && c.createdOn === filter.createdOn)
-      );
-
-      assert.equal(before, after, 'Source data length changed unexpectedly!')
-    });
-
     it('should find by stringDate from..to range (createdOn)', () => {
       const before = getNumberOfInstances();
       const filter = {
@@ -289,7 +276,9 @@ describe('Sync api functions:', () => {
 
       assert.deepEqual(
         instances,
-        getContracts().filter(c => c.isOffer === filter.isOffer && c.isPreferred === filter.isPreferred)
+        getContracts().filter(
+          c => Boolean(c.isOffer) === filter.isOffer && Boolean(c.isPreferred) === filter.isPreferred
+        )
       );
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -440,7 +429,11 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
   });
 
   describe('async create ', _ => {
-    const instance = { contractId: "t0tALly RanD0m ContracT ID 2", "description": "random description" };
+    const instance = {
+      ...realInstance,
+      contractId: "t0tALly RanD0m ContracT ID 2",
+      "description": "random description"
+    };
 
     it('should return a saved contract instance', done => {
       const before = getNumberOfInstances();

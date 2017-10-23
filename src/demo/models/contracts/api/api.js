@@ -136,18 +136,22 @@ export const
       const filteredData = searchableData.filter(
         item => Object.keys(filter).reduce(
           (rez, fieldName) => {
+            if (item[fieldName] === undefined) {
+              const err = {
+                code: 500,
+                message: `Fatal error: field ${fieldName} does not exist on instance contractId=${item.contractId}`
+              }
+              throw err;
+            }
+
             const fieldValue = filter[fieldName];
             const fieldType = fields[fieldName].type;
 
-            // Handle range from..to fields
-            if (
-              ~RANGE_FIELD_TYPES.indexOf(fieldType) &&
-              typeof fieldValue === 'object' &&
-              Object.keys(fieldValue).some(key => ~['from', 'to'].indexOf(key))
-            ) {
-              let match = true;
+            let match = true;
 
-              if (item[fieldName] !== undefined) {
+            // Handle range from..to fields
+            if (~RANGE_FIELD_TYPES.indexOf(fieldType)) {
+              if (item[fieldName] !== null) {
                 let convertFunc;
 
                 switch (fieldType) {
@@ -170,21 +174,22 @@ export const
                 if (fieldValue.to !== undefined) {
                   match = match && convertFunc(item[fieldName]) <= convertFunc(fieldValue.to)
                 }
-              // the field in undefined on this instance
               } else {
-                return false; // TBD: or `match && true`? if field is not defined, then it's not a match?
+                // null returns false for any range
+                match = false;
               }
 
               return rez && match
 
               // Now handle non-range fields
-            } else if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
-              // TBD do we need to handle search by exact date (as of now)?
-              // If yes, should it be a date without time part, e.g. 2011-05-10?
-              const match = item[fieldName] === fieldValue;
+            } else if (fieldType === FIELD_TYPE_BOOLEAN) {
+              // Boolean() converts incoming null -> false and keeps true -> true or false -> false
+              const match = Boolean(item[fieldName]) === fieldValue;
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING) {
-              const match = item[fieldName] && item[fieldName].indexOf(fieldValue) > -1;
+              const match = item[fieldName] !== null ?
+                item[fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
+                false;
               return rez && match
             }
 

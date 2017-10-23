@@ -154,34 +154,34 @@ export const
             // Handle range from..to fields
             if (~RANGE_FIELD_TYPES.indexOf(fieldType)) {
               if (item[fieldName] !== null) {
-                let gt, lt;
+                let gte, lte;
 
                 switch (fieldType) {
                   // Number and stringNumber fieldTypes are treated and compared as Numbers
                   case FIELD_TYPE_NUMBER:
-                    gt = (itemValue, filterValue) => Number(itemValue) >= Number(filterValue);
-                    lt = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
+                    gte = (itemValue, filterValue) => Number(itemValue) >= Number(filterValue);
+                    lte = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
                     break;
 
                   case FIELD_TYPE_STRING_NUMBER:
-                    gt = (itemValue, filterValue) => Big(itemValue).gte(Big(filterValue));
-                    lt = (itemValue, filterValue) => Big(itemValue).lte(Big(filterValue));
+                    gte = (itemValue, filterValue) => Big(itemValue).gte(Big(filterValue));
+                    lte = (itemValue, filterValue) => Big(itemValue).lte(Big(filterValue));
                     break;
 
                   case FIELD_TYPE_STRING_DATE:
-                    gt = (itemValue, filterValue) => new Date(itemValue) >= new Date(filterValue);
-                    lt = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
+                    gte = (itemValue, filterValue) => new Date(itemValue) >= new Date(filterValue);
+                    lte = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
                     break;
                   default:
                     console.log("Search api switch: Unknown RANGE field type: " + fieldType)
                 }
 
                 if (fieldValue.from !== undefined) {
-                  match = match && gt(item[fieldName], fieldValue.from)
+                  match = match && gte(item[fieldName], fieldValue.from)
                 }
 
                 if (fieldValue.to !== undefined) {
-                  match = match && lt(item[fieldName], fieldValue.to)
+                  match = match && lte(item[fieldName], fieldValue.to)
                 }
               } else {
                 // null returns false for any range

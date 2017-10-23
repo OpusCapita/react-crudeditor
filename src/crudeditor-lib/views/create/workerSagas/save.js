@@ -153,7 +153,7 @@ export default function*({
         action: {
           payload: {
             instance: savedInstance,
-            tab: tab ? tab.tab : null
+            tab: tab && tab.tab
           },
           meta
         }

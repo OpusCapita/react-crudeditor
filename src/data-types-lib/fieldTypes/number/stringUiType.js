@@ -1,4 +1,8 @@
-import { EMPTY_FIELD_VALUE } from '../../constants';
+import {
+  ERROR_CODE_PARSING,
+  EMPTY_FIELD_VALUE,
+  ERROR_INVALID_NUMBER
+} from '../../constants';
 
 export default {
 
@@ -16,5 +20,25 @@ export default {
    * ████ UI_TYPE_STRING --> FIELD_TYPE_NUMBER ████
    * ██████████████████████████████████████████████
    */
-  parser: value => parseFloat(value) || EMPTY_FIELD_VALUE
+  parser: value => {
+    const optimized = value.trim();
+
+    if (!optimized) {
+      return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
+    }
+
+    let n = parseFloat(optimized);
+
+    if (isNaN(optimized) || isNaN(n)) {
+      const error = {
+        code: ERROR_CODE_PARSING,
+        id: ERROR_INVALID_NUMBER,
+        message: 'Invalid number'
+      };
+
+      throw error;
+    }
+
+    return n;
+  }
 };

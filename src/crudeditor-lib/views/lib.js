@@ -18,6 +18,8 @@ import {
 } from '../../data-types-lib/constants';
 
 const defaultFieldRenders = {
+  // default valueProp.type 'string' may be omitted.
+
   [FIELD_TYPE_BOOLEAN]: {
     Component: FieldBoolean,
     valueProp: {
@@ -169,14 +171,17 @@ export const findFieldLayout = fieldName => {
   return layoutWalker;
 };
 
-export const getActiveTab = (storeState, tabName) => {
+export const getTab = (storeState, tabName) => {
+  // The function returns tab object by tabName,
+  // or default tab if tabName is not specified (i.e. falsy).
+
   const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
-  let activeTab = tabs[0]; // default tab, undefined in case of no tabs.
+  let rezTab = tabs[0]; // default tab, undefined in case of no tabs.
 
   if (tabName) {
-    storeState.formLayout.some(tab => {
+    tabs.some(tab => {
       if (tab.tab === tabName) {
-        activeTab = tab;
+        rezTab = tab;
         return true;
       }
 
@@ -184,5 +189,5 @@ export const getActiveTab = (storeState, tabName) => {
     });
   }
 
-  return activeTab
+  return rezTab
 }

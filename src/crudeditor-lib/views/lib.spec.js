@@ -5,7 +5,7 @@ import {
   buildFormLayout,
   getLogicalKeyBuilder,
   findFieldLayout,
-  getActiveTab
+  getTab
 } from './lib'
 
 import models, { fields } from '../../demo/models/contracts'
@@ -314,7 +314,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
   });
 
-  describe('getActiveTab', () => {
+  describe('getTab', () => {
     const storeState = {
       formLayout: [
         [{ field: "one" }],
@@ -325,7 +325,7 @@ describe('Crudeditor-lib / views / lib', () => {
     storeState.formLayout[1].tab = "additional";
 
     it('should return a tab from formLayout', () => {
-      const result = getActiveTab(storeState, 'additional');
+      const result = getTab(storeState, 'additional');
       assert.deepEqual(
         result,
         storeState.formLayout[1]
@@ -333,7 +333,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
 
     it('should return the first tab if name is not specified', () => {
-      const result = getActiveTab(storeState);
+      const result = getTab(storeState);
       assert.deepEqual(
         result,
         storeState.formLayout[0]
@@ -341,7 +341,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
 
     it('should return the first tab if name is unknown', () => {
-      const result = getActiveTab(storeState, 'kwhe8923o23y8[023');
+      const result = getTab(storeState, 'kwhe8923o23y8[023');
       assert.deepEqual(
         result,
         storeState.formLayout[0]

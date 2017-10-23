@@ -14,6 +14,5 @@ export default {
    * ████ UI_TYPE_DATE --> FIELD_TYPE_STRING_DATE ████
    * █████████████████████████████████████████████████
    */
-  // parser: value => value.toString() // TBD toISOString() ?
   parser: value => value.toISOString()
 };

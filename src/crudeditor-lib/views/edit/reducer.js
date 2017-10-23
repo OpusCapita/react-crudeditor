@@ -49,7 +49,7 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-import { findFieldLayout, getActiveTab } from '../lib';
+import { findFieldLayout, getTab } from '../lib';
 
 const defaultStoreStateTemplate = {
 
@@ -183,7 +183,7 @@ export default modelDefinition => (
     newStoreStateSlice.formLayout = u.constant(formLayout);
 
     const activeTab = storeState.activeTab ?
-      getActiveTab(storeState, storeState.activeTab.tab) :
+      getTab(storeState, storeState.activeTab.tab) :
       formLayout.filter(({ tab }) => !!tab)[0];
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
@@ -350,9 +350,8 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
-    const { tabName } = payload; // may be undefined.
-    const activeTab = getActiveTab(storeState, tabName);
-
+    const { tabName } = payload; // may be falsy, i.e. not specified.
+    const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

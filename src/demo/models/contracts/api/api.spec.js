@@ -173,6 +173,18 @@ describe('Sync api functions:', () => {
       "isOffer": false,
     }
 
+    it('should throw if a field doesn\'t exist on instance', () => {
+      try {
+        const err = search({ filter: {
+          ...filter,
+          "randomField21745723": "badField"
+        } })
+        assert.fail(err);
+      } catch (e) {
+        assert.ok(true);
+      }
+    });
+
     it('should find proper instance', () => {
       const before = getNumberOfInstances();
       const { instances } = search({ filter })

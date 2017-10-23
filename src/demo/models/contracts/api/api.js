@@ -1,5 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import Big from 'big.js';
+
 import initialData from './data';
 import {
   FIELD_TYPE_BOOLEAN,
@@ -152,27 +154,34 @@ export const
             // Handle range from..to fields
             if (~RANGE_FIELD_TYPES.indexOf(fieldType)) {
               if (item[fieldName] !== null) {
-                let convertFunc;
+                let gt, lt;
 
                 switch (fieldType) {
                   // Number and stringNumber fieldTypes are treated and compared as Numbers
                   case FIELD_TYPE_NUMBER:
-                  case FIELD_TYPE_STRING_NUMBER:
-                    convertFunc = field => Number(field);
+                    gt = (itemValue, filterValue) => Number(itemValue) >= Number(filterValue);
+                    lt = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
                     break;
+
+                  case FIELD_TYPE_STRING_NUMBER:
+                    gt = (itemValue, filterValue) => Big(itemValue).gte(Big(filterValue));
+                    lt = (itemValue, filterValue) => Big(itemValue).lte(Big(filterValue));
+                    break;
+
                   case FIELD_TYPE_STRING_DATE:
-                    convertFunc = field => new Date(field);
+                    gt = (itemValue, filterValue) => new Date(itemValue) >= new Date(filterValue);
+                    lt = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
                     break;
                   default:
-                    console.log("search api switch: unknown field type " + fieldType)
+                    console.log("Search api switch: Unknown RANGE field type: " + fieldType)
                 }
 
                 if (fieldValue.from !== undefined) {
-                  match = match && convertFunc(item[fieldName]) >= convertFunc(fieldValue.from)
+                  match = match && gt(item[fieldName], fieldValue.from)
                 }
 
                 if (fieldValue.to !== undefined) {
-                  match = match && convertFunc(item[fieldName]) <= convertFunc(fieldValue.to)
+                  match = match && lt(item[fieldName], fieldValue.to)
                 }
               } else {
                 // null returns false for any range

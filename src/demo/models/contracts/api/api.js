@@ -127,27 +127,16 @@ export const
     }
   )(data, instances),
 
-  // TODO handle filter by range fields (from...to)
   search = ({ filter, sort, order, offset, max }) => {
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
 
     if (filter) {
-      const filterFields = Object.keys(filter).
-        map(key => ({
-          [key]: (
-            (v, t) => t === FIELD_TYPE_BOOLEAN ?
-              Boolean(v) : // cast to boolean
-              v // assume string or object otherwise
-          )(filter[key], fields[key].type)
-        })).
-        reduce((obj, el) => ({ ...obj, ...el }), {});
-
       const filteredData = searchableData.filter(
-        item => Object.keys(filterFields).reduce(
+        item => Object.keys(filter).reduce(
           (rez, fieldName) => {
-            const fieldValue = filterFields[fieldName];
+            const fieldValue = filter[fieldName];
             const fieldType = fields[fieldName].type;
 
             // Handle range from..to fields
@@ -158,54 +147,40 @@ export const
             ) {
               let match = true;
 
-              let itemFrom, itemTo;
+              if (item[fieldName] !== undefined) {
+                let convertFunc;
 
-              switch (fieldType) {
-                // Number and stringNumber fieldTypes are treated and compared as Numbers
-                case FIELD_TYPE_NUMBER:
-                case FIELD_TYPE_STRING_NUMBER:
-                  itemFrom = item[fieldName] !== undefined ?
-                    Number(item[fieldName]) :
-                    Number.MAX_SAFE_INTEGER * -0.99 // todo remove as obsolete
-                  itemTo = item[fieldName] !== undefined ?
-                    Number(item[fieldName]) :
-                    Number.MAX_SAFE_INTEGER // todo remove as obsolete
+                switch (fieldType) {
+                  // Number and stringNumber fieldTypes are treated and compared as Numbers
+                  case FIELD_TYPE_NUMBER:
+                  case FIELD_TYPE_STRING_NUMBER:
+                    convertFunc = field => Number(field);
+                    break;
+                  case FIELD_TYPE_STRING_DATE:
+                    convertFunc = field => new Date(field);
+                    break;
+                  default:
+                    console.log("search api switch: unknown field type " + fieldType)
+                }
 
-                  if (fieldValue.from !== undefined) {
-                    match = match && itemFrom >= Number(fieldValue.from)
-                  }
+                if (fieldValue.from !== undefined) {
+                  match = match && convertFunc(item[fieldName]) >= convertFunc(fieldValue.from)
+                }
 
-                  if (fieldValue.to !== undefined) {
-                    match = match && itemTo <= Number(fieldValue.to)
-                  }
-
-                  break;
-                // Handle stringDate fieldType
-                case FIELD_TYPE_STRING_DATE:
-                  itemFrom = item[fieldName] !== undefined ? // TODO maybe better handling
-                  new Date(item[fieldName]) :
-                    new Date('1900-01-01') // TBD choice of lower boundary
-                  itemTo = item[fieldName] !== undefined ?
-                    new Date(item[fieldName]) :
-                    new Date('2900-01-01') // TBD choice of upper boundary
-
-                  if (fieldValue.from !== undefined) {
-                    match = match && itemFrom >= new Date(fieldValue.from)
-                  }
-
-                  if (fieldValue.to !== undefined) {
-                    match = match && itemTo <= new Date(fieldValue.to)
-                  }
-
-                  break;
-                default:
-                  console.log("search switch: unknown field type " + fieldType)
+                if (fieldValue.to !== undefined) {
+                  match = match && convertFunc(item[fieldName]) <= convertFunc(fieldValue.to)
+                }
+              // the field in undefined on this instance
+              } else {
+                return false; // TBD: or `match && true`? if field is not defined, then it's not a match?
               }
 
               return rez && match
 
               // Now handle non-range fields
             } else if (~[FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER].indexOf(fieldType)) {
+              // TBD do we need to handle search by exact date (as of now)?
+              // If yes, should it be a date without time part, e.g. 2011-05-10?
               const match = item[fieldName] === fieldValue;
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING) {
@@ -224,7 +199,7 @@ export const
     const totalCount = result.length;
 
     if (sort) {
-      // default sort returns ascending ordered array
+      // default Array.prototype.sort returns ascending ordered array
       let orderedSortFieldValues = result.map(el => el[sort]).sort();
       if (order && order === 'desc') {
         orderedSortFieldValues.reverse();

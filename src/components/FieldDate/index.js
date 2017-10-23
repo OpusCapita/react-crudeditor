@@ -21,6 +21,7 @@ class FieldDate extends React.PureComponent {
     // we won't listen to onBlur on the component
     // instead we'll manually call props.onBlur in onChange listener
     // right after we call props.onChange
+    // Filed issue: https://github.com/OpusCapita/react-dates/issues/32
     (<DateInput
       value={this.props.value || null}
       dateFormat="dd/MM/yyyy"

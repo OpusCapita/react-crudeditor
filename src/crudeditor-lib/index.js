@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { I18nManager } from '@opuscapita/i18n';
-import translations from './i18n'
+import crudTranslations from './i18n'
 
 import Main from './components/Main';
 import getReducer from './rootReducer';
@@ -152,14 +152,23 @@ export default baseModelDefinition => {
       this.initI18n(props);
     }
 
-    componentWillReceiveProps(props) {
-      onTransition = props.onTransition;
-    }
-
     getChildContext() {
       const i18n = (this.context && this.context.i18n) || this.i18n;
       return ({ i18n });
     }
+
+    componentWillReceiveProps(props) {
+      onTransition = props.onTransition;
+    }
+
+    // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
+    // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
+    shouldComponentUpdate = ({
+      view: {
+        name = DEFAULT_VIEW,
+        state = {}
+      } = {}
+    }) => !isEqual(storeState2appState(store.getState()), { name, state })
 
     // create our own i18n context
     // if i18n context is already passed from the outside -> oughter one is used
@@ -172,18 +181,13 @@ export default baseModelDefinition => {
       const i18n = new I18nManager({ locale, fallbackLocale, localeFormattingInfo });
 
       // core crud translations
-      i18n.register('CrudEditor', translations);
+      i18n.register('CrudEditor', crudTranslations);
+
+      // model translations
+      i18n.register('Model', modelDefinition.model.translations);
+
       this.i18n = i18n;
     }
-
-    // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
-    // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
-    shouldComponentUpdate = ({
-      view: {
-        name = DEFAULT_VIEW,
-        state = {}
-      } = {}
-    }) => !isEqual(storeState2appState(store.getState()), { name, state })
 
     render = _ =>
       (<Provider store={store}>
@@ -215,7 +219,7 @@ export default baseModelDefinition => {
     localeFormattingInfo: PropTypes.object
   };
   CrudWrapper.defaultProps = {
-    locale: 'de',
+    locale: 'ru',
     fallbackLocale: 'en'
   };
 

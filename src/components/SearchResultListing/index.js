@@ -144,7 +144,7 @@ class SearchResultListing extends React.PureComponent {
                       <Button onClick={this.handleShow(instance)}>
                         <Glyphicon glyph='glyphicon-eye-open' />
                         {' '}
-                        {this.context.i18n.getMessage('crudEditor.view.button')}
+                        {this.context.i18n.getMessage('crudEditor.show.button')}
                       </Button>
 
                       <Button onClick={this.handleEdit(instance)}>
@@ -157,7 +157,7 @@ class SearchResultListing extends React.PureComponent {
                         trigger='click'
                         onConfirm={this.handleDelete(instance)}
                         title='Delete confirmation'
-                        message='Do you want to delete this item?'
+                        message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
                       >
                         <Button>
                           <Glyphicon glyph='trash' />

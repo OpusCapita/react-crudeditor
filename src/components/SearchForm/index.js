@@ -49,7 +49,7 @@ class SearchForm extends React.PureComponent {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{name + ' (from)'}</label>
+            <label>{name + ' (' + this.context.i18n.getMessage('crudEditor.dateRange.from') + ')'}</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].from }}
               onChange={this.handleFormFilterUpdate([name, 'from'])}
@@ -65,7 +65,7 @@ class SearchForm extends React.PureComponent {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{name + ' (to)'}</label>
+            <label>{name + ' (' + this.context.i18n.getMessage('crudEditor.dateRange.to') + ')'}</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].to }}
               onChange={this.handleFormFilterUpdate([name, 'to'])}
@@ -96,7 +96,14 @@ class SearchForm extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__header">
-          <h4 className="crud--search-form__title">{this.context.i18n.getMessage('crudEditor.search.header')}</h4>
+          <h4 className="crud--search-form__title">
+            {
+              this.context.i18n.getMessage(
+                'crudEditor.search.header',
+                { "modelName": this.context.i18n.getMessage('model.name') }
+              )
+            }
+          </h4>
         </div>
         <div className="crud--search-form__controls">
           {searchableFieldsElement}
@@ -106,14 +113,14 @@ class SearchForm extends React.PureComponent {
             bsStyle='link'
             onClick={resetFormFilter}
           >
-          {this.context.i18n.getMessage('crudEditor.reset.button')}
+            {this.context.i18n.getMessage('crudEditor.reset.button')}
           </Button>
           <Button
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
           >
-          {this.context.i18n.getMessage('crudEditor.search.button')}
+            {this.context.i18n.getMessage('crudEditor.search.button')}
           </Button>
         </div>
       </Form>

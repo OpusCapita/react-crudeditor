@@ -1,6 +1,7 @@
 import api from './api';
 import DateRangeCellRender from './DateRangeCellRender';
 import StatusField from './StatusField';
+import translations from './i18n';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
@@ -307,7 +308,8 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
 
 export default {
   model: {
-    name: 'Contract',
+    name: 'Contract', // TODO remove when it is safe
+    translations,
     fields,
     validate(instance) {
       if (instance.minOrderValueRequired && instance.minOrderValue === null) {

@@ -16,7 +16,7 @@ class SearchMain extends Component {
     return (
       <div className="crud--search-main">
         <div className="crud--search-main__page-header">
-          <h3 className="crud--search-main__page-title">{model.data.entityName} Editor</h3>
+          <h3 className="crud--search-main__page-title">{this.context.i18n.getMessage('model.name')} Editor</h3>
           <button
             type="button"
             className="btn btn-sm btn-primary"

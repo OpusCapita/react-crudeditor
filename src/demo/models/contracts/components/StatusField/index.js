@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
-const StatusField = ({ value, onChange, onBlur, readOnly }) =>
-  (<FormControl
+const StatusField = ({ value, onChange, onBlur, readOnly }, context) => {
+  const getStatusText = status => context.i18n.getMessage(`model.field.statusId.${status}`)
+
+  return (<FormControl
     componentClass='select'
     value={value || value === 0 ? value : ''}
     onChange={({ target: { value } }) => onChange &&
@@ -12,12 +14,13 @@ const StatusField = ({ value, onChange, onBlur, readOnly }) =>
     disabled={readOnly}
   >
     <option value={''}></option>
-    <option value={0}>0 (pending)</option>
-    <option value={100}>100 (new)</option>
-    <option value={105}>105 (changed)</option>
-    <option value={400}>400 (confirmed)</option>
-    <option value={800}>800 (deleted)</option>
-  </FormControl>);
+    <option value={0}>0 ({getStatusText('pending')})</option>
+    <option value={100}>100 ({getStatusText('new')})</option>
+    <option value={105}>105 ({getStatusText('changed')})</option>
+    <option value={400}>400 ({getStatusText('confirmed')})</option>
+    <option value={800}>800 ({getStatusText('deleted')})</option>
+  </FormControl>)
+};
 
 StatusField.propTypes = {
   value: PropTypes.oneOfType([
@@ -28,5 +31,9 @@ StatusField.propTypes = {
   onBlur: PropTypes.func,
   readOnly: PropTypes.bool
 }
+
+StatusField.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default StatusField;

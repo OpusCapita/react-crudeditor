@@ -9,8 +9,8 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js  --require ignore-styles",
     "start": "webpack-dev-server --config config/webpack.config.babel.js",
     "build": "webpack --config config/webpack.config.babel.js",
-    "start-showroom": "showroom-scan ./src/demo/client/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
-    "build-showroom": "showroom-scan ./src/demo/client/showroom && webpack --config config/webpack.config.showroom.js"
+    "start-showroom": "showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
+    "build-showroom": "showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js"
   },
   "keywords": [
     "react",

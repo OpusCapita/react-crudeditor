@@ -1,6 +1,6 @@
 import api from './api';
-import DateRangeCellRender from './DateRangeCellRender';
-import StatusField from './StatusField';
+import DateRangeCellRender from './components/DateRangeCellRender';
+import StatusField from './components/StatusField';
 import translations from './i18n';
 
 const VIEW_CREATE = 'create';
@@ -217,7 +217,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': 'stringNumber',
+    'type': 'stringNumber', // TBD was stringNumber
     'constraints': {
       'min': 0,
       'max': 800,

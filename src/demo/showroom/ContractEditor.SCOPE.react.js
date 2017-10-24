@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
 
-import modelTranslations from '../../models/contracts/i18n';
-import crudTranslations from '../../../crudeditor-lib/i18n';
+import modelTranslations from '../models/contracts/i18n';
+import crudTranslations from '../../crudeditor-lib/i18n';
 
 // This @showroomScopeDecorator modify React.Component prototype by adding _renderChildren() method.
 export default
@@ -26,7 +26,7 @@ class ContractEditorScope extends React.Component {
   }
 
   initI18n(props) {
-    const i18n = new I18nManager({ locale: 'de' });
+    const i18n = new I18nManager({ locale: 'ru' });
 
     i18n.register('CrudEditor', crudTranslations);
     i18n.register('Model', modelTranslations);

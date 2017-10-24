@@ -40,6 +40,11 @@ export default {
     // "model.field.freightSurcharge": "freightSurcharge",
     // "model.field.isStandard": "isStandard",
     // "model.field.statusId": "statusId",
+    "model.field.statusId.pending": "pending",
+    "model.field.statusId.new": "new",
+    "model.field.statusId.changed": "changed",
+    "model.field.statusId.confirmed": "confirmed",
+    "model.field.statusId.deleted": "deleted",
     // "model.field.createdBy": "createdBy",
     // "model.field.extContractLineId": "extContractLineId",
     // "model.field.contractId": "contractId",
@@ -59,9 +64,22 @@ export default {
     "model.tab.additional": "Дополнительно",
 
     "model.section.order": "Параметры заказа",
+    "model.section.test": "Тестовое поле",
+    "model.section.auditable": "Проверяемые поля",
 
     "model.field.contractId": "Номер контракта",
     "model.field.description": "Описание",
     "model.field.validRange": "Период действия",
+    "model.field.testNumberTypeField": "Тестовое числовое поле",
+    "model.field.createdOn": "Время создания",
+    "model.field.changedOn": "Время изменения",
+    "model.field.changedBy": "Кем изменен",
+    "model.field.createdBy": "Кто создал",
+
+    "model.field.statusId.pending": "на рассмотрении",
+    "model.field.statusId.new": "новый",
+    "model.field.statusId.changed": "изменен",
+    "model.field.statusId.confirmed": "подтвержден",
+    "model.field.statusId.deleted": "удален",
   }
 }

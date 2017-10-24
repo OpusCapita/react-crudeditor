@@ -3,15 +3,21 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
+  ALL_INSTANCE_FIELDS_VALIDATE,
+
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
 
   VIEW_INITIALIZE,
+
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_SUCCESS,
   VIEW_REDIRECT_FAIL,
+
   TAB_SELECT,
+
   INSTANCE_FIELD_VALIDATE,
+
   INSTANCE_VALIDATE_SUCCESS,
   INSTANCE_VALIDATE_FAIL,
   INSTANCE_FIELD_CHANGE
@@ -122,8 +128,13 @@ export default modelDefinition => (
     // create default instance using all existing fields
     // then rewrite predefined values coming from search view
     const defaultInstance = {
-      ...Object.keys(modelDefinition.model.fields).
-        reduce((obj, field) => ({ ...obj, [field]: EMPTY_FIELD_VALUE }), {}),
+      ...Object.keys(modelDefinition.model.fields).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: EMPTY_FIELD_VALUE
+        }),
+        {}
+      ),
       ...predefinedFields
     };
 
@@ -293,6 +304,41 @@ export default modelDefinition => (
     }
 
     newStoreStateSlice.divergedField = null;
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
+    Object.keys(modelDefinition.model.fields).forEach(fieldName => {
+      const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);
+
+      if (
+        // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View
+        !fieldLayout ||
+
+        // Field is read-only => no validation needed
+        fieldLayout.readOnly ||
+
+        // Field has been parsed/validated and errors found => skip duplicate validation.
+        storeState.errors.fields[fieldName].length
+      ) {
+        return;
+      }
+
+      const fieldMeta = modelDefinition.model.fields[fieldName];
+
+      try {
+        validateField({
+          value: storeState.formInstance[fieldName],
+          type: fieldMeta.type,
+          constraints: fieldMeta.constraints
+        });
+      } catch (err) {
+        newStoreStateSlice.errors = {
+          fields: {
+            [fieldName]: Array.isArray(err) ? err : [err]
+          }
+        };
+      }
+    });
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_VALIDATE_SUCCESS) {

@@ -10,6 +10,8 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
+  ALL_INSTANCE_FIELDS_VALIDATE = namespace + '/ALL_INSTANCE_FIELDS_VALIDATE',
+
   INSTANCE_CREATE = namespace + '/INSTANCE_CREATE',
 
   INSTANCE_FIELD_CHANGE = namespace + '/INSTANCE_FIELD_CHANGE',

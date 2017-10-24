@@ -72,10 +72,10 @@ const defaultStoreStateTemplate = {
    */
   formatedInstance: undefined,
 
-  // Field name a user is entering =>
+  // Field name a user is editing =>
   // formatedFilter[fieldName] is up-to-date, but
   // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
-  // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
+  // (or UNPARSABLE_FIELD_VALUE if the value is unparsable).
   divergedField: null,
 
   // Must always be an array, may be empty.

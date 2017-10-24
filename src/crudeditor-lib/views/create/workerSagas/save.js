@@ -2,6 +2,9 @@ import { call, put, select } from 'redux-saga/effects';
 
 import {
   AFTER_ACTION_NEW,
+
+  ALL_INSTANCE_FIELDS_VALIDATE,
+
   INSTANCE_FIELD_VALIDATE,
 
   INSTANCE_SAVE_REQUEST,
@@ -11,6 +14,7 @@ import {
   INSTANCE_VALIDATE_REQUEST,
   INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS,
+
   VIEW_INITIALIZE,
   VIEW_NAME
 } from '../constants';
@@ -38,6 +42,11 @@ function* validateSaga(modelDefinition, meta) {
       meta
     });
   }
+
+  yield put({
+    type: ALL_INSTANCE_FIELDS_VALIDATE,
+    meta
+  });
 
   const [
     instance,

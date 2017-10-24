@@ -1,6 +1,6 @@
 import 'babel-polyfill';
-import '../../../styles/main.scss';
-import '../client/global-styles.less';
+// import '../../../styles/main.scss';
+// import '../client/global-styles.less';
 import buildModel from '../models';
 import createCrud from '../../crudeditor-lib';
 

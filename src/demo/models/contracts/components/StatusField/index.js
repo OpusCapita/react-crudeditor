@@ -20,7 +20,6 @@ const messages = {
 }
 
 const StatusField = ({ value, onChange, onBlur, readOnly }, context) => {
-
   context.i18n.register('StatusField', messages);
 
   const getStatusText = status => context.i18n.getMessage(`model.field.statusId.${status}`)

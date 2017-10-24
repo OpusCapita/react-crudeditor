@@ -15,10 +15,10 @@ class SearchBulkOperationsPanel extends React.PureComponent {
           trigger='click'
           title='Delete confirmation'
           onConfirm={this.handleDelete}
-          message='Do you want to delete selected items?'
+          message={this.context.i18n.getMessage('crudEditor.deleteSelected.confirmation')}
         >
           <Button bsSize='sm' disabled={this.props.model.data.selectedInstances.length === 0}>
-            Delete selected
+            {this.context.i18n.getMessage('crudEditor.deleteSelected.button')}
           </Button>
         </ConfirmDialog>
       </div>
@@ -36,5 +36,9 @@ SearchBulkOperationsPanel.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchBulkOperationsPanel.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchBulkOperationsPanel;

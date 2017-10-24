@@ -219,6 +219,27 @@ describe('Sync api functions:', () => {
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
 
+    it('should find by stringNumber (statusId)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        statusId: "105"
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(c => Number(c.statusId) === Number(filter.statusId))
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
     it('should find by stringNumber from..to range (maxOrderValue)', () => {
       const before = getNumberOfInstances();
       const filter = {

@@ -25,17 +25,32 @@ describe("FieldDate", _ => {
 
   it("should render a DateInput and pass handlers", () => {
     const onChange = sinon.spy();
+    const onBlur = sinon.spy();
     const props = {
       readOnly: false,
       value: new Date('2011-10-04'),
-      onChange
+      onChange,
+      onBlur
     };
     const wrapper = Enzyme.mount(<FieldDate {...props} />);
     const fc = wrapper.find(DateInput)
     const d = new Date();
     fc.prop('onChange')(d)
-    fc.prop('onBlur')()
     expect(onChange.calledOnce).to.be.true; // eslint-disable-line no-unused-expressions
     expect(onChange.calledWith(d)).to.be.true; // eslint-disable-line no-unused-expressions
+    expect(onBlur.calledOnce).to.be.true; // eslint-disable-line no-unused-expressions
+  });
+
+  it("should not pass handlers when in readOnly mode", () => {
+    const onChange = sinon.spy();
+    const props = {
+      readOnly: true,
+      value: new Date('2011-10-04'),
+      onChange
+    };
+    const wrapper = Enzyme.mount(<FieldDate {...props} />);
+    const fc = wrapper.find(DateInput)
+    expect(fc.prop('onChange')).to.equal(DateInput.defaultProps.onChange);
+    expect(fc.prop('onBlur')).to.equal(DateInput.defaultProps.onBlur)
   });
 });

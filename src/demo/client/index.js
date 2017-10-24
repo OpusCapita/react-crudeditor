@@ -2,8 +2,8 @@ import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './routes';
-import '../../../styles/main.scss';
-import './global-styles.less';
+// import '../../../styles/main.scss';
+// import './global-styles.less';
 
 import {
   Menu,

@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
-
+import { getFieldText } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import SpinnerOverlay from '../Spinner/SpinnerOverlay';
 import './SearchResultListing.less';
@@ -95,7 +95,7 @@ class SearchResultListing extends React.PureComponent {
                           bsStyle='link'
                           onClick={this.handleResort(name)}
                         >
-                          {name}
+                          {getFieldText(this.context.i18n, name)}
                           {
                             sortField === name &&
                             <Glyphicon
@@ -104,7 +104,7 @@ class SearchResultListing extends React.PureComponent {
                             />
                           }
                         </Button> :
-                        name
+                        getFieldText(this.context.i18n, name)
                     }
                   </th>)
                 )}
@@ -144,25 +144,25 @@ class SearchResultListing extends React.PureComponent {
                       <Button onClick={this.handleShow(instance)}>
                         <Glyphicon glyph='glyphicon-eye-open' />
                         {' '}
-                        Show
+                        {this.context.i18n.getMessage('crudEditor.show.button')}
                       </Button>
 
                       <Button onClick={this.handleEdit(instance)}>
                         <Glyphicon glyph='edit' />
                         {' '}
-                        Edit
+                        {this.context.i18n.getMessage('crudEditor.edit.button')}
                       </Button>
 
                       <ConfirmDialog
                         trigger='click'
                         onConfirm={this.handleDelete(instance)}
                         title='Delete confirmation'
-                        message='Do you want to delete this item?'
+                        message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
                       >
                         <Button>
                           <Glyphicon glyph='trash' />
                           {' '}
-                          Delete
+                          {this.context.i18n.getMessage('crudEditor.delete.button')}
                         </Button>
                       </ConfirmDialog>
                     </ButtonGroup>
@@ -190,5 +190,9 @@ SearchResultListing.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchResultListing.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchResultListing;

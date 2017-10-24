@@ -30,7 +30,7 @@ class SearchResultPaginationPanel extends React.PureComponent {
             className="crud--search-pagination-panel__per-page-dropdown"
           >
             <Dropdown.Toggle>
-              Results per page: <b>{max}</b>
+              {this.context.i18n.getMessage('crudEditor.search.resultsPerPage')}: <b>{max}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem eventKey={-1} active={max === -1}>All</MenuItem>
@@ -57,7 +57,7 @@ class SearchResultPaginationPanel extends React.PureComponent {
         </div>
 
         <div>
-          <span>{totalCount} item(s) found</span>
+          <span>{this.context.i18n.getMessage('crudEditor.found.items.message', { count: totalCount })}</span>
         </div>
       </div>
     );
@@ -75,5 +75,9 @@ SearchResultPaginationPanel.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchResultPaginationPanel.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchResultPaginationPanel;

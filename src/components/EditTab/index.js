@@ -38,7 +38,11 @@ class EditTab extends React.PureComponent {
       }
     } = this.props;
 
-    const buttons = [<Button bsStyle='link' onClick={exitView} key="Cancel">Cancel</Button>];
+    const buttons = [
+      <Button bsStyle='link' onClick={exitView} key="Cancel">
+        {this.context.i18n.getMessage('crudEditor.cancel.button')}
+      </Button>
+    ];
 
     if (viewName === VIEW_EDIT) {
       buttons.push(
@@ -46,28 +50,40 @@ class EditTab extends React.PureComponent {
           trigger='click'
           onConfirm={this.handleDelete}
           title='Delete confirmation'
-          message='Do you want to delete this item?'
+          message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
           key="Delete"
         >
-          <Button>Delete</Button>
+          <Button>{this.context.i18n.getMessage('crudEditor.delete.button')}</Button>
         </ConfirmDialog>
       )
     }
 
     if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
-      buttons.push(<Button disabled={true} key="Revisions">Revisions</Button>)
+      buttons.push(
+        <Button disabled={true} key="Revisions">
+          {this.context.i18n.getMessage('crudEditor.revisions.button')}
+        </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
-      buttons.push(<Button onClick={this.handleSaveAndNew} key="Save and New">Save and New</Button>)
+      buttons.push(
+        <Button onClick={this.handleSaveAndNew} key="Save and New">
+          {this.context.i18n.getMessage('crudEditor.saveAndNew.button')}
+        </Button>)
     }
 
     if (viewName === VIEW_EDIT) {
-      buttons.push(<Button onClick={this.handleSaveAndNext} key="Save and Next">Save and Next</Button>)
+      buttons.push(
+        <Button onClick={this.handleSaveAndNext} key="Save and Next">
+          {this.context.i18n.getMessage('crudEditor.saveAndNext.button')}
+        </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
-      buttons.push(<Button bsStyle='primary' type='submit' key="Save">Save</Button>)
+      buttons.push(
+        <Button bsStyle='primary' type='submit' key="Save">
+          {this.context.i18n.getMessage('crudEditor.save.button')}
+        </Button>)
     }
 
     return (
@@ -94,5 +110,9 @@ EditTab.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+EditTab.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default EditTab;

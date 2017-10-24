@@ -5,7 +5,7 @@ import BulkOperationsPanel from '../SearchBulkOperationsPanel';
 import PaginationPanel from '../SearchPaginationPanel';
 import './SearchResult.less';
 
-const SearchResult = ({ model }) => model.data.totalCount > 0 ? (
+const SearchResult = ({ model }, { i18n }) => model.data.totalCount > 0 ? (
   <div className="crud--search-result">
     <div className="crud--search-result__table">
       <ResultListing model={model} />
@@ -17,12 +17,16 @@ const SearchResult = ({ model }) => model.data.totalCount > 0 ? (
   </div>
 ) : (
   <div className="crud--search-result__no-items-found">
-    <span>0 items found</span>
+    <span>{i18n.getMessage('crudEditor.found.items.message', { count: 0 })}</span>
   </div>
 );
 
 SearchResult.propTypes = {
   model: PropTypes.object.isRequired
 }
+
+SearchResult.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchResult;

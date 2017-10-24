@@ -146,13 +146,17 @@ export const
               throw err;
             }
 
-            const fieldValue = filter[fieldName];
-            const fieldType = fields[fieldName].type;
-
-            let match = true;
+            const
+              fieldValue = filter[fieldName],
+              fieldType = fields[fieldName].type,
+              itemValue = item[fieldName];
 
             // Handle range from..to fields
-            if (~RANGE_FIELD_TYPES.indexOf(fieldType)) {
+            // If not object - we should check strict equality to handle search by
+            // 'statusId' field
+            if (~RANGE_FIELD_TYPES.indexOf(fieldType) && typeof fieldValue === 'object') {
+              let match = true;
+
               if (item[fieldName] !== null) {
                 let gte, lte;
 
@@ -177,11 +181,11 @@ export const
                 }
 
                 if (fieldValue.from !== undefined) {
-                  match = match && gte(item[fieldName], fieldValue.from)
+                  match = match && gte(itemValue, fieldValue.from)
                 }
 
                 if (fieldValue.to !== undefined) {
-                  match = match && lte(item[fieldName], fieldValue.to)
+                  match = match && lte(itemValue, fieldValue.to)
                 }
               } else {
                 // null returns false for any range
@@ -193,12 +197,17 @@ export const
               // Now handle non-range fields
             } else if (fieldType === FIELD_TYPE_BOOLEAN) {
               // Boolean() converts incoming null -> false and keeps true -> true or false -> false
-              const match = Boolean(item[fieldName]) === fieldValue;
+              const match = Boolean(itemValue) === fieldValue;
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING) {
-              const match = item[fieldName] !== null ?
-                item[fieldName].toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
+              const match = itemValue !== null ?
+                itemValue.toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
                 false;
+              return rez && match
+              // we actually need this strict check
+              // in order to handle search by 'statusId' field
+            } else if (fieldType === FIELD_TYPE_STRING_NUMBER) {
+              const match = Number(fieldValue) === Number(itemValue) && itemValue !== null;
               return rez && match
             }
 

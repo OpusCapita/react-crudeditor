@@ -14,6 +14,10 @@ export default class ConfirmDialog extends React.Component {
     children: PropTypes.element.isRequired,
   };
 
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   static defaultProps = {
     trigger: 'click',
     onConfirm: () => {
@@ -79,10 +83,10 @@ export default class ConfirmDialog extends React.Component {
 
         <Modal.Footer>
           <button className="btn btn-link" onClick={this.handleCancelDialog}>
-            Cancel
+            {this.context.i18n.getMessage('crudEditor.cancel.button')}
           </button>
           <button className="btn btn-primary" onClick={this.handleConfirm}>
-            Confirm
+            {this.context.i18n.getMessage('crudEditor.delete.button')}
           </button>
         </Modal.Footer>
       </Modal>

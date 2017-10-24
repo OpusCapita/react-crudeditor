@@ -9,8 +9,12 @@ class FieldDate extends React.PureComponent {
     if (!this.props.readOnly) {
       this.handleChange = value => {
         // see description in render() function
-        return (this.props.onChange && this.props.onChange(value)) &&
-          (this.props.onBlur && this.props.onBlur());
+        if (this.props.onChange) {
+          this.props.onChange(value);
+          if (this.props.onBlur) {
+            this.props.onBlur()
+          }
+        }
       }
     }
   }

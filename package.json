@@ -9,8 +9,8 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js  --require ignore-styles",
     "start": "webpack-dev-server --config config/webpack.config.babel.js",
     "build": "webpack --config config/webpack.config.babel.js",
-    "start-showroom": "showroom-scan ./src/demo/client/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
-    "build-showroom": "showroom-scan ./src/demo/client/showroom && webpack --config config/webpack.config.showroom.js"
+    "start-showroom": "showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
+    "build-showroom": "showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js"
   },
   "keywords": [
     "react",
@@ -19,6 +19,7 @@
   "author": "a.ryashentsev",
   "license": "ISC",
   "dependencies": {
+    "@opuscapita/i18n": "^1.1.0",
     "@opuscapita/react-dates": "^0.3.0-beta.13",
     "@opuscapita/react-svg": "2.0.0",
     "babel-plugin-istanbul": "^4.1.5",

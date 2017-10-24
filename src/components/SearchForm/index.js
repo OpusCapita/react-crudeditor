@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, HelpBlock } from 'react-bootstrap';
-
+import { getFieldText } from '../lib';
 import './SearchForm.less';
 
 class SearchForm extends React.PureComponent {
@@ -35,6 +35,8 @@ class SearchForm extends React.PureComponent {
       }
     } = this.props.model;
 
+    const { i18n } = this.context;
+
     const searchableFieldsElement = searchableFields.map(({
       name,
       isRange,
@@ -49,7 +51,7 @@ class SearchForm extends React.PureComponent {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{name + ' (from)'}</label>
+            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'}</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].from }}
               onChange={this.handleFormFilterUpdate([name, 'from'])}
@@ -65,7 +67,7 @@ class SearchForm extends React.PureComponent {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{name + ' (to)'}</label>
+            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'}</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].to }}
               onChange={this.handleFormFilterUpdate([name, 'to'])}
@@ -82,7 +84,7 @@ class SearchForm extends React.PureComponent {
         className="crud--search-form__form-group"
       >
         <div>
-          <label>{name}</label>
+          <label>{ getFieldText(i18n, name) }</label>
           <Component
             {...{ [valuePropName]: formatedFilter[name] }}
             onChange={this.handleFormFilterUpdate(name)}
@@ -95,9 +97,6 @@ class SearchForm extends React.PureComponent {
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
-        <div className="crud--search-form__header">
-          <h4 className="crud--search-form__title">Search</h4>
-        </div>
         <div className="crud--search-form__controls">
           {searchableFieldsElement}
         </div>
@@ -106,14 +105,14 @@ class SearchForm extends React.PureComponent {
             bsStyle='link'
             onClick={resetFormFilter}
           >
-            Reset
+            {i18n.getMessage('crudEditor.reset.button')}
           </Button>
           <Button
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
           >
-            Search
+            {i18n.getMessage('crudEditor.search.button')}
           </Button>
         </div>
       </Form>
@@ -129,5 +128,9 @@ SearchForm.propTypes = {
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired
 }
+
+SearchForm.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default SearchForm;

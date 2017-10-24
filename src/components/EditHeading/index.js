@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Nav, NavItem } from 'react-bootstrap';
+import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
   render() {
@@ -20,9 +21,11 @@ class EditHeading extends PureComponent {
       }
     } = this.props;
 
-    const title = this.context.i18n.getMessage(
+    const { i18n } = this.context;
+
+    const title = i18n.getMessage(
       `crudEditor.${viewName.toLowerCase()}.header`,
-      { modelName: this.context.i18n.getMessage('model.name') }
+      { modelName: i18n.getMessage('model.name') }
     )
 
     return (<div>
@@ -38,7 +41,7 @@ class EditHeading extends PureComponent {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>
                 {
-                  name.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
+                  getTabText(i18n, name)
                 }
               </NavItem>)
             )

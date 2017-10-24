@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { getFieldText } from '../lib'
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
 class EditField extends Component {
@@ -50,8 +51,7 @@ class EditField extends Component {
       <FormGroup controlId={fieldName} validationState={errors && 'error'}>
         <Col componentClass={ControlLabel} sm={2}>
           {
-            fieldName.charAt(0).toUpperCase() + fieldName.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') +
-              (required && '*' || '')
+            getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
           }
         </Col>
         <Col sm={1} className='text-right' />
@@ -72,5 +72,9 @@ EditField.propTypes = {
     name: PropTypes.string.isRequired
   })
 }
+
+EditField.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default EditField;

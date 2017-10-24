@@ -13,16 +13,18 @@ class SearchMain extends Component {
   render() {
     const { model } = this.props;
 
+    const { i18n } = this.context;
+
     return (
       <div className="crud--search-main">
         <div className="crud--search-main__page-header">
-          <h3 className="crud--search-main__page-title">{this.context.i18n.getMessage('model.name')} Editor</h3>
+          <h3 className="crud--search-main__page-title">{i18n.getMessage('crudEditor.search.header', { "modelName": i18n.getMessage('model.name') })}</h3>
           <button
             type="button"
             className="btn btn-sm btn-primary"
             onClick={this.handleCreate}
           >
-            {this.context.i18n.getMessage('crudEditor.create.button')}
+            {i18n.getMessage('crudEditor.create.button')}
           </button>
         </div>
 

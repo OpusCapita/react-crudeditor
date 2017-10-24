@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
-
+import { getFieldText } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import SpinnerOverlay from '../Spinner/SpinnerOverlay';
 import './SearchResultListing.less';
@@ -95,7 +95,7 @@ class SearchResultListing extends React.PureComponent {
                           bsStyle='link'
                           onClick={this.handleResort(name)}
                         >
-                          {name}
+                          {getFieldText(this.context.i18n, name)}
                           {
                             sortField === name &&
                             <Glyphicon
@@ -104,7 +104,7 @@ class SearchResultListing extends React.PureComponent {
                             />
                           }
                         </Button> :
-                        name
+                        getFieldText(this.context.i18n, name)
                     }
                   </th>)
                 )}

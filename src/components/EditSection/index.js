@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel, Glyphicon } from 'react-bootstrap';
+import { getSectionText } from '../lib';
 
 class EditSelection extends React.Component {
   state = {
@@ -28,7 +29,7 @@ class EditSelection extends React.Component {
           <span style={{ cursor: 'pointer' }}>
             <Glyphicon glyph={`menu-${collapsed ? 'down' : 'up'}`} />
             &nbsp;
-            {title}
+            { getSectionText(this.context.i18n, title) }
           </span>
         )}
       >
@@ -41,5 +42,9 @@ class EditSelection extends React.Component {
 EditSelection.propTypes = {
   title: PropTypes.string
 }
+
+EditSelection.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default EditSelection;

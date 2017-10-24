@@ -2,7 +2,27 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
 
+const messages = {
+  en: {
+    "model.field.statusId.pending": "pending",
+    "model.field.statusId.new": "new",
+    "model.field.statusId.changed": "changed",
+    "model.field.statusId.confirmed": "confirmed",
+    "model.field.statusId.deleted": "deleted"
+  },
+  ru: {
+    "model.field.statusId.pending": "на рассмотрении",
+    "model.field.statusId.new": "новый",
+    "model.field.statusId.changed": "изменен",
+    "model.field.statusId.confirmed": "подтвержден",
+    "model.field.statusId.deleted": "удален",
+  }
+}
+
 const StatusField = ({ value, onChange, onBlur, readOnly }, context) => {
+
+  context.i18n.register('StatusField', messages);
+
   const getStatusText = status => context.i18n.getMessage(`model.field.statusId.${status}`)
 
   return (<FormControl

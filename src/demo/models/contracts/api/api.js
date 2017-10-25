@@ -94,7 +94,7 @@ export const
 
   create = ({ instance }) => {
     if (find(data.contracts, ({ contractId }) => contractId === instance.contractId)) {
-      throw new Error("403")
+      throw new Error("400")
     }
 
     return ((data, instance) => {

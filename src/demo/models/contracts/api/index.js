@@ -46,7 +46,7 @@ export default {
           resolve(item)
         } catch (e) {
           reject({
-            code: 403,
+            code: 400,
             message: `Instance with contractId="${instance.contractId}" already exists in the database`
           })
         }

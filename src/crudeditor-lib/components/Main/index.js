@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { OCAlertsProvider } from '@opuscapita/react-alerts';
 import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
 
@@ -20,7 +21,10 @@ class CrudMain extends React.Component {
     this.props.hardRedirectView({ viewName, viewState });
   }
 
-  render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition} />
+  render = _ => (<div>
+    <ViewSwitcher modelDefinition={this.props.modelDefinition} />
+    <OCAlertsProvider />
+  </div>)
 }
 
 CrudMain.propTypes = {

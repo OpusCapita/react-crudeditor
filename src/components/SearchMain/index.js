@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
+import withAlerts from '../WithAlertsHOC'
 
 import './SearchMain.less';
 
-class SearchMain extends Component {
+class SearchMain extends PureComponent {
   handleCreate = (e) => {
     this.props.model.actions.createInstance();
   }
@@ -17,6 +18,10 @@ class SearchMain extends Component {
 
     return (
       <div className="crud--search-main">
+        {
+      model.data.generalErrors.length !== 0 &&
+      <div style={{ color: 'red' }}>{JSON.stringify(model.data.generalErrors)}</div>
+    }
         <div className="crud--search-main__page-header">
           <h3 className="crud--search-main__page-title">
             {i18n.getMessage('crudEditor.search.header', { "modelName": i18n.getMessage('model.name') })}
@@ -54,4 +59,4 @@ SearchMain.contextTypes = {
   i18n: PropTypes.object
 };
 
-export default SearchMain;
+export default withAlerts(SearchMain);

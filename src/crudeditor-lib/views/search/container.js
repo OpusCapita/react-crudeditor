@@ -54,8 +54,7 @@ export default connect(
   viewModel,
   children,
   ...props
-}) =>
-  (<Main model={viewModel} {...props}>
+}) => (<Main model={viewModel} {...props}>
     {children}
   </Main>)
 );

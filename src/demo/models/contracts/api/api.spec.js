@@ -492,14 +492,13 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           assert.deepEqual(
             err,
             {
-              code: 403,
+              code: 400,
               message: `Instance with contractId="${instance.contractId}" already exists in the database`
             }
           );
           assert.equal(before, after, 'Source data length changed unexpectedly!');
           done()
-        }
-        )
+        })
     });
   });
 

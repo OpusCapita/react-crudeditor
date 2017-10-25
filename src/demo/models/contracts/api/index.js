@@ -15,7 +15,8 @@ export default {
       setTimeout(_ => {
         try {
           const item = get({ instance });
-          resolve(item)
+          // resolve(item)
+          reject({ code: 404, message: `Contract ${JSON.stringify(instance.contractId)} not found` })
         } catch (e) {
           reject({ code: 404, message: `Contract ${JSON.stringify(instance.contractId)} not found` })
         }

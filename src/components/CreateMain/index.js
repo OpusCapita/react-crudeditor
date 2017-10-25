@@ -1,29 +1,14 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import isEqual from 'lodash/isEqual';
-import { OCAlert } from '@opuscapita/react-alerts';
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
+import withAlerts from '../WithAlertsHOC'
 
 class CreateMain extends PureComponent {
-
-  componentWillReceiveProps({ model: { data: { generalErrors: newErrors } } }) {
-    const { model: { data: { generalErrors: oldErrors } } } = this.props;
-
-    if (newErrors.length > 0 && !isEqual(oldErrors, newErrors)) {
-      if (this.errAlert) {
-        OCAlert.closeAlert(this.errAlert);
-      }
-      this.errAlert = OCAlert.alertError(newErrors.map(e => e.message))
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.errAlert) {
-      OCAlert.closeAlert(this.errAlert);
-    }
+  componentWillReceiveProps(np, nc) {
+    console.log('CreateMain componentWillReceiveProps');
   }
 
   render() {
@@ -50,10 +35,10 @@ class CreateMain extends PureComponent {
       }
     </div>)
   }
-};
+}
 
 CreateMain.propTypes = {
   model: PropTypes.object.isRequired
 }
 
-export default CreateMain;
+export default withAlerts(CreateMain);

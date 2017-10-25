@@ -33,6 +33,7 @@ ContractEditor react component. Provides general CRUD functionality for Contract
 <ContractEditor
   view={{name: 'search', state: {} }}
   onTransition={() => {}}
+  locale="de"
 />;
 ```
 

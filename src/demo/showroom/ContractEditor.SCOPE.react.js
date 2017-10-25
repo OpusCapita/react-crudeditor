@@ -25,7 +25,7 @@ class ContractEditorScope extends React.Component {
 
   getChildContext() {
     // check for URL query parameter 'lang', otherwise use default language
-    const i18n = new I18nManager({ locale: getParameterByName('lang') || 'de' });
+    const i18n = new I18nManager({ locale: getParameterByName('lang') || 'en' });
     i18n.register('CrudEditor', crudTranslations);
     i18n.register('Model', modelTranslations);
     return { i18n }

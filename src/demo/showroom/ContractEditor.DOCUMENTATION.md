@@ -8,10 +8,12 @@ ContractEditor react component. Provides general CRUD functionality for Contract
 
 | Name                           | Type                     | Description                                                                                             |
 | ------------------------------ | :----------------------  | -----------------------------------------------------------                                             |
-| view                           | object                   | Contains 'name'<string>, 'state'<object>                                                                |
+| view                           | object                   | Contains 'name': string, 'state': object                                                                |
 | onTransition                   | func                     | Function which executes on each transition                                                              |
 
 ## Details
+
+You can *set surrent language* with a URL query param `lang`. Just add it to current URL like this: `...&lang=en`.
 
 `view` prop example:
 
@@ -33,7 +35,6 @@ ContractEditor react component. Provides general CRUD functionality for Contract
 <ContractEditor
   view={{name: 'search', state: {} }}
   onTransition={() => {}}
-  locale="de"
 />;
 ```
 

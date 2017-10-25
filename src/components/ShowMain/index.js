@@ -5,16 +5,13 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
+import withAlerts from '../WithAlertsHOC'
 
 const ShowMain = (props) => {
   const { model } = props;
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
   return (<div className="showview">
-    {model.data.generalErrors.length !== 0 &&
-      <div style={{ color: 'red' }}>
-        {JSON.stringify(model.data.generalErrors)}
-      </div>}
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
@@ -39,4 +36,4 @@ ShowMain.propTypes = {
   model: PropTypes.object.isRequired
 }
 
-export default ShowMain
+export default withAlerts(ShowMain)

@@ -454,7 +454,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         catch(err => {
           assert.deepEqual(
             err,
-            { code: 404, message: `Contract "${instance.contractId}" not found` }
+            { code: 404, message: `Server error: Contract "${instance.contractId}" not found` }
           );
           done()
         })
@@ -483,7 +483,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
       ).catch(done)
     });
 
-    it('should return error if contract already exists', done => {
+    it('should reject if contract already exists', done => {
       const before = getNumberOfInstances();
       asyncApi.create({ instance }).
         then(done).
@@ -493,7 +493,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
             err,
             {
               code: 400,
-              message: `Instance with contractId="${instance.contractId}" already exists in the database`
+              message: `Server error: Instance with contractId "${instance.contractId}" already exists in the database`
             }
           );
           assert.equal(before, after, 'Source data length changed unexpectedly!');
@@ -539,7 +539,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
 
           assert.deepEqual(
             err,
-            { code: 400, message: `Contract "${instance.contractId}" not found` }
+            { code: 400, message: `Server error: Contract "${instance.contractId}" not found` }
           );
 
           assert.equal(before, after, 'Source data length changed unexpectedly!')

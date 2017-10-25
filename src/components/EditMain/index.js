@@ -4,15 +4,12 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
+import withAlerts from '../WithAlertsHOC'
 
 const EditMain = ({ model }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
   return (<div>
-    {
-      model.data.generalErrors.length !== 0 &&
-      <div style={{ color: 'red' }}>{JSON.stringify(model.data.generalErrors)}</div>
-    }
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
@@ -37,4 +34,4 @@ EditMain.propTypes = {
   model: PropTypes.object.isRequired
 }
 
-export default EditMain;
+export default withAlerts(EditMain);

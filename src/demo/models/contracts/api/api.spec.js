@@ -328,13 +328,16 @@ describe('Sync api functions:', () => {
         instances.length,
         getContracts().filter(
           c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
-        ).length
+        ).length,
+        'Different lengths after sort'
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort(),
-        "Result was not sorted properly"
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
+        'Sort mismatch'
       )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -355,9 +358,11 @@ describe('Sync api functions:', () => {
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort(),
-        "Result was not sorted properly"
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
+        'Sort mismatch'
       )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -378,8 +383,10 @@ describe('Sync api functions:', () => {
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort().reverse(),
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1).reverse(),
         "Result was not sorted properly"
       )
 
@@ -596,8 +603,10 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           );
 
           assert.deepEqual(
-            instances.map(e => e[sort]),
-            instances.map(e => e[sort]).sort(),
+            instances,
+            getContracts().filter(
+              c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+            ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
             "Result was not sorted properly"
           )
 

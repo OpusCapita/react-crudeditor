@@ -221,9 +221,6 @@ export const
 
     const totalCount = result.length;
 
-    // console.log('result')
-    // console.log(result)
-
     if (sort) {
       result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
       if (order && order === 'desc') {

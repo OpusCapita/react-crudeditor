@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
@@ -6,13 +6,7 @@ import Field from '../EditField';
 import { formatEntry } from '../lib';
 import withAlerts from '../WithAlertsHOC'
 
-class CreateMain extends PureComponent {
-  componentWillReceiveProps(np, nc) {
-    console.log('CreateMain componentWillReceiveProps');
-  }
-
-  render() {
-    const { model } = this.props;
+const CreateMain = ({ model }) => {
     const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
     return (<div className="showview">
@@ -34,7 +28,6 @@ class CreateMain extends PureComponent {
         </Tab>
       }
     </div>)
-  }
 }
 
 CreateMain.propTypes = {

@@ -48,7 +48,7 @@ export default {
         } catch (e) {
           reject({
             code: 400,
-            message: `Instance with contractId="${instance.contractId}" already exists in the database`
+            message: `Instance with contractId "${instance.contractId}" already exists in the database`
           })
         }
       }, FAKE_RESPONSE_TIMEOUT)

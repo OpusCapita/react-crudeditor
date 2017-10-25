@@ -19,9 +19,9 @@ class SearchMain extends PureComponent {
     return (
       <div className="crud--search-main">
         {
-      model.data.generalErrors.length !== 0 &&
+          model.data.generalErrors.length !== 0 &&
       <div style={{ color: 'red' }}>{JSON.stringify(model.data.generalErrors)}</div>
-    }
+        }
         <div className="crud--search-main__page-header">
           <h3 className="crud--search-main__page-title">
             {i18n.getMessage('crudEditor.search.header', { "modelName": i18n.getMessage('model.name') })}

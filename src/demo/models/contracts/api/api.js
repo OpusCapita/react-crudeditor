@@ -221,13 +221,14 @@ export const
 
     const totalCount = result.length;
 
+    // console.log('result')
+    // console.log(result)
+
     if (sort) {
-      // default Array.prototype.sort returns ascending ordered array
-      let orderedSortFieldValues = result.map(el => el[sort]).sort();
+      result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
       if (order && order === 'desc') {
-        orderedSortFieldValues.reverse();
+        result.reverse();
       }
-      result = orderedSortFieldValues.map(v => find(result, el => el[sort] === v))
     }
 
     if (Number(offset) === parseInt(offset, 10)) {

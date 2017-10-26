@@ -45,7 +45,6 @@ const withAlerts = WrappedComponent => {
           NotificationManager.create({
             id: 'warning',
             type: 'warning',
-            timeOut: 0,
             message: this.handlePluralMessages(displayErrors)
           })
         }
@@ -59,7 +58,6 @@ const withAlerts = WrappedComponent => {
           NotificationManager.create({
             id: 'error',
             type: 'error',
-            timeOut: 0,
             message: this.handlePluralMessages(displayErrors)
           })
         }

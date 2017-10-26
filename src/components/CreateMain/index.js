@@ -9,7 +9,7 @@ import withAlerts from '../WithAlertsHOC';
 const CreateMain = ({ model }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
-  return (<div className="showview">
+  return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :

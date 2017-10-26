@@ -206,6 +206,7 @@ export const
               return rez && match
               // we actually need this strict check
               // in order to handle search by 'statusId' field
+              // TODO add [], number, date ? strict comparison
             } else if (fieldType === FIELD_TYPE_STRING_NUMBER) {
               const match = Number(fieldValue) === Number(itemValue) && itemValue !== null;
               return rez && match

@@ -16,11 +16,21 @@ const withAlerts = WrappedComponent => {
     };
 
     componentWillReceiveProps(nextProps) {
-      const { i18n } = this.context;
+      const { i18n } = this.context; // TODO errors i18n
 
-      const { model: { data: { fieldsErrors: newFieldsErrors } } } = nextProps;
-      const { model: { data: { fieldsErrors: oldFieldsErrors } } } = this.props
+      const { model: { data: {
+        fieldsErrors: newFieldsErrors,
+        generalErrors: newGeneralErrors,
+        flags: newFlags
+      } } } = nextProps;
 
+      const { model: { data: {
+        fieldsErrors: oldFieldsErrors,
+        generalErrors: oldGeneralErrors,
+        flags: oldFlags
+      } } } = this.props
+
+      // handle fields validation errors
       if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
         if (this.warnAlert) {
           OCAlert.closeAlert(this.warnAlert);
@@ -41,9 +51,7 @@ const withAlerts = WrappedComponent => {
         }
       }
 
-      const { model: { data: { generalErrors: newGeneralErrors } } } = nextProps;
-      const { model: { data: { generalErrors: oldGeneralErrors } } } = this.props;
-
+      // handle critical/serverside errors
       if (newGeneralErrors && newGeneralErrors.length > 0 && !isEqual(newGeneralErrors, oldGeneralErrors)) {
         if (this.errAlert) {
           OCAlert.closeAlert(this.errAlert);
@@ -56,6 +64,15 @@ const withAlerts = WrappedComponent => {
         } else if (this.errAlert) {
           OCAlert.closeAlert(this.errAlert);
         }
+      }
+
+      // handle successSave flag
+      if (newFlags && newFlags.saveSuccess && newFlags.saveSuccess && !isEqual(newFlags, oldFlags)) {
+        if (this.successAlert) {
+          OCAlert.closeAlert(this.successAlert);
+        }
+
+        this.successAlert = OCAlert.alertSuccess(`Instance "${newFlags.saveSuccess.contractId}" saved successfully!`)
       }
     }
 

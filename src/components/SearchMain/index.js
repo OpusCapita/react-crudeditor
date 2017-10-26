@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
+import withAlerts from '../WithAlertsHOC'
 
 import './SearchMain.less';
 
-class SearchMain extends Component {
+class SearchMain extends PureComponent {
   handleCreate = (e) => {
     this.props.model.actions.createInstance();
   }
 
   render() {
     const { model } = this.props;
-
     const { i18n } = this.context;
 
     return (
@@ -54,4 +54,4 @@ SearchMain.contextTypes = {
   i18n: PropTypes.object
 };
 
-export default SearchMain;
+export default withAlerts(SearchMain);

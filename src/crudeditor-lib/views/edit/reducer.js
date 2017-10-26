@@ -97,7 +97,14 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: STATUS_UNINITIALIZED
+  status: STATUS_UNINITIALIZED,
+
+  // flags for UI alerts other than errors
+  flags: {
+    // 'false'/'null' for falsey/empty values
+    // saved instance for successful case
+    saveSuccess: null
+  }
 };
 
 /*
@@ -158,12 +165,23 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
+    newStoreStateSlice.flags = u.constant({
+      ...storeState.flags,
+      saveSuccess: null
+    })
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
     const { instance } = payload;
+
+    if (type === INSTANCE_SAVE_SUCCESS) {
+      newStoreStateSlice.flags = u.constant({
+        ...storeState.flags,
+        saveSuccess: instance
+      })
+    }
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
@@ -231,6 +249,11 @@ export default modelDefinition => (
         general: errors
       };
     }
+
+    newStoreStateSlice.flags = u.constant({
+      ...storeState.flags,
+      saveSuccess: false
+    })
 
     newStoreStateSlice.status = STATUS_READY;
 

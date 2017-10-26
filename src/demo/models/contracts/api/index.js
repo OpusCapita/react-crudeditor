@@ -16,8 +16,12 @@ export default {
         try {
           const item = get({ instance });
           resolve(item)
+          //
+          // comment 'resolve' and uncomment 'reject' if you need to test for errors alerts on Search view
+          //
+          // reject({ code: 404, message: `Server error: Contract ${JSON.stringify(instance.contractId)} not found` })
         } catch (e) {
-          reject({ code: 404, message: `Contract ${JSON.stringify(instance.contractId)} not found` })
+          reject({ code: 404, message: `Server error: Contract ${JSON.stringify(instance.contractId)} not found` })
         }
       }, FAKE_RESPONSE_TIMEOUT)
     })
@@ -46,8 +50,8 @@ export default {
           resolve(item)
         } catch (e) {
           reject({
-            code: 403,
-            message: `Instance with contractId="${instance.contractId}" already exists in the database`
+            code: 400,
+            message: `Server error: Instance with contractId "${instance.contractId}" already exists in the database`
           })
         }
       }, FAKE_RESPONSE_TIMEOUT)
@@ -62,7 +66,7 @@ export default {
           const result = update({ instance });
           resolve(result)
         } catch (e) {
-          reject({ code: 400, message: `Contract ${JSON.stringify(instance.contractId)} not found` })
+          reject({ code: 400, message: `Server error: Contract ${JSON.stringify(instance.contractId)} not found` })
         }
       }, FAKE_RESPONSE_TIMEOUT)
     })

@@ -94,7 +94,7 @@ export const
 
   create = ({ instance }) => {
     if (find(data.contracts, ({ contractId }) => contractId === instance.contractId)) {
-      throw new Error("403")
+      throw new Error("400")
     }
 
     return ((data, instance) => {
@@ -206,6 +206,7 @@ export const
               return rez && match
               // we actually need this strict check
               // in order to handle search by 'statusId' field
+              // TODO add [], number, date ? strict comparison
             } else if (fieldType === FIELD_TYPE_STRING_NUMBER) {
               const match = Number(fieldValue) === Number(itemValue) && itemValue !== null;
               return rez && match
@@ -222,12 +223,10 @@ export const
     const totalCount = result.length;
 
     if (sort) {
-      // default Array.prototype.sort returns ascending ordered array
-      let orderedSortFieldValues = result.map(el => el[sort]).sort();
+      result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
       if (order && order === 'desc') {
-        orderedSortFieldValues.reverse();
+        result.reverse();
       }
-      result = orderedSortFieldValues.map(v => find(result, el => el[sort] === v))
     }
 
     if (Number(offset) === parseInt(offset, 10)) {

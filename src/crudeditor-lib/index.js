@@ -178,6 +178,7 @@ export default baseModelDefinition => {
         fallbackLocale,
         localeFormattingInfo
       } = props;
+
       const i18n = new I18nManager({ locale, fallbackLocale, localeFormattingInfo });
 
       // core crud translations

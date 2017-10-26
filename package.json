@@ -39,7 +39,6 @@
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
     "redux-saga": "0.15.6",
-    "superagent": "3.5.2",
     "updeep": "1.0.0"
   },
   "devDependencies": {

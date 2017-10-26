@@ -171,4 +171,6 @@ export default function*({
     },
     meta
   });
+
+  return instances;
 }

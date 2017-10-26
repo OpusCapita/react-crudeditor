@@ -1,7 +1,10 @@
 import { call, put, select } from 'redux-saga/effects';
+import findIndex from 'lodash/findIndex';
+import isEqual from 'lodash/isEqual';
 
+import searchSaga from '../../search/workerSagas/search';
 import editSaga from './edit';
-import { VIEW_CREATE } from '../../../common/constants';
+import { VIEW_CREATE, VIEW_SEARCH } from '../../../common/constants';
 
 import {
   AFTER_ACTION_NEXT,
@@ -124,6 +127,8 @@ function* updateSaga(modelDefinition, meta) {
     },
     meta
   });
+
+  return updated;
 }
 
 /*
@@ -139,7 +144,7 @@ export default function*({
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  const instance = yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
@@ -165,21 +170,47 @@ export default function*({
       throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    // TODO: get next instance
-    const nextInstance = {};
+    // retrieve search params
+    const filter = yield select(storeState => storeState.views[VIEW_SEARCH].resultFilter);
+    const { field: sort, order } = yield select(storeState => storeState.views[VIEW_SEARCH].sortParams);
+    const { offset } = yield select(storeState => storeState.views[VIEW_SEARCH].pageParams);
 
     try {
-      yield call(editSaga, {
+      const searchResult = yield call(searchSaga, {
         modelDefinition,
         action: {
           payload: {
-            instance: nextInstance
+            filter,
+            sort,
+            order,
+            max: 100000, // TODO do something better (introduce 'next' prop for search and refactor api and below code accordingly)
+            offset
           },
           meta
         }
       });
+
+      const updatedInstanceIndex = findIndex(searchResult, el => isEqual(el, instance));
+
+      const nextInstance = updatedInstanceIndex < (searchResult.length - 1) ?
+        searchResult[updatedInstanceIndex + 1] :
+        instance;
+
+      try {
+        yield call(editSaga, {
+          modelDefinition,
+          action: {
+            payload: {
+              instance: nextInstance
+            },
+            meta
+          }
+        });
+      } catch (err) {
+        throw err;
+      }
     } catch (err) {
-      throw err;
+      throw err; // Initialization error(s) are forwarded to the parent saga.
     }
   }
 }

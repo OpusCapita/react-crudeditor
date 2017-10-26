@@ -40,7 +40,8 @@ export default connect(
   }), {
     createInstance,
     deleteInstances,
-    editInstance,
+    editInstance, // can plug in here and pass additional thing into payload to mark 'search' source for 'edit' view
+    // and/or pass boolean value if there is next item
     parseFormFilter,
     resetFormFilter,
     searchInstances,

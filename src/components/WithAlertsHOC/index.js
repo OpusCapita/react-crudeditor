@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-// import { getFieldText } from '../lib'
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import './styles.css';
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
@@ -20,31 +20,31 @@ const withAlerts = WrappedComponent => {
       const { i18n } = this.context;
 
       const { model: { data: {
-        // fieldsErrors: newFieldsErrors,
+        fieldsErrors: newFieldsErrors,
         generalErrors: newGeneralErrors,
         flags: newFlags
       } } } = nextProps;
 
       const { model: { data: {
-        // fieldsErrors: oldFieldsErrors,
+        fieldsErrors: oldFieldsErrors,
         generalErrors: oldGeneralErrors,
         flags: oldFlags
       } } } = this.props
 
       // handle fields validation errors
-      // if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
-      //   const displayErrors = Object.keys(newFieldsErrors).reduce(
-      //     (errArr, fieldName) => errArr.concat(newFieldsErrors[fieldName]), []
-      //   )
+      if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
+        const displayErrors = Object.keys(newFieldsErrors).reduce(
+          (errArr, fieldName) => errArr.concat(newFieldsErrors[fieldName]), []
+        )
 
-      //   if (displayErrors.length > 0) {
-      //     NotificationManager.create({
-      //       id: 'warning',
-      //       type: 'warning',
-      //       message: this.context.i18n.getMessage('crudEditor.objectSaveFailed.message')
-      //     })
-      //   }
-      // }
+        if (displayErrors.length > 0) {
+          NotificationManager.create({
+            id: 'warning',
+            type: 'error',
+            message: i18n.getMessage('crudEditor.objectSaveFailed.message')
+          })
+        }
+      }
 
       // handle critical/serverside errors
       if (
@@ -54,7 +54,7 @@ const withAlerts = WrappedComponent => {
         )) {
         NotificationManager.create({
           id: 'error',
-          type: 'warning',
+          type: 'error',
           message: i18n.getMessage('crudEditor.objectSaveFailed.message')
         })
       }

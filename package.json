@@ -20,7 +20,6 @@
   "license": "ISC",
   "dependencies": {
     "@opuscapita/i18n": "^1.1.0",
-    "@opuscapita/react-alerts": "^1.1.1",
     "@opuscapita/react-dates": "^0.3.0-beta.13",
     "@opuscapita/react-svg": "2.0.0",
     "babel-plugin-istanbul": "^4.1.5",
@@ -34,6 +33,7 @@
     "react": "15.6.1",
     "react-bootstrap": "0.31.1",
     "react-dom": "15.6.1",
+    "react-notifications": "^1.4.3",
     "react-redux": "5.0.5",
     "react-router": "4.1.2",
     "react-router-dom": "4.1.2",

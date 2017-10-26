@@ -102,8 +102,8 @@ const defaultStoreStateTemplate = {
   // flags for UI alerts other than errors
   flags: {
     // 'false'/'null' for falsey/empty values
-    // saved instance for successful case
-    saveSuccess: null
+    // updated instance for successful case
+    updateSuccess: null
   }
 };
 
@@ -167,7 +167,7 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_EXTRACTING;
     newStoreStateSlice.flags = u.constant({
       ...storeState.flags,
-      saveSuccess: null
+      updateSuccess: null
     })
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
@@ -179,7 +179,7 @@ export default modelDefinition => (
     if (type === INSTANCE_SAVE_SUCCESS) {
       newStoreStateSlice.flags = u.constant({
         ...storeState.flags,
-        saveSuccess: instance
+        updateSuccess: instance
       })
     }
 
@@ -252,7 +252,7 @@ export default modelDefinition => (
 
     newStoreStateSlice.flags = u.constant({
       ...storeState.flags,
-      saveSuccess: false
+      updateSuccess: false
     })
 
     newStoreStateSlice.status = STATUS_READY;

@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { OCAlert } from '@opuscapita/react-alerts';
 import isEqual from 'lodash/isEqual';
-import { OCAlertsProvider } from '@opuscapita/react-alerts';
 import { getFieldText } from '../lib'
+
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
@@ -16,7 +17,7 @@ const withAlerts = WrappedComponent => {
     };
 
     componentWillReceiveProps(nextProps) {
-      const { i18n } = this.context; // TODO errors i18n
+      const { i18n } = this.context;
 
       const { model: { data: {
         fieldsErrors: newFieldsErrors,
@@ -32,10 +33,6 @@ const withAlerts = WrappedComponent => {
 
       // handle fields validation errors
       if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
-        if (this.warnAlert) {
-          OCAlert.closeAlert(this.warnAlert);
-        }
-
         const displayErrors = Object.keys(newFieldsErrors).reduce(
           (errArr, fieldName) => errArr.concat(
             newFieldsErrors[fieldName].map(
@@ -45,40 +42,45 @@ const withAlerts = WrappedComponent => {
         )
 
         if (displayErrors.length > 0) {
-          this.warnAlert = OCAlert.alertWarning(displayErrors)
-        } else if (this.warnAlert) {
-          OCAlert.closeAlert(this.warnAlert);
+          NotificationManager.warning(this.handlePluralMessages(displayErrors))
         }
       }
 
       // handle critical/serverside errors
       if (newGeneralErrors && newGeneralErrors.length > 0 && !isEqual(newGeneralErrors, oldGeneralErrors)) {
-        if (this.errAlert) {
-          OCAlert.closeAlert(this.errAlert);
-        }
-
         const displayErrors = newGeneralErrors.map(e => e.message);
 
         if (displayErrors.length > 0) {
-          this.errAlert = OCAlert.alertError(displayErrors)
-        } else if (this.errAlert) {
-          OCAlert.closeAlert(this.errAlert);
+          NotificationManager.error(this.handlePluralMessages(displayErrors))
         }
       }
 
-      // handle successSave flag
+      // handle saveSuccess flag
       if (newFlags && newFlags.saveSuccess && newFlags.saveSuccess && !isEqual(newFlags, oldFlags)) {
-        if (this.successAlert) {
-          OCAlert.closeAlert(this.successAlert);
-        }
+        NotificationManager.remove({ id: 'successAlert' });
+        NotificationManager.create({
+          id: 'successAlert',
+          type: "success",
+          message: this.context.i18n.getMessage('crudEditor.objectSaved.message'),
+        })
+      }
 
-        this.successAlert = OCAlert.alertSuccess(`Instance "${newFlags.saveSuccess.contractId}" saved successfully!`)
+      // handle updateSuccess flag
+      if (newFlags && newFlags.updateSuccess && newFlags.updateSuccess && !isEqual(newFlags, oldFlags)) {
+        NotificationManager.remove({ id: 'successAlert' });
+        NotificationManager.create({
+          id: 'successAlert',
+          type: "success",
+          message: this.context.i18n.getMessage('crudEditor.objectUpdated.message'),
+        })
       }
     }
 
-    componentWillUnmount() {
-      OCAlert.closeAlerts();
-    }
+    handlePluralMessages = msgs => (Array.isArray(msgs) && msgs.length === 1) || typeof msgs === 'string' ?
+      msgs :
+      (<div>
+        {msgs.map((message, index) => <p key={message + '-' + index}>{message}</p>)}
+      </div>);
 
     render() {
       const { children, ...props } = this.props;
@@ -87,7 +89,7 @@ const withAlerts = WrappedComponent => {
         <WrappedComponent {...props}>
           {children}
         </WrappedComponent>
-        <OCAlertsProvider/>
+        <NotificationContainer/>
       </div>
       );
     }

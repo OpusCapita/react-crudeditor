@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { OCAlertsProvider } from '@opuscapita/react-alerts';
 
 import SearchView from '../../views/search/container';
 import CreateView from '../../views/create/container';
@@ -36,8 +35,7 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
         <ViewComponent modelDefinition={modelDefinition} /> :
         <div>Unknown view <i>{activeViewName}</i></div>
     }
-    {/* <OCAlertsProvider /> */}
-  </div>); // TBD where to position OCAlertsProvider. Maybe away from crudeditor-lib
+  </div>);
 };
 
 ViewSwitcher.propTypes = {

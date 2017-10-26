@@ -85,7 +85,7 @@ const withAlerts = WrappedComponent => {
     }
 
     componentWillUnmount() {
-      [ 'success',
+      ['success',
         'warning',
         'error'
       ].forEach(id => NotificationManager.remove({ id }))

@@ -1,5 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
+import findIndex from 'lodash/findIndex';
+import isEqual from 'lodash/isEqual';
 import Big from 'big.js';
 
 import initialData from './data';
@@ -129,7 +131,7 @@ export const
     }
   )(data, instances),
 
-  search = ({ filter, sort, order, offset, max }) => {
+  search = ({ filter, sort, order, offset, max, nextTo }) => {
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
@@ -236,8 +238,26 @@ export const
         []
     }
 
+    if (nextTo) {
+      const previousIndex = findIndex(result, el => isEqual(el, nextTo));
+
+      const nextInstance = previousIndex < (result.length - 1) ?
+        result[previousIndex + 1] :
+        // TODO maybe handle last element differently
+        nextTo;
+
+      return {
+        totalCount: 1,
+        instances: [nextInstance].map(internal2api)
+      }
+    }
+
     if (Number(max) === parseInt(max, 10)) {
-      result = result.slice(0, parseInt(max, 10))
+      const maxItems = parseInt(max, 10);
+      // max = -1 for all items
+      if (maxItems > 0) {
+        result = result.slice(0, maxItems)
+      }
     }
 
     return {

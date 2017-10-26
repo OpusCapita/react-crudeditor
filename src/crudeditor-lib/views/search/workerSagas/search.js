@@ -30,7 +30,11 @@ export default function*({
     sort,
     order,
     max,
-    offset
+    offset,
+    // get next item only
+    // holds previous instance or nothing otherwise
+    // if set, search should return the next instance
+    nextTo
   } = payload;
 
   const { searchableFields } = modelDefinition.ui.search;
@@ -88,7 +92,7 @@ export default function*({
     throw errors.fields;
   }
 
-  if (meta.source === 'owner') {
+  if (meta.source === 'owner') { // TBD what is it
     // Default search values are default values for the arguments in case of external searchInstances() call.
     const {
       resultFilter: defaultFilter,
@@ -145,7 +149,8 @@ export default function*({
       sort,
       order,
       max,
-      offset
+      offset,
+      nextTo
     }));
   } catch (err) {
     yield put({

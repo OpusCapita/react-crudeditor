@@ -28,7 +28,7 @@ class EditHeading extends PureComponent {
       { modelName: i18n.getMessage('model.name') }
     )
 
-    return (<div>
+    return (<div style={{ marginBottom: '15px' }}>
       <h1>
         { title }
         &nbsp;

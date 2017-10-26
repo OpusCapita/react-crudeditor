@@ -1,6 +1,4 @@
 import { call, put, select } from 'redux-saga/effects';
-import findIndex from 'lodash/findIndex';
-import isEqual from 'lodash/isEqual';
 
 import searchSaga from '../../search/workerSagas/search';
 import editSaga from './edit';
@@ -176,25 +174,22 @@ export default function*({
     const { offset } = yield select(storeState => storeState.views[VIEW_SEARCH].pageParams);
 
     try {
-      const searchResult = yield call(searchSaga, {
+      const instances = yield call(searchSaga, {
         modelDefinition,
         action: {
           payload: {
             filter,
             sort,
             order,
-            max: 100000, // TODO do something better (introduce 'next' prop for search and refactor api and below code accordingly)
-            offset
+            max: -1,
+            offset,
+            nextTo: instance
           },
           meta
         }
       });
 
-      const updatedInstanceIndex = findIndex(searchResult, el => isEqual(el, instance));
-
-      const nextInstance = updatedInstanceIndex < (searchResult.length - 1) ?
-        searchResult[updatedInstanceIndex + 1] :
-        instance;
+      const nextInstance = instances[0];
 
       try {
         yield call(editSaga, {

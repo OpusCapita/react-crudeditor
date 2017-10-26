@@ -32,37 +32,31 @@ const withAlerts = WrappedComponent => {
       } } } = this.props
 
       // handle fields validation errors
-      if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
-        const displayErrors = Object.keys(newFieldsErrors).reduce(
-          (errArr, fieldName) => errArr.concat(
-            newFieldsErrors[fieldName].map(
-              errObj => `Error in field "${i18n ? getFieldText(i18n, fieldName) : fieldName}": ${errObj.message}`
-            )
-          ), []
-        )
+      // if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
+      //   const displayErrors = Object.keys(newFieldsErrors).reduce(
+      //     (errArr, fieldName) => errArr.concat(newFieldsErrors[fieldName]), []
+      //   )
 
-        if (displayErrors.length > 0) {
-          NotificationManager.create({
-            id: 'warning',
-            type: 'warning',
-            timeOut: 0,
-            message: this.handlePluralMessages(displayErrors)
-          })
-        }
-      }
+      //   if (displayErrors.length > 0) {
+      //     NotificationManager.create({
+      //       id: 'warning',
+      //       type: 'warning',
+      //       message: this.context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+      //     })
+      //   }
+      // }
 
       // handle critical/serverside errors
-      if (newGeneralErrors && newGeneralErrors.length > 0 && !isEqual(newGeneralErrors, oldGeneralErrors)) {
-        const displayErrors = newGeneralErrors.map(e => e.message);
-
-        if (displayErrors.length > 0) {
-          NotificationManager.create({
-            id: 'error',
-            type: 'error',
-            timeOut: 0,
-            message: this.handlePluralMessages(displayErrors)
-          })
-        }
+      if (
+        newGeneralErrors && newGeneralErrors.length > 0 &&
+        !isEqual(newGeneralErrors, oldGeneralErrors &&
+        newGeneralErrors.length > 0
+      )) {
+        NotificationManager.create({
+          id: 'error',
+          type: 'error',
+          message: this.context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+        })
       }
 
       // handle saveSuccess flag
@@ -85,10 +79,7 @@ const withAlerts = WrappedComponent => {
     }
 
     componentWillUnmount() {
-      ['success',
-        'warning',
-        'error'
-      ].forEach(id => NotificationManager.remove({ id }))
+      ['success', 'warning', 'error'].forEach(id => NotificationManager.remove({ id }))
     }
 
     handlePluralMessages = msgs => (Array.isArray(msgs) && msgs.length === 1) || typeof msgs === 'string' ?

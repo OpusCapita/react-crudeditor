@@ -42,7 +42,11 @@ const withAlerts = WrappedComponent => {
         )
 
         if (displayErrors.length > 0) {
-          NotificationManager.warning(this.handlePluralMessages(displayErrors))
+          NotificationManager.create({
+            id: 'warning',
+            type: 'warning',
+            message: this.handlePluralMessages(displayErrors)
+          })
         }
       }
 
@@ -51,29 +55,38 @@ const withAlerts = WrappedComponent => {
         const displayErrors = newGeneralErrors.map(e => e.message);
 
         if (displayErrors.length > 0) {
-          NotificationManager.error(this.handlePluralMessages(displayErrors))
+          NotificationManager.create({
+            id: 'error',
+            type: 'error',
+            message: this.handlePluralMessages(displayErrors)
+          })
         }
       }
 
       // handle saveSuccess flag
       if (newFlags && newFlags.saveSuccess && newFlags.saveSuccess && !isEqual(newFlags, oldFlags)) {
-        NotificationManager.remove({ id: 'successAlert' });
         NotificationManager.create({
-          id: 'successAlert',
-          type: "success",
-          message: this.context.i18n.getMessage('crudEditor.objectSaved.message'),
+          id: 'success',
+          type: 'success',
+          message: this.context.i18n.getMessage('crudEditor.objectSaved.message')
         })
       }
 
       // handle updateSuccess flag
       if (newFlags && newFlags.updateSuccess && newFlags.updateSuccess && !isEqual(newFlags, oldFlags)) {
-        NotificationManager.remove({ id: 'successAlert' });
         NotificationManager.create({
-          id: 'successAlert',
-          type: "success",
-          message: this.context.i18n.getMessage('crudEditor.objectUpdated.message'),
+          id: 'success',
+          type: 'success',
+          message: this.context.i18n.getMessage('crudEditor.objectUpdated.message')
         })
       }
+    }
+
+    componentWillUnmount() {
+      [ 'success',
+        'warning',
+        'error'
+      ].forEach(id => NotificationManager.remove({ id }))
     }
 
     handlePluralMessages = msgs => (Array.isArray(msgs) && msgs.length === 1) || typeof msgs === 'string' ?

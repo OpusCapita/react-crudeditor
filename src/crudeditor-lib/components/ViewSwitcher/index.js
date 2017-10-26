@@ -29,9 +29,13 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
     [VIEW_ERROR]: ErrorView
   })[activeViewName];
 
-  return ViewComponent ?
-    <ViewComponent modelDefinition={modelDefinition} /> :
-    <div>Unknown view <i>{activeViewName}</i></div>;
+  return (<div>
+    {
+      ViewComponent ?
+        <ViewComponent modelDefinition={modelDefinition} /> :
+        <div>Unknown view <i>{activeViewName}</i></div>
+    }
+  </div>);
 };
 
 ViewSwitcher.propTypes = {

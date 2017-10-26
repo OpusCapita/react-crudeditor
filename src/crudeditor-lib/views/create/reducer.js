@@ -7,6 +7,7 @@ import {
 
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
+  INSTANCE_SAVE_SUCCESS,
 
   VIEW_INITIALIZE,
 
@@ -83,7 +84,14 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: STATUS_UNINITIALIZED
+  status: STATUS_UNINITIALIZED,
+
+  // flags for UI alerts other than errors
+  flags: {
+    // 'false'/'null' for falsey/empty values
+    // saved instance for successful case
+    saveSuccess: null
+  }
 };
 
 
@@ -173,6 +181,15 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+  } else if (type === INSTANCE_SAVE_SUCCESS) {
+    newStoreStateSlice.status = STATUS_READY;
+
+    const { instance } = payload;
+
+    newStoreStateSlice.flags = u.constant({
+      ...storeState.flags,
+      saveSuccess: instance
+    })
   } else if (type === VIEW_REDIRECT_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -190,6 +207,10 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
+    newStoreStateSlice.flags = u.constant({
+      ...storeState.flags,
+      saveSuccess: null
+    })
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
@@ -200,6 +221,11 @@ export default modelDefinition => (
         general: errors
       };
     }
+
+    newStoreStateSlice.flags = u.constant({
+      ...storeState.flags,
+      saveSuccess: false
+    })
 
     newStoreStateSlice.status = STATUS_READY;
 

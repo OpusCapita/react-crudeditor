@@ -96,8 +96,6 @@ function* validateSaga(modelDefinition, meta) {
 
 function* updateSaga(modelDefinition, meta) {
   const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
-  // const tabName = yield select(storeState => storeState.views[VIEW_NAME].activeTab.tab);
-  // console.log("update saga: " + tabName)
 
   yield put({
     type: INSTANCE_SAVE_REQUEST,

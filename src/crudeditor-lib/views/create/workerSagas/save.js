@@ -1,4 +1,5 @@
 import { call, put, select } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
 
 import {
   AFTER_ACTION_NEW,
@@ -125,8 +126,13 @@ function* saveSaga(modelDefinition, meta) {
 
   yield put({
     type: INSTANCE_SAVE_SUCCESS,
+    payload: {
+      instance: savedInstance
+    },
     meta
   });
+
+  yield call(delay, 1000)
 
   return savedInstance
 }

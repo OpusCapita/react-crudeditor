@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import { getFieldText } from '../lib'
+// import { getFieldText } from '../lib'
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
@@ -20,13 +20,13 @@ const withAlerts = WrappedComponent => {
       const { i18n } = this.context;
 
       const { model: { data: {
-        fieldsErrors: newFieldsErrors,
+        // fieldsErrors: newFieldsErrors,
         generalErrors: newGeneralErrors,
         flags: newFlags
       } } } = nextProps;
 
       const { model: { data: {
-        fieldsErrors: oldFieldsErrors,
+        // fieldsErrors: oldFieldsErrors,
         generalErrors: oldGeneralErrors,
         flags: oldFlags
       } } } = this.props
@@ -51,11 +51,11 @@ const withAlerts = WrappedComponent => {
         newGeneralErrors && newGeneralErrors.length > 0 &&
         !isEqual(newGeneralErrors, oldGeneralErrors &&
         newGeneralErrors.length > 0
-      )) {
+        )) {
         NotificationManager.create({
           id: 'error',
-          type: 'error',
-          message: this.context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+          type: 'warning',
+          message: i18n.getMessage('crudEditor.objectSaveFailed.message')
         })
       }
 
@@ -64,7 +64,7 @@ const withAlerts = WrappedComponent => {
         NotificationManager.create({
           id: 'success',
           type: 'success',
-          message: this.context.i18n.getMessage('crudEditor.objectSaved.message')
+          message: i18n.getMessage('crudEditor.objectSaved.message')
         })
       }
 
@@ -73,7 +73,7 @@ const withAlerts = WrappedComponent => {
         NotificationManager.create({
           id: 'success',
           type: 'success',
-          message: this.context.i18n.getMessage('crudEditor.objectUpdated.message')
+          message: i18n.getMessage('crudEditor.objectUpdated.message')
         })
       }
     }

@@ -16,6 +16,9 @@ import {
   VIEW_ERROR
 } from '../../common/constants';
 
+import { checkErrorsObjects } from './lib';
+import withAlerts from '../WithAlertsHOC';
+
 const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   if (!activeViewName) {
     return null;
@@ -44,5 +47,23 @@ ViewSwitcher.propTypes = {
 }
 
 export default connect(
-  storeState => ({ activeViewName: storeState.common.activeViewName })
-)(ViewSwitcher);
+  storeState => {
+    // check for proper 'errors' objects in views
+    const views = [VIEW_CREATE, VIEW_EDIT, VIEW_SEARCH, VIEW_SHOW];
+
+    checkErrorsObjects(storeState, views);
+
+    const activeViewName = storeState.common.activeViewName;
+
+    const { flags, errors: { general, fields = {} } } = storeState.views[activeViewName];
+
+    return {
+      activeViewName,
+      errors: {
+        general,
+        fields
+      },
+      flags
+    }
+  }
+)(withAlerts(ViewSwitcher));

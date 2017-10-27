@@ -9,7 +9,11 @@ import './styles.css';
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
     static propTypes = {
-      model: PropTypes.object.isRequired
+      errors: PropTypes.shape({
+        general: PropTypes.array,
+        fields: PropTypes.object
+      }),
+      flags: PropTypes.object
     }
 
     static contextTypes = {
@@ -19,17 +23,21 @@ const withAlerts = WrappedComponent => {
     componentWillReceiveProps(nextProps) {
       const { i18n } = this.context;
 
-      const { model: { data: {
-        fieldsErrors: newFieldsErrors,
-        generalErrors: newGeneralErrors,
+      const {
+        errors: {
+          general: newGeneralErrors,
+          fields: newFieldsErrors
+        },
         flags: newFlags
-      } } } = nextProps;
+      } = nextProps;
 
-      const { model: { data: {
-        fieldsErrors: oldFieldsErrors,
-        generalErrors: oldGeneralErrors,
+      const {
+        errors: {
+          general: oldGeneralErrors,
+          fields: oldFieldsErrors
+        },
         flags: oldFlags
-      } } } = this.props
+      } = this.props;
 
       // handle fields validation errors
       if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {

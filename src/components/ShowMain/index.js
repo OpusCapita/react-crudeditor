@@ -5,7 +5,6 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
-import withAlerts from '../WithAlertsHOC'
 
 const ShowMain = (props) => {
   const { model } = props;
@@ -36,4 +35,4 @@ ShowMain.propTypes = {
   model: PropTypes.object.isRequired
 }
 
-export default withAlerts(ShowMain)
+export default ShowMain;

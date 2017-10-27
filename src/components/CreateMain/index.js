@@ -4,7 +4,6 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
-import withAlerts from '../WithAlertsHOC';
 
 const CreateMain = ({ model }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
@@ -34,4 +33,4 @@ CreateMain.propTypes = {
   model: PropTypes.object.isRequired
 }
 
-export default withAlerts(CreateMain);
+export default CreateMain;

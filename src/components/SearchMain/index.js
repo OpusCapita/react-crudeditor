@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
-import withAlerts from '../WithAlertsHOC'
 
 import './SearchMain.less';
 
@@ -54,4 +53,4 @@ SearchMain.contextTypes = {
   i18n: PropTypes.object
 };
 
-export default withAlerts(SearchMain);
+export default SearchMain;

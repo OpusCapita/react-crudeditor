@@ -1,5 +1,4 @@
 import { call, put, select } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
 
 import editSaga from './edit';
 import searchNext from './searchNext';
@@ -147,8 +146,6 @@ export default function*({
   const instance = yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
-    yield call(delay, 1000)
-
     yield put({
       type: VIEW_REDIRECT_REQUEST,
       meta

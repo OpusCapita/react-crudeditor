@@ -72,7 +72,7 @@ class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if (viewName === VIEW_EDIT) {
+    if (viewName === VIEW_EDIT && this.props.model.actions.saveAndNextInstance !== undefined) {
       buttons.push(
         <Button onClick={this.handleSaveAndNext} key="Save and Next">
           {this.context.i18n.getMessage('crudEditor.saveAndNext.button')}

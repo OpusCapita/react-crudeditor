@@ -103,7 +103,10 @@ const defaultStoreStateTemplate = {
   flags: {
     // 'false'/'null' for falsey/empty values
     // updated instance for successful case
-    updateSuccess: null
+    updateSuccess: null,
+
+    // weither show 'saveAndNext' button in editor or not
+    showSaveAndNext: false
   }
 };
 
@@ -167,7 +170,8 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_EXTRACTING;
     newStoreStateSlice.flags = u.constant({
       ...storeState.flags,
-      updateSuccess: null
+      updateSuccess: null,
+      showSaveAndNext: false
     })
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
@@ -181,6 +185,17 @@ export default modelDefinition => (
         ...storeState.flags,
         updateSuccess: instance
       })
+    }
+
+    if (type === INSTANCE_EDIT_SUCCESS) {
+      const { referer } = payload;
+
+      if (referer === 'search') {
+        newStoreStateSlice.flags = u.constant({
+          ...storeState.flags,
+          showSaveAndNext: true
+        })
+      }
     }
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).

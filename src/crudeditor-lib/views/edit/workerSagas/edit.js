@@ -14,7 +14,7 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: { instance },
+    payload: { instance, referer },
     meta
   }
 }) {
@@ -43,7 +43,8 @@ export default function*({
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
-      instance: persistentInstance
+      instance: persistentInstance,
+      referer
     },
     meta
   });

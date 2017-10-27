@@ -15,12 +15,14 @@ export const
 
   editInstance = ({
     instance,
-    tab
+    tab,
+    referer
   }) => ({
     type: INSTANCE_EDIT,
     payload: {
       instance,
-      tab
+      tab,
+      referer
     }
   }),
 

@@ -82,7 +82,8 @@ export default function*({
   softRedirectSaga,
   viewState: {
     instance,
-    tab: tabName
+    tab: tabName,
+    referer
   },
   source
 }) {
@@ -95,7 +96,7 @@ export default function*({
     yield call(editSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
+        payload: { instance, referer },
         meta: { source }
       }
     });

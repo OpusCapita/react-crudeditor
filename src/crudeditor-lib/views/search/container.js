@@ -40,8 +40,13 @@ export default connect(
   }), {
     createInstance,
     deleteInstances,
-    editInstance, // can plug in here and pass additional thing into payload to mark 'search' source for 'edit' view
-    // and/or pass boolean value if there is next item
+    // can plug in here and pass additional thing into payload to mark 'search' referer for 'edit' view
+    // and/or pass boolean value if there is a next item
+    editInstance: ({ instance, tab }) => editInstance({
+      instance,
+      tab,
+      referer: 'search'
+    }),
     parseFormFilter,
     resetFormFilter,
     searchInstances,

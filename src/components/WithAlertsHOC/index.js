@@ -82,12 +82,6 @@ const withAlerts = WrappedComponent => {
       ['success', 'warning', 'error'].forEach(id => NotificationManager.remove({ id }))
     }
 
-    handlePluralMessages = msgs => (Array.isArray(msgs) && msgs.length === 1) || typeof msgs === 'string' ?
-      msgs :
-      (<div>
-        {msgs.map((message, index) => <p key={message + '-' + index}>{message}</p>)}
-      </div>);
-
     render() {
       const { children, ...props } = this.props;
 

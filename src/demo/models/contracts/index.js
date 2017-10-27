@@ -217,7 +217,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': 'stringNumber', // TBD was stringNumber
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 800,

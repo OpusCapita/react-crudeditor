@@ -92,7 +92,7 @@ export default function*({
     throw errors.fields;
   }
 
-  if (meta.source === 'owner') { // TBD what is it
+  if (meta.source === 'owner') {
     // Default search values are default values for the arguments in case of external searchInstances() call.
     const {
       resultFilter: defaultFilter,

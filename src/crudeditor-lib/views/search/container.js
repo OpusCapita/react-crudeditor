@@ -40,8 +40,8 @@ export default connect(
   }), {
     createInstance,
     deleteInstances,
-    // can plug in here and pass additional thing into payload to mark 'search' referer for 'edit' view
-    // and/or pass boolean value if there is a next item
+    // mark 'search' referer for 'edit' view
+    // it helps to decide weither to show 'saveAndNext' button or not
     editInstance: ({ instance, tab }) => editInstance({
       instance,
       tab,

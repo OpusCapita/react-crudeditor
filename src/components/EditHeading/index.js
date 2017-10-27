@@ -11,7 +11,7 @@ class EditHeading extends PureComponent {
           activeTab: {
             tab: activeTabName
           } = {},
-          instanceLabel, // TBD not implemented?
+          instanceLabel,
           tabs,
           viewName
         },

@@ -20,7 +20,6 @@ export default function* ({
           filter,
           sort,
           order,
-          max: -1,
           offset,
           nextTo: instance
         },

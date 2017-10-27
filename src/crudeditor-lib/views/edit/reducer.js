@@ -168,35 +168,30 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
-    newStoreStateSlice.flags = u.constant({
+
+    const flags = {
       ...storeState.flags,
-      updateSuccess: null,
-      showSaveAndNext: false
-    })
+      updateSuccess: null
+    };
+
+    newStoreStateSlice.flags = u.constant(flags);
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
-    const { instance } = payload;
+    const { instance, showSaveAndNext } = payload;
 
-    if (type === INSTANCE_SAVE_SUCCESS) {
-      newStoreStateSlice.flags = u.constant({
-        ...storeState.flags,
-        updateSuccess: instance
-      })
+    const flags = {
+      ...storeState.flags
     }
-
     if (type === INSTANCE_EDIT_SUCCESS) {
-      const { referer } = payload;
-
-      if (referer === 'search') {
-        newStoreStateSlice.flags = u.constant({
-          ...storeState.flags,
-          showSaveAndNext: true
-        })
-      }
+      flags.showSaveAndNext = showSaveAndNext
     }
+    if (type === INSTANCE_SAVE_SUCCESS) {
+      flags.updateSuccess = instance
+    }
+    newStoreStateSlice.flags = u.constant(flags)
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.

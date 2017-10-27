@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 
 import { getLogicalKeyBuilder } from '../../lib';
+import searchNext from './searchNext';
 
 import {
   INSTANCE_EDIT_FAIL,
@@ -14,7 +15,10 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: { instance, referer },
+    payload: {
+      instance,
+      referer
+    },
     meta
   }
 }) {
@@ -40,11 +44,35 @@ export default function*({
     throw err;
   }
 
+  // check if we need to display 'saveAndNext' button
+  // this is true, if:
+  // - referer === 'search' &&
+  // there is actual instance available on the backend
+  // (e.g. for the last instance this button should not be displayed)
+  let showSaveAndNext = false;
+
+  if (referer === 'search') {
+    try {
+      // make a request to find out if the next instance exists
+      const nextInstance = yield call(searchNext, {
+        modelDefinition,
+        meta,
+        instance: persistentInstance
+      })
+
+      if (nextInstance) {
+        showSaveAndNext = true;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
       instance: persistentInstance,
-      referer
+      showSaveAndNext
     },
     meta
   });

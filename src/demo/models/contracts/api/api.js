@@ -1,7 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
-import isEqual from 'lodash/isEqual';
 import Big from 'big.js';
 
 import initialData from './data';
@@ -239,16 +238,15 @@ export const
     }
 
     if (nextTo) {
-      const previousIndex = findIndex(result, el => isEqual(el, nextTo));
+      const previousIndex = findIndex(result, el => el.contractId === nextTo.contractId);
 
       const nextInstance = previousIndex < (result.length - 1) ?
         result[previousIndex + 1] :
-        // TODO maybe handle last element differently
-        nextTo;
+        null;
 
       return {
         totalCount: 1,
-        instances: [nextInstance].map(internal2api)
+        instances: nextInstance ? [nextInstance].map(internal2api) : []
       }
     }
 

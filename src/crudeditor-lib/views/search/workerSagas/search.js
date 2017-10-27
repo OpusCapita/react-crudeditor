@@ -144,6 +144,10 @@ export default function*({
   let instances, totalCount;
 
   try {
+    // backend api should return an object of shape { instances<array>, totalCount<int> }
+    // if only one instance is requested ('nextTo' is present and is of type 'object')
+    // then backend api should return { instances: [nextInstance<object>], totalCount: 1 }
+    // or if there is no next instance { instances: [], totalCount: 1 }
     ({ instances, totalCount } = yield call(modelDefinition.api.search, {
       filter: cleanFilter({ searchableFields, filter }),
       sort,

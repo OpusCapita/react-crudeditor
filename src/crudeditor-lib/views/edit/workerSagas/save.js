@@ -1,9 +1,10 @@
 import { call, put, select } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 
-import searchSaga from '../../search/workerSagas/search';
 import editSaga from './edit';
-import { VIEW_CREATE, VIEW_SEARCH } from '../../../common/constants';
+import searchNext from './searchNext';
+
+import { VIEW_CREATE } from '../../../common/constants';
 
 import {
   AFTER_ACTION_NEXT,
@@ -171,35 +172,20 @@ export default function*({
       throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    // retrieve search params
-    const filter = yield select(storeState => storeState.views[VIEW_SEARCH].resultFilter);
-    const { field: sort, order } = yield select(storeState => storeState.views[VIEW_SEARCH].sortParams);
-    const { offset } = yield select(storeState => storeState.views[VIEW_SEARCH].pageParams);
-
     try {
-      const instances = yield call(searchSaga, {
+      const nextInstance = yield call(searchNext, {
         modelDefinition,
-        action: {
-          payload: {
-            filter,
-            sort,
-            order,
-            max: -1,
-            offset,
-            nextTo: instance
-          },
-          meta
-        }
-      });
-
-      const nextInstance = instances[0];
+        meta,
+        instance
+      })
 
       try {
         yield call(editSaga, {
           modelDefinition,
           action: {
             payload: {
-              instance: nextInstance
+              instance: nextInstance,
+              referer: 'search'
             },
             meta
           }
@@ -208,7 +194,7 @@ export default function*({
         throw err;
       }
     } catch (err) {
-      throw err; // Initialization error(s) are forwarded to the parent saga.
+      throw err;
     }
   }
 }

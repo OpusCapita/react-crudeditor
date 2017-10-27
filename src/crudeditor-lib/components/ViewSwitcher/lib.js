@@ -16,7 +16,8 @@ export const checkErrorsObjects = (state, views) => {
       }
 
       if (!errors.general) {
-        err.message = `'errors' object should contain 'general' property of type Array; not found in '${viewName}' view state`;
+        err.message = `'errors' object should contain 'general' property of type Array;
+        not found in '${viewName}' view state`;
         console.error(err.message);
         throw err
       }
@@ -28,12 +29,16 @@ export const checkErrorsObjects = (state, views) => {
       }
 
       if (~[VIEW_CREATE, VIEW_EDIT, VIEW_SEARCH].indexOf(viewName) && !errors.fields) {
-        err.message = `'errors' object should contain 'field' property of type Object; not found in '${viewName}' view state`;
+        err.message = `'errors' object should contain 'field' property of type Object;
+        not found in '${viewName}' view state`;
         console.error(err.message);
         throw err
       }
 
-      if (errors.fields !== undefined && (typeof errors.fields !== 'object' || Array.isArray(errors.fields))) {
+      if (
+        errors.fields !== undefined &&
+        (typeof errors.fields !== 'object' || Array.isArray(errors.fields))
+      ) {
         err.message = `'errors.fields' should be an Object in '${viewName}' view state`;
         console.error(err.message);
         throw err

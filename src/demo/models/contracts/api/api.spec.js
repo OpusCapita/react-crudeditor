@@ -298,6 +298,60 @@ describe('Sync api functions:', () => {
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
 
+    it('should find by stringDate from.. (createdOn)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        createdOn: {
+          from: "2011-03-10"
+        }
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert(instances.length > 0)
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(
+          ({ createdOn }) => new Date(createdOn) >= new Date(filter.createdOn.from)
+        )
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
+    it('should find by stringDate ..to (createdOn)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        createdOn: {
+          to: "2011-07-01"
+        }
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert(instances.length > 0)
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(
+          ({ createdOn }) => new Date(createdOn) <= new Date(filter.createdOn.to)
+        )
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
     it('should find by boolean value', () => {
       const before = getNumberOfInstances();
       const filter = {

@@ -12,10 +12,6 @@ import {
   FIELD_TYPE_NUMBER
 } from '../../../../data-types-lib/constants';
 
-import {
-  RANGE_FIELD_TYPES
-} from '../../../../crudeditor-lib/views/search/constants';
-
 import { fields } from '../'
 
 const NUMBER_FIELDS = [
@@ -75,6 +71,15 @@ const setChangedFields = instance => {
       contract
   )
 }
+
+const isRangeObject = obj =>
+  typeof obj === 'object' &&
+  obj !== null &&
+  (obj => {
+    const keys = Object.keys(obj);
+    return (keys.length === 1 || keys.length === 2) &&
+      (~keys.indexOf('from') || ~keys.indexOf('to'))
+  })(obj);
 
 export const
 
@@ -155,7 +160,7 @@ export const
             // Handle range from..to fields
             // If not object - we should check strict equality to handle search by
             // 'statusId' field
-            if (~RANGE_FIELD_TYPES.indexOf(fieldType) && typeof fieldValue === 'object') {
+            if (isRangeObject(fieldValue)) {
               let match = true;
 
               if (item[fieldName] !== null) {
@@ -178,7 +183,8 @@ export const
                     lte = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
                     break;
                   default:
-                    console.log("Search api switch: Unknown RANGE field type: " + fieldType)
+                    console.log("Search api switch: Unknown RANGE field type: " + fieldType);
+                    return false;
                 }
 
                 if (fieldValue.from !== undefined) {
@@ -208,8 +214,11 @@ export const
               // we actually need this strict check
               // in order to handle search by 'statusId' field
               // TODO add [], number, date ? strict comparison
-            } else if (fieldType === FIELD_TYPE_STRING_NUMBER) {
-              const match = Number(fieldValue) === Number(itemValue) && itemValue !== null;
+            } else if (~[FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType)) {
+              const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
+              return rez && match
+            } else if (fieldType === FIELD_TYPE_STRING_DATE) {
+              const match = new Date(fieldValue).valueOf() === new Date(itemValue).valueOf();
               return rez && match
             }
 

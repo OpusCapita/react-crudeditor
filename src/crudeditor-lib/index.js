@@ -133,13 +133,16 @@ export default baseModelDefinition => {
 
   const sagaMiddleware = createSagaMiddleware();
 
+  // context for CrudWrapper children
+  const context = {};
+
   const store = createStore(
     getReducer(modelDefinition),
     (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
       // XXX: ensure each middleware calls "next(action)" synchronously,
       // or else ensure that "redux-saga" is the last middleware in the call chain.
       appStateChangeDetect,
-      eventsMiddleware,
+      eventsMiddleware(context),
       sagaMiddleware
     ))
   );
@@ -156,7 +159,8 @@ export default baseModelDefinition => {
 
     getChildContext() {
       const i18n = (this.context && this.context.i18n) || this.i18n;
-      return ({ i18n });
+      context.i18n = i18n;
+      return context;
     }
 
     componentWillReceiveProps(props) {

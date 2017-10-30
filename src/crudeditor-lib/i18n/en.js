@@ -30,7 +30,7 @@ export default {
   "crudEditor.objectUpdated.message": "Object updated.",
   "crudEditor.objectSaveFailed.message": "Object save failed.",
   "crudEditor.objectDeleted.message": "Object deleted.",
-  "crudEditor.objectsDeleted.message": "Objects {0} deleted.",
+  "crudEditor.objectsDeleted.message": "Objects {count} deleted.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "You cannot delete some objects because of security restrictions.",
   "crudEditor.objectDeleteFailed.message": "Failed to delete object, perhaps it is already in use.",
   "crudEditor.objectsDeleteFailed.message": "Failed to delete objects {0}, perhaps they are already in use.",

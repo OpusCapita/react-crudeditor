@@ -84,14 +84,7 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: STATUS_UNINITIALIZED,
-
-  // flags for UI alerts other than errors
-  flags: {
-    // 'false'/'null' for falsey/empty values
-    // saved instance for successful case
-    saveSuccess: null
-  }
+  status: STATUS_UNINITIALIZED
 };
 
 
@@ -183,13 +176,6 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_REDIRECTING;
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
-
-    const { instance } = payload;
-
-    newStoreStateSlice.flags = u.constant({
-      ...storeState.flags,
-      saveSuccess: instance
-    })
   } else if (type === VIEW_REDIRECT_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -207,10 +193,6 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
-    newStoreStateSlice.flags = u.constant({
-      ...storeState.flags,
-      saveSuccess: null
-    })
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
@@ -222,18 +204,13 @@ export default modelDefinition => (
       };
     }
 
-    newStoreStateSlice.flags = u.constant({
-      ...storeState.flags,
-      saveSuccess: false
-    })
-
     newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
-    newStoreStateSlice.activeTab = u.constant(activeTab);
+    newStoreStateSlice.activeTab = activeTab;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_FIELD_CHANGE) {

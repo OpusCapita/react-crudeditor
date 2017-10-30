@@ -22,7 +22,7 @@ const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
     data: viewModelData,
     actions: (
       ({ saveAndNextInstance, ...otherActions }) =>
-        viewModelData.flags.nextInstanceExists ?
+        viewModelData.nextInstanceExists ?
           { saveAndNextInstance, ...otherActions } :
           { ...otherActions }
     )(dispatchProps)

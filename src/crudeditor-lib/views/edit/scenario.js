@@ -19,8 +19,17 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
+// 'inc' is a generator used to increment 'navigation offset' value
+// to handle 'Save and Next' functionality
+function* inc() {
+  let i = 1;
+  while (true) {
+    yield i++
+  }
+}
+
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
+function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
   const choices = {
     blocking: {
       [INSTANCES_DELETE]: deleteSaga,
@@ -30,6 +39,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
       [VIEW_EXIT]: exitSaga
     }
   }
+
+  const nextInc = inc();
 
   let lastTask;
 
@@ -63,7 +74,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action,
+            searchParams: {
+              ...searchParams,
+              nextInc
+            }
           });
         } catch (err) {
           // Swallow custom errors.
@@ -83,7 +98,8 @@ export default function*({
   viewState: {
     instance,
     tab: tabName,
-    referer
+    // get searchParams from 'search' view
+    searchParams
   },
   source
 }) {
@@ -96,7 +112,10 @@ export default function*({
     yield call(editSaga, {
       modelDefinition,
       action: {
-        payload: { instance, referer },
+        payload: {
+          instance,
+          searchParams
+        },
         meta: { source }
       }
     });
@@ -124,7 +143,7 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
+      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, searchParams });
     } finally {
       if (yield cancelled()) {
         yield put({

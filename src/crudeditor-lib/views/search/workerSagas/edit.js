@@ -16,11 +16,16 @@ export default function*({
   action: {
     payload: {
       instance,
-      referer
+      searchParams
     },
     meta
   }
 }) {
+  console.log("search edit")
+  console.log({
+    instance,
+    searchParams
+  })
   yield put({
     type: VIEW_REDIRECT_REQUEST,
     meta
@@ -29,7 +34,10 @@ export default function*({
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_EDIT,
-      viewState: { instance, referer }
+      viewState: {
+        instance,
+        searchParams
+      }
     });
   } catch (err) {
     yield put({

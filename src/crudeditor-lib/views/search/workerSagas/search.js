@@ -31,10 +31,7 @@ export default function*({
     order,
     max,
     offset,
-    // get next item only
-    // holds previous instance or nothing otherwise
-    // if set, search should return the next instance
-    nextTo
+    // nextTo
   } = payload;
 
   const { searchableFields } = modelDefinition.ui.search;
@@ -144,17 +141,13 @@ export default function*({
   let instances, totalCount;
 
   try {
-    // backend api should return an object of shape { instances<array>, totalCount<int> }
-    // if only one instance is requested ('nextTo' is present and is of type 'object')
-    // then backend api should return { instances: [nextInstance<object>], totalCount: 1 }
-    // or if there is no next instance { instances: [], totalCount: 1 }
     ({ instances, totalCount } = yield call(modelDefinition.api.search, {
       filter: cleanFilter({ searchableFields, filter }),
       sort,
       order,
       max,
       offset,
-      nextTo
+      // nextTo
     }));
   } catch (err) {
     yield put({
@@ -181,5 +174,5 @@ export default function*({
     meta
   });
 
-  return instances;
+  return { instances, totalCount };
 }

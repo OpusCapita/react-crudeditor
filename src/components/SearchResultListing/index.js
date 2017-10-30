@@ -46,7 +46,7 @@ class SearchResultListing extends React.PureComponent {
     }) => this.props.model.actions.toggleSelected({ selected, instance });
 
     this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
-    this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
+    this.handleEdit = (instance, index) => () => this.props.model.actions.editInstance({ instance, index });
     this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
 
@@ -114,7 +114,7 @@ class SearchResultListing extends React.PureComponent {
             </thead>
             <tbody>
 
-              {instances.map(instance =>
+              {instances.map((instance, index) =>
                 (<tr key={`tr-${JSON.stringify(instance)}`}>
                   <td>
                     <Checkbox
@@ -147,7 +147,7 @@ class SearchResultListing extends React.PureComponent {
                         {this.context.i18n.getMessage('crudEditor.show.button')}
                       </Button>
 
-                      <Button onClick={this.handleEdit(instance)}>
+                      <Button onClick={this.handleEdit(instance, index)}>
                         <Glyphicon glyph='edit' />
                         {' '}
                         {this.context.i18n.getMessage('crudEditor.edit.button')}

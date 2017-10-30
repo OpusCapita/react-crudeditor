@@ -16,13 +16,13 @@ export const
   editInstance = ({
     instance,
     tab,
-    referer
+    searchParams
   }) => ({
     type: INSTANCE_EDIT,
     payload: {
       instance,
       tab,
-      referer
+      searchParams
     }
   }),
 

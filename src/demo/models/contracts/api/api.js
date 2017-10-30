@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
-import findIndex from 'lodash/findIndex';
 import Big from 'big.js';
 
 import initialData from './data';
@@ -244,19 +243,6 @@ export const
       result = result.length > offsetNum ?
         result.slice(offsetNum) :
         []
-    }
-
-    if (nextTo) {
-      const previousIndex = findIndex(result, el => el.contractId === nextTo.contractId);
-
-      const nextInstance = previousIndex < (result.length - 1) ?
-        result[previousIndex + 1] :
-        null;
-
-      return {
-        totalCount: 1,
-        instances: nextInstance ? [nextInstance].map(internal2api) : []
-      }
     }
 
     if (Number(max) === parseInt(max, 10)) {

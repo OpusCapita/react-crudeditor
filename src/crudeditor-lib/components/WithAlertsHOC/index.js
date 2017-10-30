@@ -8,83 +8,10 @@ import './styles.css';
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
-    static propTypes = {
-      errors: PropTypes.shape({
-        general: PropTypes.array,
-        fields: PropTypes.object
-      }),
-      flags: PropTypes.object
-    }
 
     static contextTypes = {
       i18n: PropTypes.object
     };
-
-    componentWillReceiveProps(nextProps) {
-      const { i18n } = this.context;
-
-      const {
-        errors: {
-          general: newGeneralErrors,
-          fields: newFieldsErrors
-        },
-        flags: newFlags
-      } = nextProps;
-
-      const {
-        errors: {
-          general: oldGeneralErrors,
-          fields: oldFieldsErrors
-        },
-        flags: oldFlags
-      } = this.props;
-
-      // handle fields validation errors
-      if (newFieldsErrors && !isEqual(newFieldsErrors, oldFieldsErrors)) {
-        const displayErrors = Object.keys(newFieldsErrors).reduce(
-          (errArr, fieldName) => errArr.concat(newFieldsErrors[fieldName]), []
-        )
-
-        if (displayErrors.length > 0) {
-          NotificationManager.create({
-            id: 'warning',
-            type: 'error',
-            message: i18n.getMessage('crudEditor.objectSaveFailed.message')
-          })
-        }
-      }
-
-      // handle critical/serverside errors
-      if (
-        newGeneralErrors && newGeneralErrors.length > 0 &&
-        !isEqual(newGeneralErrors, oldGeneralErrors &&
-        newGeneralErrors.length > 0
-        )) {
-        NotificationManager.create({
-          id: 'error',
-          type: 'error',
-          message: i18n.getMessage('crudEditor.objectSaveFailed.message')
-        })
-      }
-
-      // handle saveSuccess flag
-      if (newFlags && newFlags.saveSuccess && newFlags.saveSuccess && !isEqual(newFlags, oldFlags)) {
-        NotificationManager.create({
-          id: 'success',
-          type: 'success',
-          message: i18n.getMessage('crudEditor.objectSaved.message')
-        })
-      }
-
-      // handle updateSuccess flag
-      if (newFlags && newFlags.updateSuccess && newFlags.updateSuccess && !isEqual(newFlags, oldFlags)) {
-        NotificationManager.create({
-          id: 'success',
-          type: 'success',
-          message: i18n.getMessage('crudEditor.objectUpdated.message')
-        })
-      }
-    }
 
     componentWillUnmount() {
       ['success', 'warning', 'error'].forEach(id => NotificationManager.remove({ id }))

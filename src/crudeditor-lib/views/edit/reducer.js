@@ -99,7 +99,6 @@ const defaultStoreStateTemplate = {
 
   status: STATUS_UNINITIALIZED,
 
-  // flags for UI alerts other than errors
   flags: {
     // 'false'/'null' for falsey/empty values
     // updated instance for successful case

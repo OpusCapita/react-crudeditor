@@ -106,7 +106,7 @@ const defaultStoreStateTemplate = {
     updateSuccess: null,
 
     // weither show 'saveAndNext' button in editor or not
-    showSaveAndNext: false
+    nextInstanceExists: false
   }
 };
 
@@ -169,29 +169,25 @@ export default modelDefinition => (
   } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
 
-    const flags = {
-      ...storeState.flags,
+    newStoreStateSlice.flags = {
       updateSuccess: null
     };
-
-    newStoreStateSlice.flags = u.constant(flags);
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
-    const { instance, showSaveAndNext } = payload;
+    const { instance, nextInstanceExists } = payload;
 
-    const flags = {
-      ...storeState.flags
-    }
+    const flags = {};
+
     if (type === INSTANCE_EDIT_SUCCESS) {
-      flags.showSaveAndNext = showSaveAndNext
+      flags.nextInstanceExists = nextInstanceExists
     }
     if (type === INSTANCE_SAVE_SUCCESS) {
       flags.updateSuccess = instance
     }
-    newStoreStateSlice.flags = u.constant(flags)
+    newStoreStateSlice.flags = flags
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.

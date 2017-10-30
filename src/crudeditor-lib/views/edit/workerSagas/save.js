@@ -181,11 +181,15 @@ export default function*({
 
       if (instances.length === 0) {
         // empty search results -> exit view (redirect to 'search' view)
-        yield call(exitSaga, {
-          modelDefinition,
-          softRedirectSaga,
-          action: { meta }
-        })
+        try {
+          yield call(exitSaga, {
+            modelDefinition,
+            softRedirectSaga,
+            action: { meta }
+          })
+        } catch (err) {
+          throw err;
+        }
       }
 
       const nextInstance = instances[0];

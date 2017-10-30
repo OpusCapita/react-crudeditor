@@ -21,11 +21,6 @@ export default function*({
     meta
   }
 }) {
-  console.log("search edit")
-  console.log({
-    instance,
-    searchParams
-  })
   yield put({
     type: VIEW_REDIRECT_REQUEST,
     meta

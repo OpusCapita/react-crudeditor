@@ -52,7 +52,7 @@ export default connect(
       searchParams: {
         ...searchParams,
         // 'index' is an index of instance in the array of search results
-        navOffset: searchParams.navOffset + index
+        ...Object.assign({}, searchParams ? { navOffset: searchParams.navOffset + index } : {})
       }
     })),
     ...bindActionCreators({

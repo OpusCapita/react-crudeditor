@@ -126,7 +126,6 @@ export default function*({
       error: true,
       meta: { source }
     });
-
     throw err; // Initialization error(s) are forwarded to the parent saga.
   }
 

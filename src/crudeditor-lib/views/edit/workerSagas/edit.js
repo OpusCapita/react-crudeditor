@@ -39,17 +39,16 @@ export default function*({
       error: true,
       meta
     });
-
     throw err;
   }
-
-  const { navOffset, totalCount } = searchParams;
 
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
       instance: persistentInstance,
-      showSaveAndNext: navOffset < totalCount - 1
+      ...Object.assign({}, searchParams ? {
+        nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1
+      } : {})
     },
     meta
   });

@@ -134,7 +134,7 @@ export const
     }
   )(data, instances),
 
-  search = ({ filter, sort, order, offset, max, nextTo }) => {
+  search = ({ filter, sort, order, offset, max }) => {
     const searchableData = data.contracts;
 
     let result = searchableData.slice();
@@ -249,8 +249,8 @@ export const
         offsetNum >= max &&
         totalCount > 0
       ) {
-        const totalPages = Math.ceil(totalCount/max);
-        const newOffset = totalPages*max - max;
+        const totalPages = Math.ceil(totalCount / max);
+        const newOffset = totalPages * max - max;
         result = result.slice(newOffset)
       } else {
         result = offsetResult

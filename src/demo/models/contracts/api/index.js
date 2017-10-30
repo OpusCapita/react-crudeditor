@@ -27,10 +27,10 @@ export default {
     })
   },
 
-  search({ filter, sort, order, offset, max, nextTo }) {
+  search({ filter, sort, order, offset, max }) {
     // console.log('Making inlinedata API-search call', JSON.stringify({ filter, sort, order, offset, max }));
     return new Promise((resolve, reject) => {
-      setTimeout(_ => resolve(search({ filter, sort, order, offset, max, nextTo })), FAKE_RESPONSE_TIMEOUT)
+      setTimeout(_ => resolve(search({ filter, sort, order, offset, max })), FAKE_RESPONSE_TIMEOUT)
     })
   },
 

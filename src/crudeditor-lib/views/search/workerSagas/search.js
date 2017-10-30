@@ -30,8 +30,7 @@ export default function*({
     sort,
     order,
     max,
-    offset,
-    // nextTo
+    offset
   } = payload;
 
   const { searchableFields } = modelDefinition.ui.search;
@@ -146,8 +145,7 @@ export default function*({
       sort,
       order,
       max,
-      offset,
-      // nextTo
+      offset
     }));
   } catch (err) {
     yield put({

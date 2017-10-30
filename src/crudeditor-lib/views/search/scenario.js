@@ -63,6 +63,24 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           softRedirectSaga,
           action
         });
+        // refresh search results
+        // TODO: refactor search api
+        // to handle situation when
+        // offset > max && results === [] && totalCount > 0
+        // (reset last page and show non-empty results)
+        if (action.type === INSTANCES_DELETE) {
+          try {
+            yield call(searchSaga, {
+              modelDefinition,
+              softRedirectSaga,
+              action: {
+                payload: {}
+              }
+            });
+          } catch (err) {
+            throw err;
+          }
+        }
       } catch (err) {
         // Swallow custom errors.
         if (err instanceof Error) {

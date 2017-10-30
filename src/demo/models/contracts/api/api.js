@@ -210,9 +210,7 @@ export const
                 itemValue.toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
                 false;
               return rez && match
-              // we actually need this strict check
-              // in order to handle search by 'statusId' field
-              // TODO add [], number, date ? strict comparison
+              // TODO add [] search
             } else if (~[FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType)) {
               const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
               return rez && match
@@ -240,9 +238,23 @@ export const
 
     if (Number(offset) === parseInt(offset, 10)) {
       const offsetNum = parseInt(offset, 10);
-      result = result.length > offsetNum ?
+
+      const offsetResult = totalCount > offsetNum ?
         result.slice(offsetNum) :
         []
+
+      // handle search for the last page in case that previous last page was completely deleted
+      if (offsetResult.length === 0 &&
+        max !== undefined &&
+        offsetNum >= max &&
+        totalCount > 0
+      ) {
+        const totalPages = Math.ceil(totalCount/max);
+        const newOffset = totalPages*max - max;
+        result = result.slice(newOffset)
+      } else {
+        result = offsetResult
+      }
     }
 
     if (Number(max) === parseInt(max, 10)) {

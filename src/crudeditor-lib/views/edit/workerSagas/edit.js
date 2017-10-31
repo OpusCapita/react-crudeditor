@@ -46,9 +46,13 @@ export default function*({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
       instance: persistentInstance,
-      ...Object.assign({}, searchParams ? {
-        nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1
-      } : {})
+      ...Object.assign({}, searchParams ?
+        {
+          nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1,
+          error: searchParams.error
+        } :
+        {}
+      )
     },
     meta
   });

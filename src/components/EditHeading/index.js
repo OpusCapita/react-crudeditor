@@ -1,6 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Nav, NavItem } from 'react-bootstrap';
+import {
+  Nav,
+  NavItem,
+  Col,
+  Row,
+  ButtonGroup,
+  Button,
+  Glyphicon
+} from 'react-bootstrap';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
@@ -16,7 +24,8 @@ class EditHeading extends PureComponent {
           viewName
         },
         actions: {
-          selectTab
+          selectTab,
+          exitView
         }
       }
     } = this.props;
@@ -29,11 +38,29 @@ class EditHeading extends PureComponent {
     )
 
     return (<div style={{ marginBottom: '15px' }}>
+
       <h1>
-        { title }
-        &nbsp;
-        { instanceLabel && <small>{instanceLabel}</small> }
+        <Row>
+          <Col xs={8}>
+            {title}
+            &nbsp;
+            {instanceLabel && <small>{instanceLabel}</small>}
+          </Col>
+          <Col xs={4}>
+            <div style={{ float: "right" }}>
+              <ButtonGroup>
+                <Button bsStyle='link' onClick={exitView}>
+                  {i18n.getMessage('crudEditor.search.result.label')}
+                </Button>
+                <Button><Glyphicon glyph="arrow-left" /></Button>
+                <Button><Glyphicon glyph="arrow-right" /></Button>
+              </ButtonGroup>
+            </div>
+          </Col>
+        </Row>
       </h1>
+
+
       <br />
       {
         tabs.length !== 0 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
@@ -53,7 +80,10 @@ class EditHeading extends PureComponent {
 }
 
 EditHeading.propTypes = {
-  model: PropTypes.object.isRequired
+  model: PropTypes.shape({
+    data: PropTypes.object,
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
 }
 
 EditHeading.contextTypes = {

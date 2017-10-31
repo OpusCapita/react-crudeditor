@@ -2,9 +2,8 @@ import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
 import searchNext from './searchNext';
-import exitSaga from './exit';
 
-import { VIEW_CREATE } from '../../../common/constants';
+import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 
 import {
   AFTER_ACTION_NEXT,
@@ -179,31 +178,17 @@ export default function*({
         searchParams
       })
 
-      if (instances.length === 0) {
-        // empty search results -> exit view (redirect to 'search' view)
-        try {
-          yield call(exitSaga, {
-            modelDefinition,
-            softRedirectSaga,
-            action: { meta }
-          })
-        } catch (err) {
-          throw err;
-        }
-      }
-
-      const nextInstance = instances[0];
-
       try {
         yield call(editSaga, {
           modelDefinition,
           action: {
             payload: {
-              instance: nextInstance,
+              instance: instances.length === 0 ? instance : instances[0],
               searchParams: {
                 ...searchParams,
                 navOffset,
-                totalCount
+                totalCount,
+                ...Object.assign({}, instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
               }
             },
             meta

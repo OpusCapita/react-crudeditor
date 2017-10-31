@@ -11,11 +11,13 @@ import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
 
-  INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE
+  INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
+  INSTANCE_EDIT_SUCCESS
 } from './views/edit/constants';
 import {
   INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_SUCCESS
+  INSTANCES_DELETE_SUCCESS,
+  ERROR_NOT_FOUND
 } from './common/constants';
 
 export const
@@ -75,6 +77,16 @@ const eventsMiddleware = context => store => next => action => {
             count: action.payload.instances.length
           })
       });
+      break;
+    case INSTANCE_EDIT_SUCCESS:
+      if (action.payload.error === ERROR_NOT_FOUND) {
+        NotificationManager.create({
+          id: NOTIFICATION_ERROR,
+          type: 'error',
+          timeOut: 3000,
+          message: context.i18n.getMessage('crudEditor.found.items.message', { count: 0 })
+        });
+      }
       break;
     default:
   }

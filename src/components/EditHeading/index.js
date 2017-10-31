@@ -15,12 +15,12 @@ import ConfirmDialog from '../ConfirmDialog';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
-
   makeRegularButton = ({ glyph, handleFunc }) => (
     <Button
       onClick={handleFunc}
       disabled={!handleFunc}
-      key={glyph}>
+      key={glyph}
+    >
       <Glyphicon glyph={glyph}/>
     </Button>
   );
@@ -32,7 +32,8 @@ class EditHeading extends PureComponent {
       title="You have unsaved changes"
       message={this.context.i18n.getMessage('crudEditor.unsaved.confirmation')}
       buttonTextConfirm={this.context.i18n.getMessage('crudEditor.confirm.action')}
-      key={glyph}>
+      key={glyph}
+    >
       <Button disabled={!handleFunc}><Glyphicon glyph={glyph}/></Button>
     </ConfirmDialog>
   )
@@ -73,8 +74,8 @@ class EditHeading extends PureComponent {
       this.makeButtonWithConfirm :
       this.makeRegularButton;
 
-    const arrowLeft = arrowMakerFunc({glyph: 'arrow-left', handleFunc: editPrevInstance });
-    const arrowRight = arrowMakerFunc({glyph: 'arrow-right', handleFunc: editNextInstance });
+    const arrowLeft = arrowMakerFunc({ glyph: 'arrow-left', handleFunc: editPrevInstance });
+    const arrowRight = arrowMakerFunc({ glyph: 'arrow-right', handleFunc: editNextInstance });
 
     return (<div style={{ marginBottom: '15px' }}>
       <h1>

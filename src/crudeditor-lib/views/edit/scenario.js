@@ -29,10 +29,14 @@ import {
 // increment: iterator.next(1)
 // decrement: iterator.next(-1)
 function* plusMinus() {
-  let i = 1;
+  let i = 0, init = true;
+
   while (true) {
-    const a = yield i
-    i += a
+    const next = yield { i, init };
+    if (init) {
+      init = false
+    }
+    i += next.i
   }
 }
 

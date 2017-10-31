@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
+import isEqual from 'lodash/isEqual';
 
 import ConfirmDialog from '../ConfirmDialog';
 
@@ -30,15 +31,20 @@ class EditTab extends React.PureComponent {
       children: sectionsAndFields,
       model: {
         actions: {
-          exitView
+          exitView,
+          saveAndNextInstance
         },
         data: {
-          viewName
+          viewName,
+          persistentInstance,
+          formInstance
         }
       }
     } = this.props;
 
     const { i18n } = this.context;
+
+    const disableSave = isEqual(persistentInstance, formInstance);
 
     const buttons = [
       <Button bsStyle='link' onClick={exitView} key="Cancel">
@@ -70,21 +76,34 @@ class EditTab extends React.PureComponent {
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
-        <Button onClick={this.handleSaveAndNew} key="Save and New">
+        <Button
+          onClick={this.handleSaveAndNew}
+          disabled={disableSave}
+          key="Save and New"
+        >
           {i18n.getMessage('crudEditor.saveAndNew.button')}
         </Button>)
     }
 
-    if (viewName === VIEW_EDIT && this.props.model.actions.saveAndNextInstance !== undefined) {
+    if (viewName === VIEW_EDIT && saveAndNextInstance) {
       buttons.push(
-        <Button onClick={this.handleSaveAndNext} key="Save and Next">
+        <Button
+          onClick={this.handleSaveAndNext}
+          disabled={disableSave}
+          key="Save and Next"
+        >
           {i18n.getMessage('crudEditor.saveAndNext.button')}
         </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
-        <Button bsStyle='primary' type='submit' key="Save">
+        <Button
+          disabled={disableSave}
+          bsStyle='primary'
+          type='submit'
+          key="Save"
+        >
           {i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }

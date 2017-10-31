@@ -26,7 +26,6 @@ export default function*({
   }
 
   const instance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
-  // TODO check for divergence and show popup if something was edited
 
   try {
     const { instances, totalCount, navOffset } = yield call(searchWithOffset(incNum), {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, HelpBlock } from 'react-bootstrap';
+import isEqual from 'lodash/isEqual';
 import { getFieldText } from '../lib';
 import './SearchForm.less';
 
@@ -28,7 +29,9 @@ class SearchForm extends React.PureComponent {
       data: {
         fieldErrors: errors,
         formatedFilter,
-        searchableFields
+        searchableFields,
+        resultFilter,
+        formFilter
       },
       actions: {
         resetFormFilter
@@ -111,6 +114,7 @@ class SearchForm extends React.PureComponent {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
+            disabled={isEqual(resultFilter, formFilter)}
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

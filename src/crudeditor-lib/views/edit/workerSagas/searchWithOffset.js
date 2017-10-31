@@ -19,7 +19,18 @@ export default function(incNum) {
     // it resets when 'edit' view (namely edit/scenario.js) is loaded
     // it increments on nextInc.next(1) call
     // or decrements on nextInc.next(-1) call
-    const offset = navOffset + nextInc.next(incNum).value;
+
+    let { i, init } = nextInc.next({ i: incNum }).value
+
+    // the first iteration initializes iterator
+    // if this is the first one, we need to re-iterate in order to
+    // receive a proper value
+    // 'init' === false for any iteration after the first one
+    if (init) {
+      i = nextInc.next({ i: incNum }).value.i
+    }
+
+    const offset = navOffset + i;
 
     try {
       const { instances, totalCount } = yield call(searchSaga, {

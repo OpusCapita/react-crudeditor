@@ -1,7 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
-import searchWithOffset from './searchWithOffset';
+import searchWithOffset from '../../search/workerSagas/searchWithOffset';
 
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 

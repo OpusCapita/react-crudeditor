@@ -4,9 +4,10 @@ import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
-import editAdjacent from './workerSagas/editAdjacent';
+import editAdjacentSaga from './workerSagas/editAdjacent';
 
 import { INSTANCES_DELETE } from '../../common/constants';
+import { plusMinus } from '../lib';
 
 import {
   INSTANCE_SAVE,
@@ -22,32 +23,12 @@ import {
   INSTANCE_EDIT_ADJACENT
 } from './constants';
 
-// 'plusMinus' is a generator used to increment/decrement 'navigation offset' value
-// to handle 'Save and Next' and next/previous navigation functionality
-// usage:
-// iterator = plusMinus()
-// increment: iterator.next({i: 1})
-// decrement: iterator.next({i: -1})
-// on the first iteration iterator returns 'init' === true, you may check it
-// if you need to run custom init logic
-function* plusMinus() {
-  let i = 0, init = true;
-
-  while (true) {
-    const next = yield { i, init };
-    if (init) {
-      init = false
-    }
-    i += next.i
-  }
-}
-
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
   const choices = {
     blocking: {
       [INSTANCES_DELETE]: deleteSaga,
-      [INSTANCE_EDIT_ADJACENT]: editAdjacent
+      [INSTANCE_EDIT_ADJACENT]: editAdjacentSaga
     },
     nonBlocking: {
       [INSTANCE_SAVE]: saveSaga,
@@ -55,6 +36,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
     }
   }
 
+  // create an iterator which will remember navigation offset for this scenario
   const nextInc = plusMinus();
 
   let lastTask;

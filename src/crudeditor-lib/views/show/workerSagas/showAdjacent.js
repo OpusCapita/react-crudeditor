@@ -1,6 +1,6 @@
 import { call, select } from 'redux-saga/effects';
 
-import editSaga from './edit';
+import showSaga from './show';
 import searchWithOffset from '../../search/workerSagas/searchWithOffset';
 
 import { VIEW_NAME } from '../constants';
@@ -36,7 +36,7 @@ export default function*({
     })
 
     try {
-      yield call(editSaga, {
+      yield call(showSaga, {
         modelDefinition,
         action: {
           payload: {

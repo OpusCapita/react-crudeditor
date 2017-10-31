@@ -16,7 +16,7 @@ export default function(incNum) {
     const { navOffset, nextInc } = searchParams;
 
     // nextInc is a scenario-scoped iterator
-    // it resets when 'edit' view (namely edit/scenario.js) is loaded
+    // it resets when 'edit'/'show' view (namely edit/scenario.js or show/scenario.js) is loaded
     // it increments on nextInc.next(1) call
     // or decrements on nextInc.next(-1) call
 

@@ -19,12 +19,17 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
-// 'inc' is a generator used to increment 'navigation offset' value
-// to handle 'Save and Next' functionality
-function* inc() {
+// 'plusMinus' is a generator used to increment/decrement 'navigation offset' value
+// to handle 'Save and Next' and next/previous navigation functionality
+// usage:
+// iterator = plusMinus()
+// increment: iterator.next(1)
+// decrement: iterator.next(-1)
+function* plusMinus() {
   let i = 1;
   while (true) {
-    yield i++
+    const a = yield i
+    i += a
   }
 }
 
@@ -40,7 +45,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
     }
   }
 
-  const nextInc = inc();
+  const nextInc = plusMinus();
 
   let lastTask;
 

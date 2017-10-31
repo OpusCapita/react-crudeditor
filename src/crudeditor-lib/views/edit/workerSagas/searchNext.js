@@ -15,8 +15,8 @@ export default function* ({
   const { navOffset, nextInc } = searchParams;
   // nextInc is a scenario-scoped iterator
   // it resets when 'edit' view (namely edit/scenario.js) is loaded
-  // it increments on each next() call
-  const offset = navOffset + nextInc.next().value;
+  // it increments on nextInc.next(1) call
+  const offset = navOffset + nextInc.next(1).value;
 
   try {
     const { instances, totalCount } = yield call(searchSaga, {

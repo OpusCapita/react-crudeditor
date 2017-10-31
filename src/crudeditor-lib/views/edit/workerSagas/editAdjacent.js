@@ -4,6 +4,7 @@ import editSaga from './edit';
 import searchWithOffset from './searchWithOffset';
 
 import { VIEW_NAME } from '../constants';
+import { ERROR_NOT_FOUND } from '../../../common/constants';
 
 export default function*({
   modelDefinition,
@@ -15,9 +16,9 @@ export default function*({
   },
   searchParams
 }) {
-  const incNum = side === 'next' ? 1
-    : side === 'prev' ? -1
-    : 0; // should never happen
+  const incNum = side === 'next' ? 1 :
+    side === 'prev' ? -1 :
+      0; // should never happen
 
   if (incNum === 0) { // TODO delete this 'if' after testing
     console.error('Unexpected side: ' + side);

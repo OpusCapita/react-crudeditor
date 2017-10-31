@@ -26,8 +26,10 @@ import {
 // to handle 'Save and Next' and next/previous navigation functionality
 // usage:
 // iterator = plusMinus()
-// increment: iterator.next(1)
-// decrement: iterator.next(-1)
+// increment: iterator.next({i: 1})
+// decrement: iterator.next({i: -1})
+// on the first iteration iterator returns 'init' === true, you may check it
+// if you need to run custom init logic
 function* plusMinus() {
   let i = 0, init = true;
 

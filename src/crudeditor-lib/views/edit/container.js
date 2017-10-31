@@ -37,14 +37,14 @@ const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
           result = {
             ...result,
             saveAndNextInstance,
-            editNextInstance: editAdjacentInstance.bind(null, 'next')
+            gotoNextInstance: editAdjacentInstance.bind(null, 'next')
           }
         }
 
         if (prevInstanceExists) {
           result = {
             ...result,
-            editPrevInstance: editAdjacentInstance.bind(null, 'prev')
+            gotoPrevInstance: editAdjacentInstance.bind(null, 'prev')
           }
         }
 

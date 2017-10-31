@@ -54,8 +54,8 @@ class EditHeading extends PureComponent {
         actions: {
           selectTab,
           exitView,
-          editNextInstance,
-          editPrevInstance
+          gotoNextInstance,
+          gotoPrevInstance
         }
       }
     } = this.props;
@@ -68,14 +68,14 @@ class EditHeading extends PureComponent {
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
-    const hasUnsavedChanges = !isEqual(formInstance, persistentInstance);
+    const hasUnsavedChanges = formInstance && persistentInstance && !isEqual(formInstance, persistentInstance);
 
     const arrowMakerFunc = hasUnsavedChanges ?
       this.makeButtonWithConfirm :
       this.makeRegularButton;
 
-    const arrowLeft = arrowMakerFunc({ glyph: 'arrow-left', handleFunc: editPrevInstance });
-    const arrowRight = arrowMakerFunc({ glyph: 'arrow-right', handleFunc: editNextInstance });
+    const arrowLeft = arrowMakerFunc({ glyph: 'arrow-left', handleFunc: gotoPrevInstance });
+    const arrowRight = arrowMakerFunc({ glyph: 'arrow-right', handleFunc: gotoNextInstance });
 
     return (<div style={{ marginBottom: '15px' }}>
       <h1>

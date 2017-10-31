@@ -24,7 +24,7 @@ import {
 
 const mergeProps = (
   { defaultNewInstance, viewModelData },
-  { createInstance, editInstance, ...dispatchProps },
+  { createInstance, editInstance, showInstance, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
@@ -34,6 +34,10 @@ const mergeProps = (
       ...dispatchProps,
       createInstance: createInstance.bind(null, { predefinedFields: defaultNewInstance }),
       editInstance: editInstance({ searchParams: {
+        navOffset: viewModelData.pageParams.offset,
+        totalCount: viewModelData.totalCount
+      } }),
+      showInstance: showInstance({ searchParams: {
         navOffset: viewModelData.pageParams.offset,
         totalCount: viewModelData.totalCount
       } })
@@ -55,6 +59,15 @@ export default connect(
         ...Object.assign({}, searchParams ? { navOffset: searchParams.navOffset + index } : {})
       }
     })),
+    showInstance: ({ searchParams }) => ({ instance, tab, index }) => dispatch(showInstance({
+      instance,
+      tab,
+      searchParams: {
+        ...searchParams,
+        // 'index' is an index of instance in the array of search results
+        ...Object.assign({}, searchParams ? { navOffset: searchParams.navOffset + index } : {})
+      }
+    })),
     ...bindActionCreators({
       createInstance,
       deleteInstances,
@@ -63,8 +76,7 @@ export default connect(
       searchInstances,
       toggleSelected,
       toggleSelectedAll,
-      updateFormFilter,
-      showInstance
+      updateFormFilter
     }, dispatch)
   }),
   mergeProps

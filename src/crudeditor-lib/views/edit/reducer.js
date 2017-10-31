@@ -103,8 +103,6 @@ const defaultStoreStateTemplate = {
     nextInstanceExists: false,
     prevInstanceExists: false
   }
-
-
 };
 
 /*

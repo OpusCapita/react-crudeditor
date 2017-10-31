@@ -45,7 +45,7 @@ class SearchResultListing extends React.PureComponent {
       }
     }) => this.props.model.actions.toggleSelected({ selected, instance });
 
-    this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
+    this.handleShow = (instance, index) => () => this.props.model.actions.showInstance({ instance, index });
     this.handleEdit = (instance, index) => () => this.props.model.actions.editInstance({ instance, index });
     this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
@@ -141,7 +141,7 @@ class SearchResultListing extends React.PureComponent {
 
                   <td className="text-right">
                     <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-                      <Button onClick={this.handleShow(instance)}>
+                      <Button onClick={this.handleShow(instance, index)}>
                         <Glyphicon glyph='glyphicon-eye-open' />
                         {' '}
                         {this.context.i18n.getMessage('crudEditor.show.button')}

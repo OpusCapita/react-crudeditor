@@ -72,7 +72,8 @@ export default function*({
   softRedirectSaga,
   viewState: {
     instance,
-    tab: tabName
+    tab: tabName,
+    searchParams
   },
   source
 }) {
@@ -85,7 +86,10 @@ export default function*({
     yield call(showSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
+        payload: {
+          instance,
+          searchParams
+        },
         meta: { source }
       }
     });

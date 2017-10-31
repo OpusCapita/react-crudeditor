@@ -63,7 +63,12 @@ const defaultStoreStateTemplate = {
     general: []
   },
 
-  status: STATUS_UNINITIALIZED
+  status: STATUS_UNINITIALIZED,
+
+  flags: {
+    nextInstanceExists: false,
+    prevInstanceExists: false
+  }
 };
 
 /*
@@ -110,6 +115,12 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SHOW_SUCCESS) {
     const { instance } = payload;
+
+    const { nextInstanceExists = false, prevInstanceExists = false } = payload;
+    newStoreStateSlice.flags = {
+      nextInstanceExists,
+      prevInstanceExists
+    }
 
     const formLayout = modelDefinition.ui.show.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.

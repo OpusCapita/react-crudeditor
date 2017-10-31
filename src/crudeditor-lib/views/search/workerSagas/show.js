@@ -14,7 +14,10 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   action: {
-    payload: { instance },
+    payload: {
+      instance,
+      searchParams
+    },
     meta
   }
 }) {
@@ -26,7 +29,10 @@ export default function*({
   try {
     yield call(softRedirectSaga, {
       viewName: VIEW_SHOW,
-      viewState: { instance }
+      viewState: {
+        instance,
+        searchParams
+      }
     });
   } catch (err) {
     yield put({

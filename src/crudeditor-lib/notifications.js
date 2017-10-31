@@ -102,7 +102,7 @@ const eventsMiddleware = context => store => next => action => {
           id: NOTIFICATION_VALIDATION_WARNING,
           type: 'error',
           timeOut: 3000,
-          message: context.i18n.getMessage('Dummy field validation warning')
+          message: context.i18n.getMessage('Dummy field validation warning') //
         });
       } else {
         NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })

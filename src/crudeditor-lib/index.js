@@ -7,7 +7,7 @@ import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { I18nManager } from '@opuscapita/i18n';
 import crudTranslations from './i18n';
-import eventsMiddleware from './events';
+import notificationsMiddleware from './notifications';
 
 import Main from './components/Main';
 import getReducer from './rootReducer';
@@ -142,7 +142,7 @@ export default baseModelDefinition => {
       // XXX: ensure each middleware calls "next(action)" synchronously,
       // or else ensure that "redux-saga" is the last middleware in the call chain.
       appStateChangeDetect,
-      eventsMiddleware(context),
+      notificationsMiddleware(context),
       sagaMiddleware
     ))
   );

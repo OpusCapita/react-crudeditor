@@ -57,7 +57,11 @@ const eventsMiddleware = context => store => next => action => {
         id: NOTIFICATION_ERROR,
         type: 'error',
         timeOut: 3000,
-        message: context.i18n.getMessage('crudEditor.objectDeleteFailed.message')
+        message: action.payload === 1 ?
+          context.i18n.getMessage('crudEditor.objectDeleteFailed.message') :
+          context.i18n.getMessage('crudEditor.objectsDeleteFailed.message', {
+            count: action.payload
+          })
       });
       break;
     case INSTANCES_DELETE_SUCCESS:
@@ -65,9 +69,11 @@ const eventsMiddleware = context => store => next => action => {
         id: NOTIFICATION_SUCCESS,
         type: 'success',
         timeOut: 3000,
-        message: context.i18n.getMessage('crudEditor.objectsDeleted.message', {
-          count: action.payload.instances.length
-        })
+        message: action.payload.instances.length === 1 ?
+          context.i18n.getMessage('crudEditor.objectDeleted.message') :
+          context.i18n.getMessage('crudEditor.objectsDeleted.message', {
+            count: action.payload.instances.length
+          })
       });
       break;
     default:

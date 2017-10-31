@@ -40,7 +40,7 @@ export const
     fieldsMeta: modelMeta.fields,
     generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
-    nextInstanceExists: storeState.nextInstanceExists,
+    flags: storeState.flags,
     isLoading: !!~[
       STATUS_EXTRACTING,
       STATUS_DELETING,

@@ -25,7 +25,9 @@ class EditHeading extends PureComponent {
         },
         actions: {
           selectTab,
-          exitView
+          exitView,
+          editNextInstance,
+          editPrevInstance
         }
       }
     } = this.props;
@@ -52,8 +54,18 @@ class EditHeading extends PureComponent {
                 <Button bsStyle='link' onClick={exitView}>
                   {i18n.getMessage('crudEditor.search.result.label')}
                 </Button>
-                <Button><Glyphicon glyph="arrow-left" /></Button>
-                <Button><Glyphicon glyph="arrow-right" /></Button>
+                <Button
+                  onClick={editPrevInstance}
+                  disabled={editPrevInstance === undefined}
+                >
+                  <Glyphicon glyph="arrow-left" />
+                </Button>
+                <Button
+                  onClick={editNextInstance}
+                  disabled={editNextInstance === undefined}
+                >
+                  <Glyphicon glyph="arrow-right" />
+                </Button>
               </ButtonGroup>
             </div>
           </Col>

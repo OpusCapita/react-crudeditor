@@ -99,7 +99,12 @@ const defaultStoreStateTemplate = {
 
   status: STATUS_UNINITIALIZED,
 
-  nextInstanceExists: false
+  flags: {
+    nextInstanceExists: false,
+    prevInstanceExists: false
+  }
+
+
 };
 
 /*
@@ -168,7 +173,11 @@ export default modelDefinition => (
     const { instance } = payload;
 
     if (type === INSTANCE_EDIT_SUCCESS) {
-      newStoreStateSlice.nextInstanceExists = payload.nextInstanceExists
+      const { nextInstanceExists = false, prevInstanceExists = false } = payload;
+      newStoreStateSlice.flags = {
+        nextInstanceExists,
+        prevInstanceExists
+      }
     }
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).

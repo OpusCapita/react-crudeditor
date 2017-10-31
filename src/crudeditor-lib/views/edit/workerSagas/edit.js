@@ -49,6 +49,7 @@ export default function*({
       ...Object.assign({}, searchParams ?
         {
           nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1,
+          prevInstanceExists: searchParams.navOffset > 0 && searchParams.totalCount > 0,
           error: searchParams.error
         } :
         {}

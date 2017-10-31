@@ -13,19 +13,43 @@ import {
   saveAndNewInstance,
   saveAndNextInstance,
   selectTab,
-  validateInstanceField
+  validateInstanceField,
+  editAdjacentInstance
 } from './actions';
 
 const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
+    // here we adjust action creators to reflect viewModelData.flags values
     actions: (
-      ({ saveAndNextInstance, ...otherActions }) =>
-        viewModelData.nextInstanceExists ?
-          { saveAndNextInstance, ...otherActions } :
-          { ...otherActions }
-    )(dispatchProps)
+      ({
+        saveAndNextInstance,
+        editAdjacentInstance,
+        ...otherActions
+      }, {
+        nextInstanceExists,
+        prevInstanceExists
+      }) => {
+        let result = { ...otherActions };
+
+        if (nextInstanceExists) {
+          result = {
+            ...result,
+            saveAndNextInstance,
+            editNextInstance: editAdjacentInstance.bind(null, 'next')
+          }
+        }
+
+        if (prevInstanceExists) {
+          result = {
+            ...result,
+            editPrevInstance: editAdjacentInstance.bind(null, 'prev')
+          }
+        }
+
+        return result
+      })(dispatchProps, viewModelData.flags)
   }
 });
 
@@ -40,7 +64,8 @@ export default connect(
     saveAndNewInstance,
     saveAndNextInstance,
     selectTab,
-    validateInstanceField
+    validateInstanceField,
+    editAdjacentInstance
   },
   mergeProps
 )(({

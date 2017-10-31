@@ -4,6 +4,7 @@ import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
+import editAdjacent from './workerSagas/editAdjacent';
 
 import { INSTANCES_DELETE } from '../../common/constants';
 
@@ -16,7 +17,9 @@ import {
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
 
-  VIEW_REDIRECT_SUCCESS
+  VIEW_REDIRECT_SUCCESS,
+
+  INSTANCE_EDIT_ADJACENT
 } from './constants';
 
 // 'plusMinus' is a generator used to increment/decrement 'navigation offset' value
@@ -38,6 +41,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
   const choices = {
     blocking: {
       [INSTANCES_DELETE]: deleteSaga,
+      [INSTANCE_EDIT_ADJACENT]: editAdjacent
     },
     nonBlocking: {
       [INSTANCE_SAVE]: saveSaga,
@@ -65,7 +69,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action,
+          searchParams: {
+            ...searchParams,
+            nextInc
+          }
         });
       } catch (err) {
         // Swallow custom errors.

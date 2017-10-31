@@ -6,7 +6,8 @@ import {
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE,
   INSTANCE_SAVE,
-  TAB_SELECT
+  TAB_SELECT,
+  INSTANCE_EDIT_ADJACENT
 } from './constants';
 
 export const
@@ -82,4 +83,9 @@ export const
   selectTab = tabName => ({
     type: TAB_SELECT,
     payload: { tabName }
+  }),
+
+  editAdjacentInstance = side => ({
+    type: INSTANCE_EDIT_ADJACENT,
+    payload: { side }
   });

@@ -43,6 +43,7 @@ export default {
   "crudEditor.search.all": "Alles",
   "crudEditor.found.items.message": "{count} Datens\u00E4tze gefunden",
   "crudEditor.dateRange.from": "von",
-  "crudEditor.dateRange.to": "bis"
+  "crudEditor.dateRange.to": "bis",
+  "crudEditor.confirm.action": "Bestätigen"
 }
 /* eslint-enable max-len */

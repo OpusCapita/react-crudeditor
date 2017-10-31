@@ -38,6 +38,8 @@ class EditTab extends React.PureComponent {
       }
     } = this.props;
 
+    const { i18n } = this.context;
+
     const buttons = [
       <Button bsStyle='link' onClick={exitView} key="Cancel">
         {this.context.i18n.getMessage('crudEditor.cancel.button')}
@@ -50,10 +52,11 @@ class EditTab extends React.PureComponent {
           trigger='click'
           onConfirm={this.handleDelete}
           title='Delete confirmation'
-          message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
+          message={i18n.getMessage('crudEditor.delete.confirmation')}
+          buttonTextConfirm={i18n.getMessage('crudEditor.delete.button')}
           key="Delete"
         >
-          <Button>{this.context.i18n.getMessage('crudEditor.delete.button')}</Button>
+          <Button>{i18n.getMessage('crudEditor.delete.button')}</Button>
         </ConfirmDialog>
       )
     }
@@ -61,28 +64,28 @@ class EditTab extends React.PureComponent {
     if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
       buttons.push(
         <Button disabled={true} key="Revisions">
-          {this.context.i18n.getMessage('crudEditor.revisions.button')}
+          {i18n.getMessage('crudEditor.revisions.button')}
         </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
         <Button onClick={this.handleSaveAndNew} key="Save and New">
-          {this.context.i18n.getMessage('crudEditor.saveAndNew.button')}
+          {i18n.getMessage('crudEditor.saveAndNew.button')}
         </Button>)
     }
 
     if (viewName === VIEW_EDIT && this.props.model.actions.saveAndNextInstance !== undefined) {
       buttons.push(
         <Button onClick={this.handleSaveAndNext} key="Save and Next">
-          {this.context.i18n.getMessage('crudEditor.saveAndNext.button')}
+          {i18n.getMessage('crudEditor.saveAndNext.button')}
         </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
         <Button bsStyle='primary' type='submit' key="Save">
-          {this.context.i18n.getMessage('crudEditor.save.button')}
+          {i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }
 

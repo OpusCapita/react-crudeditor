@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
+
 import {
   Nav,
   NavItem,
@@ -9,9 +11,32 @@ import {
   Button,
   Glyphicon
 } from 'react-bootstrap';
+import ConfirmDialog from '../ConfirmDialog';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
+
+  makeRegularButton = ({ glyph, handleFunc }) => (
+    <Button
+      onClick={handleFunc}
+      disabled={!handleFunc}
+      key={glyph}>
+      <Glyphicon glyph={glyph}/>
+    </Button>
+  );
+
+  makeButtonWithConfirm = ({ glyph, handleFunc }) => (
+    <ConfirmDialog
+      trigger='click'
+      onConfirm={handleFunc}
+      title="You have unsaved changes"
+      message={this.context.i18n.getMessage('crudEditor.unsaved.confirmation')}
+      buttonTextConfirm={this.context.i18n.getMessage('crudEditor.confirm.action')}
+      key={glyph}>
+      <Button disabled={!handleFunc}><Glyphicon glyph={glyph}/></Button>
+    </ConfirmDialog>
+  )
+
   render() {
     const {
       model: {
@@ -21,7 +46,9 @@ class EditHeading extends PureComponent {
           } = {},
           instanceLabel,
           tabs,
-          viewName
+          viewName,
+          persistentInstance,
+          formInstance
         },
         actions: {
           selectTab,
@@ -39,8 +66,17 @@ class EditHeading extends PureComponent {
       { modelName: i18n.getMessage('model.name') }
     )
 
-    return (<div style={{ marginBottom: '15px' }}>
+    // compare persistent and form instances to decide weither to show confirm box or not
+    const hasUnsavedChanges = !isEqual(formInstance, persistentInstance);
 
+    const arrowMakerFunc = hasUnsavedChanges ?
+      this.makeButtonWithConfirm :
+      this.makeRegularButton;
+
+    const arrowLeft = arrowMakerFunc({glyph: 'arrow-left', handleFunc: editPrevInstance });
+    const arrowRight = arrowMakerFunc({glyph: 'arrow-right', handleFunc: editNextInstance });
+
+    return (<div style={{ marginBottom: '15px' }}>
       <h1>
         <Row>
           <Col xs={8}>
@@ -54,18 +90,8 @@ class EditHeading extends PureComponent {
                 <Button bsStyle='link' onClick={exitView}>
                   {i18n.getMessage('crudEditor.search.result.label')}
                 </Button>
-                <Button
-                  onClick={editPrevInstance}
-                  disabled={editPrevInstance === undefined}
-                >
-                  <Glyphicon glyph="arrow-left" />
-                </Button>
-                <Button
-                  onClick={editNextInstance}
-                  disabled={editNextInstance === undefined}
-                >
-                  <Glyphicon glyph="arrow-right" />
-                </Button>
+                {arrowLeft}
+                {arrowRight}
               </ButtonGroup>
             </div>
           </Col>

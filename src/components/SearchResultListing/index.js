@@ -158,6 +158,7 @@ class SearchResultListing extends React.PureComponent {
                         onConfirm={this.handleDelete(instance)}
                         title='Delete confirmation'
                         message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
+                        buttonTextConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
                       >
                         <Button>
                           <Glyphicon glyph='trash' />

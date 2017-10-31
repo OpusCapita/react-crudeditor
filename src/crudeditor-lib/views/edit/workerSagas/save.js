@@ -1,7 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
-import searchNext from './searchNext';
+import searchWithOffset from './searchWithOffset';
 
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 
@@ -171,7 +171,7 @@ export default function*({
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
     try {
-      const { instances, totalCount, navOffset } = yield call(searchNext, {
+      const { instances, totalCount, navOffset } = yield call(searchWithOffset(1), {
         modelDefinition,
         meta,
         instance,

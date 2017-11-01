@@ -15,6 +15,9 @@ import {
   INSTANCE_EDIT_SUCCESS
 } from '../views/edit/constants';
 import {
+  FORM_FILTER_PARSE
+} from '../views/search/constants';
+import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_SUCCESS,
   ERROR_NOT_FOUND
@@ -94,7 +97,8 @@ const eventsMiddleware = context => store => next => action => {
   if (~[
     CREATE_INSTANCE_FIELD_VALIDATE,
     EDIT_INSTANCE_FIELD_VALIDATE,
-    ALL_INSTANCE_FIELDS_VALIDATE
+    ALL_INSTANCE_FIELDS_VALIDATE,
+    FORM_FILTER_PARSE
   ].indexOf(action.type)) {
     const before = store.getState().views[store.getState().common.activeViewName].errors.fields;
 
@@ -107,7 +111,11 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })
     } else {
       // are there any errors?
-      const errs = Object.keys(after).reduce((arr, errKey) => arr.concat(after[errKey]), [])
+      const errs = Object.keys(after).reduce((arr, errKey) => arr.concat(
+        Array.isArray(after[errKey]) ?
+          after[errKey] :
+          Object.keys(after[errKey]).map(key => after[errKey][key]).filter(v => !!v)
+      ), [])
 
       if (errs.length) {
         NotificationManager.create({

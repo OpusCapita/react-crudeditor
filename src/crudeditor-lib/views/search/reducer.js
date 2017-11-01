@@ -413,8 +413,6 @@ export default modelDefinition => {
     } else if (type === FORM_FILTER_PARSE && storeState.divergedField) {
       // if storeState.divergedField is null, no data has changed.
       const { path } = payload;
-      console.log("FORM_FILTER_PARSE reducer: path")
-      console.log(path)
 
       const fieldName = Array.isArray(path) ? path[0] : path;
       const fieldType = modelDefinition.model.fields[fieldName].type;
@@ -505,10 +503,7 @@ export default modelDefinition => {
             value: u.constant(newFormatedValue)
           });
         }
-        console.log("old errors")
-        console.log(oldErrorValue)
-        console.log("new errors")
-        console.log(newStoreStateSlice.errors)
+
         if (oldErrorValue) {
           newStoreStateSlice.errors = setFieldValue({
             isRange,

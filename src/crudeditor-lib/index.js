@@ -23,7 +23,6 @@ import { getViewState as getErrorViewState } from './views/error';
 import {
   DEFAULT_VIEW,
   DEFAULT_FIELD_TYPE,
-  STATUS_READY,
 
   VIEW_SEARCH,
   VIEW_CREATE,
@@ -124,18 +123,18 @@ export default baseModelDefinition => {
       onTransition: PropTypes.func
     }
 
+    static propTypes = {
+      locale: PropTypes.string,
+      fallbackLocale: PropTypes.string,
+      localeFormattingInfo: PropTypes.object
+    };
+
     static contextTypes = {
       i18n: PropTypes.object
     };
 
     static childContextTypes = {
       i18n: PropTypes.object
-    };
-
-    static propTypes = {
-      locale: PropTypes.string,
-      fallbackLocale: PropTypes.string,
-      localeFormattingInfo: PropTypes.object
     };
 
     static defaultProps = {

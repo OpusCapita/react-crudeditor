@@ -17,6 +17,7 @@ export default class ConfirmDialog extends React.Component {
     // showDialog should return a boolean
     // if true -> dialog is displayed
     // else immediately invoke onConfirm
+    // by default showDialog returns true
     showDialog: PropTypes.func
   };
 

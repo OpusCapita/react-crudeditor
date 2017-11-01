@@ -64,6 +64,8 @@ class SearchResultListing extends React.PureComponent {
       isLoading
     } = this.props.model.data;
 
+    const { i18n } = this.context;
+
     const spinnerElement = isLoading ? (<SpinnerOverlay />) : null;
 
     return (
@@ -157,13 +159,14 @@ class SearchResultListing extends React.PureComponent {
                         trigger='click'
                         onConfirm={this.handleDelete(instance)}
                         title='Delete confirmation'
-                        message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
-                        buttonTextConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
+                        message={i18n.getMessage('crudEditor.delete.confirmation')}
+                        textConfirm={i18n.getMessage('crudEditor.delete.button')}
+                        textCancel={i18n.getMessage('crudEditor.cancel.button')}
                       >
                         <Button>
                           <Glyphicon glyph='trash' />
                           {' '}
-                          {this.context.i18n.getMessage('crudEditor.delete.button')}
+                          {i18n.getMessage('crudEditor.delete.button')}
                         </Button>
                       </ConfirmDialog>
                     </ButtonGroup>

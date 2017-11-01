@@ -16,7 +16,8 @@ class SearchBulkOperationsPanel extends React.PureComponent {
           title='Delete confirmation'
           onConfirm={this.handleDelete}
           message={this.context.i18n.getMessage('crudEditor.deleteSelected.confirmation')}
-          buttonTextConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
+          textConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
+          textCancel={this.context.i18n.getMessage('crudEditor.cancel.button')}
         >
           <Button bsSize='sm' disabled={this.props.model.data.selectedInstances.length === 0}>
             {this.context.i18n.getMessage('crudEditor.deleteSelected.button')}

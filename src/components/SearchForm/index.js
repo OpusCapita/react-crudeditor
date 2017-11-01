@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, FormGroup, HelpBlock } from 'react-bootstrap';
+import { Button, Form, FormGroup, Label } from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
 import { getFieldText } from '../lib';
 import './SearchForm.less';
 
-function errMsgs(errs) {
-  return errs.map(({ message }) => message)
-}
+const errMsgs = errs => errs.map(({ message }) => message);
 
 class SearchForm extends React.PureComponent {
   constructor(...args) {
@@ -64,7 +62,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'from'])}
               onBlur={this.handleFormFilterBlur([name, 'from'])}
             />
-            {errors[name] && errors[name].from && <HelpBlock>{errMsgs(errors[name].from)}</HelpBlock>}
+            {errors[name] && errors[name].from && <Label bsStyle="danger">{errMsgs(errors[name].from)}</Label>}
           </div>
         </FormGroup>
         <FormGroup
@@ -80,7 +78,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'to'])}
               onBlur={this.handleFormFilterBlur([name, 'to'])}
             />
-            {errors[name] && errors[name].to && <HelpBlock>{errMsgs(errors[name].to)}</HelpBlock>}
+            {errors[name] && errors[name].to && <Label bsStyle="danger">{errMsgs(errors[name].to)}</Label>}
           </div>
         </FormGroup>
       </div> :
@@ -97,7 +95,7 @@ class SearchForm extends React.PureComponent {
             onChange={this.handleFormFilterUpdate(name)}
             onBlur={this.handleFormFilterBlur(name)}
           />
-          {errors[name] && <HelpBlock>{errors[name].message}</HelpBlock>}
+          {errors[name] && <Label bsStyle="danger">{errors[name].message}</Label>}
         </div>
       </FormGroup>
     );

@@ -15,7 +15,7 @@ export default ({
   }
 
   if (action.meta && action.meta.source === 'owner' || !onTransition) {
-    lastState = {
+    lastState = { // eslint-disable-line no-param-reassign
       store: storeState
     };
 
@@ -28,7 +28,7 @@ export default ({
   }
 
   if (lastState.store && !lastState.app) {
-    lastState.app = storeState2appState(lastState.store);
+    lastState.app = storeState2appState(lastState.store); // eslint-disable-line no-param-reassign
   }
 
   const appState = storeState2appState(storeState);
@@ -37,7 +37,7 @@ export default ({
     onTransition(appState);
   }
 
-  lastState = {
+  lastState = { // eslint-disable-line no-param-reassign
     store: storeState,
     app: appState
   };

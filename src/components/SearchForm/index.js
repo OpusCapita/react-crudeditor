@@ -5,6 +5,10 @@ import isEqual from 'lodash/isEqual';
 import { getFieldText } from '../lib';
 import './SearchForm.less';
 
+function errMsgs(errs) {
+  return errs.map(({ message }) => message)
+}
+
 class SearchForm extends React.PureComponent {
   constructor(...args) {
     super(...args);
@@ -60,7 +64,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'from'])}
               onBlur={this.handleFormFilterBlur([name, 'from'])}
             />
-            {errors[name] && errors[name].from && <HelpBlock>{errors[name].from.message}</HelpBlock>}
+            {errors[name] && errors[name].from && <HelpBlock>{errMsgs(errors[name].from)}</HelpBlock>}
           </div>
         </FormGroup>
         <FormGroup
@@ -76,7 +80,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'to'])}
               onBlur={this.handleFormFilterBlur([name, 'to'])}
             />
-            {errors[name] && errors[name].to && <HelpBlock>{errors[name].to.message}</HelpBlock>}
+            {errors[name] && errors[name].to && <HelpBlock>{errMsgs(errors[name].to)}</HelpBlock>}
           </div>
         </FormGroup>
       </div> :

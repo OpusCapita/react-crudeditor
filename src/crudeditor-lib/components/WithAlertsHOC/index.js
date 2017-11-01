@@ -9,7 +9,7 @@ import {
   NOTIFICATION_SUCCESS,
   NOTIFICATION_ERROR,
   NOTIFICATION_VALIDATION_WARNING
-} from '../../notifications';
+} from '../../middleware/notifications';
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {

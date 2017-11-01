@@ -6,19 +6,19 @@ import {
 
   INSTANCE_FIELD_VALIDATE as CREATE_INSTANCE_FIELD_VALIDATE,
   ALL_INSTANCE_FIELDS_VALIDATE
-} from './views/create/constants';
+} from '../views/create/constants';
 import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
 
   INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
   INSTANCE_EDIT_SUCCESS
-} from './views/edit/constants';
+} from '../views/edit/constants';
 import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_SUCCESS,
   ERROR_NOT_FOUND
-} from './common/constants';
+} from '../common/constants';
 
 export const
   NOTIFICATION_ERROR = 'error',

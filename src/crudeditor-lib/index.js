@@ -7,7 +7,8 @@ import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { I18nManager } from '@opuscapita/i18n';
 import crudTranslations from './i18n';
-import notificationsMiddleware from './notifications';
+import notificationsMiddleware from './middleware/notifications';
+import appStateChangeDetect from './middleware/appStateChangeDetect';
 
 import Main from './components/Main';
 import getReducer from './rootReducer';
@@ -92,56 +93,21 @@ export default baseModelDefinition => {
     state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
   });
 
-  const appStateChangeDetect = ({ getState }) => next => action => {
-    const rez = next(action);
-    const storeState = getState();
-
-    if (storeState.views[storeState.common.activeViewName].status !== STATUS_READY) {
-      return rez;
-    }
-
-    if (action.meta && action.meta.source === 'owner' || !onTransition) {
-      lastState = {
-        store: storeState
-      };
-
-      return rez;
-    }
-
-    // XXX: updeep must be used in reducers for below store states comparison to work as expected.
-    if (storeState === lastState.store) {
-      return rez;
-    }
-
-    if (lastState.store && !lastState.app) {
-      lastState.app = storeState2appState(lastState.store);
-    }
-
-    const appState = storeState2appState(storeState);
-
-    if (!isEqual(appState, lastState.app)) {
-      onTransition(appState);
-    }
-
-    lastState = {
-      store: storeState,
-      app: appState
-    };
-
-    return rez;
-  }
-
-  const sagaMiddleware = createSagaMiddleware();
-
   // context for CrudWrapper children
   const context = {};
+
+  const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
     getReducer(modelDefinition),
     (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
       // XXX: ensure each middleware calls "next(action)" synchronously,
       // or else ensure that "redux-saga" is the last middleware in the call chain.
-      appStateChangeDetect,
+      appStateChangeDetect({
+        lastState,
+        onTransition,
+        storeState2appState
+      }),
       notificationsMiddleware(context),
       sagaMiddleware
     ))
@@ -150,6 +116,33 @@ export default baseModelDefinition => {
   sagaMiddleware.run(rootSaga, modelDefinition);
 
   class CrudWrapper extends React.Component {
+    static propTypes = {
+      view: PropTypes.shape({
+        name: PropTypes.string,
+        state: PropTypes.object
+      }),
+      onTransition: PropTypes.func
+    }
+
+    static contextTypes = {
+      i18n: PropTypes.object
+    };
+
+    static childContextTypes = {
+      i18n: PropTypes.object
+    };
+
+    static propTypes = {
+      locale: PropTypes.string,
+      fallbackLocale: PropTypes.string,
+      localeFormattingInfo: PropTypes.object
+    };
+
+    static defaultProps = {
+      locale: 'en',
+      fallbackLocale: 'en'
+    };
+
     constructor(props, context) {
       super(props, context);
       onTransition = this.props.onTransition;
@@ -205,30 +198,6 @@ export default baseModelDefinition => {
         />
       </Provider>)
   }
-
-  CrudWrapper.propTypes = {
-    view: PropTypes.shape({
-      name: PropTypes.string,
-      state: PropTypes.object
-    }),
-    onTransition: PropTypes.func
-  }
-
-  CrudWrapper.contextTypes = {
-    i18n: PropTypes.object
-  };
-  CrudWrapper.childContextTypes = {
-    i18n: PropTypes.object
-  };
-  CrudWrapper.propTypes = {
-    locale: PropTypes.string,
-    fallbackLocale: PropTypes.string,
-    localeFormattingInfo: PropTypes.object
-  };
-  CrudWrapper.defaultProps = {
-    locale: 'en',
-    fallbackLocale: 'en'
-  };
 
   return CrudWrapper
 };

@@ -215,6 +215,7 @@ export const buildDefaultStoreState = modelDefinition => ({
     // (the object does not have keys for successfully parsed values).
     fields: {},
 
+    // FIXME: remove as unnecessary.
     // Array of Internal Errors, may be empty.
     general: []
   },

@@ -1,5 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 
+// FIXME: add INSTANCE_VALIDATE_FAIL and INSTANCE_VALIDATE_SUCCESS
+
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
@@ -7,6 +9,7 @@ import {
   INSTANCE_FIELD_VALIDATE as CREATE_INSTANCE_FIELD_VALIDATE,
   ALL_INSTANCE_FIELDS_VALIDATE
 } from './views/create/constants';
+
 import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
@@ -14,6 +17,7 @@ import {
   INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
   INSTANCE_EDIT_SUCCESS
 } from './views/edit/constants';
+
 import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_SUCCESS,
@@ -115,6 +119,7 @@ const eventsMiddleware = context => store => next => action => {
           type: 'error',
           timeOut: 3000,
           message: context.i18n.getMessage('Some fields are invalid!')
+          // FIXME: ask Alexey Sergeev Qs below.
           // TODO / TBD / do we need this / where do we get translations from
         });
       } else {
@@ -126,4 +131,4 @@ const eventsMiddleware = context => store => next => action => {
   return next(action)
 }
 
-export default eventsMiddleware
+export default eventsMiddleware;

@@ -46,6 +46,7 @@ ViewSwitcher.propTypes = {
   modelDefinition: PropTypes.object
 }
 
+// FIXME: remove connect as unnecessary.
 export default connect(
   storeState => {
     // check for proper 'errors' objects in views

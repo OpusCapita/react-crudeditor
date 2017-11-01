@@ -58,6 +58,7 @@ const defaultStoreStateTemplate = {
 
   instanceLabel: undefined,
 
+  // FIXME: remove as unnecessary.
   errors: {
     // Array of Internal Errors, may be empty.
     general: []

@@ -412,6 +412,7 @@ export default modelDefinition => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     } else if (type === FORM_FILTER_PARSE && storeState.divergedField) {
+      // FIXME: "Max Order Value (from/to)" filled with letters gets successful parse, but should not.
       // if storeState.divergedField is null, no data has changed.
       const { path } = payload;
 

@@ -8,13 +8,13 @@ import {
 export const showInstance = ({
   instance,
   tab,
-  searchParams
+  navigation
 }) => ({
   type: INSTANCE_SHOW,
   payload: {
     instance,
     tab,
-    searchParams
+    navigation
   }
 })
 

@@ -17,13 +17,13 @@ export const
   editInstance = ({
     instance,
     tab,
-    searchParams
+    navigation
   }) => ({
     type: INSTANCE_EDIT,
     payload: {
       instance,
       tab,
-      searchParams
+      navigation
     }
   }),
 

@@ -14,7 +14,7 @@ export default function*({
     },
     meta
   },
-  searchParams
+  navigation
 }) {
   const incNum = side === 'next' ? 1 :
     side === 'prev' ? -1 :
@@ -28,11 +28,11 @@ export default function*({
   const instance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 
   try {
-    const { instances, totalCount, navOffset } = yield call(searchWithOffset(incNum), {
+    const { instances, totalCount, offset } = yield call(searchWithOffset(incNum), {
       modelDefinition,
       meta,
       instance,
-      searchParams
+      navigation
     })
 
     try {
@@ -41,11 +41,11 @@ export default function*({
         action: {
           payload: {
             instance: instances.length === 0 ? instance : instances[0],
-            searchParams: {
-              ...searchParams,
-              navOffset,
+            navigation: {
+              ...navigation,
+              offset,
               totalCount,
-              ...Object.assign({}, instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
+              ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
             }
           },
           meta

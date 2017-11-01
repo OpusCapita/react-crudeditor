@@ -16,7 +16,7 @@ export default function*({
   action: {
     payload: {
       instance,
-      searchParams
+      navigation
     },
     meta
   }
@@ -31,7 +31,7 @@ export default function*({
       viewName: VIEW_EDIT,
       viewState: {
         instance,
-        searchParams
+        navigation
       }
     });
   } catch (err) {

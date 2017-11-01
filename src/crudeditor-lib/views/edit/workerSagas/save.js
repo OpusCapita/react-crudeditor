@@ -140,7 +140,7 @@ export default function*({
     payload: { afterAction } = {},
     meta
   },
-  searchParams
+  navigation
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
@@ -171,11 +171,11 @@ export default function*({
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
     try {
-      const { instances, totalCount, navOffset } = yield call(searchWithOffset(1), {
+      const { instances, totalCount, offset } = yield call(searchWithOffset(1), {
         modelDefinition,
         meta,
         instance,
-        searchParams
+        navigation
       })
 
       try {
@@ -184,11 +184,11 @@ export default function*({
           action: {
             payload: {
               instance: instances.length === 0 ? instance : instances[0],
-              searchParams: {
-                ...searchParams,
-                navOffset,
+              navigation: {
+                ...navigation,
+                offset,
                 totalCount,
-                ...Object.assign({}, instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
+                ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
               }
             },
             meta

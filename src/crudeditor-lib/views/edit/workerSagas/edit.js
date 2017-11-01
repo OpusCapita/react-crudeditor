@@ -16,7 +16,7 @@ export default function*({
   action: {
     payload: {
       instance,
-      searchParams
+      navigation
     },
     meta
   }
@@ -46,11 +46,11 @@ export default function*({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
       instance: persistentInstance,
-      ...Object.assign({}, searchParams ?
+      ...(navigation ?
         {
-          nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1,
-          prevInstanceExists: searchParams.navOffset > 0 && searchParams.totalCount > 0,
-          error: searchParams.error
+          nextInstanceExists: navigation.offset < navigation.totalCount - 1,
+          prevInstanceExists: navigation.offset > 0 && navigation.totalCount > 0,
+          error: navigation.error
         } :
         {}
       )

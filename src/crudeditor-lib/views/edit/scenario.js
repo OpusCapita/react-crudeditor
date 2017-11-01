@@ -24,7 +24,7 @@ import {
 } from './constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
+function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
   const choices = {
     blocking: {
       [INSTANCES_DELETE]: deleteSaga,
@@ -58,8 +58,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
           modelDefinition,
           softRedirectSaga,
           action,
-          searchParams: {
-            ...searchParams,
+          navigation: {
+            ...navigation,
             nextInc
           }
         });
@@ -76,8 +76,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
             modelDefinition,
             softRedirectSaga,
             action,
-            searchParams: {
-              ...searchParams,
+            navigation: {
+              ...navigation,
               nextInc
             }
           });
@@ -99,8 +99,8 @@ export default function*({
   viewState: {
     instance,
     tab: tabName,
-    // get searchParams from 'search' view
-    searchParams
+    // get navigation from 'search' view
+    navigation
   },
   source
 }) {
@@ -115,7 +115,7 @@ export default function*({
       action: {
         payload: {
           instance,
-          searchParams
+          navigation
         },
         meta: { source }
       }
@@ -143,7 +143,7 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, searchParams });
+      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, navigation });
     } finally {
       if (yield cancelled()) {
         yield put({

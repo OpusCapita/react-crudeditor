@@ -8,36 +8,12 @@ import {
   Col,
   Row,
   ButtonGroup,
-  Button,
-  Glyphicon
+  Button
 } from 'react-bootstrap';
-import ConfirmDialog from '../ConfirmDialog';
+import makeButtonWithConfirm from './buttonWithConfirm';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
-  makeRegularButton = ({ glyph, handleFunc }) => ( // FIXME: regular function instead of class instance properties
-    <Button
-      onClick={handleFunc}
-      disabled={!handleFunc}
-      key={glyph}
-    >
-      <Glyphicon glyph={glyph}/>
-    </Button>
-  );
-
-  makeButtonWithConfirm = ({ glyph, handleFunc }) => ( // FIXME: regular function instead of class instance properties
-    <ConfirmDialog
-      trigger='click'
-      onConfirm={handleFunc}
-      title="You have unsaved changes"
-      message={this.context.i18n.getMessage('crudEditor.unsaved.confirmation')}
-      buttonTextConfirm={this.context.i18n.getMessage('crudEditor.confirm.action')}
-      key={glyph}
-    >
-      <Button disabled={!handleFunc}><Glyphicon glyph={glyph}/></Button>
-    </ConfirmDialog>
-  )
-
   render() {
     const {
       model: {
@@ -68,15 +44,27 @@ class EditHeading extends PureComponent {
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
-    // FIXME: formInstance and persistentInstance are always truthy.
-    const hasUnsavedChanges = formInstance && persistentInstance && !isEqual(formInstance, persistentInstance);
+    // FIXME: formInstance and persistentInstance are always truthy. // done
+    const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
 
-    const arrowMakerFunc = hasUnsavedChanges ?
-      this.makeButtonWithConfirm :
-      this.makeRegularButton;
-
-    const arrowLeft = arrowMakerFunc({ glyph: 'arrow-left', handleFunc: gotoPrevInstance });
-    const arrowRight = arrowMakerFunc({ glyph: 'arrow-right', handleFunc: gotoNextInstance });
+    const arrowLeft = makeButtonWithConfirm({
+      glyph: 'arrow-left',
+      handleFunc: gotoPrevInstance,
+      title: "You have unsaved changes",
+      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
+      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
+      textCancel: i18n.getMessage('crudEditor.cancel.button'),
+      showDialog
+    });
+    const arrowRight = makeButtonWithConfirm({
+      glyph: 'arrow-right',
+      handleFunc: gotoNextInstance,
+      title: "You have unsaved changes",
+      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
+      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
+      textCancel: i18n.getMessage('crudEditor.cancel.button'),
+      showDialog
+    });
 
     return (<div style={{ marginBottom: '15px' }}>
       <h1>

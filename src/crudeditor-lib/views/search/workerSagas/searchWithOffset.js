@@ -7,13 +7,13 @@ export default function(incNum) {
     modelDefinition,
     meta,
     instance,
-    searchParams
+    navigation
   }) {
     // retrieve search params
     const filter = yield select(storeState => storeState.views[VIEW_SEARCH].resultFilter);
     const { field: sort, order } = yield select(storeState => storeState.views[VIEW_SEARCH].sortParams);
 
-    const { navOffset, nextInc } = searchParams;
+    const { offset: navOffset, nextInc } = navigation;
 
     // nextInc is a scenario-scoped iterator
     // it resets when 'edit'/'show' view (namely edit/scenario.js or show/scenario.js) is loaded
@@ -46,10 +46,10 @@ export default function(incNum) {
         }
       });
 
-      // return instances, totalCount and new navOffset
-      // BEWARE: navOffset is scoped to workerSagas/edit.js and is used to decide about showing/hiding a button
-      // it does not propagate to edit/scenario.js, neither does the whole searchParams object
-      return { instances, totalCount, navOffset: offset };
+      // return instances, totalCount and new offset
+      // BEWARE: offset is scoped to workerSagas/edit.js and is used to decide about showing/hiding a button
+      // it does not propagate to edit/scenario.js, neither does the whole navigation object
+      return { instances, totalCount, offset };
     } catch (err) {
       throw err; // Initialization error(s) are forwarded to the parent saga.
     }

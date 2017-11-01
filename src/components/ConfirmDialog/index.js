@@ -12,7 +12,12 @@ export default class ConfirmDialog extends React.Component {
     message: PropTypes.any,
     trigger: PropTypes.string,
     children: PropTypes.element.isRequired,
-    buttonTextConfirm: PropTypes.string
+    textConfirm: PropTypes.string,
+    textCancel: PropTypes.string,
+    // showDialog should return a boolean
+    // if true -> dialog is displayed
+    // else immediately invoke onConfirm
+    showDialog: PropTypes.func
   };
 
   static contextTypes = {
@@ -21,10 +26,9 @@ export default class ConfirmDialog extends React.Component {
 
   static defaultProps = {
     trigger: 'click',
-    onConfirm: () => {
-    },
-    onCancel: () => {
-    }
+    onConfirm: _ => {},
+    onCancel: _ => {},
+    showDialog: _ => true
   };
 
   state = {
@@ -71,7 +75,15 @@ export default class ConfirmDialog extends React.Component {
   };
 
   render() {
-    let { title, message, children, trigger, buttonTextConfirm } = this.props;
+    let {
+      title,
+      message,
+      children,
+      trigger,
+      textConfirm,
+      textCancel,
+      showDialog
+    } = this.props;
 
     let eventId = 'on' + upperFirst(trigger);
 
@@ -84,10 +96,10 @@ export default class ConfirmDialog extends React.Component {
 
         <Modal.Footer>
           <button className="btn btn-link" onClick={this.handleCancelDialog}>
-            {this.context.i18n.getMessage('crudEditor.cancel.button')}
+            {textCancel}
           </button>
           <button className="btn btn-primary" onClick={this.handleConfirm}>
-            {buttonTextConfirm}
+            {textConfirm}
           </button>
         </Modal.Footer>
       </Modal>
@@ -99,7 +111,7 @@ export default class ConfirmDialog extends React.Component {
       ...child.props
     };
 
-    childProps[eventId] = this.handleOpenDialog;
+    childProps[eventId] = showDialog() ? this.handleOpenDialog : this.handleConfirm;
 
     return React.cloneElement(child, childProps);
   }

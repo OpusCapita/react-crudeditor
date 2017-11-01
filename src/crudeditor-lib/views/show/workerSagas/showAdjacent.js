@@ -45,7 +45,7 @@ export default function*({
               ...navigation,
               offset,
               totalCount,
-              ...Object.assign({}, instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
+              ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
             }
           },
           meta

@@ -15,9 +15,6 @@ import {
   INSTANCE_EDIT_SUCCESS
 } from '../views/edit/constants';
 import {
-// FORM_FILTER_PARSE
-} from '../views/search/constants';
-import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_SUCCESS,
   ERROR_NOT_FOUND
@@ -97,8 +94,7 @@ const eventsMiddleware = context => store => next => action => {
   if (~[
     CREATE_INSTANCE_FIELD_VALIDATE,
     EDIT_INSTANCE_FIELD_VALIDATE,
-    ALL_INSTANCE_FIELDS_VALIDATE,
-    // FORM_FILTER_PARSE
+    ALL_INSTANCE_FIELDS_VALIDATE
   ].indexOf(action.type)) {
     const before = store.getState().views[store.getState().common.activeViewName].errors.fields;
 

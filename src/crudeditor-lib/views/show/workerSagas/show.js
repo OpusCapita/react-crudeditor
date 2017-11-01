@@ -47,7 +47,7 @@ export default function*({
     type: INSTANCE_SHOW_SUCCESS,
     payload: {
       instance: persistentInstance,
-      ...Object.assign({}, navigation ?
+      ...(navigation ?
         {
           nextInstanceExists: navigation.offset < navigation.totalCount - 1,
           prevInstanceExists: navigation.offset > 0 && navigation.totalCount > 0,

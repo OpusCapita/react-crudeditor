@@ -453,13 +453,32 @@ export default modelDefinition => {
             sourceType: uiType
           });
 
-          newStoreStateSlice.errors = {
-            fields: setFieldValue({
-              isRange,
-              path,
-              value: null
-            })
-          };
+          // remove the field if error is gone; difficul part is handling range fields properly
+          const { errors } = storeState;
+          if (errors && errors.fields && errors.fields[fieldName]) {
+            // there were errors in state, delete the passed one
+            if (isRange) {
+              newStoreStateSlice.errors = {
+                fields: {
+                  [fieldName]: u.omit(path[1])
+                }
+              }
+              if (
+                ~Object.keys(errors.fields[fieldName]).indexOf(path[1]) &&
+                Object.keys(errors.fields[fieldName]).length === 1
+              ) {
+                // delete the field if it is an empty object now
+                newStoreStateSlice.errors = {
+                  fields: u.omit(fieldName)
+                }
+              }
+            } else {
+              // not Range
+              newStoreStateSlice.errors = {
+                fields: u.omit(fieldName)
+              }
+            }
+          }
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 

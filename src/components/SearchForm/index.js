@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, Label } from 'react-bootstrap';
-import isEqual from 'lodash/isEqual';
+// import isEqual from 'lodash/isEqual';
 import { getFieldText } from '../lib';
 import './SearchForm.less';
 
-const errMsgs = errs => errs.map(({ message }) => message);
+const errMsgs = errs => errs.
+  map(({ message }) => message).
+  map(err => <Label bsStyle="danger" key={err}>{err}</Label>);
 
 class SearchForm extends React.PureComponent {
   constructor(...args) {
@@ -32,8 +34,8 @@ class SearchForm extends React.PureComponent {
         fieldErrors: errors,
         formatedFilter,
         searchableFields,
-        resultFilter,
-        formFilter
+        // resultFilter,
+        // formFilter
       },
       actions: {
         resetFormFilter
@@ -62,7 +64,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'from'])}
               onBlur={this.handleFormFilterBlur([name, 'from'])}
             />
-            {errors[name] && errors[name].from && <Label bsStyle="danger">{errMsgs(errors[name].from)}</Label>}
+            {errors[name] && errors[name].from && errMsgs(errors[name].from)}
           </div>
         </FormGroup>
         <FormGroup
@@ -78,7 +80,7 @@ class SearchForm extends React.PureComponent {
               onChange={this.handleFormFilterUpdate([name, 'to'])}
               onBlur={this.handleFormFilterBlur([name, 'to'])}
             />
-            {errors[name] && errors[name].to && <Label bsStyle="danger">{errMsgs(errors[name].to)}</Label>}
+            {errors[name] && errors[name].to && errMsgs(errors[name].to)}
           </div>
         </FormGroup>
       </div> :
@@ -116,7 +118,7 @@ class SearchForm extends React.PureComponent {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={isEqual(resultFilter, formFilter)}
+            /* disabled={isEqual(resultFilter, formFilter)} */
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

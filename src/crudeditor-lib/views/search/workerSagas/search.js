@@ -6,7 +6,7 @@ import { buildDefaultStoreState } from '../reducer';
 import { cleanFilter } from '../lib';
 
 import {
-  FORM_FILTER_PARSE,
+  // FORM_FILTER_PARSE,
 
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
@@ -34,24 +34,6 @@ export default function*({
   } = payload;
 
   const { searchableFields } = modelDefinition.ui.search;
-  const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
-
-  if (divergedField) {
-    // ENTER key was pressed in one of filter inputs =>
-    // the input's onBlur() was not called and vallues was not parsed as a result =>
-    // mimic onBlur() event handler:
-    yield put({
-      type: FORM_FILTER_PARSE,
-      payload: {
-        path: divergedField
-      },
-      meta
-    });
-
-    if (filter) {
-      filter = yield select(storeState => storeState.views[VIEW_NAME].formFilter);
-    }
-  }
 
   const [
     currentFilter,

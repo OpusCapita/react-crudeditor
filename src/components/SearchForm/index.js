@@ -18,7 +18,7 @@ class SearchForm extends React.PureComponent {
     });
   }
 
-  handleFormFilterBlur = path => _ => this.props.model.actions.parseFormFilter(path);
+  handleFormFilterBlur = path => _ => {} // this.props.model.actions.parseFormFilter(path);
 
   handleSubmit = e => {
     e.preventDefault();

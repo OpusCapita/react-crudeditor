@@ -79,10 +79,7 @@ export const
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
-
-    searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter) &&
-      isEqual(storeState.errors.fields, {}),
-
+    searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter),
     generalErrors: storeState.errors.general,
     isLoading: !!~[
       STATUS_DELETING,

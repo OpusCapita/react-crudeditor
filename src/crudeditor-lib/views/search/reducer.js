@@ -18,7 +18,6 @@ import {
   ALL_INSTANCES_SELECT,
   ALL_INSTANCES_DESELECT,
 
-  FORM_FILTER_PARSE,
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
 
@@ -190,12 +189,6 @@ export const buildDefaultStoreState = modelDefinition => ({
   // Raw filter as communicated to Search fields React Components.
   formatedFilter: buildDefaultFormatedFilter(modelDefinition),
 
-  // Field name or array [fieldName, subFieldName] in case of range a user is entering =>
-  // formatedFilter[fieldName] is up-to-date,
-  // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
-  // (or UNPARSABLE_FIELD_VALUE if the value happens to be unparsable).
-  divergedField: null,
-
   sortParams: {
     field: getDefaultSortField(modelDefinition.ui.search),
     order: DEFAULT_ORDER
@@ -274,7 +267,7 @@ export default modelDefinition => {
       // Do not reset store to initial uninitialized state because
       // filter, order, sort, etc. must remain after returning from other Views.
       newStoreStateSlice.formFilter = u.constant(cloneDeep(storeState.resultFilter));
-      newStoreStateSlice.divergedField = null;
+
       newStoreStateSlice.selectedInstances = [];
 
       newStoreStateSlice.formatedFilter = u.constant(buildFormatedFilter({
@@ -333,7 +326,6 @@ export default modelDefinition => {
 
       newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
       newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
-      newStoreStateSlice.divergedField = null;
 
       newStoreStateSlice.formatedFilter = u.constant(buildFormatedFilter({
         modelDefinition,
@@ -384,7 +376,6 @@ export default modelDefinition => {
     } else if (type === FORM_FILTER_RESET) {
       newStoreStateSlice.formatedFilter = u.constant(buildDefaultFormatedFilter(modelDefinition));
       newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
-      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     } else if (type === FORM_FILTER_UPDATE) {
@@ -407,14 +398,6 @@ export default modelDefinition => {
         value: u.constant(fieldValue)
       });
 
-      newStoreStateSlice.divergedField = path;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-    } else if (type === FORM_FILTER_PARSE && storeState.divergedField) {
-      // if storeState.divergedField is null, no data has changed.
-      const { path } = payload;
-
-      const fieldName = Array.isArray(path) ? path[0] : path;
       const fieldType = modelDefinition.model.fields[fieldName].type;
       let isRange, uiType;
 
@@ -433,10 +416,7 @@ export default modelDefinition => {
         path
       });
 
-      const oldFormatedValue = getFieldValue({
-        filter: storeState.formatedFilter,
-        path
-      });
+      const oldFormatedValue = fieldValue;
 
       const oldErrorValue = getFieldValue({
         filter: storeState.errors,
@@ -531,8 +511,6 @@ export default modelDefinition => {
           })
         }
       }
-
-      newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     } else if (type === ALL_INSTANCES_SELECT) {

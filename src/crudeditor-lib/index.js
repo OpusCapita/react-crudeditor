@@ -9,7 +9,6 @@ import { I18nManager } from '@opuscapita/i18n';
 import crudTranslations from './i18n';
 import notificationsMiddleware from './middleware/notifications';
 import appStateChangeDetect from './middleware/appStateChangeDetect';
-import searchFormMiddleware from './middleware/searchFormMiddleware'
 
 import Main from './components/Main';
 import getReducer from './rootReducer';
@@ -109,7 +108,6 @@ export default baseModelDefinition => {
         storeState2appState
       }),
       notificationsMiddleware(context),
-      searchFormMiddleware,
       sagaMiddleware
     ))
   );

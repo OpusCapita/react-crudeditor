@@ -17,11 +17,11 @@ import {
   editAdjacentInstance
 } from './actions';
 
-const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
+const mergeProps = ({ viewModelData, flags }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData, // FIXME: remove flags from data since they are not used in CRUD Editor components.
-    // here we adjust action creators to reflect viewModelData.flags values
+    data: viewModelData,
+    // here we adjust action creators to reflect flags values
     actions: (
       ({
         saveAndNextInstance,
@@ -49,13 +49,16 @@ const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
         }
 
         return result
-      })(dispatchProps, viewModelData.flags)
+      })(dispatchProps, flags)
   }
 });
 
 export default connect(
   (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
+    ...(({ flags, ...viewModelData }) => ({
+      viewModelData,
+      flags
+    }))(getViewModelData(storeState, modelDefinition))
   }), {
     changeInstanceField,
     deleteInstances,

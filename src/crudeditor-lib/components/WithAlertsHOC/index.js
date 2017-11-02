@@ -8,7 +8,8 @@ import './styles.css';
 import {
   NOTIFICATION_SUCCESS,
   NOTIFICATION_ERROR,
-  NOTIFICATION_VALIDATION_WARNING
+  NOTIFICATION_VALIDATION_WARNING,
+  NOTIFICATION_VALIDATION_ERROR
 } from '../../middleware/notifications';
 
 const withAlerts = WrappedComponent => {
@@ -20,7 +21,8 @@ const withAlerts = WrappedComponent => {
     componentWillUnmount() {
       [NOTIFICATION_SUCCESS,
         NOTIFICATION_ERROR,
-        NOTIFICATION_VALIDATION_WARNING
+        NOTIFICATION_VALIDATION_WARNING,
+        NOTIFICATION_VALIDATION_ERROR
       ].forEach(id => NotificationManager.remove({ id }))
     }
 

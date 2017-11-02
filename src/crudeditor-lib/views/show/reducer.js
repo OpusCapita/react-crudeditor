@@ -52,12 +52,6 @@ const defaultStoreStateTemplate = {
 
   instanceLabel: undefined,
 
-  // FIXME: remove as unnecessary.
-  errors: {
-    // Array of Internal Errors, may be empty.
-    general: []
-  },
-
   status: STATUS_UNINITIALIZED,
 
   flags: {
@@ -94,14 +88,6 @@ export default modelDefinition => (
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
@@ -137,10 +123,6 @@ export default modelDefinition => (
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-    newStoreStateSlice.errors = u.constant({
-      general: [],
-    });
-
     newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
       (rez, fieldName) => {
         const fieldLayout = findFieldLayout(fieldName)(formLayout);
@@ -169,12 +151,6 @@ export default modelDefinition => (
     newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_SHOW_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    newStoreStateSlice.errors = {
-      general: errors
-    };
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

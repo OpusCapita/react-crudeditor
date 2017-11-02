@@ -91,11 +91,7 @@ const defaultStoreStateTemplate = {
     // object with keys as field names,
     // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
     // (the object has keys for all fields).
-    fields: {},
-
-    // FIXME: remove as unnecessary.
-    // Array of Internal Errors and Instance Validation Errors, may be empty.
-    general: []
+    fields: {}
   },
 
   status: STATUS_UNINITIALIZED,
@@ -134,14 +130,6 @@ export default modelDefinition => (
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
   } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
@@ -151,14 +139,6 @@ export default modelDefinition => (
   } else if (type === INSTANCES_DELETE_REQUEST) {
     newStoreStateSlice.status = STATUS_DELETING;
   } else if (type === INSTANCES_DELETE_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -222,7 +202,6 @@ export default modelDefinition => (
     ));
 
     newStoreStateSlice.errors = u.constant({
-      general: [],
       fields: Object.keys(instance).reduce(
         (rez, fieldName) => ({
           ...rez,
@@ -238,14 +217,6 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== STATUS_INITIALIZING) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -343,24 +314,6 @@ export default modelDefinition => (
     }
 
     newStoreStateSlice.divergedField = null;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_SUCCESS) {
-    if (storeState.errors.general.length) {
-      newStoreStateSlice.errors = {
-        general: []
-      };
-    }
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {

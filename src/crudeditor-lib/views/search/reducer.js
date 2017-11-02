@@ -206,11 +206,7 @@ export const buildDefaultStoreState = modelDefinition => ({
     // object with keys as field names,
     // values as arrays of Parsing Errors, may not be empty
     // (the object does not have keys for successfully parsed values).
-    fields: {},
-
-    // FIXME: remove as unnecessary.
-    // Array of Internal Errors, may be empty.
-    general: []
+    fields: {}
   },
 
   status: STATUS_UNINITIALIZED
@@ -255,14 +251,6 @@ export default modelDefinition => {
     } else if (type === VIEW_REDIRECT_REQUEST) {
       newStoreStateSlice.status = STATUS_REDIRECTING;
     } else if (type === VIEW_REDIRECT_FAIL) {
-      const errors = Array.isArray(payload) ? payload : [payload];
-
-      if (!isEqual(storeState.errors.general, errors)) {
-        newStoreStateSlice.errors = {
-          general: errors
-        };
-      }
-
       newStoreStateSlice.status = STATUS_READY;
     } else if (type === VIEW_REDIRECT_SUCCESS) {
       // Do not reset store to initial uninitialized state because
@@ -277,8 +265,7 @@ export default modelDefinition => {
       }));
 
       newStoreStateSlice.errors = u.constant({
-        fields: {},
-        general: []
+        fields: {}
       });
 
       newStoreStateSlice.status = STATUS_UNINITIALIZED;
@@ -292,20 +279,9 @@ export default modelDefinition => {
       newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
       newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
 
-      if (storeState.errors.general.length) {
-        newStoreStateSlice.errors = {
-          general: []
-        };
-      }
       newStoreStateSlice.status = STATUS_READY;
     } else if (type === INSTANCES_DELETE_FAIL) {
       const errors = Array.isArray(payload) ? payload : [payload];
-
-      if (!isEqual(storeState.errors.general, errors)) {
-        newStoreStateSlice.errors = {
-          general: errors
-        };
-      }
 
       newStoreStateSlice.status = STATUS_READY;
 
@@ -352,25 +328,11 @@ export default modelDefinition => {
       }
 
       if (storeState.status !== STATUS_INITIALIZING) {
-        if (storeState.errors.general.length) {
-          newStoreStateSlice.errors = {
-            general: []
-          };
-        }
-
         newStoreStateSlice.status = STATUS_READY;
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== STATUS_INITIALIZING) {
-      const errors = Array.isArray(payload) ? payload : [payload];
-
-      if (!isEqual(storeState.errors.general, errors)) {
-        newStoreStateSlice.errors = {
-          general: errors
-        };
-      }
-
       newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

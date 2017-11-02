@@ -6,8 +6,6 @@ import { buildDefaultStoreState } from '../reducer';
 import { cleanFilter } from '../lib';
 
 import {
-  // FORM_FILTER_PARSE,
-
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,

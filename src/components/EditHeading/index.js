@@ -44,7 +44,6 @@ class EditHeading extends PureComponent {
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
-    // FIXME: formInstance and persistentInstance are always truthy. // done
     const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
 
     const arrowLeft = makeButtonWithConfirm({

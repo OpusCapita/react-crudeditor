@@ -16,11 +16,11 @@ import {
   VIEW_ERROR
 } from '../../common/constants';
 
-import { checkErrorsObjects } from './lib';
 import withAlerts from '../WithAlertsHOC';
 
 const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   if (!activeViewName) {
+    console.log("no active view in props")
     return null;
   }
 
@@ -46,26 +46,6 @@ ViewSwitcher.propTypes = {
   modelDefinition: PropTypes.object
 }
 
-// FIXME: remove connect as unnecessary.
 export default connect(
-  storeState => {
-    // check for proper 'errors' objects in views
-    const views = [VIEW_CREATE, VIEW_EDIT, VIEW_SEARCH, VIEW_SHOW];
-
-    checkErrorsObjects(storeState, views);
-
-    const activeViewName = storeState.common.activeViewName;
-
-    // FIXME: remove flags since they are never used in children.
-    const { flags, errors: { general, fields = {} } } = storeState.views[activeViewName];
-
-    return {
-      activeViewName,
-      errors: {
-        general,
-        fields
-      },
-      flags
-    }
-  }
+  storeState => ({ activeViewName: storeState.common.activeViewName })
 )(withAlerts(ViewSwitcher));

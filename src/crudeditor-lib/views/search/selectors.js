@@ -80,7 +80,6 @@ export const
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
     searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter),
-    generalErrors: storeState.errors.general,
     isLoading: !!~[
       STATUS_DELETING,
       STATUS_INITIALIZING,

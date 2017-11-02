@@ -78,11 +78,7 @@ const defaultStoreStateTemplate = {
     // object with keys as field names,
     // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
     // (the object has keys for all fields).
-    fields: {},
-
-    // FIXME: remove as unnecessary.
-    // Array of Internal Errors and Instance Validation Errors, may be empty.
-    general: []
+    fields: {}
   },
 
   status: STATUS_UNINITIALIZED
@@ -162,7 +158,6 @@ export default modelDefinition => (
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(defaultInstance);
 
     newStoreStateSlice.errors = u.constant({
-      general: [],
       fields: Object.keys(defaultInstance).reduce(
         (rez, fieldName) => ({
           ...rez,
@@ -178,14 +173,6 @@ export default modelDefinition => (
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
@@ -197,14 +184,6 @@ export default modelDefinition => (
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_SAVE_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
-
     newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -345,22 +324,6 @@ export default modelDefinition => (
     });
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_SUCCESS) {
-    if (storeState.errors.general.length) {
-      newStoreStateSlice.errors = {
-        general: []
-      };
-    }
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_VALIDATE_FAIL) {
-    const errors = Array.isArray(payload) ? payload : [payload];
-
-    if (!isEqual(storeState.errors.general, errors)) {
-      newStoreStateSlice.errors = {
-        general: errors
-      };
-    }
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

@@ -1,22 +1,23 @@
 import { NotificationManager } from 'react-notifications';
 
-// FIXME: add INSTANCE_VALIDATE_FAIL and INSTANCE_VALIDATE_SUCCESS from Edit and Create Views.
-// FIXME: add FORM_FILTER_PARSE from Search View.
-
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
-
   INSTANCE_FIELD_VALIDATE as CREATE_INSTANCE_FIELD_VALIDATE,
-  ALL_INSTANCE_FIELDS_VALIDATE
+  ALL_INSTANCE_FIELDS_VALIDATE,
+  INSTANCE_VALIDATE_FAIL as CREATE_INSTANCE_VALIDATE_FAIL,
+  INSTANCE_VALIDATE_SUCCESS as CREATE_INSTANCE_VALIDATE_SUCCESS
 } from '../views/create/constants';
+
 import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
-
   INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
-  INSTANCE_EDIT_SUCCESS
+  INSTANCE_EDIT_SUCCESS,
+  INSTANCE_VALIDATE_FAIL as EDIT_INSTANCE_VALIDATE_FAIL,
+  INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS
 } from '../views/edit/constants';
+
 import {
   INSTANCES_DELETE_FAIL,
   INSTANCES_DELETE_SUCCESS,
@@ -26,7 +27,8 @@ import {
 export const
   NOTIFICATION_ERROR = 'error',
   NOTIFICATION_SUCCESS = 'success',
-  NOTIFICATION_VALIDATION_WARNING = 'warning';
+  NOTIFICATION_VALIDATION_WARNING = 'warning',
+  NOTIFICATION_VALIDATION_ERROR = 'instanceValidationError';
 
 // eventsMiddleware is a function which accepts context as an argument and
 // returns a standard Redux middleware function
@@ -91,6 +93,21 @@ const eventsMiddleware = context => store => next => action => {
         });
       }
       break;
+    case CREATE_INSTANCE_VALIDATE_FAIL:
+    case EDIT_INSTANCE_VALIDATE_FAIL:
+      // in case 'model.validate' fails
+      NotificationManager.create({
+        id: NOTIFICATION_VALIDATION_ERROR,
+        type: 'error',
+        timeOut: 3000,
+        // TODO / TBD / do we need this / where do we get translations from
+        message: "Instance is not valid"
+      });
+      break;
+    case CREATE_INSTANCE_VALIDATE_SUCCESS:
+    case EDIT_INSTANCE_VALIDATE_SUCCESS:
+        NotificationManager.remove({ id: NOTIFICATION_VALIDATION_ERROR });
+        break;
     default:
   }
 

@@ -59,7 +59,8 @@ class EditTab extends React.PureComponent {
           onConfirm={this.handleDelete}
           title='Delete confirmation'
           message={i18n.getMessage('crudEditor.delete.confirmation')}
-          buttonTextConfirm={i18n.getMessage('crudEditor.delete.button')}
+          textConfirm={i18n.getMessage('crudEditor.delete.button')}
+          textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
           <Button>{i18n.getMessage('crudEditor.delete.button')}</Button>

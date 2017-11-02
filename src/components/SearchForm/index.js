@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup } from 'react-bootstrap';
-import { getFieldText } from '../lib';
+import { getFieldText, errorsExistAndVisible } from '../lib';
 import FieldErrorLabel from '../FieldErrorLabel';
 import './SearchForm.less';
 
@@ -10,22 +10,33 @@ class SearchForm extends React.Component {
     showFieldErrors: {}
   }
 
-  showFieldErrors = (path, show) => this.setState(prevState => ({
+  toggleFieldErrors = (path, show) => this.setState(prevState => ({
     showFieldErrors: {
       ...prevState.showFieldErrors,
-      ...({ [Array.isArray(path) ? `${path[0]}_${path[1]}` : path]: show })
+      ...(
+        Array.isArray(path) ? {
+          [path[0]]: {
+            ...(prevState.showFieldErrors[path[0]] || {}),
+            [path[1]]: show
+          }
+        } : {
+          [path]: show
+        }
+      )
     }
   }));
 
-  shouldShowErrors = path => Array.isArray(path) ? (
-    this.state.showFieldErrors[`${path[0]}_${path[1]}`] &&
-    this.props.model.data.fieldErrors[path[0]] && this.props.model.data.fieldErrors[path[0]][path[1]]
+  shouldShowErrors = path => Array.isArray(path) ? !!(
+    this.state.showFieldErrors[path[0]] &&
+    this.state.showFieldErrors[path[0]][path[1]] &&
+    this.props.model.data.fieldErrors[path[0]] &&
+    this.props.model.data.fieldErrors[path[0]][path[1]]
   ) :
-    this.state.showFieldErrors[path] && this.props.model.data.fieldErrors[path]
+    !!(this.state.showFieldErrors[path] && this.props.model.data.fieldErrors[path])
 
 
   handleFormFilterUpdate = path => newFieldValue => {
-    this.showFieldErrors(path, false);
+    this.toggleFieldErrors(path, false);
 
     this.props.model.actions.updateFormFilter({
       path,
@@ -33,7 +44,7 @@ class SearchForm extends React.Component {
     });
   }
 
-  handleFormFilterBlur = path => _ => this.showFieldErrors(path, true);
+  handleFormFilterBlur = path => _ => this.toggleFieldErrors(path, true);
 
   handleSubmit = e => {
     e.preventDefault();
@@ -140,11 +151,7 @@ class SearchForm extends React.Component {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={
-              !searchFormChanged ||
-              !!Object.keys(this.state.showFieldErrors).
-                filter(key => this.state.showFieldErrors[key] && errors[key]).length
-            } // TODO think it through
+            disabled={ !searchFormChanged || errorsExistAndVisible(errors, this.state.showFieldErrors) }
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

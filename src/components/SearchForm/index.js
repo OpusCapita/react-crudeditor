@@ -134,7 +134,11 @@ class SearchForm extends React.Component {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={!searchFormChanged}
+            disabled={
+              !searchFormChanged ||
+              !!Object.keys(this.state.showFieldErrors).
+                filter(key => this.state.showFieldErrors[key]).length
+            }
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

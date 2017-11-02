@@ -8,17 +8,35 @@ const errMsgs = errs => errs.
   map(({ message }) => message).
   map(err => <Label bsStyle="danger" key={err}>{err}</Label>);
 
-class SearchForm extends React.PureComponent {
-  constructor(...args) {
-    super(...args);
+class SearchForm extends React.Component {
+  state = {
+    showFieldErrors: {}
+  }
 
-    this.handleFormFilterUpdate = path => newFieldValue => this.props.model.actions.updateFormFilter({
+  showFieldErrors = (path, show) => this.setState(prevState => ({
+    showFieldErrors: {
+      ...prevState.showFieldErrors,
+      ...(Array.isArray(path) ? { [`${path[0]}_${path[1]}`]: show } : { [path]: show })
+    }
+  }));
+
+  shouldShowErrors = path => Array.isArray(path) ? (
+    this.state.showFieldErrors[`${path[0]}_${path[1]}`] &&
+    this.props.model.data.fieldErrors[path[0]] && this.props.model.data.fieldErrors[path[0]][path[1]]
+  ) :
+    this.state.showFieldErrors[path] && this.props.model.data.fieldErrors[path]
+
+
+  handleFormFilterUpdate = path => newFieldValue => {
+    this.showFieldErrors(path, false);
+
+    this.props.model.actions.updateFormFilter({
       path,
       value: newFieldValue
     });
   }
 
-  handleFormFilterBlur = path => _ => {} // this.props.model.actions.parseFormFilter(path);
+  handleFormFilterBlur = path => _ => this.showFieldErrors(path, true);
 
   handleSubmit = e => {
     e.preventDefault();
@@ -31,9 +49,9 @@ class SearchForm extends React.PureComponent {
     const {
       data: {
         fieldErrors: errors,
-        formatedFilter,
-        searchableFields,
-        searchFormChanged
+      formatedFilter,
+      searchableFields,
+      searchFormChanged
       },
       actions: {
         resetFormFilter
@@ -48,56 +66,56 @@ class SearchForm extends React.PureComponent {
       Component,
       valuePropName
     }) => isRange ?
-      <div key={`div-form-group-${name}`}>
+        <div key={`div-form-group-${name}`}>
+          <FormGroup
+            key={`form-group-${name}-from`}
+            controlId={`fg-${name}-from`}
+            validationState={errors[name] && errors[name].from ? 'error' : null} // TBD maybe show only onBlur?
+            className="crud--search-form__form-group"
+          >
+            <div>
+              <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'}</label>
+              <Component
+                {...{ [valuePropName]: formatedFilter[name].from }}
+                onChange={this.handleFormFilterUpdate([name, 'from'])}
+                onBlur={this.handleFormFilterBlur([name, 'from'])}
+              />
+              {this.shouldShowErrors([name, 'from']) && errMsgs(errors[name].from)}
+            </div>
+          </FormGroup>
+          <FormGroup
+            key={`form-group-${name}-to`}
+            controlId={`fg-${name}-to`}
+            validationState={errors[name] && errors[name].to ? 'error' : null}
+            className="crud--search-form__form-group"
+          >
+            <div>
+              <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'}</label>
+              <Component
+                {...{ [valuePropName]: formatedFilter[name].to }}
+                onChange={this.handleFormFilterUpdate([name, 'to'])}
+                onBlur={this.handleFormFilterBlur([name, 'to'])}
+              />
+              {this.shouldShowErrors([name, 'to']) && errMsgs(errors[name].to)}
+            </div>
+          </FormGroup>
+        </div> :
         <FormGroup
-          key={`form-group-${name}-from`}
-          controlId={`fg-${name}-from`}
-          validationState={errors[name] && errors[name].from ? 'error' : null}
+          key={`form-group-${name}`}
+          controlId={`fg-${name}`}
+          validationState={errors[name] ? 'error' : null}
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'}</label>
+            <label>{getFieldText(i18n, name)}</label>
             <Component
-              {...{ [valuePropName]: formatedFilter[name].from }}
-              onChange={this.handleFormFilterUpdate([name, 'from'])}
-              onBlur={this.handleFormFilterBlur([name, 'from'])}
+              {...{ [valuePropName]: formatedFilter[name] }}
+              onChange={this.handleFormFilterUpdate(name)}
+              onBlur={this.handleFormFilterBlur(name)}
             />
-            {errors[name] && errors[name].from && errMsgs(errors[name].from)}
+            {this.shouldShowErrors(name) && <Label bsStyle="danger">{errors[name].message}</Label>}
           </div>
         </FormGroup>
-        <FormGroup
-          key={`form-group-${name}-to`}
-          controlId={`fg-${name}-to`}
-          validationState={errors[name] && errors[name].to ? 'error' : null}
-          className="crud--search-form__form-group"
-        >
-          <div>
-            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'}</label>
-            <Component
-              {...{ [valuePropName]: formatedFilter[name].to }}
-              onChange={this.handleFormFilterUpdate([name, 'to'])}
-              onBlur={this.handleFormFilterBlur([name, 'to'])}
-            />
-            {errors[name] && errors[name].to && errMsgs(errors[name].to)}
-          </div>
-        </FormGroup>
-      </div> :
-      <FormGroup
-        key={`form-group-${name}`}
-        controlId={`fg-${name}`}
-        validationState={errors[name] ? 'error' : null}
-        className="crud--search-form__form-group"
-      >
-        <div>
-          <label>{ getFieldText(i18n, name) }</label>
-          <Component
-            {...{ [valuePropName]: formatedFilter[name] }}
-            onChange={this.handleFormFilterUpdate(name)}
-            onBlur={this.handleFormFilterBlur(name)}
-          />
-          {errors[name] && <Label bsStyle="danger">{errors[name].message}</Label>}
-        </div>
-      </FormGroup>
     );
 
     return (

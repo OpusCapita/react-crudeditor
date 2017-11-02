@@ -1,5 +1,4 @@
 import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import {
@@ -8,7 +7,6 @@ import {
 
 import {
   INSTANCE_SHOW_SUCCESS,
-  INSTANCE_SHOW_FAIL,
 
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,

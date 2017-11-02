@@ -106,8 +106,8 @@ const eventsMiddleware = context => store => next => action => {
       break;
     case CREATE_INSTANCE_VALIDATE_SUCCESS:
     case EDIT_INSTANCE_VALIDATE_SUCCESS:
-        NotificationManager.remove({ id: NOTIFICATION_VALIDATION_ERROR });
-        break;
+      NotificationManager.remove({ id: NOTIFICATION_VALIDATION_ERROR });
+      break;
     default:
   }
 

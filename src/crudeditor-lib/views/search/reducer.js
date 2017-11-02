@@ -281,8 +281,6 @@ export default modelDefinition => {
 
       newStoreStateSlice.status = STATUS_READY;
     } else if (type === INSTANCES_DELETE_FAIL) {
-      const errors = Array.isArray(payload) ? payload : [payload];
-
       newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

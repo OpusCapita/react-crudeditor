@@ -23,7 +23,7 @@ export const fields = {
     'type': 'number',
     'constraints': {
       'required': false,
-      'max': Number.MAX_VALUE
+      'max': 9999
     }
   },
   'contractBoilerplates': {

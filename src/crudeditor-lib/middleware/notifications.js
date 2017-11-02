@@ -3,8 +3,8 @@ import { NotificationManager } from 'react-notifications';
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
-  INSTANCE_FIELD_VALIDATE as CREATE_INSTANCE_FIELD_VALIDATE,
-  ALL_INSTANCE_FIELDS_VALIDATE,
+  // INSTANCE_FIELD_VALIDATE as CREATE_INSTANCE_FIELD_VALIDATE,
+  // ALL_INSTANCE_FIELDS_VALIDATE,
   INSTANCE_VALIDATE_FAIL as CREATE_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as CREATE_INSTANCE_VALIDATE_SUCCESS
 } from '../views/create/constants';
@@ -12,7 +12,7 @@ import {
 import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
-  INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
+  // INSTANCE_FIELD_VALIDATE as EDIT_INSTANCE_FIELD_VALIDATE,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_VALIDATE_FAIL as EDIT_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS
@@ -111,38 +111,38 @@ const eventsMiddleware = context => store => next => action => {
     default:
   }
 
-  if (~[
-    CREATE_INSTANCE_FIELD_VALIDATE,
-    EDIT_INSTANCE_FIELD_VALIDATE,
-    ALL_INSTANCE_FIELDS_VALIDATE
-  ].indexOf(action.type)) {
-    const before = store.getState().views[store.getState().common.activeViewName].errors.fields;
+  // if (~[
+  //   CREATE_INSTANCE_FIELD_VALIDATE,
+  //   EDIT_INSTANCE_FIELD_VALIDATE,
+  //   ALL_INSTANCE_FIELDS_VALIDATE
+  // ].indexOf(action.type)) {
+  //   const before = store.getState().views[store.getState().common.activeViewName].errors.fields;
 
-    // run the action
-    next(action);
+  //   // run the action
+  //   next(action);
 
-    const after = store.getState().views[store.getState().common.activeViewName].errors.fields;
+  //   const after = store.getState().views[store.getState().common.activeViewName].errors.fields;
 
-    if (before === after) {
-      NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })
-    } else {
-      // are there any errors?
-      const errs = Object.keys(after).reduce((arr, errKey) => arr.concat(after[errKey]), [])
+  //   if (before === after) {
+  //     NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })
+  //   } else {
+  //     // are there any errors?
+  //     const errs = Object.keys(after).reduce((arr, errKey) => arr.concat(after[errKey]), [])
 
-      if (errs.length) {
-        NotificationManager.create({
-          id: NOTIFICATION_VALIDATION_WARNING,
-          type: 'error',
-          timeOut: 3000,
-          message: context.i18n.getMessage('Some fields are invalid!')
-          // FIXME: ask Alexey Sergeev Qs below.
-          // TODO / TBD / do we need this / where do we get translations from
-        });
-      } else {
-        NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })
-      }
-    }
-  }
+  //     if (errs.length) {
+  //       NotificationManager.create({
+  //         id: NOTIFICATION_VALIDATION_WARNING,
+  //         type: 'error',
+  //         timeOut: 3000,
+  //         message: context.i18n.getMessage('Some fields are invalid!')
+  //         // FIXME: ask Alexey Sergeev Qs below.
+  //         // TODO / TBD / do we need this / where do we get translations from
+  //       });
+  //     } else {
+  //       NotificationManager.remove({ id: NOTIFICATION_VALIDATION_WARNING })
+  //     }
+  //   }
+  // }
 
   return next(action)
 }

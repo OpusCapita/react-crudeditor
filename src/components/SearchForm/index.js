@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, FormGroup, Label } from 'react-bootstrap';
+import { Button, Form, FormGroup } from 'react-bootstrap';
 import { getFieldText } from '../lib';
+import FieldErrorLabel from '../FieldErrorLabel';
 import './SearchForm.less';
-
-const errMsgs = errs => errs.
-  map(({ message }) => message).
-  map(err => <Label bsStyle="danger" key={err}>{err}</Label>);
 
 class SearchForm extends React.Component {
   state = {
@@ -16,7 +13,7 @@ class SearchForm extends React.Component {
   showFieldErrors = (path, show) => this.setState(prevState => ({
     showFieldErrors: {
       ...prevState.showFieldErrors,
-      ...(Array.isArray(path) ? { [`${path[0]}_${path[1]}`]: show } : { [path]: show })
+      ...({ [Array.isArray(path) ? `${path[0]}_${path[1]}` : path]: show })
     }
   }));
 
@@ -70,7 +67,7 @@ class SearchForm extends React.Component {
         <FormGroup
           key={`form-group-${name}-from`}
           controlId={`fg-${name}-from`}
-          validationState={errors[name] && errors[name].from ? 'error' : null} // TBD maybe show only onBlur?
+          validationState={this.shouldShowErrors([name, 'from']) ? 'error' : null} // TBD maybe show only onBlur?
           className="crud--search-form__form-group"
         >
           <div>
@@ -80,13 +77,16 @@ class SearchForm extends React.Component {
               onChange={this.handleFormFilterUpdate([name, 'from'])}
               onBlur={this.handleFormFilterBlur([name, 'from'])}
             />
-            {this.shouldShowErrors([name, 'from']) && errMsgs(errors[name].from)}
+            <FieldErrorLabel
+              errors={this.shouldShowErrors([name, 'from']) ? errors[name].from : []}
+              show={this.shouldShowErrors([name, 'from'])}
+            />
           </div>
         </FormGroup>
         <FormGroup
           key={`form-group-${name}-to`}
           controlId={`fg-${name}-to`}
-          validationState={errors[name] && errors[name].to ? 'error' : null}
+          validationState={this.shouldShowErrors([name, 'to']) ? 'error' : null}
           className="crud--search-form__form-group"
         >
           <div>
@@ -96,14 +96,17 @@ class SearchForm extends React.Component {
               onChange={this.handleFormFilterUpdate([name, 'to'])}
               onBlur={this.handleFormFilterBlur([name, 'to'])}
             />
-            {this.shouldShowErrors([name, 'to']) && errMsgs(errors[name].to)}
+            <FieldErrorLabel
+              errors={this.shouldShowErrors([name, 'to']) ? errors[name].to : []}
+              show={this.shouldShowErrors([name, 'to'])}
+            />
           </div>
         </FormGroup>
       </div> :
       <FormGroup
         key={`form-group-${name}`}
         controlId={`fg-${name}`}
-        validationState={errors[name] ? 'error' : null}
+        validationState={this.shouldShowErrors(name) ? 'error' : null}
         className="crud--search-form__form-group"
       >
         <div>
@@ -113,7 +116,10 @@ class SearchForm extends React.Component {
             onChange={this.handleFormFilterUpdate(name)}
             onBlur={this.handleFormFilterBlur(name)}
           />
-          {this.shouldShowErrors(name) && <Label bsStyle="danger">{errors[name].message}</Label>}
+          <FieldErrorLabel
+            errors={this.shouldShowErrors(name) ? errors[name] : []}
+            show={this.shouldShowErrors(name)}
+          />
         </div>
       </FormGroup>
     );
@@ -137,8 +143,8 @@ class SearchForm extends React.Component {
             disabled={
               !searchFormChanged ||
               !!Object.keys(this.state.showFieldErrors).
-                filter(key => this.state.showFieldErrors[key]).length
-            }
+                filter(key => this.state.showFieldErrors[key] && errors[key]).length
+            } // TODO think it through
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

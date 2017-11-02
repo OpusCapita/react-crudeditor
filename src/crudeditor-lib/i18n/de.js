@@ -1,5 +1,7 @@
+import exceptions from './exceptions/de';
+
 /* eslint-disable max-len */
-export default {
+const common = {
   "crudEditor.create.header": "{modelName} anlegen",
   "crudEditor.edit.header": "{modelName} bearbeiten",
   "crudEditor.show.header": "{modelName} ansehen",
@@ -47,3 +49,8 @@ export default {
   "crudEditor.confirm.action": "Bestätigen"
 }
 /* eslint-enable max-len */
+
+export default {
+  ...common,
+  ...exceptions
+}

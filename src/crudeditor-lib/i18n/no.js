@@ -1,5 +1,7 @@
+import exceptions from './exceptions/no';
+
 /* eslint-disable max-len */
-export default {
+const common = {
   "crudEditor.create.header": "Opprett {modelName}",
   "crudEditor.edit.header": "Rediger {modelName}",
   "crudEditor.show.header": "Vis {modelName}",
@@ -46,3 +48,8 @@ export default {
   "crudEditor.dateRange.to": "til"
 }
 /* eslint-enable max-len */
+
+export default {
+  ...common,
+  ...exceptions
+}

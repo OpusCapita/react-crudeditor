@@ -1,5 +1,7 @@
+import exceptions from './exceptions/ru';
+
 /* eslint-disable max-len */
-export default {
+const common = {
   "crudEditor.actions.tableHeader": "Действия",
   "crudEditor.cancel.button": "Отменить",
   "crudEditor.close.button": "Закрыть",
@@ -46,3 +48,8 @@ export default {
   "crudEditor.dateRange.to": "\u043F\u043E"
 }
 /* eslint-enable max-len */
+
+export default {
+  ...common,
+  ...exceptions
+}

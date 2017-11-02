@@ -56,6 +56,7 @@ export default connect(
 
     const activeViewName = storeState.common.activeViewName;
 
+    // FIXME: remove flags since they are never used in children.
     const { flags, errors: { general, fields = {} } } = storeState.views[activeViewName];
 
     return {

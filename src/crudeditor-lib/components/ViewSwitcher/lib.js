@@ -1,3 +1,4 @@
+// FIXME: remove the lib as unnecessary.
 import {
   VIEW_SEARCH,
   VIEW_CREATE,

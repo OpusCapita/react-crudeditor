@@ -19,7 +19,9 @@ export default function*({
   const incNum = side === 'next' ? 1 :
     side === 'prev' ? -1 :
       0; // should never happen
+  // FIXME: throw error in shoud-never-happen case.
 
+  // FIXME: do TODO
   if (incNum === 0) { // TODO delete this 'if' after testing
     console.error('Unexpected side: ' + side);
     throw new Error(`Unexpected side: ${side}`)

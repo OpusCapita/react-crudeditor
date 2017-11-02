@@ -1,5 +1,8 @@
 import { NotificationManager } from 'react-notifications';
 
+// FIXME: add INSTANCE_VALIDATE_FAIL and INSTANCE_VALIDATE_SUCCESS from Edit and Create Views.
+// FIXME: add FORM_FILTER_PARSE from Search View.
+
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
@@ -115,6 +118,7 @@ const eventsMiddleware = context => store => next => action => {
           type: 'error',
           timeOut: 3000,
           message: context.i18n.getMessage('Some fields are invalid!')
+          // FIXME: ask Alexey Sergeev Qs below.
           // TODO / TBD / do we need this / where do we get translations from
         });
       } else {
@@ -126,4 +130,4 @@ const eventsMiddleware = context => store => next => action => {
   return next(action)
 }
 
-export default eventsMiddleware
+export default eventsMiddleware;

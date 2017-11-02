@@ -46,6 +46,7 @@ ViewSwitcher.propTypes = {
   modelDefinition: PropTypes.object
 }
 
+// FIXME: remove connect as unnecessary.
 export default connect(
   storeState => {
     // check for proper 'errors' objects in views
@@ -55,6 +56,7 @@ export default connect(
 
     const activeViewName = storeState.common.activeViewName;
 
+    // FIXME: remove flags since they are never used in children.
     const { flags, errors: { general, fields = {} } } = storeState.views[activeViewName];
 
     return {

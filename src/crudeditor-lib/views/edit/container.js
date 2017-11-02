@@ -20,7 +20,7 @@ import {
 const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: viewModelData, // FIXME: remove flags from data since they are not used in CRUD Editor components.
     // here we adjust action creators to reflect viewModelData.flags values
     actions: (
       ({

@@ -1,9 +1,44 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Nav, NavItem } from 'react-bootstrap';
+import isEqual from 'lodash/isEqual';
+
+import {
+  Nav,
+  NavItem,
+  Col,
+  Row,
+  ButtonGroup,
+  Button,
+  Glyphicon
+} from 'react-bootstrap';
+import ConfirmDialog from '../ConfirmDialog';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
+  // FIXME DONE: regular function instead of class instance properties
+  makeRegularButton = ({ glyph, handleFunc }) => (
+    <Button
+      onClick={handleFunc}
+      disabled={!handleFunc}
+      key={glyph}
+    >
+      <Glyphicon glyph={glyph}/>
+    </Button>
+  );
+  // FIXME DONE: regular function instead of class instance properties
+  makeButtonWithConfirm = ({ glyph, handleFunc }) => (
+    <ConfirmDialog
+      trigger='click'
+      onConfirm={handleFunc}
+      title="You have unsaved changes"
+      message={this.context.i18n.getMessage('crudEditor.unsaved.confirmation')}
+      buttonTextConfirm={this.context.i18n.getMessage('crudEditor.confirm.action')}
+      key={glyph}
+    >
+      <Button disabled={!handleFunc}><Glyphicon glyph={glyph}/></Button>
+    </ConfirmDialog>
+  )
+
   render() {
     const {
       model: {
@@ -11,12 +46,17 @@ class EditHeading extends PureComponent {
           activeTab: {
             tab: activeTabName
           } = {},
-          instanceLabel, // TBD not implemented?
+          instanceLabel,
           tabs,
-          viewName
+          viewName,
+          persistentInstance,
+          formInstance
         },
         actions: {
-          selectTab
+          selectTab,
+          exitView,
+          gotoNextInstance,
+          gotoPrevInstance
         }
       }
     } = this.props;
@@ -28,12 +68,40 @@ class EditHeading extends PureComponent {
       { modelName: i18n.getMessage('model.name') }
     )
 
-    return (<div>
+    // compare persistent and form instances to decide weither to show confirm box or not
+    // FIXME DONE: formInstance and persistentInstance are always truthy.
+    const hasUnsavedChanges = formInstance && persistentInstance && !isEqual(formInstance, persistentInstance);
+
+    const arrowMakerFunc = hasUnsavedChanges ?
+      this.makeButtonWithConfirm :
+      this.makeRegularButton;
+
+    const arrowLeft = arrowMakerFunc({ glyph: 'arrow-left', handleFunc: gotoPrevInstance });
+    const arrowRight = arrowMakerFunc({ glyph: 'arrow-right', handleFunc: gotoNextInstance });
+
+    return (<div style={{ marginBottom: '15px' }}>
       <h1>
-        { title }
-        &nbsp;
-        { instanceLabel && <small>{instanceLabel}</small> }
+        <Row>
+          <Col xs={8}>
+            {title}
+            &nbsp;
+            {instanceLabel && <small>{instanceLabel}</small>}
+          </Col>
+          <Col xs={4}>
+            <div style={{ float: "right" }}>
+              <ButtonGroup>
+                <Button bsStyle='link' onClick={exitView}>
+                  {i18n.getMessage('crudEditor.search.result.label')}
+                </Button>
+                {arrowLeft}
+                {arrowRight}
+              </ButtonGroup>
+            </div>
+          </Col>
+        </Row>
       </h1>
+
+
       <br />
       {
         tabs.length !== 0 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
@@ -53,7 +121,10 @@ class EditHeading extends PureComponent {
 }
 
 EditHeading.propTypes = {
-  model: PropTypes.object.isRequired
+  model: PropTypes.shape({
+    data: PropTypes.object,
+    actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired
 }
 
 EditHeading.contextTypes = {

@@ -125,6 +125,9 @@ function* saveSaga(modelDefinition, meta) {
 
   yield put({
     type: INSTANCE_SAVE_SUCCESS,
+    payload: {
+      instance: savedInstance
+    },
     meta
   });
 
@@ -156,6 +159,7 @@ export default function*({
   } else {
     try {
       const tab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);
+
       yield call(editSaga, {
         modelDefinition,
         softRedirectSaga,

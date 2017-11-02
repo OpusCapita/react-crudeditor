@@ -12,6 +12,7 @@ export default class ConfirmDialog extends React.Component {
     message: PropTypes.any,
     trigger: PropTypes.string,
     children: PropTypes.element.isRequired,
+    buttonTextConfirm: PropTypes.string
   };
 
   static contextTypes = {
@@ -70,7 +71,7 @@ export default class ConfirmDialog extends React.Component {
   };
 
   render() {
-    let { title, message, children, trigger } = this.props;
+    let { title, message, children, trigger, buttonTextConfirm } = this.props;
 
     let eventId = 'on' + upperFirst(trigger);
 
@@ -86,7 +87,7 @@ export default class ConfirmDialog extends React.Component {
             {this.context.i18n.getMessage('crudEditor.cancel.button')}
           </button>
           <button className="btn btn-primary" onClick={this.handleConfirm}>
-            {this.context.i18n.getMessage('crudEditor.delete.button')}
+            {buttonTextConfirm}
           </button>
         </Modal.Footer>
       </Modal>

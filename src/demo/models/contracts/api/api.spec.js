@@ -298,6 +298,60 @@ describe('Sync api functions:', () => {
       assert.equal(before, after, 'Source data length changed unexpectedly!')
     });
 
+    it('should find by stringDate from.. (createdOn)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        createdOn: {
+          from: "2011-03-10"
+        }
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert(instances.length > 0)
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(
+          ({ createdOn }) => new Date(createdOn) >= new Date(filter.createdOn.from)
+        )
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
+    it('should find by stringDate ..to (createdOn)', () => {
+      const before = getNumberOfInstances();
+      const filter = {
+        createdOn: {
+          to: "2011-07-01"
+        }
+      }
+      const { instances, totalCount } = search({ filter })
+      const after = getNumberOfInstances();
+
+      assert(instances.length > 0)
+
+      assert.deepEqual(
+        instances,
+        getContracts().filter(
+          ({ createdOn }) => new Date(createdOn) <= new Date(filter.createdOn.to)
+        )
+      );
+
+      assert.equal(
+        totalCount,
+        instances.length
+      )
+
+      assert.equal(before, after, 'Source data length changed unexpectedly!')
+    });
+
     it('should find by boolean value', () => {
       const before = getNumberOfInstances();
       const filter = {
@@ -328,13 +382,16 @@ describe('Sync api functions:', () => {
         instances.length,
         getContracts().filter(
           c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
-        ).length
+        ).length,
+        'Different lengths after sort'
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort(),
-        "Result was not sorted properly"
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
+        'Sort mismatch'
       )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -355,9 +412,11 @@ describe('Sync api functions:', () => {
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort(),
-        "Result was not sorted properly"
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
+        'Sort mismatch'
       )
 
       assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -378,8 +437,10 @@ describe('Sync api functions:', () => {
       );
 
       assert.deepEqual(
-        instances.map(e => e[sort]),
-        instances.map(e => e[sort]).sort().reverse(),
+        instances,
+        getContracts().filter(
+          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+        ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1).reverse(),
         "Result was not sorted properly"
       )
 
@@ -454,7 +515,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
         catch(err => {
           assert.deepEqual(
             err,
-            { code: 404, message: `Contract "${instance.contractId}" not found` }
+            { code: 404, message: `Server error: Contract "${instance.contractId}" not found` }
           );
           done()
         })
@@ -483,7 +544,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
       ).catch(done)
     });
 
-    it('should return error if contract already exists', done => {
+    it('should reject if contract already exists', done => {
       const before = getNumberOfInstances();
       asyncApi.create({ instance }).
         then(done).
@@ -492,14 +553,13 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           assert.deepEqual(
             err,
             {
-              code: 403,
-              message: `Instance with contractId="${instance.contractId}" already exists in the database`
+              code: 400,
+              message: `Server error: Instance with contractId "${instance.contractId}" already exists in the database`
             }
           );
           assert.equal(before, after, 'Source data length changed unexpectedly!');
           done()
-        }
-        )
+        })
     });
   });
 
@@ -540,7 +600,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
 
           assert.deepEqual(
             err,
-            { code: 400, message: `Contract "${instance.contractId}" not found` }
+            { code: 400, message: `Server error: Contract "${instance.contractId}" not found` }
           );
 
           assert.equal(before, after, 'Source data length changed unexpectedly!')
@@ -597,8 +657,10 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           );
 
           assert.deepEqual(
-            instances.map(e => e[sort]),
-            instances.map(e => e[sort]).sort(),
+            instances,
+            getContracts().filter(
+              c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+            ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
             "Result was not sorted properly"
           )
 

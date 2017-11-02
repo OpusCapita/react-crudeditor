@@ -40,6 +40,10 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
+        test: /\.(png|jpg|jpeg|gif|ttf|eot|svg)(\?[a-z0-9=&.]+)?$/,
+        use: ['file-loader']
+      },
+      {
         test: /\.(css|less)$/,
         use: [
           { loader: 'style-loader' },

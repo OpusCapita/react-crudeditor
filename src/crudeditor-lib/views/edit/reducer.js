@@ -93,11 +93,17 @@ const defaultStoreStateTemplate = {
     // (the object has keys for all fields).
     fields: {},
 
+    // FIXME DONE: remove as unnecessary.
     // Array of Internal Errors and Instance Validation Errors, may be empty.
     general: []
   },
 
-  status: STATUS_UNINITIALIZED
+  status: STATUS_UNINITIALIZED,
+
+  flags: {
+    nextInstanceExists: false,
+    prevInstanceExists: false
+  }
 };
 
 /*
@@ -164,6 +170,14 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
     const { instance } = payload;
+
+    if (type === INSTANCE_EDIT_SUCCESS) {
+      const { nextInstanceExists = false, prevInstanceExists = false } = payload;
+      newStoreStateSlice.flags = {
+        nextInstanceExists,
+        prevInstanceExists
+      }
+    }
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.

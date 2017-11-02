@@ -38,8 +38,8 @@ export const
     formInstance: storeState.formInstance,
     fieldsErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
-    generalErrors: storeState.errors.general,
     instanceLabel: storeState.instanceLabel,
+    flags: storeState.flags,
     isLoading: !!~[
       STATUS_EXTRACTING,
       STATUS_DELETING,

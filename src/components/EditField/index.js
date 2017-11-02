@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, Col, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { FormGroup, Col, ControlLabel, Label } from 'react-bootstrap';
 import { getFieldText } from '../lib'
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
@@ -57,7 +57,7 @@ class EditField extends Component {
         <Col sm={1} className='text-right' />
         <Col sm={9}>
           <FieldInput {...fieldInputProps} />
-          {errors && <HelpBlock>{errors}</HelpBlock>}
+          {errors && <Label bsStyle="danger">{errors}</Label>}
         </Col>
       </FormGroup>
     );

@@ -7,6 +7,7 @@ import {
 
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
+  INSTANCE_SAVE_SUCCESS,
 
   VIEW_INITIALIZE,
 
@@ -79,6 +80,7 @@ const defaultStoreStateTemplate = {
     // (the object has keys for all fields).
     fields: {},
 
+    // FIXME DONE: remove as unnecessary.
     // Array of Internal Errors and Instance Validation Errors, may be empty.
     general: []
   },
@@ -173,6 +175,8 @@ export default modelDefinition => (
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+  } else if (type === INSTANCE_SAVE_SUCCESS) {
+    newStoreStateSlice.status = STATUS_READY;
   } else if (type === VIEW_REDIRECT_FAIL) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
@@ -207,7 +211,7 @@ export default modelDefinition => (
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
-    newStoreStateSlice.activeTab = u.constant(activeTab);
+    newStoreStateSlice.activeTab = activeTab;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCE_FIELD_CHANGE) {

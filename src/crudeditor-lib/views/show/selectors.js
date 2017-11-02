@@ -31,7 +31,7 @@ export const
     entityName: modelMeta.name,
     formatedInstance: storeState.formatedInstance,
     fieldsMeta: modelMeta.fields,
-    generalErrors: storeState.errors.general,
+    flags: storeState.flags,
     instanceLabel: storeState.instanceLabel,
     isLoading: !!~[STATUS_INITIALIZING, STATUS_REDIRECTING].indexOf(storeState.status),
     persistentInstance: storeState.persistentInstance,

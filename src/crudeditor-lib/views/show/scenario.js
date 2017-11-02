@@ -2,6 +2,9 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 
 import showSaga from './workerSagas/show';
 import exitSaga from './workerSagas/exit';
+import showAdjacentSaga from './workerSagas/showAdjacent';
+
+import { plusMinus } from '../lib';
 
 import {
   VIEW_EXIT,
@@ -9,17 +12,23 @@ import {
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
-  VIEW_REDIRECT_SUCCESS
+  VIEW_REDIRECT_SUCCESS,
+  INSTANCE_SHOW_ADJACENT
 } from './constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
+function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
   const choices = {
-    blocking: {},
+    blocking: {
+      [INSTANCE_SHOW_ADJACENT]: showAdjacentSaga
+    },
     nonBlocking: {
       [VIEW_EXIT]: exitSaga
     }
   }
+
+  // create an iterator which will remember navigation offset for this scenario
+  const nextInc = plusMinus()
 
   let lastTask;
 
@@ -39,7 +48,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action,
+          searchParams: {
+            ...searchParams,
+            nextInc
+          }
         });
       } catch (err) {
         // Swallow custom errors.
@@ -72,7 +85,8 @@ export default function*({
   softRedirectSaga,
   viewState: {
     instance,
-    tab: tabName
+    tab: tabName,
+    searchParams
   },
   source
 }) {
@@ -85,7 +99,10 @@ export default function*({
     yield call(showSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
+        payload: {
+          instance,
+          searchParams
+        },
         meta: { source }
       }
     });
@@ -113,7 +130,7 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
+      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, searchParams });
     } finally {
       if (yield cancelled()) {
         yield put({

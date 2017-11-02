@@ -215,6 +215,7 @@ export const buildDefaultStoreState = modelDefinition => ({
     // (the object does not have keys for successfully parsed values).
     fields: {},
 
+    // FIXME DONE: remove as unnecessary.
     // Array of Internal Errors, may be empty.
     general: []
   },
@@ -411,6 +412,7 @@ export default modelDefinition => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     } else if (type === FORM_FILTER_PARSE && storeState.divergedField) {
+      // FIXME DONE: "Max Order Value (from/to)" filled with letters gets successful parse, but should not.
       // if storeState.divergedField is null, no data has changed.
       const { path } = payload;
 

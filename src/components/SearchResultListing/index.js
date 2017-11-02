@@ -45,8 +45,8 @@ class SearchResultListing extends React.PureComponent {
       }
     }) => this.props.model.actions.toggleSelected({ selected, instance });
 
-    this.handleShow = instance => () => this.props.model.actions.showInstance({ instance });
-    this.handleEdit = instance => () => this.props.model.actions.editInstance({ instance });
+    this.handleShow = (instance, index) => () => this.props.model.actions.showInstance({ instance, index });
+    this.handleEdit = (instance, index) => () => this.props.model.actions.editInstance({ instance, index });
     this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
   }
 
@@ -114,7 +114,7 @@ class SearchResultListing extends React.PureComponent {
             </thead>
             <tbody>
 
-              {instances.map(instance =>
+              {instances.map((instance, index) =>
                 (<tr key={`tr-${JSON.stringify(instance)}`}>
                   <td>
                     <Checkbox
@@ -141,13 +141,13 @@ class SearchResultListing extends React.PureComponent {
 
                   <td className="text-right">
                     <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-                      <Button onClick={this.handleShow(instance)}>
+                      <Button onClick={this.handleShow(instance, index)}>
                         <Glyphicon glyph='glyphicon-eye-open' />
                         {' '}
                         {this.context.i18n.getMessage('crudEditor.show.button')}
                       </Button>
 
-                      <Button onClick={this.handleEdit(instance)}>
+                      <Button onClick={this.handleEdit(instance, index)}>
                         <Glyphicon glyph='edit' />
                         {' '}
                         {this.context.i18n.getMessage('crudEditor.edit.button')}
@@ -158,6 +158,7 @@ class SearchResultListing extends React.PureComponent {
                         onConfirm={this.handleDelete(instance)}
                         title='Delete confirmation'
                         message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
+                        buttonTextConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
                       >
                         <Button>
                           <Glyphicon glyph='trash' />

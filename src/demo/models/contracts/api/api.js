@@ -11,10 +11,6 @@ import {
   FIELD_TYPE_NUMBER
 } from '../../../../data-types-lib/constants';
 
-import {
-  RANGE_FIELD_TYPES
-} from '../../../../crudeditor-lib/views/search/constants';
-
 import { fields } from '../'
 
 const NUMBER_FIELDS = [
@@ -75,6 +71,15 @@ const setChangedFields = instance => {
   )
 }
 
+const isRangeObject = obj =>
+  typeof obj === 'object' &&
+  obj !== null &&
+  (obj => {
+    const keys = Object.keys(obj);
+    return (keys.length === 1 || keys.length === 2) &&
+      (~keys.indexOf('from') || ~keys.indexOf('to'))
+  })(obj);
+
 export const
 
   getNumberOfInstances = _ => data.contracts.length,
@@ -94,7 +99,7 @@ export const
 
   create = ({ instance }) => {
     if (find(data.contracts, ({ contractId }) => contractId === instance.contractId)) {
-      throw new Error("403")
+      throw new Error("400")
     }
 
     return ((data, instance) => {
@@ -154,7 +159,7 @@ export const
             // Handle range from..to fields
             // If not object - we should check strict equality to handle search by
             // 'statusId' field
-            if (~RANGE_FIELD_TYPES.indexOf(fieldType) && typeof fieldValue === 'object') {
+            if (isRangeObject(fieldValue)) {
               let match = true;
 
               if (item[fieldName] !== null) {
@@ -177,7 +182,8 @@ export const
                     lte = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
                     break;
                   default:
-                    console.log("Search api switch: Unknown RANGE field type: " + fieldType)
+                    console.log("Search api switch: Unknown RANGE field type: " + fieldType);
+                    return false;
                 }
 
                 if (fieldValue.from !== undefined) {
@@ -204,10 +210,12 @@ export const
                 itemValue.toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
                 false;
               return rez && match
-              // we actually need this strict check
-              // in order to handle search by 'statusId' field
-            } else if (fieldType === FIELD_TYPE_STRING_NUMBER) {
-              const match = Number(fieldValue) === Number(itemValue) && itemValue !== null;
+              // TODO add [] search
+            } else if (~[FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType)) {
+              const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
+              return rez && match
+            } else if (fieldType === FIELD_TYPE_STRING_DATE) {
+              const match = new Date(fieldValue).valueOf() === new Date(itemValue).valueOf();
               return rez && match
             }
 
@@ -222,23 +230,39 @@ export const
     const totalCount = result.length;
 
     if (sort) {
-      // default Array.prototype.sort returns ascending ordered array
-      let orderedSortFieldValues = result.map(el => el[sort]).sort();
+      result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
       if (order && order === 'desc') {
-        orderedSortFieldValues.reverse();
+        result.reverse();
       }
-      result = orderedSortFieldValues.map(v => find(result, el => el[sort] === v))
     }
 
     if (Number(offset) === parseInt(offset, 10)) {
       const offsetNum = parseInt(offset, 10);
-      result = result.length > offsetNum ?
+
+      const offsetResult = totalCount > offsetNum ?
         result.slice(offsetNum) :
         []
+
+      // handle search for the last page in case that previous last page was completely deleted
+      if (offsetResult.length === 0 &&
+        max !== undefined &&
+        offsetNum >= max &&
+        totalCount > 0
+      ) {
+        const totalPages = Math.ceil(totalCount / max);
+        const newOffset = totalPages * max - max;
+        result = result.slice(newOffset)
+      } else {
+        result = offsetResult
+      }
     }
 
     if (Number(max) === parseInt(max, 10)) {
-      result = result.slice(0, parseInt(max, 10))
+      const maxItems = parseInt(max, 10);
+      // max = -1 for all items
+      if (maxItems > 0) {
+        result = result.slice(0, maxItems)
+      }
     }
 
     return {

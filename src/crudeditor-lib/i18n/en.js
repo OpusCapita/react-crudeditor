@@ -30,10 +30,10 @@ export default {
   "crudEditor.objectUpdated.message": "Object updated.",
   "crudEditor.objectSaveFailed.message": "Object save failed.",
   "crudEditor.objectDeleted.message": "Object deleted.",
-  "crudEditor.objectsDeleted.message": "Objects {0} deleted.",
+  "crudEditor.objectsDeleted.message": "Objects {count} deleted.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "You cannot delete some objects because of security restrictions.",
   "crudEditor.objectDeleteFailed.message": "Failed to delete object, perhaps it is already in use.",
-  "crudEditor.objectsDeleteFailed.message": "Failed to delete objects {0}, perhaps they are already in use.",
+  "crudEditor.objectsDeleteFailed.message": "Failed to delete objects {count}, perhaps they are already in use.",
   "crudEditor.objectDuplicated.message": "Object is copied.",
   "crudEditor.noAssociationEntriesFound.message": "No entries found. You can {1} a new entry.",
   "crudEditor.message.ajax.loading": "Please wait...",
@@ -43,6 +43,7 @@ export default {
   "crudEditor.search.all": "All",
   "crudEditor.found.items.message": "{count} item(s) found",
   "crudEditor.dateRange.from": "from",
-  "crudEditor.dateRange.to": "to"
+  "crudEditor.dateRange.to": "to",
+  "crudEditor.confirm.action": "Confirm"
 }
 /* eslint-enable max-len */

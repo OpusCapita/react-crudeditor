@@ -14,7 +14,10 @@ import {
 export default function*({
   modelDefinition,
   action: {
-    payload: { instance },
+    payload: {
+      instance,
+      searchParams
+    },
     meta
   }
 }) {
@@ -36,14 +39,21 @@ export default function*({
       error: true,
       meta
     });
-
     throw err;
   }
 
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
-      instance: persistentInstance
+      instance: persistentInstance,
+      ...Object.assign({}, searchParams ?
+        {
+          nextInstanceExists: searchParams.navOffset < searchParams.totalCount - 1,
+          prevInstanceExists: searchParams.navOffset > 0 && searchParams.totalCount > 0,
+          error: searchParams.error
+        } :
+        {}
+      )
     },
     meta
   });

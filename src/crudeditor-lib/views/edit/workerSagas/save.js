@@ -1,7 +1,9 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
-import { VIEW_CREATE } from '../../../common/constants';
+import searchWithOffset from '../../search/workerSagas/searchWithOffset';
+
+import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 
 import {
   AFTER_ACTION_NEXT,
@@ -96,8 +98,6 @@ function* validateSaga(modelDefinition, meta) {
 
 function* updateSaga(modelDefinition, meta) {
   const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
-  // const tabName = yield select(storeState => storeState.views[VIEW_NAME].activeTab.tab);
-  // console.log("update saga: " + tabName)
 
   yield put({
     type: INSTANCE_SAVE_REQUEST,
@@ -126,6 +126,8 @@ function* updateSaga(modelDefinition, meta) {
     },
     meta
   });
+
+  return updated;
 }
 
 /*
@@ -137,11 +139,12 @@ export default function*({
   action: {
     payload: { afterAction } = {},
     meta
-  }
+  },
+  searchParams
 }) {
   yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
-  yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  const instance = yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield put({
@@ -167,19 +170,33 @@ export default function*({
       throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    // TODO: get next instance
-    const nextInstance = {};
-
     try {
-      yield call(editSaga, {
+      const { instances, totalCount, navOffset } = yield call(searchWithOffset(1), {
         modelDefinition,
-        action: {
-          payload: {
-            instance: nextInstance
-          },
-          meta
-        }
-      });
+        meta,
+        instance,
+        searchParams
+      })
+
+      try {
+        yield call(editSaga, {
+          modelDefinition,
+          action: {
+            payload: {
+              instance: instances.length === 0 ? instance : instances[0],
+              searchParams: {
+                ...searchParams,
+                navOffset,
+                totalCount,
+                ...Object.assign({}, instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
+              }
+            },
+            meta
+          }
+        });
+      } catch (err) {
+        throw err;
+      }
     } catch (err) {
       throw err;
     }

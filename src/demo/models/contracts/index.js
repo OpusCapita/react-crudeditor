@@ -175,7 +175,7 @@ export const fields = {
     'constraints': {
       'min': 0,
       'max': 999999999,
-      'required': true
+      'required': false
     }
   },
   'validRange': {
@@ -217,7 +217,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': 'stringNumber', // TBD was stringNumber
+    'type': 'stringNumber',
     'constraints': {
       'min': 0,
       'max': 800,
@@ -283,7 +283,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'boilerplates' }),
   tab({ name: 'supplier' }),
   tab({ name: 'groups' }),
-  tab({ name: 'additional' },
+  tab({ name: 'additional', disabled: viewName === VIEW_CREATE },
     section({ name: 'test' },
       field({ name: 'testNumberTypeField' })
     ),

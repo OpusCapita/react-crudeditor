@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
+import isEqual from 'lodash/isEqual';
 
 import ConfirmDialog from '../ConfirmDialog';
 
@@ -30,13 +31,21 @@ class EditTab extends React.PureComponent {
       children: sectionsAndFields,
       model: {
         actions: {
-          exitView
+          exitView,
+          saveAndNextInstance
         },
         data: {
-          viewName
+          viewName,
+          persistentInstance,
+          formInstance
         }
       }
     } = this.props;
+
+    const { i18n } = this.context;
+
+    // FIXME DONE: consistency with hasUnsavedChanges variable in EditHeading component.
+    const disableSave = isEqual(persistentInstance, formInstance);
 
     const buttons = [
       <Button bsStyle='link' onClick={exitView} key="Cancel">
@@ -50,10 +59,11 @@ class EditTab extends React.PureComponent {
           trigger='click'
           onConfirm={this.handleDelete}
           title='Delete confirmation'
-          message={this.context.i18n.getMessage('crudEditor.delete.confirmation')}
+          message={i18n.getMessage('crudEditor.delete.confirmation')}
+          buttonTextConfirm={i18n.getMessage('crudEditor.delete.button')}
           key="Delete"
         >
-          <Button>{this.context.i18n.getMessage('crudEditor.delete.button')}</Button>
+          <Button>{i18n.getMessage('crudEditor.delete.button')}</Button>
         </ConfirmDialog>
       )
     }
@@ -61,28 +71,41 @@ class EditTab extends React.PureComponent {
     if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
       buttons.push(
         <Button disabled={true} key="Revisions">
-          {this.context.i18n.getMessage('crudEditor.revisions.button')}
+          {i18n.getMessage('crudEditor.revisions.button')}
         </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
-        <Button onClick={this.handleSaveAndNew} key="Save and New">
-          {this.context.i18n.getMessage('crudEditor.saveAndNew.button')}
+        <Button
+          onClick={this.handleSaveAndNew}
+          disabled={disableSave}
+          key="Save and New"
+        >
+          {i18n.getMessage('crudEditor.saveAndNew.button')}
         </Button>)
     }
 
-    if (viewName === VIEW_EDIT) {
+    if (viewName === VIEW_EDIT && saveAndNextInstance) {
       buttons.push(
-        <Button onClick={this.handleSaveAndNext} key="Save and Next">
-          {this.context.i18n.getMessage('crudEditor.saveAndNext.button')}
+        <Button
+          onClick={this.handleSaveAndNext}
+          disabled={disableSave}
+          key="Save and Next"
+        >
+          {i18n.getMessage('crudEditor.saveAndNext.button')}
         </Button>)
     }
 
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
-        <Button bsStyle='primary' type='submit' key="Save">
-          {this.context.i18n.getMessage('crudEditor.save.button')}
+        <Button
+          disabled={disableSave}
+          bsStyle='primary'
+          type='submit'
+          key="Save"
+        >
+          {i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }
 

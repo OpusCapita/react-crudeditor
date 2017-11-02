@@ -62,6 +62,7 @@ export const
   \*██████████████████████████████████████*/
 
   ERROR_CODE_INTERNAL = 500,
+  ERROR_NOT_FOUND = 404,
 
   ERROR_UNKNOWN_VIEW = viewName => ({
     code: ERROR_CODE_INTERNAL,

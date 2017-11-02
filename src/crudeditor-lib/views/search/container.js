@@ -1,6 +1,5 @@
 // Edit View container component.
 import React from 'react';
-
 import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
 import { createInstance } from '../create/actions';
@@ -22,13 +21,41 @@ import {
   updateFormFilter
 } from './actions';
 
-const mergeProps = ({ defaultNewInstance, viewModelData }, { createInstance, ...dispatchProps }, ownProps) => ({
+const mergeProps = (
+  { defaultNewInstance, viewModelData },
+  { createInstance, editInstance, showInstance, ...dispatchProps },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      createInstance: createInstance.bind(null, { predefinedFields: defaultNewInstance })
+      createInstance: _ => createInstance({ predefinedFields: defaultNewInstance }),
+      editInstance: ({
+        instance,
+        tab,
+        index // an index of instance in the array of search results => add navigation to Edit View.
+      }) => editInstance({
+        instance,
+        tab,
+        navigation: {
+          offset: viewModelData.pageParams.offset + index,
+          totalCount: viewModelData.totalCount
+        }
+      }),
+      showInstance: ({
+        instance,
+        tab,
+        index // an index of instance in the array of search results => add navigation to Show View.
+      }) => showInstance({
+        instance,
+        tab,
+        navigation: {
+          offset: viewModelData.pageParams.offset + index,
+          totalCount: viewModelData.totalCount
+        }
+      })
     }
   },
 });
@@ -37,25 +64,22 @@ export default connect(
   (storeState, { modelDefinition }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
-  }), {
+  }),
+  {
     createInstance,
-    deleteInstances,
     editInstance,
+    showInstance,
+    deleteInstances,
     parseFormFilter,
     resetFormFilter,
     searchInstances,
     toggleSelected,
     toggleSelectedAll,
-    updateFormFilter,
-    showInstance
+    updateFormFilter
   },
   mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
+)(({ viewModel, children, ...props }) => (
+  <Main model={viewModel} {...props}>
     {children}
-  </Main>)
-);
+  </Main>
+));

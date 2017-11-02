@@ -4,8 +4,10 @@ import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
+import editAdjacentSaga from './workerSagas/editAdjacent';
 
 import { INSTANCES_DELETE } from '../../common/constants';
+import { plusMinus } from '../lib';
 
 import {
   INSTANCE_SAVE,
@@ -16,20 +18,26 @@ import {
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
 
-  VIEW_REDIRECT_SUCCESS
+  VIEW_REDIRECT_SUCCESS,
+
+  INSTANCE_EDIT_ADJACENT
 } from './constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
+function* scenarioSaga({ modelDefinition, softRedirectSaga, searchParams }) {
   const choices = {
     blocking: {
       [INSTANCES_DELETE]: deleteSaga,
+      [INSTANCE_EDIT_ADJACENT]: editAdjacentSaga
     },
     nonBlocking: {
       [INSTANCE_SAVE]: saveSaga,
       [VIEW_EXIT]: exitSaga
     }
   }
+
+  // create an iterator which will remember navigation offset for this scenario
+  const nextInc = plusMinus();
 
   let lastTask;
 
@@ -49,7 +57,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action,
+          searchParams: {
+            ...searchParams,
+            nextInc
+          }
         });
       } catch (err) {
         // Swallow custom errors.
@@ -63,7 +75,11 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action,
+            searchParams: {
+              ...searchParams,
+              nextInc
+            }
           });
         } catch (err) {
           // Swallow custom errors.
@@ -82,7 +98,9 @@ export default function*({
   softRedirectSaga,
   viewState: {
     instance,
-    tab: tabName
+    tab: tabName,
+    // get searchParams from 'search' view
+    searchParams
   },
   source
 }) {
@@ -95,7 +113,10 @@ export default function*({
     yield call(editSaga, {
       modelDefinition,
       action: {
-        payload: { instance },
+        payload: {
+          instance,
+          searchParams
+        },
         meta: { source }
       }
     });
@@ -106,7 +127,6 @@ export default function*({
       error: true,
       meta: { source }
     });
-
     throw err; // Initialization error(s) are forwarded to the parent saga.
   }
 
@@ -123,7 +143,7 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
+      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, searchParams });
     } finally {
       if (yield cancelled()) {
         yield put({

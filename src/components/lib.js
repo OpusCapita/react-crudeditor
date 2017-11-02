@@ -56,8 +56,8 @@ export const
     // now we need to check if there are actual errors for these fields
       some(f => errors[f] && (
         Array.isArray(errors[f]) ?
-          errors[f].length > 0 :
-          ['to', 'from'].some(
+          errors[f].length > 0 : // non-Range fields have error values of type Array which can be empty
+          ['to', 'from'].some( // Range fields can have 'to' and/or 'from' fields with values of type Array
             k => ~Object.keys(errors[f]).indexOf(k) &&
               Array.isArray(errors[f][k]) &&
               errors[f][k].length > 0

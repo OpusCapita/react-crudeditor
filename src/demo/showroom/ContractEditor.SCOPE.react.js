@@ -5,6 +5,7 @@ import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
 import modelTranslations from '../models/contracts/i18n';
 import crudTranslations from '../../crudeditor-lib/i18n';
+// import './ContractEditorScope.less'
 
 function getParameterByName(name, url) {
   if (!url) {url = window.location.href;} // eslint-disable-line no-param-reassign
@@ -34,7 +35,7 @@ class ContractEditorScope extends React.Component {
 
   render() {
     return (
-      <div style={{ position: "relative" }}>
+      <div style={{ position: "relative" }} className="contract-editor-scope">
         {this._renderChildren()}
       </div>
     );

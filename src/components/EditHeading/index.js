@@ -15,7 +15,8 @@ import ConfirmDialog from '../ConfirmDialog';
 import { getTabText } from '../lib';
 
 class EditHeading extends PureComponent {
-  makeRegularButton = ({ glyph, handleFunc }) => ( // FIXME: regular function instead of class instance properties
+  // FIXME DONE: regular function instead of class instance properties
+  makeRegularButton = ({ glyph, handleFunc }) => (
     <Button
       onClick={handleFunc}
       disabled={!handleFunc}
@@ -24,8 +25,8 @@ class EditHeading extends PureComponent {
       <Glyphicon glyph={glyph}/>
     </Button>
   );
-
-  makeButtonWithConfirm = ({ glyph, handleFunc }) => ( // FIXME: regular function instead of class instance properties
+  // FIXME DONE: regular function instead of class instance properties
+  makeButtonWithConfirm = ({ glyph, handleFunc }) => (
     <ConfirmDialog
       trigger='click'
       onConfirm={handleFunc}
@@ -68,7 +69,7 @@ class EditHeading extends PureComponent {
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
-    // FIXME: formInstance and persistentInstance are always truthy.
+    // FIXME DONE: formInstance and persistentInstance are always truthy.
     const hasUnsavedChanges = formInstance && persistentInstance && !isEqual(formInstance, persistentInstance);
 
     const arrowMakerFunc = hasUnsavedChanges ?

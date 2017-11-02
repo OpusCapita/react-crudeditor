@@ -44,7 +44,7 @@ class EditTab extends React.PureComponent {
 
     const { i18n } = this.context;
 
-    // FIXME: consistency with hasUnsavedChanges variable in EditHeading component.
+    // FIXME DONE: consistency with hasUnsavedChanges variable in EditHeading component.
     const disableSave = isEqual(persistentInstance, formInstance);
 
     const buttons = [

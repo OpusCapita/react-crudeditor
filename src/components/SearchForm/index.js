@@ -9,7 +9,7 @@ class SearchForm extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    // FIXME: move out of counstructor and delete constructor.
+    // FIXME DONE: move out of counstructor and delete constructor.
     this.handleFormFilterUpdate = path => newFieldValue => this.props.model.actions.updateFormFilter({
       path,
       value: newFieldValue

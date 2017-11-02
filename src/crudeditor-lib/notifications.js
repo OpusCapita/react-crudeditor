@@ -1,7 +1,7 @@
 import { NotificationManager } from 'react-notifications';
 
-// FIXME: add INSTANCE_VALIDATE_FAIL and INSTANCE_VALIDATE_SUCCESS from Edit and Create Views.
-// FIXME: add FORM_FILTER_PARSE from Search View.
+// FIXME DONE: add INSTANCE_VALIDATE_FAIL and INSTANCE_VALIDATE_SUCCESS from Edit and Create Views.
+// FIXME DONE: add FORM_FILTER_PARSE from Search View.
 
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,

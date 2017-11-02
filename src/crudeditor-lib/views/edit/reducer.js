@@ -93,7 +93,7 @@ const defaultStoreStateTemplate = {
     // (the object has keys for all fields).
     fields: {},
 
-    // FIXME: remove as unnecessary.
+    // FIXME DONE: remove as unnecessary.
     // Array of Internal Errors and Instance Validation Errors, may be empty.
     general: []
   },

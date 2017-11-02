@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 // import '../../../styles/main.scss';
 // import '../client/global-styles.less';
 import buildModel from '../models';

@@ -39,23 +39,27 @@ export const
     }
   },
 
-  // TODO maybe refactor the following crazy function somehow
+  // TODO maybe refactor the following function somehow
   // it works but looks like a spell to summon satan
   //
   // inputs:
   // errors: errors.fields from reducer
   // showErrors: mirrored structure to errors, but end values are true/false
   errorsExistAndVisible = (errors, showErrors) =>
-  !!Object.keys(showErrors).
-    filter(
-      f => typeof showErrors[f] === 'object' ?
-        Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
-        showErrors[f]
-    ).
+    !!Object.keys(showErrors).
+      filter(
+        f => typeof showErrors[f] === 'object' ?
+          Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
+          showErrors[f]
+      ).
     // here we have fields which are set to be true in showErrors
     // now we need to check if there are actual errors for these fields
-    some(f => errors[f] && (
-      Array.isArray(errors[f]) ?
-        errors[f].length > 0 :
-        ['to', 'from'].some(k => ~Object.keys(errors[f]).indexOf(k) && Array.isArray(errors[f][k]) && errors[f][k].length > 0)
-    ));
+      some(f => errors[f] && (
+        Array.isArray(errors[f]) ?
+          errors[f].length > 0 :
+          ['to', 'from'].some(
+            k => ~Object.keys(errors[f]).indexOf(k) &&
+              Array.isArray(errors[f][k]) &&
+              errors[f][k].length > 0
+          )
+      ));

@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';

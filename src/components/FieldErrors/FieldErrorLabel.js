@@ -10,14 +10,6 @@ import {
   ERROR_REQUIRED_MISSING
 } from '../../data-types-lib/constants';
 
-const errorMessages = {
-  [ERROR_MIN_DECEEDED]: "default.invalid.min.size.message",
-  [ERROR_MAX_EXCEEDED]: "default.invalid.max.size.message",
-  [ERROR_REQUIRED_MISSING]: "default.blank.message",
-  [ERROR_INVALID_NUMBER]: "typeMismatch.java.math.BigDecimal",
-  [ERROR_INVALID_DATE]: "typeMismatch.java.util.Date"
-}
-
 export default class extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.object),
@@ -25,12 +17,26 @@ export default class extends PureComponent {
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   };
 
-  getErrorMessage = ({ id, message }) => errorMessages[id] ?
-    this.context.i18n.getMessage(errorMessages[id]) :
-    message.length ? message : id;
+  getErrorMessage = ({ id, message }) => {
+    const { getMessage } = this.context.i18n;
+
+    const errorMessages = {
+      [ERROR_MIN_DECEEDED]: { key: "default.invalid.min.message", payload: message },
+      [ERROR_MAX_EXCEEDED]: { key: "default.invalid.max.message", payload: message },
+      [ERROR_REQUIRED_MISSING]: { key: "default.blank.message" },
+      [ERROR_INVALID_NUMBER]: { key: "typeMismatch.java.math.BigDecimal" },
+      [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" }
+    }
+
+    return errorMessages[id] ? // if we have a translation
+    getMessage(errorMessages[id].key, { payload: errorMessages[id].payload }) :
+      message ? // no translation defined -> print a message if it exists
+      message :
+        id; // otherwise just print error id
+  }
 
   render() {
     const { errors, show } = this.props;

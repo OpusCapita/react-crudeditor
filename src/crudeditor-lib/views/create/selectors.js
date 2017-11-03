@@ -30,7 +30,7 @@ export const
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
     formInstance: storeState.formInstance,
-    fieldsErrors: storeState.errors.fields,
+    // fieldsErrors: storeState.errors.fields, // TODO check create view for errors about undefined fieldsErrors
     fieldsMeta: modelMeta.fields,
     formatedInstance: storeState.formatedInstance,
     instanceLabel: storeState.instanceLabel,

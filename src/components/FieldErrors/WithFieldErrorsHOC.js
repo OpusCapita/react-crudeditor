@@ -73,9 +73,14 @@ const withFieldErrors = WrappedComponent => {
       this.state.showFieldErrors[path[0]] &&
       this.state.showFieldErrors[path[0]][path[1]] &&
       this.props.model.data.fieldErrors[path[0]] &&
-      this.props.model.data.fieldErrors[path[0]][path[1]]
+      this.props.model.data.fieldErrors[path[0]][path[1]] &&
+      this.props.model.data.fieldErrors[path[0]][path[1]].length > 0
     ) :
-      !!(this.state.showFieldErrors[path] && this.props.model.data.fieldErrors[path])
+      !!(
+        this.state.showFieldErrors[path] &&
+        this.props.model.data.fieldErrors[path] &&
+        this.props.model.data.fieldErrors[path].length > 0
+      )
 
     render() {
       const props = {

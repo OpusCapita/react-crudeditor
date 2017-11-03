@@ -41,7 +41,7 @@ export default {
     [CONSTRAINT_MIN]: param => value >= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MIN_DECEEDED,
-      message: `Min number ${param} is deceeded`
+      message: param
     }),
 
     /*
@@ -51,7 +51,7 @@ export default {
     [CONSTRAINT_MAX]: param => value <= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MAX_EXCEEDED,
-      message: `Max number ${param} is exceeded`
+      message: param
     })
   })
 };

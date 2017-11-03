@@ -57,7 +57,7 @@ class SearchForm extends React.Component {
         <FormGroup
           key={`form-group-${name}-from`}
           controlId={`fg-${name}-from`}
-          validationState={shouldShowErrors([name, 'from']) ? 'error' : null} // TBD maybe show only onBlur?
+          validationState={shouldShowErrors([name, 'from']) ? 'error' : null}
           className="crud--search-form__form-group"
         >
           <div>

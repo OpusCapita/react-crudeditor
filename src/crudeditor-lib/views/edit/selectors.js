@@ -36,7 +36,7 @@ export const
     entityName: modelMeta.name,
     formatedInstance: storeState.formatedInstance,
     formInstance: storeState.formInstance,
-    fieldsErrors: storeState.errors.fields,
+    fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
     instanceLabel: storeState.instanceLabel,
     flags: storeState.flags,

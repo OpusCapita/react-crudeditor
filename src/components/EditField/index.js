@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, Col, ControlLabel, Label } from 'react-bootstrap';
+import { FormGroup, Col, ControlLabel } from 'react-bootstrap';
 import { getFieldText } from '../lib'
+import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
 class EditField extends Component {
-  handleValidation = _ => this.props.model.actions.validateInstanceField ?
-    this.props.model.actions.validateInstanceField(this.props.entry.name) :
-    null;
+  handleChange = value => {
+    this.props.fieldErrorsWrapper.toggleFieldErrors(this.props.entry.name, false);
 
-  handleChange = value => this.props.model.actions.changeInstanceField ?
-    this.props.model.actions.changeInstanceField({
-      name: this.props.entry.name,
-      value
-    }) :
-    null;
+    return this.props.model.actions.changeInstanceField ?
+      this.props.model.actions.changeInstanceField({
+        name: this.props.entry.name,
+        value
+      }) :
+      null;
+  }
 
   render() {
     const {
@@ -27,28 +28,28 @@ class EditField extends Component {
       model: {
         data: {
           fieldsMeta,
-          fieldsErrors,
+          fieldErrors,
           formatedInstance: instance
         }
+      },
+      fieldErrorsWrapper: {
+        shouldShowErrors,
+        toggleFieldErrors
       }
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
 
-    const errors = fieldsErrors && fieldsErrors[fieldName] && fieldsErrors[fieldName].length ?
-      fieldsErrors[fieldName].map(({ message }) => message).join('; ') :
-      null;
-
     const fieldInputProps = {
       id: fieldName,
       readOnly,
       [valuePropName]: instance[fieldName],
-      // onBlur: this.handleValidation,
+      onBlur: _ => toggleFieldErrors(fieldName, true),
       onChange: this.handleChange
     }
 
     return (
-      <FormGroup controlId={fieldName} validationState={errors && 'error'}>
+      <FormGroup controlId={fieldName} validationState={shouldShowErrors(fieldName) ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={2}>
           {
             getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
@@ -57,7 +58,10 @@ class EditField extends Component {
         <Col sm={1} className='text-right' />
         <Col sm={9}>
           <FieldInput {...fieldInputProps} />
-          {errors && <Label bsStyle="danger">{errors}</Label>}
+          <FieldErrorLabel
+            errors={shouldShowErrors(fieldName) ? fieldErrors[fieldName] : []}
+            show={shouldShowErrors(fieldName)}
+          />
         </Col>
       </FormGroup>
     );
@@ -70,6 +74,9 @@ EditField.propTypes = {
   }).isRequired,
   entry: PropTypes.shape({
     name: PropTypes.string.isRequired
+  }),
+  fieldErrorsWrapper: PropTypes.shape({
+    toggleFieldErrors: PropTypes.func
   })
 }
 

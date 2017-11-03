@@ -13,7 +13,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
+      <Tab model={model}>
         {
           model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
             (<Entry key={supIndex}

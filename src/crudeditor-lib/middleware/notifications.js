@@ -13,7 +13,8 @@ import {
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_VALIDATE_FAIL as EDIT_INSTANCE_VALIDATE_FAIL,
-  INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS
+  INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS,
+  ALL_INSTANCE_FIELDS_VALIDATE_FAIL
 } from '../views/edit/constants';
 
 import {
@@ -50,6 +51,7 @@ const eventsMiddleware = context => store => next => action => {
       break;
     case CREATE_INSTANCE_SAVE_FAIL:
     case EDIT_INSTANCE_SAVE_FAIL:
+    case ALL_INSTANCE_FIELDS_VALIDATE_FAIL:
       NotificationManager.create({
         id: NOTIFICATION_ERROR,
         type: 'error',

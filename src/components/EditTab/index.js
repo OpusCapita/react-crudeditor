@@ -39,17 +39,12 @@ class EditTab extends React.PureComponent {
           persistentInstance,
           formInstance
         }
-      },
-      fieldErrorsWrapper: {
-        errorsExistAndVisible
       }
     } = this.props;
 
     const { i18n } = this.context;
 
-    const disableSave =
-      (formInstance && isEqual(persistentInstance, formInstance)) ||
-      errorsExistAndVisible;
+    const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
     const buttons = [
       <Button bsStyle='link' onClick={exitView} key="Cancel">

@@ -94,9 +94,7 @@ class EditHeading extends PureComponent {
           {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>
-                {
-                  getTabText(i18n, name)
-                }
+                <h4>{getTabText(i18n, name)}</h4>
               </NavItem>)
             )
           }

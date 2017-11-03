@@ -4,21 +4,29 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import Field from '../EditField';
 import { formatEntry } from '../lib';
+import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 
-const CreateMain = ({ model }) => {
+const CreateMain = ({ model, fieldErrorsWrapper }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model}>
+      <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
         {
           model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
-            (<Entry key={supIndex} {...props} model={model}>  {/* either Section or top-level Field */}
+            (<Entry key={supIndex}
+              {...props} model={model}
+              fieldErrorsWrapper={fieldErrorsWrapper}
+            >  {/* either Section or top-level Field */}
               {
                 fields && fields.map(({ props }, subIndex) =>
-                  <Field key={`${supIndex}_${subIndex}`} {...props} model={model} />
+                  (<Field
+                    key={`${supIndex}_${subIndex}`}
+                    {...props} model={model}
+                    fieldErrorsWrapper={fieldErrorsWrapper}
+                  />)
                 )
               }
             </Entry>)
@@ -30,7 +38,8 @@ const CreateMain = ({ model }) => {
 }
 
 CreateMain.propTypes = {
-  model: PropTypes.object.isRequired
+  model: PropTypes.object.isRequired,
+  fieldErrorsWrapper: PropTypes.object
 }
 
-export default CreateMain;
+export default WithFieldErrors(CreateMain);

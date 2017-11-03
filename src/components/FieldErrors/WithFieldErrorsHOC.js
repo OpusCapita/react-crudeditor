@@ -53,21 +53,26 @@ const withFieldErrors = WrappedComponent => {
 
     // path <string> or <[string, string{'to', 'from'}]>
     // show <boolean>
-    toggleFieldErrors = (path, show) => this.setState(prevState => ({
-      showFieldErrors: {
-        ...prevState.showFieldErrors,
-        ...(
-          Array.isArray(path) ? {
-            [path[0]]: {
-              ...(prevState.showFieldErrors[path[0]] || {}),
-              [path[1]]: show
+    toggleFieldErrors = (path, show) => this.setState(
+      prevState => typeof path !== 'boolean' ? {
+        showFieldErrors: {
+          ...prevState.showFieldErrors,
+          ...(
+            Array.isArray(path) ? {
+              [path[0]]: {
+                ...(prevState.showFieldErrors[path[0]] || {}),
+                [path[1]]: show
+              }
+            } : {
+              [path]: show
             }
-          } : {
-            [path]: show
-          }
-        )
+          )
+        }
+      } : { // if path is boolean - set value for all fields
+        showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
+          reduce((obj, key) => ({ ...obj, [key]: path }), {})
       }
-    }));
+    );
 
     shouldShowErrors = path => Array.isArray(path) ? !!( // for 'path' type see 'toggleFieldErrors' description
       this.state.showFieldErrors[path[0]] &&

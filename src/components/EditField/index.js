@@ -7,7 +7,9 @@ import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
 class EditField extends Component {
   handleChange = value => {
-    this.props.fieldErrorsWrapper.toggleFieldErrors(this.props.entry.name, false);
+    if (this.props.fieldErrorsWrapper) {
+      this.props.fieldErrorsWrapper.toggleFieldErrors(this.props.entry.name, false)
+    }
 
     return this.props.model.actions.changeInstanceField ?
       this.props.model.actions.changeInstanceField({
@@ -35,6 +37,9 @@ class EditField extends Component {
       fieldErrorsWrapper: {
         shouldShowErrors,
         toggleFieldErrors
+      } = { // TBD weither define different components or keep everything in VIEW_EDIT space
+        shouldShowErrors: _ => false,
+        toggleFieldErrors: _ => {}
       }
     } = this.props;
 
@@ -48,8 +53,10 @@ class EditField extends Component {
       onChange: this.handleChange
     }
 
+    const showErrors = shouldShowErrors(fieldName)
+
     return (
-      <FormGroup controlId={fieldName} validationState={shouldShowErrors(fieldName) ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={2}>
           {
             getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
@@ -59,8 +66,8 @@ class EditField extends Component {
         <Col sm={9}>
           <FieldInput {...fieldInputProps} />
           <FieldErrorLabel
-            errors={shouldShowErrors(fieldName) ? fieldErrors[fieldName] : []}
-            show={shouldShowErrors(fieldName)}
+            errors={showErrors ? fieldErrors[fieldName] : []}
+            show={showErrors}
           />
         </Col>
       </FormGroup>

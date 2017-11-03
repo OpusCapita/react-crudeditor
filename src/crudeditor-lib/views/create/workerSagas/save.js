@@ -4,6 +4,7 @@ import {
   AFTER_ACTION_NEW,
 
   ALL_INSTANCE_FIELDS_VALIDATE,
+  ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
 
   INSTANCE_FIELD_VALIDATE,
 
@@ -73,6 +74,10 @@ function* validateSaga(modelDefinition, meta) {
   );
 
   if (Object.keys(fieldErrors).length) {
+    yield put({
+      type: ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
+      payload: fieldErrors
+    });
     throw fieldErrors;
   }
 

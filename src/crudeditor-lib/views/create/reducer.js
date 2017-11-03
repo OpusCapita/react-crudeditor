@@ -17,7 +17,6 @@ import {
 
   TAB_SELECT,
 
-  INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE
 } from './constants';
 
@@ -65,8 +64,6 @@ const defaultStoreStateTemplate = {
 
   // A ref to one of tabs element => it is undefined when and only when formLayout does not consist of tabs.
   activeTab: undefined,
-
-  divergedField: null,
 
   instanceLabel: undefined,
 
@@ -200,12 +197,6 @@ export default modelDefinition => (
       [fieldName]: u.constant(fieldValue)
     };
 
-    newStoreStateSlice.divergedField = fieldName;
-
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-    // if storeState.divergedField is null, no data has changed.
-    const { name: fieldName } = payload;
     const fieldMeta = modelDefinition.model.fields[fieldName];
     const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
@@ -214,7 +205,7 @@ export default modelDefinition => (
 
       try {
         newFormValue = parseField({
-          value: storeState.formatedInstance[fieldName],
+          value: fieldValue,
           type: fieldMeta.type,
           sourceType: uiType
         });
@@ -282,8 +273,6 @@ export default modelDefinition => (
         };
       }
     }
-
-    newStoreStateSlice.divergedField = null;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {

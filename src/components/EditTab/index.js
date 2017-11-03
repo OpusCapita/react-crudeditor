@@ -15,6 +15,10 @@ class EditTab extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
+    if (this.props.model.data.viewName === VIEW_CREATE) {
+      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
+    }
+
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
       this.props.model.actions.saveInstance();
     }
@@ -22,9 +26,15 @@ class EditTab extends React.PureComponent {
 
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
-  handleSaveAndNew = _ => this.props.model.actions.saveAndNewInstance()
+  handleSaveAndNew = _ => {
+    if (this.props.model.data.viewName === VIEW_CREATE) {
+      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
+    }
 
-  handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance()
+    this.props.model.actions.saveAndNewInstance()
+  }
+
+  handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
   render() {
     const {

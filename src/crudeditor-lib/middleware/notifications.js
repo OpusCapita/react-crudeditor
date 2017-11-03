@@ -100,8 +100,7 @@ const eventsMiddleware = context => store => next => action => {
         id: NOTIFICATION_VALIDATION_ERROR,
         type: 'error',
         timeOut: 3000,
-        // TODO / TBD / do we need this / where do we get translations from
-        message: "Instance is not valid"
+        message: context.i18n.getMessage('default.invalid.validator.message')
       });
       break;
     case CREATE_INSTANCE_VALIDATE_SUCCESS:

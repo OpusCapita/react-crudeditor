@@ -73,7 +73,7 @@ const defaultStoreStateTemplate = {
   // formatedFilter[fieldName] is up-to-date, but
   // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
   // (or UNPARSABLE_FIELD_VALUE if the value is unparsable).
-  divergedField: null,
+  // divergedField: null,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -180,7 +180,7 @@ export default modelDefinition => (
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-    newStoreStateSlice.divergedField = null;
+    // newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
@@ -227,12 +227,12 @@ export default modelDefinition => (
       [fieldName]: u.constant(fieldValue)
     };
 
-    newStoreStateSlice.divergedField = fieldName;
+  //   newStoreStateSlice.divergedField = fieldName;
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-    // if storeState.divergedField is null, no data has changed.
-    const { name: fieldName } = payload;
+  // // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
+  //   // if storeState.divergedField is null, no data has changed.
+    // const { name: fieldName } = payload;
     const fieldMeta = modelDefinition.model.fields[fieldName];
     const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
@@ -241,7 +241,8 @@ export default modelDefinition => (
 
       try {
         newFormValue = parseField({
-          value: storeState.formatedInstance[fieldName],
+          // value: storeState.formatedInstance[fieldName],
+          value: fieldValue,
           type: fieldMeta.type,
           sourceType: uiType
         });
@@ -310,7 +311,7 @@ export default modelDefinition => (
       }
     }
 
-    newStoreStateSlice.divergedField = null;
+    // newStoreStateSlice.divergedField = null;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {

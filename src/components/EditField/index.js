@@ -43,7 +43,7 @@ class EditField extends Component {
       id: fieldName,
       readOnly,
       [valuePropName]: instance[fieldName],
-      onBlur: this.handleValidation,
+      // onBlur: this.handleValidation,
       onChange: this.handleChange
     }
 

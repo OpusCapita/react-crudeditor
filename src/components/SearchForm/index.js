@@ -1,42 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup } from 'react-bootstrap';
-import { getFieldText, errorsExistAndVisible } from '../lib';
-import FieldErrorLabel from '../FieldErrorLabel';
+import { getFieldText } from '../lib';
+import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
+import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import './SearchForm.less';
 
 class SearchForm extends React.Component {
-  state = {
-    showFieldErrors: {}
-  }
-
-  toggleFieldErrors = (path, show) => this.setState(prevState => ({
-    showFieldErrors: {
-      ...prevState.showFieldErrors,
-      ...(
-        Array.isArray(path) ? {
-          [path[0]]: {
-            ...(prevState.showFieldErrors[path[0]] || {}),
-            [path[1]]: show
-          }
-        } : {
-          [path]: show
-        }
-      )
-    }
-  }));
-
-  shouldShowErrors = path => Array.isArray(path) ? !!(
-    this.state.showFieldErrors[path[0]] &&
-    this.state.showFieldErrors[path[0]][path[1]] &&
-    this.props.model.data.fieldErrors[path[0]] &&
-    this.props.model.data.fieldErrors[path[0]][path[1]]
-  ) :
-    !!(this.state.showFieldErrors[path] && this.props.model.data.fieldErrors[path])
-
-
   handleFormFilterUpdate = path => newFieldValue => {
-    this.toggleFieldErrors(path, false);
+    this.props.fieldErrorsWrapper.toggleFieldErrors(path, false);
 
     this.props.model.actions.updateFormFilter({
       path,
@@ -44,7 +16,7 @@ class SearchForm extends React.Component {
     });
   }
 
-  handleFormFilterBlur = path => _ => this.toggleFieldErrors(path, true);
+  handleFormFilterBlur = path => _ => this.props.fieldErrorsWrapper.toggleFieldErrors(path, true);
 
   handleSubmit = e => {
     e.preventDefault();
@@ -55,16 +27,23 @@ class SearchForm extends React.Component {
 
   render() {
     const {
-      data: {
-        fieldErrors: errors,
-        formatedFilter,
-        searchableFields,
-        searchFormChanged
+      model: {
+        data: {
+          fieldErrors: errors,
+          formatedFilter,
+          searchableFields,
+          searchFormChanged
+        },
+        actions: {
+          resetFormFilter
+        }
       },
-      actions: {
-        resetFormFilter
+      // fieldErrorsWrapper comes from WithFieldErrors HOC
+      fieldErrorsWrapper: {
+        shouldShowErrors,
+        errorsExistAndVisible
       }
-    } = this.props.model;
+    } = this.props;
 
     const { i18n } = this.context;
 
@@ -78,7 +57,7 @@ class SearchForm extends React.Component {
         <FormGroup
           key={`form-group-${name}-from`}
           controlId={`fg-${name}-from`}
-          validationState={this.shouldShowErrors([name, 'from']) ? 'error' : null} // TBD maybe show only onBlur?
+          validationState={shouldShowErrors([name, 'from']) ? 'error' : null} // TBD maybe show only onBlur?
           className="crud--search-form__form-group"
         >
           <div>
@@ -89,15 +68,15 @@ class SearchForm extends React.Component {
               onBlur={this.handleFormFilterBlur([name, 'from'])}
             />
             <FieldErrorLabel
-              errors={this.shouldShowErrors([name, 'from']) ? errors[name].from : []}
-              show={this.shouldShowErrors([name, 'from'])}
+              errors={shouldShowErrors([name, 'from']) ? errors[name].from : []}
+              show={shouldShowErrors([name, 'from'])}
             />
           </div>
         </FormGroup>
         <FormGroup
           key={`form-group-${name}-to`}
           controlId={`fg-${name}-to`}
-          validationState={this.shouldShowErrors([name, 'to']) ? 'error' : null}
+          validationState={shouldShowErrors([name, 'to']) ? 'error' : null}
           className="crud--search-form__form-group"
         >
           <div>
@@ -108,8 +87,8 @@ class SearchForm extends React.Component {
               onBlur={this.handleFormFilterBlur([name, 'to'])}
             />
             <FieldErrorLabel
-              errors={this.shouldShowErrors([name, 'to']) ? errors[name].to : []}
-              show={this.shouldShowErrors([name, 'to'])}
+              errors={shouldShowErrors([name, 'to']) ? errors[name].to : []}
+              show={shouldShowErrors([name, 'to'])}
             />
           </div>
         </FormGroup>
@@ -117,7 +96,7 @@ class SearchForm extends React.Component {
       <FormGroup
         key={`form-group-${name}`}
         controlId={`fg-${name}`}
-        validationState={this.shouldShowErrors(name) ? 'error' : null}
+        validationState={shouldShowErrors(name) ? 'error' : null}
         className="crud--search-form__form-group"
       >
         <div>
@@ -128,8 +107,8 @@ class SearchForm extends React.Component {
             onBlur={this.handleFormFilterBlur(name)}
           />
           <FieldErrorLabel
-            errors={this.shouldShowErrors(name) ? errors[name] : []}
-            show={this.shouldShowErrors(name)}
+            errors={shouldShowErrors(name) ? errors[name] : []}
+            show={shouldShowErrors(name)}
           />
         </div>
       </FormGroup>
@@ -151,7 +130,7 @@ class SearchForm extends React.Component {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={ !searchFormChanged || errorsExistAndVisible(errors, this.state.showFieldErrors) }
+            disabled={ !searchFormChanged || errorsExistAndVisible }
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>
@@ -168,6 +147,11 @@ SearchForm.propTypes = {
       fieldErrors: PropTypes.object
     }),
     actions: PropTypes.objectOf(PropTypes.func)
+  }).isRequired,
+  fieldErrorsWrapper: PropTypes.shape({
+    toggleFieldErrors: PropTypes.func,
+    shouldShowErrors: PropTypes.func,
+    errorsExistAndVisible: PropTypes.bool
   }).isRequired
 }
 
@@ -175,4 +159,4 @@ SearchForm.contextTypes = {
   i18n: PropTypes.object
 };
 
-export default SearchForm;
+export default WithFieldErrors(SearchForm);

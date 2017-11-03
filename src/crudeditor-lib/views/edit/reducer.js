@@ -14,7 +14,6 @@ import {
   INSTANCE_EDIT_FAIL,
 
   INSTANCE_FIELD_CHANGE,
-  INSTANCE_FIELD_VALIDATE,
 
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
@@ -227,11 +226,11 @@ export default modelDefinition => (
       [fieldName]: u.constant(fieldValue)
     };
 
-  //   newStoreStateSlice.divergedField = fieldName;
+    //   newStoreStateSlice.divergedField = fieldName;
 
-  // // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  // } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-  //   // if storeState.divergedField is null, no data has changed.
+    // // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    // } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
+    //   // if storeState.divergedField is null, no data has changed.
     // const { name: fieldName } = payload;
     const fieldMeta = modelDefinition.model.fields[fieldName];
     const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;

@@ -16,7 +16,7 @@ import {
   VIEW_ERROR
 } from '../../common/constants';
 
-import withAlerts from '../WithAlertsHOC';
+import WithAlerts from '../WithAlertsHOC';
 
 const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   if (!activeViewName) {
@@ -48,4 +48,4 @@ ViewSwitcher.propTypes = {
 
 export default connect(
   storeState => ({ activeViewName: storeState.common.activeViewName })
-)(withAlerts(ViewSwitcher));
+)(WithAlerts(ViewSwitcher));

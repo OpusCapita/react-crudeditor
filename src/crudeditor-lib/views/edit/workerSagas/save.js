@@ -12,8 +12,6 @@ import {
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_FAIL,
 
-  INSTANCE_FIELD_VALIDATE,
-
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS,
@@ -29,21 +27,6 @@ import {
  * Instance validation
  */
 function* validateSaga(modelDefinition, meta) {
-  // const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
-
-  // if (divergedField) {
-  //   // ENTER key was pressed in one of form inputs =>
-  //   // the input's onBlur() was not called and vallues was not parsed as a result =>
-  //   // mimic onBlur() event handler:
-  //   yield put({
-  //     type: INSTANCE_FIELD_VALIDATE,
-  //     payload: {
-  //       name: divergedField
-  //     },
-  //     meta
-  //   });
-  // }
-
   const [
     instance,
     errors

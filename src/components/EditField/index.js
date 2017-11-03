@@ -37,7 +37,7 @@ class EditField extends Component {
       fieldErrorsWrapper: {
         shouldShowErrors,
         toggleFieldErrors
-      } = { // TBD weither define different components or keep everything in VIEW_EDIT space
+      } = {
         shouldShowErrors: _ => false,
         toggleFieldErrors: _ => {}
       }

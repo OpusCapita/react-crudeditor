@@ -7,6 +7,7 @@ import {
 
 import {
   INSTANCE_SHOW_SUCCESS,
+  INSTANCE_SHOW_REQUEST,
 
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,
@@ -23,7 +24,8 @@ import {
   STATUS_INITIALIZING,
   STATUS_READY,
   STATUS_REDIRECTING,
-  STATUS_UNINITIALIZED
+  STATUS_UNINITIALIZED,
+  STATUS_EXTRACTING
 } from '../../common/constants';
 
 import { findFieldLayout, getTab } from '../lib';
@@ -92,6 +94,8 @@ export default modelDefinition => (
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_SHOW_REQUEST) {
+    newStoreStateSlice.status = STATUS_EXTRACTING;
   } else if (type === INSTANCE_SHOW_SUCCESS) {
     const { instance } = payload;
 

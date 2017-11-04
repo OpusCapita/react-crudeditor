@@ -56,7 +56,7 @@ class EditField extends Component {
 
     const showErrors = shouldShowErrors(fieldName)
 
-    const labelColumns = 2 * columns;
+    const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
       <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>

@@ -14,7 +14,6 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
   const spinnerElement = model.data.isLoading ? (<SpinnerOverlay />) : null;
 
   const { columns: tabColumns } = model.data.activeTab;
-  console.log(tabColumns)
 
   const sectionFieldsLayout = ({ fields, model, supIndex, columns: sectionColumns = 1 }) => {
     const fieldsArr = fields.map(({ props }, subIndex) => (
@@ -26,12 +25,8 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
     let columns = [];
 
     if (sectionColumns < 2) {
-      console.log("section columns as is")
-      console.log(fieldsArr)
       columns = <Col sm={12}>{fieldsArr}</Col>
     } else {
-      console.log("section columns to format")
-      console.log(fieldsArr)
       for (let i = 0; i < sectionColumns; i++) {
         columns.push(
           <Col sm={12 / sectionColumns} key={i + '_section_column'}>
@@ -43,14 +38,26 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
     return <Row>{columns}</Row>
   }
 
+  sectionFieldsLayout.propTypes = {
+    fields: PropTypes.arrayOf(PropTypes.object),
+    model: PropTypes.object,
+    supIndex: PropTypes.number,
+    columns: PropTypes.number
+  }
+
   const tabLayout = tabColumns < 2 ?
     // plain vertical full-width grid
     model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
       (<Entry key={supIndex + '_toplevel'}
-         {...props} model={model}
-         fieldErrorsWrapper={fieldErrorsWrapper}
+        {...props} model={model}
+        fieldErrorsWrapper={fieldErrorsWrapper}
       >
-        { fields ? sectionFieldsLayout({ fields, model, supIndex, columns: props.columns }) : null }
+        {
+          fields ? sectionFieldsLayout({
+            fields, model, supIndex,
+            columns: props.columns // eslint-disable-line react/prop-types
+          }) : null
+        }
       </Entry>)
     ) :
     // now funky stuff with columns begins

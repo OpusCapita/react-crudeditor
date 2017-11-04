@@ -92,7 +92,7 @@ class SearchResultListing extends React.PureComponent {
                   (<th key={`th-${name}`}>
                     {
                       sortable ?
-                      <a
+                        <a
                           className="crud--search-result-listing__sort-button"
                           style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                           onClick={this.handleResort(name)}

@@ -16,14 +16,7 @@ export default function*({
   },
   navigation
 }) {
-  const incNum = side === 'next' ? 1 :
-    side === 'prev' ? -1 :
-      0; // should never happen
-
-  if (incNum === 0) { // TODO delete this 'if' after testing
-    console.error('Unexpected side: ' + side);
-    throw new Error(`Unexpected side: ${side}`)
-  }
+  const incNum = side === 'next' ? 1 : -1;
 
   const instance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 

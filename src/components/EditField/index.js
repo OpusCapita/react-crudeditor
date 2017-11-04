@@ -57,13 +57,13 @@ class EditField extends Component {
 
     return (
       <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>
-        <Col componentClass={ControlLabel} sm={2}>
+        <Col componentClass={ControlLabel} sm={3}>
           {
             getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
           }
         </Col>
         <Col sm={1} className='text-right' />
-        <Col sm={9}>
+        <Col sm={8}>
           <FieldInput {...fieldInputProps} />
           <FieldErrorLabel
             errors={showErrors ? fieldErrors[fieldName] : []}

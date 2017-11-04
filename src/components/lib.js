@@ -34,7 +34,7 @@ export const
     Entry: Section,
     fields: entry.map(formatEntry), // Section always has at least one field.
     props: {
-      // title: entry.section.replace(/(^|\s)[a-z]/g, char => char.toUpperCase())
-      title: entry.section
+      title: entry.section,
+      columns: entry.columns
     }
   };

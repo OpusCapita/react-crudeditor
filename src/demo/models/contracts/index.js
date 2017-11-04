@@ -264,14 +264,14 @@ export const fields = {
 };
 
 const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
-  tab({ name: 'general' },
+  tab({ name: 'general', columns: 2 },
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
     field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
     // field({ name: 'parentContract', render: { Component: ContractReferenceSearch }}),
     // field({ name: 'currencyId', render: { Component: CurrencyField }}),
-    viewName !== VIEW_CREATE && section({ name: 'auditable' },
+    viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
       field({ name: 'createdBy', readOnly: true }),
       field({ name: 'createdOn', readOnly: true }),
       field({ name: 'changedOn', readOnly: true }),

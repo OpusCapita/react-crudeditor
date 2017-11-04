@@ -107,19 +107,21 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, r
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const sectionLayout = ({ name: sectionId }, ...allEntries) => {
+const sectionLayout = ({ name: sectionId, columns }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.section = sectionId;
+  entries.columns = columns;
   return entries.length ? entries : null;
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const tabLayout = ({ name: tabId, ...props }, ...allEntries) => {
+const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.tab = tabId;
+  entries.columns = columns;
 
   Object.keys(props).forEach(name => {
     entries[name] = props[name];

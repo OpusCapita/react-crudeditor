@@ -92,9 +92,9 @@ class SearchResultListing extends React.PureComponent {
                   (<th key={`th-${name}`}>
                     {
                       sortable ?
-                      <nobr><a
+                      <a
                           className="crud--search-result-listing__sort-button"
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                           onClick={this.handleResort(name)}
                         >
                           {getFieldText(this.context.i18n, name)}
@@ -105,7 +105,7 @@ class SearchResultListing extends React.PureComponent {
                               glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`}
                             />
                           }
-                        </a></nobr> :
+                        </a> :
                         getFieldText(this.context.i18n, name)
                     }
                   </th>)

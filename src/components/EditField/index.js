@@ -40,7 +40,8 @@ class EditField extends Component {
       } = {
         shouldShowErrors: _ => false,
         toggleFieldErrors: _ => {}
-      }
+      },
+      columns
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
@@ -55,15 +56,17 @@ class EditField extends Component {
 
     const showErrors = shouldShowErrors(fieldName)
 
+    const labelColumns = 2 * columns;
+
     return (
       <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>
-        <Col componentClass={ControlLabel} sm={3}>
+        <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
           }
         </Col>
-        <Col sm={1} className='text-right' />
-        <Col sm={8}>
+        {/* <Col sm={1} className='text-right' /> */}
+        <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
           <FieldErrorLabel
             errors={showErrors ? fieldErrors[fieldName] : []}

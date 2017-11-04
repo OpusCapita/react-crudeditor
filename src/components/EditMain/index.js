@@ -13,13 +13,14 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
 
   const spinnerElement = model.data.isLoading ? (<SpinnerOverlay />) : null;
 
-  const { columns: tabColumns } = model.data.activeTab;
+  const { columns: tabColumns = 1 } = model.data.activeTab;
 
   const sectionFieldsLayout = ({ fields, model, supIndex, columns: sectionColumns = 1 }) => {
     const fieldsArr = fields.map(({ props }, subIndex) => (
       <Field key={`${supIndex}_${subIndex}_section_field`}
         {...props} model={model}
         fieldErrorsWrapper={fieldErrorsWrapper}
+        columns={sectionColumns}
       />));
 
     let columns = [];
@@ -51,6 +52,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
       (<Entry key={supIndex + '_toplevel'}
         {...props} model={model}
         fieldErrorsWrapper={fieldErrorsWrapper}
+        columns={tabColumns}
       >
         {
           fields ? sectionFieldsLayout({
@@ -76,6 +78,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
                 <Entry key={supIndex + '_section'}
                   {...props} model={model}
                   fieldErrorsWrapper={fieldErrorsWrapper}
+                  columns={tabColumns}
                 >
                   { sectionFieldsLayout({ fields, model, supIndex, columns }) }
                 </Entry>
@@ -90,6 +93,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
           key={supIndex + '_entry'}
           {...props} model={model}
           fieldErrorsWrapper={fieldErrorsWrapper}
+          columns={tabColumns}
         ></Entry>);
 
         let blocks;

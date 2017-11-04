@@ -13,18 +13,19 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
 
   const spinnerElement = model.data.isLoading ? (<SpinnerOverlay />) : null;
 
-  const { columns } = model.data.activeTab;
+  const { columns: tabColumns } = model.data.activeTab;
+  console.log(tabColumns)
 
   const sectionFieldsLayout = ({ fields, model, supIndex }) => fields.map(({ props }, subIndex) => (
-    <Field key={`${supIndex}_${subIndex}`}
+    <Field key={`${supIndex}_${subIndex}_section_field`}
       {...props} model={model}
       fieldErrorsWrapper={fieldErrorsWrapper}
     />));
 
-  const tabLayout = columns < 2 ?
+  const tabLayout = tabColumns < 2 ?
     // plain vertical full-width grid
     model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) =>
-      (<Entry key={supIndex}
+      (<Entry key={supIndex + '_toplevel'}
          {...props} model={model}
          fieldErrorsWrapper={fieldErrorsWrapper}
       >
@@ -43,7 +44,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
             ...result,
             blocks: result.blocks.concat({
               block: (
-                <Entry key={supIndex}
+                <Entry key={supIndex + '_section'}
                   {...props} model={model}
                   fieldErrorsWrapper={fieldErrorsWrapper}
                 >
@@ -57,14 +58,14 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
         }
         // this is a regular top-level field
         const field = (<Entry
-          key={supIndex}
+          key={supIndex + '_entry'}
           {...props} model={model}
           fieldErrorsWrapper={fieldErrorsWrapper}
         ></Entry>);
 
         let blocks;
 
-        if (result.blocks[result.currIndex]) { // add field to current array inside
+        if (result.blocks[result.currIndex]) {
           blocks = result.blocks.map((b, i) => i === result.currIndex ? {
             ...b,
             block: b.block.concat(field)
@@ -78,14 +79,34 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
 
         return {
           ...result,
-          // Array<{ block: [] || section, type: "fields" || "section" }>
           blocks
         }
       }, {
-        blocks: [],
+        blocks: [], // Array<{ block: [] || section, type: "fields" || "section" }>
         currIndex: 0
       }
-    ).blocks.map(({ block, type }) => block);
+    ).blocks.map(({ block, type }, index) => {
+      // create grids
+      if (type === "fields") {
+        let columns = [];
+        for (let i = 0; i < tabColumns; i++) {
+          columns.push((_ => {
+            const columnFields = block.filter((field, index) => index % tabColumns === i);
+            return (
+              <Col sm={12 / tabColumns} key={i + '_column'}>
+                {columnFields}
+              </Col>)
+          })())
+        }
+        return <Row key={type + '_' + index}>{columns}</Row>
+      }
+
+      if (type === "section") {
+        return block
+      }
+
+      throw new Error('Unknown type of grid block!')
+    });
 
   return (<div className="ready-for-spinner">
     {spinnerElement}
@@ -95,32 +116,6 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
         <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
         <Tab model={model}>
           {tabLayout}
-          {
-            // model.data.activeEntries.map(formatEntry).map(({ Entry, props, fields }, supIndex) => {
-            //   console.log("supppp: " + supIndex)
-            //   console.log({ Entry, props, fields })
-            //   return (<Entry key={supIndex}
-            //     {...props} model={model}
-            //     fieldErrorsWrapper={fieldErrorsWrapper}
-            //   >  {/* either Section or top-level Field */}
-            //     <Row>
-            //       <Col sm={6}>
-            //     {
-            //       fields && fields.map(({ props }, subIndex) => {
-            //         console.log(supIndex + " " + subIndex);
-            //         console.log(props)
-            //         return (<Field key={`${supIndex}_${subIndex}`}
-            //           {...props} model={model}
-            //           fieldErrorsWrapper={fieldErrorsWrapper}
-            //         />)
-            //       })
-            //     }
-            //       </Col>
-            //     </Row>
-            //   </Entry>)
-            // })
-          }
-
         </Tab>
       }
     </div>

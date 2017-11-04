@@ -287,16 +287,16 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     section({ name: 'test' },
       field({ name: 'testNumberTypeField' })
     ),
-    section({ name: 'order' },
+    section({ name: 'order', columns: 2 },
       field({ name: 'minOrderValue' }),
-      field({ name: 'minOrderValueRequired' }),
       field({ name: 'maxOrderValue' }),
       field({ name: 'freeShippingBoundary' }),
       field({ name: 'freightSurcharge' }),
       field({ name: 'smallVolumeSurcharge' }),
-      field({ name: 'totalContractedAmount' })
+      field({ name: 'totalContractedAmount' }),
+      field({ name: 'minOrderValueRequired' })
     ),
-    section({ name: 'type' },
+    section({ name: 'type', columns: 3 },
       field({ name: 'isStandard' }),
       field({ name: 'isPreferred' }),
       field({ name: 'isFrameContract' }),

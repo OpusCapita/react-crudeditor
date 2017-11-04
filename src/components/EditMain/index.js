@@ -16,11 +16,32 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
   const { columns: tabColumns } = model.data.activeTab;
   console.log(tabColumns)
 
-  const sectionFieldsLayout = ({ fields, model, supIndex }) => fields.map(({ props }, subIndex) => (
-    <Field key={`${supIndex}_${subIndex}_section_field`}
-      {...props} model={model}
-      fieldErrorsWrapper={fieldErrorsWrapper}
-    />));
+  const sectionFieldsLayout = ({ fields, model, supIndex, columns: sectionColumns = 1 }) => {
+    const fieldsArr = fields.map(({ props }, subIndex) => (
+      <Field key={`${supIndex}_${subIndex}_section_field`}
+        {...props} model={model}
+        fieldErrorsWrapper={fieldErrorsWrapper}
+      />));
+
+    let columns = [];
+
+    if (sectionColumns < 2) {
+      console.log("section columns as is")
+      console.log(fieldsArr)
+      columns = <Col sm={12}>{fieldsArr}</Col>
+    } else {
+      console.log("section columns to format")
+      console.log(fieldsArr)
+      for (let i = 0; i < sectionColumns; i++) {
+        columns.push(
+          <Col sm={12 / sectionColumns} key={i + '_section_column'}>
+            {fieldsArr.filter((field, index) => index % sectionColumns === i)}
+          </Col>
+        )
+      }
+    }
+    return <Row>{columns}</Row>
+  }
 
   const tabLayout = tabColumns < 2 ?
     // plain vertical full-width grid
@@ -29,7 +50,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
          {...props} model={model}
          fieldErrorsWrapper={fieldErrorsWrapper}
       >
-        { fields ? sectionFieldsLayout({ fields, model, supIndex }) : null }
+        { fields ? sectionFieldsLayout({ fields, model, supIndex, columns: props.columns }) : null }
       </Entry>)
     ) :
     // now funky stuff with columns begins
@@ -40,6 +61,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
       (result, { Entry, props, fields }, supIndex) => {
         // sections have not-null 'fields' property
         if (fields) {
+          const { columns } = props;
           return {
             ...result,
             blocks: result.blocks.concat({
@@ -48,7 +70,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
                   {...props} model={model}
                   fieldErrorsWrapper={fieldErrorsWrapper}
                 >
-                  { sectionFieldsLayout({ fields, model, supIndex }) }
+                  { sectionFieldsLayout({ fields, model, supIndex, columns }) }
                 </Entry>
               ),
               type: 'section'
@@ -90,13 +112,11 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
       if (type === "fields") {
         let columns = [];
         for (let i = 0; i < tabColumns; i++) {
-          columns.push((_ => {
-            const columnFields = block.filter((field, index) => index % tabColumns === i);
-            return (
-              <Col sm={12 / tabColumns} key={i + '_column'}>
-                {columnFields}
-              </Col>)
-          })())
+          columns.push(
+            <Col sm={12 / tabColumns} key={i + '_column'}>
+              {block.filter((field, index) => index % tabColumns === i)}
+            </Col>
+          )
         }
         return <Row key={type + '_' + index}>{columns}</Row>
       }

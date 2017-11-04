@@ -87,7 +87,8 @@ EditField.propTypes = {
   }),
   fieldErrorsWrapper: PropTypes.shape({
     toggleFieldErrors: PropTypes.func
-  })
+  }),
+  columns: PropTypes.number
 }
 
 EditField.contextTypes = {

@@ -17,7 +17,7 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
       <Heading model={model} />
       {ActiveTabComponent ?
         <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-        <Tab model={model}>
+        <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
           <FormGrid model={model} fieldErrorsWrapper={fieldErrorsWrapper}/>
         </Tab>
       }

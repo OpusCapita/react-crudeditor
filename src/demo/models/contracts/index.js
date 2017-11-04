@@ -264,7 +264,7 @@ export const fields = {
 };
 
 const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
-  tab({ name: 'general', columns: 2 }, // Best look with N % 2 = 0
+  tab({ name: 'general', columns: 2 }, // Best look with N = 2, 3, 4 (default is 1)
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
@@ -287,7 +287,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     section({ name: 'test' },
       field({ name: 'testNumberTypeField' })
     ),
-    section({ name: 'order', columns: 2 },
+    section({ name: 'order', columns: 3 },
       field({ name: 'minOrderValue' }),
       field({ name: 'maxOrderValue' }),
       field({ name: 'freeShippingBoundary' }),

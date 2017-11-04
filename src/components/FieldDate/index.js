@@ -6,8 +6,8 @@ class FieldDate extends React.PureComponent {
   constructor(...args) {
     super(...args);
 
-    if (!this.props.readOnly) {
-      this.handleChange = value => {
+    this.handleChange = (!this.props.readOnly) ?
+      value => {
         // see description in render() function
         if (this.props.onChange) {
           this.props.onChange(value);
@@ -15,8 +15,8 @@ class FieldDate extends React.PureComponent {
             this.props.onBlur()
           }
         }
-      }
-    }
+      } :
+      _ => null // prevents a propTypes warning about missing onChange handler for DateInput component
   }
 
   render = _ =>

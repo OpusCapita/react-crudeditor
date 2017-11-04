@@ -15,11 +15,8 @@ class EditTab extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
 
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
-    }
-
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
+      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
       this.props.model.actions.saveInstance();
     }
   }

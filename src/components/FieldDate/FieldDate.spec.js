@@ -50,7 +50,7 @@ describe("FieldDate", _ => {
     };
     const wrapper = Enzyme.mount(<FieldDate {...props} />);
     const fc = wrapper.find(DateInput)
-    expect(fc.prop('onChange')).to.equal(DateInput.defaultProps.onChange);
+    expect(fc.prop('onChange')()).to.equal(null);
     expect(fc.prop('onBlur')).to.equal(DateInput.defaultProps.onBlur)
   });
 });

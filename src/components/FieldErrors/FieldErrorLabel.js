@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Label } from 'react-bootstrap';
+import { Label, Fade } from 'react-bootstrap';
 
 import {
   ERROR_INVALID_DATE,
@@ -43,11 +43,13 @@ export default class extends PureComponent {
 
     return (
       <div style={{ display: "block" }}>
-        <Label
-          bsStyle="danger"
-          style={{ opacity: show ? '1' : '0' }}
-        >{(show && errors.length > 0) ? this.getErrorMessage(errors[0]) : ' '}
-        </Label>
+        <div style={{ opacity: show ? '1' : '0' }}>
+          <Fade in={show}>
+            <Label bsStyle="danger">
+              {(show && errors.length > 0) ? this.getErrorMessage(errors[0]) : ' '}
+            </Label>
+          </Fade>
+        </div>
       </div>
     )
   }

@@ -43,23 +43,6 @@ class EditSelection extends React.Component {
       </div>
 
     );
-
-    // return (
-    //   <Panel
-    //     collapsible={true}
-    //     expanded={!collapsed}
-    //     onSelect={this.handleSelect}
-    //     header={(
-    //       <h4 style={{ cursor: 'pointer', fontWeight: 'normal' }}>
-    //         <Glyphicon glyph={`chevron-${collapsed ? 'down' : 'up'}`}/>
-    //         &nbsp;
-    //         { getSectionText(this.context.i18n, title) }
-    //       </h4>
-    //     )}
-    //   >
-    //     {fields}
-    //   </Panel>
-    // );
   }
 }
 

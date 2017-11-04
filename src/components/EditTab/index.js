@@ -126,7 +126,9 @@ class EditTab extends React.PureComponent {
         </Col>
         <FormGroup>
           <Col sm={12}>
-            <ButtonToolbar style={{ float: 'right' }}>{ buttons }</ButtonToolbar>
+            <div className="form-submit text-right">
+              <ButtonToolbar>{ buttons }</ButtonToolbar>
+            </div>
           </Col>
         </FormGroup>
       </Form>

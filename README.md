@@ -279,6 +279,8 @@ view | {<br />&nbsp;&nbsp;name: &lt;string&gt;,<br />&nbsp;&nbsp;state: &lt;obje
 
 ### Definition Object Structure
 
+Complete example of the model configuration file: [contracts model](https://github.com/OpusCapita/react-crudeditor/blob/master/src/demo/models/contracts/index.js).
+
 Model Definition is an object describing an entity. It has the following structure:
 
 ```javascript
@@ -641,6 +643,51 @@ Model Definition is an object describing an entity. It has the following structu
     }
   }
 }
+```
+
+Form layout is built with the following function: 
+
+```
+const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
+  // Number of columns for UI, best values are 2, 3, 4. If not defined assumed 1.
+  tab({ name: 'general', columns: 2 },
+    field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
+    field({ name: 'description' }),
+    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
+    viewName !== VIEW_CREATE && section({ name: 'auditable' },
+      field({ name: 'createdBy', readOnly: true }),
+      field({ name: 'createdOn', readOnly: true }),
+      field({ name: 'changedOn', readOnly: true }),
+      field({ name: 'changedBy', readOnly: true })
+    )
+  ),
+  tab({ name: 'catalogs' }),
+  tab({ name: 'customer' }),
+  tab({ name: 'boilerplates' }),
+  tab({ name: 'supplier' }),
+  tab({ name: 'groups' }),
+  tab({ name: 'additional' },
+    section({ name: 'test' },
+      field({ name: 'testNumberTypeField' })
+    ),
+    section({ name: 'order', columns: 2 }, // Columns can be defined for tabs and/or sections
+      field({ name: 'minOrderValue' }),
+      field({ name: 'minOrderValueRequired' }),
+      field({ name: 'maxOrderValue' }),
+      field({ name: 'freeShippingBoundary' }),
+      field({ name: 'freightSurcharge' }),
+      field({ name: 'smallVolumeSurcharge' }),
+      field({ name: 'totalContractedAmount' })
+    ),
+    section({ name: 'type' },
+      field({ name: 'isStandard' }),
+      field({ name: 'isPreferred' }),
+      field({ name: 'isFrameContract' }),
+      field({ name: 'isInternal' }),
+      field({ name: 'isOffer' })
+    )
+  )
+];
 ```
 
 ### FieldInputComponent

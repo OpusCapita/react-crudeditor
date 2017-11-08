@@ -1,5 +1,7 @@
 [![CircleCI](https://circleci.com/gh/OpusCapita/react-crudeditor.svg?style=shield&circle-token=d9a917e9d6b76fc2d83928b2ec06e2297b3e05a4)](https://circleci.com/gh/OpusCapita/react-crudeditor)
 
+### Demo: [contracts editor](https://opuscapita.github.io/react-crudeditor/branches/master/).
+
 # CRUD Editor
 
 Table of Content

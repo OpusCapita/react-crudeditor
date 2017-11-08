@@ -1,3 +1,6 @@
+## [v0.0.7](Wed, 08 Nov 2017 11:55:15 GMT)
+ - Version update (Andrei Mourzenkov <mourzenkov@scand.com>, cc21d8e)
+
 ## [v0.0.6](Wed, 08 Nov 2017 11:52:24 GMT)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3e448d2)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, ca9d397)

@@ -112,7 +112,7 @@ Table of Content
 ```javascript
 // 'contract-crudeditor' package.
 import React from 'react';
-import crudEditor from 'react-crudeditor';
+import crudEditor from '@opuscapita/react-crudeditor';
 
 const ContractEditor = crudEditor(<Model Definition>);
 export default ContractEditor;

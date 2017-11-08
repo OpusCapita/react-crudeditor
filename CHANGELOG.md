@@ -1,3 +1,7 @@
+## [v0.0.6](Wed, 08 Nov 2017 11:52:24 GMT)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3e448d2)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, ca9d397)
+
 ## [v0.0.5](Wed, 08 Nov 2017 11:44:17 GMT)
  - Method of import has changed (Andrei Mourzenkov <mourzenkov@scand.com>, 58f258e)
 

@@ -1,7 +1,6 @@
 {
   "name": "@opuscapita/react-crudeditor",
   "version": "0.0.1",
-  "private": true,
   "description": "React.js CRUD Editor",
   "repository": "OpusCapita/react-crudeditor",
   "scripts": {
@@ -12,7 +11,8 @@
     "start-showroom": "showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
     "build-showroom": "showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js",
     "npm-build": "rimraf lib && cross-env NODE_ENV=production webpack --config ./config/webpack.config.build.js",
-    "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish"
+    "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish",
+    "publish-release": "npm run npm-publish -- --release"
   },
   "keywords": [
     "react",

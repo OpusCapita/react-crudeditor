@@ -1,3 +1,6 @@
+## [v0.0.5](Wed, 08 Nov 2017 11:44:17 GMT)
+ - Method of import has changed (Andrei Mourzenkov <mourzenkov@scand.com>, 58f258e)
+
 ## [v0.0.4](Wed, 08 Nov 2017 11:30:19 GMT)
 
 ## [v0.0.3](Wed, 08 Nov 2017 11:12:07 GMT)

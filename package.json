@@ -22,6 +22,10 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
+  "files": [
+    "lib",
+    "README.md"
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "@opuscapita/i18n": "^1.1.0",

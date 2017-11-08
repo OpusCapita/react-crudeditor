@@ -1,4 +1,4 @@
-var crudeditor = require('./crudeditor-lib').default;
+let crudeditor = require('./crudeditor-lib').default;
 
 module.exports = {
   crudeditor

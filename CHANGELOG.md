@@ -1,3 +1,8 @@
+## [v0.0.3](Wed, 08 Nov 2017 11:12:07 GMT)
+ - ready [ci skip] (Egor Stambakio <stambakio@scand.com>, 4c7cb24)
+ - ready to publish [ci skip] (Egor Stambakio <stambakio@scand.com>, cca8b0a)
+ - ready to publish [ci skip] (Egor Stambakio <stambakio@scand.com>, efed5a8)
+
 ## [v0.0.2](Wed, 08 Nov 2017 10:26:10 GMT)
  - try [ci skip] (Egor Stambakio <stambakio@scand.com>, 891b55c)
  - try [ci skip] (Egor Stambakio <stambakio@scand.com>, 5b5d44d)

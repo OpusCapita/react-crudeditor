@@ -19,7 +19,7 @@
     "webpack"
   ],
   "publishConfig": {
-    "registry": "http://192.168.7.94:4873",
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
   "license": "Apache-2.0",

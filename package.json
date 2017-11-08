@@ -10,7 +10,9 @@
     "start": "webpack-dev-server --config config/webpack.config.babel.js",
     "build": "webpack --config config/webpack.config.babel.js",
     "start-showroom": "showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
-    "build-showroom": "showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js"
+    "build-showroom": "showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js",
+    "npm-build": "rimraf lib && cross-env NODE_ENV=production webpack --config ./config/webpack.config.build.js",
+    "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish"
   },
   "keywords": [
     "react",

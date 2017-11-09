@@ -54,7 +54,7 @@ export default function*({
     //   navigation
     // })
     // TODO doesn't work
-    const { instances, totalCount, offset } = yield call(searchSaga, {
+    const { instances, totalCount, offset: newOffset } = yield call(searchSaga, {
       modelDefinition,
       action: {
         payload: {
@@ -64,10 +64,6 @@ export default function*({
       }
     });
 
-    console.group('editAdjacent')
-    console.log(instances, totalCount, offset)
-    console.groupEnd()
-
     try {
       yield call(editSaga, {
         modelDefinition,
@@ -76,7 +72,7 @@ export default function*({
             instance: instances.length === 0 ? instance : instances[0],
             navigation: {
               ...navigation,
-              offset,
+              offset: newOffset,
               totalCount,
               ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
             }

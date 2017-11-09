@@ -2,6 +2,7 @@ import api from './api';
 import DateRangeCellRender from './components/DateRangeCellRender';
 import StatusField from './components/StatusField';
 import translations from './i18n';
+import CustomSpinner from './components/CustomSpinner';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
@@ -367,6 +368,7 @@ export default {
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
-    }
+    },
+    spinner: CustomSpinner
   }
 };

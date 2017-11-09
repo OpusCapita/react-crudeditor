@@ -66,7 +66,7 @@ const withFieldErrors = WrappedComponent => {
         this.props.model.data.fieldErrors[path].length > 0
       )
 
-    // public API function for getting an error handling field under form controls
+    // public API function for getting field errors
     fieldErrors = path => {
       const { fieldErrors: errors } = this.props.model.data;
       const { showFieldErrors: showErrors } = this.state;

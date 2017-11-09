@@ -75,6 +75,7 @@ export const
     model: modelMeta,
     ui: uiMeta
   }) => ({
+    spinner: uiMeta.spinner,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,

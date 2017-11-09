@@ -3,25 +3,20 @@ import PropTypes from 'prop-types';
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
-import SpinnerOverlay from '../Spinner/SpinnerOverlay';
+import WithSpinner from '../Spinner/SpinnerOverlayHOC';
 import FormGrid from '../FormGrid';
 
 const EditMain = ({ model, fieldErrorsWrapper }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
 
-  const spinnerElement = model.data.isLoading ? (<SpinnerOverlay />) : null;
-
-  return (<div className="ready-for-spinner">
-    {spinnerElement}
-    <div className={`${model.data.isLoading ? 'under-active-spinner' : ''}`}>
-      <Heading model={model} />
-      {ActiveTabComponent ?
-        <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-        <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
-          <FormGrid model={model} fieldErrorsWrapper={fieldErrorsWrapper}/>
-        </Tab>
-      }
-    </div>
+  return (<div>
+    <Heading model={model} />
+    {ActiveTabComponent ?
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+      <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
+        <FormGrid model={model} fieldErrorsWrapper={fieldErrorsWrapper}/>
+      </Tab>
+    }
   </div>);
 };
 
@@ -30,4 +25,4 @@ EditMain.propTypes = {
   fieldErrorsWrapper: PropTypes.object
 }
 
-export default WithFieldErrors(EditMain);
+export default WithSpinner(WithFieldErrors(EditMain));

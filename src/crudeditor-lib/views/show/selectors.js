@@ -25,8 +25,10 @@ export const
   })),
 
   getViewModelData = wrapper((storeState, {
-    model: modelMeta
+    model: modelMeta,
+    ui: { spinner }
   }) => ({
+    spinner,
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,

@@ -87,7 +87,7 @@ class SearchResultListing extends React.PureComponent {
                         style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                         onClick={this.handleResort(name)}
                       >
-                        {getFieldText(this.context.i18n, name)}
+                        {getFieldText(i18n, name)}
                         {
                           sortField === name &&
                           <Glyphicon
@@ -96,7 +96,7 @@ class SearchResultListing extends React.PureComponent {
                           />
                         }
                       </a> :
-                      getFieldText(this.context.i18n, name)
+                      getFieldText(i18n, name)
                   }
                 </th>)
               )}
@@ -136,13 +136,13 @@ class SearchResultListing extends React.PureComponent {
                     <Button onClick={this.handleShow(instance, index)}>
                       <Glyphicon glyph='glyphicon-eye-open' />
                       {' '}
-                      {this.context.i18n.getMessage('crudEditor.show.button')}
+                      {i18n.getMessage('crudEditor.show.button')}
                     </Button>
 
                     <Button onClick={this.handleEdit(instance, index)}>
                       <Glyphicon glyph='edit' />
                       {' '}
-                      {this.context.i18n.getMessage('crudEditor.edit.button')}
+                      {i18n.getMessage('crudEditor.edit.button')}
                     </Button>
 
                     <ConfirmDialog

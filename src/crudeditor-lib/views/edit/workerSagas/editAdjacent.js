@@ -1,7 +1,6 @@
 import { call, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
-// import searchWithOffset from '../../search/workerSagas/searchWithOffset';
 import searchSaga from '../../search/workerSagas/search';
 
 import { VIEW_NAME } from '../constants';
@@ -17,13 +16,7 @@ export default function*({
   },
   navigation
 }) {
-  const incNum = side === 'next' ? 1 :
-    side === 'prev' ? -1 :
-      0; // should never happen
-
-  if (incNum === 0) {
-    throw new Error(`Unexpected side value of ${side}, expected 'next' or 'prev'.`)
-  }
+  const incNum = side === 'next' ? 1 : -1;
 
   const instance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 
@@ -47,13 +40,6 @@ export default function*({
   const offset = navOffset + i;
 
   try {
-    // const { instances, totalCount, offset } = yield call(searchWithOffset(incNum), {
-    //   modelDefinition,
-    //   meta,
-    //   instance,
-    //   navigation
-    // })
-    // TODO doesn't work
     const { instances, totalCount, offset: newOffset } = yield call(searchSaga, {
       modelDefinition,
       action: {

@@ -34,15 +34,15 @@ ownProps) => ({
     data: viewModelData,
     // here we adjust action creators to reflect flags values
     actions: {
-        ...otherActions,
-        ...(prevInstanceExists ? {
-          gotoPrevInstance: _ => editAdjacentInstance('prev')
-        } : {}),
-        ...(nextInstanceExists ? {
-          saveAndNextInstance,
-          gotoNextInstance: _ => editAdjacentInstance('next')
-        } : {})
-      }
+      ...otherActions,
+      ...(prevInstanceExists ? {
+        gotoPrevInstance: _ => editAdjacentInstance('prev')
+      } : {}),
+      ...(nextInstanceExists ? {
+        saveAndNextInstance,
+        gotoNextInstance: _ => editAdjacentInstance('next')
+      } : {})
+    }
   }
 });
 

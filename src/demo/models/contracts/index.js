@@ -369,6 +369,6 @@ export default {
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
-    spinner: CustomSpinner
+    Spinner: CustomSpinner
   }
 };

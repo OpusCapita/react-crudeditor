@@ -17,7 +17,7 @@ const withSpinner = WrappedComponent => {
 
       const defaultSpinner = (<Svg svg={spinnerSVG} style={{ width: '64px', height: '64px' }} />);
 
-      const CustomSpinner = model.data.spinner;
+      const CustomSpinner = model.data.Spinner;
 
       const spinner = model.data.isLoading ?
         (

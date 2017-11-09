@@ -1,4 +1,3 @@
-import isEqual from 'lodash/isEqual';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 
 import {
@@ -79,7 +78,6 @@ export const
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
-    searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter),
     isLoading: !!~[
       STATUS_DELETING,
       STATUS_INITIALIZING,

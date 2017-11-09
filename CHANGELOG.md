@@ -1,3 +1,18 @@
+## [v0.0.9](Thu, 09 Nov 2017 09:17:14 GMT)
+ - v 0.3 (Egor Stambakio <stambakio@scand.com>, da849a9)
+ - Renamed spinner to Spinner. (Egor Stambakio <stambakio@scand.com>, e46ee54)
+ - Merge pull request #23 from OpusCapita/Issue/22
+    
+    Issue/22: configurable spinner (2f0d174 364d2e0, 5491587)
+ - Minor fixes in SR Listing. (Egor Stambakio <stambakio@scand.com>, 364d2e0)
+ - Merge pull request #21 from OpusCapita/Issue/20
+    
+    Fixed issue #20 (401e382 c168838, 2f0d174)
+ - Added new spinner option into Readme. (Egor Stambakio <stambakio@scand.com>, eb2bcb0)
+ - Implemented Spinner HOC. (Egor Stambakio <stambakio@scand.com>, fcc493d)
+ - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c168838)
+ - fixed (Egor Stambakio <stambakio@scand.com>, 6739c32)
+
 ## [v0.0.7](Wed, 08 Nov 2017 11:55:15 GMT)
  - Version update (Andrei Mourzenkov <mourzenkov@scand.com>, cc21d8e)
 

@@ -146,7 +146,6 @@ export const getLogicalKeyBuilder = fieldsMeta => {
   const logicalKeyFields = Object.keys(fieldsMeta).filter(fieldName => fieldsMeta[fieldName].unique);
 
   if (logicalKeyFields.length === 0) {
-    console.error('Model should have at least one unique field');
     throw new Error('Model should have at least one unique field');
   }
 

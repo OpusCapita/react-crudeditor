@@ -151,6 +151,13 @@ export default baseModelDefinition => {
 
     getChildContext() {
       const i18n = (this.context && this.context.i18n) || this.i18n;
+
+      // core crud translations
+      i18n.register('CrudEditor', crudTranslations);
+
+      // model translations
+      i18n.register('Model', modelDefinition.model.translations);
+
       context.i18n = i18n;
       return context;
     }
@@ -177,15 +184,7 @@ export default baseModelDefinition => {
         localeFormattingInfo
       } = props;
 
-      const i18n = new I18nManager({ locale, fallbackLocale, localeFormattingInfo });
-
-      // core crud translations
-      i18n.register('CrudEditor', crudTranslations);
-
-      // model translations
-      i18n.register('Model', modelDefinition.model.translations);
-
-      this.i18n = i18n;
+      this.i18n = new I18nManager({ locale, fallbackLocale, localeFormattingInfo });
     }
 
     render = _ =>

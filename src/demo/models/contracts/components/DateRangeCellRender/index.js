@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function date2str(arg, i18n) {
-  const date = typeof arg === 'string' ?
-    new Date(Date.parse(arg)) :
-    arg;
-
-  return i18n.formatDate(date)
-}
+const date2str = (date, i18n) => i18n.formatDate(typeof date === 'string' ?
+  new Date(Date.parse(date)) :
+  date
+);
 
 const DateRangeCellRender = ({ name, instance }, { i18n }) => {
   const value = instance[name];

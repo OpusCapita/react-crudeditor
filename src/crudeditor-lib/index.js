@@ -112,7 +112,7 @@ export default baseModelDefinition => {
     ))
   );
 
-  sagaMiddleware.run(rootSaga, modelDefinition);
+  const runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
 
   class CrudWrapper extends React.Component {
     static propTypes = {
@@ -174,6 +174,10 @@ export default baseModelDefinition => {
         state = {}
       } = {}
     }) => !isEqual(storeState2appState(store.getState()), { name, state })
+
+    componentWillUnmount() {
+      runningSaga.cancel()
+    }
 
     // create our own i18n context
     // if i18n context is already passed from the outside -> oughter one is used

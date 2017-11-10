@@ -1,6 +1,3 @@
-import Section from './EditSection';
-import Field from './EditField';
-
 const getText = type => (source, key) => {
   const
     msgKey = `model.${type}.${key}`,
@@ -18,23 +15,4 @@ export const
 
   getSectionText = getText('section'),
 
-  getFieldText = getText('field'),
-
-  formatEntry = entry => entry.field ? {
-    Entry: Field,
-    props: {
-      entry: {
-        name: entry.field,
-        readOnly: entry.readOnly,
-        Component: entry.render.Component,
-        valuePropName: entry.render.valueProp.name
-      }
-    }
-  } : {
-    Entry: Section,
-    fields: entry.map(formatEntry), // Section always has at least one field.
-    props: {
-      title: entry.section,
-      columns: entry.columns
-    }
-  };
+  getFieldText = getText('field');

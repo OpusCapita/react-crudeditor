@@ -1,3 +1,20 @@
+## [v0.0.10](Fri, 10 Nov 2017 12:18:02 GMT)
+ - lint corrections (Andrei Mourzenkov <mourzenkov@scand.com>, b69d362)
+ - Merging master with fix #15 (910ef50 b467b6f, 139a552)
+ - Fix #15 (Andrei Mourzenkov <mourzenkov@scand.com>, 910ef50)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b467b6f)
+ - Add default filter to a model's api.search (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8756b81)
+ - Merge pull request #29 from OpusCapita/Issue/27
+    
+    fixed #27 (878db94 b172e0e, fa405de)
+ - fixed (Egor Stambakio <stambakio@scand.com>, b172e0e)
+ - Merge pull request #28 from OpusCapita/Issue/25
+    
+    Make Date fields use i18n.formatDate (6784678 a7c24b4, 878db94)
+ - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7c24b4)
+ - Unified date field to use i18n.formatDate (Egor Stambakio <stambakio@scand.com>, e7affc5)
+ - barely started (Egor Stambakio <stambakio@scand.com>, c974536)
+
 ## [v0.0.9](Thu, 09 Nov 2017 09:17:14 GMT)
  - v 0.3 (Egor Stambakio <stambakio@scand.com>, da849a9)
  - Renamed spinner to Spinner. (Egor Stambakio <stambakio@scand.com>, e46ee54)

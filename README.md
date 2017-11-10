@@ -433,6 +433,8 @@ Model Definition is an object describing an entity. It has the following structu
   },
 
   ?ui: {
+    ?Spinner: <React component> to be displayed instead of built-in spinner,
+
     ?search: function() {
       ...
       return {
@@ -532,10 +534,10 @@ Model Definition is an object describing an entity. It has the following structu
               name: <string, tab name>,
               ?disabled: <boolean, false by default>,
               ?Component: <function, TabFormComponent>,
-              ?columns: <number>
+              ?columns: <number, 1 by default>
             },
             ?section(
-              { name: <string, section name>, ?columns: <number> },
+              { name: <string, section name>, ?columns: <number, 1 by default> },
               ?field({
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,

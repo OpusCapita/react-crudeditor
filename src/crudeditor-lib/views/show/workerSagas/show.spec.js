@@ -15,13 +15,17 @@ describe('show view: show saga', () => {
     modelDefinition: {
       api: { get: _ => null },
       model: {
-        fields: []
+        fields: {
+          id: {
+            unique: true
+          }
+        }
       }
     },
     softRedirectSaga: _ => null,
     action: {
       payload: { instance: {
-        name: "someName"
+        id: "someId"
       } },
       meta: { source: {} }
     }

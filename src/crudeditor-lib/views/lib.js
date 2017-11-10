@@ -5,6 +5,8 @@ import FieldDate from '../../components/FieldDate';
 
 import {
   AUDITABLE_FIELDS,
+  DEFAULT_SECTION_COLUMNS,
+  DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
   VIEW_SHOW
 } from '../common/constants';
@@ -111,7 +113,7 @@ const sectionLayout = ({ name: sectionId, columns }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.section = sectionId;
-  entries.columns = columns;
+  entries.columns = columns || DEFAULT_SECTION_COLUMNS;
   return entries.length ? entries : null;
 };
 
@@ -121,7 +123,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.tab = tabId;
-  entries.columns = columns;
+  entries.columns = columns || DEFAULT_TAB_COLUMNS;  // TBD: default to 1 or parent tab's columns?
 
   Object.keys(props).forEach(name => {
     entries[name] = props[name];

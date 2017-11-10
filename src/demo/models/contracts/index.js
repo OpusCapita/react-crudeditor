@@ -249,7 +249,6 @@ export const fields = {
     }
   },
   'parentContract': {
-    // 'type': 'com.jcatalog.contract.Contract',
     'type': 'string',
     'constraints': {
       'required': false
@@ -271,7 +270,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
-    field({ name: 'parentContract', render: { Component: ReferenceSearch } }),
+    field({ name: 'parentContract', render: { Component: ReferenceSearch, valueProp: { type: 'string' } } }),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
       field({ name: 'createdBy', readOnly: true }),
       field({ name: 'createdOn', readOnly: true }),

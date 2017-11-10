@@ -51,7 +51,8 @@ const realInstance = {
   "freeShippingBoundary": 18827,
   "totalContractedAmount": 6085,
   "smallVolumeSurcharge": 82038,
-  "freightSurcharge": 36792
+  "freightSurcharge": 36792,
+  "parentContract": null
 };
 
 describe('Sync api functions:', () => {

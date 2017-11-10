@@ -9,29 +9,20 @@ import {
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
 import ReferenceSearchService from './service';
+import { getFieldText } from '../../../../../components/lib'
 
 const SERVICE_NAME = 'ReferenceSearch';
 
-/*
- * Parses Content-range header and returns response count
- */
-function getTotalCount(response) {
-  let range = response.headers['content-range'];
-  let index = range.indexOf('/');
-  let totalCount = range.substring(index + 1);
-  return parseInt(totalCount, 10);
-}
-
 export default class ReferenceSearch extends PureComponent {
-
     static propTypes = {
       ...ReferenceInputBaseProps,
-      reactSelectSpecificProps: React.PropTypes.shape(ReactSelectSpecificProps),
+      value: PropTypes.string,
+      reactSelectSpecificProps: PropTypes.shape(ReactSelectSpecificProps),
       serviceRegistry: isServiceRegistryConfiguredFor(SERVICE_NAME)
     };
 
     static contextTypes = {
-      i18n: React.PropTypes.object.isRequired
+      i18n: PropTypes.object.isRequired
     };
 
     static defaultProps = {
@@ -43,45 +34,41 @@ export default class ReferenceSearch extends PureComponent {
     }
 
     render() {
-      const { contractId, onBlur, onFocus, onChange, multiple, disabled, readOnly } = this.props;
+      const { contractId, onBlur, onChange, readOnly } = this.props;
+
+      const { i18n } = this.context;
+
+      console.log('RS this.prop.value: ' + JSON.stringify(this.props.value))
 
       const referenceSearchProps = {
         contractId,
         onBlur,
-        onChange: v => {
-          console.log('ReferenceSearch onChange value')
-          console.log(v)
-          return onChange(v.contractId)
-        },
+        onChange: v => onChange(v.contractId),
         readOnly,
         ...{
-          value: this.props.value,
+          value: { contractId: this.props.value },
           referenceSearchAction: (searchParams, callback) => {
             let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-            return referenceSearchService.getIds(searchParams).then((response) => {
-              return callback(
-                {
-                  count: response.items.length,
-                  items: response.items
-                }
-              )
-            });
+            return referenceSearchService.getIds(searchParams).then(({ items }) => callback({
+              count: items.length,
+              items
+            }));
           },
           searchFields: [
             {
               name: 'contractId',
-              label: this.context.i18n.getMessage('model.field.contractId')
+              label: getFieldText(i18n, 'contractId')
             }
           ],
           resultFields: [
             {
               name: 'contractId',
-              label: this.context.i18n.getMessage('model.field.contractId')
+              label: getFieldText(i18n, 'contractId')
             }
           ],
 
-          title: this.context.i18n.getMessage('crudEditor.search.header', {
-            payload: this.context.i18n.getMessage('model.field.contractId')
+          title: i18n.getMessage('crudEditor.search.header', {
+            payload: i18n.getMessage('model.field.contractId')
           }),
           labelProperty: 'contractId',
           valueProperty: 'contractId'
@@ -93,9 +80,9 @@ export default class ReferenceSearch extends PureComponent {
         valueProperty: referenceSearchProps.valueProperty,
         autocompleteAction: (searchTerm, callback) => {
           let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-          return referenceSearchService.getIds({ contractId: searchTerm }).then((response) => {
+          return referenceSearchService.getIds({ contractId: searchTerm }).then(({ items }) => {
             return {
-              options: response.body,
+              options: items,
               complete: false
             };
           });
@@ -109,4 +96,4 @@ export default class ReferenceSearch extends PureComponent {
         </ReferenceSearchInput>
       );
     }
-  }
+}

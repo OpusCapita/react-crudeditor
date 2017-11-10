@@ -5,6 +5,9 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import FieldDate from "./";
 import { DateInput } from '@opuscapita/react-dates';
+import { I18nManager } from '@opuscapita/i18n';
+
+const context = { i18n: new I18nManager() }
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -13,13 +16,17 @@ describe("FieldDate", _ => {
     const props = {
       value: new Date()
     };
-    const wrapper = Enzyme.mount(<FieldDate {...props} />);
+    const wrapper = Enzyme.mount(<FieldDate {...props} />, {
+      context
+    });
     expect(wrapper.find(DateInput).prop('value')).to.equal(props.value); // eslint-disable-line no-unused-expressions
   });
 
   it("should pass a null value for null/undefined value prop", () => {
     const props = {};
-    const wrapper = Enzyme.mount(<FieldDate {...props} />);
+    const wrapper = Enzyme.mount(<FieldDate {...props} />, {
+      context
+    });
     expect(wrapper.find(DateInput).prop('value')).to.equal(null); // eslint-disable-line no-unused-expressions
   });
 
@@ -32,7 +39,9 @@ describe("FieldDate", _ => {
       onChange,
       onBlur
     };
-    const wrapper = Enzyme.mount(<FieldDate {...props} />);
+    const wrapper = Enzyme.mount(<FieldDate {...props} />, {
+      context
+    });
     const fc = wrapper.find(DateInput)
     const d = new Date();
     fc.prop('onChange')(d)
@@ -48,7 +57,9 @@ describe("FieldDate", _ => {
       value: new Date('2011-10-04'),
       onChange
     };
-    const wrapper = Enzyme.mount(<FieldDate {...props} />);
+    const wrapper = Enzyme.mount(<FieldDate {...props} />, {
+      context
+    });
     const fc = wrapper.find(DateInput)
     expect(fc.prop('onChange')()).to.equal(null);
     expect(fc.prop('onBlur')).to.equal(DateInput.defaultProps.onBlur)

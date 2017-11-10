@@ -1,46 +1,20 @@
+import { getContracts } from '../../api/api';
+
 export default class ReferenceSearchService {
+    getIds({ contractId }) {
+      console.log('service request: ' + contractId)
+      const contractIds = getContracts().map(({ contractId }) => contractId);
 
-    examples = {
-      "body": [
-        {
-          "contractId": "1",
-          "name": "example1",
-          "_objectLabel": "example1"
-        },
-        {
-          "contractId": "2",
-          "name": "example2",
-          "_objectLabel": "example2"
-        },
-        {
-          "contractId": "3",
-          "name": "example3",
-          "_objectLabel": "example3"
-        }
-      ],
-      "headers": {
-        "content-range": "items 0-2/3"
-      }
-    };
+      let result = contractId ?
+        contractIds.filter(cid => cid.includes(contractId)) :
+        contractIds;
 
+      console.log('result')
+      console.log(result)
+      const items = result.slice(0, 10).map(contractId => ({ contractId }))
+      console.log('items')
+      console.log(items)
 
-    getExamples(params) {
-      console.log('params')
-      console.log(params)
-      if (params.contractId) {
-        let items = [];
-        if (params.contractId) {
-          items = this.examples.body.filter((example) => {
-            return example.contractId.includes(params.contractId)
-          })
-        }
-        return Promise.resolve({
-          "body": items,
-          "headers": {
-            "content-range": `items 0-9/${items.length}`
-          }
-        })
-      }
-      return Promise.resolve(this.examples)
+      return Promise.resolve({ items })
     }
   }

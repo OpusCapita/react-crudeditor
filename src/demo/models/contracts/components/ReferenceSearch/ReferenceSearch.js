@@ -9,8 +9,6 @@ import {
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
 import ReferenceSearchService from './service';
-import pick from 'lodash/pick';
-import extend from 'lodash/extend';
 
 const SERVICE_NAME = 'ReferenceSearch';
 
@@ -45,21 +43,26 @@ export default class ReferenceSearch extends PureComponent {
     }
 
     render() {
-      console.log(this.props)
+      const { contractId, onBlur, onFocus, onChange, multiple, disabled, readOnly } = this.props;
 
-      let referenceSearchProps = extend(
-        // copy this properties
-        pick(this.props, ['contractId', 'onBlur', 'onFocus', 'onChange', 'multiple', 'disabled', 'readOnly']),
-        // add custom properties
-        {
+      const referenceSearchProps = {
+        contractId,
+        onBlur,
+        onChange: v => {
+          console.log('ReferenceSearch onChange value')
+          console.log(v)
+          return onChange(v.contractId)
+        },
+        readOnly,
+        ...{
           value: this.props.value,
           referenceSearchAction: (searchParams, callback) => {
             let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-            return referenceSearchService.getExamples(searchParams).then((response) => {
+            return referenceSearchService.getIds(searchParams).then((response) => {
               return callback(
                 {
-                  count: getTotalCount(response),
-                  items: response.body
+                  count: response.items.length,
+                  items: response.items
                 }
               )
             });
@@ -80,19 +83,17 @@ export default class ReferenceSearch extends PureComponent {
           title: this.context.i18n.getMessage('crudEditor.search.header', {
             payload: this.context.i18n.getMessage('model.field.contractId')
           }),
-          labelProperty: '_objectLabel',
+          labelProperty: 'contractId',
           valueProperty: 'contractId'
         }
-      );
+      }
 
-      let autocompleteProps = {
+      const autocompleteProps = {
         labelProperty: referenceSearchProps.labelProperty,
         valueProperty: referenceSearchProps.valueProperty,
         autocompleteAction: (searchTerm, callback) => {
           let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-          return referenceSearchService.getExamples({ q: searchTerm }).then((response) => {
-            console.log('autocomplete response')
-            console.log(response)
+          return referenceSearchService.getIds({ contractId: searchTerm }).then((response) => {
             return {
               options: response.body,
               complete: false

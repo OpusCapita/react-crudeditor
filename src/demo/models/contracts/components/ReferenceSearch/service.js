@@ -2,7 +2,6 @@ import { getContracts } from '../../api/api';
 
 export default class ReferenceSearchService {
   getIds({ contractId }) {
-    console.log('service request: ' + contractId)
     const contractIds = getContracts().map(({ contractId }) => contractId);
 
     let result = contractId ?

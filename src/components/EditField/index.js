@@ -51,7 +51,7 @@ class EditField extends Component {
       readOnly,
       [valuePropName]: instance[fieldName],
       onBlur: _ => toggleFieldErrors(fieldName, true),
-      onChange: v => {console.log('EditField onChange: '); console.log(v); this.handleChange(v)}
+      onChange: this.handleChange
     }
 
     const showErrors = shouldShowErrors(fieldName)

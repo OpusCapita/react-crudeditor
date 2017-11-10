@@ -38,8 +38,6 @@ export default class ReferenceSearch extends PureComponent {
 
       const { i18n } = this.context;
 
-      console.log('RS this.prop.value: ' + JSON.stringify(this.props.value))
-
       const referenceSearchProps = {
         contractId,
         onBlur,

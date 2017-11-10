@@ -300,9 +300,7 @@ export default modelDefinition => (
 
         break PARSE_LABEL;
       }
-      console.log('edit reducer errors')
-      console.log(storeState.errors.fields)
-      console.log('fieldName: ' + fieldName)
+
       if (storeState.errors.fields[fieldName].length) {
         newStoreStateSlice.errors = {
           fields: {

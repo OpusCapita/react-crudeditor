@@ -31,6 +31,7 @@
   "dependencies": {
     "@opuscapita/i18n": "1.1.0",
     "@opuscapita/react-dates": "0.3.0-beta.16",
+    "@opuscapita/react-reference-select": "^1.0.4",
     "@opuscapita/react-svg": "2.0.0",
     "big.js": "3.1.3",
     "lodash": "4.17.4",
@@ -98,9 +99,9 @@
     "raw-loader": "0.5.1",
     "react": "15.6.1",
     "react-dom": "15.6.1",
-    "react-test-renderer": "16.0.0",
     "react-router": "4.1.2",
     "react-router-dom": "4.1.2",
+    "react-test-renderer": "16.0.0",
     "regenerator-runtime": "0.11.0",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",

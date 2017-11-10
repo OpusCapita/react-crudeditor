@@ -1,3 +1,7 @@
+## [v0.0.11](Fri, 10 Nov 2017 12:33:11 GMT)
+ - Cancel root saga on unmount. (Egor Stambakio <stambakio@scand.com>, b5a23fa)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b3bc37a)
+
 ## [v0.0.10](Fri, 10 Nov 2017 12:18:02 GMT)
  - lint corrections (Andrei Mourzenkov <mourzenkov@scand.com>, b69d362)
  - Merging master with fix #15 (910ef50 b467b6f, 139a552)

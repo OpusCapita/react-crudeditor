@@ -35,7 +35,7 @@ const common = {
   "crudEditor.saveAndNext.button": "Сохранить и далее",
   "crudEditor.search.all": "Все",
   "crudEditor.search.button": "Поиск",
-  "crudEditor.search.header": "Поиск: {modelName}",
+  "crudEditor.search.header": "Поиск: {payload}",
   "crudEditor.search.result.label": "Результаты поиска",
   "crudEditor.search.resultsPerPage": "Число результатов на страницу",
   "crudEditor.select.button": "Выбрать",

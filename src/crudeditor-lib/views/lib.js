@@ -123,7 +123,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.tab = tabId;
-  entries.columns = columns || DEFAULT_TAB_COLUMNS;  // TBD: default to 1 or parent tab's columns?
+  entries.columns = columns || DEFAULT_TAB_COLUMNS; // TBD: default to 1 or parent tab's columns?
 
   Object.keys(props).forEach(name => {
     entries[name] = props[name];

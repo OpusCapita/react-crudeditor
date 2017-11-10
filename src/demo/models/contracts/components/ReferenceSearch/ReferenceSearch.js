@@ -8,9 +8,21 @@ import {
   ReferenceInputBaseProps
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
-import service from './service';
+import ReferenceSearchService from './service';
+import pick from 'lodash/pick';
+import extend from 'lodash/extend';
 
 const SERVICE_NAME = 'ReferenceSearch';
+
+/*
+ * Parses Content-range header and returns response count
+ */
+function getTotalCount(response) {
+  let range = response.headers['content-range'];
+  let index = range.indexOf('/');
+  let totalCount = range.substring(index + 1);
+  return parseInt(totalCount, 10);
+}
 
 export default class ReferenceSearch extends PureComponent {
 
@@ -25,7 +37,7 @@ export default class ReferenceSearch extends PureComponent {
     };
 
     static defaultProps = {
-      serviceRegistry = serviceName => ({ url: 'http://localhost:3000' })
+      serviceRegistry: serviceName => ({ url: 'http://localhost:3000' })
     }
 
     componentWillMount() {
@@ -33,15 +45,17 @@ export default class ReferenceSearch extends PureComponent {
     }
 
     render() {
-      let referenceSearchProps = lodash.extend(
+      console.log(this.props)
+
+      let referenceSearchProps = extend(
         // copy this properties
-        lodash.pick(this.props, ['id', 'name', 'onBlur', 'onFocus', 'onChange', 'multiple', 'disabled', 'readOnly']),
+        pick(this.props, ['contractId', 'onBlur', 'onFocus', 'onChange', 'multiple', 'disabled', 'readOnly']),
         // add custom properties
         {
           value: this.props.value,
           referenceSearchAction: (searchParams, callback) => {
-            let exampleService = new ExampleService(this.props.serviceRegistry(SERVICE_NAME).url);
-            return exampleService.getExamples(searchParams).then((response) => {
+            let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+            return referenceSearchService.getExamples(searchParams).then((response) => {
               return callback(
                 {
                   count: getTotalCount(response),
@@ -53,19 +67,21 @@ export default class ReferenceSearch extends PureComponent {
           searchFields: [
             {
               name: 'contractId',
-              label: this.context.i18n.getMessage('ReferenceSearch.id')
+              label: this.context.i18n.getMessage('model.field.contractId')
             }
           ],
           resultFields: [
             {
               name: 'contractId',
-              label: this.context.i18n.getMessage('ReferenceSearch.id')
+              label: this.context.i18n.getMessage('model.field.contractId')
             }
           ],
 
-          title: this.context.i18n.getMessage('ReferenceSearch.dialogTitle'),
+          title: this.context.i18n.getMessage('crudEditor.search.header', {
+            payload: this.context.i18n.getMessage('model.field.contractId')
+          }),
           labelProperty: '_objectLabel',
-          valueProperty: 'id'
+          valueProperty: 'contractId'
         }
       );
 
@@ -73,8 +89,10 @@ export default class ReferenceSearch extends PureComponent {
         labelProperty: referenceSearchProps.labelProperty,
         valueProperty: referenceSearchProps.valueProperty,
         autocompleteAction: (searchTerm, callback) => {
-          let exampleService = new ExampleService(this.props.serviceRegistry(SERVICE_NAME).url);
-          return exampleService.getExamples({ q: searchTerm }).then((response) => {
+          let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+          return referenceSearchService.getExamples({ q: searchTerm }).then((response) => {
+            console.log('autocomplete response')
+            console.log(response)
             return {
               options: response.body,
               complete: false

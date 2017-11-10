@@ -433,7 +433,7 @@ Model Definition is an object describing an entity. It has the following structu
   },
 
   ?ui: {
-    ?Spinner: <React component> to be displayed instead of built-in spinner,
+    ?Spinner: <function, React component to be displayed instead of built-in spinner>,
 
     ?search: function() {
       ...

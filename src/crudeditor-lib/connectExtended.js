@@ -10,7 +10,7 @@ function connectExtended(
   mergeProps,
   options = {}
 ) {
-  options.storeKey = STORE_KEY
+  options.storeKey = STORE_KEY // eslint-disable-line no-param-reassign
   return connect(
     mapStateToProps,
     mapDispatchToProps,
@@ -19,4 +19,4 @@ function connectExtended(
   )
 }
 
-export {connectExtended as connect}
+export { connectExtended as connect }

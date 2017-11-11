@@ -127,11 +127,9 @@ export default baseModelDefinition => {
 
     constructor(props, context) {
       super(props, context);
-      console.log('crud constructor called')
 
       onTransition = this.props.onTransition;
 
-      console.log('create store')
       this.store = createStore(
         getReducer(modelDefinition),
         (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
@@ -146,9 +144,9 @@ export default baseModelDefinition => {
           sagaMiddleware
         ))
       );
-    
+
       this.runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
-      
+
       this.initI18n(props);
     }
 
@@ -176,11 +174,10 @@ export default baseModelDefinition => {
         name = DEFAULT_VIEW,
         state = {}
       } = {}
-    }) => !isEqual(storeState2appState(store.getState()), { name, state })
+    }) => !isEqual(storeState2appState(this.store.getState()), { name, state })
 
     componentWillUnmount() {
       this.runningSaga.cancel()
-      // this.store = null
     }
 
     // create our own i18n context

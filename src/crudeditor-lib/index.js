@@ -145,7 +145,7 @@ export default baseModelDefinition => {
         ))
       );
 
-      this.runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
+      this.crudSaga = sagaMiddleware.run(rootSaga, modelDefinition);
 
       this.initI18n(props);
     }
@@ -177,7 +177,7 @@ export default baseModelDefinition => {
     }) => !isEqual(storeState2appState(this.store.getState()), { name, state })
 
     componentWillUnmount() {
-      this.runningSaga.cancel()
+      this.crudSaga.cancel()
     }
 
     // create our own i18n context

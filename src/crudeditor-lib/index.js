@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { Provider } from 'react-redux';
+import { Provider } from './connectExtended';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
 import { I18nManager } from '@opuscapita/i18n';
@@ -97,23 +97,6 @@ export default baseModelDefinition => {
 
   const sagaMiddleware = createSagaMiddleware();
 
-  const store = createStore(
-    getReducer(modelDefinition),
-    (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
-      // XXX: ensure each middleware calls "next(action)" synchronously,
-      // or else ensure that "redux-saga" is the last middleware in the call chain.
-      appStateChangeDetect({
-        lastState,
-        onTransition,
-        storeState2appState
-      }),
-      notificationsMiddleware(context),
-      sagaMiddleware
-    ))
-  );
-
-  const runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
-
   class CrudWrapper extends React.Component {
     static propTypes = {
       view: PropTypes.shape({
@@ -144,8 +127,28 @@ export default baseModelDefinition => {
 
     constructor(props, context) {
       super(props, context);
+      console.log('crud constructor called')
+
       onTransition = this.props.onTransition;
 
+      console.log('create store')
+      this.store = createStore(
+        getReducer(modelDefinition),
+        (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
+          // XXX: ensure each middleware calls "next(action)" synchronously,
+          // or else ensure that "redux-saga" is the last middleware in the call chain.
+          appStateChangeDetect({
+            lastState,
+            onTransition,
+            storeState2appState
+          }),
+          notificationsMiddleware(context),
+          sagaMiddleware
+        ))
+      );
+    
+      this.runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
+      
       this.initI18n(props);
     }
 
@@ -176,7 +179,8 @@ export default baseModelDefinition => {
     }) => !isEqual(storeState2appState(store.getState()), { name, state })
 
     componentWillUnmount() {
-      runningSaga.cancel()
+      this.runningSaga.cancel()
+      // this.store = null
     }
 
     // create our own i18n context
@@ -192,7 +196,7 @@ export default baseModelDefinition => {
     }
 
     render = _ =>
-      (<Provider store={store}>
+      (<Provider store={this.store}>
         <Main
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}

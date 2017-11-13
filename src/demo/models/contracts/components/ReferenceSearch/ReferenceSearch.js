@@ -66,7 +66,7 @@ export default class ReferenceSearch extends PureComponent {
           ],
 
           title: i18n.getMessage('crudEditor.search.header', {
-            payload: i18n.getMessage('model.field.contractId')
+            payload: getFieldText(i18n, 'contractId')
           }),
           labelProperty: 'contractId',
           valueProperty: 'contractId'

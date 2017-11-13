@@ -9,7 +9,8 @@ import {
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
 import ReferenceSearchService from './ReferenceSearchService';
-import { getFieldText } from '../../../../../components/lib'
+import { getFieldText } from '../../../../../components/lib';
+import './styles.less';
 
 const SERVICE_NAME = 'ReferenceSearch';
 const SERVICE_URL = 'http://some-host:some-port/';

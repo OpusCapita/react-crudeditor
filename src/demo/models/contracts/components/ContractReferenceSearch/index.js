@@ -12,7 +12,7 @@ import ReferenceSearchService from './ReferenceSearchService';
 import { getFieldText } from '../../../../../components/lib';
 import './styles.less';
 
-const SERVICE_NAME = 'ReferenceSearch';
+const SERVICE_NAME = 'ContractReferenceSearch';
 const SERVICE_URL = 'http://some-host:some-port/';
 
 /*
@@ -25,7 +25,7 @@ function getTotalCount(response) {
   return parseInt(totalCount, 10);
 }
 
-export default class ReferenceSearch extends PureComponent {
+export default class ContractReferenceSearch extends PureComponent {
   static propTypes = {
     ...ReferenceInputBaseProps,
     value: PropTypes.string,
@@ -42,7 +42,7 @@ export default class ReferenceSearch extends PureComponent {
   }
 
   componentWillMount() {
-    this.context.i18n.register('ReferenceSearch', translations)
+    this.context.i18n.register('ContractReferenceSearch', translations)
   }
 
   render() {

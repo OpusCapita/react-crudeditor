@@ -3,7 +3,7 @@ import DateRangeCellRender from './components/DateRangeCellRender';
 import StatusField from './components/StatusField';
 import translations from './i18n';
 import CustomSpinner from './components/CustomSpinner';
-import ReferenceSearch from './components/ReferenceSearch';
+import ContractReferenceSearch from './components/ContractReferenceSearch';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
@@ -14,7 +14,7 @@ const searchableFields = [
   { name: 'description' },
   { name: 'extContractId' },
   { name: 'extContractLineId' },
-  { name: 'parentContract', render: { Component: ReferenceSearch } },
+  { name: 'parentContract', render: { Component: ContractReferenceSearch } },
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
   { name: 'maxOrderValue' },
   // { name: 'testNumberTypeField' },
@@ -265,8 +265,10 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'general', columns: 2 }, // Best look with N = 2, 3, 4 (default is 1)
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
+    // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
     field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
-    field({ name: 'parentContract', render: { Component: ReferenceSearch } }),
+    field({ name: 'parentContract', render: { Component: ContractReferenceSearch } }),
+    // field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
       field({ name: 'createdBy', readOnly: true }),
       field({ name: 'createdOn', readOnly: true }),

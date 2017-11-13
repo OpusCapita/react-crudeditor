@@ -12,6 +12,7 @@ import ReferenceSearchService from './ReferenceSearchService';
 import { getFieldText } from '../../../../../components/lib'
 
 const SERVICE_NAME = 'ReferenceSearch';
+const SERVICE_URL = 'http://some-host:some-port/';
 
 /*
  * Parses Content-range header and returns response count
@@ -36,7 +37,7 @@ export default class ReferenceSearch extends PureComponent {
     };
 
     static defaultProps = {
-      serviceRegistry: serviceName => ({ url: 'http://localhost:3000' })
+      serviceRegistry: serviceName => ({ url: SERVICE_URL })
     }
 
     componentWillMount() {

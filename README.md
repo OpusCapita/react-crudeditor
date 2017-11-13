@@ -148,7 +148,7 @@ Name | Default | Description
 ---|---|---
 view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
+[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operation](#external-operation) handlers
 
 ### *EditorComponent* props.view.name
 
@@ -262,7 +262,7 @@ An object with [External Operations](#external-operation) handlers.  A handler i
 
 ```javascript
 {
-  <external operation name>: function({ instance, view, state }) {
+  <external operation name>: function({ instance, view }) {
     ...
     return;  // Return value is ignored.
   },
@@ -627,14 +627,20 @@ Model Definition is an object describing an entity. It has the following structu
     /*
      * Internal, Custom and External operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
-     * Handlers are provided for Custom Operations.
+     * Handlers are provided for Custom Operations only.
      * TODO
      */
     ?operations: function(<object, entity instance>, <string, View Name>) {
       ...
       return [{
         name: <string, operation ID>,
-        ?icon: <string, name of an icon to be displayed inside a button, ex. "trash", "edit"; see full list at http://getbootstrap.com/components/#glyphicons >,
+        
+        /*
+         * name of an icon to be displayed inside a button, ex. "trash", "edit";
+         * see full list at
+         * http://getbootstrap.com/components/#glyphicons
+         */
+        ?icon: <string>,
 
         // handler for a Custom Operation.
         ?handler: function() {

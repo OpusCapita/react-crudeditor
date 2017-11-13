@@ -31,8 +31,8 @@ export const
   NOTIFICATION_VALIDATION_ERROR = 'instanceValidationError';
 
 const
-  successTimeout = 3000,
-  errorTimeout = 3000;
+  SUCCESS_NOTIFICATION_TIMEOUT = 3000,
+  ERROR_NOTIFICATION_TIMEOUT = 3000;
 
 // eventsMiddleware is a function which accepts context as an argument and
 // returns a standard Redux middleware function
@@ -42,7 +42,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_SUCCESS,
         type: 'success',
-        timeOut: successTimeout,
+        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: context.i18n.getMessage('crudEditor.objectSaved.message')
       });
       break;
@@ -50,7 +50,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_SUCCESS,
         type: 'success',
-        timeOut: successTimeout,
+        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: context.i18n.getMessage('crudEditor.objectUpdated.message')
       });
       break;
@@ -61,7 +61,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_ERROR,
         type: 'error',
-        timeOut: errorTimeout,
+        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: context.i18n.getMessage('crudEditor.objectSaveFailed.message')
       });
       break;
@@ -69,7 +69,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_ERROR,
         type: 'error',
-        timeOut: errorTimeout,
+        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: action.payload === 1 ?
           context.i18n.getMessage('crudEditor.objectDeleteFailed.message') :
           context.i18n.getMessage('crudEditor.objectsDeleteFailed.message', {
@@ -81,7 +81,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_SUCCESS,
         type: 'success',
-        timeOut: successTimeout,
+        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: action.payload.instances.length === 1 ?
           context.i18n.getMessage('crudEditor.objectDeleted.message') :
           context.i18n.getMessage('crudEditor.objectsDeleted.message', {
@@ -94,7 +94,7 @@ const eventsMiddleware = context => store => next => action => {
         NotificationManager.create({
           id: NOTIFICATION_ERROR,
           type: 'error',
-          timeOut: errorTimeout,
+          timeOut: ERROR_NOTIFICATION_TIMEOUT,
           message: context.i18n.getMessage('crudEditor.found.items.message', { count: 0 })
         });
       }
@@ -105,7 +105,7 @@ const eventsMiddleware = context => store => next => action => {
       NotificationManager.create({
         id: NOTIFICATION_VALIDATION_ERROR,
         type: 'error',
-        timeOut: errorTimeout,
+        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: context.i18n.getMessage('default.invalid.validator.message')
       });
       break;

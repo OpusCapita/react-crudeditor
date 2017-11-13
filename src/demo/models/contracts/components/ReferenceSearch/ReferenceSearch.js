@@ -25,84 +25,83 @@ function getTotalCount(response) {
 }
 
 export default class ReferenceSearch extends PureComponent {
-    static propTypes = {
-      ...ReferenceInputBaseProps,
-      value: PropTypes.string,
-      reactSelectSpecificProps: PropTypes.shape(ReactSelectSpecificProps),
-      serviceRegistry: isServiceRegistryConfiguredFor(SERVICE_NAME)
-    };
+  static propTypes = {
+    ...ReferenceInputBaseProps,
+    value: PropTypes.string,
+    reactSelectSpecificProps: PropTypes.shape(ReactSelectSpecificProps),
+    serviceRegistry: isServiceRegistryConfiguredFor(SERVICE_NAME)
+  };
 
-    static contextTypes = {
-      i18n: PropTypes.object.isRequired
-    };
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  };
 
-    static defaultProps = {
-      serviceRegistry: serviceName => ({ url: SERVICE_URL })
-    }
+  static defaultProps = {
+    serviceRegistry: serviceName => ({ url: SERVICE_URL })
+  }
 
-    componentWillMount() {
-      this.context.i18n.register('ReferenceSearch', translations)
-    }
+  componentWillMount() {
+    this.context.i18n.register('ReferenceSearch', translations)
+  }
 
-    render() {
-      const { contractId, onBlur, onChange, readOnly } = this.props;
+  render() {
+    const { contractId, onBlur, onChange, readOnly } = this.props;
 
-      const { i18n } = this.context;
+    const { i18n } = this.context;
 
-      const referenceSearchProps = {
-        contractId,
-        onBlur,
-        onChange: v => onChange(v ? v.contractId : ''),
-        readOnly,
-        ...{
-          value: { contractId: this.props.value },
-          referenceSearchAction: (searchParams, callback) => {
-            const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-            return referenceSearchService.getIds(searchParams).then(response => callback({
-              count: getTotalCount(response),
-              items: response.body
-            }));
-          },
-          searchFields: [
-            {
-              name: 'contractId',
-              label: getFieldText(i18n, 'contractId')
-            }
-          ],
-          resultFields: [
-            {
-              name: 'contractId',
-              label: getFieldText(i18n, 'contractId')
-            }
-          ],
-
-          title: i18n.getMessage('crudEditor.search.header', {
-            payload: getFieldText(i18n, 'contractId')
-          }),
-          labelProperty: 'contractId',
-          valueProperty: 'contractId'
+    const referenceSearchProps = {
+      contractId,
+      onBlur,
+      onChange: v => onChange(v ? v.contractId : ''),
+      readOnly,
+      value: { contractId: this.props.value },
+      referenceSearchAction: (searchParams, callback) => {
+        const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+        return referenceSearchService.getData(searchParams).then(response => callback({
+          count: getTotalCount(response),
+          items: response.body
+        }));
+      },
+      searchFields: [
+        {
+          name: 'contractId',
+          label: getFieldText(i18n, 'contractId')
         }
-      }
+      ],
+      resultFields: [
+        {
+          name: 'contractId',
+          label: getFieldText(i18n, 'contractId')
+        }
+      ],
 
-      const autocompleteProps = {
-        labelProperty: referenceSearchProps.labelProperty,
-        valueProperty: referenceSearchProps.valueProperty,
-        autocompleteAction: (searchTerm, callback) => {
-          const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-          return referenceSearchService.getIds({ contractId: searchTerm }).then(({ body }) => {
-            return {
-              options: body,
-              complete: false
-            };
-          });
-        },
-        reactSelectSpecificProps: this.props.reactSelectSpecificProps
-      };
+      title: i18n.getMessage('crudEditor.search.header', {
+        payload: getFieldText(i18n, 'contractId')
+      }),
+      labelProperty: 'contractId',
+      valueProperty: 'contractId'
 
-      return (
-        <ReferenceSearchInput {...referenceSearchProps}>
-          <ReferenceAutocomplete {...autocompleteProps}/>
-        </ReferenceSearchInput>
-      );
     }
+
+    const autocompleteProps = {
+      labelProperty: referenceSearchProps.labelProperty,
+      valueProperty: referenceSearchProps.valueProperty,
+      autocompleteAction: (searchTerm, callback) => {
+        const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+        return referenceSearchService.getData({ contractId: searchTerm }).then(({ body }) => {
+          return {
+            options: body,
+            complete: false
+          };
+        });
+      },
+      reactSelectSpecificProps: this.props.reactSelectSpecificProps
+    };
+
+    return (
+      <ReferenceSearchInput {...referenceSearchProps}>
+        <ReferenceAutocomplete {...autocompleteProps} />
+      </ReferenceSearchInput>
+    );
+  }
 }

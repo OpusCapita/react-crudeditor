@@ -1,7 +1,7 @@
 import { getContracts } from '../../api/api';
 
 export default class ReferenceSearchService {
-  getIds({ contractId, max = 10, offset = 0 }) {
+  getData({ contractId, max = 10, offset = 0 }) {
     const contractIds = getContracts().map(({ contractId }) => contractId).sort();
 
     let result = contractId ?
@@ -12,11 +12,11 @@ export default class ReferenceSearchService {
       slice(offset, offset + max).
       map(contractId => ({ contractId }))
 
-    return Promise.resolve({
+    return new Promise(resolve => setTimeout(_ => resolve({
       body: items,
       headers: {
         "content-range": `items ${offset}-${offset + max - 1}/${result.length}`
       }
-    })
+    }), 300))
   }
 }

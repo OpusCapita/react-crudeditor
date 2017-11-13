@@ -14,9 +14,10 @@ const searchableFields = [
   { name: 'description' },
   { name: 'extContractId' },
   { name: 'extContractLineId' },
+  { name: 'parentContract', render: { Component: ReferenceSearch } },
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
   { name: 'maxOrderValue' },
-  { name: 'testNumberTypeField' },
+  // { name: 'testNumberTypeField' },
   { name: 'createdOn' }
 ];
 

@@ -1,5 +1,4 @@
-// import '../../../styles/main.scss';
-import '../client/global-styles.less';
+import '../global-styles.less';
 import buildModel from '../models';
 import createCrud from '../../crudeditor-lib';
 

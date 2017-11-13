@@ -8,10 +8,20 @@ import {
   ReferenceInputBaseProps
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
-import ReferenceSearchService from './service';
+import ReferenceSearchService from './ReferenceSearchService';
 import { getFieldText } from '../../../../../components/lib'
 
 const SERVICE_NAME = 'ReferenceSearch';
+
+/*
+ * Parses Content-range header and returns response count
+ */
+function getTotalCount(response) {
+  let range = response.headers['content-range'];
+  let index = range.indexOf('/');
+  let totalCount = range.substring(index + 1);
+  return parseInt(totalCount, 10);
+}
 
 export default class ReferenceSearch extends PureComponent {
     static propTypes = {
@@ -41,15 +51,15 @@ export default class ReferenceSearch extends PureComponent {
       const referenceSearchProps = {
         contractId,
         onBlur,
-        onChange: v => onChange(v.contractId),
+        onChange: v => onChange(v ? v.contractId : ''),
         readOnly,
         ...{
           value: { contractId: this.props.value },
           referenceSearchAction: (searchParams, callback) => {
-            let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-            return referenceSearchService.getIds(searchParams).then(({ items }) => callback({
-              count: items.length,
-              items
+            const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+            return referenceSearchService.getIds(searchParams).then(response => callback({
+              count: getTotalCount(response),
+              items: response.body
             }));
           },
           searchFields: [
@@ -77,10 +87,10 @@ export default class ReferenceSearch extends PureComponent {
         labelProperty: referenceSearchProps.labelProperty,
         valueProperty: referenceSearchProps.valueProperty,
         autocompleteAction: (searchTerm, callback) => {
-          let referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
-          return referenceSearchService.getIds({ contractId: searchTerm }).then(({ items }) => {
+          const referenceSearchService = new ReferenceSearchService(this.props.serviceRegistry(SERVICE_NAME).url);
+          return referenceSearchService.getIds({ contractId: searchTerm }).then(({ body }) => {
             return {
-              options: items,
+              options: body,
               complete: false
             };
           });

@@ -1,3 +1,31 @@
+## [v0.0.13](Tue, 14 Nov 2017 05:00:41 GMT)
+ - Merge pull request #33 from OpusCapita/Issue/19
+    
+    Added reference select usage example. (2397386 5f18105, ff3af61)
+ - react-reference-select is moved to devDependencies (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 5f18105)
+ - ReferenceSearch files renaming (Andrei Mourzenkov <mourzenkov@scand.com>, 85f2b14)
+ - Change notification timeout constant name (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, f2d5ec2)
+ - Fixed styling issue. (Egor Stambakio <stambakio@scand.com>, 0ea4d91)
+ - Fixed tests. (Egor Stambakio <stambakio@scand.com>, a241767)
+ - Added a reference search field to search form. (Egor Stambakio <stambakio@scand.com>, df35ed5)
+ - Supervisor notes. (Egor Stambakio <stambakio@scand.com>, 38e4cad)
+ - Fixed input padding issue in firefox. (Egor Stambakio <stambakio@scand.com>, 2397386)
+ - Done. (Egor Stambakio <stambakio@scand.com>, 1b80dec)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, cac1729)
+ - ... (Egor Stambakio <stambakio@scand.com>, f269b59)
+ - Merge pull request #32 from OpusCapita/Issue/26
+    
+    Added webpack definePlugin to lib build config. (0d48011 d491f13, bb7e82d)
+ - Removed dev plugin, saved ~10% bundle size. (estambakio-sc <egor.stambakio@opuscapita.com>, d491f13)
+ - Added webpack definePlugin to lib build config. (estambakio-sc <egor.stambakio@opuscapita.com>, 5afc63e)
+ - Cleanup. (Egor Stambakio <stambakio@scand.com>, 90bf15f)
+ - Added react-reference-select component for parentContract field. (Egor Stambakio <stambakio@scand.com>, e9925a3)
+ - Merge branch 'master' into Issue/19 (22101fe 0d48011, 3195aef)
+ - ... (Egor Stambakio <stambakio@scand.com>, 22101fe)
+ - Semi-working reference search component; not ready yet. (Egor Stambakio <stambakio@scand.com>, b7a7ecf)
+ - Merge branch 'master' into Issue/19 (f3e8942 139a552, 7ce8395)
+ - started (Egor Stambakio <stambakio@scand.com>, f3e8942)
+
 ## [v0.0.12](Fri, 10 Nov 2017 12:34:55 GMT)
 
 ## [v0.0.11](Fri, 10 Nov 2017 12:33:11 GMT)

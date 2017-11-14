@@ -65,7 +65,6 @@ class EditField extends Component {
             getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
           }
         </Col>
-        {/* <Col sm={1} className='text-right' /> */}
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
           <FieldErrorLabel

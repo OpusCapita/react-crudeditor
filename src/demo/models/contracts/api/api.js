@@ -3,6 +3,8 @@ import find from 'lodash/find';
 import Big from 'big.js';
 
 import initialData from './data';
+import { DEFAULT_FIELD_TYPE } from '../../../../crudeditor-lib/common/constants.js';
+
 import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING_DATE,
@@ -42,6 +44,11 @@ const data = { // remove doubles
   ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).map(
     c => ({
       [testNumberFieldType]: Math.random() * 1000000,
+      parentContract: Math.random() > 0.8 ?
+        null :
+        initialData.contracts.map(({ contractId }) => contractId)[
+          Math.floor(Math.random() * initialData.contracts.length)
+        ],
       ...c
     })
   )
@@ -153,7 +160,7 @@ export const
 
             const
               fieldValue = filter[fieldName],
-              fieldType = fields[fieldName].type,
+              fieldType = fields[fieldName].type || DEFAULT_FIELD_TYPE,
               itemValue = item[fieldName];
 
             // Handle range from..to fields

@@ -35,7 +35,7 @@ const common = {
   "crudEditor.saveAndNext.button": "Tallenna ja Seuraava",
   "crudEditor.search.all": "Kaikki",
   "crudEditor.search.button": "Hae",
-  "crudEditor.search.header": "Hae {modelName}",
+  "crudEditor.search.header": "Hae {payload}",
   "crudEditor.search.result.label": "Hakutulos",
   "crudEditor.search.resultsPerPage": "Tuloksia sivulla",
   "crudEditor.select.button": "Valitse",

@@ -50,6 +50,7 @@
   "devDependencies": {
     "@opuscapita/npm-scripts": "2.0.1-beta.1",
     "@opuscapita/react-navigation": "0.0.20",
+    "@opuscapita/react-reference-select": "1.0.4",
     "@opuscapita/react-showroom-client": "1.2.10",
     "@opuscapita/react-showroom-server": "1.3.0",
     "@opuscapita/styles": "1.0.0",
@@ -99,9 +100,9 @@
     "raw-loader": "0.5.1",
     "react": "15.6.1",
     "react-dom": "15.6.1",
-    "react-test-renderer": "16.0.0",
     "react-router": "4.1.2",
     "react-router-dom": "4.1.2",
+    "react-test-renderer": "16.0.0",
     "regenerator-runtime": "0.11.0",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",

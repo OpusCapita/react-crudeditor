@@ -537,7 +537,7 @@ Model Definition is an object describing an entity. It has the following structu
               ?columns: <number, 1 by default>
             },
             ?section(
-              { name: <string, section name>, ?columns: <number, 1 by default> },
+              { name: <string, section name>, ?columns: <number, columns in parent tab by default> },
               ?field({
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,

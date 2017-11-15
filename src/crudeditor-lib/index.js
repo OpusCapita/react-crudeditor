@@ -46,7 +46,7 @@ const getUi = {
   [VIEW_SHOW]: getShowUi
 };
 
-function fillDefaults(baseModelDefinition) {
+const fillDefaults = baseModelDefinition => {
   // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
   const fieldsMeta = modelDefinition.model.fields;
@@ -82,20 +82,16 @@ function fillDefaults(baseModelDefinition) {
   return modelDefinition;
 }
 
-export default baseModelDefinition => {
-  const modelDefinition = fillDefaults(baseModelDefinition);
-  let onTransition = null;
-  let lastState = {};
+const storeState2appState = (storeState, modelDefinition) => ({
+  name: storeState.common.activeViewName,
+  state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
+});
 
-  const storeState2appState = storeState => ({
-    name: storeState.common.activeViewName,
-    state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
-  });
+export default baseModelDefinition => {
+  let lastState = {}; // TBD leave lastState here, in closure?
 
   // context for CrudWrapper children
   const context = {};
-
-  const sagaMiddleware = createSagaMiddleware();
 
   class CrudWrapper extends React.Component {
     static propTypes = {
@@ -128,43 +124,45 @@ export default baseModelDefinition => {
     constructor(props, context) {
       super(props, context);
 
-      onTransition = this.props.onTransition;
+      this.onTransition = this.props.onTransition;
+
+      this.modelDefinition = fillDefaults(baseModelDefinition);
+      const sagaMiddleware = createSagaMiddleware();
 
       this.store = createStore(
-        getReducer(modelDefinition),
+        getReducer(this.modelDefinition),
         (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
           // XXX: ensure each middleware calls "next(action)" synchronously,
           // or else ensure that "redux-saga" is the last middleware in the call chain.
           appStateChangeDetect({
             lastState,
-            onTransition,
-            storeState2appState
+            onTransition: this.onTransition,
+            storeState2appState,
+            modelDefinition: this.modelDefinition
           }),
           notificationsMiddleware(context),
           sagaMiddleware
         ))
       );
 
-      this.crudSaga = sagaMiddleware.run(rootSaga, modelDefinition);
+      this.crudSaga = sagaMiddleware.run(rootSaga, this.modelDefinition);
 
       this.initI18n(props);
     }
 
     getChildContext() {
       const i18n = (this.context && this.context.i18n) || this.i18n;
-
       // core crud translations
       i18n.register('CrudEditor', crudTranslations);
-
       // model translations
-      i18n.register('Model', modelDefinition.model.translations);
+      i18n.register('Model', this.modelDefinition.model.translations);
 
       context.i18n = i18n;
       return context;
     }
 
     componentWillReceiveProps(props) {
-      onTransition = props.onTransition;
+      this.onTransition = props.onTransition;
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
@@ -174,7 +172,7 @@ export default baseModelDefinition => {
         name = DEFAULT_VIEW,
         state = {}
       } = {}
-    }) => !isEqual(storeState2appState(this.store.getState()), { name, state })
+    }) => !isEqual(storeState2appState(this.store.getState(), this.modelDefinition), { name, state })
 
     componentWillUnmount() {
       this.crudSaga.cancel()
@@ -197,7 +195,7 @@ export default baseModelDefinition => {
         <Main
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}
-          modelDefinition={modelDefinition}
+          modelDefinition={this.modelDefinition}
         />
       </Provider>)
   }

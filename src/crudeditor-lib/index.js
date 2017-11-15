@@ -69,9 +69,9 @@ function fillDefaults(baseModelDefinition) {
     modelDefinition.ui = {};
   }
 
-  modelDefinition.ui.instanceLabel = modelDefinition.ui.instanceLabel ?
-    modelDefinition.ui.instanceLabel :
-    ({ _objectLabel }) => _objectLabel;
+  if (!modelDefinition.ui.instanceLabel) {
+    modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
+  }
 
   Object.keys(getUi).forEach(viewName => {
     if (getUi[viewName]) {

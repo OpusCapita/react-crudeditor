@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 import FieldString from '../../components/FieldString';
 import FieldBoolean from '../../components/FieldBoolean';
 import FieldNumber from '../../components/FieldNumber';
@@ -5,7 +7,6 @@ import FieldDate from '../../components/FieldDate';
 
 import {
   AUDITABLE_FIELDS,
-  DEFAULT_SECTION_COLUMNS,
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
   VIEW_SHOW
@@ -51,9 +52,9 @@ export const buildFieldRender = ({
   render: customRender,
   type: fieldType
 }) => {
-  const render = customRender ||
-    defaultFieldRenders[fieldType] ||
-    (_ => {
+  const render = customRender ?
+    cloneDeep(customRender) :
+    defaultFieldRenders[fieldType] || (_ => {
       throw new TypeError(
         `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
       );
@@ -109,11 +110,15 @@ const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, r
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const sectionLayout = ({ name: sectionId, columns }, ...allEntries) => {
+const sectionLayout = ({ name: sectionId, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.section = sectionId;
-  entries.columns = columns || DEFAULT_SECTION_COLUMNS;
+
+  Object.keys(props).forEach(name => {
+    entries[name] = props[name];
+  });
+
   return entries.length ? entries : null;
 };
 
@@ -123,7 +128,13 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
   // entries is always an array, may be empty.
   const entries = allEntries.filter(entry => !!entry);
   entries.tab = tabId;
-  entries.columns = columns || DEFAULT_TAB_COLUMNS; // TBD: default to 1 or parent tab's columns?
+  entries.columns = columns || DEFAULT_TAB_COLUMNS;
+
+  entries.forEach(entry => {
+    if (entry.section && !entry.columns) {
+      entry.columns = entries.columns;
+    }
+  });
 
   Object.keys(props).forEach(name => {
     entries[name] = props[name];

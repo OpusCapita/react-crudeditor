@@ -21,7 +21,6 @@ export const
   DEFAULT_FIELD_TYPE = 'string',
   DEFAULT_VIEW = VIEW_SEARCH,
   DEFAULT_TAB_COLUMNS = 1,
-  DEFAULT_SECTION_COLUMNS = 1,
 
   /*
    * Value for a empty field/filter (even if the field is of type "string", "boolean", etc.)

@@ -1,4 +1,5 @@
 import isEqual from 'lodash/isEqual';
+import cloneDeep from 'lodash/cloneDeep';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 
 import {
@@ -62,10 +63,10 @@ export const
 
   getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
     modelDefinition.ui.create.defaultNewInstance ?
-      modelDefinition.ui.create.defaultNewInstance({
+      cloneDeep(modelDefinition.ui.create.defaultNewInstance({
         filter: {}, // Setting filter to empty object if it is not specified in view state.
         ..._getViewState(storeState, modelDefinition)
-      }) :
+      })) :
       {}
   ),
 

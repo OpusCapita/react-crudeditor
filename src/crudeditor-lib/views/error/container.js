@@ -1,6 +1,6 @@
 // Edit View container component.
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from '../../connectExtended';
 
 import Main from '../../../components/ErrorMain';
 import { getViewModelData } from './selectors';

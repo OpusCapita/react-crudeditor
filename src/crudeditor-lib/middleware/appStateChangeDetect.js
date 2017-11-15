@@ -5,7 +5,8 @@ import { STATUS_READY } from '../common/constants';
 export default ({
   lastState,
   onTransition,
-  storeState2appState
+  storeState2appState,
+  modelDefinition
 }) => ({ getState }) => next => action => {
   const rez = next(action);
   const storeState = getState();
@@ -28,10 +29,10 @@ export default ({
   }
 
   if (lastState.store && !lastState.app) {
-    lastState.app = storeState2appState(lastState.store); // eslint-disable-line no-param-reassign
+    lastState.app = storeState2appState(lastState.store, modelDefinition); // eslint-disable-line no-param-reassign
   }
 
-  const appState = storeState2appState(storeState);
+  const appState = storeState2appState(storeState, modelDefinition);
 
   if (!isEqual(appState, lastState.app)) {
     onTransition(appState);

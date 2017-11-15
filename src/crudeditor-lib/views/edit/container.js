@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { connect } from 'react-redux';
+import { connect } from '../../connectExtended';
 import Main from '../../../components/EditMain';
 import { getViewModelData } from './selectors';
 import { deleteInstances } from '../../common/actions';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect } from '../../connectExtended';
 
 import SearchView from '../../views/search/container';
 import CreateView from '../../views/create/container';

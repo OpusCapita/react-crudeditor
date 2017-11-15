@@ -1,6 +1,6 @@
 // Edit View container component.
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from '../../connectExtended';
 import Main from '../../../components/SearchMain';
 import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';

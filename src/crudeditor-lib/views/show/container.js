@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect } from '../../connectExtended'
 
 import Main from '../../../components/ShowMain'
 import { getViewModelData } from './selectors'

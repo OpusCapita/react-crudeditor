@@ -132,7 +132,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
 
   entries.forEach(entry => {
     if (entry.section && !entry.columns) {
-      entry.columns = entries.columns;
+      entry.columns = entries.columns; // eslint-disable-line no-param-reassign
     }
   });
 

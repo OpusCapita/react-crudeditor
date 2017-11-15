@@ -1,3 +1,7 @@
+## [v0.0.14](Wed, 15 Nov 2017 12:04:37 GMT)
+ - ESLINT error fix (Andrei Mourzenkov <mourzenkov@scand.com>, c49af36)
+ - Changed default columns for sections; baseModelDefinition is no longer modified (Andrei Mourzenkov <mourzenkov@scand.com>, 364636c)
+
 ## [v0.0.13](Tue, 14 Nov 2017 05:00:41 GMT)
  - Merge pull request #33 from OpusCapita/Issue/19
     

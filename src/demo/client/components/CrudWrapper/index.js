@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import cloneDeep from 'lodash/cloneDeep';
 import buildModel from '../../../models';
 import createCrud from '../../../../crudeditor-lib';
 import { hash2obj, buildURL } from './lib';
+import { I18nManager } from '@opuscapita/i18n/lib/utils';
 
 const VIEW_EDIT = 'edit';
 
@@ -36,45 +37,57 @@ function transitionHandler(historyPush, baseURL, view) {
 
 const buildTransitionHandler = (historyPush, baseURL) => view => transitionHandler(historyPush, baseURL, view)
 
-const CrudWrapper = ({
-  history: {
-    push
-  },
-  location: {
-    hash,
-    pathname,
-    search: query
-  },
-  match: {
-    params: {
-      entities
-    },
-    url: baseURL
-  }
-}) => {
-  if (pathname.indexOf(baseURL) !== 0) {
-    throw new Error(`Router match.url "${baseURL}" is exptected to be a prefix of location.pathname "${pathname}"`);
+export default class CrudWrapper extends PureComponent {
+  static propTypes = {
+    history: PropTypes.object,
+    match: PropTypes.object
   }
 
-  const suffix = pathname.slice(baseURL.length);
-  const view = url2view({ hash, query, suffix });
-
-  if (!handleTransition[baseURL]) {
-    handleTransition[baseURL] = buildTransitionHandler(push, baseURL);
+  static childContextTypes = {
+    i18n: PropTypes.object
   }
 
-  if (!entities2crud[entities]) {
-    const model = buildModel(entities);
-    entities2crud[entities] = createCrud(model);
+  getChildContext() {
+    return {
+      i18n: new I18nManager()
+    }
   }
 
-  const Crud = entities2crud[entities];
-  return <Crud view={view} onTransition={handleTransition[baseURL]} />;
+  render() {
+    const {
+      history: {
+        push
+      },
+      location: {
+        hash,
+        pathname,
+        search: query
+      },
+      match: {
+        params: {
+          entities
+        },
+        url: baseURL
+      }
+    } = this.props;
+
+    if (pathname.indexOf(baseURL) !== 0) {
+      throw new Error(`Router match.url "${baseURL}" is exptected to be a prefix of location.pathname "${pathname}"`);
+    }
+
+    const suffix = pathname.slice(baseURL.length);
+    const view = url2view({ hash, query, suffix });
+
+    if (!handleTransition[baseURL]) {
+      handleTransition[baseURL] = buildTransitionHandler(push, baseURL);
+    }
+
+    if (!entities2crud[entities]) {
+      const model = buildModel(entities);
+      entities2crud[entities] = createCrud(model);
+    }
+
+    const Crud = entities2crud[entities];
+    return <Crud view={view} onTransition={handleTransition[baseURL]} />;
+  }
 }
-
-CrudWrapper.propTypes = {
-  history: PropTypes.object,
-  match: PropTypes.object
-}
-
-export default CrudWrapper;

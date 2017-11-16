@@ -62,7 +62,7 @@ class EditField extends Component {
       <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
-            getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
+            getFieldText(this.context.i18n, fieldName) + (required ? '*' : '')
           }
         </Col>
         <Col sm={12 - labelColumns}>

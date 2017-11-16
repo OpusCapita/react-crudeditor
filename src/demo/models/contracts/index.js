@@ -306,7 +306,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
 
 export default {
   model: {
-    name: 'Contract', // TODO remove if it's not required by specification
+    name: 'Contracts', // unique name of the model [a-zA-Z0-9_] used in model translations
     translations,
     fields,
     validate(instance) {

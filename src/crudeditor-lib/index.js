@@ -44,7 +44,7 @@ export default baseModelDefinition => {
     };
 
     static contextTypes = {
-      i18n: PropTypes.object.isRequired
+      i18n: PropTypes.object.isRequired // important
     };
 
     static childContextTypes = {
@@ -91,12 +91,43 @@ export default baseModelDefinition => {
     }
 
     getChildContext() {
+      const
+        { name: modelName, translations } = modelDefinition.model,
+        prefix = getModelPrefix(appName, modelName),
+        modelMessageKeys = Object.keys(
+          Object.keys(translations).reduce((acc, lang) => ({ ...acc, ...translations[lang] }), {})
+        ),
+        i18nSource = this.context.i18n;
+
       return {
-        i18n: (i18n => {
-          // eslint-disable-next-line no-param-reassign
-          i18n.__crudEditor_modelPrefix = getModelPrefix(appName, modelDefinition.model.name);
-          return i18n
-        })(this.context.i18n)
+        i18n: {
+          // this method mimics @opuscapita/i18n getMessage
+          get getMessage() {
+            return (key, payload) => modelMessageKeys.indexOf(key) > -1 ?
+              i18nSource.getMessage(`${prefix}.${key}`) :
+              i18nSource.getMessage(key, payload)
+          },
+          // crudEditor-specific method, used to get model tabs, sections, fields names
+          get getModelMessage() {
+            return type => // 'field', 'section', 'tab', or any other model message key
+              key => { // name of a mathing type, can be empty for not structured keys
+                const msgKey = `${prefix}.model.${type}` + (key ? `.${key}` : '');
+                const i18nText = this.getMessage(msgKey);
+                // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+                // in this case we'are trying to make a readable title-case message
+                return i18nText === msgKey ?
+                  key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+                  i18nText;
+              }
+          },
+          // preserve all @opuscapita/i18n methods for possible usage in components, etc. 
+          ...Object.getOwnPropertyNames(i18nSource).
+            filter(prop => typeof i18nSource[prop] === 'function' && prop !== 'getMessage').
+            reduce((funcs, funcName) => ({
+              ...funcs,
+              [funcName]: (...args) => i18nSource[funcName](...args)
+            }), {})
+        }
       }
     }
 
@@ -129,4 +160,3 @@ export default baseModelDefinition => {
 
   return CrudWrapper
 };
-

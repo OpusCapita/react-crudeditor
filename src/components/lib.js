@@ -1,21 +1,9 @@
-const getText = type => (source, key) => {
-  const
-    msgKey = `${source.__crudEditor_modelPrefix}.model.${type}` + (key ? `.${key}` : ''),
-    i18nText = source.getMessage(msgKey);
-
-  // if i18n doesn't find a message by key, it returns the key itself
-  // in this case we'are trying to make a readable title-case phrase
-  return i18nText !== msgKey ?
-    i18nText :
-    key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0')
-}
-
 export const
 
-  getTabText = getText('tab'),
+  getTabText = (i18n, key) => i18n.getModelMessage('tab')(key),
 
-  getSectionText = getText('section'),
+  getSectionText = (i18n, key) => i18n.getModelMessage('section')(key),
 
-  getFieldText = getText('field'),
+  getFieldText = (i18n, key) => i18n.getModelMessage('field')(key),
 
-  getModelName = getText('name');
+  getModelName = i18n => i18n.getModelMessage('name')();

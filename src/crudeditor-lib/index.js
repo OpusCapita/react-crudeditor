@@ -91,12 +91,34 @@ export default baseModelDefinition => {
     }
 
     getChildContext() {
+      console.log(this.context)
+      const context = this.context;
       return {
-        i18n: (i18n => {
-          // eslint-disable-next-line no-param-reassign
-          i18n.__crudEditor_modelPrefix = getModelPrefix(appName, modelDefinition.model.name);
-          return i18n
-        })(this.context.i18n)
+        i18n: {
+          getMessage(key) {
+              const modelMessages = modelDefinition.model.translations;
+              const isModelKey = Object.keys(Object.keys(modelMessages).
+                reduce((acc, lang) => ({ ...acc, ...modelMessages[lang] }), {})
+              ).indexOf(key) > -1;
+
+              if (isModelKey) {
+                key = `${getModelPrefix(appName, modelDefinition.model.name)}.${key}`;
+              }
+
+              const text = context.i18n.getMessage(key);
+
+              return text !== key ?
+                text :
+                // TODO return last chunk capitalized
+                key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0')
+          },
+          register(...args) {
+            return context.i18n.register(...args);
+          },
+          formatDate(...args) {
+            return context.i18n.formatDate(...args);
+          }
+        }
       }
     }
 

@@ -1,6 +1,6 @@
 const getText = type => (source, key) => {
   const
-    msgKey = `${source.__crudEditor_modelPrefix}.model.${type}` + (key ? `.${key}` : ''),
+    msgKey = `model.${type}` + (key ? `.${key}` : ''),
     i18nText = source.getMessage(msgKey);
 
   // if i18n doesn't find a message by key, it returns the key itself

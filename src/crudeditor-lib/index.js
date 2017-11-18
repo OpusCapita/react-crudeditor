@@ -103,9 +103,9 @@ export default baseModelDefinition => {
         i18n: {
           // this method mimics @opuscapita/i18n getMessage
           get getMessage() {
-            return (key, payload) => modelMessageKeys.indexOf(key) > -1 ?
-              i18nSource.getMessage(`${prefix}.${key}`) :
-              i18nSource.getMessage(key, payload)
+            return (key, payload) => i18nSource.getMessage(
+              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
+            )
           },
           // crudEditor-specific method, used to get model tabs, sections, fields names
           get getModelMessage() {

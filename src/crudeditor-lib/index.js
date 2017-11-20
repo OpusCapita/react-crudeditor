@@ -92,8 +92,10 @@ export default baseModelDefinition => {
     getChildContext() {
       const
         { translations } = modelDefinition.model,
-        modelMessageKeys = Object.keys(Object.keys(translations).
-          reduce((acc, lang) => ({ ...acc, ...translations[lang] }), {})),
+        modelMessageKeys = Object.keys(translations).reduce(
+          (acc, lang) => [ ...acc, ...Object.key(translations[lang]) ],
+          []
+        ),
         i18nSource = this.context.i18n;
 
       return {
@@ -103,7 +105,8 @@ export default baseModelDefinition => {
           getMessage: {
             get() {
               return (key, payload) => i18nSource.getMessage(
-                modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
+                modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
+                payload
               )
             }
           }

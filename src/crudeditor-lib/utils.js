@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import base64 from 'base-64';
 
 import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
 import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
@@ -48,10 +49,7 @@ export function applyPrefixToTranslations(translations, prefix) {
 }
 
 export function getModelPrefix(appName, modelName) {
-  if (!modelName || /\W/.test(modelName)) {
-    throw new Error('Model name must be defined and can only contain letters, numbers and underscore.')
-  }
-  return `${appName}.${modelName}`;
+  return `${appName}.${base64.encode(modelName)}`;
 }
 
 export function fillDefaults(baseModelDefinition) {

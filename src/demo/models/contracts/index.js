@@ -306,7 +306,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
 
 export default {
   model: {
-    name: 'Contracts', // unique name of the model [a-zA-Z0-9_] used in model translations
+    name: 'Contracts', // unique for each model used in your app; used to distinguish translations
     translations,
     fields,
     validate(instance) {

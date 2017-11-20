@@ -21,7 +21,7 @@ function requireAll(requireContext) {
   }));
 }
 
-let icons = requireAll(require.context('!!raw-loader!@opuscapita/svg-icons/lib', true, /.*\.svg$/));
+let icons = requireAll(require.context('@opuscapita/svg-icons/lib', true, /.*\.svg$/));
 
 let getIcon = (name) => {
   return icons.filter(icon => icon.name === name)[0].svg;

@@ -1,12 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, FormGroup } from 'react-bootstrap';
-import { getFieldText } from '../lib';
+import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import './SearchForm.less';
 
 class SearchForm extends React.Component {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        formFilter: PropTypes.object,
+        fieldErrors: PropTypes.object
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired,
+    fieldErrorsWrapper: PropTypes.shape({
+      toggleFieldErrors: PropTypes.func,
+      shouldShowErrors: PropTypes.func,
+      errorsExistAndVisible: PropTypes.bool
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handleFormFilterUpdate = path => newFieldValue => {
     this.props.fieldErrorsWrapper.toggleFieldErrors(path, false);
 
@@ -61,7 +80,10 @@ class SearchForm extends React.Component {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'}</label>
+            <label>{
+              getModelMessage(i18n, `model.field.${name}`, name) +
+              ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'
+            }</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].from }}
               onChange={this.handleFormFilterUpdate([name, 'from'])}
@@ -80,7 +102,10 @@ class SearchForm extends React.Component {
           className="crud--search-form__form-group"
         >
           <div>
-            <label>{getFieldText(i18n, name) + ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'}</label>
+            <label>{
+              getModelMessage(i18n, `model.field.${name}`, name) +
+              ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'
+            }</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].to }}
               onChange={this.handleFormFilterUpdate([name, 'to'])}
@@ -100,7 +125,7 @@ class SearchForm extends React.Component {
         className="crud--search-form__form-group"
       >
         <div>
-          <label>{getFieldText(i18n, name)}</label>
+          <label>{getModelMessage(i18n, `model.field.${name}`, name)}</label>
           <Component
             {...{ [valuePropName]: formatedFilter[name] }}
             onChange={this.handleFormFilterUpdate(name)}
@@ -139,24 +164,5 @@ class SearchForm extends React.Component {
     );
   }
 }
-
-SearchForm.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      formFilter: PropTypes.object,
-      fieldErrors: PropTypes.object
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired,
-  fieldErrorsWrapper: PropTypes.shape({
-    toggleFieldErrors: PropTypes.func,
-    shouldShowErrors: PropTypes.func,
-    errorsExistAndVisible: PropTypes.bool
-  }).isRequired
-}
-
-SearchForm.contextTypes = {
-  i18n: PropTypes.object
-};
 
 export default WithFieldErrors(SearchForm);

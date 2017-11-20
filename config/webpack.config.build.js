@@ -1,5 +1,8 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
   context: resolve(__dirname, '../src'),
@@ -49,8 +52,12 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jpg|jpeg|gif|ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff(2)?)(\?[a-z0-9=&.]+)?$/,
         use: ['file-loader']
+      },
+      {
+        test: /\.(svg)(\?[a-z0-9=&.]+)?$/,
+        use: ['raw-loader']
       },
       {
         test: /\.(css|less)$/,
@@ -83,6 +90,12 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production')
+    }),
+    // new UglifyJsPlugin(),
+    // new BundleAnalyzerPlugin(),
+    new LodashModuleReplacementPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      minimize: true
     })
   ]
 };

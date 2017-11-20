@@ -276,7 +276,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
       field({ name: 'changedBy', readOnly: true })
     )
   ),
-  tab({ name: 'catalogs' }),
+  tab({ name: 'catalogs', Component: ({ name }) => <div>Hello {name}</div> }),
   tab({ name: 'customer' }),
   tab({ name: 'boilerplates' }),
   tab({ name: 'supplier' }),

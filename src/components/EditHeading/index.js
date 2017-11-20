@@ -13,7 +13,18 @@ import {
 import makeButtonWithConfirm from './buttonWithConfirm';
 import { getModelMessage } from '../lib';
 
-class EditHeading extends PureComponent {
+export default class EditHeading extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.object,
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   render() {
     const {
       model: {
@@ -104,15 +115,3 @@ class EditHeading extends PureComponent {
   }
 }
 
-EditHeading.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.object,
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-EditHeading.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditHeading;

@@ -8,6 +8,7 @@ import FormGrid from '../FormGrid';
 
 const EditMain = ({ model, fieldErrorsWrapper }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
+  console.log(model.data.activeTab)
 
   return (<div>
     <Heading model={model} />

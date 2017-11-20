@@ -140,7 +140,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
     entries[name] = props[name];
   });
 
-  return entries.length ? entries : null;
+  return entries.length || entries.Component ? entries : null;
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████

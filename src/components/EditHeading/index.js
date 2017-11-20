@@ -11,7 +11,7 @@ import {
   Button
 } from 'react-bootstrap';
 import makeButtonWithConfirm from './buttonWithConfirm';
-import { getTabText, getModelName } from '../lib';
+import { getModelMessage } from '../lib';
 
 class EditHeading extends PureComponent {
   render() {
@@ -40,7 +40,7 @@ class EditHeading extends PureComponent {
 
     const title = i18n.getMessage(
       `crudEditor.${viewName.toLowerCase()}.header`,
-      { modelName: getModelName(i18n) }
+      { modelName: getModelMessage(i18n, 'model.name') }
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
@@ -94,7 +94,7 @@ class EditHeading extends PureComponent {
           {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>
-                <h4>{getTabText(i18n, name)}</h4>
+                <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
               </NavItem>)
             )
           }

@@ -99,26 +99,12 @@ export default baseModelDefinition => {
       return {
         i18n: Object.create(i18nSource, {
           // this method mimics @opuscapita/i18n getMessage
+          // it queries for prefixed model messages to allow multi-model/multi-crud apps
           getMessage: {
             get() {
               return (key, payload) => i18nSource.getMessage(
                 modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
               )
-            }
-          },
-          // crudEditor-specific method, used to get model tabs, sections, fields names
-          getModelMessage: {
-            get() {
-              return type => // 'field', 'section', 'tab', or any other model message key
-                key => { // name of a mathing type, can be empty for not structured keys
-                  const msgKey = `${prefix}.model.${type}` + (key ? `.${key}` : '');
-                  const i18nText = this.getMessage(msgKey);
-                  // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
-                  // in this case we'are trying to make a readable title-case message
-                  return i18nText === msgKey ?
-                    key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
-                    i18nText;
-                }
             }
           }
         })

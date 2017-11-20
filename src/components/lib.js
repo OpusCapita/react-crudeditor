@@ -1,9 +1,8 @@
-export const
+export const getModelMessage = (i18n, key, defaultKey) => {
+  const message = i18n.getMessage(key);
 
-  getTabText = (i18n, key) => i18n.getModelMessage('tab')(key),
-
-  getSectionText = (i18n, key) => i18n.getModelMessage('section')(key),
-
-  getFieldText = (i18n, key) => i18n.getModelMessage('field')(key),
-
-  getModelName = i18n => i18n.getModelMessage('name')();
+  // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+  return (message.indexOf(key) + key.length) === message.length && defaultKey ?
+    defaultKey.charAt(0).toUpperCase() + defaultKey.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+    message;
+}

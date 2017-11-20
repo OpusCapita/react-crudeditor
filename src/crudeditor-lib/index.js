@@ -44,7 +44,7 @@ export default baseModelDefinition => {
     };
 
     static contextTypes = {
-      i18n: PropTypes.object.isRequired
+      i18n: PropTypes.object.isRequired // important
     };
 
     static childContextTypes = {
@@ -91,33 +91,42 @@ export default baseModelDefinition => {
     }
 
     getChildContext() {
-      console.log(this.context)
-      const context = this.context;
+      const
+        { name: modelName, translations } = modelDefinition.model,
+        prefix = getModelPrefix(appName, modelName),
+        modelMessageKeys = Object.keys(
+          Object.keys(translations).reduce((acc, lang) => ({ ...acc, ...translations[lang] }), {})
+        ),
+        i18nSource = this.context.i18n;
+
       return {
         i18n: {
-          getMessage(key) {
-              const modelMessages = modelDefinition.model.translations;
-              const isModelKey = Object.keys(Object.keys(modelMessages).
-                reduce((acc, lang) => ({ ...acc, ...modelMessages[lang] }), {})
-              ).indexOf(key) > -1;
-
-              if (isModelKey) {
-                key = `${getModelPrefix(appName, modelDefinition.model.name)}.${key}`;
+          // this method mimics @opuscapita/i18n getMessage
+          get getMessage() {
+            return (key, payload) => i18nSource.getMessage(
+              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
+            )
+          },
+          // crudEditor-specific method, used to get model tabs, sections, fields names
+          get getModelMessage() {
+            return type => // 'field', 'section', 'tab', or any other model message key
+              key => { // name of a mathing type, can be empty for not structured keys
+                const msgKey = `${prefix}.model.${type}` + (key ? `.${key}` : '');
+                const i18nText = this.getMessage(msgKey);
+                // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+                // in this case we'are trying to make a readable title-case message
+                return i18nText === msgKey ?
+                  key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+                  i18nText;
               }
-
-              const text = context.i18n.getMessage(key);
-
-              return text !== key ?
-                text :
-                // TODO return last chunk capitalized
-                key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0')
           },
-          register(...args) {
-            return context.i18n.register(...args);
-          },
-          formatDate(...args) {
-            return context.i18n.formatDate(...args);
-          }
+          // preserve all @opuscapita/i18n methods for possible usage in components, etc.
+          ...Object.getOwnPropertyNames(i18nSource).
+            filter(prop => typeof i18nSource[prop] === 'function' && prop !== 'getMessage').
+            reduce((funcs, funcName) => ({
+              ...funcs,
+              [funcName]: (...args) => i18nSource[funcName](...args)
+            }), {})
         }
       }
     }
@@ -151,4 +160,3 @@ export default baseModelDefinition => {
 
   return CrudWrapper
 };
-

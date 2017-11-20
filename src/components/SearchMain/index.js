@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
-
+import { getModelMessage } from '../lib'
 import './SearchMain.less';
 
 class SearchMain extends PureComponent {
@@ -18,7 +18,7 @@ class SearchMain extends PureComponent {
       <div className="crud--search-main">
         <div className="crud--search-main__page-header">
           <h3 className="crud--search-main__page-title">
-            {i18n.getMessage('crudEditor.search.header', { "payload": i18n.getMessage('model.name') })}
+            {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
           </h3>
           <button
             type="button"

@@ -1,18 +1,8 @@
-const getText = type => (source, key) => {
-  const
-    msgKey = `model.${type}.${key}`,
-    i18nText = source.getMessage(msgKey);
+export const getModelMessage = (i18n, key, defaultKey) => {
+  const message = i18n.getMessage(key);
 
-  // if i18n doesn't find a message by key, it returns the key itself
-  return i18nText !== msgKey ?
-    i18nText :
-    key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0')
+  // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+  return (message.indexOf(key) + key.length) === message.length && defaultKey ?
+    defaultKey.charAt(0).toUpperCase() + defaultKey.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+    message;
 }
-
-export const
-
-  getTabText = getText('tab'),
-
-  getSectionText = getText('section'),
-
-  getFieldText = getText('field');

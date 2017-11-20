@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
-import { getFieldText } from '../lib';
+import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import './SearchResultListing.less';
 
@@ -86,7 +86,7 @@ class SearchResultListing extends PureComponent {
                         style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                         onClick={this.handleResort(name)}
                       >
-                        {getFieldText(i18n, name)}
+                        {getModelMessage(i18n, `model.field.${name}`, name)}
                         {
                           sortField === name &&
                           <Glyphicon
@@ -95,7 +95,7 @@ class SearchResultListing extends PureComponent {
                           />
                         }
                       </a> :
-                      getFieldText(i18n, name)
+                      getModelMessage(i18n, `model.field.${name}`, name)
                   }
                 </th>)
               )}

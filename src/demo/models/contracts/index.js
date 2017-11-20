@@ -4,6 +4,7 @@ import StatusField from './components/StatusField';
 import translations from './i18n';
 import CustomSpinner from './components/CustomSpinner';
 import ContractReferenceSearch from './components/ContractReferenceSearch';
+import CustomTabComponent from './components/CustomTabComponent';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
@@ -301,7 +302,8 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
       field({ name: 'isInternal' }),
       field({ name: 'isOffer' })
     )
-  )
+  ),
+  tab({ name: 'custom', Component: CustomTabComponent, disabled: viewName === VIEW_CREATE })
 ];
 
 export default {

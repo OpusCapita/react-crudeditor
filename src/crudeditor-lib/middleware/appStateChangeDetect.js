@@ -1,6 +1,6 @@
 import isEqual from 'lodash/isEqual';
 import { STATUS_READY } from '../common/constants';
-import { storeState2appState } from '../utils';
+import { storeState2appState } from '../lib';
 
 // appStateChangeDetect is a function which returns Redux middleware
 export default ({

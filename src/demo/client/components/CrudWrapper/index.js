@@ -4,7 +4,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import buildModel from '../../../models';
 import createCrud from '../../../../crudeditor-lib';
 import { hash2obj, buildURL } from './lib';
-import { I18nManager } from '@opuscapita/i18n/lib/utils';
+import { I18nManager } from '@opuscapita/i18n';
 
 const VIEW_EDIT = 'edit';
 

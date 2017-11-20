@@ -18,7 +18,7 @@ import {
   storeState2appState,
   fillDefaults,
   getPrefixedTranslations
-} from './utils';
+} from './lib';
 
 const appName = 'crudEditor';
 

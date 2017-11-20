@@ -447,6 +447,12 @@ Model Definition is an object describing an entity. It has the following structu
           name: <string, persistent field name>,
 
           /*
+           * Boolean, whether the field search is range search.
+           * By default, it is true for numbers/dates and false for all other values.
+           */
+          ?isRange: <boolean>,
+
+          /*
            * Default render:
            * {
            *   // Default React Component for displaying particular field type.
@@ -461,14 +467,7 @@ Model Definition is an object describing an entity. It has the following structu
            *   valueProp: {
            *     name: "value",
            *     type: "string"
-           *   },
-           *
-           *   // Boolean, whether the field search is range search.
-           *   // It is true for numbers/dates and false for all other values.
-           *   // NOTE: it is inappropriate for custom render because custom Component is
-           *   //       fully responsible for composing searchable field filter value
-           *   //       => isRange is presupposed to be false in such case.
-           *   isRange: <boolean>
+           *   }
            * }
            */
           ?render: {

@@ -93,7 +93,7 @@ export default baseModelDefinition => {
       const
         { translations } = modelDefinition.model,
         modelMessageKeys = Object.keys(translations).reduce(
-          (acc, lang) => [...acc, ...Object.key(translations[lang])],
+          (acc, lang) => [...acc, ...Object.keys(translations[lang])],
           []
         ),
         i18nSource = this.context.i18n;

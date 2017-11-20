@@ -1,3 +1,40 @@
+## [v0.0.15](Mon, 20 Nov 2017 13:19:00 GMT)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (c623e60 348e2a8, bf15c01)
+ - Remove redundancy from package.json (Andrei Mourzenkov <mourzenkov@scand.com>, c623e60)
+ - Merge pull request #41 from OpusCapita/custom-tab-component
+
+    Added custom tab component example (a80e012 a726d98, 348e2a8)
+ - Unified tabs logic handling in show/edit/create views. (Egor Stambakio <stambakio@scand.com>, a726d98)
+ - Lint (Egor Stambakio <stambakio@scand.com>, fb21e5c)
+ - Added a custom component example for tabs. (Egor Stambakio <stambakio@scand.com>, 004f489)
+ - hideSearchForm flag is added to Documentation (Andrei Mourzenkov <mourzenkov@scand.com>, a80e012)
+ - Merge branch 'master' into custom-tab-component (dfd9c4f aa108f4, 8900d31)
+ - hotfix (Egor Stambakio <stambakio@scand.com>, aa108f4)
+ - 1 (Egor Stambakio <stambakio@scand.com>, dfd9c4f)
+ - Lint corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 592c8fd)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (2acb86e b7e487a, 1498cbd)
+ - Documentation allows isRange for Cusom Components in Search View (Andrei Mourzenkov <mourzenkov@scand.com>, 2acb86e)
+ - Merge pull request #38 from OpusCapita/translations/37
+
+    Translations/37 (4e6f513 a7e6133, b7e487a)
+ - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7e6133)
+ - Removed getModelText from inner context. (Egor Stambakio <stambakio@scand.com>, a38b865)
+ - Merge pull request #39 from OpusCapita/initial-search-spinner/3
+
+    Refactored search view to show spinner on initial load (46c1259 b828d22, 4e6f513)
+ - Renamed utils -> lib. (Egor Stambakio <stambakio@scand.com>, 39cecce)
+ - Object.create for contextual i18n. (Egor Stambakio <stambakio@scand.com>, 266401b)
+ - Base64 encoding for model name in prefix. (Egor Stambakio <stambakio@scand.com>, ab8ca3d)
+ - Fixed #3 (Egor Stambakio <stambakio@scand.com>, b828d22)
+ - Pulled (7529117 65f37a0, e726a22)
+ - Unified context getMessage to handle model phrases with payloads. (estambakio-sc <egor.stambakio@opuscapita.com>, 65f37a0)
+ - Refactored i18n context. (estambakio-sc <egor.stambakio@opuscapita.com>, 3003516)
+ - evening; still need to implement field titlecase. (Egor Stambakio <stambakio@scand.com>, 7529117)
+ - Edited webpack config a bit. (Egor Stambakio <stambakio@scand.com>, 6b4ecae)
+ - Removed raw loader links so they dont break tests. (Egor Stambakio <stambakio@scand.com>, 2e1c503)
+ - Added i18n context for demo/client. (Egor Stambakio <stambakio@scand.com>, 73d2318)
+ - Added namespace for model i18n, and refactored crudeditor-lib index.js (Egor Stambakio <stambakio@scand.com>, d9d95ce)
+
 ## [v0.0.14](Wed, 15 Nov 2017 12:04:37 GMT)
  - ESLINT error fix (Andrei Mourzenkov <mourzenkov@scand.com>, c49af36)
  - Changed default columns for sections; baseModelDefinition is no longer modified (Andrei Mourzenkov <mourzenkov@scand.com>, 364636c)

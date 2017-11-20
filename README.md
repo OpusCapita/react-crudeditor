@@ -181,7 +181,8 @@ View State *must* be serializable.
   ?sort: <string, sort field name>,
   ?order: <"asc"|"desc", sort order>,
   ?max: <natural number, search result limit>,
-  ?offset: <whole number, search result offset>
+  ?offset: <whole number, search result offset>,
+  ?hideSearchForm: <boolean, search form initial visibility>
 }
 ```
 
@@ -192,6 +193,7 @@ sort | Result field marked with `sortByDefault` (first result field if no `sortB
 order | `"asc"`
 max | `30`
 offset | `0`
+hideSearchForm | false
 
 #### *EditorComponent* props.state for *"create"* View:
 

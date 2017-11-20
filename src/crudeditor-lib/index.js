@@ -4,10 +4,10 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
+import base64 from 'base-64';
 import crudTranslations from './i18n';
 import notificationsMiddleware from './middleware/notifications';
 import appStateChangeDetect from './middleware/appStateChangeDetect';
-
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
@@ -17,14 +17,15 @@ import { DEFAULT_VIEW } from './common/constants';
 import {
   storeState2appState,
   fillDefaults,
-  getModelPrefix,
-  applyPrefixToTranslations
+  getPrefixedTranslations
 } from './utils';
 
 const appName = 'crudEditor';
 
 export default baseModelDefinition => {
+  // TODO check baseModelDefinition validity
   const modelDefinition = fillDefaults(baseModelDefinition);
+  const prefix = `${appName}.${base64.encode(modelDefinition.model.name)}`;
   let onTransition = null;
   let lastState = {};
 
@@ -48,8 +49,7 @@ export default baseModelDefinition => {
     };
 
     static childContextTypes = {
-      i18n: PropTypes.object,
-      uniquePrefix: PropTypes.string
+      i18n: PropTypes.object.isRequired
     }
 
     static defaultProps = {
@@ -66,9 +66,8 @@ export default baseModelDefinition => {
       this.context.i18n.register(appName, crudTranslations);
 
       // model translations
-      const uniquePrefix = getModelPrefix(appName, modelDefinition.model.name);
-      const prefixedTranslations = applyPrefixToTranslations(modelDefinition.model.translations, uniquePrefix);
-      this.context.i18n.register(uniquePrefix, prefixedTranslations);
+      const prefixedTranslations = getPrefixedTranslations(modelDefinition.model.translations, prefix);
+      this.context.i18n.register(prefix, prefixedTranslations);
 
       const sagaMiddleware = createSagaMiddleware();
 
@@ -92,42 +91,37 @@ export default baseModelDefinition => {
 
     getChildContext() {
       const
-        { name: modelName, translations } = modelDefinition.model,
-        prefix = getModelPrefix(appName, modelName),
-        modelMessageKeys = Object.keys(
-          Object.keys(translations).reduce((acc, lang) => ({ ...acc, ...translations[lang] }), {})
-        ),
+        { translations } = modelDefinition.model,
+        modelMessageKeys = Object.keys(Object.keys(translations).
+          reduce((acc, lang) => ({ ...acc, ...translations[lang] }), {})),
         i18nSource = this.context.i18n;
 
       return {
-        i18n: {
+        i18n: Object.create(i18nSource, {
           // this method mimics @opuscapita/i18n getMessage
-          get getMessage() {
-            return (key, payload) => i18nSource.getMessage(
-              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
-            )
+          getMessage: {
+            get() {
+              return (key, payload) => i18nSource.getMessage(
+                modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key, payload
+              )
+            }
           },
           // crudEditor-specific method, used to get model tabs, sections, fields names
-          get getModelMessage() {
-            return type => // 'field', 'section', 'tab', or any other model message key
-              key => { // name of a mathing type, can be empty for not structured keys
-                const msgKey = `${prefix}.model.${type}` + (key ? `.${key}` : '');
-                const i18nText = this.getMessage(msgKey);
-                // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
-                // in this case we'are trying to make a readable title-case message
-                return i18nText === msgKey ?
-                  key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
-                  i18nText;
-              }
-          },
-          // preserve all @opuscapita/i18n methods for possible usage in components, etc.
-          ...Object.getOwnPropertyNames(i18nSource).
-            filter(prop => typeof i18nSource[prop] === 'function' && prop !== 'getMessage').
-            reduce((funcs, funcName) => ({
-              ...funcs,
-              [funcName]: (...args) => i18nSource[funcName](...args)
-            }), {})
-        }
+          getModelMessage: {
+            get() {
+              return type => // 'field', 'section', 'tab', or any other model message key
+                key => { // name of a mathing type, can be empty for not structured keys
+                  const msgKey = `${prefix}.model.${type}` + (key ? `.${key}` : '');
+                  const i18nText = this.getMessage(msgKey);
+                  // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+                  // in this case we'are trying to make a readable title-case message
+                  return i18nText === msgKey ?
+                    key.charAt(0).toUpperCase() + key.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+                    i18nText;
+                }
+            }
+          }
+        })
       }
     }
 

@@ -1,5 +1,4 @@
 import cloneDeep from 'lodash/cloneDeep';
-import base64 from 'base-64';
 
 import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
 import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
@@ -36,7 +35,7 @@ export const storeState2appState = (storeState, modelDefinition) => ({
   state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
 });
 
-export function applyPrefixToTranslations(translations, prefix) {
+export function getPrefixedTranslations(translations, prefix) {
   return Object.keys(translations).
     reduce((acc, lang) => ({
       ...acc,
@@ -46,10 +45,6 @@ export function applyPrefixToTranslations(translations, prefix) {
           [`${prefix}.${msgKey}`]: translations[lang][msgKey]
         }), {})
     }), {})
-}
-
-export function getModelPrefix(appName, modelName) {
-  return `${appName}.${base64.encode(modelName)}`;
 }
 
 export function fillDefaults(baseModelDefinition) {

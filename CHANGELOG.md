@@ -1,3 +1,10 @@
+## [v0.0.16](Tue, 21 Nov 2017 06:24:28 GMT)
+ - Merge pull request #43 from OpusCapita/buttons-belong-to-forms
+
+    Forms & submit buttons drawn only for form tabs. (e126ec7 c97207f, d4ac68a)
+ - Forms & submit buttons drawn only for form tabs. (Egor Stambakio <stambakio@scand.com>, c97207f)
+ - Update .gitattributes (Andrei Mourzenkov <mourzenkov@scand.com>, e126ec7)
+
 ## [v0.0.15](Mon, 20 Nov 2017 13:19:00 GMT)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (c623e60 348e2a8, bf15c01)
  - Remove redundancy from package.json (Andrei Mourzenkov <mourzenkov@scand.com>, c623e60)

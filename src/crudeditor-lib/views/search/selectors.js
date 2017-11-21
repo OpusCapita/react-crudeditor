@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual';
+
 import cloneDeep from 'lodash/cloneDeep';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 
@@ -81,7 +81,6 @@ export const
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
-    searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter),
     isLoading: !!~[
       STATUS_DELETING,
       STATUS_INITIALIZING,

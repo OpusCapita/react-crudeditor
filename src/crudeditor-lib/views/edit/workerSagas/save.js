@@ -1,7 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
-import searchWithOffset from '../../search/workerSagas/searchWithOffset';
+import searchSaga from '../../search/workerSagas/search';
 
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 
@@ -160,12 +160,25 @@ export default function*({
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {
     try {
-      const { instances, totalCount, offset } = yield call(searchWithOffset(1), {
+      const { offset: navOffset, nextInc } = navigation;
+
+      let { i, init } = nextInc.next({ i: 1 }).value
+
+      if (init) {
+        i = nextInc.next({ i: 1 }).value.i
+      }
+
+      const offset = navOffset + i;
+
+      const { instances, totalCount, offset: newOffset } = yield call(searchSaga, {
         modelDefinition,
-        meta,
-        instance,
-        navigation
-      })
+        action: {
+          payload: {
+            offset
+          },
+          meta
+        }
+      });
 
       try {
         yield call(editSaga, {
@@ -175,7 +188,7 @@ export default function*({
               instance: instances.length === 0 ? instance : instances[0],
               navigation: {
                 ...navigation,
-                offset,
+                offset: newOffset,
                 totalCount,
                 ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
               }

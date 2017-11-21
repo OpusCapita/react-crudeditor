@@ -12,8 +12,7 @@ import {
 
 export default class extends PureComponent {
   static propTypes = {
-    errors: PropTypes.arrayOf(PropTypes.object),
-    show: PropTypes.bool
+    errors: PropTypes.arrayOf(PropTypes.object)
   }
 
   static contextTypes = {
@@ -33,20 +32,18 @@ export default class extends PureComponent {
 
     return errorMessages[id] ? // if we have a translation
     getMessage(errorMessages[id].key, { payload: errorMessages[id].payload }) :
-      message ? // no translation defined -> print a message if it exists
-      message :
-        id; // otherwise just print error id
+      message || id; // otherwise print error message or at least error id
   }
 
   render() {
-    const { errors, show } = this.props;
+    const { errors } = this.props;
 
     return (
       <div style={{ display: "block" }}>
-        <div style={{ opacity: show ? '1' : '0' }}>
-          <Fade in={show}>
+        <div style={{ opacity: errors.length ? '1' : '0' }}>
+          <Fade in={!!errors.length}>
             <Label bsStyle="danger">
-              {(show && errors.length > 0) ? this.getErrorMessage(errors[0]) : ' '}
+              {errors.length ? this.getErrorMessage(errors[0]) : ' '}
             </Label>
           </Fade>
         </div>

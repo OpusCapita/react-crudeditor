@@ -17,39 +17,32 @@ import {
   editAdjacentInstance
 } from './actions';
 
-const mergeProps = ({ viewModelData, flags }, dispatchProps, ownProps) => ({
+const mergeProps = ({
+  viewModelData,
+  flags: {
+    nextInstanceExists,
+    prevInstanceExists
+  }
+}, {
+  saveAndNextInstance,
+  editAdjacentInstance,
+  ...otherActions
+},
+ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
     // here we adjust action creators to reflect flags values
-    actions: (
-      ({
+    actions: {
+      ...otherActions,
+      ...(prevInstanceExists ? {
+        gotoPrevInstance: _ => editAdjacentInstance('prev')
+      } : {}),
+      ...(nextInstanceExists ? {
         saveAndNextInstance,
-        editAdjacentInstance,
-        ...otherActions
-      }, {
-        nextInstanceExists,
-        prevInstanceExists
-      }) => {
-        let result = { ...otherActions };
-
-        if (nextInstanceExists) {
-          result = {
-            ...result,
-            saveAndNextInstance,
-            gotoNextInstance: editAdjacentInstance.bind(null, 'next')
-          }
-        }
-
-        if (prevInstanceExists) {
-          result = {
-            ...result,
-            gotoPrevInstance: editAdjacentInstance.bind(null, 'prev')
-          }
-        }
-
-        return result
-      })(dispatchProps, flags)
+        gotoNextInstance: _ => editAdjacentInstance('next')
+      } : {})
+    }
   }
 });
 

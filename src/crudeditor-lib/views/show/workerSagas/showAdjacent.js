@@ -1,7 +1,7 @@
 import { call, select } from 'redux-saga/effects';
 
 import showSaga from './show';
-import searchWithOffset from '../../search/workerSagas/searchWithOffset';
+import searchSaga from '../../search/workerSagas/search';
 
 import { VIEW_NAME } from '../constants';
 import { ERROR_NOT_FOUND } from '../../../common/constants';
@@ -16,17 +16,30 @@ export default function*({
   },
   navigation
 }) {
-  const incNum = side === 'next' ? 1 : -1;
-
   const instance = yield select(storeState => storeState.views[VIEW_NAME].persistentInstance);
 
+  const incNum = side === 'next' ? 1 : -1;
+
+  const { offset: navOffset, nextInc } = navigation;
+
+  let { i, init } = nextInc.next({ i: incNum }).value
+
+  if (init) {
+    i = nextInc.next({ i: incNum }).value.i
+  }
+
+  const offset = navOffset + i;
+
   try {
-    const { instances, totalCount, offset } = yield call(searchWithOffset(incNum), {
+    const { instances, totalCount, offset: newOffset } = yield call(searchSaga, {
       modelDefinition,
-      meta,
-      instance,
-      navigation
-    })
+      action: {
+        payload: {
+          offset
+        },
+        meta
+      }
+    });
 
     try {
       yield call(showSaga, {
@@ -36,7 +49,7 @@ export default function*({
             instance: instances.length === 0 ? instance : instances[0],
             navigation: {
               ...navigation,
-              offset,
+              offset: newOffset,
               totalCount,
               ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
             }

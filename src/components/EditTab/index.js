@@ -12,24 +12,7 @@ import {
 } from '../../crudeditor-lib/common/constants';
 
 class EditTab extends React.PureComponent {
-  handleSubmit = e => {
-    e.preventDefault();
-
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
-      this.props.model.actions.saveInstance();
-    }
-  }
-
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
-
-  handleSaveAndNew = _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
-    }
-
-    this.props.model.actions.saveAndNewInstance()
-  }
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
@@ -46,7 +29,11 @@ class EditTab extends React.PureComponent {
           persistentInstance,
           formInstance
         }
-      }
+      },
+      fieldErrorsWrapper: {
+        handleSaveAndNew,
+        handleSubmit
+      } = {}
     } = this.props;
 
     const { i18n } = this.context;
@@ -85,7 +72,7 @@ class EditTab extends React.PureComponent {
     if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
       buttons.push(
         <Button
-          onClick={this.handleSaveAndNew}
+          onClick={handleSaveAndNew}
           disabled={disableSave}
           key="Save and New"
         >
@@ -117,7 +104,7 @@ class EditTab extends React.PureComponent {
     }
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit}>
+      <Form horizontal={true} onSubmit={handleSubmit}>
         <Col sm={12}>
           { sectionsAndFields }
         </Col>
@@ -141,7 +128,7 @@ EditTab.propTypes = {
     }),
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired,
-  fieldErrorsWrapper: PropTypes.object
+  fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
 }
 
 EditTab.contextTypes = {

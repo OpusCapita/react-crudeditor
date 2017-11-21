@@ -35,12 +35,12 @@ class SearchMain extends PureComponent {
           <Row>
             <Col xs={8}>
               <Button
-                  bsStyle="link"
-                  active={this.state.isFormOpen}
-                  style={{ margin: '0 16px' }}
-                  onClick={this.handleToggleForm}
-                >
-                  <Glyphicon glyph="search"/>
+                bsStyle="link"
+                active={this.state.isFormOpen}
+                style={{ margin: '0 16px' }}
+                onClick={this.handleToggleForm}
+              >
+                <Glyphicon glyph="search"/>
               </Button>
               {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
             </Col>

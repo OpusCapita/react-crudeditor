@@ -1,3 +1,15 @@
+## [v0.0.17](Tue, 21 Nov 2017 18:23:26 GMT)
+ - Partial resolution of #46 (Andrei Mourzenkov <mourzenkov@scand.com>, 21e313c)
+ - Merge pull request #24 from OpusCapita/issue17
+
+    Refactored FieldErrors HOC and made fixes accroding to supervisor notes (4673b2b e3ca823, 7823617)
+ - Resolved conflicts. (f7f9d00 4673b2b, e3ca823)
+ - Minor changes. (Egor Stambakio <stambakio@scand.com>, f7f9d00)
+ - Unified prev/next search to use the single app search point. (Egor Stambakio <stambakio@scand.com>, 2985100)
+ - Merge branch 'master' into issue17 (93783c3 6784678, 190fc10)
+ - ... (Egor Stambakio <stambakio@scand.com>, 93783c3)
+ - working on #17 (Egor Stambakio <stambakio@scand.com>, a6cd5d1)
+
 ## [v0.0.16](Tue, 21 Nov 2017 06:24:28 GMT)
  - Merge pull request #43 from OpusCapita/buttons-belong-to-forms
 
@@ -48,7 +60,7 @@
 
 ## [v0.0.13](Tue, 14 Nov 2017 05:00:41 GMT)
  - Merge pull request #33 from OpusCapita/Issue/19
-    
+
     Added reference select usage example. (2397386 5f18105, ff3af61)
  - react-reference-select is moved to devDependencies (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 5f18105)
  - ReferenceSearch files renaming (Andrei Mourzenkov <mourzenkov@scand.com>, 85f2b14)
@@ -62,7 +74,7 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, cac1729)
  - ... (Egor Stambakio <stambakio@scand.com>, f269b59)
  - Merge pull request #32 from OpusCapita/Issue/26
-    
+
     Added webpack definePlugin to lib build config. (0d48011 d491f13, bb7e82d)
  - Removed dev plugin, saved ~10% bundle size. (estambakio-sc <egor.stambakio@opuscapita.com>, d491f13)
  - Added webpack definePlugin to lib build config. (estambakio-sc <egor.stambakio@opuscapita.com>, 5afc63e)
@@ -87,11 +99,11 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b467b6f)
  - Add default filter to a model's api.search (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8756b81)
  - Merge pull request #29 from OpusCapita/Issue/27
-    
+
     fixed #27 (878db94 b172e0e, fa405de)
  - fixed (Egor Stambakio <stambakio@scand.com>, b172e0e)
  - Merge pull request #28 from OpusCapita/Issue/25
-    
+
     Make Date fields use i18n.formatDate (6784678 a7c24b4, 878db94)
  - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7c24b4)
  - Unified date field to use i18n.formatDate (Egor Stambakio <stambakio@scand.com>, e7affc5)
@@ -101,11 +113,11 @@
  - v 0.3 (Egor Stambakio <stambakio@scand.com>, da849a9)
  - Renamed spinner to Spinner. (Egor Stambakio <stambakio@scand.com>, e46ee54)
  - Merge pull request #23 from OpusCapita/Issue/22
-    
+
     Issue/22: configurable spinner (2f0d174 364d2e0, 5491587)
  - Minor fixes in SR Listing. (Egor Stambakio <stambakio@scand.com>, 364d2e0)
  - Merge pull request #21 from OpusCapita/Issue/20
-    
+
     Fixed issue #20 (401e382 c168838, 2f0d174)
  - Added new spinner option into Readme. (Egor Stambakio <stambakio@scand.com>, eb2bcb0)
  - Implemented Spinner HOC. (Egor Stambakio <stambakio@scand.com>, fcc493d)
@@ -137,7 +149,7 @@
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 24f26c9)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (992a8d3 822037a, 3ed6749)
  - Update README.md
-    
+
     Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
  - Fixed issue and added fade-in animation for field errors. (Egor Stambakio <stambakio@scand.com>, 992a8d3)
  - Unified grid for all related views. (Egor Stambakio <stambakio@scand.com>, 5e69aeb)
@@ -229,7 +241,7 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (61db1af 6e6acbb, 40acff3)
  - All instance fields re-validation on CREATE-command (Andrei Mourzenkov <mourzenkov@scand.com>, 61db1af)
  - Merge pull request #7 from OpusCapita/i18n-model-feature-4
-    
+
     I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
  - fixed one translation (Egor Stambakio <stambakio@scand.com>, 5b73cf5)
  - refactored files with translations (Egor Stambakio <stambakio@scand.com>, 413c456)
@@ -526,7 +538,7 @@
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 24f26c9)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (992a8d3 822037a, 3ed6749)
  - Update README.md
-    
+
     Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
  - Fixed issue and added fade-in animation for field errors. (Egor Stambakio <stambakio@scand.com>, 992a8d3)
  - Unified grid for all related views. (Egor Stambakio <stambakio@scand.com>, 5e69aeb)
@@ -618,7 +630,7 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (61db1af 6e6acbb, 40acff3)
  - All instance fields re-validation on CREATE-command (Andrei Mourzenkov <mourzenkov@scand.com>, 61db1af)
  - Merge pull request #7 from OpusCapita/i18n-model-feature-4
-    
+
     I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
  - fixed one translation (Egor Stambakio <stambakio@scand.com>, 5b73cf5)
  - refactored files with translations (Egor Stambakio <stambakio@scand.com>, 413c456)

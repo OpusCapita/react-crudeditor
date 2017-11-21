@@ -35,7 +35,7 @@ class SearchMain extends PureComponent {
           <Row>
             <Col xs={8}>
               <Button
-                bsStyle="link"
+                bsStyle="default"
                 active={this.state.isFormOpen}
                 style={{ margin: '0 16px' }}
                 onClick={this.handleToggleForm}

@@ -1,8 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import {
+  Button,
+  Collapse,
+  Glyphicon,
+  Row,
+  Col
+} from 'react-bootstrap';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
-import { getModelMessage } from '../lib'
+import { getModelMessage } from '../lib';
 import './SearchMain.less';
 
 class SearchMain extends PureComponent {
@@ -10,24 +17,46 @@ class SearchMain extends PureComponent {
     this.props.model.actions.createInstance();
   }
 
+  state = {
+    hideForm: false
+  }
+
+  toggleForm = _ => this.setState(prevState => ({
+    hideForm: !prevState.hideForm
+  }))
+
   render() {
     const { model } = this.props;
     const { i18n } = this.context;
 
     return (
       <div className="crud--search-main">
-        <div className="crud--search-main__page-header">
-          <h3 className="crud--search-main__page-title">
-            {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
-          </h3>
-          <button
-            type="button"
-            className="btn btn-sm btn-primary"
-            onClick={this.handleCreate}
-          >
-            {i18n.getMessage('crudEditor.create.button')}
-          </button>
-        </div>
+        <h1>
+          <Row>
+            <Col xs={8}>
+              {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
+              <Button
+                bsStyle="info"
+                active={!this.state.hideForm}
+                style={{ marginLeft: '16px' }}
+                onClick={this.toggleForm}
+              >
+                <Glyphicon glyph="search"/>
+              </Button>
+            </Col>
+            <Col xs={4}>
+              <div style={{ float: "right" }}>
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={this.handleCreate}
+                >
+                  {i18n.getMessage('crudEditor.create.button')}
+                </button>
+              </div>
+            </Col>
+          </Row>
+        </h1>
 
         <div className="crud--search-main__container">
           <div className="crud--search-main__search-container">

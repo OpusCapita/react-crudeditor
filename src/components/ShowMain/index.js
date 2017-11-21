@@ -11,12 +11,12 @@ const ShowMain = (props) => {
 
   return (<div>
     <Heading model={model} />
-    <Tab model={model}>
-      {ActiveTabComponent ?
-        <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+    {ActiveTabComponent ?
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+      <Tab model={model}>
         <FormGrid model={model}/>
-      }
-    </Tab>
+      </Tab>
+    }
   </div>);
 };
 

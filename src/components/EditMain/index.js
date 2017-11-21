@@ -10,12 +10,12 @@ const EditMain = ({ model, fieldErrorsWrapper }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
   return (<div>
     <Heading model={model} />
-    <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
-      {ActiveTabComponent ?
-        <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+    {ActiveTabComponent ?
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+      <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
         <FormGrid model={model} fieldErrorsWrapper={fieldErrorsWrapper}/>
-      }
-    </Tab>
+      </Tab>
+    }
   </div>);
 };
 

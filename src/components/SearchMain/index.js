@@ -37,7 +37,7 @@ class SearchMain extends PureComponent {
             <Col xs={8}>
               {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
               <Button
-                bsStyle="info"
+                bsStyle="link"
                 active={this.state.isFormOpen}
                 style={{ marginLeft: '16px' }}
                 onClick={this.toggleForm}
@@ -72,8 +72,7 @@ class SearchMain extends PureComponent {
             </div>
           </Collapse> */}
 
-          <div
-            className={ isFormOpen ?
+          <div className={ isFormOpen ?
               "crud--search-main__search-container open" :
               "crud--search-main__search-container"
             }
@@ -81,8 +80,7 @@ class SearchMain extends PureComponent {
             <Form model={model} />
           </div>
 
-          <div className="crud--search-main__results-container"
-            className={ isFormOpen ?
+          <div className={ isFormOpen ?
               "crud--search-main__results-container open" :
               "crud--search-main__results-container"
             }

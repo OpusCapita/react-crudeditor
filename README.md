@@ -148,7 +148,7 @@ Name | Default | Description
 ---|---|---
 view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operations](#external-operation) handlers
+[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operation](#external-operation) handlers
 
 ### *EditorComponent* props.view.name
 
@@ -181,7 +181,8 @@ View State *must* be serializable.
   ?sort: <string, sort field name>,
   ?order: <"asc"|"desc", sort order>,
   ?max: <natural number, search result limit>,
-  ?offset: <whole number, search result offset>
+  ?offset: <whole number, search result offset>,
+  ?hideSearchForm: <boolean, search form initial visibility>
 }
 ```
 
@@ -192,6 +193,7 @@ sort | Result field marked with `sortByDefault` (first result field if no `sortB
 order | `"asc"`
 max | `30`
 offset | `0`
+hideSearchForm | false
 
 #### *EditorComponent* props.state for *"create"* View:
 
@@ -262,7 +264,7 @@ An object with [External Operations](#external-operation) handlers.  A handler i
 
 ```javascript
 {
-  <external operation name>: function({ instance, view, state }) {
+  <external operation name>: function({ instance, view }) {
     ...
     return;  // Return value is ignored.
   },
@@ -433,7 +435,7 @@ Model Definition is an object describing an entity. It has the following structu
   },
 
   ?ui: {
-    ?Spinner: <React component> to be displayed instead of built-in spinner,
+    ?Spinner: <function, React component to be displayed instead of built-in spinner>,
 
     ?search: function() {
       ...
@@ -445,6 +447,12 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?searchableFields: [{
           name: <string, persistent field name>,
+
+          /*
+           * Boolean, whether the field search is range search.
+           * By default, it is true for numbers/dates and false for all other values.
+           */
+          ?isRange: <boolean>,
 
           /*
            * Default render:
@@ -461,14 +469,7 @@ Model Definition is an object describing an entity. It has the following structu
            *   valueProp: {
            *     name: "value",
            *     type: "string"
-           *   },
-           *
-           *   // Boolean, whether the field search is range search.
-           *   // It is true for numbers/dates and false for all other values.
-           *   // NOTE: it is inappropriate for custom render because custom Component is
-           *   //       fully responsible for composing searchable field filter value
-           *   //       => isRange is presupposed to be false in such case.
-           *   isRange: <boolean>
+           *   }
            * }
            */
           ?render: {
@@ -534,10 +535,10 @@ Model Definition is an object describing an entity. It has the following structu
               name: <string, tab name>,
               ?disabled: <boolean, false by default>,
               ?Component: <function, TabFormComponent>,
-              ?columns: <number>
+              ?columns: <number, 1 by default>
             },
             ?section(
-              { name: <string, section name>, ?columns: <number> },
+              { name: <string, section name>, ?columns: <number, columns in parent tab by default> },
               ?field({
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,
@@ -627,14 +628,20 @@ Model Definition is an object describing an entity. It has the following structu
     /*
      * Internal, Custom and External operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
-     * Handlers are provided for Custom Operations.
+     * Handlers are provided for Custom Operations only.
      * TODO
      */
     ?operations: function(<object, entity instance>, <string, View Name>) {
       ...
       return [{
         name: <string, operation ID>,
-        ?icon: <string, name of an icon to be displayed inside a button, ex. "trash", "edit"; see full list at http://getbootstrap.com/components/#glyphicons >,
+        
+        /*
+         * name of an icon to be displayed inside a button, ex. "trash", "edit";
+         * see full list at
+         * http://getbootstrap.com/components/#glyphicons
+         */
+        ?icon: <string>,
 
         // handler for a Custom Operation.
         ?handler: function() {

@@ -1,22 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function date2str(arg) {
-  const date = typeof arg === 'string' ?
-    new Date(Date.parse(arg)) :
-    arg;
+const date2str = (date, i18n) => i18n.formatDate(typeof date === 'string' ?
+  new Date(Date.parse(date)) :
+  date
+);
 
-  return [date.getDate(), date.getMonth(), date.getFullYear()].join('/');
-}
-
-const DateRangeCellRender = ({ name, instance }) => {
+const DateRangeCellRender = ({ name, instance }, { i18n }) => {
   const value = instance[name];
 
   return value ?
     (
       <span>
         {
-          `${value.from ? date2str(value.from) : '...'} - ${value.to ? date2str(value.to) : '...'}`
+          `${value.from ? date2str(value.from, i18n) : '...'} - ${value.to ? date2str(value.to, i18n) : '...'}`
         }
       </span>
     ) :
@@ -26,6 +23,10 @@ const DateRangeCellRender = ({ name, instance }) => {
 DateRangeCellRender.propTypes = {
   name: PropTypes.string,
   instance: PropTypes.object
+}
+
+DateRangeCellRender.contextTypes = {
+  i18n: PropTypes.object.isRequired
 }
 
 export default DateRangeCellRender;

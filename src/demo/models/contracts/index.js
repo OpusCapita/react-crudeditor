@@ -3,6 +3,8 @@ import DateRangeCellRender from './components/DateRangeCellRender';
 import StatusField from './components/StatusField';
 import translations from './i18n';
 import CustomSpinner from './components/CustomSpinner';
+import ContractReferenceSearch from './components/ContractReferenceSearch';
+import CustomTabComponent from './components/CustomTabComponent';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
@@ -13,9 +15,10 @@ const searchableFields = [
   { name: 'description' },
   { name: 'extContractId' },
   { name: 'extContractLineId' },
+  { name: 'parentContract', render: { Component: ContractReferenceSearch } },
   { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
   { name: 'maxOrderValue' },
-  { name: 'testNumberTypeField' },
+  // { name: 'testNumberTypeField' },
   { name: 'createdOn' }
 ];
 
@@ -247,12 +250,7 @@ export const fields = {
       'required': true
     }
   },
-  'parentContract': {
-    'type': 'com.jcatalog.contract.Contract',
-    'constraints': {
-      'required': false
-    }
-  },
+  'parentContract': {},
   'minOrderValue': {
     'type': 'stringNumber',
     'constraints': {
@@ -270,7 +268,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'description' }),
     // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
     field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
-    // field({ name: 'parentContract', render: { Component: ContractReferenceSearch }}),
+    field({ name: 'parentContract', render: { Component: ContractReferenceSearch } }),
     // field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
       field({ name: 'createdBy', readOnly: true }),
@@ -304,12 +302,13 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
       field({ name: 'isInternal' }),
       field({ name: 'isOffer' })
     )
-  )
+  ),
+  tab({ name: 'custom', Component: CustomTabComponent, disabled: viewName === VIEW_CREATE })
 ];
 
 export default {
   model: {
-    name: 'Contract', // TODO remove if it's not required by specification
+    name: 'Contracts', // unique for each model used in your app; used to distinguish translations
     translations,
     fields,
     validate(instance) {

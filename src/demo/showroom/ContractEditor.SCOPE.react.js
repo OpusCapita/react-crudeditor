@@ -3,8 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
-import modelTranslations from '../models/contracts/i18n';
-import crudTranslations from '../../crudeditor-lib/i18n';
 // import './ContractEditorScope.less'
 
 function getParameterByName(name, url) {
@@ -28,8 +26,6 @@ class ContractEditorScope extends React.Component {
   getChildContext() {
     // check for URL query parameter 'lang', otherwise use default language
     const i18n = new I18nManager({ locale: getParameterByName('lang') || 'en' });
-    i18n.register('CrudEditor', crudTranslations);
-    i18n.register('Model', modelTranslations);
     return { i18n }
   }
 

@@ -10,7 +10,7 @@ const common = {
   "crudEditor.save.button": "Save",
   "crudEditor.saveAndNew.button": "Save and New",
   "crudEditor.saveAndNext.button": "Save and Next",
-  "crudEditor.search.header": "Search {modelName}",
+  "crudEditor.search.header": "Search {payload}",
   "crudEditor.search.button": "Search",
   "crudEditor.reset.button": "Reset",
   "crudEditor.create.button": "Create",

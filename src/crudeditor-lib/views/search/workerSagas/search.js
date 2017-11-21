@@ -119,9 +119,11 @@ export default function*({
 
   let instances, totalCount;
 
+  const cleanedFilter = cleanFilter({ searchableFields, filter })
+
   try {
     ({ instances, totalCount } = yield call(modelDefinition.api.search, {
-      filter: cleanFilter({ searchableFields, filter }),
+      ...(cleanedFilter ? { filter: cleanedFilter } : null),
       sort,
       order,
       max,

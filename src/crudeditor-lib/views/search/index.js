@@ -1,3 +1,5 @@
+import cloneDeep from 'lodash/cloneDeep';
+
 import { RANGE_FIELD_TYPES } from './constants';
 import { buildFieldRender } from '../lib';
 import { AUDITABLE_FIELDS } from '../../common/constants';
@@ -8,7 +10,7 @@ export const getUi = modelDefinition => {
   const fieldsMeta = modelDefinition.model.fields;
 
   const searchMeta = modelDefinition.ui.search ?
-    modelDefinition.ui.search() :
+    cloneDeep(modelDefinition.ui.search()) :
     {};
 
   if (!searchMeta.resultFields) {

@@ -11,9 +11,20 @@ import {
   Button
 } from 'react-bootstrap';
 import makeButtonWithConfirm from './buttonWithConfirm';
-import { getTabText } from '../lib';
+import { getModelMessage } from '../lib';
 
-class EditHeading extends PureComponent {
+export default class EditHeading extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.object,
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   render() {
     const {
       model: {
@@ -40,7 +51,7 @@ class EditHeading extends PureComponent {
 
     const title = i18n.getMessage(
       `crudEditor.${viewName.toLowerCase()}.header`,
-      { modelName: i18n.getMessage('model.name') }
+      { modelName: getModelMessage(i18n, 'model.name') }
     )
 
     // compare persistent and form instances to decide weither to show confirm box or not
@@ -94,7 +105,7 @@ class EditHeading extends PureComponent {
           {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>
-                <h4>{getTabText(i18n, name)}</h4>
+                <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
               </NavItem>)
             )
           }
@@ -104,15 +115,3 @@ class EditHeading extends PureComponent {
   }
 }
 
-EditHeading.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.object,
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-EditHeading.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditHeading;

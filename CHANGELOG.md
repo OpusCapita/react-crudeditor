@@ -1,3 +1,102 @@
+## [v0.0.16](Tue, 21 Nov 2017 06:24:28 GMT)
+ - Merge pull request #43 from OpusCapita/buttons-belong-to-forms
+
+    Forms & submit buttons drawn only for form tabs. (e126ec7 c97207f, d4ac68a)
+ - Forms & submit buttons drawn only for form tabs. (Egor Stambakio <stambakio@scand.com>, c97207f)
+ - Update .gitattributes (Andrei Mourzenkov <mourzenkov@scand.com>, e126ec7)
+
+## [v0.0.15](Mon, 20 Nov 2017 13:19:00 GMT)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (c623e60 348e2a8, bf15c01)
+ - Remove redundancy from package.json (Andrei Mourzenkov <mourzenkov@scand.com>, c623e60)
+ - Merge pull request #41 from OpusCapita/custom-tab-component
+
+    Added custom tab component example (a80e012 a726d98, 348e2a8)
+ - Unified tabs logic handling in show/edit/create views. (Egor Stambakio <stambakio@scand.com>, a726d98)
+ - Lint (Egor Stambakio <stambakio@scand.com>, fb21e5c)
+ - Added a custom component example for tabs. (Egor Stambakio <stambakio@scand.com>, 004f489)
+ - hideSearchForm flag is added to Documentation (Andrei Mourzenkov <mourzenkov@scand.com>, a80e012)
+ - Merge branch 'master' into custom-tab-component (dfd9c4f aa108f4, 8900d31)
+ - hotfix (Egor Stambakio <stambakio@scand.com>, aa108f4)
+ - 1 (Egor Stambakio <stambakio@scand.com>, dfd9c4f)
+ - Lint corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 592c8fd)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (2acb86e b7e487a, 1498cbd)
+ - Documentation allows isRange for Cusom Components in Search View (Andrei Mourzenkov <mourzenkov@scand.com>, 2acb86e)
+ - Merge pull request #38 from OpusCapita/translations/37
+
+    Translations/37 (4e6f513 a7e6133, b7e487a)
+ - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7e6133)
+ - Removed getModelText from inner context. (Egor Stambakio <stambakio@scand.com>, a38b865)
+ - Merge pull request #39 from OpusCapita/initial-search-spinner/3
+
+    Refactored search view to show spinner on initial load (46c1259 b828d22, 4e6f513)
+ - Renamed utils -> lib. (Egor Stambakio <stambakio@scand.com>, 39cecce)
+ - Object.create for contextual i18n. (Egor Stambakio <stambakio@scand.com>, 266401b)
+ - Base64 encoding for model name in prefix. (Egor Stambakio <stambakio@scand.com>, ab8ca3d)
+ - Fixed #3 (Egor Stambakio <stambakio@scand.com>, b828d22)
+ - Pulled (7529117 65f37a0, e726a22)
+ - Unified context getMessage to handle model phrases with payloads. (estambakio-sc <egor.stambakio@opuscapita.com>, 65f37a0)
+ - Refactored i18n context. (estambakio-sc <egor.stambakio@opuscapita.com>, 3003516)
+ - evening; still need to implement field titlecase. (Egor Stambakio <stambakio@scand.com>, 7529117)
+ - Edited webpack config a bit. (Egor Stambakio <stambakio@scand.com>, 6b4ecae)
+ - Removed raw loader links so they dont break tests. (Egor Stambakio <stambakio@scand.com>, 2e1c503)
+ - Added i18n context for demo/client. (Egor Stambakio <stambakio@scand.com>, 73d2318)
+ - Added namespace for model i18n, and refactored crudeditor-lib index.js (Egor Stambakio <stambakio@scand.com>, d9d95ce)
+
+## [v0.0.14](Wed, 15 Nov 2017 12:04:37 GMT)
+ - ESLINT error fix (Andrei Mourzenkov <mourzenkov@scand.com>, c49af36)
+ - Changed default columns for sections; baseModelDefinition is no longer modified (Andrei Mourzenkov <mourzenkov@scand.com>, 364636c)
+
+## [v0.0.13](Tue, 14 Nov 2017 05:00:41 GMT)
+ - Merge pull request #33 from OpusCapita/Issue/19
+    
+    Added reference select usage example. (2397386 5f18105, ff3af61)
+ - react-reference-select is moved to devDependencies (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 5f18105)
+ - ReferenceSearch files renaming (Andrei Mourzenkov <mourzenkov@scand.com>, 85f2b14)
+ - Change notification timeout constant name (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, f2d5ec2)
+ - Fixed styling issue. (Egor Stambakio <stambakio@scand.com>, 0ea4d91)
+ - Fixed tests. (Egor Stambakio <stambakio@scand.com>, a241767)
+ - Added a reference search field to search form. (Egor Stambakio <stambakio@scand.com>, df35ed5)
+ - Supervisor notes. (Egor Stambakio <stambakio@scand.com>, 38e4cad)
+ - Fixed input padding issue in firefox. (Egor Stambakio <stambakio@scand.com>, 2397386)
+ - Done. (Egor Stambakio <stambakio@scand.com>, 1b80dec)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, cac1729)
+ - ... (Egor Stambakio <stambakio@scand.com>, f269b59)
+ - Merge pull request #32 from OpusCapita/Issue/26
+    
+    Added webpack definePlugin to lib build config. (0d48011 d491f13, bb7e82d)
+ - Removed dev plugin, saved ~10% bundle size. (estambakio-sc <egor.stambakio@opuscapita.com>, d491f13)
+ - Added webpack definePlugin to lib build config. (estambakio-sc <egor.stambakio@opuscapita.com>, 5afc63e)
+ - Cleanup. (Egor Stambakio <stambakio@scand.com>, 90bf15f)
+ - Added react-reference-select component for parentContract field. (Egor Stambakio <stambakio@scand.com>, e9925a3)
+ - Merge branch 'master' into Issue/19 (22101fe 0d48011, 3195aef)
+ - ... (Egor Stambakio <stambakio@scand.com>, 22101fe)
+ - Semi-working reference search component; not ready yet. (Egor Stambakio <stambakio@scand.com>, b7a7ecf)
+ - Merge branch 'master' into Issue/19 (f3e8942 139a552, 7ce8395)
+ - started (Egor Stambakio <stambakio@scand.com>, f3e8942)
+
+## [v0.0.12](Fri, 10 Nov 2017 12:34:55 GMT)
+
+## [v0.0.11](Fri, 10 Nov 2017 12:33:11 GMT)
+ - Cancel root saga on unmount. (Egor Stambakio <stambakio@scand.com>, b5a23fa)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b3bc37a)
+
+## [v0.0.10](Fri, 10 Nov 2017 12:18:02 GMT)
+ - lint corrections (Andrei Mourzenkov <mourzenkov@scand.com>, b69d362)
+ - Merging master with fix #15 (910ef50 b467b6f, 139a552)
+ - Fix #15 (Andrei Mourzenkov <mourzenkov@scand.com>, 910ef50)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b467b6f)
+ - Add default filter to a model's api.search (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8756b81)
+ - Merge pull request #29 from OpusCapita/Issue/27
+    
+    fixed #27 (878db94 b172e0e, fa405de)
+ - fixed (Egor Stambakio <stambakio@scand.com>, b172e0e)
+ - Merge pull request #28 from OpusCapita/Issue/25
+    
+    Make Date fields use i18n.formatDate (6784678 a7c24b4, 878db94)
+ - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7c24b4)
+ - Unified date field to use i18n.formatDate (Egor Stambakio <stambakio@scand.com>, e7affc5)
+ - barely started (Egor Stambakio <stambakio@scand.com>, c974536)
+
 ## [v0.0.9](Thu, 09 Nov 2017 09:17:14 GMT)
  - v 0.3 (Egor Stambakio <stambakio@scand.com>, da849a9)
  - Renamed spinner to Spinner. (Egor Stambakio <stambakio@scand.com>, e46ee54)

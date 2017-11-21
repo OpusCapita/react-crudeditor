@@ -2,8 +2,7 @@ import 'babel-polyfill'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './routes';
-// import '../../../styles/main.scss';
-import './global-styles.less';
+import '../global-styles.less';
 
 import {
   Menu,
@@ -22,7 +21,7 @@ function requireAll(requireContext) {
   }));
 }
 
-let icons = requireAll(require.context('!!raw-loader!@opuscapita/svg-icons/lib', true, /.*\.svg$/));
+let icons = requireAll(require.context('@opuscapita/svg-icons/lib', true, /.*\.svg$/));
 
 let getIcon = (name) => {
   return icons.filter(icon => icon.name === name)[0].svg;

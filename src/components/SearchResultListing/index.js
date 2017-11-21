@@ -1,14 +1,13 @@
 // TODO: add operations (external, custom, ...) handlers.
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
-import { getFieldText } from '../lib';
+import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
-import WithSpinner from '../Spinner/SpinnerOverlayHOC';
 import './SearchResultListing.less';
 
-class SearchResultListing extends React.PureComponent {
+class SearchResultListing extends PureComponent {
   constructor(...args) {
     super(...args);
 
@@ -87,7 +86,7 @@ class SearchResultListing extends React.PureComponent {
                         style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                         onClick={this.handleResort(name)}
                       >
-                        {getFieldText(i18n, name)}
+                        {getModelMessage(i18n, `model.field.${name}`, name)}
                         {
                           sortField === name &&
                           <Glyphicon
@@ -96,7 +95,7 @@ class SearchResultListing extends React.PureComponent {
                           />
                         }
                       </a> :
-                      getFieldText(i18n, name)
+                      getModelMessage(i18n, `model.field.${name}`, name)
                   }
                 </th>)
               )}
@@ -188,4 +187,4 @@ SearchResultListing.contextTypes = {
   i18n: PropTypes.object
 };
 
-export default WithSpinner(SearchResultListing);
+export default SearchResultListing;

@@ -4,25 +4,25 @@ import { FormControl } from 'react-bootstrap';
 
 const messages = {
   en: {
-    "model.field.statusId.pending": "pending",
-    "model.field.statusId.new": "new",
-    "model.field.statusId.changed": "changed",
-    "model.field.statusId.confirmed": "confirmed",
-    "model.field.statusId.deleted": "deleted"
+    "customComponents.statusId.pending": "pending",
+    "customComponents.statusId.new": "new",
+    "customComponents.statusId.changed": "changed",
+    "customComponents.statusId.confirmed": "confirmed",
+    "customComponents.statusId.deleted": "deleted"
   },
   ru: {
-    "model.field.statusId.pending": "на рассмотрении",
-    "model.field.statusId.new": "новый",
-    "model.field.statusId.changed": "изменен",
-    "model.field.statusId.confirmed": "подтвержден",
-    "model.field.statusId.deleted": "удален",
+    "customComponents.statusId.pending": "на рассмотрении",
+    "customComponents.statusId.new": "новый",
+    "customComponents.statusId.changed": "изменен",
+    "customComponents.statusId.confirmed": "подтвержден",
+    "customComponents.statusId.deleted": "удален",
   }
 }
 
 const StatusField = ({ value, onChange, onBlur, readOnly }, { i18n }) => {
   i18n.register('StatusField', messages);
 
-  const getStatusText = status => i18n.getMessage(`model.field.statusId.${status}`)
+  const getStatusText = status => i18n.getMessage(`customComponents.statusId.${status}`)
 
   return (<FormControl
     componentClass='select'

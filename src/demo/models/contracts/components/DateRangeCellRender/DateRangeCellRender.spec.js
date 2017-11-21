@@ -3,10 +3,15 @@ import Enzyme from "enzyme";
 import Adapter from 'enzyme-adapter-react-15';
 import { expect } from 'chai';
 import DateRangeCellRender from "./";
+import { I18nManager } from '@opuscapita/i18n';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 describe("DateRangeCellRender", _ => {
+  const i18n = new I18nManager();
+
+  const context = { i18n }
+
   it("should properly display the Date range", () => {
     const props = {
       name: "dateRange",
@@ -17,9 +22,13 @@ describe("DateRangeCellRender", _ => {
         }
       }
     };
-    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />);
+    const wrapper = Enzyme.mount(<DateRangeCellRender {...props}/>, {
+      context
+    });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal('1/8/2008 - 19/8/2010');
+    expect(wrapper.find('span').text()).to.equal(
+      i18n.formatDate(props.instance.dateRange.from) + ' - ' + i18n.formatDate(props.instance.dateRange.to)
+    );
   });
 
   it("should properly display the Date range if passed Date objects instead of strings", () => {
@@ -32,9 +41,13 @@ describe("DateRangeCellRender", _ => {
         }
       }
     };
-    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />);
+    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />, {
+      context
+    });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal('1/8/2008 - 19/8/2010');
+    expect(wrapper.find('span').text()).to.equal(
+      i18n.formatDate(props.instance.dateRange.from) + ' - ' + i18n.formatDate(props.instance.dateRange.to)
+    );
   });
 
   it("should return null in render function for unmatched props", () => {
@@ -42,7 +55,9 @@ describe("DateRangeCellRender", _ => {
       name: "date",
       instance: {}
     };
-    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />);
+    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />, {
+      context
+    });
     expect(wrapper.isEmptyRender()).to.be.true; // eslint-disable-line no-unused-expressions
   });
 
@@ -55,9 +70,11 @@ describe("DateRangeCellRender", _ => {
         }
       }
     };
-    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />);
+    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />, {
+      context
+    });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal('1/8/2008 - ...');
+    expect(wrapper.find('span').text()).to.equal(i18n.formatDate(props.instance.dateRange.from) + ' - ...');
   });
 
   it("should render 'to' if 'from' is missing", () => {
@@ -69,8 +86,10 @@ describe("DateRangeCellRender", _ => {
         }
       }
     };
-    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />);
+    const wrapper = Enzyme.mount(<DateRangeCellRender {...props} />, {
+      context
+    });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal('... - 1/8/2008');
+    expect(wrapper.find('span').text()).to.equal('... - ' + i18n.formatDate(props.instance.dateRange.to));
   });
 });

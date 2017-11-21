@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Col, ControlLabel } from 'react-bootstrap';
-import { getFieldText } from '../lib'
+import { getModelMessage } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
@@ -48,7 +48,7 @@ class EditField extends Component {
       <FormGroup controlId={fieldName} validationState={fieldErrors(fieldName).length ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
-            getFieldText(this.context.i18n, fieldName) + (required && '*' || '')
+            getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
           }
         </Col>
         <Col sm={12 - labelColumns}>

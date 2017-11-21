@@ -2,7 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DateInput } from '@opuscapita/react-dates';
 
-class FieldDate extends React.PureComponent {
+export default class FieldDate extends React.PureComponent {
+  static propTypes = {
+    readOnly: PropTypes.bool,
+    value: PropTypes.instanceOf(Date),
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
+  };
+
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -28,19 +39,10 @@ class FieldDate extends React.PureComponent {
     // Filed issue: https://github.com/OpusCapita/react-dates/issues/32
     (<DateInput
       value={this.props.value || null}
-      dateFormat="dd/MM/yyyy"
+      dateFormat={this.context.i18n.dateFormat}
       onChange={this.handleChange}
       disabled={!!this.props.readOnly}
       showToLeft={false}
       showToTop={true}
     />)
 }
-
-FieldDate.propTypes = {
-  readOnly: PropTypes.bool,
-  value: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func
-}
-
-export default FieldDate;

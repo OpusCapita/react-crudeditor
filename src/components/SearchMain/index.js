@@ -18,16 +18,17 @@ class SearchMain extends PureComponent {
   }
 
   state = {
-    hideForm: false
+    isFormOpen: true
   }
 
   toggleForm = _ => this.setState(prevState => ({
-    hideForm: !prevState.hideForm
+    isFormOpen: !prevState.isFormOpen
   }))
 
   render() {
     const { model } = this.props;
     const { i18n } = this.context;
+    const { isFormOpen } = this.state;
 
     return (
       <div className="crud--search-main">
@@ -37,7 +38,7 @@ class SearchMain extends PureComponent {
               {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
               <Button
                 bsStyle="info"
-                active={!this.state.hideForm}
+                active={this.state.isFormOpen}
                 style={{ marginLeft: '16px' }}
                 onClick={this.toggleForm}
               >
@@ -59,8 +60,8 @@ class SearchMain extends PureComponent {
         </h1>
 
         <div className="crud--search-main__container">
-          <Collapse
-            in={this.state.hideForm}
+          {/* <Collapse
+            in={!this.state.hideForm}
             dimension="width"
             transitionAppear={true}
             >
@@ -69,9 +70,23 @@ class SearchMain extends PureComponent {
               <Form model={model} />
             </div>
             </div>
-          </Collapse>
+          </Collapse> */}
 
-          <div className="crud--search-main__results-container">
+          <div
+            className={ isFormOpen ?
+              "crud--search-main__search-container open" :
+              "crud--search-main__search-container"
+            }
+          >
+            <Form model={model} />
+          </div>
+
+          <div className="crud--search-main__results-container"
+            className={ isFormOpen ?
+              "crud--search-main__results-container open" :
+              "crud--search-main__results-container"
+            }
+          >
             <Result model={model} />
           </div>
         </div>

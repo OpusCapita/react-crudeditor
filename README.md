@@ -297,7 +297,12 @@ Model Definition is an object describing an entity. It has the following structu
      */
     fields: {
       <field name>: {
+
+        /*
+         * At least one field must have "unique" property set to true.
+         */
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
+        
         ?type: <string, field type (see corresponding "Terminology" section)>,  // TODO more types and their constraints.
 
         /*

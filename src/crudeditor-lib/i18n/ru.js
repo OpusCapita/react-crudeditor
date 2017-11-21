@@ -44,8 +44,8 @@ const common = {
   "crudEditor.show.header": "Просмотр: {modelName}",
   "crudEditor.export.button": "Экспорт",
   "crudEditor.found.items.message": "\u041D\u0430\u0439\u0434\u0435\u043D\u043E \u043F\u043E\u0437\u0438\u0446\u0438\u0439\: {count}",
-  "crudEditor.dateRange.from": "\u0441",
-  "crudEditor.dateRange.to": "\u043F\u043E"
+  "crudEditor.range.from": "\u0441",
+  "crudEditor.range.to": "\u043F\u043E"
 }
 /* eslint-enable max-len */
 

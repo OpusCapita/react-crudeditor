@@ -73,7 +73,7 @@ class SearchForm extends React.Component {
           <div>
             <label>{
               getModelMessage(i18n, `model.field.${name}`, name) +
-              ' (' + i18n.getMessage('crudEditor.dateRange.from') + ')'
+              ' (' + i18n.getMessage('crudEditor.range.from') + ')'
             }</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].from }}
@@ -92,7 +92,7 @@ class SearchForm extends React.Component {
           <div>
             <label>{
               getModelMessage(i18n, `model.field.${name}`, name) +
-              ' (' + i18n.getMessage('crudEditor.dateRange.to') + ')'
+              ' (' + i18n.getMessage('crudEditor.range.to') + ')'
             }</label>
             <Component
               {...{ [valuePropName]: formatedFilter[name].to }}

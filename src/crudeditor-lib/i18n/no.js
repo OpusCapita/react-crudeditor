@@ -44,8 +44,8 @@ const common = {
   "crudEditor.search.all": "Alle",
   "crudEditor.export.button": "Eksporter",
   "crudEditor.found.items.message": "{count} elementer funnet",
-  "crudEditor.dateRange.from": "fra",
-  "crudEditor.dateRange.to": "til"
+  "crudEditor.range.from": "fra",
+  "crudEditor.range.to": "til"
 }
 /* eslint-enable max-len */
 

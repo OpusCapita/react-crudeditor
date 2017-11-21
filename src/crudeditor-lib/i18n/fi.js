@@ -44,8 +44,8 @@ const common = {
   "crudEditor.show.header": "Katso {modelName}",
   "crudEditor.export.button": "Vie",
   "crudEditor.found.items.message": "{count} itemia l\u00F6ytyi",
-  "crudEditor.dateRange.from": "l\u00E4htien",
-  "crudEditor.dateRange.to": "asti"
+  "crudEditor.range.from": "l\u00E4htien",
+  "crudEditor.range.to": "asti"
 }
 /* eslint-enable max-len */
 

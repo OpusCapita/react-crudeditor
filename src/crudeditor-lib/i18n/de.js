@@ -44,8 +44,8 @@ const common = {
   "crudEditor.search.resultsPerPage": "Ergebnisse pro Seite",
   "crudEditor.search.all": "Alles",
   "crudEditor.found.items.message": "{count} Datens\u00E4tze gefunden",
-  "crudEditor.dateRange.from": "von",
-  "crudEditor.dateRange.to": "bis",
+  "crudEditor.range.from": "von",
+  "crudEditor.range.to": "bis",
   "crudEditor.confirm.action": "Bestätigen"
 }
 /* eslint-enable max-len */

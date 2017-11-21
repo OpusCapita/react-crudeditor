@@ -35,6 +35,8 @@ import {
   VIEW_REDIRECT_REQUEST,
   VIEW_REDIRECT_FAIL,
   VIEW_REDIRECT_SUCCESS,
+
+  TOGGLE_SEARCH_FORM
 } from './constants';
 
 import {
@@ -209,7 +211,9 @@ export const buildDefaultStoreState = modelDefinition => ({
     fields: {}
   },
 
-  status: STATUS_UNINITIALIZED
+  status: STATUS_UNINITIALIZED,
+
+  hideSearchForm: false
 });
 
 /*
@@ -492,6 +496,8 @@ export default modelDefinition => {
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => ins !== instance);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    } else if (type === TOGGLE_SEARCH_FORM) {
+      newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm
     }
 
     return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

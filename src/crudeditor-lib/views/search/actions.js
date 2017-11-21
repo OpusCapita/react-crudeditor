@@ -5,7 +5,8 @@ import {
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
   ALL_INSTANCES_SELECT,
-  ALL_INSTANCES_DESELECT
+  ALL_INSTANCES_DESELECT,
+  TOGGLE_SEARCH_FORM
 } from './constants';
 
 export const
@@ -48,4 +49,8 @@ export const
 
   toggleSelectedAll = selected => ({
     type: selected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
+  }),
+
+  toggleSearchForm = _ => ({
+    type: TOGGLE_SEARCH_FORM
   });

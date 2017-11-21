@@ -12,22 +12,21 @@ import { getModelMessage } from '../lib';
 import './SearchMain.less';
 
 class SearchMain extends PureComponent {
-  state = {
-    isFormOpen: true
-  }
-
   handleCreate = (e) => {
     this.props.model.actions.createInstance();
   }
 
-  handleToggleForm = _ => this.setState(prevState => ({
-    isFormOpen: !prevState.isFormOpen
-  }))
-
   render() {
     const { model } = this.props;
+    const {
+      data: {
+        hideSearchForm
+      },
+      actions: {
+        toggleSearchForm
+      }
+    } = model;
     const { i18n } = this.context;
-    const { isFormOpen } = this.state;
 
     return (
       <div className="crud--search-main">
@@ -36,9 +35,9 @@ class SearchMain extends PureComponent {
             <Col xs={8}>
               <Button
                 bsStyle="default"
-                active={this.state.isFormOpen}
+                active={!hideSearchForm}
                 style={{ margin: '0 16px' }}
-                onClick={this.handleToggleForm}
+                onClick={toggleSearchForm}
               >
                 <Glyphicon glyph="search"/>
               </Button>
@@ -59,17 +58,17 @@ class SearchMain extends PureComponent {
         </h1>
 
         <div className="crud--search-main__container">
-          <div className={ isFormOpen ?
-            "crud--search-main__search-container open" :
-            "crud--search-main__search-container"
+          <div className={ hideSearchForm ?
+            "crud--search-main__search-container" :
+            "crud--search-main__search-container open"
           }
           >
             <Form model={model} />
           </div>
 
-          <div className={ isFormOpen ?
-            "crud--search-main__results-container open" :
-            "crud--search-main__results-container"
+          <div className={ hideSearchForm ?
+            "crud--search-main__results-container" :
+            "crud--search-main__results-container open"
           }
           >
             <Result model={model} />

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  Collapse,
   Glyphicon,
   Row,
   Col
@@ -13,15 +12,15 @@ import { getModelMessage } from '../lib';
 import './SearchMain.less';
 
 class SearchMain extends PureComponent {
-  handleCreate = (e) => {
-    this.props.model.actions.createInstance();
-  }
-
   state = {
     isFormOpen: true
   }
 
-  toggleForm = _ => this.setState(prevState => ({
+  handleCreate = (e) => {
+    this.props.model.actions.createInstance();
+  }
+
+  handleToggleForm = _ => this.setState(prevState => ({
     isFormOpen: !prevState.isFormOpen
   }))
 
@@ -40,7 +39,7 @@ class SearchMain extends PureComponent {
                 bsStyle="link"
                 active={this.state.isFormOpen}
                 style={{ marginLeft: '16px' }}
-                onClick={this.toggleForm}
+                onClick={this.handleToggleForm}
               >
                 <Glyphicon glyph="search"/>
               </Button>
@@ -73,17 +72,17 @@ class SearchMain extends PureComponent {
           </Collapse> */}
 
           <div className={ isFormOpen ?
-              "crud--search-main__search-container open" :
-              "crud--search-main__search-container"
-            }
+            "crud--search-main__search-container open" :
+            "crud--search-main__search-container"
+          }
           >
             <Form model={model} />
           </div>
 
           <div className={ isFormOpen ?
-              "crud--search-main__results-container open" :
-              "crud--search-main__results-container"
-            }
+            "crud--search-main__results-container open" :
+            "crud--search-main__results-container"
+          }
           >
             <Result model={model} />
           </div>

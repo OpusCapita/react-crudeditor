@@ -59,9 +59,17 @@ class SearchMain extends PureComponent {
         </h1>
 
         <div className="crud--search-main__container">
-          <div className="crud--search-main__search-container">
-            <Form model={model} />
-          </div>
+          <Collapse
+            in={this.state.hideForm}
+            dimension="width"
+            transitionAppear={true}
+            >
+            <div>
+            <div className="crud--search-main__search-container">
+              <Form model={model} />
+            </div>
+            </div>
+          </Collapse>
 
           <div className="crud--search-main__results-container">
             <Result model={model} />

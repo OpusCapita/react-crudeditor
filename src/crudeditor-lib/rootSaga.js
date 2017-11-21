@@ -20,8 +20,6 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-let activeViewScenarioTask;
-
 const initializeViewSagas = {
   [VIEW_SEARCH]: searchViewScenario,
   [VIEW_CREATE]: createViewScenario,
@@ -31,6 +29,8 @@ const initializeViewSagas = {
 };
 
 export default function*(modelDefinition) {
+  let activeViewScenarioTask;
+
   /*
    * The saga handles an active view request for replacements with another view.
    *

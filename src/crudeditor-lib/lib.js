@@ -84,20 +84,20 @@ export function fillDefaults(baseModelDefinition) {
     throw new Error('permissions.crudOperations must be defined in a crud model!');
   }
 
-  const ops = modelDefinition.permissions.crudOperations;
+  const allowedOps = modelDefinition.permissions.crudOperations;
 
   ['create', 'edit', 'delete', 'view'].forEach(operation => {
-    if (!ops.hasOwnProperty(operation)) {
-      ops[operation] = false
+    if (!allowedOps.hasOwnProperty(operation)) {
+      allowedOps[operation] = false
     }
   }
   );
 
   const getUi = {
-    ...(ops.view ? { [VIEW_SEARCH]: getSearchUi } : null),
-    ...(ops.create ? { [VIEW_CREATE]: getCreateUi } : null),
-    ...(ops.edit ? { [VIEW_EDIT]: getEditUi } : null),
-    ...(ops.view ? { [VIEW_SHOW]: getShowUi } : null)
+    ...(allowedOps.view ? { [VIEW_SEARCH]: getSearchUi } : null),
+    ...(allowedOps.create ? { [VIEW_CREATE]: getCreateUi } : null),
+    ...(allowedOps.edit ? { [VIEW_EDIT]: getEditUi } : null),
+    ...(allowedOps.view ? { [VIEW_SHOW]: getShowUi } : null)
   };
 
   Object.keys(getUi).forEach(viewName => {

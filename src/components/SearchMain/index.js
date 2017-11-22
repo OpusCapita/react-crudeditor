@@ -17,9 +17,9 @@ class SearchMain extends PureComponent {
     return (
       <div className="crud--search-main">
         <div className="crud--search-main__page-header">
-          <h3 className="crud--search-main__page-title">
+          <h1 className="crud--search-main__page-title">
             {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
-          </h3>
+          </h1>
           <button
             type="button"
             className="btn btn-sm btn-primary"

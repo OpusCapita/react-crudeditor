@@ -349,6 +349,15 @@ Model Definition is an object describing an entity. It has the following structu
       return true;
     }
   },
+  
+  permissions: {
+    crudOperations: {
+      ?create: <boolean, false by default>,
+      ?edit: <boolean, false by default>,
+      ?delete: <boolean, false by default>,
+      ?view: <boolean, false by default>
+    }
+  },
 
   /*
    * Methods for async operations.

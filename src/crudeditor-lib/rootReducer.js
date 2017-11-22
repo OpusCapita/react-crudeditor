@@ -17,11 +17,13 @@ import {
 
 export default modelDefinition => combineReducers({
   common: common(modelDefinition),
-  views: combineReducers({
-    [VIEW_SEARCH]: search(modelDefinition),
-    [VIEW_CREATE]: create(modelDefinition),
-    [VIEW_EDIT]: edit(modelDefinition),
-    [VIEW_SHOW]: show(modelDefinition),
-    [VIEW_ERROR]: error(modelDefinition)
-  })
+  views: combineReducers(
+    (ops => ({
+      ...(ops.view ? { [VIEW_SEARCH]: search(modelDefinition) } : null),
+      ...(ops.create ? { [VIEW_CREATE]: create(modelDefinition) } : null),
+      ...(ops.edit ? { [VIEW_EDIT]: edit(modelDefinition) } : null),
+      ...(ops.view ? { [VIEW_SHOW]: show(modelDefinition) } : null),
+      [VIEW_ERROR]: error(modelDefinition)
+    }))(modelDefinition.permissions.crudOperations)
+  )
 });

@@ -2,12 +2,32 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Glyphicon, Button, ButtonGroup, Checkbox } from 'react-bootstrap';
+import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
-import ConfirmDialog from '../ConfirmDialog';
+import SearchResultButtons from './SearchResultButtons';
 import './SearchResultListing.less';
 
 class SearchResultListing extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        resultInstances: PropTypes.array,
+        selectedInstances: PropTypes.array,
+        resultFields: PropTypes.array,
+        sortParams: PropTypes.object,
+        isLoading: PropTypes.bool,
+        permissions: PropTypes.shape({
+          crudOperations: PropTypes.object.isRequired
+        })
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -59,6 +79,9 @@ class SearchResultListing extends PureComponent {
       sortParams: {
         field: sortField,
         order: sortOrder
+      },
+      permissions: {
+        crudOperations: permissions
       }
     } = this.props.model.data;
 
@@ -69,13 +92,15 @@ class SearchResultListing extends PureComponent {
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selectedInstances.length === instances.length && instances.length !== 0}
-                  onChange={this.handleToggleSelectedAll}
-                />
-              </th>
+              { permissions.delete &&
+                <th>
+                  <input
+                    type="checkbox"
+                    checked={selectedInstances.length === instances.length && instances.length !== 0}
+                    onChange={this.handleToggleSelectedAll}
+                  />
+                </th>
+              }
 
               {resultFields.map(({ name, sortable }) =>
                 (<th key={`th-${name}`}>
@@ -107,12 +132,14 @@ class SearchResultListing extends PureComponent {
 
             {instances.map((instance, index) =>
               (<tr key={`tr-${JSON.stringify(instance)}`}>
-                <td>
-                  <Checkbox
-                    checked={!!~selectedInstances.indexOf(instance)}
-                    onChange={this.handleToggleSelected(instance)}
-                  />
-                </td>
+                {
+                  permissions.delete && (<td>
+                    <Checkbox
+                      checked={!!~selectedInstances.indexOf(instance)}
+                      onChange={this.handleToggleSelected(instance)}
+                    />
+                  </td>)
+                }
                 {resultFields.map(({ name, Component, textAlignment }) =>
                   (<td
                     key={`td-${name}`}
@@ -131,34 +158,14 @@ class SearchResultListing extends PureComponent {
                 )}
 
                 <td className="text-right">
-                  <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-                    <Button onClick={this.handleShow(instance, index)}>
-                      <Glyphicon glyph='glyphicon-eye-open' />
-                      {' '}
-                      {i18n.getMessage('crudEditor.show.button')}
-                    </Button>
-
-                    <Button onClick={this.handleEdit(instance, index)}>
-                      <Glyphicon glyph='edit' />
-                      {' '}
-                      {i18n.getMessage('crudEditor.edit.button')}
-                    </Button>
-
-                    <ConfirmDialog
-                      trigger='click'
-                      onConfirm={this.handleDelete(instance)}
-                      title='Delete confirmation'
-                      message={i18n.getMessage('crudEditor.delete.confirmation')}
-                      textConfirm={i18n.getMessage('crudEditor.delete.button')}
-                      textCancel={i18n.getMessage('crudEditor.cancel.button')}
-                    >
-                      <Button>
-                        <Glyphicon glyph='trash' />
-                        {' '}
-                        {i18n.getMessage('crudEditor.delete.button')}
-                      </Button>
-                    </ConfirmDialog>
-                  </ButtonGroup>
+                  <SearchResultButtons
+                    model={this.props.model}
+                    instance={instance}
+                    index={index}
+                    onShow={this.handleShow}
+                    onEdit={this.handleEdit}
+                    onDelete={this.handleDelete}
+                  />
                 </td>
               </tr>)
             )}
@@ -170,21 +177,5 @@ class SearchResultListing extends PureComponent {
   }
 }
 
-SearchResultListing.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      resultInstances: PropTypes.array,
-      selectedInstances: PropTypes.array,
-      resultFields: PropTypes.array,
-      sortParams: PropTypes.object,
-      isLoading: PropTypes.bool
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-SearchResultListing.contextTypes = {
-  i18n: PropTypes.object
-};
 
 export default SearchResultListing;

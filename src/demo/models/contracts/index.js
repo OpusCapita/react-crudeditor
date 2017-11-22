@@ -327,9 +327,9 @@ export default {
   },
   permissions: {
     crudOperations: {
-      create: false,
+      create: true,
       edit: true,
-      delete: true,
+      delete: false,
       view: true
     }
   },

@@ -74,18 +74,30 @@ export function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
   }
 
-  if(!permissions || !permissions.crudOperations) { // TODO remove after we create a proper model validator
-    console.error('permissions.crudOperations must be defined in a crud model!');
+  if (!permissions || !permissions.crudOperations) { // TODO remove after we create a proper model validator
+    console.error('permissions.crudOperations must be defined in a crud schema!' + '\nExample: ' + JSON.stringify({
+      model: {},
+      api: {},
+      ui: {},
+      permissions: {
+        crudOperations: {
+          create: true,
+          edit: true,
+          delete: false,
+          view: true
+        }
+      }
+    }), null, 2);
     throw new Error('permissions.crudOperations must be defined in a crud model!');
   }
 
   const ops = modelDefinition.permissions.crudOperations;
 
   ['create', 'edit', 'delete', 'view'].forEach(operation => {
-      if (!ops.hasOwnProperty(operation)) {
-        ops[operation] = false
-      }
+    if (!ops.hasOwnProperty(operation)) {
+      ops[operation] = false
     }
+  }
   );
 
   const canShowUi = {

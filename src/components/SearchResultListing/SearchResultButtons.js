@@ -25,55 +25,55 @@ export default class SearchResultButtons extends PureComponent {
 
   render() {
     const permissions = this.props.model.data.permissions.crudOperations;
-    const {
-      instance,
-      index,
-      onShow,
-      onEdit,
-      onDelete
-    } = this.props;
+    const { onShow, onEdit, onDelete } = this.props;
     const { i18n } = this.context;
 
-    const showButton = permissions.view && !permissions.edit ?
-      (<Button onClick={onShow(instance, index)}>
-        <Glyphicon glyph='glyphicon-eye-open' />
-        {' '}
-        {i18n.getMessage('crudEditor.show.button')}
-      </Button>) :
-      null;
+    const buttons = [];
 
-    const editButton = permissions.edit ?
-      (<Button onClick={onEdit(instance, index)}>
-        <Glyphicon glyph='edit' />
-        {' '}
-        {i18n.getMessage('crudEditor.edit.button')}
-      </Button>) :
-      null;
-
-    const deleteButton = permissions.delete ?
-      (<ConfirmDialog
-        trigger='click'
-        onConfirm={onDelete(instance)}
-        title='Delete confirmation'
-        message={i18n.getMessage('crudEditor.delete.confirmation')}
-        textConfirm={i18n.getMessage('crudEditor.delete.button')}
-        textCancel={i18n.getMessage('crudEditor.cancel.button')}
-      >
-        <Button>
-          <Glyphicon glyph='trash' />
+    if (permissions.view && !permissions.edit) {
+      buttons.push(
+        <Button onClick={onShow} key="show">
+          <Glyphicon glyph='glyphicon-eye-open' />
           {' '}
-          {i18n.getMessage('crudEditor.delete.button')}
+          {i18n.getMessage('crudEditor.show.button')}
         </Button>
-      </ConfirmDialog>) :
-      null;
+      )
+    }
 
-    return showButton || editButton || deleteButton ? (
+    if (permissions.edit) {
+      buttons.push(
+        <Button onClick={onEdit} key="edit">
+          <Glyphicon glyph='edit' />
+          {' '}
+          {i18n.getMessage('crudEditor.edit.button')}
+        </Button>
+      )
+    }
+
+    if (permissions.delete) {
+      buttons.push(
+        <ConfirmDialog
+          trigger='click'
+          onConfirm={onDelete}
+          title='Delete confirmation'
+          message={i18n.getMessage('crudEditor.delete.confirmation')}
+          textConfirm={i18n.getMessage('crudEditor.delete.button')}
+          textCancel={i18n.getMessage('crudEditor.cancel.button')}
+          key="delete"
+        >
+          <Button>
+            <Glyphicon glyph='trash' />
+            {' '}
+            {i18n.getMessage('crudEditor.delete.button')}
+          </Button>
+        </ConfirmDialog>
+      )
+    }
+
+    return buttons.length > 0 && (
       <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-        {showButton}
-        {editButton}
-        {deleteButton}
+        {buttons}
       </ButtonGroup>
-    ) :
-      null;
+    );
   }
 }

@@ -22,14 +22,15 @@ import {
 
 
 export default function*(modelDefinition) {
-  const initializeViewSagas = (ops => ({
-    ...(ops.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
-    ...(ops.create ? { [VIEW_CREATE]: createViewScenario } : null),
-    ...(ops.edit ? { [VIEW_EDIT]: editViewScenario } : null),
-    ...(ops.view ? { [VIEW_SHOW]: showViewScenario } : null),
+  const allowedOps = modelDefinition.permissions.crudOperations;
+
+  const initializeViewSagas = {
+    ...(allowedOps.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
+    ...(allowedOps.create ? { [VIEW_CREATE]: createViewScenario } : null),
+    ...(allowedOps.edit ? { [VIEW_EDIT]: editViewScenario } : null),
+    ...(allowedOps.view ? { [VIEW_SHOW]: showViewScenario } : null),
     [VIEW_ERROR]: errorViewScenario
-  }))(modelDefinition.permissions.crudOperations)
-  ;
+  };
 
   let activeViewScenarioTask;
 

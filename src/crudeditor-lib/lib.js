@@ -23,13 +23,6 @@ const getViewState = {
   [VIEW_ERROR]: getErrorViewState
 };
 
-const getUi = {
-  [VIEW_SEARCH]: getSearchUi,
-  [VIEW_CREATE]: getCreateUi,
-  [VIEW_EDIT]: getEditUi,
-  [VIEW_SHOW]: getShowUi
-};
-
 export const storeState2appState = (storeState, modelDefinition) => ({
   name: storeState.common.activeViewName,
   state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
@@ -100,15 +93,15 @@ export function fillDefaults(baseModelDefinition) {
   }
   );
 
-  const canShowUi = {
-    [VIEW_CREATE]: ops.create,
-    [VIEW_EDIT]: ops.edit,
-    [VIEW_SEARCH]: ops.view,
-    [VIEW_SHOW]: ops.view
-  }
+  const getUi = {
+    ...(ops.view ? { [VIEW_SEARCH]: getSearchUi } : null),
+    ...(ops.create ? { [VIEW_CREATE]: getCreateUi } : null),
+    ...(ops.edit ? { [VIEW_EDIT]: getEditUi } : null),
+    ...(ops.view ? { [VIEW_SHOW]: getShowUi } : null)
+  };
 
   Object.keys(getUi).forEach(viewName => {
-    if (getUi[viewName] && canShowUi[viewName]) {
+    if (getUi[viewName]) {
       modelDefinition.ui[viewName] = getUi[viewName](modelDefinition);
     }
   })

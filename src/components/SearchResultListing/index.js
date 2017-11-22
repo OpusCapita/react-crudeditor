@@ -102,74 +102,76 @@ class SearchResultListing extends PureComponent {
                 </th>
               }
 
-              {resultFields.map(({ name, sortable }) =>
-                (<th key={`th-${name}`}>
-                  {
-                    sortable ?
-                      <a
-                        className="crud--search-result-listing__sort-button"
-                        style={{ cursor: "pointer", whiteSpace: "nowrap" }}
-                        onClick={this.handleResort(name)}
-                      >
-                        {getModelMessage(i18n, `model.field.${name}`, name)}
-                        {
-                          sortField === name &&
-                          <Glyphicon
-                            className="crud--search-result-listing__sort-icon"
-                            glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`}
-                          />
-                        }
-                      </a> :
-                      getModelMessage(i18n, `model.field.${name}`, name)
-                  }
-                </th>)
-              )}
+              {
+                resultFields.map(({ name, sortable }) => (
+                  <th key={`th-${name}`}>
+                    {
+                      sortable ?
+                        <a
+                          className="crud--search-result-listing__sort-button"
+                          style={{ cursor: "pointer", whiteSpace: "nowrap" }}
+                          onClick={this.handleResort(name)}
+                        >
+                          { getModelMessage(i18n, `model.field.${name}`, name) }
+                          {
+                            sortField === name &&
+                            <Glyphicon
+                              className="crud--search-result-listing__sort-icon"
+                              glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`}
+                            />
+                          }
+                        </a> :
+                        getModelMessage(i18n, `model.field.${name}`, name)
+                    }
+                  </th>
+                ))
+              }
 
               <th>&nbsp;</th>
             </tr>
           </thead>
           <tbody>
 
-            {instances.map((instance, index) =>
-              (<tr key={`tr-${JSON.stringify(instance)}`}>
-                {
-                  permissions.delete && (<td>
-                    <Checkbox
-                      checked={!!~selectedInstances.indexOf(instance)}
-                      onChange={this.handleToggleSelected(instance)}
+            {
+              instances.map((instance, index) => (
+                <tr key={`tr-${JSON.stringify(instance)}`}>
+                  {
+                    permissions.delete && (<td>
+                      <Checkbox
+                        checked={!!~selectedInstances.indexOf(instance)}
+                        onChange={this.handleToggleSelected(instance)}
+                      />
+                    </td>)
+                  }
+                  {
+                    resultFields.map(({ name, Component, textAlignment }) => (
+                      <td
+                        key={`td-${name}`}
+                        className={
+                          textAlignment === 'right' && 'text-right' ||
+                        textAlignment === 'center' && 'text-center' ||
+                        'text-left'
+                        }
+                      >
+                        {
+                          Component ?
+                            <Component name={name} instance={instance} /> :
+                            instance[name]
+                        }
+                      </td>
+                    ))
+                  }
+                  <td className="text-right">
+                    <SearchResultButtons
+                      model={this.props.model}
+                      onShow={this.handleShow(instance, index)}
+                      onEdit={this.handleEdit(instance, index)}
+                      onDelete={this.handleDelete(instance)}
                     />
-                  </td>)
-                }
-                {resultFields.map(({ name, Component, textAlignment }) =>
-                  (<td
-                    key={`td-${name}`}
-                    className={
-                      textAlignment === 'right' && 'text-right' ||
-                      textAlignment === 'center' && 'text-center' ||
-                      'text-left'
-                    }
-                  >
-                    {
-                      Component ?
-                        <Component name={name} instance={instance} /> :
-                        instance[name]
-                    }
-                  </td>)
-                )}
-
-                <td className="text-right">
-                  <SearchResultButtons
-                    model={this.props.model}
-                    instance={instance}
-                    index={index}
-                    onShow={this.handleShow}
-                    onEdit={this.handleEdit}
-                    onDelete={this.handleDelete}
-                  />
-                </td>
-              </tr>)
-            )}
-
+                  </td>
+                </tr>
+              ))
+            }
           </tbody>
         </Table>
       </div>

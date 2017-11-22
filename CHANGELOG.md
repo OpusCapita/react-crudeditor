@@ -1,3 +1,7 @@
+## [v0.0.19](Wed, 22 Nov 2017 09:06:04 GMT)
+ - Search View heading has the same size as Edit/Show/Create View heading (Andrei Mourzenkov <mourzenkov@scand.com>, 7d7fde9)
+ - Permissions are added to model definition in docs (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8bc82a2)
+
 ## [v0.0.18](Tue, 21 Nov 2017 18:48:25 GMT)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (8cd051a 7988bc2, 49a5c61)
  - dateRange.from/to is renamed to range.from/to in i18n (Andrei Mourzenkov <mourzenkov@scand.com>, 8cd051a)

@@ -101,7 +101,7 @@ export default class EditHeading extends PureComponent {
 
       <br />
       {
-        tabs.length !== 0 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+        tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
           {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>

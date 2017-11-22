@@ -20,7 +20,7 @@ class SearchResultPaginationPanel extends React.PureComponent {
       }
     } = this.props.model.data;
 
-    return totalCount > max && (
+    return (
       <div className="crud--search-pagination-panel clearfix">
         <div className='paginate'>
           <Dropdown
@@ -43,18 +43,21 @@ class SearchResultPaginationPanel extends React.PureComponent {
           </Dropdown>
         </div>
 
-        <div className="crud--search-pagination-panel__paginate">
-          <Pagination
-            activePage={offset / max + 1}
-            onSelect={this.handlePaginate}
-            items={Math.ceil(totalCount / max)}
-            className="crud--search-pagination-panel__pagination"
-            maxButtons={5}
-            boundaryLinks={true}
-            first={true}
-            last={true}
-          />
-        </div>
+        {
+          totalCount > max &&
+          <div className="crud--search-pagination-panel__paginate">
+            <Pagination
+              activePage={offset / max + 1}
+              onSelect={this.handlePaginate}
+              items={Math.ceil(totalCount / max)}
+              className="crud--search-pagination-panel__pagination"
+              maxButtons={5}
+              boundaryLinks={true}
+              first={true}
+              last={true}
+            />
+          </div>
+        }
 
         <div>
           <span>{this.context.i18n.getMessage('crudEditor.found.items.message', { count: totalCount })}</span>

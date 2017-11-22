@@ -20,7 +20,7 @@ class SearchResultPaginationPanel extends React.PureComponent {
       }
     } = this.props.model.data;
 
-    return (
+    return totalCount > max && (
       <div className="crud--search-pagination-panel clearfix">
         <div className='paginate'>
           <Dropdown

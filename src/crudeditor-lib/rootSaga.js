@@ -20,15 +20,16 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-const initializeViewSagas = {
-  [VIEW_SEARCH]: searchViewScenario,
-  [VIEW_CREATE]: createViewScenario,
-  [VIEW_EDIT]: editViewScenario,
-  [VIEW_SHOW]: showViewScenario,
-  [VIEW_ERROR]: errorViewScenario
-};
 
 export default function*(modelDefinition) {
+  const initializeViewSagas = {
+    [VIEW_SEARCH]: searchViewScenario,
+    [VIEW_CREATE]: createViewScenario,
+    [VIEW_EDIT]: editViewScenario,
+    [VIEW_SHOW]: showViewScenario,
+    [VIEW_ERROR]: errorViewScenario
+  };
+
   let activeViewScenarioTask;
 
   /*

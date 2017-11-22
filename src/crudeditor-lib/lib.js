@@ -50,7 +50,7 @@ export function getPrefixedTranslations(translations, prefix) {
 export function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
-  const fieldsMeta = modelDefinition.model.fields;
+  const { model: { fields: fieldsMeta }, permissions } = modelDefinition;
 
   Object.keys(fieldsMeta).forEach(fieldName => {
     if (!fieldsMeta[fieldName].type) {
@@ -74,8 +74,29 @@ export function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
   }
 
+  if(!permissions || !permissions.crudOperations) { // TODO remove after we create a proper model validator
+    console.error('permissions.crudOperations must be defined in a crud model!');
+    throw new Error('permissions.crudOperations must be defined in a crud model!');
+  }
+
+  const ops = modelDefinition.permissions.crudOperations;
+
+  ['create', 'edit', 'delete', 'view'].forEach(operation => {
+      if (!ops.hasOwnProperty(operation)) {
+        ops[operation] = false
+      }
+    }
+  );
+
+  const canShowUi = {
+    [VIEW_CREATE]: ops.create,
+    [VIEW_EDIT]: ops.edit,
+    [VIEW_SEARCH]: ops.view,
+    [VIEW_SHOW]: ops.view
+  }
+
   Object.keys(getUi).forEach(viewName => {
-    if (getUi[viewName]) {
+    if (getUi[viewName] && canShowUi[viewName]) {
       modelDefinition.ui[viewName] = getUi[viewName](modelDefinition);
     }
   })

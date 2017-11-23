@@ -37,7 +37,6 @@ const
 // eventsMiddleware is a function which accepts context as an argument and
 // returns a standard Redux middleware function
 const eventsMiddleware = ({ context, modelDefinition }) => store => next => action => {
-  console.log(action)
   switch (action.type) {
     case CREATE_INSTANCE_SAVE_SUCCESS:
       NotificationManager.create({

@@ -42,6 +42,14 @@ function validateModelDefinition(modelDefinition) {
     throw new Error(`${errorPrefix}Model must contain 'fields' object.`);
   }
 
+  const noUniqueFields = Object.keys(model.fields).
+    filter(fieldName => model.fields[fieldName].unique).
+    length === 0;
+
+  if (noUniqueFields) {
+    throw new Error(`${errorPrefix}At least one field should have property 'unique: true'.`);
+  }
+
   if (!model.validate || typeof model.validate !== 'function') {
     throw new Error(`${errorPrefix}Model must contain 'validate' function. Signature: (instance) => boolean.`);
   }

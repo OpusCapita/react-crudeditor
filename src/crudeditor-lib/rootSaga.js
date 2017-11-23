@@ -22,13 +22,13 @@ import {
 
 
 export default function*(modelDefinition) {
-  const allowedOps = modelDefinition.permissions.crudOperations;
+  const { crudOperations } = modelDefinition.permissions;
 
   const initializeViewSagas = {
-    ...(allowedOps.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
-    ...(allowedOps.create ? { [VIEW_CREATE]: createViewScenario } : null),
-    ...(allowedOps.edit ? { [VIEW_EDIT]: editViewScenario } : null),
-    ...(allowedOps.view ? { [VIEW_SHOW]: showViewScenario } : null),
+    ...(crudOperations.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
+    ...(crudOperations.create ? { [VIEW_CREATE]: createViewScenario } : null),
+    ...(crudOperations.edit ? { [VIEW_EDIT]: editViewScenario } : null),
+    ...(crudOperations.view ? { [VIEW_SHOW]: showViewScenario } : null),
     [VIEW_ERROR]: errorViewScenario
   };
 
@@ -91,7 +91,7 @@ export default function*(modelDefinition) {
 
     if (!initializeViewSaga) {
       initializeViewSaga = errorViewScenario;
-      viewState = ERROR_UNKNOWN_VIEW(viewName);
+      viewState = ERROR_UNKNOWN_VIEW(viewName); // TODO: add ERROR_FORBIDDEN_VIEW
       viewName = VIEW_ERROR;
     }
 

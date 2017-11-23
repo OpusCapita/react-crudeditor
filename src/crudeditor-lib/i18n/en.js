@@ -2,6 +2,7 @@ import exceptions from './exceptions/en';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "New",
   "crudEditor.create.header": "Create {modelName}",
   "crudEditor.edit.header": "Edit {modelName}",
   "crudEditor.show.header": "View {modelName}",
@@ -32,7 +33,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Object updated.",
   "crudEditor.objectSaveFailed.message": "Object save failed.",
   "crudEditor.objectDeleted.message": "Object deleted.",
-  "crudEditor.objectsDeleted.message": "Objects {count} deleted.",
+  "crudEditor.objectsDeleted.message": "Objects {labels} deleted.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "You cannot delete some objects because of security restrictions.",
   "crudEditor.objectDeleteFailed.message": "Failed to delete object, perhaps it is already in use.",
   "crudEditor.objectsDeleteFailed.message": "Failed to delete objects {count}, perhaps they are already in use.",

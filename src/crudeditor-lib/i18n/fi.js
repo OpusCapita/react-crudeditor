@@ -26,7 +26,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Objekti päivitetty.",
   "crudEditor.objectsDeleteFailed.message": "Objektien {0} poistaminen epäonnistui, koska ne ovat jo käytössä.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Et voi poistaa joitakin objekteja turvallisuusrajoitteista johtuen.",
-  "crudEditor.objectsDeleted.message": "Objektit {0} poistettu.",
+  "crudEditor.objectsDeleted.message": "Objektit {labels} poistettu.",
   "crudEditor.refresh.button": "Päivitä",
   "crudEditor.reset.button": "Tyhjennä",
   "crudEditor.revisions.button": "Revisiot",

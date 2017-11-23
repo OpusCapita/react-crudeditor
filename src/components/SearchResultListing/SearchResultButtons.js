@@ -30,22 +30,20 @@ export default class SearchResultButtons extends PureComponent {
 
     const buttons = [];
 
-    if (permissions.view && !permissions.edit) {
-      buttons.push(
-        <Button onClick={onShow} key="show">
-          <Glyphicon glyph='glyphicon-eye-open' />
-          {' '}
-          {i18n.getMessage('crudEditor.show.button')}
-        </Button>
-      )
-    }
-
     if (permissions.edit) {
       buttons.push(
         <Button onClick={onEdit} key="edit">
           <Glyphicon glyph='edit' />
           {' '}
           {i18n.getMessage('crudEditor.edit.button')}
+        </Button>
+      )
+    } else if (permissions.view) {
+      buttons.push(
+        <Button onClick={onShow} key="show">
+          <Glyphicon glyph='glyphicon-eye-open' />
+          {' '}
+          {i18n.getMessage('crudEditor.show.button')}
         </Button>
       )
     }

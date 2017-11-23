@@ -1,3 +1,31 @@
+## [v0.0.20](Thu, 23 Nov 2017 07:46:08 GMT)
+ - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 23d37e1)
+ - Implemented model validation #47 (Egor Stambakio <stambakio@scand.com>, 493cd62)
+ - Merge pull request #50 from OpusCapita/permissions/48
+    
+    Implemented basic permissions system for crud's schema (5ade2c6 bb95165, 3318670)
+ - Minor code optimization (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, bb95165)
+ - Merge pull request #53 from OpusCapita/pagination/51
+    
+    Fixed #51 (hide pagination for a single-page search result) (782874c a881e26, 5ade2c6)
+ - Merge pull request #56 from OpusCapita/translations-client-bug/55
+    
+    Fixed translations bug #55 on demo client with react-router (c27cf8f 69e10e5, 782874c)
+ - Renamed a variable. (Egor Stambakio <stambakio@scand.com>, f0cb5d4)
+ - Fixed according to supervisor notes. (Egor Stambakio <stambakio@scand.com>, 0671b22)
+ - Hide only pagination links; totalCount & paging dropdownstay intact. (Egor Stambakio <stambakio@scand.com>, a881e26)
+ - Merge pull request #54 from OpusCapita/tabs/52
+    
+    Fixed #52 (don't show a single tab) (648a4cb ab8af4e, c27cf8f)
+ - Fixed #55 (Egor Stambakio <stambakio@scand.com>, 69e10e5)
+ - Fixed #52 (Egor Stambakio <stambakio@scand.com>, ab8af4e)
+ - Fixed #51 (Egor Stambakio <stambakio@scand.com>, b064ae0)
+ - Hide search results link on edit/show views if view is not allowed. (Egor Stambakio <stambakio@scand.com>, 9d48e08)
+ - Merged master. (7dec134 648a4cb, bc8c74d)
+ - Rolled back prop-types version to match master branch. (Egor Stambakio <stambakio@scand.com>, 7dec134)
+ - Done. (Egor Stambakio <stambakio@scand.com>, 1b93ba2)
+ - Starting. (Egor Stambakio <stambakio@scand.com>, d8f32a9)
+
 ## [v0.0.19](Wed, 22 Nov 2017 09:06:04 GMT)
  - Search View heading has the same size as Edit/Show/Create View heading (Andrei Mourzenkov <mourzenkov@scand.com>, 7d7fde9)
  - Permissions are added to model definition in docs (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8bc82a2)

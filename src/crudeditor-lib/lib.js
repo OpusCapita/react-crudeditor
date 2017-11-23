@@ -57,7 +57,10 @@ function validateModelDefinition(modelDefinition) {
   }
 
   if (!permissions.crudOperations.view) { // TBD it this ok?
-    console.warn(`Search page is unavailable if 'view' is set to false or undefined in model's permissions.crudOperations.`)
+    console.warn(`
+      Search page is unavailable if 'view' is set to false
+      or undefined in model's permissions.crudOperations.
+    `)
   }
 
   // API
@@ -123,7 +126,7 @@ export function fillDefaults(baseModelDefinition) {
   // throws in case of failed validation; silent otherwise
   validateModelDefinition(modelDefinition);
 
-  const { model: { fields: fieldsMeta }, permissions } = modelDefinition;
+  const fieldsMeta = modelDefinition.model.fields;
 
   Object.keys(fieldsMeta).forEach(fieldName => {
     if (!fieldsMeta[fieldName].type) {

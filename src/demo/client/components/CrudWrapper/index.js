@@ -47,9 +47,15 @@ export default class CrudWrapper extends PureComponent {
     i18n: PropTypes.object
   }
 
+  constructor(...args) {
+    super(...args);
+
+    this.i18n = new I18nManager();
+  }
+
   getChildContext() {
     return {
-      i18n: new I18nManager()
+      i18n: this.i18n
     }
   }
 

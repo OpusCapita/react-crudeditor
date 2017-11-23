@@ -2,6 +2,7 @@ import exceptions from './exceptions/en';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "New",
   "crudEditor.create.header": "Create {modelName}",
   "crudEditor.edit.header": "Edit {modelName}",
   "crudEditor.show.header": "View {modelName}",

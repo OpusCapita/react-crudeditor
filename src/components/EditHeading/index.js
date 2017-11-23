@@ -79,16 +79,16 @@ export default class EditHeading extends PureComponent {
       showDialog
     });
 
-    return (<div style={{ marginBottom: '15px' }}>
+    return (<div style={{ marginBottom: '10px' }}>
       <h1>
         <Row>
           <Col xs={8}>
             {title}
-            {(instanceLabel || viewName === VIEW_CREATE) && ' / '}
             {
-              viewName === VIEW_CREATE ?
-                i18n.getMessage('crudEditor.new.title') :
-                instanceLabel && <small>{instanceLabel}</small>
+              (instanceLabel || viewName === VIEW_CREATE) &&
+              <small>
+                {' / ' + (viewName === VIEW_CREATE ? i18n.getMessage('crudEditor.new.title') : instanceLabel)}
+              </small>
             }
           </Col>
           <Col xs={4}>
@@ -99,8 +99,6 @@ export default class EditHeading extends PureComponent {
         </Row>
       </h1>
 
-
-      <br />
       {
         tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
           {

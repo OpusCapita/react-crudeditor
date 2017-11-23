@@ -33,7 +33,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Objekt aktualisiert.",
   "crudEditor.objectSaveFailed.message": "Speichern von Objekten fehlgeschlagen.",
   "crudEditor.objectDeleted.message": "Objekt gelöscht.",
-  "crudEditor.objectsDeleted.message": "Objekte {0} gelöscht.",
+  "crudEditor.objectsDeleted.message": "Objekte {labels} gelöscht.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Aus Sicherheitsgründen lassen sich einige Objekte nicht löschen.",
   "crudEditor.objectDeleteFailed.message": "Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.",
   "crudEditor.objectsDeleteFailed.message": "Objekte {0} konnten nicht gelöscht werden, vielleicht sind sie bereits im Einsatz.",

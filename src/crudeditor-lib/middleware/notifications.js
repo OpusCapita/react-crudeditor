@@ -36,7 +36,8 @@ const
 
 // eventsMiddleware is a function which accepts context as an argument and
 // returns a standard Redux middleware function
-const eventsMiddleware = context => store => next => action => {
+const eventsMiddleware = ({ context, modelDefinition }) => store => next => action => {
+  console.log(action)
   switch (action.type) {
     case CREATE_INSTANCE_SAVE_SUCCESS:
       NotificationManager.create({
@@ -85,7 +86,7 @@ const eventsMiddleware = context => store => next => action => {
         message: action.payload.instances.length === 1 ?
           context.i18n.getMessage('crudEditor.objectDeleted.message') :
           context.i18n.getMessage('crudEditor.objectsDeleted.message', {
-            count: action.payload.instances.length
+            labels: action.payload.instances.map(modelDefinition.ui.instanceLabel).join(', ')
           })
       });
       break;

@@ -33,7 +33,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Object updated.",
   "crudEditor.objectSaveFailed.message": "Object save failed.",
   "crudEditor.objectDeleted.message": "Object deleted.",
-  "crudEditor.objectsDeleted.message": "Objects {count} deleted.",
+  "crudEditor.objectsDeleted.message": "Objects {labels} deleted.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "You cannot delete some objects because of security restrictions.",
   "crudEditor.objectDeleteFailed.message": "Failed to delete object, perhaps it is already in use.",
   "crudEditor.objectsDeleteFailed.message": "Failed to delete objects {count}, perhaps they are already in use.",

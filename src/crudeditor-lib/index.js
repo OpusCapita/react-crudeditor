@@ -81,7 +81,7 @@ export default baseModelDefinition => {
             onTransition,
             modelDefinition
           }),
-          notificationsMiddleware(this.context),
+          notificationsMiddleware({ context: this.context, modelDefinition }),
           sagaMiddleware
         ))
       );

@@ -31,7 +31,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Objekt uppdaterat.",
   "crudEditor.objectSaveFailed.message": "Objektet kunde inte sparas.",
   "crudEditor.objectDeleted.message": "Objekt borttaget.",
-  "crudEditor.objectsDeleted.message": "Objekt {0} borttagna.",
+  "crudEditor.objectsDeleted.message": "Objekt {labels} borttagna.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Du kan inte ta bort vissa objekt på grund av säkerhetsbegränsningar.",
   "crudEditor.objectDeleteFailed.message": "Det gick inte att ta bort objektet, eventuell används det redan.",
   "crudEditor.objectsDeleteFailed.message": "Det gick inte att ta bort objekten {0}, eventuellt används de redan.",

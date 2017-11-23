@@ -26,7 +26,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Объект обновлен.",
   "crudEditor.objectsDeleteFailed.message": "Не удалось удалить объекты {0}, вероятно, они уже используются.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Вы не можете удалить некоторые объекты из-за ограничений безопасности.",
-  "crudEditor.objectsDeleted.message": "Объекты {0} удалены.",
+  "crudEditor.objectsDeleted.message": "Объекты {labels} удалены.",
   "crudEditor.refresh.button": "Обновить",
   "crudEditor.reset.button": "Сбросить",
   "crudEditor.revisions.button": "Ревизии",

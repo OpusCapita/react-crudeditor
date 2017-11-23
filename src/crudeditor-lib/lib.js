@@ -23,13 +23,6 @@ const getViewState = {
   [VIEW_ERROR]: getErrorViewState
 };
 
-const getUi = {
-  [VIEW_SEARCH]: getSearchUi,
-  [VIEW_CREATE]: getCreateUi,
-  [VIEW_EDIT]: getEditUi,
-  [VIEW_SHOW]: getShowUi
-};
-
 export const storeState2appState = (storeState, modelDefinition) => ({
   name: storeState.common.activeViewName,
   state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
@@ -50,7 +43,7 @@ export function getPrefixedTranslations(translations, prefix) {
 export function fillDefaults(baseModelDefinition) {
   // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
-  const fieldsMeta = modelDefinition.model.fields;
+  const { model: { fields: fieldsMeta }, permissions } = modelDefinition;
 
   Object.keys(fieldsMeta).forEach(fieldName => {
     if (!fieldsMeta[fieldName].type) {
@@ -73,6 +66,39 @@ export function fillDefaults(baseModelDefinition) {
   if (!modelDefinition.ui.instanceLabel) {
     modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
   }
+
+  if (!permissions || !permissions.crudOperations) { // TODO remove after we create a proper model validator
+    console.error('permissions.crudOperations must be defined in a crud schema!' + '\nExample: ' + JSON.stringify({
+      model: {},
+      api: {},
+      ui: {},
+      permissions: {
+        crudOperations: {
+          create: true,
+          edit: true,
+          delete: false,
+          view: true
+        }
+      }
+    }), null, 2);
+    throw new Error('permissions.crudOperations must be defined in a crud model!');
+  }
+
+  const allowedOps = modelDefinition.permissions.crudOperations;
+
+  ['create', 'edit', 'delete', 'view'].forEach(operation => {
+    if (!allowedOps.hasOwnProperty(operation)) {
+      allowedOps[operation] = false
+    }
+  }
+  );
+
+  const getUi = {
+    ...(allowedOps.view ? { [VIEW_SEARCH]: getSearchUi } : null),
+    ...(allowedOps.create ? { [VIEW_CREATE]: getCreateUi } : null),
+    ...(allowedOps.edit ? { [VIEW_EDIT]: getEditUi } : null),
+    ...(allowedOps.view ? { [VIEW_SHOW]: getShowUi } : null)
+  };
 
   Object.keys(getUi).forEach(viewName => {
     if (getUi[viewName]) {

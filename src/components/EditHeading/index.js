@@ -36,7 +36,10 @@ export default class EditHeading extends PureComponent {
           tabs,
           viewName,
           persistentInstance,
-          formInstance
+          formInstance,
+          permissions: {
+            crudOperations
+          }
         },
         actions: {
           selectTab,
@@ -87,9 +90,11 @@ export default class EditHeading extends PureComponent {
           <Col xs={4}>
             <div style={{ float: "right" }}>
               <ButtonGroup>
-                <Button bsStyle='link' onClick={exitView}>
-                  {i18n.getMessage('crudEditor.search.result.label')}
-                </Button>
+                { crudOperations.view &&
+                  <Button bsStyle='link' onClick={exitView}>
+                    {i18n.getMessage('crudEditor.search.result.label')}
+                  </Button>
+                }
                 {arrowLeft}
                 {arrowRight}
               </ButtonGroup>

@@ -74,8 +74,10 @@ export const
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
-    ui: uiMeta
+    ui: uiMeta,
+    permissions
   }) => ({
+    permissions,
     Spinner: uiMeta.Spinner,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,

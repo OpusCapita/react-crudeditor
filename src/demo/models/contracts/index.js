@@ -325,6 +325,14 @@ export default {
       return true;
     }
   },
+  permissions: {
+    crudOperations: {
+      create: true,
+      edit: true,
+      delete: true,
+      view: true
+    }
+  },
   api,
   ui: {
     search: _ => ({

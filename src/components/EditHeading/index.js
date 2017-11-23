@@ -6,8 +6,7 @@ import {
   NavItem,
   Col,
   Row,
-  ButtonGroup,
-  Button
+  ButtonGroup
 } from 'react-bootstrap';
 import makeButtonWithConfirm from './buttonWithConfirm';
 import { getModelMessage } from '../lib';
@@ -85,9 +84,9 @@ export default class EditHeading extends PureComponent {
         <Row>
           <Col xs={8}>
             {title}
-            {(instanceLabel || this.props.model.data.viewName === VIEW_CREATE) && ' / '}
+            {(instanceLabel || viewName === VIEW_CREATE) && ' / '}
             {
-              this.props.model.data.viewName === VIEW_CREATE ?
+              viewName === VIEW_CREATE ?
                 i18n.getMessage('crudEditor.new.title') :
                 instanceLabel && <small>{instanceLabel}</small>
             }

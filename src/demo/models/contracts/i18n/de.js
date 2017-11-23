@@ -1,5 +1,5 @@
 export default {
-  "model.name": "Kontrakt",
+  "model.name": "Kontrakte",
 
   "model.tab.additional": "Zusätzlich",
 

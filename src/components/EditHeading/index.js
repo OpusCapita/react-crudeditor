@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-
 import {
   Nav,
   NavItem,
@@ -12,6 +11,7 @@ import {
 } from 'react-bootstrap';
 import makeButtonWithConfirm from './buttonWithConfirm';
 import { getModelMessage } from '../lib';
+import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -52,10 +52,11 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const title = i18n.getMessage(
-      `crudEditor.${viewName.toLowerCase()}.header`,
-      { modelName: getModelMessage(i18n, 'model.name') }
-    )
+    const title = (crudOperations.view ?
+      (<a style={{ cursor: 'pointer' }} onClick={exitView}>
+        {getModelMessage(i18n, 'model.name')}
+      </a>) :
+      getModelMessage(i18n, 'model.name'));
 
     // compare persistent and form instances to decide weither to show confirm box or not
     const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
@@ -84,20 +85,16 @@ export default class EditHeading extends PureComponent {
         <Row>
           <Col xs={8}>
             {title}
-            &nbsp;
-            {instanceLabel && <small>{instanceLabel}</small>}
+            {(instanceLabel || this.props.model.data.viewName === VIEW_CREATE) && ' / '}
+            {
+              this.props.model.data.viewName === VIEW_CREATE ?
+                i18n.getMessage('crudEditor.new.title') :
+                instanceLabel && <small>{instanceLabel}</small>
+            }
           </Col>
           <Col xs={4}>
             <div style={{ float: "right" }}>
-              <ButtonGroup>
-                { crudOperations.view &&
-                  <Button bsStyle='link' onClick={exitView}>
-                    {i18n.getMessage('crudEditor.search.result.label')}
-                  </Button>
-                }
-                {arrowLeft}
-                {arrowRight}
-              </ButtonGroup>
+              <ButtonGroup>{arrowLeft}{arrowRight}</ButtonGroup>
             </div>
           </Col>
         </Row>

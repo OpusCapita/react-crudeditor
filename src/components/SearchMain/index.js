@@ -63,8 +63,8 @@ export default class SearchMain extends PureComponent {
             </Col>
             <Col xs={4}>
               <div style={{ float: "right" }}>
-              {
-                canCreate &&
+                {
+                  canCreate &&
                 <button
                   type="button"
                   className="btn btn-sm btn-primary"
@@ -72,7 +72,7 @@ export default class SearchMain extends PureComponent {
                 >
                   {i18n.getMessage('crudEditor.create.button')}
                 </button>
-              }
+                }
               </div>
             </Col>
           </Row>

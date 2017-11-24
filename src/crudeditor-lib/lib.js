@@ -16,11 +16,20 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-function validateModelDefinition(modelDefinition) {
-  const modelPropTypes = {
-    model: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      fields: PropTypes.objectOf(PropTypes.shape({
+// https://stackoverflow.com/a/31169012
+const allPropTypes = (...types) => (...args) => {
+  const errors = types.map((type) => type(...args)).filter(Boolean);
+  if (errors.length === 0) {
+    return
+  };
+  return new Error(errors.map((e) => e.message).join('\n'));
+};
+
+const modelPropTypes = {
+  model: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    fields: allPropTypes(
+      PropTypes.objectOf(PropTypes.shape({
         unique: PropTypes.bool,
         type: PropTypes.string,
         constraints: PropTypes.shape({
@@ -39,48 +48,10 @@ function validateModelDefinition(modelDefinition) {
           validate: PropTypes.func
         })
       })).isRequired,
-      validate: PropTypes.func.isRequired
-    }).isRequired,
-    permissions: PropTypes.shape({
-      crudOperations: PropTypes.shape({
-        create: PropTypes.bool,
-        edit: PropTypes.bool,
-        delete: PropTypes.bool,
-        view: PropTypes.bool
-      }).isRequired
-    }).isRequired,
-    api: PropTypes.shape({
-      get: PropTypes.func.isRequired,
-      search: PropTypes.func.isRequired,
-      delete: PropTypes.func.isRequired,
-      create: PropTypes.func.isRequired,
-      update: PropTypes.func.isRequired
-    }).isRequired,
-    ui: PropTypes.shape({
-      Spinner: PropTypes.func,
-      search: PropTypes.func,
-      instanceLabel: PropTypes.func,
-      create: PropTypes.shape({
-        defaultNewInstance: PropTypes.func,
-        formLayout: PropTypes.func
-      }),
-      edit: PropTypes.shape({
-        formLayout: PropTypes.func
-      }),
-      show: PropTypes.shape({
-        formLayout: PropTypes.func
-      }),
-      customViews: PropTypes.objectOf(PropTypes.func),
-      operations: PropTypes.func
-    })
-  }
-
-  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
-
-  // additional custom validation
-  PropTypes.checkPropTypes({
-    model: PropTypes.shape({
-      fields: (props, propName, componentName) => {
+      (props, propName, componentName) => {
+        if (!props[propName]) {
+          return; // don't duplicate an Error because it'll be returned by 'isRequired' above
+        }
         const noUniqueFields = Object.keys(props[propName]).
           filter(fieldName => props[propName][fieldName].unique).length === 0;
 
@@ -88,9 +59,42 @@ function validateModelDefinition(modelDefinition) {
           return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
         }
       }
-    })
-  }, modelDefinition, 'property', 'React-CrudEditor Model Fields');
-}
+    ),
+    validate: PropTypes.func.isRequired
+  }).isRequired,
+  permissions: PropTypes.shape({
+    crudOperations: PropTypes.shape({
+      create: PropTypes.bool,
+      edit: PropTypes.bool,
+      delete: PropTypes.bool,
+      view: PropTypes.bool
+    }).isRequired
+  }).isRequired,
+  api: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired,
+    delete: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired
+  }).isRequired,
+  ui: PropTypes.shape({
+    Spinner: PropTypes.func,
+    search: PropTypes.func,
+    instanceLabel: PropTypes.func,
+    create: PropTypes.shape({
+      defaultNewInstance: PropTypes.func,
+      formLayout: PropTypes.func
+    }),
+    edit: PropTypes.shape({
+      formLayout: PropTypes.func
+    }),
+    show: PropTypes.shape({
+      formLayout: PropTypes.func
+    }),
+    customViews: PropTypes.objectOf(PropTypes.func),
+    operations: PropTypes.func
+  })
+};
 
 export const storeState2appState = (storeState, modelDefinition) => {
   const getViewState = {
@@ -119,12 +123,12 @@ export function getPrefixedTranslations(translations, prefix) {
     }), {})
 }
 
+// Filling modelDefinition with default values where necessary.
 export function fillDefaults(baseModelDefinition) {
-  // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
 
-  // throws in case of failed validation; silent otherwise
-  validateModelDefinition(modelDefinition);
+  // validate modelDefinition using 'prop-types'
+  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
 
   const fieldsMeta = modelDefinition.model.fields;
 

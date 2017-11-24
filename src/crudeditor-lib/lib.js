@@ -21,7 +21,8 @@ const allPropTypes = (...types) => (...args) => {
   const errors = types.map((type) => type(...args)).filter(Boolean);
   if (errors.length === 0) {
     return
-  };
+  }
+  // eslint-disable-next-line consistent-return
   return new Error(errors.map((e) => e.message).join('\n'));
 };
 
@@ -56,6 +57,7 @@ const modelPropTypes = {
           filter(fieldName => props[propName][fieldName].unique).length === 0;
 
         if (noUniqueFields) {
+          // eslint-disable-next-line consistent-return
           return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
         }
       }

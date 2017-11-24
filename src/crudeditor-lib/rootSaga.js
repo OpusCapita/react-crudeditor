@@ -21,7 +21,7 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-const isStandardView = viewName => ~[VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName);
+const isStandardView = viewName => [VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName) > -1;
 
 export default function*(modelDefinition) {
   const { crudOperations } = modelDefinition.permissions;

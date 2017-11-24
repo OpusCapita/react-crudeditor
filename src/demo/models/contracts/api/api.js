@@ -84,7 +84,7 @@ const isRangeObject = obj =>
   (obj => {
     const keys = Object.keys(obj);
     return (keys.length === 1 || keys.length === 2) &&
-      (~keys.indexOf('from') || ~keys.indexOf('to'))
+      (keys.indexOf('from') > -1 || keys.indexOf('to') > -1)
   })(obj);
 
 export const
@@ -218,7 +218,7 @@ export const
                 false;
               return rez && match
               // TODO add [] search
-            } else if (~[FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType)) {
+            } else if ([FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType) > -1) {
               const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {

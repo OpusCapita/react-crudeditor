@@ -39,8 +39,6 @@ class EditTab extends React.PureComponent {
       } = {}
     } = this.props;
 
-    console.log(this.props.model)
-
     const { i18n } = this.context;
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));

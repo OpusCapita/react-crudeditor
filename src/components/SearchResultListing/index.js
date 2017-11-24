@@ -18,7 +18,8 @@ class SearchResultListing extends PureComponent {
         isLoading: PropTypes.bool,
         permissions: PropTypes.shape({
           crudOperations: PropTypes.object.isRequired
-        })
+        }),
+        operations: PropTypes.func
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired

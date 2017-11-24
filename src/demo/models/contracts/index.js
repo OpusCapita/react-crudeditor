@@ -6,7 +6,6 @@ import CustomSpinner from './components/CustomSpinner';
 import ContractReferenceSearch from './components/ContractReferenceSearch';
 import CustomTabComponent from './components/CustomTabComponent';
 
-const VIEW_SEARCH = 'search';
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';

@@ -55,8 +55,8 @@ export default class SearchResultButtons extends PureComponent {
     }
 
     // FIXME: check whether there are unsaved changes before calling operation handler.
+    // >> needed only on EDIT view
 
-    // FIXME: remove Glyphicon if no operation.icon and correct getMessage() argument
     if (operations.length === 1) {
       const { name, icon, handler } = operations[0];
 
@@ -68,11 +68,6 @@ export default class SearchResultButtons extends PureComponent {
         </Button>
       );
     } else if (operations.length > 1) {
-      // FIXME: set correct unique id.
-      // FIXME: figure out whether onClick/onSelect for SplitButton/MenuItem must be used.
-      // FIXME: figure out whether eventKey should be used.
-      // FIXME: add Glyphicon if operation.icon and correct getMessage() argument.
-
       buttons.push(
         <SplitButton
           title={getModelMessage(i18n, `model.label.${operations[0].name}`, operations[0].name)}

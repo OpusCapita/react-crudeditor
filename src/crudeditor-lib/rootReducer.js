@@ -15,13 +15,19 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-export default modelDefinition => combineReducers({
-  common: common(modelDefinition),
-  views: combineReducers({
-    [VIEW_SEARCH]: search(modelDefinition),
-    [VIEW_CREATE]: create(modelDefinition),
-    [VIEW_EDIT]: edit(modelDefinition),
-    [VIEW_SHOW]: show(modelDefinition),
+export default modelDefinition => {
+  const { crudOperations } = modelDefinition.permissions;
+
+  const viewReducers = {
+    ...(crudOperations.view ? { [VIEW_SEARCH]: search(modelDefinition) } : null),
+    ...(crudOperations.create ? { [VIEW_CREATE]: create(modelDefinition) } : null),
+    ...(crudOperations.edit ? { [VIEW_EDIT]: edit(modelDefinition) } : null),
+    ...(crudOperations.view ? { [VIEW_SHOW]: show(modelDefinition) } : null),
     [VIEW_ERROR]: error(modelDefinition)
-  })
-});
+  }
+
+  return combineReducers({
+    common: common(modelDefinition),
+    views: combineReducers(viewReducers)
+  });
+}

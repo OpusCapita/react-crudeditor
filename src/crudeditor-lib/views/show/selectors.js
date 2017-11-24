@@ -26,8 +26,10 @@ export const
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
-    ui: { Spinner }
+    ui: { Spinner },
+    permissions
   }) => ({
+    permissions,
     Spinner,
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
@@ -36,11 +38,11 @@ export const
     fieldsMeta: modelMeta.fields,
     flags: storeState.flags,
     instanceLabel: storeState.instanceLabel,
-    isLoading: !!~[
+    isLoading: [
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
       STATUS_EXTRACTING
-    ].indexOf(storeState.status),
+    ].indexOf(storeState.status) > -1,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

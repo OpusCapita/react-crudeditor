@@ -12,24 +12,7 @@ import {
 } from '../../crudeditor-lib/common/constants';
 
 class EditTab extends React.PureComponent {
-  handleSubmit = e => {
-    e.preventDefault();
-
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
-      this.props.model.actions.saveInstance();
-    }
-  }
-
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
-
-  handleSaveAndNew = _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(true);
-    }
-
-    this.props.model.actions.saveAndNewInstance()
-  }
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
@@ -44,22 +27,33 @@ class EditTab extends React.PureComponent {
         data: {
           viewName,
           persistentInstance,
-          formInstance
+          formInstance,
+          permissions: {
+            crudOperations
+          }
         }
-      }
+      },
+      fieldErrorsWrapper: {
+        handleSaveAndNew,
+        handleSubmit
+      } = {}
     } = this.props;
 
     const { i18n } = this.context;
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
-    const buttons = [
-      <Button bsStyle='link' onClick={exitView} key="Cancel">
-        {this.context.i18n.getMessage('crudEditor.cancel.button')}
-      </Button>
-    ];
+    const buttons = [];
 
-    if (viewName === VIEW_EDIT) {
+    if (crudOperations.view) {
+      buttons.push(
+        <Button bsStyle='link' onClick={exitView} key="Cancel">
+          {this.context.i18n.getMessage('crudEditor.cancel.button')}
+        </Button>
+      )
+    }
+
+    if (viewName === VIEW_EDIT && crudOperations.delete) {
       buttons.push(
         <ConfirmDialog
           trigger='click'
@@ -75,17 +69,17 @@ class EditTab extends React.PureComponent {
       )
     }
 
-    if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
+    if ([VIEW_EDIT, VIEW_SHOW].indexOf(viewName) > -1) {
       buttons.push(
         <Button disabled={true} key="Revisions">
           {i18n.getMessage('crudEditor.revisions.button')}
         </Button>)
     }
 
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && crudOperations.create) {
       buttons.push(
         <Button
-          onClick={this.handleSaveAndNew}
+          onClick={handleSaveAndNew}
           disabled={disableSave}
           key="Save and New"
         >
@@ -104,7 +98,7 @@ class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1) {
       buttons.push(
         <Button
           disabled={disableSave}
@@ -117,7 +111,7 @@ class EditTab extends React.PureComponent {
     }
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit}>
+      <Form horizontal={true} onSubmit={handleSubmit}>
         <Col sm={12}>
           { sectionsAndFields }
         </Col>
@@ -141,7 +135,7 @@ EditTab.propTypes = {
     }),
     actions: PropTypes.objectOf(PropTypes.func)
   }).isRequired,
-  fieldErrorsWrapper: PropTypes.object
+  fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
 }
 
 EditTab.contextTypes = {

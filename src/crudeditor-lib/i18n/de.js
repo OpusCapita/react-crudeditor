@@ -2,6 +2,7 @@ import exceptions from './exceptions/de';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "Neu",
   "crudEditor.create.header": "{modelName} anlegen",
   "crudEditor.edit.header": "{modelName} bearbeiten",
   "crudEditor.show.header": "{modelName} ansehen",
@@ -32,7 +33,7 @@ const common = {
   "crudEditor.objectUpdated.message": "Objekt aktualisiert.",
   "crudEditor.objectSaveFailed.message": "Speichern von Objekten fehlgeschlagen.",
   "crudEditor.objectDeleted.message": "Objekt gelöscht.",
-  "crudEditor.objectsDeleted.message": "Objekte {0} gelöscht.",
+  "crudEditor.objectsDeleted.message": "Objekte {labels} gelöscht.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Aus Sicherheitsgründen lassen sich einige Objekte nicht löschen.",
   "crudEditor.objectDeleteFailed.message": "Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.",
   "crudEditor.objectsDeleteFailed.message": "Objekte {0} konnten nicht gelöscht werden, vielleicht sind sie bereits im Einsatz.",
@@ -44,8 +45,8 @@ const common = {
   "crudEditor.search.resultsPerPage": "Ergebnisse pro Seite",
   "crudEditor.search.all": "Alles",
   "crudEditor.found.items.message": "{count} Datens\u00E4tze gefunden",
-  "crudEditor.dateRange.from": "von",
-  "crudEditor.dateRange.to": "bis",
+  "crudEditor.range.from": "von",
+  "crudEditor.range.to": "bis",
   "crudEditor.confirm.action": "Bestätigen"
 }
 /* eslint-enable max-len */

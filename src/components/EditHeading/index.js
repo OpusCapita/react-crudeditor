@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-
 import {
   Nav,
   NavItem,
   Col,
   Row,
-  ButtonGroup,
-  Button
+  ButtonGroup
 } from 'react-bootstrap';
 import makeButtonWithConfirm from './buttonWithConfirm';
 import { getModelMessage } from '../lib';
+import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -36,7 +35,10 @@ export default class EditHeading extends PureComponent {
           tabs,
           viewName,
           persistentInstance,
-          formInstance
+          formInstance,
+          permissions: {
+            crudOperations
+          }
         },
         actions: {
           selectTab,
@@ -49,10 +51,11 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const title = i18n.getMessage(
-      `crudEditor.${viewName.toLowerCase()}.header`,
-      { modelName: getModelMessage(i18n, 'model.name') }
-    )
+    const title = (crudOperations.view ?
+      (<a style={{ cursor: 'pointer' }} onClick={exitView}>
+        {getModelMessage(i18n, 'model.name')}
+      </a>) :
+      getModelMessage(i18n, 'model.name'));
 
     // compare persistent and form instances to decide weither to show confirm box or not
     const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
@@ -76,32 +79,28 @@ export default class EditHeading extends PureComponent {
       showDialog
     });
 
-    return (<div style={{ marginBottom: '15px' }}>
+    return (<div style={{ marginBottom: '10px' }}>
       <h1>
         <Row>
           <Col xs={8}>
             {title}
-            &nbsp;
-            {instanceLabel && <small>{instanceLabel}</small>}
+            {
+              (instanceLabel || viewName === VIEW_CREATE) &&
+              <small>
+                {' / ' + (viewName === VIEW_CREATE ? i18n.getMessage('crudEditor.new.title') : instanceLabel)}
+              </small>
+            }
           </Col>
           <Col xs={4}>
             <div style={{ float: "right" }}>
-              <ButtonGroup>
-                <Button bsStyle='link' onClick={exitView}>
-                  {i18n.getMessage('crudEditor.search.result.label')}
-                </Button>
-                {arrowLeft}
-                {arrowRight}
-              </ButtonGroup>
+              <ButtonGroup>{arrowLeft}{arrowRight}</ButtonGroup>
             </div>
           </Col>
         </Row>
       </h1>
 
-
-      <br />
       {
-        tabs.length !== 0 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+        tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
           {
             tabs.map(({ tab: name, disabled }, index) =>
               (<NavItem eventKey={name} disabled={!!disabled} key={index}>

@@ -81,11 +81,11 @@ const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
 }) => _ => Object.keys(fieldsMeta).
-  filter(name => ~[VIEW_SHOW, VIEW_EDIT].indexOf(viewName) || AUDITABLE_FIELDS.indexOf(name) === -1).
+  filter(name => [VIEW_SHOW, VIEW_EDIT].indexOf(viewName) > -1 || AUDITABLE_FIELDS.indexOf(name) === -1).
   map(name => ({
     field: name,
     readOnly: viewName === VIEW_EDIT && (
-      !!~AUDITABLE_FIELDS.indexOf(name) || // Audiatable fields are read-only in Edit View.
+      AUDITABLE_FIELDS.indexOf(name) > -1 || // Audiatable fields are read-only in Edit View.
         fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
     ),
     render: buildFieldRender({
@@ -157,10 +157,6 @@ export const buildFormLayout = ({ customBuilder, viewName, fieldsMeta }) => cust
 
 export const getLogicalKeyBuilder = fieldsMeta => {
   const logicalKeyFields = Object.keys(fieldsMeta).filter(fieldName => fieldsMeta[fieldName].unique);
-
-  if (logicalKeyFields.length === 0) {
-    throw new Error('Model should have at least one unique field');
-  }
 
   return instance => logicalKeyFields.reduce(
     (rez, fieldName) => ({

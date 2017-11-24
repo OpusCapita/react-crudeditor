@@ -23,7 +23,6 @@ import {
 const appName = 'crudEditor';
 
 export default baseModelDefinition => {
-  // TODO check baseModelDefinition validity
   const modelDefinition = fillDefaults(baseModelDefinition);
   const prefix = `${appName}.${base64.encode(modelDefinition.model.name)}`;
   let onTransition = null;
@@ -81,7 +80,7 @@ export default baseModelDefinition => {
             onTransition,
             modelDefinition
           }),
-          notificationsMiddleware(this.context),
+          notificationsMiddleware({ context: this.context, modelDefinition }),
           sagaMiddleware
         ))
       );

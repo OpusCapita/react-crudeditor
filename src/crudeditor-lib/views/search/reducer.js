@@ -409,7 +409,7 @@ export default modelDefinition => {
                 }
               }
               if (
-                ~Object.keys(errors.fields[fieldName]).indexOf(path[1]) &&
+                Object.keys(errors.fields[fieldName]).indexOf(path[1]) > -1 &&
                 Object.keys(errors.fields[fieldName]).length === 1
               ) {
                 // delete the field if it is an empty object now

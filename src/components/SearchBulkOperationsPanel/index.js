@@ -1,46 +1,58 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 import './SearchBulkOperationsPanel.less';
 
-class SearchBulkOperationsPanel extends React.PureComponent {
+export default class SearchBulkOperationsPanel extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        selectedInstances: PropTypes.array,
+        permissions: PropTypes.shape({
+          crudOperations: PropTypes.shape({
+            delete: PropTypes.bool.isRequired
+          })
+        })
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
 
-  render = _ =>
-    (<div className='crud---search-bulk-operations-panel'>
-      <div>
-        <ConfirmDialog
-          trigger='click'
-          title='Delete confirmation'
-          onConfirm={this.handleDelete}
-          message={this.context.i18n.getMessage('crudEditor.deleteSelected.confirmation')}
-          textConfirm={this.context.i18n.getMessage('crudEditor.delete.button')}
-          textCancel={this.context.i18n.getMessage('crudEditor.cancel.button')}
-        >
-          <Button bsSize='sm' disabled={this.props.model.data.selectedInstances.length === 0}>
-            {this.context.i18n.getMessage('crudEditor.deleteSelected.button')}
-          </Button>
-        </ConfirmDialog>
+  render() {
+    const { i18n } = this.context;
+    const canDelete = this.props.model.data.permissions.crudOperations.delete;
+
+    return (
+      <div className='crud---search-bulk-operations-panel'>
+        {
+          canDelete && (<div>
+            <ConfirmDialog
+              trigger='click'
+              title='Delete confirmation'
+              onConfirm={this.handleDelete}
+              message={i18n.getMessage('crudEditor.deleteSelected.confirmation')}
+              textConfirm={i18n.getMessage('crudEditor.delete.button')}
+              textCancel={i18n.getMessage('crudEditor.cancel.button')}
+            >
+              <Button bsSize='sm' disabled={this.props.model.data.selectedInstances.length === 0}>
+                {i18n.getMessage('crudEditor.deleteSelected.button')}
+              </Button>
+            </ConfirmDialog>
+          </div>)
+        }
+        <div>
+          {/* export menu here*/}
+        </div>
       </div>
-      <div>
-        {/* export menu here*/}
-      </div>
-    </div>)
+    )
+  }
 }
 
-SearchBulkOperationsPanel.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      selectedInstances: PropTypes.array
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-SearchBulkOperationsPanel.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default SearchBulkOperationsPanel;

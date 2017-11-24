@@ -91,7 +91,7 @@ Table of Content
   </dd>
   <dt id="ui-type">UI Type</dt>
   <dd>
-    Type a field value must be converted to/from for communication with React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>UI Type</i> before sending to a React Component, and parsed from the <i>UI Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
+    Value conversion is necessary for communication with a React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>UI Type</i> before sending to a React Component, and parsed from the <i>UI Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
     <br/>
     <br/>
     <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
@@ -297,7 +297,12 @@ Model Definition is an object describing an entity. It has the following structu
      */
     fields: {
       <field name>: {
+
+        /*
+         * At least one field must have "unique" property set to true.
+         */
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
+        
         ?type: <string, field type (see corresponding "Terminology" section)>,  // TODO more types and their constraints.
 
         /*
@@ -342,6 +347,15 @@ Model Definition is an object describing an entity. It has the following structu
       throw [<Instance Validation Error>, ...];
       ...
       return true;
+    }
+  },
+  
+  permissions: {
+    crudOperations: {
+      ?create: <boolean, false by default>,
+      ?edit: <boolean, false by default>,
+      ?delete: <boolean, false by default>,
+      ?view: <boolean, false by default>
     }
   },
 
@@ -468,7 +482,7 @@ Model Definition is an object describing an entity. It has the following structu
            *
            *   valueProp: {
            *     name: "value",
-           *     type: "string"
+           *     type: <string, UI Type peculiar to the Component>
            *   }
            * }
            */
@@ -476,7 +490,12 @@ Model Definition is an object describing an entity. It has the following structu
             Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
             ?valueProp: {
               ?name: <string, a name of Component prop with field value>,
-              ?type: <string, UI Type (see corresponding "Terminology" section)>
+              
+              /*
+               * When omitted, UI Type is considered to be unknown
+               * and unconverted field value is sent to the Component (i.e. of Field Type).
+               */
+              ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
             }
           }
         }, ...],
@@ -546,7 +565,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: <function, FieldInputComponent>,
                   ?valueProp: {
                     ?name: <string, a name of Component's prop with field value, "value" by default>,
-                    ?type: <string, UI Type (see corresponding "Terminology" section)>
+                    ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -558,7 +577,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
                     ?name: <string, a name of Component prop with field value, "value" by default>,
-                    ?type: <string, UI Type (see corresponding "Terminology" section)>
+                    ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -571,7 +590,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, UI Type (see corresponding "Terminology" section)>
+                  ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -585,7 +604,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, UI Type (see corresponding "Terminology" section)>
+                  ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -598,7 +617,7 @@ Model Definition is an object describing an entity. It has the following structu
               Component: <function, FieldInputComponent>,
               ?valueProp: {
                 ?name: <string, a name of Component's prop with field value, "value" by default>,
-                ?type: <string, UI Type (see corresponding "Terminology" section)>
+                ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
               }
             }
           }),
@@ -631,7 +650,10 @@ Model Definition is an object describing an entity. It has the following structu
      * Handlers are provided for Custom Operations only.
      * TODO
      */
-    ?operations: function(<object, entity instance>, <string, View Name>) {
+    ?operations: function(<object, entity instance>, {
+      name: <string, View name>,  // See EditorComponent props.view.name
+      state: <object, Full View State>  // See EditorComponent props.view.state
+    }) {
       ...
       return [{
         name: <string, operation ID>,

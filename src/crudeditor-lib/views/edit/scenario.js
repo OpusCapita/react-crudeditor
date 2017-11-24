@@ -52,7 +52,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
       yield cancel(lastTask);
     }
 
-    if (~Object.keys(choices.blocking).indexOf(action.type)) {
+    if (Object.keys(choices.blocking).indexOf(action.type) > -1) {
       try {
         yield call(choices.blocking[action.type], {
           modelDefinition,
@@ -69,7 +69,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
           throw err;
         }
       }
-    } else if (~Object.keys(choices.nonBlocking).indexOf(action.type)) {
+    } else if (Object.keys(choices.nonBlocking).indexOf(action.type) > -1) {
       lastTask = yield fork(function*() {
         try {
           yield call(choices.nonBlocking[action.type], {

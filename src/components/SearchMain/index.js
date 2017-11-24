@@ -11,7 +11,22 @@ import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
 import './SearchMain.less';
 
-class SearchMain extends PureComponent {
+export default class SearchMain extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      actions: PropTypes.objectOf(PropTypes.func),
+      data: PropTypes.shape({
+        permissions: PropTypes.shape({
+          crudOperations: PropTypes.object.isRequired
+        })
+      })
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handleCreate = (e) => {
     this.props.model.actions.createInstance();
   }
@@ -27,24 +42,29 @@ class SearchMain extends PureComponent {
       }
     } = model;
     const { i18n } = this.context;
-    console.log(hideSearchForm)
+
+    const canCreate = model.data.permissions.crudOperations.create;
 
     return (
       <div className="crud--search-main">
         <h1>
           <Row>
             <Col xs={8}>
+
+              {getModelMessage(i18n, 'model.name')}
+
               <Button
                 bsStyle="link"
-                style={{ margin: '0 16px' }}
                 onClick={toggleSearchForm}
+                title={`${hideSearchForm ? 'Show' : 'Hide'} search form`}
               >
-                <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`}/>
+                <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>
               </Button>
-              {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
             </Col>
             <Col xs={4}>
               <div style={{ float: "right" }}>
+              {
+                canCreate &&
                 <button
                   type="button"
                   className="btn btn-sm btn-primary"
@@ -52,6 +72,7 @@ class SearchMain extends PureComponent {
                 >
                   {i18n.getMessage('crudEditor.create.button')}
                 </button>
+              }
               </div>
             </Col>
           </Row>
@@ -78,15 +99,3 @@ class SearchMain extends PureComponent {
     );
   }
 }
-
-SearchMain.propTypes = {
-  model: PropTypes.shape({
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-SearchMain.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default SearchMain;

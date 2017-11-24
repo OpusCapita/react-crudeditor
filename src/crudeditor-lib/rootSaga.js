@@ -10,6 +10,7 @@ import {
   ACTIVE_VIEW_CHANGE,
   DEFAULT_VIEW,
   ERROR_UNKNOWN_VIEW,
+  ERROR_FORBIDDEN_VIEW,
 
   VIEW_HARD_REDIRECT,
 
@@ -20,17 +21,21 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-let activeViewScenarioTask;
-
-const initializeViewSagas = {
-  [VIEW_SEARCH]: searchViewScenario,
-  [VIEW_CREATE]: createViewScenario,
-  [VIEW_EDIT]: editViewScenario,
-  [VIEW_SHOW]: showViewScenario,
-  [VIEW_ERROR]: errorViewScenario
-};
+const isStandardView = viewName => [VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName) > -1;
 
 export default function*(modelDefinition) {
+  const { crudOperations } = modelDefinition.permissions;
+
+  const initializeViewSagas = {
+    ...(crudOperations.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
+    ...(crudOperations.create ? { [VIEW_CREATE]: createViewScenario } : null),
+    ...(crudOperations.edit ? { [VIEW_EDIT]: editViewScenario } : null),
+    ...(crudOperations.view ? { [VIEW_SHOW]: showViewScenario } : null),
+    [VIEW_ERROR]: errorViewScenario
+  };
+
+  let activeViewScenarioTask;
+
   /*
    * The saga handles an active view request for replacements with another view.
    *
@@ -43,6 +48,9 @@ export default function*(modelDefinition) {
     const initializeViewSaga = initializeViewSagas[viewName];
 
     if (!initializeViewSaga) {
+      if (isStandardView(viewName)) {
+        throw ERROR_FORBIDDEN_VIEW(viewName);
+      }
       throw ERROR_UNKNOWN_VIEW(viewName);
     }
 
@@ -88,7 +96,9 @@ export default function*(modelDefinition) {
 
     if (!initializeViewSaga) {
       initializeViewSaga = errorViewScenario;
-      viewState = ERROR_UNKNOWN_VIEW(viewName);
+      viewState = isStandardView(viewName) ?
+        ERROR_FORBIDDEN_VIEW(viewName) :
+        ERROR_UNKNOWN_VIEW(viewName);
       viewName = VIEW_ERROR;
     }
 

@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual';
+
 import cloneDeep from 'lodash/cloneDeep';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 
@@ -74,20 +74,21 @@ export const
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
-    ui: uiMeta
+    ui: uiMeta,
+    permissions
   }) => ({
+    permissions,
     Spinner: uiMeta.Spinner,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
-    searchFormChanged: !isEqual(storeState.formFilter, storeState.resultFilter),
-    isLoading: !!~[
+    isLoading: [
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
       STATUS_SEARCHING
-    ].indexOf(storeState.status),
+    ].indexOf(storeState.status) > -1,
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

@@ -6,19 +6,6 @@ import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
 class EditField extends Component {
-  handleChange = value => {
-    if (this.props.fieldErrorsWrapper) {
-      this.props.fieldErrorsWrapper.toggleFieldErrors(this.props.entry.name, false)
-    }
-
-    return this.props.model.actions.changeInstanceField ?
-      this.props.model.actions.changeInstanceField({
-        name: this.props.entry.name,
-        value
-      }) :
-      null;
-  }
-
   render() {
     const {
       entry: {
@@ -30,16 +17,17 @@ class EditField extends Component {
       model: {
         data: {
           fieldsMeta,
-          fieldErrors,
           formatedInstance: instance
         }
       },
       fieldErrorsWrapper: {
-        shouldShowErrors,
-        toggleFieldErrors
+        handleChange,
+        handleBlur,
+        fieldErrors
       } = {
-        shouldShowErrors: _ => false,
-        toggleFieldErrors: _ => {}
+        handleChange: _ => {},
+        handleBlur: _ => {},
+        fieldErrors: _ => []
       },
       columns
     } = this.props;
@@ -50,16 +38,14 @@ class EditField extends Component {
       id: fieldName,
       readOnly,
       [valuePropName]: instance[fieldName],
-      onBlur: _ => toggleFieldErrors(fieldName, true),
-      onChange: this.handleChange
+      onBlur: handleBlur(fieldName),
+      onChange: handleChange(fieldName)
     }
-
-    const showErrors = shouldShowErrors(fieldName)
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={showErrors ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={fieldErrors(fieldName).length ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -67,10 +53,7 @@ class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel
-            errors={showErrors ? fieldErrors[fieldName] : []}
-            show={showErrors}
-          />
+          <FieldErrorLabel errors={fieldErrors(fieldName)}/>
         </Col>
       </FormGroup>
     );
@@ -85,7 +68,9 @@ EditField.propTypes = {
     name: PropTypes.string.isRequired
   }),
   fieldErrorsWrapper: PropTypes.shape({
-    toggleFieldErrors: PropTypes.func
+    handleChange: PropTypes.func,
+    handleBlur: PropTypes.func,
+    fieldErrors: PropTypes.func
   }),
   columns: PropTypes.number
 }

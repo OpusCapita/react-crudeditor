@@ -492,8 +492,8 @@ Model Definition is an object describing an entity. It has the following structu
               ?name: <string, a name of Component prop with field value>,
               
               /*
-               * When omitted, UI Type is considered to be unknown and unconverted field value
-               * is sent to the Component (i.e. of Field Type).
+               * When omitted, UI Type is considered to be unknown
+               * and unconverted field value is sent to the Component (i.e. of Field Type).
                */
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
             }

@@ -30,32 +30,36 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewModelData = wrapper((storeState, {
-    model: modelMeta,
-    ui: { Spinner },
-    permissions
-  }) => ({
-    permissions,
-    Spinner,
-    activeEntries: storeState.activeTab || storeState.formLayout,
-    activeTab: storeState.activeTab,
-    entityName: modelMeta.name,
-    formatedInstance: storeState.formatedInstance,
-    formInstance: storeState.formInstance,
-    fieldErrors: storeState.errors.fields,
-    fieldsMeta: modelMeta.fields,
-    instanceLabel: storeState.instanceLabel,
-    flags: storeState.flags,
-    isLoading: [
-      STATUS_EXTRACTING,
-      STATUS_DELETING,
-      STATUS_INITIALIZING,
-      STATUS_REDIRECTING,
-      STATUS_UPDATING
-    ].indexOf(storeState.status) > -1,
-    persistentInstance: storeState.persistentInstance,
-    tabs: storeState.formLayout.filter(({ tab }) => tab),
-    status: storeState.status,
-    viewName: VIEW_NAME,
-    viewState: _getViewState(storeState, modelDefinition)
-  }));
+  getViewModelData = wrapper((storeState, modelDefinition) => {
+    const {
+      model: modelMeta,
+      ui: { Spinner },
+      permissions
+    } = modelDefinition;
+
+    return {
+      permissions,
+      Spinner,
+      activeEntries: storeState.activeTab || storeState.formLayout,
+      activeTab: storeState.activeTab,
+      entityName: modelMeta.name,
+      formatedInstance: storeState.formatedInstance,
+      formInstance: storeState.formInstance,
+      fieldErrors: storeState.errors.fields,
+      fieldsMeta: modelMeta.fields,
+      instanceLabel: storeState.instanceLabel,
+      flags: storeState.flags,
+      isLoading: [
+        STATUS_EXTRACTING,
+        STATUS_DELETING,
+        STATUS_INITIALIZING,
+        STATUS_REDIRECTING,
+        STATUS_UPDATING
+      ].indexOf(storeState.status) > -1,
+      persistentInstance: storeState.persistentInstance,
+      tabs: storeState.formLayout.filter(({ tab }) => tab),
+      status: storeState.status,
+      viewName: VIEW_NAME,
+      viewState: _getViewState(storeState, modelDefinition)
+    }
+  });

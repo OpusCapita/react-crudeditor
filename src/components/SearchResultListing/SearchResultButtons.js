@@ -1,7 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon, Button, ButtonGroup, SplitButton, MenuItem } from 'react-bootstrap';
+import {
+  Glyphicon,
+  Button,
+  ButtonGroup,
+  SplitButton,
+  MenuItem
+} from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
+import { getModelMessage } from '../lib';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
@@ -50,12 +57,14 @@ export default class SearchResultButtons extends PureComponent {
     // FIXME: check whether there are unsaved changes before calling operation handler.
 
     // FIXME: remove Glyphicon if no operation.icon and correct getMessage() argument
-    if (operations.length) {
+    if (operations.length === 1) {
+      const { name, icon, handler } = operations[0];
+
       buttons.push(
-        <Button onClick={operations[0].handler} key="operation">
-          <Glyphicon glyph={`glyphicon-${operations[0].icon}`}/>
-          {' '}
-          {operations[0].name}
+        <Button onClick={handler} key="operation">
+          {icon && <Glyphicon glyph={icon}/>}
+          {icon && ' '}
+          {getModelMessage(i18n, `model.label.${name}`, name)}
         </Button>
       );
     } else if (operations.length > 1) {
@@ -63,12 +72,25 @@ export default class SearchResultButtons extends PureComponent {
       // FIXME: figure out whether onClick/onSelect for SplitButton/MenuItem must be used.
       // FIXME: figure out whether eventKey should be used.
       // FIXME: add Glyphicon if operation.icon and correct getMessage() argument.
+
       buttons.push(
-        <SplitButton title={i18n.getMessage(operations[0].name)} pullRight={true} id="split-button-pull-right" onClick={operations[0].handler}>
+        <SplitButton
+          title={getModelMessage(i18n, `model.label.${operations[0].name}`, operations[0].name)}
+          pullRight={true}
+          id={`operations-split-${operations[0].name}`}
+          key={`operations-split-${operations[0].name}`}
+          onClick={operations[0].handler}
+          bsSize="sm"
+        >
           {
             operations.slice(1).map((operation, index) => (
-              <MenuItem eventKey={operation} key={index} onClick={operation.handler}>
-                { i18n.getMessage(operation.name) }
+              <MenuItem
+                key={index}
+                onClick={operation.handler}
+              >
+                {operation.icon && <Glyphicon glyph={operation.icon}/>}
+                {operation.icon && ' '}
+                {getModelMessage(i18n, `model.label.${operation.name}`, operation.name)}
               </MenuItem>
             ))
           }

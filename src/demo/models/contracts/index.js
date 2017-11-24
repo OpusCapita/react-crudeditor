@@ -387,12 +387,13 @@ export default {
           name: 'testLink',
           icon: 'link',
           handler: _ => {
-            window.location.href = 'https://www.opuscapita.com';
+            window.open('https://www.opuscapita.com');
           }
         }];
       } else {
         return [{
           name: 'createChild',
+          icon: 'transfer',
           handler: _ => ({
             name: VIEW_CREATE,
             state: {
@@ -405,7 +406,7 @@ export default {
           name: 'testLink',
           icon: 'link',
           handler: _ => {
-            window.location.href = 'https://www.opuscapita.com';
+            window.open('https://www.opuscapita.com');
           }
         }]
       }

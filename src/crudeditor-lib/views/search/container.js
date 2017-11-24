@@ -45,7 +45,7 @@ const mergeProps = (
                 handler: _ => {
                   const view = handler();
 
-                  if (view && view.state && Object.keys(view.state) !== 0) {
+                  if (view && view.state && Object.keys(view.state) !== 0) { // TBD why require view.state.keys.length > 0 ?
                     softRedirectView(view);
                   }
                 }

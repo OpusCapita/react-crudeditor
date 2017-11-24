@@ -22,4 +22,6 @@ export default {
   "model.field.changedBy": "Changed By",
   "model.field.usages": "usages",
   "model.field.currencyId": "currencyId",
+
+  "model.label.createChild": "Create child"
 }

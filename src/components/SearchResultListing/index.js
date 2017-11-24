@@ -138,7 +138,7 @@ class SearchResultListing extends PureComponent {
                   {
                     permissions.delete && (<td>
                       <Checkbox
-                        checked={!!~selectedInstances.indexOf(instance)}
+                        checked={selectedInstances.indexOf(instance) > -1}
                         onChange={this.handleToggleSelected(instance)}
                       />
                     </td>)

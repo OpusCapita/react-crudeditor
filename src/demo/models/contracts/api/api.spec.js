@@ -209,7 +209,7 @@ describe('Sync api functions:', () => {
 
       assert.deepEqual(
         instances,
-        getContracts().filter(c => c.description && ~c.description.indexOf(filter.description))
+        getContracts().filter(c => c.description && c.description.indexOf(filter.description) > -1)
       );
 
       assert.equal(
@@ -382,7 +382,7 @@ describe('Sync api functions:', () => {
       assert.equal(
         instances.length,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).length,
         'Different lengths after sort'
       );
@@ -390,7 +390,7 @@ describe('Sync api functions:', () => {
       assert.deepEqual(
         instances,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
         'Sort mismatch'
       )
@@ -408,14 +408,14 @@ describe('Sync api functions:', () => {
       assert.equal(
         instances.length,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).length
       );
 
       assert.deepEqual(
         instances,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
         'Sort mismatch'
       )
@@ -433,14 +433,14 @@ describe('Sync api functions:', () => {
       assert.equal(
         instances.length,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).length
       );
 
       assert.deepEqual(
         instances,
         getContracts().filter(
-          c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+          c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
         ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1).reverse(),
         "Result was not sorted properly"
       )
@@ -653,14 +653,14 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
           assert.equal(
             instances.length,
             getContracts().filter(
-              c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+              c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
             ).length
           );
 
           assert.deepEqual(
             instances,
             getContracts().filter(
-              c => c.extContractId && ~c.extContractId.indexOf(filter.extContractId)
+              c => c.extContractId && c.extContractId.indexOf(filter.extContractId) > -1
             ).sort((a, b) => (a[sort] < b[sort]) ? -1 : 1),
             "Result was not sorted properly"
           )

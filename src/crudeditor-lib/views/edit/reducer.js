@@ -144,7 +144,7 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (~[INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type)) {
+  } else if ([INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type) > -1) {
     const { instance } = payload;
 
     if (type === INSTANCE_EDIT_SUCCESS) {
@@ -212,7 +212,7 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-  } else if (~[INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) && storeState.status !== STATUS_INITIALIZING) {
+  } else if ([INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) > -1 && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████

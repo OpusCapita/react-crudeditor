@@ -85,7 +85,7 @@ const withFieldErrors = WrappedComponent => {
             Array.isArray(errors[f]) ?
               errors[f].length > 0 : // non-Range fields have error values of type Array which can be empty
               ['to', 'from'].some( // Range fields can have 'to' and/or 'from' fields with values of type Array
-                k => ~Object.keys(errors[f]).indexOf(k) &&
+                k => Object.keys(errors[f]).indexOf(k) > -1 &&
                   Array.isArray(errors[f][k]) &&
                   errors[f][k].length > 0
               )
@@ -121,7 +121,7 @@ const withFieldErrors = WrappedComponent => {
 
     handleSubmit = e => {
       e.preventDefault();
-      if (~[VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName)) {
+      if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
         this.toggleFieldErrors(true);
         this.props.model.actions.saveInstance();
       }

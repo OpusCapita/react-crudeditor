@@ -47,7 +47,7 @@ export default modelDefinition => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  if (~[VIEW_INITIALIZE, VIEW_REDIRECT_FAIL].indexOf(type)) {
+  if ([VIEW_INITIALIZE, VIEW_REDIRECT_FAIL].indexOf(type) > -1) {
     const errors = Array.isArray(payload) ? payload : [payload];
 
     newStoreStateSlice.errors = errors.map(({ code, ...rest }) => ({

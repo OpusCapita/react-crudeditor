@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import PropTypes from 'prop-types';
 
 import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
 import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
@@ -15,84 +16,80 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-function missingObjKeys(obj, requiredKeys) {
-  return requiredKeys.filter(key => Object.keys(obj).indexOf(key) === -1)
-}
-
 function validateModelDefinition(modelDefinition) {
-  const errorPrefix = 'Crud Model definition error: ';
-
-  if (typeof modelDefinition !== 'object') {
-    throw new Error(`${errorPrefix}Model definition must be an object.`)
+  const modelPropTypes = {
+    model: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      fields: PropTypes.objectOf(PropTypes.shape({
+        unique: PropTypes.bool,
+        type: PropTypes.string,
+        constraints: PropTypes.shape({
+          max: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.instanceOf(Date)
+          ]),
+          min: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.instanceOf(Date)
+          ]),
+          required: PropTypes.bool,
+          email: PropTypes.bool,
+          matches: PropTypes.instanceOf(RegExp),
+          url: PropTypes.bool,
+          validate: PropTypes.func
+        })
+      })).isRequired,
+      validate: PropTypes.func.isRequired
+    }).isRequired,
+    permissions: PropTypes.shape({
+      crudOperations: PropTypes.shape({
+        create: PropTypes.bool,
+        edit: PropTypes.bool,
+        delete: PropTypes.bool,
+        view: PropTypes.bool
+      }).isRequired
+    }).isRequired,
+    api: PropTypes.shape({
+      get: PropTypes.func.isRequired,
+      search: PropTypes.func.isRequired,
+      delete: PropTypes.func.isRequired,
+      create: PropTypes.func.isRequired,
+      update: PropTypes.func.isRequired
+    }).isRequired,
+    ui: PropTypes.shape({
+      Spinner: PropTypes.func,
+      search: PropTypes.func,
+      instanceLabel: PropTypes.func,
+      create: PropTypes.shape({
+        defaultNewInstance: PropTypes.func,
+        formLayout: PropTypes.func
+      }),
+      edit: PropTypes.shape({
+        formLayout: PropTypes.func
+      }),
+      show: PropTypes.shape({
+        formLayout: PropTypes.func
+      }),
+      customViews: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.func
+    })
   }
 
-  // TODO add required keys (custom operations, etc.) as they're implemented
-  const rootKeys = ['model', 'permissions', 'api', 'ui'];
-  const missingRootKeys = missingObjKeys(modelDefinition, rootKeys);
+  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
 
-  if (missingRootKeys.length) {
-    throw new Error(`${errorPrefix}Model definition is missing required properties: ${missingRootKeys.join(', ')}.`);
-  }
+  // additional custom validation
+  PropTypes.checkPropTypes({
+    model: PropTypes.shape({
+      fields: (props, propName, componentName) => {
+        const noUniqueFields = Object.keys(props[propName]).
+          filter(fieldName => props[propName][fieldName].unique).length === 0;
 
-  const { model, permissions, api, ui } = modelDefinition;
-
-  // MODEL
-
-  if (!model.fields || typeof model.fields !== 'object') {
-    throw new Error(`${errorPrefix}Model must contain 'fields' object.`);
-  }
-
-  const noUniqueFields = Object.keys(model.fields).
-    filter(fieldName => model.fields[fieldName].unique).
-    length === 0;
-
-  if (noUniqueFields) {
-    throw new Error(`${errorPrefix}At least one field should have property 'unique: true'.`);
-  }
-
-  if (!model.validate || typeof model.validate !== 'function') {
-    throw new Error(`${errorPrefix}Model must contain 'validate' function. Signature: (instance) => boolean.`);
-  }
-
-  // PERMISSIONS
-
-  const { crudOperations } = permissions;
-
-  if (!crudOperations) {
-    throw new Error(`
-      ${errorPrefix}'permissions' must contain 'crudOperations' object.
-      Example: ${JSON.stringify({ create: true, edit: true, delete: false, view: true })}.
-      (Hint: not defined operations are considered forbidden.)
-    `);
-  }
-
-  // API
-
-  const missingApiKeys = missingObjKeys(api, ['get', 'search', 'create', 'delete', 'update']);
-
-  if (missingApiKeys.length) {
-    throw new Error(`${errorPrefix}'api' object is missing required properties: ${missingApiKeys.join(', ')}.`);
-  }
-
-  // UI
-
-  if (ui.search && typeof ui.search !== 'function') {
-    throw new Error(`${errorPrefix}ui.search must be a function.`);
-  }
-
-  ['edit', 'create', 'show'].forEach(viewName => {
-    if (ui[viewName] && (!ui[viewName].formLayout || typeof ui[viewName].formLayout !== 'function')) {
-      throw new Error(`${errorPrefix}ui.${viewName} must have a 'formLayout' function.`);
-    }
-  })
-
-  if (ui.instanceLabel && typeof ui.instanceLabel !== 'function') {
-    throw new Error(`${errorPrefix}ui.instanceLabel must be a function.`);
-  }
-
-  if (ui.Spinner && typeof ui.Spinner !== 'function') {
-    throw new Error(`${errorPrefix}ui.Spinner must be a function.`);
-  }
+        if (noUniqueFields) {
+          return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
+        }
+      }
+    })
+  }, modelDefinition, 'property', 'React-CrudEditor Model Fields');
 }
 
 export const storeState2appState = (storeState, modelDefinition) => {

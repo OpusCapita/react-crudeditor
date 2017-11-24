@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
+import PropTypes from 'prop-types';
 
 import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
 import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
@@ -15,85 +16,87 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-function missingObjKeys(obj, requiredKeys) {
-  return requiredKeys.filter(key => Object.keys(obj).indexOf(key) === -1)
-}
-
-function validateModelDefinition(modelDefinition) {
-  const errorPrefix = 'Crud Model definition error: ';
-
-  if (typeof modelDefinition !== 'object') {
-    throw new Error(`${errorPrefix}Model definition must be an object.`)
+// https://stackoverflow.com/a/31169012
+const allPropTypes = (...types) => (...args) => {
+  const errors = types.map((type) => type(...args)).filter(Boolean);
+  if (errors.length === 0) {
+    return
   }
+  // eslint-disable-next-line consistent-return
+  return new Error(errors.map((e) => e.message).join('\n'));
+};
 
-  // TODO add required keys (custom operations, etc.) as they're implemented
-  const rootKeys = ['model', 'permissions', 'api', 'ui'];
-  const missingRootKeys = missingObjKeys(modelDefinition, rootKeys);
+const modelPropTypes = {
+  model: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    fields: allPropTypes(
+      PropTypes.objectOf(PropTypes.shape({
+        unique: PropTypes.bool,
+        type: PropTypes.string,
+        constraints: PropTypes.shape({
+          max: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.instanceOf(Date)
+          ]),
+          min: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.instanceOf(Date)
+          ]),
+          required: PropTypes.bool,
+          email: PropTypes.bool,
+          matches: PropTypes.instanceOf(RegExp),
+          url: PropTypes.bool,
+          validate: PropTypes.func
+        })
+      })).isRequired,
+      (props, propName, componentName) => {
+        if (!props[propName]) {
+          return; // don't duplicate an Error because it'll be returned by 'isRequired' above
+        }
+        const noUniqueFields = Object.keys(props[propName]).
+          filter(fieldName => props[propName][fieldName].unique).length === 0;
 
-  if (missingRootKeys.length) {
-    throw new Error(`${errorPrefix}Model definition is missing required properties: ${missingRootKeys.join(', ')}.`);
-  }
-
-  const { model, permissions, api, ui } = modelDefinition;
-
-  // MODEL
-
-  if (!model.fields || typeof model.fields !== 'object') {
-    throw new Error(`${errorPrefix}Model must contain 'fields' object.`);
-  }
-
-  const noUniqueFields = Object.keys(model.fields).
-    filter(fieldName => model.fields[fieldName].unique).
-    length === 0;
-
-  if (noUniqueFields) {
-    throw new Error(`${errorPrefix}At least one field should have property 'unique: true'.`);
-  }
-
-  if (!model.validate || typeof model.validate !== 'function') {
-    throw new Error(`${errorPrefix}Model must contain 'validate' function. Signature: (instance) => boolean.`);
-  }
-
-  // PERMISSIONS
-
-  const { crudOperations } = permissions;
-
-  if (!crudOperations) {
-    throw new Error(`
-      ${errorPrefix}'permissions' must contain 'crudOperations' object.
-      Example: ${JSON.stringify({ create: true, edit: true, delete: false, view: true })}.
-      (Hint: not defined operations are considered forbidden.)
-    `);
-  }
-
-  // API
-
-  const missingApiKeys = missingObjKeys(api, ['get', 'search', 'create', 'delete', 'update']);
-
-  if (missingApiKeys.length) {
-    throw new Error(`${errorPrefix}'api' object is missing required properties: ${missingApiKeys.join(', ')}.`);
-  }
-
-  // UI
-
-  if (ui.search && typeof ui.search !== 'function') {
-    throw new Error(`${errorPrefix}ui.search must be a function.`);
-  }
-
-  ['edit', 'create', 'show'].forEach(viewName => {
-    if (ui[viewName] && (!ui[viewName].formLayout || typeof ui[viewName].formLayout !== 'function')) {
-      throw new Error(`${errorPrefix}ui.${viewName} must have a 'formLayout' function.`);
-    }
+        if (noUniqueFields) {
+          // eslint-disable-next-line consistent-return
+          return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
+        }
+      }
+    ),
+    validate: PropTypes.func.isRequired
+  }).isRequired,
+  permissions: PropTypes.shape({
+    crudOperations: PropTypes.shape({
+      create: PropTypes.bool,
+      edit: PropTypes.bool,
+      delete: PropTypes.bool,
+      view: PropTypes.bool
+    }).isRequired
+  }).isRequired,
+  api: PropTypes.shape({
+    get: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired,
+    delete: PropTypes.func.isRequired,
+    create: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired
+  }).isRequired,
+  ui: PropTypes.shape({
+    Spinner: PropTypes.func,
+    search: PropTypes.func,
+    instanceLabel: PropTypes.func,
+    create: PropTypes.shape({
+      defaultNewInstance: PropTypes.func,
+      formLayout: PropTypes.func
+    }),
+    edit: PropTypes.shape({
+      formLayout: PropTypes.func
+    }),
+    show: PropTypes.shape({
+      formLayout: PropTypes.func
+    }),
+    customViews: PropTypes.objectOf(PropTypes.func),
+    operations: PropTypes.func
   })
-
-  if (ui.instanceLabel && typeof ui.instanceLabel !== 'function') {
-    throw new Error(`${errorPrefix}ui.instanceLabel must be a function.`);
-  }
-
-  if (ui.Spinner && typeof ui.Spinner !== 'function') {
-    throw new Error(`${errorPrefix}ui.Spinner must be a function.`);
-  }
-}
+};
 
 export const storeState2appState = (storeState, modelDefinition) => {
   const getViewState = {
@@ -122,12 +125,12 @@ export function getPrefixedTranslations(translations, prefix) {
     }), {})
 }
 
+// Filling modelDefinition with default values where necessary.
 export function fillDefaults(baseModelDefinition) {
-  // Filling modelDefinition with default values where necessary.
   const modelDefinition = cloneDeep(baseModelDefinition);
 
-  // throws in case of failed validation; silent otherwise
-  validateModelDefinition(modelDefinition);
+  // validate modelDefinition using 'prop-types'
+  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
 
   const fieldsMeta = modelDefinition.model.fields;
 

@@ -83,12 +83,12 @@ export const
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
     formatedFilter: storeState.formatedFilter,
-    isLoading: !!~[
+    isLoading: [
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
       STATUS_SEARCHING
-    ].indexOf(storeState.status),
+    ].indexOf(storeState.status) > -1,
     pageParams: {
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset

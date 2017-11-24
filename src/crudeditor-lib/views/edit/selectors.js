@@ -46,13 +46,13 @@ export const
     fieldsMeta: modelMeta.fields,
     instanceLabel: storeState.instanceLabel,
     flags: storeState.flags,
-    isLoading: !!~[
+    isLoading: [
       STATUS_EXTRACTING,
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
       STATUS_UPDATING
-    ].indexOf(storeState.status),
+    ].indexOf(storeState.status) > -1,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,

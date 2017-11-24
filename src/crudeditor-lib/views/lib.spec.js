@@ -271,12 +271,12 @@ describe('Crudeditor-lib / views / lib', () => {
     it('should return an empty object if not received a customBuilder', () => {
       const result = buildFormLayout({
         viewName: 'show',
-        fieldsMeta: Object.keys(fields).reduce((obj, f) => ~[
+        fieldsMeta: Object.keys(fields).reduce((obj, f) => [
           FIELD_TYPE_BOOLEAN,
           FIELD_TYPE_STRING,
           FIELD_TYPE_STRING_DATE,
           FIELD_TYPE_STRING_NUMBER
-        ].indexOf(fields[f].type) ?
+        ].indexOf(fields[f].type) > -1 ?
           {
             ...obj,
             [f]: fields[f]

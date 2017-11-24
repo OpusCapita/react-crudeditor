@@ -69,14 +69,14 @@ class EditTab extends React.PureComponent {
       )
     }
 
-    if (~[VIEW_EDIT, VIEW_SHOW].indexOf(viewName)) {
+    if ([VIEW_EDIT, VIEW_SHOW].indexOf(viewName) > -1) {
       buttons.push(
         <Button disabled={true} key="Revisions">
           {i18n.getMessage('crudEditor.revisions.button')}
         </Button>)
     }
 
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName) && crudOperations.create) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && crudOperations.create) {
       buttons.push(
         <Button
           onClick={handleSaveAndNew}
@@ -98,7 +98,7 @@ class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if (~[VIEW_CREATE, VIEW_EDIT].indexOf(viewName)) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1) {
       buttons.push(
         <Button
           disabled={disableSave}

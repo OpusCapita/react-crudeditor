@@ -1,21 +1,38 @@
+## [v0.0.21](Thu, 23 Nov 2017 15:23:03 GMT)
+ - Remove debug info (Andrei Mourzenkov <mourzenkov@scand.com>, 51c7e26)
+ - Merge pull request #59 from OpusCapita/ui-headers/57
+
+    Adjusted UI (037d38d fbd1dca, 3a6301b)
+ - Remove debugging info (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, fbd1dca)
+ - Merge branch 'master' into ui-headers/57 (39192fd 037d38d, 01d6254)
+ - Done #57 (Egor Stambakio <stambakio@scand.com>, 39192fd)
+ - Edited styles. (Egor Stambakio <stambakio@scand.com>, 4a27d9e)
+ - Merge pull request #58 from OpusCapita/validate-unique-field-presense
+
+    Added validation for unique field presense (62bd5dc 0309809, 037d38d)
+ - Added validation for unique field presense. (Egor Stambakio <stambakio@scand.com>, 0309809)
+ - Linted. (Egor Stambakio <stambakio@scand.com>, 8bf0c30)
+ - Done besides renaming Create button: waiting for texts. (Egor Stambakio <stambakio@scand.com>, 6d59b63)
+ - Added translations. (Egor Stambakio <stambakio@scand.com>, 2666fc4)
+
 ## [v0.0.20](Thu, 23 Nov 2017 07:46:08 GMT)
  - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 23d37e1)
  - Implemented model validation #47 (Egor Stambakio <stambakio@scand.com>, 493cd62)
  - Merge pull request #50 from OpusCapita/permissions/48
-    
+
     Implemented basic permissions system for crud's schema (5ade2c6 bb95165, 3318670)
  - Minor code optimization (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, bb95165)
  - Merge pull request #53 from OpusCapita/pagination/51
-    
+
     Fixed #51 (hide pagination for a single-page search result) (782874c a881e26, 5ade2c6)
  - Merge pull request #56 from OpusCapita/translations-client-bug/55
-    
+
     Fixed translations bug #55 on demo client with react-router (c27cf8f 69e10e5, 782874c)
  - Renamed a variable. (Egor Stambakio <stambakio@scand.com>, f0cb5d4)
  - Fixed according to supervisor notes. (Egor Stambakio <stambakio@scand.com>, 0671b22)
  - Hide only pagination links; totalCount & paging dropdownstay intact. (Egor Stambakio <stambakio@scand.com>, a881e26)
  - Merge pull request #54 from OpusCapita/tabs/52
-    
+
     Fixed #52 (don't show a single tab) (648a4cb ab8af4e, c27cf8f)
  - Fixed #55 (Egor Stambakio <stambakio@scand.com>, 69e10e5)
  - Fixed #52 (Egor Stambakio <stambakio@scand.com>, ab8af4e)

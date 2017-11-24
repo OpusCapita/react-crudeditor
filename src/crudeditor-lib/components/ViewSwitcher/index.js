@@ -20,7 +20,6 @@ import WithAlerts from '../WithAlertsHOC';
 
 const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   if (!activeViewName) {
-    console.log("no active view in props")
     return null;
   }
 

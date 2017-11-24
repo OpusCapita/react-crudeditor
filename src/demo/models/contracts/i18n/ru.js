@@ -1,5 +1,5 @@
 export default {
-  "model.name": "Контракт",
+  "model.name": "Контракты",
   "model.tab.general": "Главное",
   "model.tab.additional": "Дополнительно",
 

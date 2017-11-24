@@ -645,7 +645,10 @@ Model Definition is an object describing an entity. It has the following structu
      * Handlers are provided for Custom Operations only.
      * TODO
      */
-    ?operations: function(<object, entity instance>, <string, View Name>) {
+    ?operations: function(<object, entity instance>, {
+      name: <string, View name>,  // See EditorComponent props.view.name
+      state: <object, Full View State>  // See EditorComponent props.view.state
+    }) {
       ...
       return [{
         name: <string, operation ID>,

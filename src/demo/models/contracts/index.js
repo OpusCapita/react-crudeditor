@@ -344,7 +344,7 @@ export default {
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', Component: DateRangeCellRender }]
     }),
-    instanceLabel: instance => instance._objectLabel || '',
+    instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
       defaultNewInstance: ({ filter }) => Object.keys(filter).reduce(
         (rez, fieldName) => {

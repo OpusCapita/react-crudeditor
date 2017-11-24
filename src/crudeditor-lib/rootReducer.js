@@ -16,13 +16,13 @@ import {
 } from './common/constants';
 
 export default modelDefinition => {
-  const allowedOps = modelDefinition.permissions.crudOperations;
+  const { crudOperations } = modelDefinition.permissions;
 
   const viewReducers = {
-    ...(allowedOps.view ? { [VIEW_SEARCH]: search(modelDefinition) } : null),
-    ...(allowedOps.create ? { [VIEW_CREATE]: create(modelDefinition) } : null),
-    ...(allowedOps.edit ? { [VIEW_EDIT]: edit(modelDefinition) } : null),
-    ...(allowedOps.view ? { [VIEW_SHOW]: show(modelDefinition) } : null),
+    ...(crudOperations.view ? { [VIEW_SEARCH]: search(modelDefinition) } : null),
+    ...(crudOperations.create ? { [VIEW_CREATE]: create(modelDefinition) } : null),
+    ...(crudOperations.edit ? { [VIEW_EDIT]: edit(modelDefinition) } : null),
+    ...(crudOperations.view ? { [VIEW_SHOW]: show(modelDefinition) } : null),
     [VIEW_ERROR]: error(modelDefinition)
   }
 

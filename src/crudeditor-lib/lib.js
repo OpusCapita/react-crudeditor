@@ -56,19 +56,14 @@ function validateModelDefinition(modelDefinition) {
 
   // PERMISSIONS
 
-  if (!permissions.crudOperations) {
+  const { crudOperations } = permissions;
+
+  if (!crudOperations) {
     throw new Error(`
       ${errorPrefix}'permissions' must contain 'crudOperations' object.
       Example: ${JSON.stringify({ create: true, edit: true, delete: false, view: true })}.
       (Hint: not defined operations are considered forbidden.)
     `);
-  }
-
-  if (!permissions.crudOperations.view) { // TBD it this ok?
-    console.warn(`
-      Search page is unavailable if 'view' is set to false
-      or undefined in model's permissions.crudOperations.
-    `)
   }
 
   // API
@@ -158,27 +153,26 @@ export function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
   }
 
-  const allowedOps = modelDefinition.permissions.crudOperations;
+  const { crudOperations } = modelDefinition.permissions;
 
   ['create', 'edit', 'delete', 'view'].forEach(operation => {
-    if (!allowedOps.hasOwnProperty(operation)) {
-      allowedOps[operation] = false
+    if (!crudOperations.hasOwnProperty(operation)) {
+      crudOperations[operation] = false
     }
-  }
-  );
+  });
 
   const getUi = {
-    ...(allowedOps.view ? { [VIEW_SEARCH]: getSearchUi } : null),
-    ...(allowedOps.create ? { [VIEW_CREATE]: getCreateUi } : null),
-    ...(allowedOps.edit ? { [VIEW_EDIT]: getEditUi } : null),
-    ...(allowedOps.view ? { [VIEW_SHOW]: getShowUi } : null)
+    ...(crudOperations.view ? { [VIEW_SEARCH]: getSearchUi } : null),
+    ...(crudOperations.create ? { [VIEW_CREATE]: getCreateUi } : null),
+    ...(crudOperations.edit ? { [VIEW_EDIT]: getEditUi } : null),
+    ...(crudOperations.view ? { [VIEW_SHOW]: getShowUi } : null)
   };
 
   Object.keys(getUi).forEach(viewName => {
     if (getUi[viewName]) {
       modelDefinition.ui[viewName] = getUi[viewName](modelDefinition);
     }
-  })
+  });
 
   return modelDefinition;
 }

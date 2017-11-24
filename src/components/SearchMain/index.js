@@ -34,7 +34,7 @@ export default class SearchMain extends PureComponent {
       <div className="crud--search-main">
         <div className="crud--search-main__page-header">
           <h1 className="crud--search-main__page-title">
-            {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
+            {getModelMessage(i18n, 'model.name')}
           </h1>
           { canCreate &&
             <button

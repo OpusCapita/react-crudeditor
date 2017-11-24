@@ -163,7 +163,8 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
-                      model={this.props.model}
+                      permissions={this.props.model.data.permissions.crudOperations}
+                      operations={this.props.model.data.operations(instance)}
                       onShow={this.handleShow(instance, index)}
                       onEdit={this.handleEdit(instance, index)}
                       onDelete={this.handleDelete(instance)}

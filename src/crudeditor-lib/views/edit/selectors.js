@@ -10,21 +10,23 @@ import {
   STATUS_UPDATING
 } from '../../common/constants';
 
+const _getViewState = ({
+  persistentInstance,
+  activeTab: { tab } = {}
+}, {
+  model: { fields }
+}) => ({
+  instance: getLogicalKeyBuilder(fields)(persistentInstance),
+  ...(tab ? { tab } : {})
+});
+
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({
-    persistentInstance,
-    activeTab: { tab } = {}
-  }, {
-    model: { fields }
-  }) => ({
-    instance: getLogicalKeyBuilder(fields)(persistentInstance),
-    ...(tab ? { tab } : {})
-  })),
+  getViewState = wrapper(_getViewState),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -54,5 +56,6 @@ export const
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
-    viewName: VIEW_NAME
+    viewName: VIEW_NAME,
+    viewState: _getViewState(storeState, modelDefinition)
   }));

@@ -5,10 +5,25 @@ import {
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
   ALL_INSTANCES_SELECT,
-  ALL_INSTANCES_DESELECT
+  ALL_INSTANCES_DESELECT,
+  VIEW_NAME,
+  VIEW_SOFT_REDIRECT
 } from './constants';
 
 export const
+  softRedirectView = ({
+    name = VIEW_NAME,
+    state
+  }) => ({
+    type: VIEW_SOFT_REDIRECT,
+    payload: {
+      view: {
+        name,
+        state
+      }
+    }
+  }),
+
   searchInstances = ({
     filter,
     sort,

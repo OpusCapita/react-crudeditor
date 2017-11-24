@@ -46,7 +46,7 @@ export default function*(modelDefinition) {
     const initializeViewSaga = initializeViewSagas[viewName];
 
     if (!initializeViewSaga) {
-      throw ERROR_UNKNOWN_VIEW(viewName);
+      throw ERROR_UNKNOWN_VIEW(viewName); // TODO: add ERROR_FORBIDDEN_VIEW
     }
 
     const oldViewScenarioTask = activeViewScenarioTask;

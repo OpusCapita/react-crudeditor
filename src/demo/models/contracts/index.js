@@ -6,6 +6,7 @@ import CustomSpinner from './components/CustomSpinner';
 import ContractReferenceSearch from './components/ContractReferenceSearch';
 import CustomTabComponent from './components/CustomTabComponent';
 
+const VIEW_SEARCH = 'search';
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
@@ -376,6 +377,38 @@ export default {
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
-    Spinner: CustomSpinner
+    Spinner: CustomSpinner,
+    operations: (instance, {
+      name: viewName,
+      state: viewState
+    }) => {
+      if (viewName === VIEW_CREATE) {
+        return [{
+          name: 'testLink',
+          icon: 'link',
+          handler: _ => {
+            window.location.href = 'https://www.opuscapita.com';
+          }
+        }];
+      } else {
+        return [{
+          name: 'createChild',
+          handler: _ => ({
+            name: VIEW_CREATE,
+            state: {
+              predefinedFields: {
+                parentContract: instance.contractId
+              }
+            }
+          })
+        }, {
+          name: 'testLink',
+          icon: 'link',
+          handler: _ => {
+            window.location.href = 'https://www.opuscapita.com';
+          }
+        }]
+      }
+    }
   }
 };

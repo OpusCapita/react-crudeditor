@@ -1,19 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+import { Glyphicon, Button, ButtonGroup, SplitButton, MenuItem } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
-    model: PropTypes.shape({
-      data: PropTypes.shape({
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.object.isRequired
-        })
-      })
-    }),
-    instance: PropTypes.object,
-    index: PropTypes.number,
+    permissions: PropTypes.object.isRequired,
+    operations: PropTypes.array.isRequired,
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func
@@ -24,8 +17,14 @@ export default class SearchResultButtons extends PureComponent {
   }
 
   render() {
-    const permissions = this.props.model.data.permissions.crudOperations;
-    const { onShow, onEdit, onDelete } = this.props;
+    const {
+      onShow,
+      onEdit,
+      onDelete,
+      permissions,
+      operations
+    } = this.props;
+
     const { i18n } = this.context;
 
     const buttons = [];
@@ -46,6 +45,35 @@ export default class SearchResultButtons extends PureComponent {
           {i18n.getMessage('crudEditor.show.button')}
         </Button>
       )
+    }
+
+    // FIXME: check whether there are unsaved changes before calling operation handler.
+
+    // FIXME: remove Glyphicon if no operation.icon and correct getMessage() argument
+    if (operations.length) {
+      buttons.push(
+        <Button onClick={operations[0].handler} key="operation">
+          <Glyphicon glyph={`glyphicon-${operations[0].icon}`}/>
+          {' '}
+          {operations[0].name}
+        </Button>
+      );
+    } else if (operations.length > 1) {
+      // FIXME: set correct unique id.
+      // FIXME: figure out whether onClick/onSelect for SplitButton/MenuItem must be used.
+      // FIXME: figure out whether eventKey should be used.
+      // FIXME: add Glyphicon if operation.icon and correct getMessage() argument.
+      buttons.push(
+        <SplitButton title={i18n.getMessage(operations[0].name)} pullRight={true} id="split-button-pull-right" onClick={operations[0].handler}>
+          {
+            operations.slice(1).map((operation, index) => (
+              <MenuItem eventKey={operation} key={index} onClick={operation.handler}>
+                { i18n.getMessage(operation.name) }
+              </MenuItem>
+            ))
+          }
+        </SplitButton>
+      );
     }
 
     if (permissions.delete) {

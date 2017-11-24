@@ -6,10 +6,12 @@ import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';
 import { deleteInstances } from '../../common/actions';
 import { showInstance } from '../show/actions';
+import { VIEW_NAME } from './constants';
 
 import {
   getDefaultNewInstance,
-  getViewModelData
+  getViewModelData,
+  getViewState
 } from './selectors';
 
 import {
@@ -17,17 +19,44 @@ import {
   searchInstances,
   toggleSelected,
   toggleSelectedAll,
-  updateFormFilter
+  updateFormFilter,
+  softRedirectView
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData },
-  { createInstance, editInstance, showInstance, ...dispatchProps },
+  { defaultNewInstance, viewModelData, viewState, operations },
+  { createInstance, editInstance, showInstance, softRedirectView, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: instance => operations(instance, {
+        name: VIEW_NAME,
+        state: viewState
+      }).reduce(
+        (rez, { handler, ...rest }) => [
+          ...rez,
+          {
+            ...rest,
+            ...(handler ?
+              {
+                handler: _ => {
+                  const view = handler();
+
+                  if (view && view.state && Object.keys(view.state) !== 0) {
+                    softRedirectView(view);
+                  }
+                }
+              } :
+              {}
+            )
+          }
+        ],
+        []
+      )
+    },
     actions: {
       ...dispatchProps,
       createInstance: _ => createInstance({ predefinedFields: defaultNewInstance }),
@@ -56,13 +85,15 @@ const mergeProps = (
         }
       })
     }
-  },
+  }
 });
 
 export default connect(
   (storeState, { modelDefinition }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
+    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations
   }),
   {
     createInstance,
@@ -73,7 +104,8 @@ export default connect(
     searchInstances,
     toggleSelected,
     toggleSelectedAll,
-    updateFormFilter
+    updateFormFilter,
+    softRedirectView
   },
   mergeProps
 )(({ viewModel, children, ...props }) => (

@@ -64,9 +64,16 @@ export const
 
   ERROR_CODE_INTERNAL = 500,
   ERROR_NOT_FOUND = 404,
+  ERROR_FORBIDDEN = 403,
 
   ERROR_UNKNOWN_VIEW = viewName => ({
     code: ERROR_CODE_INTERNAL,
     id: 'unknownViewError',
     message: 'Unknown view:' + viewName
+  }),
+
+  ERROR_FORBIDDEN_VIEW = viewName => ({
+    code: ERROR_FORBIDDEN,
+    id: 'forbiddenViewError',
+    message: `Access to '${viewName}' view is forbidden`
   });

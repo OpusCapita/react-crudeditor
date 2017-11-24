@@ -10,6 +10,7 @@ import {
   ACTIVE_VIEW_CHANGE,
   DEFAULT_VIEW,
   ERROR_UNKNOWN_VIEW,
+  ERROR_FORBIDDEN_VIEW,
 
   VIEW_HARD_REDIRECT,
 
@@ -20,6 +21,7 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
+const isStandardView = viewName => ~[VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName);
 
 export default function*(modelDefinition) {
   const { crudOperations } = modelDefinition.permissions;
@@ -46,6 +48,9 @@ export default function*(modelDefinition) {
     const initializeViewSaga = initializeViewSagas[viewName];
 
     if (!initializeViewSaga) {
+      if (isStandardView(viewName)) {
+        throw ERROR_FORBIDDEN_VIEW(viewName);
+      }
       throw ERROR_UNKNOWN_VIEW(viewName);
     }
 
@@ -91,7 +96,9 @@ export default function*(modelDefinition) {
 
     if (!initializeViewSaga) {
       initializeViewSaga = errorViewScenario;
-      viewState = ERROR_UNKNOWN_VIEW(viewName); // TODO: add ERROR_FORBIDDEN_VIEW
+      viewState = isStandardView(viewName) ?
+        ERROR_FORBIDDEN_VIEW(viewName) :
+        ERROR_UNKNOWN_VIEW(viewName);
       viewName = VIEW_ERROR;
     }
 

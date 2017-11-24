@@ -27,6 +27,7 @@ class SearchMain extends PureComponent {
       }
     } = model;
     const { i18n } = this.context;
+    console.log(hideSearchForm)
 
     return (
       <div className="crud--search-main">
@@ -34,12 +35,11 @@ class SearchMain extends PureComponent {
           <Row>
             <Col xs={8}>
               <Button
-                bsStyle="default"
-                active={!hideSearchForm}
+                bsStyle="link"
                 style={{ margin: '0 16px' }}
                 onClick={toggleSearchForm}
               >
-                <Glyphicon glyph="search"/>
+                <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`}/>
               </Button>
               {i18n.getMessage('crudEditor.search.header', { "payload": getModelMessage(i18n, 'model.name') })}
             </Col>

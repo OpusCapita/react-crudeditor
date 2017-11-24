@@ -23,10 +23,15 @@ class ContractEditorScope extends React.Component {
     i18n: PropTypes.object
   };
 
-  getChildContext() {
+  constructor(...args) {
+    super(...args);
+
     // check for URL query parameter 'lang', otherwise use default language
-    const i18n = new I18nManager({ locale: getParameterByName('lang') || 'en' });
-    return { i18n }
+    this.i18n = new I18nManager({ locale: getParameterByName('lang') || 'en' });
+  }
+
+  getChildContext() {
+    return { i18n: this.i18n }
   }
 
   render() {

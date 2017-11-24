@@ -482,7 +482,7 @@ Model Definition is an object describing an entity. It has the following structu
            *
            *   valueProp: {
            *     name: "value",
-           *     type: "string"
+           *     type: <string, UI Type peculiar to the Component>
            *   }
            * }
            */
@@ -494,7 +494,7 @@ Model Definition is an object describing an entity. It has the following structu
               /*
                * When omitted, UI Type is considered to be unknown and unconverted field value
                * is sent to the Component (i.e. of Field Type).
-               /
+               */
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
             }
           }
@@ -565,7 +565,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: <function, FieldInputComponent>,
                   ?valueProp: {
                     ?name: <string, a name of Component's prop with field value, "value" by default>,
-                    ?type: <string, UI Type (see corresponding "Terminology" section)>
+                    ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -577,7 +577,7 @@ Model Definition is an object describing an entity. It has the following structu
                   Component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
                     ?name: <string, a name of Component prop with field value, "value" by default>,
-                    ?type: <string, UI Type (see corresponding "Terminology" section)>
+                    ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                   }
                 }
               }),
@@ -590,7 +590,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, UI Type (see corresponding "Terminology" section)>
+                  ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -604,7 +604,7 @@ Model Definition is an object describing an entity. It has the following structu
                 Component: <function, FieldInputComponent>,
                 ?valueProp: {
                   ?name: <string, a name of Component's prop with field value, "value" by default>,
-                  ?type: <string, UI Type (see corresponding "Terminology" section)>
+                  ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
             }),
@@ -617,7 +617,7 @@ Model Definition is an object describing an entity. It has the following structu
               Component: <function, FieldInputComponent>,
               ?valueProp: {
                 ?name: <string, a name of Component's prop with field value, "value" by default>,
-                ?type: <string, UI Type (see corresponding "Terminology" section)>
+                ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
               }
             }
           }),

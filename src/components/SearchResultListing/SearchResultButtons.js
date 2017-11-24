@@ -70,7 +70,13 @@ export default class SearchResultButtons extends PureComponent {
     } else if (operations.length > 1) {
       buttons.push(
         <SplitButton
-          title={getModelMessage(i18n, `model.label.${operations[0].name}`, operations[0].name)}
+          title={
+            <span>
+              {operations[0].icon && <Glyphicon glyph={operations[0].icon}/>}
+              {operations[0].icon && ' '}
+              {getModelMessage(i18n, `model.label.${operations[0].name}`, operations[0].name)}
+            </span>
+          }
           pullRight={true}
           id={`operations-split-${operations[0].name}`}
           key={`operations-split-${operations[0].name}`}

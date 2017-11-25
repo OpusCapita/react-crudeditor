@@ -1,14 +1,39 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import { connect } from 'react-redux';
+import Main from '../../../components/ShowMain';
+import {
+  getViewModelData,
+  getViewState
+} from './selectors';
+import {
+  selectTab,
+  exitView,
+  showAdjacentInstance
+} from './actions';
+import { viewOperations } from '../lib';
+import { VIEW_NAME } from './constants';
+import { softRedirectView } from '../../common/actions';
 
-import Main from '../../../components/ShowMain'
-import { getViewModelData } from './selectors'
-import { selectTab, exitView, showAdjacentInstance } from './actions'
-
-const mergeProps = ({ viewModelData, flags }, dispatchProps, ownProps) => ({
+const mergeProps = ({
+  viewModelData,
+  flags,
+  viewState,
+  operations
+}, {
+  softRedirectView,
+  ...dispatchProps
+}, ownProps) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      })
+    },
     actions: (
       ({
         showAdjacentInstance,
@@ -43,11 +68,14 @@ export default connect(
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
-    }))(getViewModelData(storeState, modelDefinition))
+    }))(getViewModelData(storeState, modelDefinition)),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations
   }), {
     selectTab,
     exitView,
-    showAdjacentInstance
+    showAdjacentInstance,
+    softRedirectView
   },
   mergeProps
 )(({

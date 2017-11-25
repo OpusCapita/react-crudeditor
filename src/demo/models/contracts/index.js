@@ -392,7 +392,7 @@ export default {
       } else {
         return [{
           name: 'createChild',
-          icon: 'transfer',
+          // icon: 'transfer',
           handler: _ => ({
             name: VIEW_CREATE,
             state: {

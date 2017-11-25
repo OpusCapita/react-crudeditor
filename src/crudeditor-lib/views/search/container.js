@@ -10,6 +10,7 @@ import {
 } from '../../common/actions';
 import { showInstance } from '../show/actions';
 import { VIEW_NAME } from './constants';
+import { viewOperations } from '../lib';
 
 import {
   getDefaultNewInstance,
@@ -34,30 +35,12 @@ const mergeProps = (
   viewModel: {
     data: {
       ...viewModelData,
-      operations: instance => operations(instance, {
-        name: VIEW_NAME,
-        state: viewState
-      }).reduce(
-        (rez, { handler, ...rest }) => [
-          ...rez,
-          {
-            ...rest,
-            ...(handler ?
-              {
-                handler: _ => {
-                  const view = handler();
-                  // TBD why require view.state.keys.length > 0 ?
-                  if (view && view.state && Object.keys(view.state) !== 0) {
-                    softRedirectView(view);
-                  }
-                }
-              } :
-              {}
-            )
-          }
-        ],
-        []
-      )
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      })
     },
     actions: {
       ...dispatchProps,

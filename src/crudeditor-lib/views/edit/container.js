@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Main from '../../../components/EditMain';
-import { getViewModelData, getViewState } from './selectors';
+import {
+  getViewModelData,
+  getViewState
+} from './selectors';
 import {
   deleteInstances,
   softRedirectView
@@ -17,6 +20,7 @@ import {
   editAdjacentInstance
 } from './actions';
 import { VIEW_NAME } from './constants';
+import { viewOperations } from '../lib';
 
 const mergeProps = (
   {
@@ -39,29 +43,12 @@ const mergeProps = (
   viewModel: {
     data: {
       ...viewModelData,
-      operations: instance => operations(instance, {
-        name: VIEW_NAME,
-        state: viewState
-      }).reduce(
-        (rez, { handler, ...rest }) => [
-          ...rez,
-          {
-            ...rest,
-            ...(handler ?
-              {
-                handler: _ => {
-                  const view = handler();
-                  if (view && view.state && Object.keys(view.state) !== 0) {
-                    softRedirectView(view);
-                  }
-                }
-              } :
-              {}
-            )
-          }
-        ],
-        []
-      )
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      })
     },
     // here we adjust action creators to reflect flags values
     actions: {

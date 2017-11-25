@@ -164,7 +164,7 @@ export function fillDefaults(baseModelDefinition) {
     }
   });
 
-  if(!modelDefinition.ui.operations) {
+  if (!modelDefinition.ui.operations) {
     modelDefinition.ui.operations = _ => [];
   }
 

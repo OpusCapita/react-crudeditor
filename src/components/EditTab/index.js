@@ -30,7 +30,7 @@ export default class EditTab extends React.PureComponent {
     }).isRequired,
     fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
   }
-  
+
   static contextTypes = {
     i18n: PropTypes.object
   };

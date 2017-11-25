@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Col,
+  ButtonToolbar,
+  Glyphicon
+} from 'react-bootstrap';
 import isEqual from 'lodash/isEqual';
-
+import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 
 import {
@@ -30,7 +37,8 @@ class EditTab extends React.PureComponent {
           formInstance,
           permissions: {
             crudOperations
-          }
+          },
+          operations: instanceOperations
         }
       },
       fieldErrorsWrapper: {
@@ -48,10 +56,25 @@ class EditTab extends React.PureComponent {
     if (crudOperations.view) {
       buttons.push(
         <Button bsStyle='link' onClick={exitView} key="Cancel">
-          {this.context.i18n.getMessage('crudEditor.cancel.button')}
+          {i18n.getMessage('crudEditor.cancel.button')}
         </Button>
       )
     }
+
+    // FIXME: check whether there are unsaved changes before calling operation handler.
+
+    const operations = instanceOperations ? instanceOperations(persistentInstance) : [];
+
+    buttons.push(...operations.map((operation, index) => (
+      <Button
+        onClick={operation.handler}
+        key={`operation-${index}`}
+      >
+        {operation.icon && <Glyphicon glyph={operation.icon}/>}
+        {operation.icon && ' '}
+        {getModelMessage(i18n, `model.label.${operation.name}`, operation.name)}
+      </Button>
+    )));
 
     if (viewName === VIEW_EDIT && crudOperations.delete) {
       buttons.push(

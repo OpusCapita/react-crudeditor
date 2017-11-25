@@ -1,6 +1,7 @@
 import {
   INSTANCES_DELETE,
-  VIEW_HARD_REDIRECT
+  VIEW_HARD_REDIRECT,
+  VIEW_SOFT_REDIRECT
 } from './constants';
 
 export const
@@ -15,6 +16,19 @@ export const
     },
     meta: {
       source: 'owner'
+    }
+  }),
+
+  softRedirectView = ({
+    name,
+    state
+  }) => ({
+    type: VIEW_SOFT_REDIRECT,
+    payload: {
+      view: {
+        name,
+        state
+      }
     }
   }),
 

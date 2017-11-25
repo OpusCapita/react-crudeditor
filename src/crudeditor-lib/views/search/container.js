@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
 import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';
-import { deleteInstances } from '../../common/actions';
+import {
+  deleteInstances,
+  softRedirectView
+} from '../../common/actions';
 import { showInstance } from '../show/actions';
 import { VIEW_NAME } from './constants';
 
@@ -19,8 +22,7 @@ import {
   searchInstances,
   toggleSelected,
   toggleSelectedAll,
-  updateFormFilter,
-  softRedirectView
+  updateFormFilter
 } from './actions';
 
 const mergeProps = (

@@ -7,7 +7,10 @@ import showSaga from './workerSagas/show';
 import createSaga from './workerSagas/create';
 import redirectSaga from '../../common/workerSagas/redirect';
 
-import { INSTANCES_DELETE } from '../../common/constants';
+import {
+  INSTANCES_DELETE,
+  VIEW_SOFT_REDIRECT
+} from '../../common/constants';
 import { INSTANCE_EDIT } from '../edit/constants';
 import { INSTANCE_SHOW } from '../show/constants';
 import { INSTANCE_CREATE } from '../create/constants';
@@ -20,8 +23,7 @@ import {
   VIEW_INITIALIZE_SUCCESS,
 
   VIEW_NAME,
-  VIEW_REDIRECT_SUCCESS,
-  VIEW_SOFT_REDIRECT
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
 /*

@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
 import Main from '../../../components/EditMain';
-import { getViewModelData } from './selectors';
-import { deleteInstances } from '../../common/actions';
-
-
+import { getViewModelData, getViewState } from './selectors';
+import {
+  deleteInstances,
+  softRedirectView
+} from '../../common/actions';
 import {
   changeInstanceField,
   exitView,
@@ -16,22 +16,53 @@ import {
   validateInstanceField,
   editAdjacentInstance
 } from './actions';
+import { VIEW_NAME } from './constants';
 
-const mergeProps = ({
-  viewModelData,
-  flags: {
-    nextInstanceExists,
-    prevInstanceExists
-  }
-}, {
-  saveAndNextInstance,
-  editAdjacentInstance,
-  ...otherActions
-},
-ownProps) => ({
+const mergeProps = (
+  {
+    viewModelData,
+    viewState,
+    operations,
+    flags: {
+      nextInstanceExists,
+      prevInstanceExists
+    }
+  }, {
+    saveAndNextInstance,
+    editAdjacentInstance,
+    softRedirectView,
+    ...otherActions
+  },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: instance => operations(instance, {
+        name: VIEW_NAME,
+        state: viewState
+      }).reduce(
+        (rez, { handler, ...rest }) => [
+          ...rez,
+          {
+            ...rest,
+            ...(handler ?
+              {
+                handler: _ => {
+                  const view = handler();
+                  if (view && view.state && Object.keys(view.state) !== 0) {
+                    softRedirectView(view);
+                  }
+                }
+              } :
+              {}
+            )
+          }
+        ],
+        []
+      )
+    },
     // here we adjust action creators to reflect flags values
     actions: {
       ...otherActions,
@@ -51,7 +82,9 @@ export default connect(
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
-    }))(getViewModelData(storeState, modelDefinition))
+    }))(getViewModelData(storeState, modelDefinition)),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations
   }), {
     changeInstanceField,
     deleteInstances,
@@ -61,7 +94,8 @@ export default connect(
     saveAndNextInstance,
     selectTab,
     validateInstanceField,
-    editAdjacentInstance
+    editAdjacentInstance,
+    softRedirectView
   },
   mergeProps
 )(({

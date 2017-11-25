@@ -158,11 +158,15 @@ export function fillDefaults(baseModelDefinition) {
 
   const { crudOperations } = modelDefinition.permissions;
 
-  ['create', 'edit', 'delete', 'view'].forEach(operation => {
-    if (!crudOperations.hasOwnProperty(operation)) {
-      crudOperations[operation] = false
+  ['create', 'edit', 'delete', 'view'].forEach(operationPermission => {
+    if (!crudOperations.hasOwnProperty(operationPermission)) {
+      crudOperations[operationPermission] = false
     }
   });
+
+  if(!modelDefinition.ui.operations) {
+    modelDefinition.ui.operations = _ => [];
+  }
 
   const getUi = {
     ...(crudOperations.view ? { [VIEW_SEARCH]: getSearchUi } : null),

@@ -233,10 +233,11 @@ export const viewOperations = ({
   viewState,
   operations,
   softRedirectView
-}) => instance => operations(instance, {
-  name: viewName,
-  state: viewState
-}).reduce(
+}) => instance => (
+  operations(instance, {
+    name: viewName,
+    state: viewState
+  }) || []).reduce(
   (rez, { handler, ...rest }) => [
     ...rez,
     {

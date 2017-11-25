@@ -18,7 +18,23 @@ import {
   VIEW_SHOW
 } from '../../crudeditor-lib/common/constants';
 
-class EditTab extends React.PureComponent {
+export default class EditTab extends React.PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        viewName: PropTypes.string,
+        persistentInstance: PropTypes.object,
+        formatedInstance: PropTypes.object
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired,
+    fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
+  }
+  
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
@@ -35,6 +51,7 @@ class EditTab extends React.PureComponent {
           viewName,
           persistentInstance,
           formInstance,
+          formatedInstance,
           permissions: {
             crudOperations
           },
@@ -63,7 +80,8 @@ class EditTab extends React.PureComponent {
 
     // FIXME: check whether there are unsaved changes before calling operation handler.
 
-    const operations = instanceOperations ? instanceOperations(persistentInstance) : [];
+    // SHOW & EDIT expose 'persistentInstance'; CREATE exposes 'formatedInstance'
+    const operations = instanceOperations(persistentInstance || formatedInstance);
 
     buttons.push(...operations.map((operation, index) => (
       <Button
@@ -150,19 +168,3 @@ class EditTab extends React.PureComponent {
   }
 }
 
-EditTab.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      viewName: PropTypes.string,
-      persistentInstance: PropTypes.object
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired,
-  fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
-}
-
-EditTab.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditTab;

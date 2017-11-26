@@ -104,7 +104,6 @@ module.exports = {
       template: '../www/index.html',
     }),
     new webpack.NamedModulesPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ]
 };

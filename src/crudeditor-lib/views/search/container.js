@@ -17,7 +17,8 @@ import {
   searchInstances,
   toggleSelected,
   toggleSelectedAll,
-  updateFormFilter
+  updateFormFilter,
+  toggleSearchForm
 } from './actions';
 
 const mergeProps = (
@@ -73,7 +74,8 @@ export default connect(
     searchInstances,
     toggleSelected,
     toggleSelectedAll,
-    updateFormFilter
+    updateFormFilter,
+    toggleSearchForm
   },
   mergeProps
 )(({ viewModel, children, ...props }) => (

@@ -45,7 +45,9 @@ const common = {
   "crudEditor.export.button": "Экспорт",
   "crudEditor.found.items.message": "\u041D\u0430\u0439\u0434\u0435\u043D\u043E \u043F\u043E\u0437\u0438\u0446\u0438\u0439\: {count}",
   "crudEditor.range.from": "\u0441",
-  "crudEditor.range.to": "\u043F\u043E"
+  "crudEditor.range.to": "\u043F\u043E",
+  "crudEditor.search.showSearchForm": "Показать форму поиска",
+  "crudEditor.search.hideSearchForm": "Скрыть форму поиска"
 }
 /* eslint-enable max-len */
 

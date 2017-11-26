@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import Main from '../../../components/CreateMain';
+import { softRedirectView } from '../../common/actions';
+import { viewOperations } from '../lib';
+import { VIEW_NAME } from './constants';
+
 import {
   getViewModelData,
   getViewState
 } from './selectors';
-import { softRedirectView } from '../../common/actions';
-import { viewOperations } from '../lib';
+
 import {
   exitView,
   saveInstance,
@@ -15,17 +19,19 @@ import {
   changeInstanceField,
   saveAndNewInstance
 } from './actions';
-import { VIEW_NAME } from './constants';
 
-const mergeProps = ({
-  viewModelData,
-  viewState,
-  operations
-}, {
-  softRedirectView,
-  ...dispatchProps
-},
-ownProps) => ({
+const mergeProps = (
+  {
+    viewModelData,
+    viewState,
+    operations
+  },
+  {
+    softRedirectView,
+    ...dispatchProps
+  },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
     data: {

@@ -403,12 +403,6 @@ export default {
         }, {
           name: 'testLink',
           icon: 'link',
-          // TBD new property
-          //
-          // ?skipConfirm: <boolean> 
-          // if 'true' -> don't care about unsaved changes, execute handler without a confirmation dialog
-          // makes sense only on 'VIEW_EDIT' view 
-          skipConfirm: true,
           handler: _ => {
             window.open('https://www.opuscapita.com');
           }

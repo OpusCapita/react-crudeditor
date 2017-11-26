@@ -10,23 +10,24 @@ import {
   STATUS_UPDATING
 } from '../../common/constants';
 
-const _getViewState = ({
-  persistentInstance,
-  activeTab: { tab } = {}
-}, {
-  model: { fields }
-}) => ({
-  instance: getLogicalKeyBuilder(fields)(persistentInstance),
-  ...(tab ? { tab } : {})
-});
-
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(_getViewState),
+  getViewState = wrapper((
+    {
+      persistentInstance,
+      activeTab: { tab } = {}
+    },
+    {
+      model: { fields }
+    }
+  ) => ({
+    instance: getLogicalKeyBuilder(fields)(persistentInstance),
+    ...(tab ? { tab } : {})
+  })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

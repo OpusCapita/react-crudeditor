@@ -246,7 +246,7 @@ export const viewOperations = ({
         {
           handler: _ => {
             const view = handler();
-            if (view && view.state && Object.keys(view.state) !== 0) {
+            if (view && view.state && Object.keys(view.state).length !== 0) {
               softRedirectView(view);
             }
           }

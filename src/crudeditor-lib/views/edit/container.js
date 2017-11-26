@@ -1,14 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import Main from '../../../components/EditMain';
+import { VIEW_NAME } from './constants';
+import { viewOperations } from '../lib';
+
 import {
   getViewModelData,
   getViewState
 } from './selectors';
+
 import {
   deleteInstances,
   softRedirectView
 } from '../../common/actions';
+
 import {
   changeInstanceField,
   exitView,
@@ -19,8 +25,6 @@ import {
   validateInstanceField,
   editAdjacentInstance
 } from './actions';
-import { VIEW_NAME } from './constants';
-import { viewOperations } from '../lib';
 
 const mergeProps = (
   {
@@ -31,7 +35,8 @@ const mergeProps = (
       nextInstanceExists,
       prevInstanceExists
     }
-  }, {
+  },
+  {
     saveAndNextInstance,
     editAdjacentInstance,
     softRedirectView,

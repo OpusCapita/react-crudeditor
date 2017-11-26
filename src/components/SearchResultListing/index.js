@@ -1,5 +1,3 @@
-// TODO: add operations (external, custom, ...) handlers.
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
@@ -83,7 +81,8 @@ class SearchResultListing extends PureComponent {
       },
       permissions: {
         crudOperations: permissions
-      }
+      },
+      operations
     } = this.props.model.data;
 
     const { i18n } = this.context;
@@ -164,8 +163,8 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
-                      permissions={this.props.model.data.permissions.crudOperations}
-                      operations={this.props.model.data.operations(instance)}
+                      permissions={permissions}
+                      operations={operations(instance)}
                       onShow={this.handleShow(instance, index)}
                       onEdit={this.handleEdit(instance, index)}
                       onDelete={this.handleDelete(instance)}

@@ -1,5 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import isEqual from 'lodash/isEqual';
+import { getModelMessage } from '../lib';
+import ConfirmDialog from '../ConfirmDialog';
+
+import {
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW
+} from '../../crudeditor-lib/common/constants';
+
 import {
   Button,
   Form,
@@ -8,14 +19,6 @@ import {
   ButtonToolbar,
   Glyphicon
 } from 'react-bootstrap';
-import isEqual from 'lodash/isEqual';
-import { getModelMessage } from '../lib';
-import ConfirmDialog from '../ConfirmDialog';
-import {
-  VIEW_CREATE,
-  VIEW_EDIT,
-  VIEW_SHOW
-} from '../../crudeditor-lib/common/constants';
 
 export default class EditTab extends React.PureComponent {
   static propTypes = {
@@ -52,9 +55,9 @@ export default class EditTab extends React.PureComponent {
           formInstance,
           formatedInstance,
           permissions: {
-            crudOperations
+            crudOperations: permissions
           },
-          operations: instanceOperations
+          operations
         }
       },
       fieldErrorsWrapper: {
@@ -69,7 +72,7 @@ export default class EditTab extends React.PureComponent {
 
     const buttons = [];
 
-    if (crudOperations.view) {
+    if (permissions.view) {
       buttons.push(
         <Button bsStyle='link' onClick={exitView} key="Cancel">
           {i18n.getMessage('crudEditor.cancel.button')}
@@ -78,34 +81,33 @@ export default class EditTab extends React.PureComponent {
     }
 
     const hasUnsavedChanges = (
-      viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)
-    ) || (
-        viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null)
-      );
+      viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance) ||
+      viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null)
+    );
 
-    // SHOW & EDIT expose 'persistentInstance'; CREATE exposes 'formatedInstance'
-    const operations = instanceOperations(persistentInstance || formatedInstance);
+    buttons.push(
+      ...operations(viewName === VIEW_CREATE ? formatedInstance : persistentInstance).
+        map(({ name, icon, handler }, index) => (
+          <ConfirmDialog
+            trigger='click'
+            onConfirm={handler}
+            title="You have unsaved changes"
+            message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+            textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+            textCancel={i18n.getMessage('crudEditor.cancel.button')}
+            key={`operation-${index}`}
+            showDialog={_ => hasUnsavedChanges}
+          >
+            <Button>
+              {icon && <Glyphicon glyph={icon}/>}
+              {icon && ' '}
+              {getModelMessage(i18n, `model.label.${name}`, name)}
+            </Button>
+          </ConfirmDialog>
+        ))
+    );
 
-    buttons.push(...operations.map(({ name, icon, handler, skipConfirm = false }, index) => (
-      <ConfirmDialog
-        trigger='click'
-        onConfirm={handler}
-        title="You have unsaved changes"
-        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-        textCancel={i18n.getMessage('crudEditor.cancel.button')}
-        key={`operation-${index}`}
-        showDialog={_ => !skipConfirm && hasUnsavedChanges}
-      >
-        <Button>
-          {icon && <Glyphicon glyph={icon}/>}
-          {icon && ' '}
-          {getModelMessage(i18n, `model.label.${name}`, name)}
-        </Button>
-      </ConfirmDialog>
-    )));
-
-    if (viewName === VIEW_EDIT && crudOperations.delete) {
+    if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(
         <ConfirmDialog
           trigger='click'
@@ -128,7 +130,7 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && crudOperations.create) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
       buttons.push(
         <Button
           onClick={handleSaveAndNew}

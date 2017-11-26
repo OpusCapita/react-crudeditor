@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+
+import ConfirmDialog from '../ConfirmDialog';
+import { getModelMessage } from '../lib';
+import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
+
 import {
   Nav,
   NavItem,
@@ -10,9 +15,6 @@ import {
   Button,
   Glyphicon
 } from 'react-bootstrap';
-import ConfirmDialog from '../ConfirmDialog';
-import { getModelMessage } from '../lib';
-import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -39,7 +41,7 @@ export default class EditHeading extends PureComponent {
           persistentInstance,
           formInstance,
           permissions: {
-            crudOperations
+            crudOperations: permissions
           }
         },
         actions: {
@@ -53,11 +55,13 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const title = (crudOperations.view ?
-      (<a style={{ cursor: 'pointer' }} onClick={exitView}>
-        {getModelMessage(i18n, 'model.name')}
-      </a>) :
-      getModelMessage(i18n, 'model.name'));
+    const title = permissions.view ?
+      (
+        <a style={{ cursor: 'pointer' }} onClick={exitView}>
+          {getModelMessage(i18n, 'model.name')}
+        </a>
+      ) :
+      getModelMessage(i18n, 'model.name');
 
     // compare persistent and form instances to decide weither to show confirm box or not
     const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);

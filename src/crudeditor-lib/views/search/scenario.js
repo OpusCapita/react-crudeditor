@@ -11,6 +11,7 @@ import {
   INSTANCES_DELETE,
   VIEW_SOFT_REDIRECT
 } from '../../common/constants';
+
 import { INSTANCE_EDIT } from '../edit/constants';
 import { INSTANCE_SHOW } from '../show/constants';
 import { INSTANCE_CREATE } from '../create/constants';

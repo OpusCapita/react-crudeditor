@@ -6,9 +6,11 @@ import {
   NavItem,
   Col,
   Row,
-  ButtonGroup
+  ButtonGroup,
+  Button,
+  Glyphicon
 } from 'react-bootstrap';
-import makeButtonWithConfirm from './buttonWithConfirm';
+import ConfirmDialog from '../ConfirmDialog';
 import { getModelMessage } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 
@@ -60,24 +62,37 @@ export default class EditHeading extends PureComponent {
     // compare persistent and form instances to decide weither to show confirm box or not
     const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
 
-    const arrowLeft = makeButtonWithConfirm({
-      glyph: 'arrow-left',
-      handleFunc: gotoPrevInstance,
-      title: "You have unsaved changes",
-      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-      textCancel: i18n.getMessage('crudEditor.cancel.button'),
-      showDialog
-    });
-    const arrowRight = makeButtonWithConfirm({
-      glyph: 'arrow-right',
-      handleFunc: gotoNextInstance,
-      title: "You have unsaved changes",
-      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-      textCancel: i18n.getMessage('crudEditor.cancel.button'),
-      showDialog
-    });
+    const arrowLeft = (
+      <ConfirmDialog
+        trigger='click'
+        onConfirm={gotoPrevInstance}
+        title="You have unsaved changes"
+        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+        textCancel={i18n.getMessage('crudEditor.cancel.button')}
+        showDialog={showDialog}
+      >
+        <Button disabled={!gotoPrevInstance}>
+          <Glyphicon glyph="arrow-left"/>
+        </Button>
+      </ConfirmDialog>
+    )
+
+    const arrowRight = (
+      <ConfirmDialog
+        trigger='click'
+        onConfirm={gotoNextInstance}
+        title="You have unsaved changes"
+        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+        textCancel={i18n.getMessage('crudEditor.cancel.button')}
+        showDialog={showDialog}
+      >
+        <Button disabled={!gotoNextInstance}>
+          <Glyphicon glyph="arrow-right"/>
+        </Button>
+      </ConfirmDialog>
+    )
 
     return (<div style={{ marginBottom: '10px' }}>
       <h1>
@@ -93,7 +108,10 @@ export default class EditHeading extends PureComponent {
           </Col>
           <Col xs={4}>
             <div style={{ float: "right" }}>
-              <ButtonGroup>{arrowLeft}{arrowRight}</ButtonGroup>
+              <ButtonGroup>
+                {arrowLeft}
+                {arrowRight}
+              </ButtonGroup>
             </div>
           </Col>
         </Row>

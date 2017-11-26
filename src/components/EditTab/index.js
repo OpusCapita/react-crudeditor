@@ -11,7 +11,6 @@ import {
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
-
 import {
   VIEW_CREATE,
   VIEW_EDIT,
@@ -78,20 +77,32 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    // FIXME: check whether there are unsaved changes before calling operation handler.
+    const hasUnsavedChanges = (
+      viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)
+    ) || (
+        viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null)
+      );
 
     // SHOW & EDIT expose 'persistentInstance'; CREATE exposes 'formatedInstance'
     const operations = instanceOperations(persistentInstance || formatedInstance);
 
-    buttons.push(...operations.map((operation, index) => (
-      <Button
-        onClick={operation.handler}
+    buttons.push(...operations.map(({ name, icon, handler, skipConfirm = false }, index) => (
+      <ConfirmDialog
+        trigger='click'
+        onConfirm={handler}
+        title="You have unsaved changes"
+        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+        textCancel={i18n.getMessage('crudEditor.cancel.button')}
         key={`operation-${index}`}
+        showDialog={_ => !skipConfirm && hasUnsavedChanges}
       >
-        {operation.icon && <Glyphicon glyph={operation.icon}/>}
-        {operation.icon && ' '}
-        {getModelMessage(i18n, `model.label.${operation.name}`, operation.name)}
-      </Button>
+        <Button>
+          {icon && <Glyphicon glyph={icon}/>}
+          {icon && ' '}
+          {getModelMessage(i18n, `model.label.${name}`, name)}
+        </Button>
+      </ConfirmDialog>
     )));
 
     if (viewName === VIEW_EDIT && crudOperations.delete) {

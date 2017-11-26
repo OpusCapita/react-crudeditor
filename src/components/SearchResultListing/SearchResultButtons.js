@@ -54,9 +54,6 @@ export default class SearchResultButtons extends PureComponent {
       )
     }
 
-    // FIXME: check whether there are unsaved changes before calling operation handler.
-    // >> needed only on EDIT view
-
     if (operations.length === 1) {
       const { name, icon, handler } = operations[0];
 
@@ -68,30 +65,31 @@ export default class SearchResultButtons extends PureComponent {
         </Button>
       );
     } else if (operations.length > 1) {
+      const { name, icon, handler } = operations[0];
       buttons.push(
         <SplitButton
           title={
             <span>
-              {operations[0].icon && <Glyphicon glyph={operations[0].icon}/>}
-              {operations[0].icon && ' '}
-              {getModelMessage(i18n, `model.label.${operations[0].name}`, operations[0].name)}
+              {icon && <Glyphicon glyph={icon}/>}
+              {icon && ' '}
+              {getModelMessage(i18n, `model.label.${name}`, name)}
             </span>
           }
           pullRight={true}
-          id={`operations-split-${operations[0].name}`}
-          key={`operations-split-${operations[0].name}`}
-          onClick={operations[0].handler}
+          id={`operations-split-${name}`}
+          key={`operations-split-${name}`}
+          onClick={handler}
           bsSize="sm"
         >
           {
-            operations.slice(1).map((operation, index) => (
+            operations.slice(1).map(({ name, icon, handler }, index) => (
               <MenuItem
                 key={index}
-                onClick={operation.handler}
+                onClick={handler}
               >
-                {operation.icon && <Glyphicon glyph={operation.icon}/>}
-                {operation.icon && ' '}
-                {getModelMessage(i18n, `model.label.${operation.name}`, operation.name)}
+                {icon && <Glyphicon glyph={icon}/>}
+                {icon && ' '}
+                {getModelMessage(i18n, `model.label.${name}`, name)}
               </MenuItem>
             ))
           }

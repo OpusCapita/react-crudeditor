@@ -23,7 +23,8 @@ export default class EditTab extends React.PureComponent {
       data: PropTypes.shape({
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
-        formatedInstance: PropTypes.object
+        formatedInstance: PropTypes.object,
+        formInstance: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
@@ -37,6 +38,19 @@ export default class EditTab extends React.PureComponent {
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
+
+  showConfirmDialog = skipConfirm => _ => {
+    const {
+      viewName,
+      formInstance,
+      persistentInstance
+    } = this.props.model.data;
+
+    const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
+      (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
+
+    return !skipConfirm && hasUnsavedChanges;
+  }
 
   render() {
     const {
@@ -77,12 +91,6 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    const hasUnsavedChanges = (
-      viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)
-    ) || (
-        viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null)
-      );
-
     // SHOW & EDIT expose 'persistentInstance'; CREATE exposes 'formatedInstance'
     const operations = instanceOperations(persistentInstance || formatedInstance);
 
@@ -95,7 +103,7 @@ export default class EditTab extends React.PureComponent {
         textConfirm={i18n.getMessage('crudEditor.confirm.action')}
         textCancel={i18n.getMessage('crudEditor.cancel.button')}
         key={`operation-${index}`}
-        showDialog={_ => !skipConfirm && hasUnsavedChanges}
+        showDialog={this.showConfirmDialog(skipConfirm)}
       >
         <Button>
           {icon && <Glyphicon glyph={icon}/>}

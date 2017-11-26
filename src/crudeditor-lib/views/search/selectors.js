@@ -117,5 +117,6 @@ export const
       order: storeState.sortParams.order
     },
     status: storeState.status,
-    totalCount: storeState.totalCount
+    totalCount: storeState.totalCount,
+    hideSearchForm: storeState.hideSearchForm
   }));

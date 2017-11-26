@@ -169,6 +169,7 @@ class SearchResultListing extends PureComponent {
                       onShow={this.handleShow(instance, index)}
                       onEdit={this.handleEdit(instance, index)}
                       onDelete={this.handleDelete(instance)}
+                      index={index}
                     />
                   </td>
                 </tr>

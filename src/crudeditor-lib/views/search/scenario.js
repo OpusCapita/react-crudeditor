@@ -137,12 +137,16 @@ export default function*({
     sort,
     order,
     max,
-    offset
+    offset,
+    hideSearchForm
   } = {},
   source
 }) {
   yield put({
     type: VIEW_INITIALIZE_REQUEST,
+    payload: {
+      hideSearchForm
+    },
     meta: { source }
   });
 

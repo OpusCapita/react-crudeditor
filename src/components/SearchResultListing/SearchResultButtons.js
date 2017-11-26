@@ -16,7 +16,8 @@ export default class SearchResultButtons extends PureComponent {
     operations: PropTypes.array.isRequired,
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    index: PropTypes.number
   }
 
   static contextTypes = {
@@ -29,7 +30,8 @@ export default class SearchResultButtons extends PureComponent {
       onEdit,
       onDelete,
       permissions,
-      operations
+      operations,
+      index
     } = this.props;
 
     const { i18n } = this.context;
@@ -66,6 +68,7 @@ export default class SearchResultButtons extends PureComponent {
       );
     } else if (operations.length > 1) {
       const { name, icon, handler } = operations[0];
+      const uid = `ops-split-${name}-${index}`;
       buttons.push(
         <SplitButton
           title={
@@ -76,8 +79,8 @@ export default class SearchResultButtons extends PureComponent {
             </span>
           }
           pullRight={true}
-          id={`operations-split-${name}`}
-          key={`operations-split-${name}`}
+          id={uid}
+          key={uid}
           onClick={handler}
           bsSize="sm"
         >
@@ -85,6 +88,7 @@ export default class SearchResultButtons extends PureComponent {
             operations.slice(1).map(({ name, icon, handler }, index) => (
               <MenuItem
                 key={index}
+                eventKey={index}
                 onClick={handler}
               >
                 {icon && <Glyphicon glyph={icon}/>}

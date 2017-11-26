@@ -26,6 +26,15 @@ export default class EditHeading extends PureComponent {
     i18n: PropTypes.object
   };
 
+  showConfirmDialog = _ => {
+    const {
+      formInstance,
+      persistentInstance
+    } = this.props.model.data;
+    // compare persistent and form instances to decide weither to show confirm box or not
+    return formInstance && !isEqual(formInstance, persistentInstance);
+  }
+
   render() {
     const {
       model: {
@@ -36,8 +45,6 @@ export default class EditHeading extends PureComponent {
           instanceLabel,
           tabs,
           viewName,
-          persistentInstance,
-          formInstance,
           permissions: {
             crudOperations
           }
@@ -59,9 +66,6 @@ export default class EditHeading extends PureComponent {
       </a>) :
       getModelMessage(i18n, 'model.name'));
 
-    // compare persistent and form instances to decide weither to show confirm box or not
-    const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
-
     const arrowLeft = (
       <ConfirmDialog
         trigger='click'
@@ -70,7 +74,7 @@ export default class EditHeading extends PureComponent {
         message={i18n.getMessage('crudEditor.unsaved.confirmation')}
         textConfirm={i18n.getMessage('crudEditor.confirm.action')}
         textCancel={i18n.getMessage('crudEditor.cancel.button')}
-        showDialog={showDialog}
+        showDialog={this.showConfirmDialog}
       >
         <Button disabled={!gotoPrevInstance}>
           <Glyphicon glyph="arrow-left"/>
@@ -86,7 +90,7 @@ export default class EditHeading extends PureComponent {
         message={i18n.getMessage('crudEditor.unsaved.confirmation')}
         textConfirm={i18n.getMessage('crudEditor.confirm.action')}
         textCancel={i18n.getMessage('crudEditor.cancel.button')}
-        showDialog={showDialog}
+        showDialog={this.showConfirmDialog}
       >
         <Button disabled={!gotoNextInstance}>
           <Glyphicon glyph="arrow-right"/>

@@ -14,15 +14,19 @@ import { viewOperations } from '../lib';
 import { VIEW_NAME } from './constants';
 import { softRedirectView } from '../../common/actions';
 
-const mergeProps = ({
-  viewModelData,
-  flags,
-  viewState,
-  operations
-}, {
-  softRedirectView,
-  ...dispatchProps
-}, ownProps) => ({
+const mergeProps = (
+  {
+    viewModelData,
+    flags,
+    viewState,
+    operations
+  },
+  {
+    softRedirectView,
+    ...dispatchProps
+  },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
     data: {

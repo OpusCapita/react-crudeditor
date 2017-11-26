@@ -7,7 +7,7 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/@opuscapita/react-crudeditor.svg)](https://npmjs.org/package/@opuscapita/react-crudeditor)
 ![badge-license](https://img.shields.io/github/license/OpusCapita/react-crudeditor.svg)
 
-### [Demo contract editor](https://opuscapita.github.io/react-crudeditor/branches/master/?maxContainerWidth=91%25)
+### [Demo](https://opuscapita.github.io/react-crudeditor/branches/master/?maxContainerWidth=91%25)
 
 **Table of Content**
 

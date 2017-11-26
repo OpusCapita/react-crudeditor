@@ -1,3 +1,6 @@
+# CRUD Editor
+
+
 [![CircleCI](https://circleci.com/gh/OpusCapita/react-crudeditor.svg?style=shield&circle-token=d9a917e9d6b76fc2d83928b2ec06e2297b3e05a4)](https://circleci.com/gh/OpusCapita/react-crudeditor)
 [![npm version](https://img.shields.io/npm/v/@opuscapita/react-crudeditor.svg)](https://npmjs.org/package/@opuscapita/react-crudeditor)
 [![Dependency Status](https://img.shields.io/david/OpusCapita/react-crudeditor.svg)](https://david-dm.org/OpusCapita/react-crudeditor)
@@ -6,9 +9,7 @@
 
 ### [Demo contract editor](https://opuscapita.github.io/react-crudeditor/branches/master/?maxContainerWidth=91%25)
 
-# CRUD Editor
-
-Table of Content
+**Table of Content**
 
 - [Terminology](#terminology)
 - [Usage](#usage)

@@ -47,7 +47,9 @@ const common = {
   "crudEditor.found.items.message": "{count} item(s) found",
   "crudEditor.range.from": "from",
   "crudEditor.range.to": "to",
-  "crudEditor.confirm.action": "Confirm"
+  "crudEditor.confirm.action": "Confirm",
+  "crudEditor.search.showSearchForm": "Show search form",
+  "crudEditor.search.hideSearchForm": "Hide search form"
 }
 /* eslint-enable max-len */
 

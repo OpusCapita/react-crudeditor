@@ -35,15 +35,18 @@ export default class SearchMain extends PureComponent {
     const { model } = this.props;
     const {
       data: {
-        hideSearchForm
+        hideSearchForm,
+        permissions: {
+          crudOperations: {
+            create: canCreate
+          }
+        }
       },
       actions: {
         toggleSearchForm
       }
     } = model;
     const { i18n } = this.context;
-
-    const canCreate = model.data.permissions.crudOperations.create;
 
     return (
       <div className="crud--search-main">
@@ -56,7 +59,7 @@ export default class SearchMain extends PureComponent {
               <Button
                 bsStyle="link"
                 onClick={toggleSearchForm}
-                title={`${hideSearchForm ? 'Show' : 'Hide'} search form`}
+                title={i18n.getMessage(`crudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
               >
                 <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>
               </Button>

@@ -36,7 +36,7 @@ import {
   VIEW_REDIRECT_FAIL,
   VIEW_REDIRECT_SUCCESS,
 
-  TOGGLE_SEARCH_FORM
+  SEARCH_FORM_TOGGLE
 } from './constants';
 
 import {
@@ -498,7 +498,7 @@ export default modelDefinition => {
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => ins !== instance);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-    } else if (type === TOGGLE_SEARCH_FORM) {
+    } else if (type === SEARCH_FORM_TOGGLE) {
       newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm
     }
 

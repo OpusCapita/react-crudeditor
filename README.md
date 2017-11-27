@@ -119,9 +119,15 @@
 ```javascript
 // 'contract-crudeditor' package.
 import React from 'react';
-import crudEditor from '@opuscapita/react-crudeditor';
 
-const ContractEditor = crudEditor(<Model Definition>);
+import createEditor, {
+  VIEW_SEARCH,
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW
+} from '@opuscapita/react-crudeditor';
+
+const ContractEditor = createEditor(<Model Definition>);
 export default ContractEditor;
 ```
 
@@ -137,13 +143,13 @@ export default class extends React.Component {
       <ContractEditor
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
-        ?onExternalOperation={<object>}  // TODO
+        ?onExternalOperation={<object>}
       />;
       ...
     )
 ```
 
-`crudEditor` is a function which the only argument is [Model Definition](#model-definition) object. It returns [*EditorComponent*](#editorcomponent).
+`createEditor` is a function which the only argument is [Model Definition](#model-definition) object. It returns [*EditorComponent*](#editorcomponent).
 
 ## *EditorComponent*
 
@@ -653,7 +659,6 @@ Model Definition is an object describing an entity. It has the following structu
      * Internal, Custom and External operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
      * Handlers are provided for Custom Operations only.
-     * TODO
      */
     ?operations: function(<object, entity instance>, {
       name: <string, View name>,  // See EditorComponent props.view.name

@@ -674,7 +674,7 @@ Model Definition is an object describing an entity. It has the following structu
         ?handler: function() {
           ...
           return {
-            ?name: <string, View Name, active View by default>,
+            name: <string, View Name>,
             ?state: <object, View State, empty object by default>
           };
         }

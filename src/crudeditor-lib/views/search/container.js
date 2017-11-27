@@ -4,12 +4,18 @@ import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
 import { createInstance } from '../create/actions';
 import { editInstance } from '../edit/actions';
-import { deleteInstances } from '../../common/actions';
+import {
+  deleteInstances,
+  softRedirectView
+} from '../../common/actions';
 import { showInstance } from '../show/actions';
+import { VIEW_NAME } from './constants';
+import { viewOperations } from '../lib';
 
 import {
   getDefaultNewInstance,
-  getViewModelData
+  getViewModelData,
+  getViewState
 } from './selectors';
 
 import {
@@ -22,13 +28,22 @@ import {
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData },
-  { createInstance, editInstance, showInstance, ...dispatchProps },
+  { defaultNewInstance, viewModelData, viewState, operations, onExternalOperation },
+  { createInstance, editInstance, showInstance, softRedirectView, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView,
+        onExternalOperation
+      })
+    },
     actions: {
       ...dispatchProps,
       createInstance: _ => createInstance({ predefinedFields: defaultNewInstance }),
@@ -57,13 +72,16 @@ const mergeProps = (
         }
       })
     }
-  },
+  }
 });
 
 export default connect(
-  (storeState, { modelDefinition }) => ({
+  (storeState, { modelDefinition, onExternalOperation }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition)
+    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations,
+    onExternalOperation
   }),
   {
     createInstance,
@@ -75,6 +93,7 @@ export default connect(
     toggleSelected,
     toggleSelectedAll,
     updateFormFilter,
+    softRedirectView,
     toggleSearchForm
   },
   mergeProps

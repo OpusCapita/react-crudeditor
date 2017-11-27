@@ -5,14 +5,19 @@ import editSaga from './workerSagas/edit';
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
 import editAdjacentSaga from './workerSagas/editAdjacent';
+import redirectSaga from '../../common/workerSagas/redirect';
 
-import { INSTANCES_DELETE } from '../../common/constants';
+import {
+  INSTANCES_DELETE,
+  VIEW_SOFT_REDIRECT
+} from '../../common/constants';
 import { plusMinus } from '../lib';
 
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
   TAB_SELECT,
+  VIEW_NAME,
 
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,
@@ -32,7 +37,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
     },
     nonBlocking: {
       [INSTANCE_SAVE]: saveSaga,
-      [VIEW_EXIT]: exitSaga
+      [VIEW_EXIT]: exitSaga,
+      [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }
 
@@ -57,7 +63,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action,
+          action: {
+            ...action,
+            meta: {
+              ...action.meta,
+              spawner: VIEW_NAME
+            }
+          },
           navigation: {
             ...navigation,
             nextInc
@@ -75,7 +87,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action,
+            action: {
+              ...action,
+              meta: {
+                ...action.meta,
+                spawner: VIEW_NAME
+              }
+            },
             navigation: {
               ...navigation,
               nextInc

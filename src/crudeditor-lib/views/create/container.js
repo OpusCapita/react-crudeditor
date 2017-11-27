@@ -1,8 +1,15 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
+
 import Main from '../../../components/CreateMain';
-import { getViewModelData } from './selectors';
+import { softRedirectView } from '../../common/actions';
+import { viewOperations } from '../lib';
+import { VIEW_NAME } from './constants';
+
+import {
+  getViewModelData,
+  getViewState
+} from './selectors';
 
 import {
   exitView,
@@ -13,24 +20,49 @@ import {
   saveAndNewInstance
 } from './actions';
 
-const mergeProps = ({ viewModelData }, dispatchProps, ownProps) => ({
+const mergeProps = (
+  {
+    viewModelData,
+    viewState,
+    operations,
+    onExternalOperation
+  },
+  {
+    softRedirectView,
+    ...dispatchProps
+  },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView,
+        onExternalOperation
+      })
+    },
     actions: dispatchProps
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition }) => ({
-    viewModelData: getViewModelData(storeState, modelDefinition)
+  (storeState, { modelDefinition, onExternalOperation }) => ({
+    viewModelData: getViewModelData(storeState, modelDefinition),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations,
+    onExternalOperation
   }), {
     exitView,
     saveInstance,
     selectTab,
     validateInstanceField,
     changeInstanceField,
-    saveAndNewInstance
+    saveAndNewInstance,
+    softRedirectView
   },
   mergeProps
 )(({

@@ -3,7 +3,7 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 import showSaga from './workerSagas/show';
 import exitSaga from './workerSagas/exit';
 import showAdjacentSaga from './workerSagas/showAdjacent';
-
+import redirectSaga from '../../common/workerSagas/redirect';
 import { plusMinus } from '../lib';
 
 import {
@@ -13,8 +13,10 @@ import {
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
   VIEW_REDIRECT_SUCCESS,
-  INSTANCE_SHOW_ADJACENT
+  INSTANCE_SHOW_ADJACENT,
+  VIEW_NAME
 } from './constants';
+import { VIEW_SOFT_REDIRECT } from '../../common/constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
@@ -23,7 +25,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
       [INSTANCE_SHOW_ADJACENT]: showAdjacentSaga
     },
     nonBlocking: {
-      [VIEW_EXIT]: exitSaga
+      [VIEW_EXIT]: exitSaga,
+      [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }
 
@@ -48,7 +51,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action,
+          action: {
+            ...action,
+            meta: {
+              ...action.meta,
+              spawner: VIEW_NAME
+            }
+          },
           navigation: {
             ...navigation,
             nextInc
@@ -66,7 +75,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action: {
+              ...action,
+              meta: {
+                ...action.meta,
+                spawner: VIEW_NAME
+              }
+            }
           });
         } catch (err) {
           // Swallow custom errors.

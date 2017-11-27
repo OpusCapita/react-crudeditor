@@ -1,52 +1,132 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap';
+import {
+  Glyphicon,
+  Button,
+  ButtonGroup,
+  SplitButton,
+  MenuItem
+} from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
+import { getModelMessage } from '../lib';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
-    model: PropTypes.shape({
-      data: PropTypes.shape({
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.object.isRequired
-        })
-      })
-    }),
-    instance: PropTypes.object,
-    index: PropTypes.number,
+    permissions: PropTypes.object.isRequired,
+    operations: PropTypes.array.isRequired,
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    index: PropTypes.number
   }
 
   static contextTypes = {
     i18n: PropTypes.object.isRequired
   }
 
-  render() {
-    const permissions = this.props.model.data.permissions.crudOperations;
-    const { onShow, onEdit, onDelete } = this.props;
-    const { i18n } = this.context;
+  operationsButton = operations => {
+    if (operations.length === 0) {
+      return null;
+    }
 
+    const { icon, handler, title, uid } = operations[0];
+
+    if (operations.length === 1) {
+      return (
+        <Button onClick={handler} key={uid}>
+          {icon && <Glyphicon glyph={icon} />}
+          {icon && ' '}
+          {title}
+        </Button>
+      );
+    }
+
+    return (
+      <SplitButton
+        title={
+          <span>
+            {icon && <Glyphicon glyph={icon}/>}
+            {icon && '\u00A0'}
+            {title}
+          </span>
+        }
+        id={uid}
+        key={uid}
+        onClick={handler}
+        bsSize="sm"
+      >
+        {
+          operations.slice(1).map(({ icon, handler, title, uid }, index) => (
+            <MenuItem
+              key={index}
+              eventKey={index}
+              onClick={handler}
+            >
+              <span className="btn-sm text-left">
+                {icon && <Glyphicon glyph={icon}/>}
+                {icon && '\u00A0\u00A0'}
+                {title}
+              </span>
+            </MenuItem>
+          ))
+        }
+      </SplitButton>
+    );
+  }
+
+  render() {
+    const {
+      onShow,
+      onEdit,
+      onDelete,
+      permissions,
+      index: uid
+    } = this.props;
+
+    const { i18n } = this.context;
     const buttons = [];
 
-    if (permissions.edit) {
-      buttons.push(
-        <Button onClick={onEdit} key="edit">
-          <Glyphicon glyph='edit' />
-          {' '}
-          {i18n.getMessage('crudEditor.edit.button')}
-        </Button>
+    buttons.push(
+      this.operationsButton([
+        ...(
+          permissions.edit ?
+            [{
+              icon: 'edit',
+              title: i18n.getMessage('crudEditor.edit.button'),
+              handler: onEdit,
+              uid: `internal-operation-${uid}`
+            }] : (
+              permissions.view ?
+                [{
+                  icon: 'eye-open',
+                  title: i18n.getMessage('crudEditor.show.button'),
+                  handler: onShow,
+                  uid: `internal-operation-${uid}`
+                }] :
+                []
+            )
+        ),
+        ...this.props.operations.
+          filter(({ type }) => type === 'custom').
+          map(({ name, ...rest }) => ({
+            ...rest,
+            title: getModelMessage(i18n, `model.label.${name}`, name),
+            uid: `custom-operation-${uid}`
+          }))
+      ])
+    );
+
+    buttons.push(
+      this.operationsButton(
+        this.props.operations.
+          filter(({ type }) => type === 'external').
+          map(({ name, ...rest }) => ({
+            ...rest,
+            title: getModelMessage(i18n, `model.label.${name}`, name),
+            uid: `external-operation-${uid}`
+          }))
       )
-    } else if (permissions.view) {
-      buttons.push(
-        <Button onClick={onShow} key="show">
-          <Glyphicon glyph='glyphicon-eye-open' />
-          {' '}
-          {i18n.getMessage('crudEditor.show.button')}
-        </Button>
-      )
-    }
+    );
 
     if (permissions.delete) {
       buttons.push(
@@ -68,7 +148,7 @@ export default class SearchResultButtons extends PureComponent {
       )
     }
 
-    return buttons.length > 0 && (
+    return buttons.filter(button => button).length && (
       <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
         {buttons}
       </ButtonGroup>

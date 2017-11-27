@@ -5,8 +5,13 @@ import searchSaga from './workerSagas/search';
 import editSaga from './workerSagas/edit';
 import showSaga from './workerSagas/show';
 import createSaga from './workerSagas/create';
+import redirectSaga from '../../common/workerSagas/redirect';
 
-import { INSTANCES_DELETE } from '../../common/constants';
+import {
+  INSTANCES_DELETE,
+  VIEW_SOFT_REDIRECT
+} from '../../common/constants';
+
 import { INSTANCE_EDIT } from '../edit/constants';
 import { INSTANCE_SHOW } from '../show/constants';
 import { INSTANCE_CREATE } from '../create/constants';
@@ -18,6 +23,7 @@ import {
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
 
+  VIEW_NAME,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
@@ -39,7 +45,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
       [INSTANCES_SEARCH]: searchSaga,
       [INSTANCE_EDIT]: editSaga,
       [INSTANCE_SHOW]: showSaga,
-      [INSTANCE_CREATE]: createSaga
+      [INSTANCE_CREATE]: createSaga,
+      [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }
 
@@ -61,7 +68,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action: {
+            ...action,
+            meta: {
+              ...action.meta,
+              spawner: VIEW_NAME
+            }
+          }
         });
         // refresh search results
         if (action.type === INSTANCES_DELETE) {
@@ -89,7 +102,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action: {
+              ...action,
+              meta: {
+                ...action.meta,
+                spawner: VIEW_NAME
+              }
+            }
           });
         } catch (err) {
           // Swallow custom errors.
@@ -127,7 +146,7 @@ export default function*({
   yield put({
     type: VIEW_INITIALIZE_REQUEST,
     payload: {
-      hideSearchForm: !!hideSearchForm
+      hideSearchForm
     },
     meta: { source }
   });

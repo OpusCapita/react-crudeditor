@@ -10,7 +10,7 @@ import {
   ERROR_REQUIRED_MISSING
 } from '../../data-types-lib/constants';
 
-export default class extends PureComponent {
+export default class FieldErrorLabel extends PureComponent {
   static propTypes = {
     errors: PropTypes.arrayOf(PropTypes.object)
   }

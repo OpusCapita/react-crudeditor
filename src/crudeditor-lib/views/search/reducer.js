@@ -246,7 +246,9 @@ export default modelDefinition => {
 
     if (type === VIEW_INITIALIZE_REQUEST) {
       const { hideSearchForm } = payload;
-      newStoreStateSlice.hideSearchForm = hideSearchForm;
+      if (typeof hideSearchForm === 'boolean') {
+        newStoreStateSlice.hideSearchForm = hideSearchForm;
+      }
       newStoreStateSlice.status = STATUS_INITIALIZING;
     } else if (type === VIEW_INITIALIZE_FAIL) {
       newStoreStateSlice.status = STATUS_UNINITIALIZED;

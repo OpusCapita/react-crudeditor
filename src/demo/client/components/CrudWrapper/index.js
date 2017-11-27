@@ -94,6 +94,17 @@ export default class CrudWrapper extends PureComponent {
     }
 
     const Crud = entities2crud[entities];
-    return <Crud view={view} onTransition={handleTransition[baseURL]} />;
+
+    return (
+      <Crud
+        view={view}
+        onTransition={handleTransition[baseURL]}
+        onExternalOperation={{
+          testLink() {
+            window.location = 'http://opuscapita.com';
+          }
+        }}
+      />
+    );
   }
 }

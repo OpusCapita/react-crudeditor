@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
-import isEqual from 'lodash/isEqual';
 
+import isEqual from 'lodash/isEqual';
+import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 
 import {
@@ -11,10 +11,49 @@ import {
   VIEW_SHOW
 } from '../../crudeditor-lib/common/constants';
 
-class EditTab extends React.PureComponent {
+import {
+  Button,
+  Form,
+  FormGroup,
+  Col,
+  ButtonToolbar,
+  Glyphicon
+} from 'react-bootstrap';
+
+export default class EditTab extends React.PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        viewName: PropTypes.string,
+        persistentInstance: PropTypes.object,
+        formatedInstance: PropTypes.object,
+        formInstance: PropTypes.object
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired,
+    fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
+
+  showConfirmDialog = type => _ => {
+    const {
+      viewName,
+      formInstance,
+      persistentInstance
+    } = this.props.model.data;
+
+    const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
+      (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
+
+    return type === 'custom' && hasUnsavedChanges;
+  }
 
   render() {
     const {
@@ -28,9 +67,11 @@ class EditTab extends React.PureComponent {
           viewName,
           persistentInstance,
           formInstance,
+          formatedInstance,
           permissions: {
-            crudOperations
-          }
+            crudOperations: permissions
+          },
+          operations
         }
       },
       fieldErrorsWrapper: {
@@ -45,15 +86,37 @@ class EditTab extends React.PureComponent {
 
     const buttons = [];
 
-    if (crudOperations.view) {
+    if (permissions.view) {
       buttons.push(
         <Button bsStyle='link' onClick={exitView} key="Cancel">
-          {this.context.i18n.getMessage('crudEditor.cancel.button')}
+          {i18n.getMessage('crudEditor.cancel.button')}
         </Button>
       )
     }
 
-    if (viewName === VIEW_EDIT && crudOperations.delete) {
+    buttons.push(
+      ...operations(viewName === VIEW_CREATE ? formatedInstance : persistentInstance).
+        map(({ name, icon, handler, type }, index) => (
+          <ConfirmDialog
+            trigger='click'
+            onConfirm={handler}
+            title="You have unsaved changes"
+            message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+            textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+            textCancel={i18n.getMessage('crudEditor.cancel.button')}
+            key={`operation-${index}`}
+            showDialog={this.showConfirmDialog(type)}
+          >
+            <Button>
+              {icon && <Glyphicon glyph={icon} />}
+              {icon && ' '}
+              {getModelMessage(i18n, `model.label.${name}`, name)}
+            </Button>
+          </ConfirmDialog>
+        ))
+    );
+
+    if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(
         <ConfirmDialog
           trigger='click'
@@ -76,7 +139,7 @@ class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && crudOperations.create) {
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
       buttons.push(
         <Button
           onClick={handleSaveAndNew}
@@ -127,19 +190,3 @@ class EditTab extends React.PureComponent {
   }
 }
 
-EditTab.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      viewName: PropTypes.string,
-      persistentInstance: PropTypes.object
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired,
-  fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
-}
-
-EditTab.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditTab;

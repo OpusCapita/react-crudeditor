@@ -1,10 +1,19 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
-import Main from '../../../components/EditMain';
-import { getViewModelData } from './selectors';
-import { deleteInstances } from '../../common/actions';
 
+import Main from '../../../components/EditMain';
+import { VIEW_NAME } from './constants';
+import { viewOperations } from '../lib';
+
+import {
+  getViewModelData,
+  getViewState
+} from './selectors';
+
+import {
+  deleteInstances,
+  softRedirectView
+} from '../../common/actions';
 
 import {
   changeInstanceField,
@@ -17,21 +26,37 @@ import {
   editAdjacentInstance
 } from './actions';
 
-const mergeProps = ({
-  viewModelData,
-  flags: {
-    nextInstanceExists,
-    prevInstanceExists
-  }
-}, {
-  saveAndNextInstance,
-  editAdjacentInstance,
-  ...otherActions
-},
-ownProps) => ({
+const mergeProps = (
+  {
+    viewModelData,
+    viewState,
+    operations,
+    flags: {
+      nextInstanceExists,
+      prevInstanceExists
+    },
+    onExternalOperation
+  },
+  {
+    saveAndNextInstance,
+    editAdjacentInstance,
+    softRedirectView,
+    ...otherActions
+  },
+  ownProps
+) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      operations: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView,
+        onExternalOperation
+      })
+    },
     // here we adjust action creators to reflect flags values
     actions: {
       ...otherActions,
@@ -47,11 +72,14 @@ ownProps) => ({
 });
 
 export default connect(
-  (storeState, { modelDefinition }) => ({
+  (storeState, { modelDefinition, onExternalOperation }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
-    }))(getViewModelData(storeState, modelDefinition))
+    }))(getViewModelData(storeState, modelDefinition)),
+    viewState: getViewState(storeState, modelDefinition),
+    operations: modelDefinition.ui.operations,
+    onExternalOperation
   }), {
     changeInstanceField,
     deleteInstances,
@@ -61,7 +89,8 @@ export default connect(
     saveAndNextInstance,
     selectTab,
     validateInstanceField,
-    editAdjacentInstance
+    editAdjacentInstance,
+    softRedirectView
   },
   mergeProps
 )(({

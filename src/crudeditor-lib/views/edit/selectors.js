@@ -16,12 +16,15 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({
-    persistentInstance,
-    activeTab: { tab } = {}
-  }, {
-    model: { fields }
-  }) => ({
+  getViewState = wrapper((
+    {
+      persistentInstance,
+      activeTab: { tab } = {}
+    },
+    {
+      model: { fields }
+    }
+  ) => ({
     instance: getLogicalKeyBuilder(fields)(persistentInstance),
     ...(tab ? { tab } : {})
   })),
@@ -55,4 +58,5 @@ export const
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     viewName: VIEW_NAME
-  }));
+  })
+  );

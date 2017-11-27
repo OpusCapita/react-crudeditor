@@ -18,7 +18,7 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
+const ViewSwitcher = ({ activeViewName, modelDefinition, onExternalOperation }) => {
   if (!activeViewName) {
     return null;
   }
@@ -34,7 +34,10 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
   return (<div>
     {
       ViewComponent ?
-        <ViewComponent modelDefinition={modelDefinition} /> :
+        <ViewComponent
+          modelDefinition={modelDefinition}
+          onExternalOperation={onExternalOperation}
+        /> :
         <div>Unknown view <i>{activeViewName}</i></div>
     }
   </div>);
@@ -42,7 +45,8 @@ const ViewSwitcher = ({ activeViewName, modelDefinition }) => {
 
 ViewSwitcher.propTypes = {
   activeViewName: PropTypes.string,
-  modelDefinition: PropTypes.object
+  modelDefinition: PropTypes.object,
+  onExternalOperation: PropTypes.objectOf(PropTypes.func)
 }
 
 export default connect(

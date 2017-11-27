@@ -24,13 +24,13 @@ import {
 const isStandardView = viewName => [VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName) > -1;
 
 export default function*(modelDefinition) {
-  const { crudOperations } = modelDefinition.permissions;
+  const permissions = modelDefinition.permissions.crudOperations;
 
   const initializeViewSagas = {
-    ...(crudOperations.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
-    ...(crudOperations.create ? { [VIEW_CREATE]: createViewScenario } : null),
-    ...(crudOperations.edit ? { [VIEW_EDIT]: editViewScenario } : null),
-    ...(crudOperations.view ? { [VIEW_SHOW]: showViewScenario } : null),
+    ...(permissions.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
+    ...(permissions.create ? { [VIEW_CREATE]: createViewScenario } : null),
+    ...(permissions.edit ? { [VIEW_EDIT]: editViewScenario } : null),
+    ...(permissions.view ? { [VIEW_SHOW]: showViewScenario } : null),
     [VIEW_ERROR]: errorViewScenario
   };
 

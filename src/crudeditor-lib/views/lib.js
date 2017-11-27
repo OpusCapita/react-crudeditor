@@ -226,3 +226,48 @@ export function* plusMinus() {
     i += next.i
   }
 }
+
+// viewOperations creates custom/external operations handler for particular view
+export const viewOperations = ({
+  viewName,
+  viewState,
+  operations,
+  softRedirectView,
+  onExternalOperation = {}
+}) => instance => (operations(
+  instance,
+  {
+    name: viewName,
+    state: viewState
+  }
+) || []).reduce(
+  (rez, { handler, name, ...rest }) => [
+    ...rez,
+    ...(handler ?
+      [{
+        ...rest,
+        name,
+        type: 'custom',
+        handler: _ => {
+          const view = handler();
+          if (view && view.name) {
+            softRedirectView(view);
+          }
+        }
+      }] : (
+        onExternalOperation.hasOwnProperty(name) ?
+          [{
+            ...rest,
+            name,
+            type: 'external',
+            handler: _ => onExternalOperation[name](instance, {
+              name: viewName,
+              state: viewState
+            })
+          }] :
+          []
+      )
+    )
+  ],
+  []
+);

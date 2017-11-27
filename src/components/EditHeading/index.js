@@ -1,16 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+
+import ConfirmDialog from '../ConfirmDialog';
+import { getModelMessage } from '../lib';
+import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
+
 import {
   Nav,
   NavItem,
   Col,
   Row,
-  ButtonGroup
+  ButtonGroup,
+  Button,
+  Glyphicon
 } from 'react-bootstrap';
-import makeButtonWithConfirm from './buttonWithConfirm';
-import { getModelMessage } from '../lib';
-import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -24,6 +28,15 @@ export default class EditHeading extends PureComponent {
     i18n: PropTypes.object
   };
 
+  showConfirmDialog = _ => {
+    const {
+      formInstance,
+      persistentInstance
+    } = this.props.model.data;
+    // compare persistent and form instances to decide weither to show confirm box or not
+    return formInstance && !isEqual(formInstance, persistentInstance);
+  }
+
   render() {
     const {
       model: {
@@ -34,10 +47,8 @@ export default class EditHeading extends PureComponent {
           instanceLabel,
           tabs,
           viewName,
-          persistentInstance,
-          formInstance,
           permissions: {
-            crudOperations
+            crudOperations: permissions
           }
         },
         actions: {
@@ -51,33 +62,45 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const title = (crudOperations.view ?
-      (<a style={{ cursor: 'pointer' }} onClick={exitView}>
-        {getModelMessage(i18n, 'model.name')}
-      </a>) :
-      getModelMessage(i18n, 'model.name'));
+    const title = permissions.view ?
+      (
+        <a style={{ cursor: 'pointer' }} onClick={exitView}>
+          {getModelMessage(i18n, 'model.name')}
+        </a>
+      ) :
+      getModelMessage(i18n, 'model.name');
 
-    // compare persistent and form instances to decide weither to show confirm box or not
-    const showDialog = _ => formInstance && !isEqual(formInstance, persistentInstance);
+    const arrowLeft = (
+      <ConfirmDialog
+        trigger='click'
+        onConfirm={gotoPrevInstance}
+        title="You have unsaved changes"
+        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+        textCancel={i18n.getMessage('crudEditor.cancel.button')}
+        showDialog={this.showConfirmDialog}
+      >
+        <Button disabled={!gotoPrevInstance}>
+          <Glyphicon glyph="arrow-left"/>
+        </Button>
+      </ConfirmDialog>
+    )
 
-    const arrowLeft = makeButtonWithConfirm({
-      glyph: 'arrow-left',
-      handleFunc: gotoPrevInstance,
-      title: "You have unsaved changes",
-      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-      textCancel: i18n.getMessage('crudEditor.cancel.button'),
-      showDialog
-    });
-    const arrowRight = makeButtonWithConfirm({
-      glyph: 'arrow-right',
-      handleFunc: gotoNextInstance,
-      title: "You have unsaved changes",
-      message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-      textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-      textCancel: i18n.getMessage('crudEditor.cancel.button'),
-      showDialog
-    });
+    const arrowRight = (
+      <ConfirmDialog
+        trigger='click'
+        onConfirm={gotoNextInstance}
+        title="You have unsaved changes"
+        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
+        textCancel={i18n.getMessage('crudEditor.cancel.button')}
+        showDialog={this.showConfirmDialog}
+      >
+        <Button disabled={!gotoNextInstance}>
+          <Glyphicon glyph="arrow-right"/>
+        </Button>
+      </ConfirmDialog>
+    )
 
     return (<div style={{ marginBottom: '10px' }}>
       <h1>
@@ -93,7 +116,10 @@ export default class EditHeading extends PureComponent {
           </Col>
           <Col xs={4}>
             <div style={{ float: "right" }}>
-              <ButtonGroup>{arrowLeft}{arrowRight}</ButtonGroup>
+              <ButtonGroup>
+                {arrowLeft}
+                {arrowRight}
+              </ButtonGroup>
             </div>
           </Col>
         </Row>

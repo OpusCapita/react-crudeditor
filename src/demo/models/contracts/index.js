@@ -396,7 +396,13 @@ export default {
         name: VIEW_CREATE,
         state: {
           predefinedFields: Object.keys(instance).
-            filter(key => key !== 'contractId').
+            filter(key => [
+              'contractId',
+              'createdBy',
+              'createdOn',
+              'changedBy',
+              'changedOn'
+            ].indexOf(key) === -1).
             reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
         }
       })

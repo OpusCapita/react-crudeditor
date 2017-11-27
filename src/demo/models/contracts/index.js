@@ -382,6 +382,7 @@ export default {
       state: viewState
     }) => [{
       name: 'createChild',
+      icon: 'transfer',
       handler: _ => ({
         name: VIEW_CREATE,
         state: {
@@ -392,6 +393,7 @@ export default {
       })
     }, {
       name: 'duplicate',
+      icon: 'random',
       handler: _ => ({
         name: VIEW_CREATE,
         state: {

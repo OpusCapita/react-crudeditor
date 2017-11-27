@@ -24,14 +24,64 @@ export default class SearchResultButtons extends PureComponent {
     i18n: PropTypes.object.isRequired
   }
 
+  makeInternalOpsButtons = ({
+    glyph,
+    titleKey,
+    onClick
+  }) => {
+    const { operations, index } = this.props;
+    const uid = `ops-internal-${index}`;
+    const { i18n } = this.context;
+
+    console.log(operations)
+
+    return (operations.length > 0) ?
+      (
+        <SplitButton
+          title={
+            <span>
+              {glyph && <Glyphicon glyph={glyph}/>}
+              {glyph && '\u00A0'}
+              {i18n.getMessage(titleKey)}
+            </span>
+          }
+          id={uid}
+          key={uid}
+          onClick={onClick}
+          bsSize="sm"
+        >
+          {
+            operations.map(({ name, icon, handler }, index) => (
+              <MenuItem
+                key={index}
+                eventKey={index}
+                onClick={handler}
+              >
+                <span className="btn-sm text-left">
+                  {icon && <Glyphicon glyph={icon}/>}
+                  {icon && '\u00A0\u00A0'}
+                  {getModelMessage(i18n, `model.label.${name}`, name)}
+                </span>
+              </MenuItem>
+            ))
+          }
+        </SplitButton>
+      ) :
+      (
+        <Button onClick={onClick} key={uid}>
+          {glyph && <Glyphicon glyph={glyph} />}
+          {glyph && ' '}
+          {i18n.getMessage(titleKey)}
+        </Button>
+      )
+  }
+
   render() {
     const {
       onShow,
       onEdit,
       onDelete,
-      permissions,
-      operations,
-      index
+      permissions
     } = this.props;
 
     const { i18n } = this.context;
@@ -40,66 +90,20 @@ export default class SearchResultButtons extends PureComponent {
 
     if (permissions.edit) {
       buttons.push(
-        <Button onClick={onEdit} key="edit">
-          <Glyphicon glyph='edit' />
-          {' '}
-          {i18n.getMessage('crudEditor.edit.button')}
-        </Button>
+        this.makeInternalOpsButtons({
+          glyph: 'edit',
+          titleKey: 'crudEditor.edit.button',
+          onClick: onEdit
+        })
       )
     } else if (permissions.view) {
       buttons.push(
-        <Button onClick={onShow} key="show">
-          <Glyphicon glyph='glyphicon-eye-open' />
-          {' '}
-          {i18n.getMessage('crudEditor.show.button')}
-        </Button>
+        this.makeInternalOpsButtons({
+          glyph: 'eye-open',
+          titleKey: 'crudEditor.show.button',
+          onClick: onShow
+        })
       )
-    }
-
-    if (operations.length === 1) {
-      const { name, icon, handler } = operations[0];
-
-      buttons.push(
-        <Button onClick={handler} key="operation">
-          {icon && <Glyphicon glyph={icon}/>}
-          {icon && ' '}
-          {getModelMessage(i18n, `model.label.${name}`, name)}
-        </Button>
-      );
-    } else if (operations.length > 1) {
-      const { name, icon, handler } = operations[0];
-      const uid = `ops-split-${name}-${index}`;
-      buttons.push(
-        <SplitButton
-          title={
-            <span>
-              {icon && <Glyphicon glyph={icon}/>}
-              {icon && ' '}
-              {getModelMessage(i18n, `model.label.${name}`, name)}
-            </span>
-          }
-          id={uid}
-          key={uid}
-          onClick={handler}
-          bsSize="sm"
-        >
-          {
-            operations.slice(1).map(({ name, icon, handler }, index) => (
-              <MenuItem
-                key={index}
-                eventKey={index}
-                onClick={handler}
-              >
-                <span className="btn-sm text-left">
-                  {icon && <Glyphicon glyph={icon}/>}
-                  {icon && ' '}
-                  {getModelMessage(i18n, `model.label.${name}`, name)}
-                </span>
-              </MenuItem>
-            ))
-          }
-        </SplitButton>
-      );
     }
 
     if (permissions.delete) {

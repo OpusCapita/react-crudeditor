@@ -33,8 +33,6 @@ export default class SearchResultButtons extends PureComponent {
     const uid = `ops-internal-${index}`;
     const { i18n } = this.context;
 
-    console.log(operations)
-
     return (operations.length > 0) ?
       (
         <SplitButton

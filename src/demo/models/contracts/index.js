@@ -382,7 +382,8 @@ export default {
       state: viewState
     }) => [
       ...(
-        viewName !== VIEW_CREATE ?
+        viewName === VIEW_CREATE ?
+          [] :
           [
             {
               name: 'createChild',
@@ -412,8 +413,7 @@ export default {
                 }
               })
             }
-          ] :
-          []
+          ]
       ),
       {
         name: 'testLink',

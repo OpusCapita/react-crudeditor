@@ -235,36 +235,42 @@ export const viewOperations = ({
   softRedirectView,
   onExternalOperation = {}
 }) => instance => (
-  operations(instance, {
-    name: viewName,
-    state: viewState
-  }) || []).reduce(
+  operations(
+    instance,
+    {
+      name: viewName,
+      state: viewState
+    }
+  ) ||
+  []
+).reduce(
   (rez, { handler, name, ...rest }) => [
     ...rez,
-    {
-      name,
-      ...rest,
-      ...(handler ?
-        {
-          type: 'custom',
-          handler: _ => {
-            const view = handler();
-            if (view && view.name) {
-              softRedirectView(view);
-            }
+    ...(handler ?
+      [{
+        ...rest,
+        name,
+        type: 'custom',
+        handler: _ => {
+          const view = handler();
+          if (view && view.name) {
+            softRedirectView(view);
           }
-        } :
-        Object.keys(onExternalOperation).indexOf(name) > -1 ?
-          {
+        }
+      }] : (
+        onExternalOperation.hasOwnProperty(name) ?
+          [{
+            ...rest,
+            name,
             type: 'external',
             handler: _ => onExternalOperation[name](instance, {
               name: viewName,
               state: viewState
             })
-          } :
-          {}
+          }] :
+          []
       )
-    }
+    )
   ],
   []
 );

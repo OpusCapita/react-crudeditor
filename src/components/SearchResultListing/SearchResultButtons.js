@@ -49,7 +49,6 @@ export default class SearchResultButtons extends PureComponent {
           key={uid}
           onClick={onClick}
           bsSize="sm"
-          className="dropdown-menu-right"
         >
           {
             operations.map(({ name, icon, handler }, index) => (

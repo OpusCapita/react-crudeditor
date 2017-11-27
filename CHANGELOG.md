@@ -1,3 +1,5 @@
+## [v0.0.23](Mon, 27 Nov 2017 12:19:49 GMT)
+
 ## [v0.0.22](Mon, 27 Nov 2017 06:16:06 GMT)
  - Merge pull request #45 from OpusCapita/hideable-form/40
     

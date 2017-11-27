@@ -1,3 +1,6 @@
+## [v0.0.25](Mon, 27 Nov 2017 13:13:49 GMT)
+ - ... (Egor Stambakio <stambakio@scand.com>, bcff11d)
+
 ## [v0.0.24](Mon, 27 Nov 2017 13:08:31 GMT)
  - babel-plugin-add-module-exports (Egor Stambakio <stambakio@scand.com>, 2cd07e2)
 

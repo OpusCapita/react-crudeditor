@@ -1,3 +1,7 @@
+## [v0.0.23](Mon, 27 Nov 2017 12:19:49 GMT)
+ - Export views names. (Egor Stambakio <stambakio@scand.com>, 0602d32)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, de6fcf6)
+
 ## [v0.0.22](Mon, 27 Nov 2017 06:16:06 GMT)
  - Merge pull request #45 from OpusCapita/hideable-form/40
     

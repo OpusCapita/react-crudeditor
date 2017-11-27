@@ -1,3 +1,51 @@
+## [v0.0.22](Mon, 27 Nov 2017 06:16:06 GMT)
+ - Merge pull request #45 from OpusCapita/hideable-form/40
+    
+    Implemented show/hide search form functionality (b2e2662 bbec6b9, 70d34fb)
+ - Fixed according to reviewer notes. (estambakio-sc <egor.stambakio@opuscapita.com>, bbec6b9)
+ - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, b2e2662)
+ - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, f3b9236)
+ - Create CODE_OF_CONDUCT.md (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, 9056479)
+ - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, f2bcba7)
+ - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, 72421c4)
+ - Adding LICENSE file (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, 45e8b61)
+ - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, 6c534bc)
+ - Implemented #40 (Egor Stambakio <stambakio@scand.com>, 37372fc)
+ - Lint (Egor Stambakio <stambakio@scand.com>, a681935)
+ - Merged master and added arrow icon. (59f471c 126c10c, 6ec8506)
+ - Changed icon. (Egor Stambakio <stambakio@scand.com>, 59f471c)
+ - Merge pull request #65 from OpusCapita/proptypes-model-validation/47
+    
+    Prop-types model validation (c442a11 bc0d500, 126c10c)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c442a11)
+ - Fixed eslint errors. (Egor Stambakio <stambakio@scand.com>, bc0d500)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 394ed09)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, f4afb8e)
+ - Done #47 using prop-types. (Egor Stambakio <stambakio@scand.com>, 95fd71b)
+ - 95% (Egor Stambakio <stambakio@scand.com>, 0052405)
+ - Merge pull request #62 from OpusCapita/remove-tildas-for-readability
+    
+    Swapped indefOf ~ to more readable > -1 comparison. (89b8ae6 f7db5c8, f95f5a8)
+ - Swapped indefOf ~ to more readable > -1 comparison. (Egor Stambakio <stambakio@scand.com>, f7db5c8)
+ - Merge pull request #60 from OpusCapita/forbidden-views-403/57
+    
+    403 for forbidden standard views, 500 for unknown views. (fc8ec1a d8f5784, 89b8ae6)
+ - Added a new EOL to make eslint happy. (Egor Stambakio <stambakio@scand.com>, d8f5784)
+ - 403 for forbidden standard views, 500 for unknown views #57. (Egor Stambakio <stambakio@scand.com>, 798fffb)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (b506ecb 6a7fe29, fc8ec1a)
+ - Fixed showroom translations. (Egor Stambakio <stambakio@scand.com>, b506ecb)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 6a7fe29)
+ - Implemented properly, via Redux. (Egor Stambakio <stambakio@scand.com>, 6dd2fc5)
+ - Changed a button. (Egor Stambakio <stambakio@scand.com>, 1232e8d)
+ - Fixed search results width. (Egor Stambakio <stambakio@scand.com>, 81eb356)
+ - Lint (Egor Stambakio <stambakio@scand.com>, c935ca9)
+ - Moved search icon. (Egor Stambakio <stambakio@scand.com>, 37c77d5)
+ - Linted (Egor Stambakio <stambakio@scand.com>, 5040f03)
+ - Done. (Egor Stambakio <stambakio@scand.com>, c1745fc)
+ - ... (Egor Stambakio <stambakio@scand.com>, 771fa4a)
+ - works but choppy (Egor Stambakio <stambakio@scand.com>, 83c4680)
+ - Started implementing. (Egor Stambakio <stambakio@scand.com>, 3898441)
+
 ## [v0.0.21](Thu, 23 Nov 2017 15:23:03 GMT)
  - Remove debug info (Andrei Mourzenkov <mourzenkov@scand.com>, 51c7e26)
  - Merge pull request #59 from OpusCapita/ui-headers/57

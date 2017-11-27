@@ -46,8 +46,7 @@ module.exports = {
           plugins: [
             "transform-decorators-legacy",
             "transform-class-properties",
-            "transform-runtime",
-            "add-module-exports"
+            "transform-runtime"
           ]
         },
         exclude: /node_modules/,

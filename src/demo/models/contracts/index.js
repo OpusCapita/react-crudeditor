@@ -403,7 +403,6 @@ export default {
         }, {
           name: 'testLink',
           icon: 'link',
-          skipConfirm: true,
           handler: _ => {
             window.open('https://www.opuscapita.com');
           }

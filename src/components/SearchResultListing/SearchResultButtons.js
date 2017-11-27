@@ -78,25 +78,26 @@ export default class SearchResultButtons extends PureComponent {
               {getModelMessage(i18n, `model.label.${name}`, name)}
             </span>
           }
-          pullRight={true}
           id={uid}
           key={uid}
           onClick={handler}
           bsSize="sm"
         >
-          {
-            operations.slice(1).map(({ name, icon, handler }, index) => (
-              <MenuItem
-                key={index}
-                eventKey={index}
-                onClick={handler}
-              >
-                {icon && <Glyphicon glyph={icon}/>}
-                {icon && ' '}
-                {getModelMessage(i18n, `model.label.${name}`, name)}
-              </MenuItem>
-            ))
-          }
+            {
+              operations.slice(1).map(({ name, icon, handler }, index) => (
+                <MenuItem
+                  key={index}
+                  eventKey={index}
+                  onClick={handler}
+                >
+                  <span className="btn-sm text-left">
+                    {icon && <Glyphicon glyph={icon}/>}
+                    {icon && ' '}
+                    {getModelMessage(i18n, `model.label.${name}`, name)}
+                  </span>
+                </MenuItem>
+              ))
+            }
         </SplitButton>
       );
     }

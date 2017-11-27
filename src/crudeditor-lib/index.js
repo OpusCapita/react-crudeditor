@@ -12,13 +12,26 @@ import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
-import { DEFAULT_VIEW } from './common/constants';
+import {
+  DEFAULT_VIEW,
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SEARCH,
+  VIEW_SHOW
+} from './common/constants';
 
 import {
   storeState2appState,
   fillDefaults,
   getPrefixedTranslations
 } from './lib';
+
+export {
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SEARCH,
+  VIEW_SHOW
+}
 
 const appName = 'crudEditor';
 

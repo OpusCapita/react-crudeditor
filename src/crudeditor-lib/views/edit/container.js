@@ -34,7 +34,8 @@ const mergeProps = (
     flags: {
       nextInstanceExists,
       prevInstanceExists
-    }
+    },
+    onExternalOperation
   },
   {
     saveAndNextInstance,
@@ -52,7 +53,8 @@ const mergeProps = (
         viewName: VIEW_NAME,
         viewState,
         operations,
-        softRedirectView
+        softRedirectView,
+        onExternalOperation
       })
     },
     // here we adjust action creators to reflect flags values
@@ -70,13 +72,14 @@ const mergeProps = (
 });
 
 export default connect(
-  (storeState, { modelDefinition }) => ({
+  (storeState, { modelDefinition, onExternalOperation }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations
+    operations: modelDefinition.ui.operations,
+    onExternalOperation
   }), {
     changeInstanceField,
     deleteInstances,

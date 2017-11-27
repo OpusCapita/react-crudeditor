@@ -42,7 +42,7 @@ export default class EditTab extends React.PureComponent {
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
-  showConfirmDialog = _ => {
+  showConfirmDialog = type => _ => {
     const {
       viewName,
       formInstance,
@@ -52,7 +52,7 @@ export default class EditTab extends React.PureComponent {
     const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
 
-    return hasUnsavedChanges;
+    return type === 'custom' && hasUnsavedChanges;
   }
 
   render() {
@@ -96,7 +96,7 @@ export default class EditTab extends React.PureComponent {
 
     buttons.push(
       ...operations(viewName === VIEW_CREATE ? formatedInstance : persistentInstance).
-        map(({ name, icon, handler }, index) => (
+        map(({ name, icon, handler, type }, index) => (
           <ConfirmDialog
             trigger='click'
             onConfirm={handler}
@@ -105,7 +105,7 @@ export default class EditTab extends React.PureComponent {
             textConfirm={i18n.getMessage('crudEditor.confirm.action')}
             textCancel={i18n.getMessage('crudEditor.cancel.button')}
             key={`operation-${index}`}
-            showDialog={this.showConfirmDialog}
+            showDialog={this.showConfirmDialog(type)}
           >
             <Button>
               {icon && <Glyphicon glyph={icon} />}

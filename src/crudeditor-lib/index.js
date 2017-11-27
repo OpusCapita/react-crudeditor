@@ -34,7 +34,8 @@ export default baseModelDefinition => {
         name: PropTypes.string,
         state: PropTypes.object
       }),
-      onTransition: PropTypes.func
+      onTransition: PropTypes.func,
+      onExternalOperation: PropTypes.objectOf(PropTypes.func)
     }
 
     static propTypes = {
@@ -136,6 +137,7 @@ export default baseModelDefinition => {
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
+          onExternalOperation={this.props.onExternalOperation}
         />
       </Provider>)
   }

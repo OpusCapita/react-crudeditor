@@ -21,7 +21,7 @@ export const
 
   softRedirectView = ({
     name,
-    state
+    state = {}
   }) => ({
     type: VIEW_SOFT_REDIRECT,
     payload: {

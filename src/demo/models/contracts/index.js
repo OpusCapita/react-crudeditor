@@ -380,32 +380,49 @@ export default {
     operations: (instance, {
       name: viewName,
       state: viewState
-    }) => [{
-      name: 'createChild',
-      handler: _ => ({
-        name: VIEW_CREATE,
-        state: {
-          predefinedFields: {
-            parentContract: instance.contractId
-          }
-        }
-      })
-    }, {
-      name: 'duplicate',
-      handler: _ => ({
-        name: VIEW_CREATE,
-        state: {
-          predefinedFields: Object.keys(instance).
-            filter(key => [
-              'contractId',
-              'createdBy',
-              'createdOn',
-              'changedBy',
-              'changedOn'
-            ].indexOf(key) === -1).
-            reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
-        }
-      })
-    }]
+    }) => [
+      ...(
+        viewName !== VIEW_CREATE ?
+          [
+            {
+              name: 'createChild',
+              handler: _ => ({
+                name: VIEW_CREATE,
+                state: {
+                  predefinedFields: {
+                    parentContract: instance.contractId
+                  }
+                }
+              })
+            },
+            {
+              name: 'duplicate',
+              handler: _ => ({
+                name: VIEW_CREATE,
+                state: {
+                  predefinedFields: Object.keys(instance).
+                    filter(key => [
+                      'contractId',
+                      'createdBy',
+                      'createdOn',
+                      'changedBy',
+                      'changedOn'
+                    ].indexOf(key) === -1).
+                    reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
+                }
+              })
+            }
+          ] :
+          []
+      ),
+      {
+        name: 'testLink',
+        icon: 'link'
+      },
+      {
+        name: 'anotherLink',
+        icon: 'send'
+      }
+    ]
   }
 };

@@ -2,13 +2,16 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 
 import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
+import redirectSaga from '../../common/workerSagas/redirect';
 
 import {
   INSTANCE_SAVE,
   VIEW_EXIT,
   VIEW_INITIALIZE,
-  VIEW_REDIRECT_SUCCESS
+  VIEW_REDIRECT_SUCCESS,
+  VIEW_NAME
 } from './constants';
+import { VIEW_SOFT_REDIRECT } from '../../common/constants';
 
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
@@ -17,7 +20,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
       [INSTANCE_SAVE]: saveSaga
     },
     nonBlocking: {
-      [VIEW_EXIT]: exitSaga
+      [VIEW_EXIT]: exitSaga,
+      [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }
 
@@ -39,7 +43,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action: {
+            ...action,
+            meta: {
+              ...action.meta,
+              spawner: VIEW_NAME
+            }
+          }
         });
       } catch (err) {
         // Swallow custom errors.
@@ -53,7 +63,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action: {
+              ...action,
+              meta: {
+                ...action.meta,
+                spawner: VIEW_NAME
+              }
+            }
           });
         } catch (err) {
           // Swallow custom errors.

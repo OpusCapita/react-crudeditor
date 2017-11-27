@@ -12,13 +12,26 @@ import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
-import { DEFAULT_VIEW } from './common/constants';
+import {
+  DEFAULT_VIEW,
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SEARCH,
+  VIEW_SHOW
+} from './common/constants';
 
 import {
   storeState2appState,
   fillDefaults,
   getPrefixedTranslations
 } from './lib';
+
+export {
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SEARCH,
+  VIEW_SHOW
+}
 
 const appName = 'crudEditor';
 
@@ -34,7 +47,8 @@ export default baseModelDefinition => {
         name: PropTypes.string,
         state: PropTypes.object
       }),
-      onTransition: PropTypes.func
+      onTransition: PropTypes.func,
+      onExternalOperation: PropTypes.objectOf(PropTypes.func)
     }
 
     static propTypes = {
@@ -136,6 +150,7 @@ export default baseModelDefinition => {
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
+          onExternalOperation={this.props.onExternalOperation}
         />
       </Provider>)
   }

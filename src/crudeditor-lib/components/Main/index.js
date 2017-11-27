@@ -20,14 +20,20 @@ class CrudMain extends Component {
     this.props.hardRedirectView({ viewName, viewState });
   }
 
-  render = _ => <ViewSwitcher modelDefinition={this.props.modelDefinition} />
+  render = _ => (
+    <ViewSwitcher
+      modelDefinition={this.props.modelDefinition}
+      onExternalOperation={this.props.onExternalOperation}
+    />
+  )
 }
 
 CrudMain.propTypes = {
   viewName: PropTypes.string,
   viewState: PropTypes.object,
   modelDefinition: PropTypes.object,
-  hardRedirectView: PropTypes.func
+  hardRedirectView: PropTypes.func,
+  onExternalOperation: PropTypes.objectOf(PropTypes.func)
 }
 
 export default connect(

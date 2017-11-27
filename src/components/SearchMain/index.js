@@ -84,7 +84,7 @@ export default class SearchMain extends PureComponent {
         <div className="crud--search-main__container">
           <div className={ hideSearchForm ?
             "crud--search-main__search-container" :
-            "crud--search-main__search-container open"
+            "crud--search-main__search-container form-open"
           }
           >
             <Form model={model} />
@@ -92,7 +92,7 @@ export default class SearchMain extends PureComponent {
 
           <div className={ hideSearchForm ?
             "crud--search-main__results-container" :
-            "crud--search-main__results-container open"
+            "crud--search-main__results-container form-open"
           }
           >
             <Result model={model} />

@@ -58,6 +58,8 @@ export const
 
   VIEW_HARD_REDIRECT = namespace + '/VIEW_HARD_REDIRECT',
 
+  VIEW_SOFT_REDIRECT = namespace + '/VIEW_SOFT_REDIRECT',
+
   /* ██████████████████████████████████████*\
    *███ ERRORS (in alphabetical order) ███*
   \*██████████████████████████████████████*/

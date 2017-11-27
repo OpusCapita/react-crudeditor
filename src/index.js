@@ -1,1 +1,1 @@
-module.exports = require('./crudeditor-lib').default;
+module.exports = require('./crudeditor-lib');

@@ -1,4 +1,14 @@
+## [v0.0.26](Mon, 27 Nov 2017 16:06:30 GMT)
+
+## [v0.0.25](Mon, 27 Nov 2017 13:13:49 GMT)
+ - ... (Egor Stambakio <stambakio@scand.com>, bcff11d)
+
+## [v0.0.24](Mon, 27 Nov 2017 13:08:31 GMT)
+ - babel-plugin-add-module-exports (Egor Stambakio <stambakio@scand.com>, 2cd07e2)
+
 ## [v0.0.23](Mon, 27 Nov 2017 12:19:49 GMT)
+ - Export views names. (Egor Stambakio <stambakio@scand.com>, 0602d32)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, de6fcf6)
 
 ## [v0.0.22](Mon, 27 Nov 2017 06:16:06 GMT)
  - Merge pull request #45 from OpusCapita/hideable-form/40

@@ -380,34 +380,26 @@ export default {
     operations: (instance, {
       name: viewName,
       state: viewState
-    }) => {
-      if (viewName === VIEW_CREATE) {
-        return [{
-          name: 'testLink',
-          icon: 'link',
-          handler: _ => {
-            window.open('https://www.opuscapita.com');
+    }) => [{
+      name: 'createChild',
+      handler: _ => ({
+        name: VIEW_CREATE,
+        state: {
+          predefinedFields: {
+            parentContract: instance.contractId
           }
-        }];
-      } else {
-        return [{
-          name: 'createChild',
-          handler: _ => ({
-            name: VIEW_CREATE,
-            state: {
-              predefinedFields: {
-                parentContract: instance.contractId
-              }
-            }
-          })
-        }, {
-          name: 'testLink',
-          icon: 'link',
-          handler: _ => {
-            window.open('https://www.opuscapita.com');
-          }
-        }]
-      }
-    }
+        }
+      })
+    }, {
+      name: 'duplicate',
+      handler: _ => ({
+        name: VIEW_CREATE,
+        state: {
+          predefinedFields: Object.keys(instance).
+            filter(key => key !== 'contractId').
+            reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
+        }
+      })
+    }]
   }
 };

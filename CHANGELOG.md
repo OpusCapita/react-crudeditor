@@ -1,3 +1,12 @@
+## [v0.0.28](Tue, 28 Nov 2017 16:28:42 GMT)
+ - Fixed #64 (Andrei Mourzenkov <mourzenkov@scand.com>, 76b1f61)
+ - Merge pull request #73 from OpusCapita/create-view-ops-consistensy
+
+    Null instance and proper state for create view. (51ac41c 63b5578, b0edd0f)
+ - Implemented reviewer note. (Egor Stambakio <stambakio@scand.com>, 63b5578)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 51ac41c)
+ - Null instance and proper(?) state for create view. (Egor Stambakio <stambakio@scand.com>, 5c330e5)
+
 ## [v0.0.27](Tue, 28 Nov 2017 12:38:21 GMT)
  - Merge pull request #70 from OpusCapita/issue-68-default-props
 

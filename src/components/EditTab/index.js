@@ -26,7 +26,6 @@ export default class EditTab extends React.PureComponent {
       data: PropTypes.shape({
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
-        formatedInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func),
@@ -75,7 +74,6 @@ export default class EditTab extends React.PureComponent {
           viewName,
           persistentInstance,
           formInstance,
-          formatedInstance,
           permissions: {
             crudOperations: permissions
           }
@@ -105,7 +103,7 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
+    const instance = persistentInstance || null;
 
     buttons.push(
       ...internalOperations(instance).

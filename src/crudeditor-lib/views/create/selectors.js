@@ -18,7 +18,7 @@ export const
   getViewState = wrapper(({
     predefinedFields
   }) => ({
-    instance: predefinedFields
+    predefinedFields
   })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

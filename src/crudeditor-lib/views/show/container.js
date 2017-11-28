@@ -20,7 +20,7 @@ const mergeProps = (
     flags,
     viewState,
     operations,
-    onExternalOperation
+    externalOperations
   },
   {
     softRedirectView,
@@ -30,16 +30,7 @@ const mergeProps = (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: {
-      ...viewModelData,
-      operations: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView,
-        onExternalOperation
-      })
-    },
+    data: viewModelData,
     actions: (
       ({
         showAdjacentInstance,
@@ -65,19 +56,28 @@ const mergeProps = (
         }
 
         return result
-      })(dispatchProps, flags)
+      })(dispatchProps, flags),
+    operations: {
+      internal: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      }),
+      external: externalOperations
+    }
   },
 });
 
 export default connect(
-  (storeState, { modelDefinition, onExternalOperation }) => ({
+  (storeState, { modelDefinition, externalOperations }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    onExternalOperation
+    externalOperations
   }), {
     selectTab,
     exitView,

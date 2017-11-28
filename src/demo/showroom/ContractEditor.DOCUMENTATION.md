@@ -37,16 +37,26 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
     hideSearchForm: false
   } }}
   onTransition={() => {}}
-  onExternalOperation={{
-    'testLink': (instance, { name, state }) => {
-      console.log('testLink external handler');
-      console.log({ instance, name, state });
-    },
-    'anotherLink': (instance, { name, state }) => {
-      console.log('anotherLink external handler');
-      console.log({ instance, name, state });
-    }
-  }}
+  externalOperations={
+    [
+      {
+        title: 'Test link',
+        icon: 'link',
+        handler: (instance) => {
+          console.log('test link handler');
+          console.log(instance)
+        }
+      },
+      {
+        title: 'Another link',
+        icon: 'send',
+        handler: (instance) => {
+          console.log('another link handler');
+          console.log(instance)
+        }
+      }
+    ]
+  }
 />;
 ```
 

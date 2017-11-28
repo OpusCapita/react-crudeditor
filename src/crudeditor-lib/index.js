@@ -48,7 +48,11 @@ export default baseModelDefinition => {
         state: PropTypes.object
       }),
       onTransition: PropTypes.func,
-      onExternalOperation: PropTypes.objectOf(PropTypes.func)
+      externalOperations: PropTypes.arrayOf(PropTypes.shape({
+        title: PropTypes.string,
+        icon: PropTypes.string,
+        handler: PropTypes.func
+      }))
     }
 
     static propTypes = {
@@ -150,7 +154,7 @@ export default baseModelDefinition => {
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
-          onExternalOperation={this.props.onExternalOperation}
+          externalOperations={this.props.externalOperations}
         />
       </Provider>)
   }

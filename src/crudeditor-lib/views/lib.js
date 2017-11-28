@@ -232,8 +232,7 @@ export const viewOperations = ({
   viewName,
   viewState,
   operations,
-  softRedirectView,
-  onExternalOperation = {}
+  softRedirectView
 }) => instance => (operations(
   instance,
   {
@@ -247,26 +246,14 @@ export const viewOperations = ({
       [{
         ...rest,
         name,
-        type: 'custom',
-        handler: _ => {
+        handler: _ => { // eslint-disable-line consistent-return
           const view = handler();
           if (view && view.name) {
-            softRedirectView(view);
+            return _ => softRedirectView(view);
           }
         }
-      }] : (
-        onExternalOperation.hasOwnProperty(name) ?
-          [{
-            ...rest,
-            name,
-            type: 'external',
-            handler: _ => onExternalOperation[name](instance, {
-              name: viewName,
-              state: viewState
-            })
-          }] :
-          []
-      )
+      }] :
+      []
     )
   ],
   []

@@ -414,15 +414,7 @@ export default {
               })
             }
           ]
-      ),
-      {
-        name: 'testLink',
-        icon: 'link'
-      },
-      {
-        name: 'anotherLink',
-        icon: 'send'
-      }
+      )
     ]
   }
 };

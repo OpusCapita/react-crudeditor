@@ -13,7 +13,8 @@ import { getModelMessage } from '../lib';
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
     permissions: PropTypes.object.isRequired,
-    operations: PropTypes.array.isRequired,
+    internalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
+    externalOperations: PropTypes.arrayOf(PropTypes.object),
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
@@ -106,10 +107,10 @@ export default class SearchResultButtons extends PureComponent {
                 []
             )
         ),
-        ...this.props.operations.
-          filter(({ type }) => type === 'custom').
-          map(({ name, ...rest }) => ({
+        ...this.props.internalOperations.
+          map(({ name, handler, ...rest }) => ({
             ...rest,
+            handler: handler() || (_ => null),
             title: getModelMessage(i18n, `model.label.${name}`, name),
             uid: `custom-operation-${uid}`
           }))
@@ -118,11 +119,10 @@ export default class SearchResultButtons extends PureComponent {
 
     buttons.push(
       this.operationsButton(
-        this.props.operations.
-          filter(({ type }) => type === 'external').
-          map(({ name, ...rest }) => ({
+        (this.props.externalOperations || []).
+          map(({ title, ...rest }) => ({
             ...rest,
-            title: getModelMessage(i18n, `model.label.${name}`, name),
+            title,
             uid: `external-operation-${uid}`
           }))
       )

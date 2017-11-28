@@ -103,10 +103,8 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    const instance = persistentInstance || null;
-
     buttons.push(
-      ...internalOperations(instance).
+      ...internalOperations(persistentInstance).
         map(({ name, icon, handler, type }, index) => {
           const internalHandler = handler();
 
@@ -133,7 +131,7 @@ export default class EditTab extends React.PureComponent {
     buttons.push(
       externalOperations.map(({ title, icon, handler }, index) => (
         <Button
-          onClick={_ => handler(instance)}
+          onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
         >
           {icon && <Glyphicon glyph={icon} />}

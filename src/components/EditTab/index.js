@@ -31,12 +31,12 @@ export default class EditTab extends React.PureComponent {
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internalOperations: PropTypes.func,
-        externalOperations: PropTypes.arrayOf(PropTypes.shape({
+        internal: PropTypes.func.isRequired,
+        external: PropTypes.arrayOf(PropTypes.shape({
           title: PropTypes.string,
           icon: PropTypes.string,
           handler: PropTypes.func
-        }))
+        })).isRequired
       })
     }).isRequired,
     fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
@@ -133,7 +133,7 @@ export default class EditTab extends React.PureComponent {
     );
 
     buttons.push(
-      (externalOperations || []).map(({ title, icon, handler }, index) => (
+      externalOperations.map(({ title, icon, handler }, index) => (
         <Button
           onClick={_ => handler(instance)}
           key={`external-operation-${index}`}

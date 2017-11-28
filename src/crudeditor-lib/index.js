@@ -71,7 +71,8 @@ export default baseModelDefinition => {
 
     static defaultProps = {
       locale: 'en',
-      fallbackLocale: 'en'
+      fallbackLocale: 'en',
+      externalOperations: []
     };
 
     constructor(...args) {

@@ -222,13 +222,13 @@ hideSearchForm | false
 
 ```javascript
 {
-  ?instance: <object, an entity instance with predefined field values>
+  ?predefinedFields: <object, an entity instance with predefined field values>
 }
 ```
 
 Name | Default
 ---|---
-instance | {}
+predefinedFields | {}
 
 #### *EditorComponent* props.state for *"edit"* and *"show"* Views:
 

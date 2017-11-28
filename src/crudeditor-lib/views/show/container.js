@@ -20,7 +20,8 @@ const mergeProps = (
     flags,
     viewState,
     operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   },
   {
     softRedirectView,
@@ -65,19 +66,21 @@ const mergeProps = (
         softRedirectView
       }),
       external: externalOperations
-    }
+    },
+    uiConfig
   },
 });
 
 export default connect(
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   }), {
     selectTab,
     exitView,

@@ -16,18 +16,18 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper((
+  getViewState = wrapper(({
+    persistentInstance,
+    activeTab: { tab } = {}
+  }, {
+    model: { fields }
+  }) => persistentInstance ?
     {
-      persistentInstance,
-      activeTab: { tab } = {}
-    },
-    {
-      model: { fields }
-    }
-  ) => ({
-    instance: getLogicalKeyBuilder(fields)(persistentInstance),
-    ...(tab ? { tab } : {})
-  })),
+      instance: getLogicalKeyBuilder(fields)(persistentInstance),
+      ...(tab ? { tab } : {})
+    } :
+    undefined // view is not initialized yet.
+  ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

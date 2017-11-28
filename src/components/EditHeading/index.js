@@ -20,7 +20,8 @@ export default class EditHeading extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.object,
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      uiConfig: PropTypes.object.isRequired
     }).isRequired
   }
 
@@ -56,6 +57,9 @@ export default class EditHeading extends PureComponent {
           exitView,
           gotoNextInstance,
           gotoPrevInstance
+        },
+        uiConfig: {
+          headerLevel = 1
         }
       }
     } = this.props;
@@ -102,8 +106,10 @@ export default class EditHeading extends PureComponent {
       </ConfirmDialog>
     )
 
+    const H = 'h' + headerLevel;
+
     return (<div style={{ marginBottom: '10px' }}>
-      <h1>
+      <H>
         <Row>
           <Col xs={8}>
             {title}
@@ -123,7 +129,7 @@ export default class EditHeading extends PureComponent {
             </div>
           </Col>
         </Row>
-      </h1>
+      </H>
 
       {
         tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>

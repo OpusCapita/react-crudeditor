@@ -19,7 +19,8 @@ export default class SearchMain extends PureComponent {
         permissions: PropTypes.shape({
           crudOperations: PropTypes.object.isRequired
         })
-      })
+      }),
+      uiConfig: PropTypes.object.isRequired
     }).isRequired
   }
 
@@ -33,6 +34,7 @@ export default class SearchMain extends PureComponent {
 
   render() {
     const { model } = this.props;
+
     const {
       data: {
         hideSearchForm,
@@ -44,13 +46,18 @@ export default class SearchMain extends PureComponent {
       },
       actions: {
         toggleSearchForm
+      },
+      uiConfig: {
+        headerLevel = 1
       }
     } = model;
+
     const { i18n } = this.context;
+    const H = 'h' + headerLevel;
 
     return (
       <div className="crud--search-main">
-        <h1>
+        <H>
           <Row>
             <Col xs={8}>
 
@@ -79,7 +86,7 @@ export default class SearchMain extends PureComponent {
               </div>
             </Col>
           </Row>
-        </h1>
+        </H>
 
         <div className="crud--search-main__container">
           <div className={ hideSearchForm ?

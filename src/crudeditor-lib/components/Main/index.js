@@ -24,6 +24,7 @@ class CrudMain extends Component {
     <ViewSwitcher
       modelDefinition={this.props.modelDefinition}
       externalOperations={this.props.externalOperations}
+      uiConfig={this.props.uiConfig}
     />
   )
 }
@@ -33,7 +34,8 @@ CrudMain.propTypes = {
   viewState: PropTypes.object,
   modelDefinition: PropTypes.object,
   hardRedirectView: PropTypes.func,
-  externalOperations: PropTypes.arrayOf(PropTypes.object)
+  externalOperations: PropTypes.arrayOf(PropTypes.object),
+  uiConfig: PropTypes.object
 }
 
 export default connect(

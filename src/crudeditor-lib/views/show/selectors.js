@@ -19,10 +19,13 @@ export const
     activeTab: { tab } = {}
   }, {
     model: { fields }
-  }) => ({
-    instance: getLogicalKeyBuilder(fields)(persistentInstance),
-    ...(tab ? { tab } : {})
-  })),
+  }) => persistentInstance ?
+    {
+      instance: getLogicalKeyBuilder(fields)(persistentInstance),
+      ...(tab ? { tab } : {})
+    } :
+    undefined // view is not initialized yet.
+  ),
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,

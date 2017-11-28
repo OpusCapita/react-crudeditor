@@ -20,8 +20,8 @@ class SearchResultListing extends PureComponent {
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internal: PropTypes.func,
-        external: PropTypes.arrayOf(PropTypes.object)
+        internal: PropTypes.func.isRequired,
+        external: PropTypes.arrayOf(PropTypes.object).isRequired
       })
     }).isRequired
   }

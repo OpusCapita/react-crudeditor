@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
+import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
 import {
   VIEW_CREATE,
@@ -50,17 +50,19 @@ export default class EditTab extends React.PureComponent {
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
-  showConfirmDialog = internalHandler => _ => {
+  hasUnsavedChanges = _ => {
     const {
       viewName,
       formInstance,
       persistentInstance
     } = this.props.model.data;
 
-    const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
+    return (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
+  }
 
-    return typeof internalHandler === 'function' && hasUnsavedChanges;
+  showConfirmDialog = internalHandler => _ => {
+    return typeof internalHandler === 'function' && this.hasUnsavedChanges();
   }
 
   render() {
@@ -99,9 +101,16 @@ export default class EditTab extends React.PureComponent {
 
     if (permissions.view) {
       buttons.push(
-        <Button bsStyle='link' onClick={exitView} key="Cancel">
-          {i18n.getMessage('crudEditor.cancel.button')}
-        </Button>
+        <ConfirmUnsavedChanges
+          handleConfirm={exitView}
+          showDialog={this.hasUnsavedChanges}
+          key="Cancel"
+        >
+          <Button bsStyle='link'>
+            {i18n.getMessage('crudEditor.cancel.button')}
+          </Button>
+        </ConfirmUnsavedChanges>
+
       )
     }
 
@@ -112,22 +121,18 @@ export default class EditTab extends React.PureComponent {
         map(({ name, icon, handler, type }, index) => {
           const internalHandler = handler();
 
-          return (<ConfirmDialog
-            trigger='click'
-            onConfirm={(internalHandler || (_ => null))}
-            title="You have unsaved changes"
-            message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-            textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-            textCancel={i18n.getMessage('crudEditor.cancel.button')}
-            key={`internal-operation-${index}`}
-            showDialog={this.showConfirmDialog(internalHandler)}
-          >
-            <Button>
-              {icon && <Glyphicon glyph={icon} />}
-              {icon && ' '}
-              {getModelMessage(i18n, `model.label.${name}`, name)}
-            </Button>
-          </ConfirmDialog>
+          return (
+            <ConfirmUnsavedChanges
+              handleConfirm={(internalHandler || (_ => null))}
+              showDialog={this.showConfirmDialog(internalHandler)}
+              key={`internal-operation-${index}`}
+            >
+              <Button>
+                {icon && <Glyphicon glyph={icon} />}
+                {icon && ' '}
+                {getModelMessage(i18n, `model.label.${name}`, name)}
+              </Button>
+            </ConfirmUnsavedChanges>
           )
         })
     );

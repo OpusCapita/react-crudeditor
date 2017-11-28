@@ -297,7 +297,7 @@ An array of [External Operations](#external-operation).  Each has a handler whic
      */
     ?icon: <string>,
     
-    handler: function(instance) {
+    handler(instance) {
       ...
       return;  // Return value is ignored.
     },
@@ -697,8 +697,9 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?icon: <string>,
 
-        handler: function() {
+        handler() {
           ...
+          // return value is either undefined or view name/state.
           return {
             name: <string, View Name>,
             ?state: <object, View State, empty object by default>

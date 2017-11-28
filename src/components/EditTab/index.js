@@ -26,7 +26,6 @@ export default class EditTab extends React.PureComponent {
       data: PropTypes.shape({
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
-        formatedInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func),
@@ -75,7 +74,6 @@ export default class EditTab extends React.PureComponent {
           viewName,
           persistentInstance,
           formInstance,
-          formatedInstance,
           permissions: {
             crudOperations: permissions
           }
@@ -105,10 +103,8 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
-
     buttons.push(
-      ...internalOperations(instance).
+      ...internalOperations(persistentInstance).
         map(({ name, icon, handler, type }, index) => {
           const internalHandler = handler();
 
@@ -135,7 +131,7 @@ export default class EditTab extends React.PureComponent {
     buttons.push(
       externalOperations.map(({ title, icon, handler }, index) => (
         <Button
-          onClick={_ => handler(instance)}
+          onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
         >
           {icon && <Glyphicon glyph={icon} />}

@@ -98,7 +98,10 @@ export default modelDefinition => (
 
   if (type === VIEW_INITIALIZE) {
     const { predefinedFields } = payload;
-    newStoreStateSlice.status = STATUS_READY;
+
+    if (!isEqual(predefinedFields, storeState.predefinedFields)) {
+      newStoreStateSlice.predefinedFields = predefinedFields;
+    }
 
     const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
@@ -160,6 +163,8 @@ export default modelDefinition => (
         {}
       )
     });
+
+    newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === VIEW_REDIRECT_REQUEST) {

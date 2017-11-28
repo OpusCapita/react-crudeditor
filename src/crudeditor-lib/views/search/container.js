@@ -28,22 +28,13 @@ import {
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData, viewState, operations, onExternalOperation },
+  { defaultNewInstance, viewModelData, viewState, operations, externalOperations },
   { createInstance, editInstance, showInstance, softRedirectView, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
-    data: {
-      ...viewModelData,
-      operations: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView,
-        onExternalOperation
-      })
-    },
+    data: viewModelData,
     actions: {
       ...dispatchProps,
       createInstance: _ => createInstance({ predefinedFields: defaultNewInstance }),
@@ -71,17 +62,26 @@ const mergeProps = (
           totalCount: viewModelData.totalCount
         }
       })
+    },
+    operations: {
+      internal: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      }),
+      external: externalOperations
     }
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, onExternalOperation }) => ({
+  (storeState, { modelDefinition, externalOperations }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    onExternalOperation
+    externalOperations
   }),
   {
     createInstance,

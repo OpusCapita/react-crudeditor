@@ -16,10 +16,13 @@ class SearchResultListing extends PureComponent {
         isLoading: PropTypes.bool,
         permissions: PropTypes.shape({
           crudOperations: PropTypes.object.isRequired
-        }),
-        operations: PropTypes.func
+        })
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.shape({
+        internal: PropTypes.func,
+        external: PropTypes.arrayOf(PropTypes.object)
+      })
     }).isRequired
   }
 
@@ -72,18 +75,23 @@ class SearchResultListing extends PureComponent {
 
   render() {
     const {
-      selectedInstances,
-      resultInstances: instances,
-      resultFields,
-      sortParams: {
-        field: sortField,
-        order: sortOrder
+      data: {
+        selectedInstances,
+        resultInstances: instances,
+        resultFields,
+        sortParams: {
+          field: sortField,
+          order: sortOrder
+        },
+        permissions: {
+          crudOperations: permissions
+        }
       },
-      permissions: {
-        crudOperations: permissions
-      },
-      operations
-    } = this.props.model.data;
+      operations: {
+        internal: internalOperations,
+        external: externalOperations
+      }
+    } = this.props.model;
 
     const { i18n } = this.context;
 
@@ -164,7 +172,11 @@ class SearchResultListing extends PureComponent {
                   <td className="text-right">
                     <SearchResultButtons
                       permissions={permissions}
-                      operations={operations(instance)}
+                      internalOperations={internalOperations(instance)}
+                      externalOperations={externalOperations.map(({ handler, ...rest }) => ({
+                        ...rest,
+                        handler: _ => handler(instance)
+                      }))}
                       onShow={this.handleShow(instance, index)}
                       onEdit={this.handleEdit(instance, index)}
                       onDelete={this.handleDelete(instance)}

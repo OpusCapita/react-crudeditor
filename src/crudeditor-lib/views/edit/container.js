@@ -35,7 +35,7 @@ const mergeProps = (
       nextInstanceExists,
       prevInstanceExists
     },
-    onExternalOperation
+    externalOperations
   },
   {
     saveAndNextInstance,
@@ -47,16 +47,7 @@ const mergeProps = (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: {
-      ...viewModelData,
-      operations: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView,
-        onExternalOperation
-      })
-    },
+    data: viewModelData,
     // here we adjust action creators to reflect flags values
     actions: {
       ...otherActions,
@@ -67,19 +58,28 @@ const mergeProps = (
         saveAndNextInstance,
         gotoNextInstance: _ => editAdjacentInstance('next')
       } : {})
+    },
+    operations: {
+      internal: viewOperations({
+        viewName: VIEW_NAME,
+        viewState,
+        operations,
+        softRedirectView
+      }),
+      external: externalOperations
     }
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, onExternalOperation }) => ({
+  (storeState, { modelDefinition, externalOperations }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    onExternalOperation
+    externalOperations
   }), {
     changeInstanceField,
     deleteInstances,

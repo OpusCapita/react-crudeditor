@@ -29,7 +29,15 @@ export default class EditTab extends React.PureComponent {
         formatedInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.shape({
+        internalOperations: PropTypes.func,
+        externalOperations: PropTypes.arrayOf(PropTypes.shape({
+          title: PropTypes.string,
+          icon: PropTypes.string,
+          handler: PropTypes.func
+        }))
+      })
     }).isRequired,
     fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
   }
@@ -42,7 +50,7 @@ export default class EditTab extends React.PureComponent {
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
-  showConfirmDialog = type => _ => {
+  showConfirmDialog = internalHandler => _ => {
     const {
       viewName,
       formInstance,
@@ -52,7 +60,7 @@ export default class EditTab extends React.PureComponent {
     const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
 
-    return type === 'custom' && hasUnsavedChanges;
+    return typeof internalHandler === 'function' && hasUnsavedChanges;
   }
 
   render() {
@@ -70,8 +78,11 @@ export default class EditTab extends React.PureComponent {
           formatedInstance,
           permissions: {
             crudOperations: permissions
-          },
-          operations
+          }
+        },
+        operations: {
+          internal: internalOperations,
+          external: externalOperations
         }
       },
       fieldErrorsWrapper: {
@@ -94,18 +105,22 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
+    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
+
     buttons.push(
-      ...operations(viewName === VIEW_CREATE ? formatedInstance : persistentInstance).
-        map(({ name, icon, handler, type }, index) => (
-          <ConfirmDialog
+      ...internalOperations(instance).
+        map(({ name, icon, handler, type }, index) => {
+          const internalHandler = handler();
+
+          return (<ConfirmDialog
             trigger='click'
-            onConfirm={handler}
+            onConfirm={(internalHandler || (_ => null))}
             title="You have unsaved changes"
             message={i18n.getMessage('crudEditor.unsaved.confirmation')}
             textConfirm={i18n.getMessage('crudEditor.confirm.action')}
             textCancel={i18n.getMessage('crudEditor.cancel.button')}
-            key={`operation-${index}`}
-            showDialog={this.showConfirmDialog(type)}
+            key={`internal-operation-${index}`}
+            showDialog={this.showConfirmDialog(internalHandler)}
           >
             <Button>
               {icon && <Glyphicon glyph={icon} />}
@@ -113,8 +128,22 @@ export default class EditTab extends React.PureComponent {
               {getModelMessage(i18n, `model.label.${name}`, name)}
             </Button>
           </ConfirmDialog>
-        ))
+          )
+        })
     );
+
+    buttons.push(
+      (externalOperations || []).map(({ title, icon, handler }, index) => (
+        <Button
+          onClick={_ => handler(instance)}
+          key={`external-operation-${index}`}
+        >
+          {icon && <Glyphicon glyph={icon} />}
+          {icon && ' '}
+          {title}
+        </Button>
+      ))
+    )
 
     if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(

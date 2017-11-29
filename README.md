@@ -509,22 +509,18 @@ Model Definition is an object describing an entity. It has the following structu
           name: <string, persistent field name>,
 
           /*
-           * Boolean, whether the field search is range search.
-           * By default, it is true for numbers/dates and false for all other values.
-           */
-          ?isRange: <boolean>,
-
-          /*
-           * Default render:
+           * Default "render" property:
            * {
-           *   // Default React Component for displaying particular field type.
-           *   // The following field types have default React Components:
-           *   // -- dateString,
-           *   // -- numberString,
-           *   // -- string,
-           *   // -- boolean.
-           *   // Custom render must be supplied for all other types.
-           *   Component: <function>,
+           *   // Default React Component assigned for displaying particular Field Type.
+           *   // The following field types have assigned Components:
+           *   // -- stringDate (DateRangeInput),
+           *   // -- stringNumber and number (NumberRangeInput),
+           *   // -- string (FormControl),
+           *   // -- boolean (Checkbox).
+           *   //
+           *   // null for unkown Field Type or Field Type without assigned Component =>
+           *   // "render" property must be explicitly defined in such a case.
+           *   Component: <string|null>,
            *
            *   valueProp: {
            *     name: "value",
@@ -533,15 +529,58 @@ Model Definition is an object describing an entity. It has the following structu
            * }
            */
           ?render: {
-            Component: <FieldInputComponent>,  // see "FieldInputComponent" subheading.
+
+            /*
+             * Either custom FieldInputComponent (see corresponding subheading)
+             * or string with embedded React Component name.
+             */
+            Component: <FieldInputComponent|string>,
+
+            ?props: <object, the component props to overwrite defaults>,
             ?valueProp: {
               ?name: <string, a name of Component prop with field value>,
-              
+
               /*
-               * When omitted, UI Type is considered to be unknown
-               * and unconverted field value is sent to the Component (i.e. of Field Type).
+               * Meaningless for an embedded React Component,
+               * because UI Type it works with is already known to CRUD Editor.
+               *
+               * In case of FieldInputComponent, type can be provided only when
+               * the following all conditions are satisfied:
+               * 1. its UI Type is embedded, i.e. known to CRID Editor, and
+               * 2. CRUD Editor knows how to convert the Field Type to/from the UI Type.
+               *
+               * If at least one condition is not satisfied and "type" is provided,
+               * CRUD Editor will raise an error.
+               * 
+               * When omitted for FieldInputComponent, UI Type is considered to be unknown.
+               * In such a case:
+               * 1. either define converter,
+               * 2. or unconverted field value is sent to FieldInputComponent (i.e. of Field Type) and
+               *    FieldInputComponent is presupposed to return a value of Field Type.
                */
-              ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
+              ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
+
+              /*
+               * Meaningless when both Component is FieldInputComponent and "type" property is defined.
+               */
+              ?converter: {
+
+                /*
+                 * Field Type to UI Typer converter.
+                 */
+                format(value) {
+                  ...
+                  return <serializable>;
+                }
+
+                /*
+                 * UI Type to Field Type converter.
+                 * An error must be thrown if a value is invalid, i.e. cannot be converted to the Field Type.
+                 */
+                parse(value) {
+                  ...
+                  return <serializable>;
+                }
             }
           }
         }, ...],

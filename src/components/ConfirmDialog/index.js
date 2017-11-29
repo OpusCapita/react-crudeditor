@@ -5,7 +5,7 @@ import { Modal, Button } from 'react-bootstrap';
 import upperFirst from 'lodash/upperFirst';
 import './styles.less';
 
-export default class MaybeConfirm extends PureComponent {
+export default class ConditionalConfirm extends PureComponent {
   static propTypes = {
     trigger: PropTypes.string,
     message: PropTypes.string,
@@ -100,31 +100,21 @@ export default class MaybeConfirm extends PureComponent {
 
     return (Children.count(children) === 1) ?
       (
-        Child => (
-          <Child.type
-            {...Child.props}
-            {...{
-              [eventId]: showDialog() ?
-                this.handleOpenDialog(Child.props[eventId]) :
-                Child.props[eventId]
-            }}
-          />
-        )
+        child => React.cloneElement(child, {
+          [eventId]: showDialog() ?
+            this.handleOpenDialog(child.props[eventId]) :
+            child.props[eventId]
+        })
       )(Children.toArray(children)[0]) :
       (
         <span className="confirm-dialog-span">
           {
-            Children.map(children, (Child, index) => (
-              <Child.type
-                key={index}
-                {...Child.props}
-                {...{
-                  [eventId]: showDialog() ?
-                    this.handleOpenDialog(Child.props[eventId]) :
-                    Child.props[eventId]
-                }}
-              />
-            ))
+            Children.map(children, child => React.cloneElement(child, {
+              [eventId]: showDialog() ?
+                this.handleOpenDialog(child.props[eventId]) :
+                child.props[eventId]
+            })
+            )
           }
         </span>
       )

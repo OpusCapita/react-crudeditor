@@ -7,8 +7,7 @@ import ConfirmDialog from '../ConfirmDialog';
 
 import {
   VIEW_CREATE,
-  VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_EDIT
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -156,13 +155,6 @@ export default class EditTab extends React.PureComponent {
         </ConfirmDialog>
       )
     }
-
-    // if ([VIEW_EDIT, VIEW_SHOW].indexOf(viewName) > -1) {
-    //   buttons.push(
-    //     <Button disabled={true} key="Revisions">
-    //       {i18n.getMessage('crudEditor.revisions.button')}
-    //     </Button>)
-    // }
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
       buttons.push(

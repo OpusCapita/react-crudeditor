@@ -94,8 +94,6 @@ export default class EditTab extends React.PureComponent {
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
-    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
-
     const buttons = [];
 
     if (permissions.view) {
@@ -149,10 +147,7 @@ export default class EditTab extends React.PureComponent {
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
-          <Button
-            onClick={this.handleDelete}
-            data-show-confirm={_ => true}
-          >
+          <Button onClick={this.handleDelete}>
             {i18n.getMessage('crudEditor.delete.button')}
           </Button>
         </ConfirmDialog>

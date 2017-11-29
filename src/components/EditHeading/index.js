@@ -126,7 +126,11 @@ export default class EditHeading extends PureComponent {
           <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
             {
               tabs.map(({ tab: name, disabled }, index) =>
-                (<NavItem eventKey={name} disabled={!!disabled} key={index}>
+                (<NavItem
+                  eventKey={name}
+                  disabled={!!disabled || name === activeTabName}
+                  key={index}
+                >
                   <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
                 </NavItem>)
               )

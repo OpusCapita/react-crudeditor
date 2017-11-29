@@ -57,14 +57,12 @@
         <i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor.
       </li>
       <br />
-      <br />
       <li id="custom-operation">
         <i>Custom</i> - an operation for navigation inside CRUD Editor.  Its handler <i>must</i> be a pure function returning either nothing or new view name/state. <i>Custom operations</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.
         <br />
         <br />
         <i>Important</i>: Before moving into new view a user is warned about unsaved changes, if any, with confirmation dialog - so the transormation may be cancelled.
       </li>
-      <br />
       <br />
       <li id="external-operation">
         <i>External</i> - an operation for navigating out of CRUD Editor. Its handler is <i>not</i> a pure function because it has side effects and returns nothing. The handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsexternaloperations"><i>EditorComponent</i> props.externalOperations</a>.

@@ -5,9 +5,10 @@ import { storeState2appState } from '../lib';
 // appStateChangeDetect is a function which returns Redux middleware
 export default ({
   lastState,
-  onTransition,
+  getOnTransition,
   modelDefinition
 }) => ({ getState }) => next => action => {
+  const onTransition = getOnTransition();
   const rez = next(action);
   const storeState = getState();
 

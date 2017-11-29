@@ -58,12 +58,6 @@ export default baseModelDefinition => {
       })
     }
 
-    static propTypes = {
-      locale: PropTypes.string,
-      fallbackLocale: PropTypes.string,
-      localeFormattingInfo: PropTypes.object
-    };
-
     static contextTypes = {
       i18n: PropTypes.object.isRequired // important
     };
@@ -84,7 +78,6 @@ export default baseModelDefinition => {
       onTransition = this.props.onTransition;
 
       // core crud translations
-
       this.context.i18n.register(appName, crudTranslations);
 
       // model translations
@@ -100,7 +93,7 @@ export default baseModelDefinition => {
           // or else ensure that "redux-saga" is the last middleware in the call chain.
           appStateChangeDetect({
             lastState,
-            onTransition,
+            getOnTransition: this.getOnTransition,
             modelDefinition
           }),
           notificationsMiddleware({ context: this.context, modelDefinition }),
@@ -152,6 +145,8 @@ export default baseModelDefinition => {
     componentWillUnmount() {
       this.runningSaga.cancel()
     }
+
+    getOnTransition = _ => onTransition;
 
     render = _ =>
       (<Provider store={this.store}>

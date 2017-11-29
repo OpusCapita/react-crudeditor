@@ -94,8 +94,6 @@ export default class EditTab extends React.PureComponent {
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
-    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
-
     const buttons = [];
 
     if (permissions.view) {

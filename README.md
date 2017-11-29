@@ -18,6 +18,7 @@
     * [props.view.state](#editorcomponent-propsviewstate)
     * [props.onTransition](#editorcomponent-propsontransition)
     * [props.externalOperations](#editorcomponent-propsexternaloperations)
+    * [props.uiConfig](#editorcomponent-propsuiconfig)
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
@@ -56,6 +57,7 @@
         <i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor.
       </li>
       <br />
+      <br />
       <li id="custom-operation">
         <i>Custom</i> - an operation for navigation inside CRUD Editor.  Its handler <i>must</i> be a pure function returning either nothing or new view name/state. <i>Custom operations</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.
         <br />
@@ -63,8 +65,9 @@
         <i>Important</i>: Before moving into new view a user is warned about unsaved changes, if any, with confirmation dialog - so the transormation may be cancelled.
       </li>
       <br />
+      <br />
       <li id="external-operation">
-        <i>External</i> - an operation for navigating out of CRUD Editor. Its handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsexternaloperations"><i>EditorComponent</i> props.externalOperations</a>.
+        <i>External</i> - an operation for navigating out of CRUD Editor. Its handler is <i>not</i> a pure function because it has side effects and returns nothing. The handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsexternaloperations"><i>EditorComponent</i> props.externalOperations</a>.
         <br />
         <br />
         <i>Important</i>: All unsaved Editor data gets lost if the handler changes <b>window.location</b> or view name/state.
@@ -156,6 +159,9 @@ export default class extends React.Component {
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
         ?externalOperations={[<object>, ...]}
+        ?uiConfig={{
+          ?headerLevel: <integer>
+        }}
       />;
       ...
     )
@@ -312,6 +318,14 @@ Every handler has the same set of arguments:
 Argument | Type | Description
 ---|---|---
 instance | object | An entity persistent instance which [External Operation](#external-operation) was called upon
+
+### *EditorComponent* props.uiConfig
+
+An object with optional configurations for UI.
+
+Name | Type | Default | Description
+---|---|---|---
+headerLevel | integer from 1 to 6 | 1 | Header text size in all Views. Specially designed for sub-editors.
 
 ## Model Definition
 

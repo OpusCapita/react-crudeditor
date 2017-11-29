@@ -6,16 +6,20 @@ import Main from '../../../components/ErrorMain';
 import { getViewModelData } from './selectors';
 import { goHome } from './actions';
 
-const mergeProps = (viewModelData, dispatchProps, ownProps) => ({
+const mergeProps = ({ viewModelData, uiConfig }, dispatchProps, ownProps) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: dispatchProps
+    actions: dispatchProps,
+    uiConfig
   },
 });
 
 export default connect(
-  (storeState, { modelDefinition }) => getViewModelData(storeState, modelDefinition),
+  (storeState, { modelDefinition, uiConfig }) => ({
+    viewModelData: getViewModelData(storeState, modelDefinition),
+    uiConfig
+  }),
   { goHome },
   mergeProps
 )(({

@@ -23,7 +23,7 @@ const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiC
     return null;
   }
 
-  const ViewComponent = ({
+  const ViewContainer = ({
     [VIEW_SEARCH]: SearchView,
     [VIEW_CREATE]: CreateView,
     [VIEW_EDIT]: EditView,
@@ -33,8 +33,8 @@ const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiC
 
   return (<div>
     {
-      ViewComponent ?
-        <ViewComponent
+      ViewContainer ?
+        <ViewContainer
           modelDefinition={modelDefinition}
           externalOperations={externalOperations}
           uiConfig={uiConfig}

@@ -36,7 +36,7 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
   view={{name: 'search', state: {
     hideSearchForm: false
   } }}
-  onTransition={() => {}}
+  onTransition={({ name, state }) => { console.log('called'); console.log({ name, state })}}
   externalOperations={
     [
       {

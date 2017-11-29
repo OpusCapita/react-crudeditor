@@ -17,7 +17,7 @@ const ErrorMain = ({
     <div>
       {
         errors.length === 0 ?
-          <H> Unknown Error</H> :
+          <H>Unknown Error</H> :
           errors.map(({ code, payload }, index) => (
             <div key={`error-${index}`}>
               <H>Error {code}</H>

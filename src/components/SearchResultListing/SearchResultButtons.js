@@ -131,8 +131,6 @@ export default class SearchResultButtons extends PureComponent {
     if (permissions.delete) {
       buttons.push(
         <ConfirmDialog
-          trigger='click'
-          title='Delete confirmation'
           message={i18n.getMessage('crudEditor.delete.confirmation')}
           textConfirm={i18n.getMessage('crudEditor.delete.button')}
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
@@ -141,7 +139,6 @@ export default class SearchResultButtons extends PureComponent {
           <Button
             onClick={onDelete}
             bsSize="sm"
-            data-show-confirm={_ => true}
           >
             <Glyphicon glyph='trash' />
             {' '}

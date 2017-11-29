@@ -8,7 +8,6 @@ import './styles.less';
 export default class MaybeConfirm extends PureComponent {
   static propTypes = {
     trigger: PropTypes.string,
-    title: PropTypes.string,
     message: PropTypes.string,
     textCancel: PropTypes.string,
     textConfirm: PropTypes.string,

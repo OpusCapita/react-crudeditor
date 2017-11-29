@@ -147,7 +147,6 @@ export default class EditTab extends React.PureComponent {
     if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(
         <ConfirmDialog
-          title='Delete confirmation'
           message={i18n.getMessage('crudEditor.delete.confirmation')}
           textConfirm={i18n.getMessage('crudEditor.delete.button')}
           textCancel={i18n.getMessage('crudEditor.cancel.button')}

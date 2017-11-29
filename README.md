@@ -17,7 +17,8 @@
     * [props.view.name](#editorcomponent-propsviewname)
     * [props.view.state](#editorcomponent-propsviewstate)
     * [props.onTransition](#editorcomponent-propsontransition)
-    * [props.onExternalOperation](#editorcomponent-propsonexternaloperation)
+    * [props.externalOperations](#editorcomponent-propsexternaloperations)
+    * [props.uiConfig](#editorcomponent-propsuiconfig)
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
@@ -52,11 +53,23 @@
   <dt>Operation</dt>
   <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
     <ul>
-      <li id="internal-operation"><i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor,</li>
+      <li id="internal-operation">
+        <i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor.
+      </li>
       <br />
-      <li id="custom-operation"><i>Custom</i> - custom operation which handler is defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.<br /><br /><i>Custom operation</i> has higher priority over internal operation, i.e. may overwrite it.</li>
+      <li id="custom-operation">
+        <i>Custom</i> - an operation for navigation inside CRUD Editor.  Its handler <i>must</i> be a pure function returning either nothing or new view name/state. <i>Custom operations</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.
+        <br />
+        <br />
+        <i>Important</i>: Before moving into new view a user is warned about unsaved changes, if any, with confirmation dialog - so the transormation may be cancelled.
+      </li>
       <br />
-      <li id="external-operation"><i>External</i> - operation which handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsonexternaloperation"><i>EditorComponent</i> props.onExternalOperation</a>.<br /><br /><i>External Operation</i> has higher priority over <a href="#custom-operation">Custom</a>/<a href="#internal-operation">Internal</a> Operation, i.e. may overwrite it.</li>
+      <li id="external-operation">
+        <i>External</i> - an operation for navigating out of CRUD Editor. Its handler is <i>not</i> a pure function because it has side effects and returns nothing. The handler is defined by an application as a callback function passed to <a href="#editorcomponent-propsexternaloperations"><i>EditorComponent</i> props.externalOperations</a>.
+        <br />
+        <br />
+        <i>Important</i>: All unsaved Editor data gets lost if the handler changes <b>window.location</b> or view name/state.
+      </li>
     </ul>
   </dd>
   <dt id="persistent-field">Persistent Field</dt>
@@ -143,7 +156,10 @@ export default class extends React.Component {
       <ContractEditor
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
-        ?onExternalOperation={<object>}
+        ?externalOperations={[<object>, ...]}
+        ?uiConfig={{
+          ?headerLevel: <integer>
+        }}
       />;
       ...
     )
@@ -159,7 +175,7 @@ Name | Default | Description
 ---|---|---
 view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[onExternalOperation](#editorcomponent-propsonexternaloperation) | - | Set of [External Operation](#external-operation) handlers
+[externalOperations](#editorcomponent-propsexternaloperations) | - | Set of [External Operation](#external-operation) handlers
 
 ### *EditorComponent* props.view.name
 
@@ -210,13 +226,13 @@ hideSearchForm | false
 
 ```javascript
 {
-  ?instance: <object, an entity instance with predefined field values>
+  ?predefinedFields: <object, an entity instance with predefined field values>
 }
 ```
 
 Name | Default
 ---|---
-instance | {}
+predefinedFields | {}
 
 #### *EditorComponent* props.state for *"edit"* and *"show"* Views:
 
@@ -269,26 +285,45 @@ function ({
 }
 ```
 
-### *EditorComponent* props.onExternalOperation
+### *EditorComponent* props.externalOperations
 
-An object with [External Operations](#external-operation) handlers.  A handler is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
+An array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
 
 ```javascript
-{
-  <external operation name>: function({ instance, view }) {
+[
+  {
+    title: <string, external operation translated name>,
+    
+    /*
+     * name of an icon to be displayed inside a button, ex. "trash", "edit";
+     * see full list at
+     * http://getbootstrap.com/components/#glyphicons
+     */
+    ?icon: <string>,
+    
+    handler(instance) {
+      ...
+      return;  // Return value is ignored.
+    },
     ...
-    return;  // Return value is ignored.
   },
   ...
-}
+]
 ```
 
 Every handler has the same set of arguments:
 
 Argument | Type | Description
 ---|---|---
-instance | object | An entity instance which [External Operation](#external-operation) was called upon
-view | {<br />&nbsp;&nbsp;name: &lt;string&gt;,<br />&nbsp;&nbsp;state: &lt;object&gt;<br />} | View [Name](#editorcomponent-propsviewname)/Full [State](#editorcomponent-propsviewstate) at the time when [External Operation](#external-operation) was called
+instance | object | An entity persistent instance which [External Operation](#external-operation) was called upon
+
+### *EditorComponent* props.uiConfig
+
+An object with optional configurations for UI.
+
+Name | Type | Default | Description
+---|---|---|---
+headerLevel | integer from 1 to 6 | 1 | Header text size in all Views. Specially designed for sub-editors.
 
 ## Model Definition
 
@@ -656,11 +691,10 @@ Model Definition is an object describing an entity. It has the following structu
     },
 
     /*
-     * Internal, Custom and External operations available in CRUD Editor.
+     * Custom operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
-     * Handlers are provided for Custom Operations only.
      */
-    ?operations: function(<object, entity instance>, {
+    ?operations: function(<object, entity persistent instance>, {
       name: <string, View name>,  // See EditorComponent props.view.name
       state: <object, Full View State>  // See EditorComponent props.view.state
     }) {
@@ -675,9 +709,9 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?icon: <string>,
 
-        // handler for a Custom Operation.
-        ?handler: function() {
+        handler() {
           ...
+          // return value is either undefined or view name/state.
           return {
             name: <string, View Name>,
             ?state: <object, View State, empty object by default>
@@ -1297,6 +1331,7 @@ Not implemented:
 - isCreateSupported,
 - duplicationConfiguration,
 - cmlExportConfiguration.
+- Allow custom operations to overwrite internal operations.
 
 ## Footnotes
 

@@ -28,7 +28,7 @@ import {
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData, viewState, operations, externalOperations },
+  { defaultNewInstance, viewModelData, viewState, operations, externalOperations, uiConfig },
   { createInstance, editInstance, showInstance, softRedirectView, ...dispatchProps },
   ownProps
 ) => ({
@@ -71,17 +71,19 @@ const mergeProps = (
         softRedirectView
       }),
       external: externalOperations
-    }
+    },
+    uiConfig
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   }),
   {
     createInstance,

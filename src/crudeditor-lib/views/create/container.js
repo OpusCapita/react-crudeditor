@@ -25,7 +25,8 @@ const mergeProps = (
     viewModelData,
     viewState,
     operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   },
   {
     softRedirectView,
@@ -45,16 +46,18 @@ const mergeProps = (
         softRedirectView
       }),
       external: externalOperations
-    }
+    },
+    uiConfig
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   }), {
     exitView,
     saveInstance,

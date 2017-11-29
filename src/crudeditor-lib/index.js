@@ -52,7 +52,10 @@ export default baseModelDefinition => {
         title: PropTypes.string,
         icon: PropTypes.string,
         handler: PropTypes.func
-      }))
+      })),
+      uiConfig: PropTypes.shape({
+        headerLevel: PropTypes.number
+      })
     }
 
     static propTypes = {
@@ -71,7 +74,9 @@ export default baseModelDefinition => {
 
     static defaultProps = {
       locale: 'en',
-      fallbackLocale: 'en'
+      fallbackLocale: 'en',
+      externalOperations: [],
+      uiConfig: {}
     };
 
     constructor(...args) {
@@ -155,6 +160,7 @@ export default baseModelDefinition => {
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
           externalOperations={this.props.externalOperations}
+          uiConfig={this.props.uiConfig}
         />
       </Provider>)
   }

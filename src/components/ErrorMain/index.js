@@ -5,30 +5,39 @@ import PropTypes from 'prop-types';
 const ErrorMain = ({
   model: {
     data: { errors },
-    actions: { goHome }
-  }
-}) => (
-  <div>
-    {
-      errors.length === 0 ?
-        <h1> Unknown Error</h1> :
-        errors.map(({ code, payload }, index) => (
-          <div key={`error-${index}`}>
-            <h1>Error {code}</h1>
-            { payload ? JSON.stringify(payload) : null }
-            <hr />
-          </div>
-        ))
+    actions: { goHome },
+    uiConfig: {
+      headerLevel = 1
     }
-    <Button bsStyle='link' onClick={goHome} key="Cancel">Home</Button>
-  </div>
-);
+  }
+}) => {
+  const H = 'h' + headerLevel;
+
+  return (
+    <div>
+      {
+        errors.length === 0 ?
+          <H>Unknown Error</H> :
+          errors.map(({ code, payload }, index) => (
+            <div key={`error-${index}`}>
+              <H>Error {code}</H>
+              { payload ? JSON.stringify(payload) : null }
+              <hr />
+            </div>
+          ))
+      }
+      <Button bsStyle='link' onClick={goHome} key="Cancel">Home</Button>
+    </div>
+  );
+};
 
 ErrorMain.propTypes = {
   model: PropTypes.shape({
+    actions: PropTypes.objectOf(PropTypes.func),
     data: PropTypes.shape({
       errors: PropTypes.array
-    })
+    }),
+    uiConfig: PropTypes.object.isRequired
   })
 }
 

@@ -14,7 +14,7 @@ export default class SearchResultButtons extends PureComponent {
   static propTypes = {
     permissions: PropTypes.object.isRequired,
     internalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
-    externalOperations: PropTypes.arrayOf(PropTypes.object),
+    externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
@@ -119,7 +119,7 @@ export default class SearchResultButtons extends PureComponent {
 
     buttons.push(
       this.operationsButton(
-        (this.props.externalOperations || []).
+        this.props.externalOperations.
           map(({ title, ...rest }) => ({
             ...rest,
             title,

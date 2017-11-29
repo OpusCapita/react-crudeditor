@@ -233,7 +233,7 @@ export const viewOperations = ({
   viewState,
   operations,
   softRedirectView
-}) => instance => (operations(
+}) => instance => (viewState && operations( // viewState is undefined when view is not initialized yet.
   instance,
   {
     name: viewName,

@@ -99,10 +99,22 @@ export default class CrudWrapper extends PureComponent {
       <Crud
         view={view}
         onTransition={handleTransition[baseURL]}
-        onExternalOperation={{
-          testLink() {
+        externalOperations={[{
+          title: 'Test link',
+          icon: 'link',
+          handler(instance) {
             window.location = 'http://opuscapita.com';
           }
+        }, {
+          title: 'Another link',
+          icon: 'send',
+          handler(instance) {
+            console.log('another link handler');
+            console.log(instance)
+          }
+        }]}
+        uiConfig={{
+          headerLevel: 3
         }}
       />
     );

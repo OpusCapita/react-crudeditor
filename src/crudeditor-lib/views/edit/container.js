@@ -35,7 +35,8 @@ const mergeProps = (
       nextInstanceExists,
       prevInstanceExists
     },
-    externalOperations
+    externalOperations,
+    uiConfig
   },
   {
     saveAndNextInstance,
@@ -67,19 +68,21 @@ const mergeProps = (
         softRedirectView
       }),
       external: externalOperations
-    }
+    },
+    uiConfig
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     ...(({ flags, ...viewModelData }) => ({
       viewModelData,
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
-    externalOperations
+    externalOperations,
+    uiConfig
   }), {
     changeInstanceField,
     deleteInstances,

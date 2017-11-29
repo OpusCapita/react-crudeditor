@@ -7,8 +7,7 @@ import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
 import {
   VIEW_CREATE,
-  VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_EDIT
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -26,17 +25,16 @@ export default class EditTab extends React.PureComponent {
       data: PropTypes.shape({
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
-        formatedInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internalOperations: PropTypes.func,
-        externalOperations: PropTypes.arrayOf(PropTypes.shape({
+        internal: PropTypes.func.isRequired,
+        external: PropTypes.arrayOf(PropTypes.shape({
           title: PropTypes.string,
           icon: PropTypes.string,
           handler: PropTypes.func
-        }))
+        })).isRequired
       })
     }).isRequired,
     fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
@@ -77,7 +75,6 @@ export default class EditTab extends React.PureComponent {
           viewName,
           persistentInstance,
           formInstance,
-          formatedInstance,
           permissions: {
             crudOperations: permissions
           }
@@ -112,7 +109,7 @@ export default class EditTab extends React.PureComponent {
     }
 
     buttons.push(
-      ...internalOperations(instance).
+      ...internalOperations(persistentInstance).
         map(({ name, icon, handler, type }, index) => {
           const internalHandler = handler();
 
@@ -132,9 +129,9 @@ export default class EditTab extends React.PureComponent {
     );
 
     buttons.push(
-      (externalOperations || []).map(({ title, icon, handler }, index) => (
+      externalOperations.map(({ title, icon, handler }, index) => (
         <Button
-          onClick={_ => handler(instance)}
+          onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
         >
           {icon && <Glyphicon glyph={icon} />}
@@ -160,13 +157,6 @@ export default class EditTab extends React.PureComponent {
           </Button>
         </ConfirmDialog>
       )
-    }
-
-    if ([VIEW_EDIT, VIEW_SHOW].indexOf(viewName) > -1) {
-      buttons.push(
-        <Button disabled={true} key="Revisions">
-          {i18n.getMessage('crudEditor.revisions.button')}
-        </Button>)
     }
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {

@@ -62,38 +62,32 @@ export default class EditHeading extends PureComponent {
 
     const title = permissions.view ?
       (
-        <ConfirmUnsavedChanges
-          handleConfirm={exitView}
-          showDialog={this.showConfirmDialog}
-        >
-          <a style={{ cursor: 'pointer' }}>
+        <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
+          <a style={{ cursor: 'pointer' }} onClick={exitView}>
             {getModelMessage(i18n, 'model.name')}
           </a>
         </ConfirmUnsavedChanges>
       ) :
       getModelMessage(i18n, 'model.name');
 
-    const arrowLeft = (
-      <ConfirmUnsavedChanges
-        handleConfirm={gotoPrevInstance}
-        showDialog={this.showConfirmDialog}
-      >
-        <Button disabled={!gotoPrevInstance}>
+    const arrows = [
+      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
+        <Button
+          disabled={!gotoPrevInstance}
+          onClick={gotoPrevInstance}
+        >
           <Glyphicon glyph="arrow-left"/>
         </Button>
-      </ConfirmUnsavedChanges>
-    )
-
-    const arrowRight = (
-      <ConfirmUnsavedChanges
-        handleConfirm={gotoNextInstance}
-        showDialog={this.showConfirmDialog}
-      >
-        <Button disabled={!gotoNextInstance}>
+      </ConfirmUnsavedChanges>,
+      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
+        <Button
+          disabled={!gotoNextInstance}
+          onClick={gotoNextInstance}
+        >
           <Glyphicon glyph="arrow-right"/>
         </Button>
       </ConfirmUnsavedChanges>
-    )
+    ]
 
     return (<div style={{ marginBottom: '10px' }}>
       <h1>
@@ -110,8 +104,7 @@ export default class EditHeading extends PureComponent {
           <Col xs={4}>
             <div style={{ float: "right" }}>
               <ButtonGroup>
-                {arrowLeft}
-                {arrowRight}
+                {arrows}
               </ButtonGroup>
             </div>
           </Col>

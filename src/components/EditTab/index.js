@@ -97,24 +97,19 @@ export default class EditTab extends React.PureComponent {
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
+    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
+
     const buttons = [];
 
     if (permissions.view) {
       buttons.push(
-        <ConfirmUnsavedChanges
-          handleConfirm={exitView}
-          showDialog={this.hasUnsavedChanges}
-          key="Cancel"
-        >
-          <Button bsStyle='link'>
+        <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
+          <Button bsStyle='link' onClick={exitView}>
             {i18n.getMessage('crudEditor.cancel.button')}
           </Button>
         </ConfirmUnsavedChanges>
-
       )
     }
-
-    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
 
     buttons.push(
       ...internalOperations(instance).
@@ -123,11 +118,10 @@ export default class EditTab extends React.PureComponent {
 
           return (
             <ConfirmUnsavedChanges
-              handleConfirm={(internalHandler || (_ => null))}
-              showDialog={this.showConfirmDialog(internalHandler)}
               key={`internal-operation-${index}`}
+              showDialog={this.showConfirmDialog(internalHandler)}
             >
-              <Button>
+              <Button onClick={(internalHandler || (_ => null))}>
                 {icon && <Glyphicon glyph={icon} />}
                 {icon && ' '}
                 {getModelMessage(i18n, `model.label.${name}`, name)}
@@ -153,15 +147,18 @@ export default class EditTab extends React.PureComponent {
     if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(
         <ConfirmDialog
-          trigger='click'
-          onConfirm={this.handleDelete}
           title='Delete confirmation'
           message={i18n.getMessage('crudEditor.delete.confirmation')}
           textConfirm={i18n.getMessage('crudEditor.delete.button')}
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
-          <Button>{i18n.getMessage('crudEditor.delete.button')}</Button>
+          <Button
+            onClick={this.handleDelete}
+            data-show-confirm={_ => true}
+          >
+            {i18n.getMessage('crudEditor.delete.button')}
+          </Button>
         </ConfirmDialog>
       )
     }

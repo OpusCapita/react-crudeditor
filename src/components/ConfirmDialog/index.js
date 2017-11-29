@@ -45,9 +45,9 @@ export default class MaybeConfirm extends PureComponent {
     confirmHandler: null
   })
 
-  handleOpenDialog = childHandler => _ => this.setState({
+  handleOpenDialog = childHandler => event => this.setState({
     show: true,
-    confirmHandler: childHandler
+    confirmHandler: _ => childHandler(event)
   })
 
   handleConfirm = event => {

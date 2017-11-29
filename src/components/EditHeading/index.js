@@ -112,15 +112,21 @@ export default class EditHeading extends PureComponent {
       </h1>
 
       {
-        tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
-          {
-            tabs.map(({ tab: name, disabled }, index) =>
-              (<NavItem eventKey={name} disabled={!!disabled} key={index}>
-                <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
-              </NavItem>)
-            )
-          }
-        </Nav>
+        tabs.length > 1 &&
+        <ConfirmUnsavedChanges
+          trigger='select'
+          showDialog={this.showConfirmDialog}
+        >
+          <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+            {
+              tabs.map(({ tab: name, disabled }, index) =>
+                (<NavItem eventKey={name} disabled={!!disabled} key={index}>
+                  <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
+                </NavItem>)
+              )
+            }
+          </Nav>
+        </ConfirmUnsavedChanges>
       }
     </div>);
   }

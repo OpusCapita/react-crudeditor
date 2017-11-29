@@ -1,119 +1,122 @@
-import React from 'react';
+import React, { PureComponent, Children } from 'react';
 import ReactDOM from 'react-dom';
-import Modal from 'react-bootstrap/lib/Modal';
-import upperFirst from 'lodash/upperFirst';
 import PropTypes from 'prop-types';
+import { Modal, Button } from 'react-bootstrap';
+import upperFirst from 'lodash/upperFirst';
+import './styles.less';
 
-export default class ConfirmDialog extends React.Component {
+export default class ConditionalConfirm extends PureComponent {
   static propTypes = {
-    title: PropTypes.string,
-    onConfirm: PropTypes.func,
-    onCancel: PropTypes.func,
-    message: PropTypes.any,
     trigger: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    textConfirm: PropTypes.string,
+    message: PropTypes.string,
     textCancel: PropTypes.string,
-    // showDialog should return a boolean
-    // if true -> dialog is displayed
-    // else immediately invoke onConfirm
-    // by default showDialog returns true
+    textConfirm: PropTypes.string,
     showDialog: PropTypes.func
-  };
-
-  static contextTypes = {
-    i18n: PropTypes.object
-  };
+  }
 
   static defaultProps = {
     trigger: 'click',
-    onConfirm: _ => {},
-    onCancel: _ => {},
     showDialog: _ => true
-  };
+  }
 
   state = {
-    show: false
-  };
+    show: false,
+    confirmHandler: null
+  }
 
-  componentDidMount = () => {
+  componentDidMount = _ => {
     this._mountNode = document.createElement('div');
     this.renderDialog();
   };
 
-  componentDidUpdate = () => {
+  componentDidUpdate = _ => {
     if (this._mountNode) {
       this.renderDialog();
     }
   };
 
-  componentWillUnmount = () => {
+  componentWillUnmount = _ => {
     ReactDOM.unmountComponentAtNode(this._mountNode);
     this._mountNode = null;
   };
 
-  handleConfirm = (event) => {
-    this.props.onConfirm();
-    this.setState({ show: false });
-  };
+  handleClose = _ => this.setState({
+    show: false,
+    confirmHandler: null
+  })
 
-  handleOpenDialog = (event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault();
-    }
-    this.setState({ show: true });
-  };
+  handleOpenDialog = childHandler => event => this.setState({
+    show: true,
+    confirmHandler: _ => childHandler(event)
+  })
 
-  handleCancelDialog = () => {
-    this.props.onCancel();
-    this.setState({ show: false });
-  };
+  handleConfirm = event => {
+    this.state.confirmHandler(event)
+    this.handleClose();
+  }
 
-  renderDialog = () => {
-    ReactDOM.unstable_renderSubtreeIntoContainer(
-      this, this._dialog, this._mountNode
-    );
-  };
+  createDialog = _ => {
+    const {
+      message,
+      textConfirm,
+      textCancel
+    } = this.props;
+
+    return (
+      <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal.Header closeButton={true}>
+          <h4>{message}</h4>
+          <div className="text-right">
+            <Button
+              onClick={this.handleClose}
+              bsStyle="link"
+            >
+              {textCancel}
+            </Button>
+            <Button
+              onClick={this.handleConfirm}
+              bsStyle="primary"
+            >
+              {textConfirm}
+            </Button>
+          </div>
+        </Modal.Header>
+      </Modal>
+    )
+  }
+
+  renderDialog = _ => {
+    ReactDOM.render(this.createDialog(), this._mountNode);
+  }
 
   render() {
-    let {
-      title,
-      message,
+    const {
       children,
       trigger,
-      textConfirm,
-      textCancel,
       showDialog
     } = this.props;
 
-    let eventId = 'on' + upperFirst(trigger);
+    const eventId = 'on' + upperFirst(trigger);
 
-    this._dialog = (
-      <Modal key={1} show={this.state.show} onHide={this.handleCancelDialog}>
-        <Modal.Header closeButton={true}>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{message}</Modal.Body>
-
-        <Modal.Footer>
-          <button className="btn btn-link" onClick={this.handleCancelDialog}>
-            {textCancel}
-          </button>
-          <button className="btn btn-primary" onClick={this.handleConfirm}>
-            {textConfirm}
-          </button>
-        </Modal.Footer>
-      </Modal>
-    );
-
-    let child = Array.isArray(children) ? children[0] : children;
-
-    let childProps = {
-      ...child.props
-    };
-
-    childProps[eventId] = showDialog() ? this.handleOpenDialog : this.handleConfirm;
-
-    return React.cloneElement(child, childProps);
+    return (Children.count(children) === 1) ?
+      (
+        child => React.cloneElement(child, {
+          [eventId]: showDialog() ?
+            this.handleOpenDialog(child.props[eventId]) :
+            child.props[eventId]
+        })
+      )(Children.toArray(children)[0]) :
+      (
+        <span className="confirm-dialog-span">
+          {
+            Children.map(children, child => React.cloneElement(child, {
+              [eventId]: showDialog() ?
+                this.handleOpenDialog(child.props[eventId]) :
+                child.props[eventId]
+            })
+            )
+          }
+        </span>
+      )
   }
 }

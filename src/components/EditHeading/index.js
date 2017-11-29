@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-
-import ConfirmDialog from '../ConfirmDialog';
 import { getModelMessage } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
-
+import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 import {
   Nav,
   NavItem,
@@ -68,43 +66,32 @@ export default class EditHeading extends PureComponent {
 
     const title = permissions.view ?
       (
-        <a style={{ cursor: 'pointer' }} onClick={exitView}>
-          {getModelMessage(i18n, 'model.name')}
-        </a>
+        <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
+          <a style={{ cursor: 'pointer' }} onClick={exitView}>
+            {getModelMessage(i18n, 'model.name')}
+          </a>
+        </ConfirmUnsavedChanges>
       ) :
       getModelMessage(i18n, 'model.name');
 
-    const arrowLeft = (
-      <ConfirmDialog
-        trigger='click'
-        onConfirm={gotoPrevInstance}
-        title="You have unsaved changes"
-        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-        textCancel={i18n.getMessage('crudEditor.cancel.button')}
-        showDialog={this.showConfirmDialog}
-      >
-        <Button disabled={!gotoPrevInstance}>
+    const arrows = [
+      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
+        <Button
+          disabled={!gotoPrevInstance}
+          onClick={gotoPrevInstance}
+        >
           <Glyphicon glyph="arrow-left"/>
         </Button>
-      </ConfirmDialog>
-    )
-
-    const arrowRight = (
-      <ConfirmDialog
-        trigger='click'
-        onConfirm={gotoNextInstance}
-        title="You have unsaved changes"
-        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-        textCancel={i18n.getMessage('crudEditor.cancel.button')}
-        showDialog={this.showConfirmDialog}
-      >
-        <Button disabled={!gotoNextInstance}>
+      </ConfirmUnsavedChanges>,
+      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
+        <Button
+          disabled={!gotoNextInstance}
+          onClick={gotoNextInstance}
+        >
           <Glyphicon glyph="arrow-right"/>
         </Button>
-      </ConfirmDialog>
-    )
+      </ConfirmUnsavedChanges>
+    ]
 
     const H = 'h' + headerLevel;
 
@@ -123,8 +110,7 @@ export default class EditHeading extends PureComponent {
           <Col xs={4}>
             <div style={{ float: "right" }}>
               <ButtonGroup>
-                {arrowLeft}
-                {arrowRight}
+                {arrows}
               </ButtonGroup>
             </div>
           </Col>

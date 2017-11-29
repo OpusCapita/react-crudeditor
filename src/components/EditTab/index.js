@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
+import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
 import {
   VIEW_CREATE,
@@ -48,17 +48,19 @@ export default class EditTab extends React.PureComponent {
 
   handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
 
-  showConfirmDialog = internalHandler => _ => {
+  hasUnsavedChanges = _ => {
     const {
       viewName,
       formInstance,
       persistentInstance
     } = this.props.model.data;
 
-    const hasUnsavedChanges = (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
+    return (viewName === VIEW_EDIT && !isEqual(formInstance, persistentInstance)) ||
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
+  }
 
-    return typeof internalHandler === 'function' && hasUnsavedChanges;
+  showConfirmDialog = internalHandler => _ => {
+    return typeof internalHandler === 'function' && this.hasUnsavedChanges();
   }
 
   render() {
@@ -92,13 +94,17 @@ export default class EditTab extends React.PureComponent {
 
     const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
 
+    const instance = viewName === VIEW_CREATE ? formatedInstance : persistentInstance;
+
     const buttons = [];
 
     if (permissions.view) {
       buttons.push(
-        <Button bsStyle='link' onClick={exitView} key="Cancel">
-          {i18n.getMessage('crudEditor.cancel.button')}
-        </Button>
+        <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
+          <Button bsStyle='link' onClick={exitView}>
+            {i18n.getMessage('crudEditor.cancel.button')}
+          </Button>
+        </ConfirmUnsavedChanges>
       )
     }
 
@@ -107,22 +113,17 @@ export default class EditTab extends React.PureComponent {
         map(({ name, icon, handler, type }, index) => {
           const internalHandler = handler();
 
-          return (<ConfirmDialog
-            trigger='click'
-            onConfirm={(internalHandler || (_ => null))}
-            title="You have unsaved changes"
-            message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-            textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-            textCancel={i18n.getMessage('crudEditor.cancel.button')}
-            key={`internal-operation-${index}`}
-            showDialog={this.showConfirmDialog(internalHandler)}
-          >
-            <Button>
-              {icon && <Glyphicon glyph={icon} />}
-              {icon && ' '}
-              {getModelMessage(i18n, `model.label.${name}`, name)}
-            </Button>
-          </ConfirmDialog>
+          return (
+            <ConfirmUnsavedChanges
+              key={`internal-operation-${index}`}
+              showDialog={this.showConfirmDialog(internalHandler)}
+            >
+              <Button onClick={(internalHandler || (_ => null))}>
+                {icon && <Glyphicon glyph={icon} />}
+                {icon && ' '}
+                {getModelMessage(i18n, `model.label.${name}`, name)}
+              </Button>
+            </ConfirmUnsavedChanges>
           )
         })
     );
@@ -143,15 +144,14 @@ export default class EditTab extends React.PureComponent {
     if (viewName === VIEW_EDIT && permissions.delete) {
       buttons.push(
         <ConfirmDialog
-          trigger='click'
-          onConfirm={this.handleDelete}
-          title='Delete confirmation'
           message={i18n.getMessage('crudEditor.delete.confirmation')}
           textConfirm={i18n.getMessage('crudEditor.delete.button')}
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
-          <Button>{i18n.getMessage('crudEditor.delete.button')}</Button>
+          <Button onClick={this.handleDelete}>
+            {i18n.getMessage('crudEditor.delete.button')}
+          </Button>
         </ConfirmDialog>
       )
     }

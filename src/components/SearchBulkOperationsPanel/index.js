@@ -35,14 +35,15 @@ export default class SearchBulkOperationsPanel extends PureComponent {
         {
           canDelete && (<div>
             <ConfirmDialog
-              trigger='click'
-              title='Delete confirmation'
-              onConfirm={this.handleDelete}
               message={i18n.getMessage('crudEditor.deleteSelected.confirmation')}
               textConfirm={i18n.getMessage('crudEditor.delete.button')}
               textCancel={i18n.getMessage('crudEditor.cancel.button')}
             >
-              <Button bsSize='sm' disabled={this.props.model.data.selectedInstances.length === 0}>
+              <Button
+                bsSize='sm'
+                disabled={this.props.model.data.selectedInstances.length === 0}
+                onClick={this.handleDelete}
+              >
                 {i18n.getMessage('crudEditor.deleteSelected.button')}
               </Button>
             </ConfirmDialog>

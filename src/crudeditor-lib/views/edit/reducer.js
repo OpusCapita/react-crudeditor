@@ -47,6 +47,43 @@ import {
 
 import { findFieldLayout, getTab } from '../lib';
 
+// Synchronize formInstance and formatedInstance with instance (which is a persistentInstance).
+const synchronizeInstances = ({
+  instance,
+  newStoreStateSlice,
+  modelDefinition,
+  formLayout
+}) => {
+  /* eslint-disable no-param-reassign */
+  newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+
+  newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+    (rez, fieldName) => {
+      const fieldLayout = findFieldLayout(fieldName)(formLayout);
+      return fieldLayout ? {
+        ...rez,
+        [fieldName]: formatField({
+          value: instance[fieldName],
+          type: modelDefinition.model.fields[fieldName].type,
+          targetType: fieldLayout.render.valueProp.type
+        })
+      } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
+    },
+    {}
+  ));
+
+  newStoreStateSlice.errors = u.constant({
+    fields: Object.keys(instance).reduce(
+      (rez, fieldName) => ({
+        ...rez,
+        [fieldName]: []
+      }),
+      {}
+    )
+  });
+  /* eslint-enable no-param-reassign */
+}
+
 const defaultStoreStateTemplate = {
 
   // Instance as saved on server-side.
@@ -178,34 +215,14 @@ export default modelDefinition => (
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-    // newStoreStateSlice.divergedField = null;
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-    newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
-      (rez, fieldName) => {
-        const fieldLayout = findFieldLayout(fieldName)(formLayout);
-        return fieldLayout ? {
-          ...rez,
-          [fieldName]: formatField({
-            value: instance[fieldName],
-            type: modelDefinition.model.fields[fieldName].type,
-            targetType: fieldLayout.render.valueProp.type
-          })
-        } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
-      },
-      {}
-    ));
-
-    newStoreStateSlice.errors = u.constant({
-      fields: Object.keys(instance).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: []
-        }),
-        {}
-      )
-    });
+    synchronizeInstances({
+      instance,
+      newStoreStateSlice,
+      modelDefinition,
+      formLayout
+    })
 
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
@@ -226,12 +243,6 @@ export default modelDefinition => (
       [fieldName]: u.constant(fieldValue)
     };
 
-    //   newStoreStateSlice.divergedField = fieldName;
-
-    // // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-    // } else if (type === INSTANCE_FIELD_VALIDATE && storeState.divergedField) {
-    //   // if storeState.divergedField is null, no data has changed.
-    // const { name: fieldName } = payload;
     const fieldMeta = modelDefinition.model.fields[fieldName];
     const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
 
@@ -240,7 +251,6 @@ export default modelDefinition => (
 
       try {
         newFormValue = parseField({
-          // value: storeState.formatedInstance[fieldName],
           value: fieldValue,
           type: fieldMeta.type,
           sourceType: uiType
@@ -315,6 +325,17 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be falsy, i.e. not specified.
+
+    // reset to persistentInstance
+    if (!isEqual(storeState.formInstance, storeState.persistentInstance)) {
+      synchronizeInstances({
+        instance: storeState.persistentInstance,
+        newStoreStateSlice,
+        modelDefinition,
+        formLayout: storeState.formLayout
+      })
+    }
+
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);
 

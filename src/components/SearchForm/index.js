@@ -5,6 +5,7 @@ import { Button, Form, FormGroup } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
+import RangeInput from '../RangeInput';
 import './SearchForm.less';
 
 class SearchForm extends React.Component {
@@ -124,6 +125,12 @@ class SearchForm extends React.Component {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__controls">
+        <FormGroup className="crud--search-form__form-group">
+          <div>
+            <label>Range Input</label>
+            <RangeInput />
+          </div>
+        </FormGroup>
           {searchableFieldsElement}
         </div>
         <div className="crud--search-form__submit-group">

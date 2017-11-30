@@ -1,5 +1,4 @@
 import {
-  INSTANCE_CREATE,
   INSTANCE_SAVE,
   TAB_SELECT,
   INSTANCE_FIELD_VALIDATE,
@@ -8,15 +7,6 @@ import {
 } from './constants';
 
 export const
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  // search component dispatches it with a newely created instance
-  // listener: search/workerSagas/create.js
-  createInstance = ({ predefinedFields }) => ({
-    type: INSTANCE_CREATE,
-    payload: { predefinedFields }
-  }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

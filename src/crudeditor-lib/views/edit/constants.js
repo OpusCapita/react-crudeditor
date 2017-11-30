@@ -12,7 +12,6 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  INSTANCE_EDIT = namespace + '/INSTANCE_EDIT',
   INSTANCE_EDIT_FAIL = namespace + '/INSTANCE_EDIT_FAIL',
   INSTANCE_EDIT_REQUEST = namespace + '/INSTANCE_EDIT_REQUEST',
   INSTANCE_EDIT_SUCCESS = namespace + '/INSTANCE_EDIT_SUCCESS',

@@ -2,15 +2,12 @@ import { call, put, select } from 'redux-saga/effects';
 
 import editSaga from './edit';
 import searchSaga from '../../search/workerSagas/search';
-
+import redirectSaga from '../../../common/workerSagas/redirect';
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
 
 import {
   AFTER_ACTION_NEXT,
   AFTER_ACTION_NEW,
-
-  VIEW_REDIRECT_REQUEST,
-  VIEW_REDIRECT_FAIL,
 
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_FAIL,
@@ -136,26 +133,23 @@ export default function*({
   const instance = yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
 
   if (afterAction === AFTER_ACTION_NEW) {
-    yield put({
-      type: VIEW_REDIRECT_REQUEST,
-      meta
-    });
-
     try {
-      yield call(softRedirectSaga, {
-        viewName: VIEW_CREATE,
-        viewState: {
-          instance: {} // TODO: build correct pre-filled instance.
+      yield call(redirectSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        action: {
+          payload: {
+            view: {
+              name: VIEW_CREATE,
+              state: {
+                predefinedFields: {} // TODO: build correct pre-filled instance.
+              }
+            }
+          },
+          meta
         }
-      });
+      })
     } catch (err) {
-      yield put({
-        type: VIEW_REDIRECT_FAIL,
-        payload: err,
-        error: true,
-        meta
-      });
-
       throw err;
     }
   } else if (afterAction === AFTER_ACTION_NEXT) {

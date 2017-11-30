@@ -9,10 +9,15 @@ const ErrorMain = ({
     uiConfig: {
       headerLevel = 1
     }
+  },
+  modelDefinition: {
+    permissions: {
+      crudOperations
+    }
   }
 }) => {
   const H = 'h' + headerLevel;
-
+  console.log(crudOperations)
   return (
     <div>
       {
@@ -26,7 +31,12 @@ const ErrorMain = ({
             </div>
           ))
       }
-      <Button bsStyle='link' onClick={goHome} key="Cancel">Home</Button>
+      {
+        crudOperations.view &&
+        <Button bsStyle='link' onClick={goHome} key="Cancel">
+          Home
+        </Button>
+      }
     </div>
   );
 };
@@ -38,6 +48,16 @@ ErrorMain.propTypes = {
       errors: PropTypes.array
     }),
     uiConfig: PropTypes.object.isRequired
+  }).isRequired,
+  modelDefinition: PropTypes.shape({
+    permissions: PropTypes.shape({
+      crudOperations: PropTypes.shape({
+        create: PropTypes.bool,
+        edit: PropTypes.bool,
+        delete: PropTypes.bool,
+        view: PropTypes.bool,
+      })
+    })
   })
 }
 

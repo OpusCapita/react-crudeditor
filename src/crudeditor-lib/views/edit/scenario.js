@@ -2,7 +2,6 @@ import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effe
 
 import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
-import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
 import editAdjacentSaga from './workerSagas/editAdjacent';
 import redirectSaga from '../../common/workerSagas/redirect';
@@ -15,7 +14,6 @@ import { plusMinus } from '../lib';
 
 import {
   INSTANCE_SAVE,
-  VIEW_EXIT,
   TAB_SELECT,
   VIEW_NAME,
 
@@ -37,7 +35,6 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
     },
     nonBlocking: {
       [INSTANCE_SAVE]: saveSaga,
-      [VIEW_EXIT]: exitSaga,
       [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }

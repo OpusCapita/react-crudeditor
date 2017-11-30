@@ -1,6 +1,4 @@
 import {
-  VIEW_EXIT,
-  INSTANCE_CREATE,
   INSTANCE_SAVE,
   TAB_SELECT,
   INSTANCE_FIELD_VALIDATE,
@@ -12,23 +10,8 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  // search component dispatches it with a newely created instance
-  // listener: search/workerSagas/create.js
-  createInstance = ({ predefinedFields }) => ({
-    type: INSTANCE_CREATE,
-    payload: { predefinedFields }
-  }),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   saveInstance = _ => ({
     type: INSTANCE_SAVE
-  }),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  exitView = _ => ({
-    type: VIEW_EXIT
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

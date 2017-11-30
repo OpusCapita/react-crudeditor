@@ -9,8 +9,6 @@ export const
    *███ ACTION TYPES (in alphabetical order) ███*
   \*████████████████████████████████████████████*/
 
-  HOME_GO = namespace + '/HOME_GO',
-
   VIEW_INITIALIZE = namespace + '/VIEW_INITIALIZE',
 
   VIEW_REDIRECT_REQUEST = namespace + '/VIEW_REDIRECT_REQUEST',

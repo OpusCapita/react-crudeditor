@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
+import { VIEW_SEARCH } from '../../common/constants';
 import { viewOperations } from '../lib';
 
 import {
@@ -17,7 +18,6 @@ import {
 
 import {
   changeInstanceField,
-  exitView,
   saveInstance,
   saveAndNewInstance,
   saveAndNextInstance,
@@ -86,7 +86,7 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitView,
+    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

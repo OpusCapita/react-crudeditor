@@ -27216,34 +27216,6 @@ export default {
     "freightSurcharge": 6999
   },
   {
-    "contractId": "AICD check",
-    "extContractId": "Dilation of Right Internal Iliac Artery, Perc Endo Approach",
-    "description": "Benign neoplasm of bones of skull and face",
-    "statusId": "800",
-    "currencyId": null,
-    "minOrderValueRequired": null,
-    "minOrderValue": null,
-    "maxOrderValue": null,
-    "isStandard": false,
-    "isFrameContract": true,
-    "isOffer": true,
-    "isPreferred": true,
-    "isInternal": false,
-    "createdOn": "2012-01-03T18:42:49Z",
-    "changedOn": "2013-11-23T11:27:50Z",
-    "createdBy": "Gaylene Shorter",
-    "changedBy": "Modestia Jenny",
-    "validRange": {
-      "from": "2011-05-16T09:30:06Z",
-      "to": "2018-05-21T11:33:32Z"
-    },
-    "extContractLineId": "Circulatory anomaly NEC",
-    "freeShippingBoundary": 88761,
-    "totalContractedAmount": 68440,
-    "smallVolumeSurcharge": 17519,
-    "freightSurcharge": 70302
-  },
-  {
     "contractId": "Gastroenterostomy NEC",
     "extContractId": "Change Drainage Device in Sinus, External Approach",
     "description": null,

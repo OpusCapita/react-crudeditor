@@ -13,16 +13,7 @@ import {
   Button,
   Glyphicon
 } from 'react-bootstrap';
-
-const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
-  ...instance,
-  ...Object.keys(instance).
-    filter(fieldName => fieldsMeta[fieldName].type === 'boolean').
-    reduce((obj, fieldName) => ({
-      ...obj,
-      [fieldName]: instance[fieldName] || null
-    }), {})
-})
+import { unifyBooleanFields } from '../../crudeditor-lib/views/edit/reducer';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {

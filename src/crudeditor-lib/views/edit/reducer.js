@@ -327,12 +327,14 @@ export default modelDefinition => (
     const { tabName } = payload; // may be falsy, i.e. not specified.
 
     // reset to persistentInstance
-    synchronizeInstances({
-      instance: storeState.persistentInstance,
-      newStoreStateSlice,
-      modelDefinition,
-      formLayout: storeState.formLayout
-    })
+    if (!isEqual(storeState.formInstance, storeState.persistentInstance)) {
+      synchronizeInstances({
+        instance: storeState.persistentInstance,
+        newStoreStateSlice,
+        modelDefinition,
+        formLayout: storeState.formLayout
+      })
+    }
 
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);

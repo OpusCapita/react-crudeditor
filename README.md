@@ -553,7 +553,10 @@ Model Definition is an object describing an entity. It has the following structu
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
 
               /*
-               * Mutually exclusive with the above "type" property.
+               * Overwrites default converter, if any.
+               * There is a default converter when Field Type is known to CRUID Editor and
+               * 1. Component is embedded React Component, or
+               * 2. Component is FieldInputComponent and "type" with UI Type is specified.
                */
               ?converter: {
 

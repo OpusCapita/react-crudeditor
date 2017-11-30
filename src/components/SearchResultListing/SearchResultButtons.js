@@ -55,6 +55,16 @@ export default class SearchResultButtons extends PureComponent {
         key={uid}
         onClick={handler}
         bsSize="sm"
+        onToggle={(dropdownOpened, ...rest) => {
+          console.log(dropdownOpened, rest)
+          const { parentRef } = this.props;
+          const parentWidth = parentRef.clientWidth;
+          const tableWidth = parentRef.firstChild.scrollWidth
+
+          parentRef.style.overflow = dropdownOpened && parentWidth >= tableWidth ?
+            'visible' :
+            'auto'
+        }}
       >
         {
           operations.slice(1).map(({ icon, handler, title, uid }, index) => (

@@ -96,7 +96,7 @@ class SearchResultListing extends PureComponent {
     const { i18n } = this.context;
 
     return (
-      <div className="crud--search-result-listing__table-container">
+      <div className="crud--search-result-listing__table-container" ref={el => this._myRef = el}>
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
@@ -181,6 +181,7 @@ class SearchResultListing extends PureComponent {
                       onEdit={this.handleEdit(instance, index)}
                       onDelete={this.handleDelete(instance)}
                       index={index}
+                      parentRef={this._myRef}
                     />
                   </td>
                 </tr>

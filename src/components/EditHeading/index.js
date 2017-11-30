@@ -14,6 +14,16 @@ import {
   Glyphicon
 } from 'react-bootstrap';
 
+const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
+  ...instance,
+  ...Object.keys(instance).
+    filter(fieldName => fieldsMeta[fieldName].type === 'boolean').
+    reduce((obj, fieldName) => ({
+      ...obj,
+      [fieldName]: instance[fieldName] || null
+    }), {})
+})
+
 export default class EditHeading extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
@@ -30,10 +40,14 @@ export default class EditHeading extends PureComponent {
   showConfirmDialog = _ => {
     const {
       formInstance,
-      persistentInstance
+      persistentInstance,
+      fieldsMeta
     } = this.props.model.data;
     // compare persistent and form instances to decide weither to show confirm box or not
-    return formInstance && !isEqual(formInstance, persistentInstance);
+    return formInstance && !isEqual(
+      unifyBooleanFields(formInstance, fieldsMeta),
+      unifyBooleanFields(persistentInstance, fieldsMeta)
+    );
   }
 
   render() {
@@ -118,15 +132,25 @@ export default class EditHeading extends PureComponent {
       </H>
 
       {
-        tabs.length > 1 && <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
-          {
-            tabs.map(({ tab: name, disabled }, index) =>
-              (<NavItem eventKey={name} disabled={!!disabled} key={index}>
-                <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
-              </NavItem>)
-            )
-          }
-        </Nav>
+        tabs.length > 1 &&
+        <ConfirmUnsavedChanges
+          trigger='select'
+          showDialog={this.showConfirmDialog}
+        >
+          <Nav bsStyle='tabs' activeKey={activeTabName} onSelect={selectTab}>
+            {
+              tabs.map(({ tab: name, disabled }, index) =>
+                (<NavItem
+                  eventKey={name}
+                  disabled={!!disabled || name === activeTabName}
+                  key={index}
+                >
+                  <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
+                </NavItem>)
+              )
+            }
+          </Nav>
+        </ConfirmUnsavedChanges>
       }
     </div>);
   }

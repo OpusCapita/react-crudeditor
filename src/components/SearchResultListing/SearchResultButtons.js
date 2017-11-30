@@ -27,7 +27,7 @@ export default class SearchResultButtons extends PureComponent {
   }
 
   state = {
-    previousEvent: null
+    previousSource: null
   }
 
   // handleToggleDropdown is a workaround for weird CSS overflow behavior
@@ -45,13 +45,13 @@ export default class SearchResultButtons extends PureComponent {
 
     // handle multiple dropdowns closing each other
     // don't rewrite styles if one DD is closed by opening another DD
-    if (this.state.previousEvent === 'click' && source === 'rootClose') {
+    if (this.state.previousSource === 'click' && source === 'rootClose') {
       return
     }
 
     parentRef.style.overflow = dropdownOpened ? 'visible' : 'auto';
 
-    this.setState({ previousEvent: source })
+    this.setState({ previousSource: source })
   }
 
   operationsButton = operations => {

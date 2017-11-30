@@ -2,14 +2,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
-import { createInstance } from '../create/actions';
-import { editInstance } from '../edit/actions';
 import {
   deleteInstances,
   softRedirectView
 } from '../../common/actions';
-import { showInstance } from '../show/actions';
 import { VIEW_NAME } from './constants';
+import { VIEW_EDIT, VIEW_SHOW, VIEW_CREATE } from '../../common/constants';
 import { viewOperations } from '../lib';
 
 import {
@@ -29,7 +27,7 @@ import {
 
 const mergeProps = (
   { defaultNewInstance, viewModelData, viewState, operations, externalOperations, uiConfig },
-  { createInstance, editInstance, showInstance, softRedirectView, ...dispatchProps },
+  { softRedirectView, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
@@ -37,29 +35,40 @@ const mergeProps = (
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      createInstance: _ => createInstance({ predefinedFields: defaultNewInstance }),
+      createInstance: _ => softRedirectView({
+        name: VIEW_CREATE,
+        state: {
+          predefinedFields: defaultNewInstance
+        }
+      }),
       editInstance: ({
         instance,
         tab,
         index // an index of instance in the array of search results => add navigation to Edit View.
-      }) => editInstance({
-        instance,
-        tab,
-        navigation: {
-          offset: viewModelData.pageParams.offset + index,
-          totalCount: viewModelData.totalCount
+      }) => softRedirectView({
+        name: VIEW_EDIT,
+        state: {
+          instance,
+          tab,
+          navigation: {
+            offset: viewModelData.pageParams.offset + index,
+            totalCount: viewModelData.totalCount
+          }
         }
       }),
       showInstance: ({
         instance,
         tab,
         index // an index of instance in the array of search results => add navigation to Show View.
-      }) => showInstance({
-        instance,
-        tab,
-        navigation: {
-          offset: viewModelData.pageParams.offset + index,
-          totalCount: viewModelData.totalCount
+      }) => softRedirectView({
+        name: VIEW_SHOW,
+        state: {
+          instance,
+          tab,
+          navigation: {
+            offset: viewModelData.pageParams.offset + index,
+            totalCount: viewModelData.totalCount
+          }
         }
       })
     },
@@ -86,9 +95,6 @@ export default connect(
     uiConfig
   }),
   {
-    createInstance,
-    editInstance,
-    showInstance,
     deleteInstances,
     resetFormFilter,
     searchInstances,

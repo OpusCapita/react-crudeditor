@@ -7,11 +7,11 @@ import {
 } from './selectors';
 import {
   selectTab,
-  exitView,
   showAdjacentInstance
 } from './actions';
 import { viewOperations } from '../lib';
 import { VIEW_NAME } from './constants';
+import { VIEW_SEARCH } from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
 
 const mergeProps = (
@@ -83,7 +83,7 @@ export default connect(
     uiConfig
   }), {
     selectTab,
-    exitView,
+    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     showAdjacentInstance,
     softRedirectView
   },

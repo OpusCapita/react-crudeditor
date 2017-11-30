@@ -20,10 +20,8 @@ import {
   VIEW_NAME
 } from '../constants';
 
-import { VIEW_ERROR } from '../../../common/constants'
-
-// import createSaga from './create';
-import editSaga from './edit';
+import { VIEW_ERROR, VIEW_EDIT } from '../../../common/constants';
+import redirectSaga from '../../../common/workerSagas/redirect';
 
 /*
  * Instance validation
@@ -165,13 +163,18 @@ export default function*({
     try {
       const tab = yield select(storeState => storeState.views[VIEW_NAME].activeTab);
 
-      yield call(editSaga, {
+      yield call(redirectSaga, {
         modelDefinition,
         softRedirectSaga,
         action: {
           payload: {
-            instance: savedInstance,
-            tab: tab && tab.tab
+            view: {
+              name: VIEW_EDIT,
+              state: {
+                instance: savedInstance,
+                tab: tab && tab.tab
+              }
+            }
           },
           meta
         }

@@ -5,6 +5,7 @@ import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
 import { viewOperations } from '../lib';
 import { VIEW_NAME } from './constants';
+import { VIEW_SEARCH } from '../../common/constants';
 
 import {
   getViewModelData,
@@ -12,7 +13,6 @@ import {
 } from './selectors';
 
 import {
-  exitView,
   saveInstance,
   selectTab,
   validateInstanceField,
@@ -59,7 +59,7 @@ export default connect(
     externalOperations,
     uiConfig
   }), {
-    exitView,
+    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     selectTab,
     validateInstanceField,

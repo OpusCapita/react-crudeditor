@@ -18,11 +18,16 @@ export default class SearchResultButtons extends PureComponent {
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
-    index: PropTypes.number
+    index: PropTypes.number,
+    parentRef: PropTypes.instanceOf(HTMLDivElement)
   }
 
   static contextTypes = {
     i18n: PropTypes.object.isRequired
+  }
+
+  state = {
+    previousEvent: null
   }
 
   operationsButton = operations => {
@@ -55,15 +60,26 @@ export default class SearchResultButtons extends PureComponent {
         key={uid}
         onClick={handler}
         bsSize="sm"
-        onToggle={(dropdownOpened, ...rest) => {
-          console.log(dropdownOpened, rest)
+        onToggle={(dropdownOpened, event, { source }) => {
           const { parentRef } = this.props;
           const parentWidth = parentRef.clientWidth;
           const tableWidth = parentRef.firstChild.scrollWidth
 
-          parentRef.style.overflow = dropdownOpened && parentWidth >= tableWidth ?
-            'visible' :
-            'auto'
+          // table is wider than visible div -> show scroll
+          if (parentWidth < tableWidth) {
+            parentRef.style.overflow = 'auto';
+            return
+          }
+
+          // handle multiple dropdowns closing each other
+          // don't rewrite styles if one DD is closed by opening another DD
+          if (this.state.previousEvent === 'click' && source === 'rootClose') {
+            return
+          }
+
+          parentRef.style.overflow = dropdownOpened ? 'visible' : 'auto';
+
+          this.setState({ previousEvent: source })
         }}
       >
         {

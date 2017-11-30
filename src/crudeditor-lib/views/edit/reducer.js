@@ -47,6 +47,7 @@ import {
 
 import { findFieldLayout, getTab } from '../lib';
 
+// Synchronize formInstance and formatedInstance with instance (which is a persistentInstance).
 const synchronizeInstances = ({
   instance,
   newStoreStateSlice,
@@ -55,7 +56,6 @@ const synchronizeInstances = ({
 }) => {
   /* eslint-disable no-param-reassign */
   newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
-  newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
   newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
     (rez, fieldName) => {
@@ -215,6 +215,7 @@ export default modelDefinition => (
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     synchronizeInstances({
       instance,

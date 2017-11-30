@@ -47,6 +47,16 @@ import {
 
 import { findFieldLayout, getTab } from '../lib';
 
+export const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
+  ...instance,
+  ...Object.keys(instance).
+    filter(fieldName => fieldsMeta[fieldName].type === 'boolean').
+    reduce((obj, fieldName) => ({
+      ...obj,
+      [fieldName]: instance[fieldName] || null
+    }), {})
+})
+
 // Synchronize formInstance and formatedInstance with instance (which is a persistentInstance).
 const synchronizeInstances = ({
   instance,
@@ -327,7 +337,10 @@ export default modelDefinition => (
     const { tabName } = payload; // may be falsy, i.e. not specified.
 
     // reset to persistentInstance
-    if (!isEqual(storeState.formInstance, storeState.persistentInstance)) {
+    if (!isEqual(
+      unifyBooleanFields(storeState.formInstance, modelDefinition.model.fields),
+      unifyBooleanFields(storeState.persistentInstance, modelDefinition.model.fields)
+    )) {
       synchronizeInstances({
         instance: storeState.persistentInstance,
         newStoreStateSlice,

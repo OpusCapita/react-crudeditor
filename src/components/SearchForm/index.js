@@ -125,12 +125,15 @@ class SearchForm extends React.Component {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__controls">
-        <FormGroup className="crud--search-form__form-group">
-          <div>
-            <label>Range Input</label>
-            <RangeInput />
-          </div>
-        </FormGroup>
+          <FormGroup className="crud--search-form__form-group">
+            <div>
+              <label>Range Input</label>
+              <RangeInput
+                onChange={value => console.log(value)}
+                type="number"
+              />
+            </div>
+          </FormGroup>
           {searchableFieldsElement}
         </div>
         <div className="crud--search-form__submit-group">

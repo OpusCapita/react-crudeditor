@@ -541,27 +541,19 @@ Model Definition is an object describing an entity. It has the following structu
               ?name: <string, a name of Component prop with field value>,
 
               /*
-               * Meaningless for an embedded React Component,
+               * Redundant for an embedded React Component,
                * because UI Type it works with is already known to CRUD Editor.
                *
-               * In case of FieldInputComponent, type can be provided only when
-               * the following all conditions are satisfied:
-               * 1. its UI Type is embedded, i.e. known to CRID Editor, and
-               * 2. CRUD Editor knows how to convert the Field Type to/from the UI Type.
-               *
-               * If at least one condition is not satisfied and "type" is provided,
-               * CRUD Editor will raise an error.
-               * 
                * When omitted for FieldInputComponent, UI Type is considered to be unknown.
                * In such a case:
                * 1. either define converter,
-               * 2. or unconverted field value is sent to FieldInputComponent (i.e. of Field Type) and
+               * 2. or unconverted (i.e. of Field Type) field value is sent to FieldInputComponent and
                *    FieldInputComponent is presupposed to return a value of Field Type.
                */
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
 
               /*
-               * Meaningless when both Component is FieldInputComponent and "type" property is defined.
+               * Mutually exclusive with the above "type" property.
                */
               ?converter: {
 

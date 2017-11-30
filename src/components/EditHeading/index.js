@@ -14,7 +14,7 @@ import {
   Glyphicon
 } from 'react-bootstrap';
 
-const unifyBooleanFields = (instance, fieldsMeta) => ({
+const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
   ...instance,
   ...Object.keys(instance).
     filter(fieldName => fieldsMeta[fieldName].type === 'boolean').

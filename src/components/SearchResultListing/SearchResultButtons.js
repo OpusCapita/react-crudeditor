@@ -30,6 +30,30 @@ export default class SearchResultButtons extends PureComponent {
     previousEvent: null
   }
 
+  // handleToggleDropdown is a workaround for weird CSS overflow behavior
+  // details: https://stackoverflow.com/a/6433475
+  handleToggleDropdown = (dropdownOpened, event, { source }) => {
+    const { parentRef } = this.props;
+    const parentWidth = parentRef.clientWidth;
+    const tableWidth = parentRef.firstChild.scrollWidth
+
+    // table is wider than visible div -> show scroll
+    if (parentWidth < tableWidth) {
+      parentRef.style.overflow = 'auto';
+      return
+    }
+
+    // handle multiple dropdowns closing each other
+    // don't rewrite styles if one DD is closed by opening another DD
+    if (this.state.previousEvent === 'click' && source === 'rootClose') {
+      return
+    }
+
+    parentRef.style.overflow = dropdownOpened ? 'visible' : 'auto';
+
+    this.setState({ previousEvent: source })
+  }
+
   operationsButton = operations => {
     if (operations.length === 0) {
       return null;
@@ -60,27 +84,7 @@ export default class SearchResultButtons extends PureComponent {
         key={uid}
         onClick={handler}
         bsSize="sm"
-        onToggle={(dropdownOpened, event, { source }) => {
-          const { parentRef } = this.props;
-          const parentWidth = parentRef.clientWidth;
-          const tableWidth = parentRef.firstChild.scrollWidth
-
-          // table is wider than visible div -> show scroll
-          if (parentWidth < tableWidth) {
-            parentRef.style.overflow = 'auto';
-            return
-          }
-
-          // handle multiple dropdowns closing each other
-          // don't rewrite styles if one DD is closed by opening another DD
-          if (this.state.previousEvent === 'click' && source === 'rootClose') {
-            return
-          }
-
-          parentRef.style.overflow = dropdownOpened ? 'visible' : 'auto';
-
-          this.setState({ previousEvent: source })
-        }}
+        onToggle={this.handleToggleDropdown}
       >
         {
           operations.slice(1).map(({ icon, handler, title, uid }, index) => (

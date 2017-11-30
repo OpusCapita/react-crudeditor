@@ -73,6 +73,8 @@ class SearchResultListing extends PureComponent {
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
 
+  handleRef = el => this._myRef = el; // eslint-disable-line no-return-assign
+
   render() {
     const {
       data: {
@@ -96,7 +98,7 @@ class SearchResultListing extends PureComponent {
     const { i18n } = this.context;
 
     return (
-      <div className="crud--search-result-listing__table-container" ref={el => this._myRef = el}>
+      <div className="crud--search-result-listing__table-container" ref={this.handleRef}>
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>

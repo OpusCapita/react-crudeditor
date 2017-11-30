@@ -1,9 +1,10 @@
 import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
 
-import exitSaga from './workerSagas/exit';
+import { VIEW_NAME } from './constants';
+import { VIEW_SOFT_REDIRECT } from '../../common/constants';
+import redirectSaga from '../../common/workerSagas/redirect';
 
 import {
-  HOME_GO,
   VIEW_INITIALIZE,
   VIEW_REDIRECT_SUCCESS
 } from './constants';
@@ -13,7 +14,7 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
     blocking: {},
     nonBlocking: {
-      [HOME_GO]: exitSaga
+      [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }
 
@@ -35,7 +36,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
         yield call(choices.blocking[action.type], {
           modelDefinition,
           softRedirectSaga,
-          action
+          action: {
+            ...action,
+            meta: {
+              ...action.meta,
+              spawner: VIEW_NAME
+            }
+          }
         });
       } catch (err) {
         // Swallow custom errors.
@@ -49,7 +56,13 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
           yield call(choices.nonBlocking[action.type], {
             modelDefinition,
             softRedirectSaga,
-            action
+            action: {
+              ...action,
+              meta: {
+                ...action.meta,
+                spawner: VIEW_NAME
+              }
+            }
           });
         } catch (err) {
           // Swallow custom errors.

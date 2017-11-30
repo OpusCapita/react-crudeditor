@@ -1,12 +1,10 @@
 import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
 
-import exitSaga from './workerSagas/exit';
 import saveSaga from './workerSagas/save';
 import redirectSaga from '../../common/workerSagas/redirect';
 
 import {
   INSTANCE_SAVE,
-  VIEW_EXIT,
   VIEW_INITIALIZE,
   VIEW_REDIRECT_SUCCESS,
   VIEW_NAME
@@ -20,7 +18,6 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
       [INSTANCE_SAVE]: saveSaga
     },
     nonBlocking: {
-      [VIEW_EXIT]: exitSaga,
       [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }

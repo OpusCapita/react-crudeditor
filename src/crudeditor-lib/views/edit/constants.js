@@ -33,7 +33,6 @@ export const
   INSTANCE_SAVE_SUCCESS = namespace + '/INSTANCE_SAVE_SUCCESS',
 
   TAB_SELECT = namespace + '/TAB_SELECT',
-  VIEW_EXIT = namespace + '/VIEW_EXIT',
 
   VIEW_INITIALIZE_REQUEST = namespace + '/VIEW_INITIALIZE_REQUEST',
   VIEW_INITIALIZE_FAIL = namespace + '/VIEW_INITIALIZE_FAIL',

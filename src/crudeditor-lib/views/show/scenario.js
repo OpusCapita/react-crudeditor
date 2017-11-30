@@ -1,13 +1,11 @@
 import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
 
 import showSaga from './workerSagas/show';
-import exitSaga from './workerSagas/exit';
 import showAdjacentSaga from './workerSagas/showAdjacent';
 import redirectSaga from '../../common/workerSagas/redirect';
 import { plusMinus } from '../lib';
 
 import {
-  VIEW_EXIT,
   TAB_SELECT,
   VIEW_INITIALIZE_REQUEST,
   VIEW_INITIALIZE_FAIL,
@@ -25,7 +23,6 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
       [INSTANCE_SHOW_ADJACENT]: showAdjacentSaga
     },
     nonBlocking: {
-      [VIEW_EXIT]: exitSaga,
       [VIEW_SOFT_REDIRECT]: redirectSaga
     }
   }

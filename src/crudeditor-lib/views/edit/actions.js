@@ -1,7 +1,6 @@
 import {
   AFTER_ACTION_NEW,
   AFTER_ACTION_NEXT,
-  VIEW_EXIT,
   INSTANCE_EDIT,
   INSTANCE_FIELD_VALIDATE,
   INSTANCE_FIELD_CHANGE,
@@ -70,12 +69,6 @@ export const
     payload: {
       afterAction: AFTER_ACTION_NEXT
     }
-  }),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-  exitView = _ => ({
-    type: VIEW_EXIT
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

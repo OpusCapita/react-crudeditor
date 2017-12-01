@@ -549,13 +549,13 @@ Model Definition is an object describing an entity. It has the following structu
                * 1. either define converter,
                * 2. or unconverted (i.e. of Field Type) field value is sent to FieldInputComponent and
                *    FieldInputComponent is presupposed to return a value of Field Type.
+               *
+               * Ignored when custom "converter" is defined.
                */
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
 
               /*
-               * Mutually exclusive with the above "type" property.
-               *
-               * Overwrites default converter, if any.
+               * Curstom converter which overwrites default converter, if any.
                * There is a default converter when Field Type is known to CRUID Editor and
                * 1. Component is embedded React Component, or
                * 2. Component is FieldInputComponent and "type" with UI Type is specified.

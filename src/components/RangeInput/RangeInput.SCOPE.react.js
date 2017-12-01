@@ -31,7 +31,13 @@ class RangeInputScope extends PureComponent {
     return { i18n: this.i18n }
   }
 
-  handleChange = value => this.setState({ value }, _ => console.log(this.state.value))
+  handleChange = value => this.setState({ value }, _ => {
+    console.log(this.state.value)
+  })
+
+  handleFocus = _ => console.log('FOCUS')
+
+  handleBlur = _ => console.log('BLUR')
 
   render() {
     return (

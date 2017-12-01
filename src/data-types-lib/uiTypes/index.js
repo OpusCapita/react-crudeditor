@@ -21,6 +21,8 @@ import {
  *
  * isValid(value)
  * Return boolean whether input value is indeed of specified UI Type.
+ *
+ * EMPTY_VALUE constant getter.
  */
 export default {
   [UI_TYPE_BOOLEAN]: booleanType,

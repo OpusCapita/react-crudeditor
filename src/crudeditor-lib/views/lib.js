@@ -1,9 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import FieldString from '../../components/FieldString';
-import FieldBoolean from '../../components/FieldBoolean';
-import FieldNumber from '../../components/FieldNumber';
-import FieldDate from '../../components/FieldDate';
+import { converter } from '../../data-types-lib'; // TODO: implement.
+import Input from '../../components/Input'; // TODO: implement.
+import RangeInput from '../../components/RangeInput'; // TODO: implement.
 
 import {
   AUDITABLE_FIELDS,
@@ -14,35 +13,149 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_STRING,
-  FIELD_TYPE_NUMBER
+
+  FIELD_TYPE_STRING_DATE_RANGE, // TODO: implement.
+  FIELD_TYPE_NUMBER_RANGE, // TODO: implement.
+  FIELD_TYPE_STRING_NUMBER_RANGE, // TODO: implement.
+
+  UI_TYPE_BOOLEAN,
+  UI_TYPE_DATE,
+  UI_TYPE_NUMBER,
+  UI_TYPE_STRING,
+
+  UI_TYPE_DATE_RANGE_ARRAY, // TODO: implement.
+  UI_TYPE_NUMBER_RANGE_OBJECT, // TODO: implement.
+  UI_TYPE_STRING_RANGE_OBJECT // TODO: implement.
 } from '../../data-types-lib/constants';
 
-const defaultFieldRenders = {
-  // default valueProp.type 'string' may be omitted.
+const
+  COMPONENT_NAME_INPUT = 'input',
+  COMPONENT_NAME_RANGE_INPUT = 'rangeInput';
 
+/*
+ * The function receives render object with component name in "Component" property.
+ * It assigns default type to render.props if not specified.
+ * It returns React Component with the name and UI Type corrresponding to the Component.
+ */
+const namedComponentInfo({
+  Component: name,
+  props
+}) => {
+  let Component, uiType, valuePropName;
+
+  switch (name) {
+    case COMPONENT_NAME_INPUT:
+      Component = Input;
+      valuePropName = 'value';
+
+      if (!props.hasOwnProperty('type')) {
+        props.type = 'string';
+      }
+
+      switch (props.type) {
+        case 'checkbox':
+          uiType = UI_TYPE_BOOLEAN;
+          break;
+        case 'date':
+          uiType = UI_TYPE_DATE;
+          break;
+        case 'number':
+          uiType = UI_TYPE_NUMBER;
+          break;
+        case 'string':
+          uiType = UI_TYPE_STRING;
+          break;
+        default:
+          throw new TypeError(`Unknown type "${type}" of "${COMPONENT_NAME_INPUT}" render component`);
+      }
+
+      break;
+    case COMPONENT_NAME_RANGE_INPUT:
+      Component = RangeInput;
+      valuePropName = 'value';
+
+      if (!props.hasOwnProperty('type')) {
+        props.type = 'string';
+      }
+
+      switch (props.type) {
+        case 'date':
+          uiType = UI_TYPE_DATE_RANGE_ARRAY;
+          break;
+        case 'number':
+          uiType = UI_TYPE_NUMBER_RANGE_OBJECT;
+          break;
+        case 'string':
+          uiType = UI_TYPE_STRING_RANGE_OBJECT;
+          break;
+        default:
+          throw new TypeError(`Unknown type "${type}" of "${COMPONENT_NAME_RANGE_INPUT}" render component`);
+      }
+
+      break;
+    default:
+      throw new TypeError(`Unknown render component "${name}"`);
+  }
+
+  return {
+    Component,
+    uiType,
+    valuePropName
+  };
+}
+
+const defaultFieldRenders = {
   [FIELD_TYPE_BOOLEAN]: {
-    Component: FieldBoolean,
-    valueProp: {
-      type: 'boolean'
+    Component: 'input',
+    props: {
+      type: 'checkbox'
+    }
+  },
+  [FIELD_TYPE_NUMBER]: {
+    Component: 'input',
+    props: {
+      type: 'number'
+    }
+  },
+  [FIELD_TYPE_NUMBER_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'number'
+    }
+  },
+  [FIELD_TYPE_STRING]: {
+    Component: 'input',
+    props: {
+      type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DATE]: {
-    Component: FieldDate,
-    valueProp: {
+    Component: 'input',
+    props: {
+      type: 'date'
+    }
+  },
+  [FIELD_TYPE_STRING_DATE_RANGE]: {
+    Component: 'rangeInput',
+    props: {
       type: 'date'
     }
   },
   [FIELD_TYPE_STRING_NUMBER]: {
-    Component: FieldString
+    Component: 'input',
+    props: {
+      type: 'string'
+    }
   },
-  [FIELD_TYPE_STRING]: {
-    Component: FieldString
-  },
-  [FIELD_TYPE_NUMBER]: {
-    Component: FieldNumber
+  [FIELD_TYPE_STRING_NUMBER_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
   }
 };
 
@@ -56,20 +169,64 @@ export const buildFieldRender = ({
     cloneDeep(customRender) :
     defaultFieldRenders[fieldType] || (_ => {
       throw new TypeError(
-        `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
+        `Field type ${fieldType} is unknown or does not have an assigned render Component. Define custom component`
       );
     })();
 
-  if (!render.valueProp) {
+  if (!render.hasOwnProperty('Component')) {
+    // TODO: remove after the check is added to model validation.
+    throw new TypeError('render.Component must be defined');
+  }
+  if (!render.hasOwnProperty('props')) {
+    render.props = {};
+  }
+
+  if (!render.hasOwnProperty('valueProp')) {
     render.valueProp = {};
   }
 
-  if (!render.valueProp.name) {
+  if (typeof render.Component === 'string') {
+    const { Component, uiType, valuePropName } = namedComponentInfo(render);
+
+    if (!render.valueProp.hasOwnProperty('type')) {
+      render.valueProp.type = uiType;
+    } else if (render.valueProp.type !== uiType) {
+      throw new TypeError(`Invalid "${render.valueProp.type}" valueProp.type for "${render.Component}" component`);
+    }
+
+    if (!render.valueProp.hasOwnProperty('name')) {
+      render.valueProp.name = valuePropName;
+    } else if (render.valueProp.name !== valuePropName) {
+      throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.Component}" component`);
+    }
+
+    render.Component = Component;
+  }
+
+  if (!render.valueProp.hasOwnProperty('name')) {
     render.valueProp.name = 'value';
   }
 
-  if (!render.valueProp.type) {
-    render.valueProp.type = 'string';
+  if (render.valueProp.hasOwnProperty('type')) {
+    if (!render.valueProp.hasOwnProperty('converter')) {
+      const defaultConverter = converter({
+        fieldType,
+        uiType: render.valueProp.type
+      });
+
+      if (defaultConverter) {
+        render.valueProp.converter = defaultConverter;
+      }
+    }
+
+    delete render.valueProp.type;  // Removing "type" because it was only needed to get default converter, if any.
+  }
+
+  if (!render.valueProp.hasOwnProperty('converter')) {
+    render.valueProp.converter = {
+      format: value => value,
+      parse: value => value
+    };
   }
 
   return render;

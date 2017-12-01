@@ -1,11 +1,9 @@
-import typeNumber from './numberUiType';
-import typeString from './stringUiType';
+import numberUiType from './numberUiType';
+import stringUiType from './stringUiType';
 
 import {
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
-
-  EMPTY_FIELD_VALUE,
 
   ERROR_CODE_VALIDATION,
 
@@ -20,16 +18,9 @@ const throwError = error => { throw error; };
 
 export default {
 
-  isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'string',
-
-  formatter: {
-    [UI_TYPE_NUMBER]: typeNumber.formatter,
-    [UI_TYPE_STRING]: typeString.formatter
-  },
-
-  parser: {
-    [UI_TYPE_NUMBER]: typeNumber.parser,
-    [UI_TYPE_STRING]: typeString.parser
+  converter = {
+    [UI_TYPE_NUMBER]: numberUiType,
+    [UI_TYPE_STRING]: stringUiType
   },
 
   buildValidator: value => ({

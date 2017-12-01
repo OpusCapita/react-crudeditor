@@ -1,6 +1,6 @@
 export const
 
-  EMPTY_FIELD_VALUE = null,
+  EMPTY_VALUE = null,
 
   /* ███████████████████████████████████████████*\
    *███ FIELD TYPES (in alphabetical order) ███*

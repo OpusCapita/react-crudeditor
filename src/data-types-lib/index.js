@@ -2,7 +2,7 @@ import uiTypes from './uiTypes';
 import fieldTypes from './fieldTypes';
 
 import {
-  EMPTY_FIELD_VALUE,
+  EMPTY_VALUE,
 
   ERROR_CODE_FORMATING,
   ERROR_CODE_PARSING,
@@ -18,167 +18,12 @@ import {
 
 export const
 
-  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-   *
-   * Input value is of fieldType.
-   * Ouput is the input value converted to uiType.
-   * An error is thrown in case of conversion failure.
-   */
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  format = ({
-    value,
-    type: fieldType,
-    targetType: uiType,
-
-    /*
-     * boolean, false by default, which means forwarding a value if (one of the following):
-     * -- input UI Type is unknown,
-     * -- input Field Type is unknown,
-     * -- input UI Type is unknown to the Field Type's formatter.
-     */
-    throwOnUnknownType = false
-  }) => {
-    if (!fieldTypes[fieldType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_FIELD_TYPE,
-          message: `Unknown Field Type "${fieldType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown Field Type.
-    }
-
-    if (!fieldTypes[fieldType].isValid(value)) {
-      const error = {
-        code: ERROR_CODE_FORMATING,
-        id: ERROR_INVALID_FIELD_TYPE_VALUE,
-        message: `Invalid value "${value}" of Field Type "${fieldType}"`
-      };
-
-      throw error;
-    }
-
-    if (!uiTypes[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Target Type "${uiType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown UI Type.
-    }
-
-    if (value === EMPTY_FIELD_VALUE && uiTypes[uiType].hasOwnProperty('EMPTY_VALUE')) {
-      return uiTypes[uiType].EMPTY_VALUE;
-    }
-
-    const formatter = fieldTypes[fieldType].formatter;
-
-    if (!formatter[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Target Type "${uiType}" for the formatter`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value when UI Type is unknown to Field Type's formatter.
-    }
-
-    return formatter[uiType](value);
-  },
-
-
-  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-   *
-   * Input value is of uiType.
-   * Output is value converted to fieldType.
-   * An error is thrown in case of conversion failure.
-   */
-  parse = ({
-    value,
-    type: fieldType,
-    sourceType: uiType,
-
-    /*
-     * boolean, false by default, which means forwarding a value if (one of the following):
-     * -- input UI Type is unknown,
-     * -- input Field Type is unknown,
-     * -- input UI Type is unknown to the Field Type's parser.
-     */
-    throwOnUnknownType = false
-  }) => {
-    if (!uiTypes[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Source Type "${uiType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown UI Type.
-    }
-
-    if (!uiTypes[uiType].isValid(value)) {
-      const error = {
-        code: ERROR_CODE_PARSING,
-        id: ERROR_INVALID_UI_TYPE_VALUE,
-        message: `Invalid value "${value}" of Source Type "${uiType}"`
-      };
-
-      throw error;
-    }
-
-    if (uiTypes[uiType].isEmpty(value)) {
-      return EMPTY_FIELD_VALUE;
-    }
-
-    if (!fieldTypes[fieldType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_FIELD_TYPE,
-          message: `Unknown Field Type "${fieldType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown Field Type.
-    }
-
-    const parser = fieldTypes[fieldType].parser;
-
-    if (!parser[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Source Type "${uiType}" for the parser`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value when UI Type is unknown to the Field Type's parser.
-    }
-
-    return parser[uiType](value);
-  },
+  converter = ({
+    fieldType,
+    uiType
+  }) => (fieldTypes[fieldType] || { converter: {} }).converter[uiType],
 
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
    *
@@ -195,9 +40,9 @@ export const
     },
     throwOnUnknownType = false
   }) => {
-    if (value === EMPTY_FIELD_VALUE) {
-      // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
-      // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+    if (value === EMPTY_VALUE) {
+      // Ignore validation of EMPTY_VALUE, except for "required" constraint:
+      // "required" constraint is relevent only with EMPTY_VALUE.
       if (required) {
         const error = [{
           code: ERROR_CODE_VALIDATION,

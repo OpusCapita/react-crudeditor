@@ -24,7 +24,7 @@ import {
  * or throws an error when unable to convert.
  *
  * parser
- * An object with UI Types as keys and parsers to the corresponding UI Types as values.
+ * An object with UI Types as keys and parsers from the corresponding UI Types as values.
  * Each parser accepts a valid, natively non-EMPTY_VALUE of specified UI Type
  * and parses it to the specified Field Type
  * or throws an error when unable to convert.

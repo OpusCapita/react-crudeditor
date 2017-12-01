@@ -8,6 +8,7 @@ import {
 import './RangeInput.less';
 
 const isDef = v => v !== null && v !== undefined;
+
 const applyType = (value, type) => type === 'number' ?
   value === '' ?
     null :
@@ -102,7 +103,7 @@ export default class RangeInput extends PureComponent {
 
     const { i18n } = this.context;
 
-    const inputType = type === 'number' ? 'number' : 'text';
+    const inputType = 'text';
 
     return (
       <InputGroup className="crud--range-input">
@@ -114,7 +115,7 @@ export default class RangeInput extends PureComponent {
           value={isDef(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
         />
-        <InputGroup.Addon>{`\u2013`}</InputGroup.Addon>
+        <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
           id="range-input-to"
           name="range-input-to"

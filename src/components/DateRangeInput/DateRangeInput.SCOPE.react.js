@@ -27,13 +27,7 @@ class DateRangeInputScope extends PureComponent {
     return { i18n: this.i18n }
   }
 
-  handleChange = value => {
-    console.log('scope value')
-    console.log(value)
-    this.setState({ value }, _ => {
-      console.log(this.state.value)
-    })
-  }
+  handleChange = value => this.setState({ value });
 
   handleFocus = _ => console.log('FOCUS')
 

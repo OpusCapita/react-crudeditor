@@ -30,15 +30,20 @@ export default class AdoptedDateRangeInput extends PureComponent {
   handleChange = value => this.props.onChange(array2range(value))
 
   render() {
-    const { value } = this.props;
+    const {
+      value,
+      onFocus,
+      onBlur
+    } = this.props;
     const { i18n } = this.context;
 
     return (
       <DateRangeInput
-        {...this.props}
         dateFormat={i18n.dateFormat}
         value={range2array(value)}
         onChange={this.handleChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     )
   }

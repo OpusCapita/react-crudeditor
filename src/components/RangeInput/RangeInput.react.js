@@ -6,16 +6,7 @@ import {
   FormControl
 } from 'react-bootstrap';
 import './RangeInput.less';
-
-const isDef = v => v !== null && v !== undefined;
-
-const applyType = (value, type) => type === 'number' ?
-  value === '' ?
-    null :
-    Number.isNaN(parseFloat(value)) ?
-      null :
-      parseFloat(value) :
-  value;
+import { isDef } from '../lib';
 
 export default class RangeInput extends PureComponent {
   static propTypes = {
@@ -23,16 +14,7 @@ export default class RangeInput extends PureComponent {
       PropTypes.shape({
         from: PropTypes.string,
         to: PropTypes.string
-      }),
-      PropTypes.shape({
-        from: PropTypes.number,
-        to: PropTypes.number
       })
-    ]),
-    type: PropTypes.oneOf([
-      'number',
-      'string',
-      // 'stringNumber' // TODO maybe
     ]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
@@ -44,7 +26,6 @@ export default class RangeInput extends PureComponent {
   }
 
   static defaultProps = {
-    type: 'string',
     value: {
       from: null,
       to: null
@@ -92,34 +73,29 @@ export default class RangeInput extends PureComponent {
 
   handleChange = field => ({ target: { value } }) => this.props.onChange({
     ...this.props.value,
-    [field]: applyType(value, this.props.type)
+    [field]: value
   })
 
   render() {
-    const {
-      value,
-      type
-    } = this.props;
+    const { value } = this.props;
 
     const { i18n } = this.context;
-
-    const inputType = 'text';
 
     return (
       <InputGroup className="crud--range-input">
         <FormControl
-          id="range-input-from"
-          name="range-input-from"
-          type={inputType}
+          id='range-input-from'
+          name='range-input-from'
+          type='text'
           placeholder={i18n.getMessage('crudEditor.range.from')}
           value={isDef(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
         />
         <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
-          id="range-input-to"
-          name="range-input-to"
-          type={inputType}
+          id='range-input-to'
+          name='range-input-to'
+          type='text'
           placeholder={i18n.getMessage('crudEditor.range.to')}
           value={isDef(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}

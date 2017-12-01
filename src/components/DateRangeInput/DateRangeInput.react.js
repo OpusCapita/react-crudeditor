@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { DateRangeInput } from '@opuscapita/react-dates';
+import { DateRangeInput as OCDateRangeInput } from '@opuscapita/react-dates';
 
 const array2range = arr => ({ from: arr[0], to: arr[1] });
 const range2array = range => [range.from, range.to];
 
-export default class AdoptedDateRangeInput extends PureComponent {
+export default class DateRangeInput extends PureComponent {
   static propTypes = {
     value: PropTypes.shape({
       from: PropTypes.instanceOf(Date),
@@ -38,7 +38,7 @@ export default class AdoptedDateRangeInput extends PureComponent {
     const { i18n } = this.context;
 
     return (
-      <DateRangeInput
+      <OCDateRangeInput
         dateFormat={i18n.dateFormat}
         value={range2array(value)}
         onChange={this.handleChange}

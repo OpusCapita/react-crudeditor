@@ -1,8 +1,8 @@
-# RangeInput
+# NumberRangeInput
 
 ## Synopsis
 
-String range input component.
+Number range input component.
 
 ### Props Reference
 
@@ -15,7 +15,7 @@ String range input component.
 ## Code Example
 
 ```js
-<RangeInput
+<NumberRangeInput
   onChange={_scope.handleChange.bind(_scope)}
   onFocus={_scope.handleFocus.bind(_scope)}
   onBlur={_scope.handleBlur.bind(_scope)}
@@ -29,7 +29,7 @@ Egor Stambakio
 
 ## Component Name
 
-RangeInput
+NumberRangeInput
 
 ## License
 

@@ -7,7 +7,7 @@ import translations from '../../crudeditor-lib/i18n';
 // This @showroomScopeDecorator modify React.Component prototype by adding _renderChildren() method.
 export default
 @showroomScopeDecorator
-class RangeInputScope extends PureComponent {
+class NumberRangeInputScope extends PureComponent {
   static childContextTypes = {
     i18n: PropTypes.object
   };

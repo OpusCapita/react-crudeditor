@@ -5,7 +5,6 @@ import { Button, Form, FormGroup } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
-import DateRangeInput from '../DateRangeInput';
 import './SearchForm.less';
 
 class SearchForm extends React.Component {

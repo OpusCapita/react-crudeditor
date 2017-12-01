@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import {
   InputGroup,
@@ -7,8 +7,14 @@ import {
 } from 'react-bootstrap';
 import './RangeInput.less';
 
-const isDef = v => v !== null && v !== undefined && v !== '';
-const applyType = (value, type) => type === 'number' ? Number(value) : value;
+const isDef = v => v !== null && v !== undefined;
+const applyType = (value, type) => type === 'number' ?
+  value === '' ?
+    null :
+    !Number.isNaN(parseFloat(value)) ?
+      parseFloat(value) :
+      null :
+  value;
 
 export default class RangeInput extends PureComponent {
   static propTypes = {
@@ -22,7 +28,11 @@ export default class RangeInput extends PureComponent {
         to: PropTypes.number
       })
     ]),
-    type: PropTypes.oneOf(['number', 'string', 'stringNumber']),
+    type: PropTypes.oneOf([
+      'number',
+      'string',
+      // 'stringNumber' // TODO maybe
+    ]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func
@@ -48,7 +58,7 @@ export default class RangeInput extends PureComponent {
   }
 
   componentDidMount() {
-    this.selfDOMNode = ReactDOM.findDOMNode(this)
+    this.selfDOMNode = findDOMNode(this)
     this.selfDOMNode.addEventListener('focusin', this.handleFocusIn)
     this.selfDOMNode.addEventListener('focusout', this.handleFocusOut)
   }
@@ -87,12 +97,12 @@ export default class RangeInput extends PureComponent {
   render() {
     const {
       value,
-      // type
+      type
     } = this.props;
 
     const { i18n } = this.context;
 
-    const inputType = 'text';
+    const inputType = type === 'number' ? 'number' : 'text';
 
     return (
       <InputGroup className="crud--range-input">

@@ -20,19 +20,18 @@ class RangeInputScope extends PureComponent {
     this.i18n.register('RangeInput', translations);
   }
 
-  state = {
-    value: {
-      from: null,
-      to: null
-    }
-  }
+  state = {}
 
   getChildContext() {
     return { i18n: this.i18n }
   }
 
-  handleChange = value => this.setState({ value }, _ => {
-    console.log(this.state.value)
+  handleStringChange = stringValue => this.setState({ stringValue }, _ => {
+    console.log(this.state.stringValue)
+  })
+
+  handleNumberChange = numberValue => this.setState({ numberValue }, _ => {
+    console.log(this.state.numberValue)
   })
 
   handleFocus = _ => console.log('FOCUS')

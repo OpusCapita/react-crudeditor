@@ -91,18 +91,11 @@
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. Standard types are
-    <ul>
-      <li>boolean,</li>
-      <li>date,</li>
-      <li>number,</li>
-      <li>string.</li>
-    </ul>
-    Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#standard-field-types">standard</a> types as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    React Components for displaying fields of standard types are predefined.  Rendering of non-standard types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are default React Components for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
-    <i>Field Type</i> has nothing to do with JavaScript types since field value is always a string; it is to allow correct interpretation of the string.
+    <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
     <br />
     <i>Field Types</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.
@@ -112,7 +105,7 @@
     Value conversion is necessary for communication with a React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>UI Type</i> before sending to a React Component, and parsed from the <i>UI Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
     <br/>
     <br/>
-    <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
+    <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>UI Type</i>.  Thus any React Components displaying a field must have embedded <i>empty value</i> concept and be able to deal with <b>null</b>.
     <br/>
     <br/>
     <i>UI Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)

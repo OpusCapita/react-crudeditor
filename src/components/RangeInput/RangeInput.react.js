@@ -11,9 +11,9 @@ const isDef = v => v !== null && v !== undefined;
 const applyType = (value, type) => type === 'number' ?
   value === '' ?
     null :
-    !Number.isNaN(parseFloat(value)) ?
-      parseFloat(value) :
+    Number.isNaN(parseFloat(value)) ?
       null :
+      parseFloat(value) :
   value;
 
 export default class RangeInput extends PureComponent {

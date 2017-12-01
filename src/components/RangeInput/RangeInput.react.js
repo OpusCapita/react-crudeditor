@@ -45,6 +45,18 @@ export default class RangeInput extends PureComponent {
     this.selfDOMNode.addEventListener('focusout', this.handleFocusOut)
   }
 
+  shouldComponentUpdate(nextProps) {
+    console.log('shouldComponentUpdate called')
+    const { value: { from: newFrom, to: newTo } } = nextProps;
+    const { value: { from: oldFrom, to: oldTo } } = this.props;
+
+    const result = oldFrom !== newFrom || oldTo !== newTo;
+
+    console.log({ result, oldFrom, oldTo, newFrom, newTo })
+
+    return result
+  }
+
   componentWillUnmount() {
     this.selfDOMNode.removeEventListener('focusin', this.handleFocusIn)
     this.selfDOMNode.removeEventListener('focusout', this.handleFocusOut)
@@ -73,13 +85,15 @@ export default class RangeInput extends PureComponent {
 
   handleChange = field => ({ target: { value } }) => this.props.onChange({
     ...this.props.value,
-    [field]: value
+    [field]: value || null
   })
 
   render() {
     const { value } = this.props;
 
     const { i18n } = this.context;
+
+    console.log('render called')
 
     return (
       <InputGroup className="crud--range-input">

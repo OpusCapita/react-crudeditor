@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import RangeInput from '../RangeInput';
+import { isDef } from '../lib';
 
 export default class NumberRangeInput extends PureComponent {
   static propTypes = {
@@ -20,42 +21,80 @@ export default class NumberRangeInput extends PureComponent {
     onChange: _ => {}
   }
 
-  numberRangeToStringRange = numberRange => {
-    const { i18n } = this.context;
+  constructor(...args) {
+    super(...args);
 
-    return Object.keys(numberRange).reduce((obj, key) => ({
-      ...obj,
-      [key]: i18n.formatNumber(numberRange[key])
-    }), {})
+    this.state = {
+      strings: this.formatPropValue(this.props.value),
+      numbers: this.props.value
+    }
   }
 
-  stringRangeToNumberRange = stringRange => {
-    const { i18n } = this.context;
 
-    return Object.keys(stringRange).reduce((obj, key) => ({
-      ...obj,
-      [key]: stringRange[key] ?
-        i18n.parseNumber(stringRange[key]) :
-        null
-    }), {})
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      strings: this.formatPropValue(nextProps.value),
+      numbers: nextProps.value
+    })
   }
 
-  handleChange = value => {
+  formatPropValue = ({ from, to }) => {
+    const { i18n } = this.context;
+
+    return {
+      from: isDef(from) ? i18n.formatNumber(from) : null,
+      to: isDef(to) ? i18n.formatNumber(to) : null
+    }
+  }
+
+  // parse: string -> number
+  // format: number -> string
+  // value <{ from: <string>, to: <string> }>
+  handleChange = ({ from, to }) => {
+    const { i18n } = this.context;
+    // convert value strings to numbers
+    // if ok -> check if from/to numbers have changed
+    // if yes -> setstate for the changed ones; in a callback onChange with state.numbers
+
     try {
-      const parsedValue = this.stringRangeToNumberRange(value);
-      this.props.onChange(parsedValue)
-    } catch (err) {
-      // swallow parsing errors
+      const fromNum = i18n.parseNumber(from);
+      const toNum = i18n.parseNumber(to);
+
+      const update = {};
+      const { numbers } = this.state;
+
+      if (fromNum !== numbers.from) {
+        update.from = true
+      }
+
+      if (toNum !== numbers.to) {
+        update.to = true
+      }
+
+      if (Object.keys(update).length) {
+        this.setState(prevState => ({
+          strings: {
+            ...prevState.strings,
+            ...(update.from ? { from } : null),
+            ...(update.to ? { to } : null),
+          },
+          numbers: {
+            ...prevState.numbers,
+            ...(update.from ? { from: fromNum } : null),
+            ...(update.to ? { to: toNum } : null),
+          }
+        }), _ => this.props.onChange(this.state.numbers))
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
   render() {
-    const { value, ...rest } = this.props;
-
     return (
       <RangeInput
-        {...rest}
-        value={this.numberRangeToStringRange(value)}
+        {...this.props}
+        value={this.state.strings}
         onChange={this.handleChange}
       />
     )

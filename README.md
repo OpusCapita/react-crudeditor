@@ -502,22 +502,16 @@ Model Definition is an object describing an entity. It has the following structu
           name: <string, persistent field name>,
 
           /*
-           * Default "render" property:
+           * There is no default "render" property for a fild of custom Field Type
+           * => "render" property must be explicitly defined in such a case.
+           *
+           * Default "render" property for a fild of standard Field Type:
            * {
-           *   // Default React Component assigned for displaying particular Field Type.
-           *   // The following field types have assigned Components:
-           *   // -- stringDate (DateRangeInput),
-           *   // -- stringNumber and number (NumberRangeInput),
-           *   // -- string (FormControl),
-           *   // -- boolean (Checkbox).
-           *   //
-           *   // null for unkown Field Type or Field Type without assigned Component =>
-           *   // "render" property must be explicitly defined in such a case.
-           *   Component: <string|null>,
+           *   Component: <string, id of default Component for displaying the Field Type>,
            *
            *   valueProp: {
            *     name: "value",
-           *     type: <string, UI Type peculiar to the Component>
+           *     type: <string, UI Type peculiar to the default React Component>
            *   }
            * }
            */
@@ -525,7 +519,7 @@ Model Definition is an object describing an entity. It has the following structu
 
             /*
              * Either custom FieldInputComponent (see corresponding subheading)
-             * or string with embedded React Component name.
+             * or id with embedded React Component name.
              */
             Component: <FieldInputComponent|string>,
 

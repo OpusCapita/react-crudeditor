@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { RANGE_FIELD_TYPES } from './constants';
 import { buildFieldRender } from '../lib';
 import { AUDITABLE_FIELDS } from '../../common/constants';
 

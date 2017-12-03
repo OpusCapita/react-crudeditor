@@ -30,49 +30,33 @@ const withFieldErrors = WrappedComponent => {
       showFieldErrors: {}
     }
 
-    // path <string> or <[string, string{'to', 'from'}]>
+    // fieldName <string> or <[string, string{'to', 'from'}]>
     // show <boolean>
-    toggleFieldErrors = (path, show) => this.setState(
-      prevState => typeof path !== 'boolean' ? {
+    toggleFieldErrors = (fieldName, show) => this.setState(
+      prevState => typeof fieldName !== 'boolean' ? {
         showFieldErrors: {
           ...prevState.showFieldErrors,
-          ...(
-            Array.isArray(path) ? {
-              [path[0]]: {
-                ...(prevState.showFieldErrors[path[0]] || {}),
-                [path[1]]: show
-              }
-            } : {
-              [path]: show
-            }
-          )
+          [fieldName]: show
         }
-      } : { // if path is boolean - set value for all fields
+      } : { // if fieldName is boolean - set value for all fields
         showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
-          reduce((obj, key) => ({ ...obj, [key]: path }), {})
+          reduce((obj, key) => ({ ...obj, [key]: fieldName }), {})
       }
     );
 
-    shouldShowErrors = path => Array.isArray(path) ? !!( // for 'path' type see 'toggleFieldErrors' description
-      this.state.showFieldErrors[path[0]] &&
-      this.state.showFieldErrors[path[0]][path[1]] &&
-      this.props.model.data.fieldErrors[path[0]] &&
-      this.props.model.data.fieldErrors[path[0]][path[1]] &&
-      this.props.model.data.fieldErrors[path[0]][path[1]].length > 0
-    ) :
-      !!(
-        this.state.showFieldErrors[path] &&
-        this.props.model.data.fieldErrors[path] &&
-        this.props.model.data.fieldErrors[path].length > 0
-      )
+    shouldShowErrors = fieldName => !!(
+      this.state.showFieldErrors[fieldName] &&
+      this.props.model.data.fieldErrors[fieldName] &&
+      this.props.model.data.fieldErrors[fieldName].length > 0
+    )
 
     // public API function for getting field errors
-    fieldErrors = path => {
+    fieldErrors = fieldName => {
       const { fieldErrors: errors } = this.props.model.data;
       const { showFieldErrors: showErrors } = this.state;
 
       // called without arguments should return a boolean (are there any errors to display on view or not)
-      if (!path) {
+      if (!fieldName) {
         return !!Object.keys(showErrors).
           filter(
             f => typeof showErrors[f] === 'object' ?
@@ -81,21 +65,11 @@ const withFieldErrors = WrappedComponent => {
           ).
         // here we have fields which are set to be true in showErrors
         // now we need to check if there are actual errors for these fields
-          some(f => errors[f] && (
-            Array.isArray(errors[f]) ?
-              errors[f].length > 0 : // non-Range fields have error values of type Array which can be empty
-              ['to', 'from'].some( // Range fields can have 'to' and/or 'from' fields with values of type Array
-                k => Object.keys(errors[f]).indexOf(k) > -1 &&
-                  Array.isArray(errors[f][k]) &&
-                  errors[f][k].length > 0
-              )
-          ));
+          some(f => errors[f] && errors[f].length > 0);
       }
 
-      return this.shouldShowErrors(path) ?
-        Array.isArray(path) ?
-          errors[path[0]][path[1]] :
-          errors[path] :
+      return this.shouldShowErrors(fieldName) ?
+        errors[fieldName] :
         [];
     }
 
@@ -136,16 +110,16 @@ const withFieldErrors = WrappedComponent => {
 
     // CONSUMER: SearchForm
 
-    handleFormFilterUpdate = path => newFieldValue => {
-      this.toggleFieldErrors(path, false);
+    handleFormFilterUpdate = fieldName => newFieldValue => {
+      this.toggleFieldErrors(fieldName, false);
 
       this.props.model.actions.updateFormFilter({
-        path,
+        name: fieldName,
         value: newFieldValue
       });
     }
 
-    handleFormFilterBlur = path => _ => this.toggleFieldErrors(path, true);
+    handleFormFilterBlur = fieldName => _ => this.toggleFieldErrors(fieldName, true);
 
     render() {
       const { children, ...props } = this.props;

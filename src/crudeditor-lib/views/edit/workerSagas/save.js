@@ -17,6 +17,7 @@ import {
   INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS,
 
+  ALL_INSTANCE_FIELDS_VALIDATE,
   ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
 
   VIEW_NAME
@@ -26,6 +27,11 @@ import {
  * Instance validation
  */
 function* validateSaga(modelDefinition, meta) {
+  yield put({
+    type: ALL_INSTANCE_FIELDS_VALIDATE,
+    meta
+  });
+
   const [
     instance,
     errors
@@ -51,10 +57,11 @@ function* validateSaga(modelDefinition, meta) {
   );
 
   if (Object.keys(fieldErrors).length) {
-    yield put({
+    yield put({ // FIXME: remove as unnecessary, use next() in the middleware instead.
       type: ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
       payload: fieldErrors
     });
+
     throw fieldErrors;
   }
 

@@ -6,8 +6,6 @@ import {
   ALL_INSTANCE_FIELDS_VALIDATE,
   ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
 
-  INSTANCE_FIELD_VALIDATE,
-
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS,
@@ -27,21 +25,6 @@ import redirectSaga from '../../../common/workerSagas/redirect';
  * Instance validation
  */
 function* validateSaga(modelDefinition, meta) {
-  const divergedField = yield select(storeState => storeState.views[VIEW_NAME].divergedField);
-
-  if (divergedField) {
-    // ENTER key was pressed in one of form inputs =>
-    // the input's onBlur() was not called and vallues was not parsed as a result =>
-    // mimic onBlur() event handler:
-    yield put({
-      type: INSTANCE_FIELD_VALIDATE,
-      payload: {
-        name: divergedField
-      },
-      meta
-    });
-  }
-
   yield put({
     type: ALL_INSTANCE_FIELDS_VALIDATE,
     meta
@@ -53,12 +36,12 @@ function* validateSaga(modelDefinition, meta) {
   ] = yield select(({
     views: {
       [VIEW_NAME]: {
-        formatedInstance,
+        formInstance,
         errors
       }
     }
   }) => [
-    formatedInstance,
+    formInstance,
     errors
   ]);
 
@@ -72,10 +55,11 @@ function* validateSaga(modelDefinition, meta) {
   );
 
   if (Object.keys(fieldErrors).length) {
-    yield put({
+    yield put({ // FIXME: remove as unnecessary, use next() in the middleware instead.
       type: ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
       payload: fieldErrors
     });
+
     throw fieldErrors;
   }
 

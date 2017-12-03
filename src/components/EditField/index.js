@@ -17,7 +17,7 @@ class EditField extends Component {
       model: {
         data: {
           fieldsMeta,
-          formatedInstance: instance
+          formattedInstance: instance
         }
       },
       fieldErrorsWrapper: {

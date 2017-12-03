@@ -7,20 +7,18 @@ import {
 export default {
 
   /*
-   * ███████████████████████████████████████████████████
-   * ████ FIELD_TYPE_STRING_DATE --> UI_TYPE_STRING ████
-   * ███████████████████████████████████████████████████
-   *
-   * UI_TYPE_STRING has no empty value => value may be EMPTY_FIELD_VALUE
+   * █████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_DATE  ►  UI_TYPE_STRING  ████
+   * █████████████████████████████████████████████████████
    */
-  formatter: value => value === EMPTY_FIELD_VALUE ? '' : new Date(value).toString(),
+  format: value => new Date(value).toString(),
 
   /*
-   * ███████████████████████████████████████████████████
-   * ████ UI_TYPE_STRING --> FIELD_TYPE_STRING_DATE ████
-   * ███████████████████████████████████████████████████
+   * █████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_DATE  ◄  UI_TYPE_STRING  ████
+   * █████████████████████████████████████████████████████
    */
-  parser: value => {
+  parse: value => {
     const optimized = value.trim();
 
     if (!optimized) {
@@ -37,6 +35,6 @@ export default {
       throw error;
     }
 
-    return new Date(optimized).toString();
+    return new Date(optimized).toISOString();
   }
 };

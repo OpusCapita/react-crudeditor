@@ -9,13 +9,11 @@ import {
 export default {
 
   /*
-   * █████████████████████████████████████████████████████
-   * ████ FIELD_TYPE_STRING_NUMBER --> UI_TYPE_NUMBER ████
-   * █████████████████████████████████████████████████████
-   *
-   * UI_TYPE_NUMBER has empty value => value !== EMPTY_FIELD_VALUE
+   * ███████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_NUMBER  ►  UI_TYPE_NUMBER  ████
+   * ███████████████████████████████████████████████████████
    */
-  formatter: origValue => {
+  format: origValue => {
     const value = new Big(origValue);
     const n = Number(value);
 
@@ -34,9 +32,9 @@ export default {
   },
 
   /*
-   * █████████████████████████████████████████████████████
-   * ████ UI_TYPE_NUMBER --> FIELD_TYPE_STRING_NUMBER ████
-   * █████████████████████████████████████████████████████
+   * ███████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_NUMBER  ◄  UI_TYPE_NUMBER  ████
+   * ███████████████████████████████████████████████████████
    */
-  parser: value => new Big(value).toString()
+  parse: value => new Big(value).toString()
 };

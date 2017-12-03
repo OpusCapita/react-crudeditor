@@ -10,18 +10,6 @@ const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
 
-const searchableFields = [
-  { name: 'contractId' },
-  { name: 'description' },
-  { name: 'extContractId' },
-  { name: 'extContractLineId' },
-  { name: 'parentContract', render: { Component: ContractReferenceSearch } },
-  { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
-  { name: 'maxOrderValue' },
-  // { name: 'testNumberTypeField' },
-  { name: 'createdOn' }
-];
-
 export const fields = {
   'testNumberTypeField': {
     'type': 'number',
@@ -336,7 +324,17 @@ export default {
   api,
   ui: {
     search: _ => ({
-      searchableFields,
+      searchableFields: [
+        { name: 'contractId' },
+        { name: 'description' },
+        { name: 'extContractId' },
+        { name: 'extContractLineId' },
+        { name: 'parentContract', render: { Component: ContractReferenceSearch } },
+        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
+        { name: 'maxOrderValue' },
+        // { name: 'testNumberTypeField' },
+        { name: 'createdOn' }
+      ],
       resultFields: [
         { name: 'contractId', sortable: true },
         { name: 'description', sortable: true },
@@ -348,16 +346,7 @@ export default {
     create: {
       defaultNewInstance: ({ filter }) => Object.keys(filter).reduce(
         (rez, fieldName) => {
-          let isRange;
-
-          searchableFields.some(fieldMeta => {
-            if (fieldMeta.name === fieldName) {
-              isRange = fieldMeta.render && fieldMeta.render.isRange;
-              return true;
-            }
-            /* istanbul ignore next */
-            return false;
-          });
+          const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
 
           return isRange || filter[fieldName] === null ?
             rez :

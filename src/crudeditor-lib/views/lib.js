@@ -1,8 +1,12 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { converter } from '../../data-types-lib'; // TODO: implement.
 import Input from '../../components/Input'; // TODO: implement.
 import RangeInput from '../../components/RangeInput'; // TODO: implement.
+
+import {
+  converter,
+  validate as standardFieldValidate
+} from '../../data-types-lib';
 
 import {
   AUDITABLE_FIELDS,
@@ -38,10 +42,10 @@ const
 
 /*
  * The function receives render object with component name in "Component" property.
- * It assigns default type to render.props if not specified.
  * It returns React Component with the name and UI Type corrresponding to the Component.
+ * As side effect, it also assigns default "type" to render.props, if not specified.
  */
-const namedComponentInfo({
+const namedComponentInfo = ({
   Component: name,
   props
 }) => {
@@ -53,7 +57,7 @@ const namedComponentInfo({
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
-        props.type = 'string';
+        props.type = 'string'; // eslint-disable-line no-param-reassign
       }
 
       switch (props.type) {
@@ -70,7 +74,7 @@ const namedComponentInfo({
           uiType = UI_TYPE_STRING;
           break;
         default:
-          throw new TypeError(`Unknown type "${type}" of "${COMPONENT_NAME_INPUT}" render component`);
+          throw new TypeError(`Unknown type "${props.type}" of "${COMPONENT_NAME_INPUT}" render component`);
       }
 
       break;
@@ -79,7 +83,7 @@ const namedComponentInfo({
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
-        props.type = 'string';
+        props.type = 'string'; // eslint-disable-line no-param-reassign
       }
 
       switch (props.type) {
@@ -93,7 +97,7 @@ const namedComponentInfo({
           uiType = UI_TYPE_STRING_RANGE_OBJECT;
           break;
         default:
-          throw new TypeError(`Unknown type "${type}" of "${COMPONENT_NAME_RANGE_INPUT}" render component`);
+          throw new TypeError(`Unknown type "${props.type}" of "${COMPONENT_NAME_RANGE_INPUT}" render component`);
       }
 
       break;
@@ -121,12 +125,6 @@ const defaultFieldRenders = {
       type: 'number'
     }
   },
-  [FIELD_TYPE_NUMBER_RANGE]: {
-    Component: 'rangeInput',
-    props: {
-      type: 'number'
-    }
-  },
   [FIELD_TYPE_STRING]: {
     Component: 'input',
     props: {
@@ -139,16 +137,22 @@ const defaultFieldRenders = {
       type: 'date'
     }
   },
-  [FIELD_TYPE_STRING_DATE_RANGE]: {
-    Component: 'rangeInput',
-    props: {
-      type: 'date'
-    }
-  },
   [FIELD_TYPE_STRING_NUMBER]: {
     Component: 'input',
     props: {
       type: 'string'
+    }
+  },
+  [FIELD_TYPE_NUMBER_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'number'
+    }
+  },
+  [FIELD_TYPE_STRING_DATE_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'date'
     }
   },
   [FIELD_TYPE_STRING_NUMBER_RANGE]: {
@@ -219,7 +223,7 @@ export const buildFieldRender = ({
       }
     }
 
-    delete render.valueProp.type;  // Removing "type" because it was only needed to get default converter, if any.
+    delete render.valueProp.type; // Removing "type" because it was only needed to get default converter, if any.
   }
 
   if (!render.valueProp.hasOwnProperty('converter')) {
@@ -234,10 +238,7 @@ export const buildFieldRender = ({
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const buildDefaultFormLayout = ({
-  viewName,
-  fieldsMeta
-}) => _ => Object.keys(fieldsMeta).
+const buildDefaultFormLayout = ({ viewName, fieldsMeta }) => _ => Object.keys(fieldsMeta).
   filter(name => [VIEW_SHOW, VIEW_EDIT].indexOf(viewName) > -1 || AUDITABLE_FIELDS.indexOf(name) === -1).
   map(name => ({
     field: name,
@@ -252,18 +253,31 @@ const buildDefaultFormLayout = ({
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, render }) => ({
-  field: fieldId,
-
-  // making all fields read-only in "show" view.
-  readOnly: viewName === VIEW_SHOW || !!readOnly,
-
-  // assigning default Component to fields w/o custom Component.
-  render: buildFieldRender({
+const buildFieldLayout = (viewName, fieldsMeta) =>
+  ({
+    name: fieldName,
+    readOnly,
     render,
-    type: fieldsMeta[fieldId].type
-  })
-});
+    validate: customValidate
+  }) => ({
+    field: fieldName,
+
+    // making all fields read-only in "show" view.
+    readOnly: viewName === VIEW_SHOW || !!readOnly,
+
+    validate: customValidate ||
+      standardFieldValidate({
+        type: fieldsMeta[fieldName].type,
+        constraints: fieldsMeta[fieldName].constraints
+      }) ||
+      (value => true),
+
+    // assigning default Component to fields w/o custom Component.
+    render: buildFieldRender({
+      render,
+      type: fieldsMeta[fieldName].type
+    })
+  });
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

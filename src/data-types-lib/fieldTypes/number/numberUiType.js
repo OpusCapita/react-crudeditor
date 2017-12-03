@@ -1,18 +1,16 @@
 export default {
 
   /*
-   * ██████████████████████████████████████████████
-   * ████ FIELD_TYPE_NUMBER --> UI_TYPE_NUMBER ████
-   * ██████████████████████████████████████████████
-   *
-   * UI_TYPE_NUMBER has empty value => value !== EMPTY_FIELD_VALUE
+   * ████████████████████████████████████████████████
+   * ████  FIELD_TYPE_NUMBER  ►  UI_TYPE_NUMBER  ████
+   * ████████████████████████████████████████████████
    */
-  formatter: value => value,
+  format: value => value,
 
   /*
-   * ██████████████████████████████████████████████
-   * ████ UI_TYPE_NUMBER --> FIELD_TYPE_NUMBER ████
-   * ██████████████████████████████████████████████
+   * ████████████████████████████████████████████████
+   * ████  FIELD_TYPE_NUMBER  ◄  UI_TYPE_NUMBER  ████
+   * ████████████████████████████████████████████████
    */
-  parser: value => value
+  parse: value => value
 };

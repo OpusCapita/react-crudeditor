@@ -2,18 +2,17 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import {
-  format as formatField,
-  parse as parseField,
-  validate as validateField
-} from '../../../data-types-lib';
+import { findFieldLayout, getTab } from '../lib';
 
 import {
+  ALL_INSTANCE_FIELDS_VALIDATE,
+
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_EDIT_FAIL,
 
   INSTANCE_FIELD_CHANGE,
+  INSTANCE_FIELD_VALIDATE,
 
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
@@ -45,8 +44,6 @@ import {
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
 
-import { findFieldLayout, getTab } from '../lib';
-
 export const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
   ...instance,
   ...Object.keys(instance).
@@ -57,26 +54,18 @@ export const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
     }), {})
 })
 
-// Synchronize formInstance and formatedInstance with instance (which is a persistentInstance).
-const synchronizeInstances = ({
-  instance,
-  newStoreStateSlice,
-  modelDefinition,
-  formLayout
-}) => {
+// Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
+const synchronizeInstances = ({ instance, newStoreStateSlice, formLayout }) => {
   /* eslint-disable no-param-reassign */
   newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
 
-  newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+  newStoreStateSlice.formattedInstance = u.constant(Object.keys(instance).reduce(
     (rez, fieldName) => {
       const fieldLayout = findFieldLayout(fieldName)(formLayout);
+
       return fieldLayout ? {
         ...rez,
-        [fieldName]: formatField({
-          value: instance[fieldName],
-          type: modelDefinition.model.fields[fieldName].type,
-          targetType: fieldLayout.render.valueProp.type
-        })
+        [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName])
       } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
     },
     {}
@@ -106,20 +95,14 @@ const defaultStoreStateTemplate = {
    */
   formInstance: undefined,
 
-  /* Formated instance as displayed in the form.
+  /* Formatted instance as displayed in the form.
    * {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
    * }
-   * NOTE: formInstance values and formatedInstance values represent different values in case of parsing error
+   * NOTE: formInstance values and formattedInstance values represent different values in case of parsing error
    * (i.e. rendered value cannot be parsed into its string representation).
    */
-  formatedInstance: undefined,
-
-  // Field name a user is editing =>
-  // formatedFilter[fieldName] is up-to-date, but
-  // formFilter[fieldName] is obsolete and waits for been filled with parsed formatedFilter[fieldName]
-  // (or UNPARSABLE_FIELD_VALUE if the value is unparsable).
-  // divergedField: null,
+  formattedInstance: undefined,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -226,13 +209,7 @@ export default modelDefinition => (
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
-
-    synchronizeInstances({
-      instance,
-      newStoreStateSlice,
-      modelDefinition,
-      formLayout
-    })
+    synchronizeInstances({ instance, newStoreStateSlice, formLayout });
 
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
@@ -249,28 +226,32 @@ export default modelDefinition => (
       value: fieldValue
     } = payload;
 
-    newStoreStateSlice.formatedInstance = {
-      [fieldName]: u.constant(fieldValue)
-    };
-
-    const fieldMeta = modelDefinition.model.fields[fieldName];
-    const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
+    const {
+      validate,
+      render: {
+        valueProp: {
+          converter
+        }
+      }
+    } = findFieldLayout(fieldName)(storeState.formLayout);
 
     PARSE_LABEL: {
       let newFormValue;
 
       try {
-        newFormValue = parseField({
-          value: fieldValue,
-          type: fieldMeta.type,
-          sourceType: uiType
-        });
+        newFormValue = converter.parse(fieldValue);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
         newStoreStateSlice.formInstance = {
           [fieldName]: UNPARSABLE_FIELD_VALUE
         };
+
+        if (!isEqual(fieldValue, storeState.formattedInstance[fieldName])) {
+          newStoreStateSlice.formattedInstance = {
+            [fieldName]: u.constant(fieldValue)
+          };
+        }
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
@@ -289,24 +270,16 @@ export default modelDefinition => (
         };
       }
 
-      const newFormatedValue = formatField({
-        value: newFormValue,
-        type: fieldMeta.type,
-        targetType: uiType
-      });
+      const newFormattedValue = converter.format(newFormValue);
 
-      if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
-        newStoreStateSlice.formatedInstance = {
-          [fieldName]: u.constant(newFormatedValue)
+      if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
+        newStoreStateSlice.formattedInstance = {
+          [fieldName]: u.constant(newFormattedValue)
         };
       }
 
       try {
-        validateField({
-          value: newFormValue,
-          type: fieldMeta.type,
-          constraints: fieldMeta.constraints
-        });
+        validate(newFormValue);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -330,7 +303,71 @@ export default modelDefinition => (
       }
     }
 
-    // newStoreStateSlice.divergedField = null;
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === INSTANCE_FIELD_VALIDATE) {
+    const fieldName = payload.name;
+    const fieldValue = storeState.formInstance[fieldName];
+
+    if (fieldValue !== UNPARSABLE_FIELD_VALUE) {
+      PARSE_LABEL: {
+        try {
+          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue);
+        } catch (err) {
+          const errors = Array.isArray(err) ? err : [err];
+
+          if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+            newStoreStateSlice.errors = {
+              fields: {
+                [fieldName]: errors
+              }
+            };
+          }
+
+          break PARSE_LABEL;
+        }
+
+        if (storeState.errors.fields[fieldName].length) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: []
+            }
+          };
+        }
+      }
+    }
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
+    Object.keys(modelDefinition.model.fields).forEach(fieldName => {
+      const fieldValue = storeState.formInstance[fieldName];
+      const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);
+
+      if (
+        // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View
+        !fieldLayout ||
+
+        // Field is read-only => no validation needed
+        fieldLayout.readOnly ||
+
+        fieldValue === UNPARSABLE_FIELD_VALUE
+      ) {
+        return;
+      }
+
+      try {
+        fieldLayout.validate(fieldValue);
+      } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
+
+        if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: errors
+            }
+          };
+        }
+      }
+    });
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === TAB_SELECT) {
@@ -344,9 +381,8 @@ export default modelDefinition => (
       synchronizeInstances({
         instance: storeState.persistentInstance,
         newStoreStateSlice,
-        modelDefinition,
         formLayout: storeState.formLayout
-      })
+      });
     }
 
     const activeTab = getTab(storeState, tabName);

@@ -2,10 +2,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
 
 import {
-  format as formatField,
-} from '../../../data-types-lib';
-
-import {
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_REQUEST,
 
@@ -35,14 +31,14 @@ const defaultStoreStateTemplate = {
   // Instance as saved on server-side.
   persistentInstance: undefined,
 
-  /* Formated instance as displayed in the form.
+  /* Formatted instance as displayed in the form.
    * {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
    * }
-   * NOTE: formInstance values and formatedInstance values represent different values in case of parsing error
+   * NOTE: formInstance values and formattedInstance values represent different values in case of parsing error
    * (i.e. rendered value cannot be parsed into its string representation).
    */
-  formatedInstance: undefined,
+  formattedInstance: undefined,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -125,16 +121,13 @@ export default modelDefinition => (
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-    newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+    newStoreStateSlice.formattedInstance = u.constant(Object.keys(instance).reduce(
       (rez, fieldName) => {
         const fieldLayout = findFieldLayout(fieldName)(formLayout);
+
         return fieldLayout ? {
           ...rez,
-          [fieldName]: formatField({
-            value: instance[fieldName],
-            type: modelDefinition.model.fields[fieldName].type,
-            targetType: fieldLayout.render.valueProp.type
-          })
+          [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName])
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
       },
       {}

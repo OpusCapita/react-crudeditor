@@ -38,7 +38,7 @@ class SearchForm extends React.Component {
     const {
       model: {
         data: {
-          formatedFilter,
+          formattedFilter,
           searchableFields,
           formFilter,
           resultFilter
@@ -57,74 +57,29 @@ class SearchForm extends React.Component {
 
     const { i18n } = this.context;
 
-    const searchableFieldsElement = searchableFields.map(({
-      name,
-      isRange,
-      Component,
-      valuePropName
-    }) => isRange ?
-      <div key={`div-form-group-${name}`}>
-        <FormGroup
-          key={`form-group-${name}-from`}
-          controlId={`fg-${name}-from`}
-          validationState={fieldErrors([name, 'from']).length ? 'error' : null}
-          className="crud--search-form__form-group"
-        >
-          <div>
-            <label>{
-              getModelMessage(i18n, `model.field.${name}`, name) +
-              ' (' + i18n.getMessage('crudEditor.range.from') + ')'
-            }</label>
-            <Component
-              {...{ [valuePropName]: formatedFilter[name].from }}
-              onChange={handleFormFilterUpdate([name, 'from'])}
-              onBlur={handleFormFilterBlur([name, 'from'])}
-            />
-            <FieldErrorLabel errors={fieldErrors([name, 'from'])}/>
-          </div>
-        </FormGroup>
-        <FormGroup
-          key={`form-group-${name}-to`}
-          controlId={`fg-${name}-to`}
-          validationState={fieldErrors([name, 'to']).length ? 'error' : null}
-          className="crud--search-form__form-group"
-        >
-          <div>
-            <label>{
-              getModelMessage(i18n, `model.field.${name}`, name) +
-              ' (' + i18n.getMessage('crudEditor.range.to') + ')'
-            }</label>
-            <Component
-              {...{ [valuePropName]: formatedFilter[name].to }}
-              onChange={handleFormFilterUpdate([name, 'to'])}
-              onBlur={handleFormFilterBlur([name, 'to'])}
-            />
-            <FieldErrorLabel errors={fieldErrors([name, 'to'])}/>
-          </div>
-        </FormGroup>
-      </div> :
-      <FormGroup
-        key={`form-group-${name}`}
-        controlId={`fg-${name}`}
-        validationState={fieldErrors(name).length ? 'error' : null}
-        className="crud--search-form__form-group"
-      >
-        <div>
-          <label>{getModelMessage(i18n, `model.field.${name}`, name)}</label>
-          <Component
-            {...{ [valuePropName]: formatedFilter[name] }}
-            onChange={handleFormFilterUpdate(name)}
-            onBlur={handleFormFilterBlur(name)}
-          />
-          <FieldErrorLabel errors={fieldErrors(name)}/>
-        </div>
-      </FormGroup>
-    );
-
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__controls">
-          {searchableFieldsElement}
+          {
+            searchableFields.map(({ name, Component, valuePropName }) => (
+              <FormGroup
+                key={`form-group-${name}`}
+                controlId={`fg-${name}`}
+                validationState={fieldErrors(name).length ? 'error' : null}
+                className="crud--search-form__form-group"
+              >
+                <div>
+                  <label>{getModelMessage(i18n, `model.field.${name}`, name)}</label>
+                  <Component
+                    {...{ [valuePropName]: formattedFilter[name] }}
+                    onChange={handleFormFilterUpdate(name)}
+                    onBlur={handleFormFilterBlur(name)}
+                  />
+                  <FieldErrorLabel errors={fieldErrors(name)}/>
+                </div>
+              </FormGroup>
+            ))
+          }
         </div>
         <div className="crud--search-form__submit-group">
           <Button

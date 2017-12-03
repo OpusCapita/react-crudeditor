@@ -9,20 +9,20 @@ import {
 export default {
 
   /*
-   * █████████████████████████████████████████████████████
-   * ████ FIELD_TYPE_STRING_NUMBER --> UI_TYPE_STRING ████
-   * █████████████████████████████████████████████████████
+   * ███████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_NUMBER  ►  UI_TYPE_STRING  ████
+   * ███████████████████████████████████████████████████████
    *
    * UI_TYPE_STRING has no empty value => value may be EMPTY_FIELD_VALUE
    */
-  formatter: value => value === EMPTY_FIELD_VALUE ? '' : new Big(value).toString(),
+  format: value => value === EMPTY_FIELD_VALUE ? '' : new Big(value).toString(),
 
   /*
-   * █████████████████████████████████████████████████████
-   * ████ UI_TYPE_STRING --> FIELD_TYPE_STRING_NUMBER ████
-   * █████████████████████████████████████████████████████
+   * ███████████████████████████████████████████████████████
+   * ████  FIELD_TYPE_STRING_NUMBER  ◄  UI_TYPE_STRING  ████
+   * ███████████████████████████████████████████████████████
    */
-  parser: value => {
+  parse: value => {
     const optimized = value.trim();
 
     if (!optimized) {

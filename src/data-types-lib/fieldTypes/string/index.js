@@ -5,6 +5,8 @@ import {
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
 
+  EMPTY_FIELD_VALUE,
+
   ERROR_CODE_VALIDATION,
 
   ERROR_MIN_DECEEDED,
@@ -18,7 +20,9 @@ const throwError = error => { throw error; };
 
 export default {
 
-  converter = {
+  isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'string',
+
+  converter: {
     [UI_TYPE_NUMBER]: numberUiType,
     [UI_TYPE_STRING]: stringUiType
   },

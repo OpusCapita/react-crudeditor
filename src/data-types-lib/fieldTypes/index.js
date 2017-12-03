@@ -16,15 +16,11 @@ import {
  * isValid(value)
  * Method returning boolean whether input value is indeed of specified Field Type.
  *
- * formatter
- * An object with UI Types as keys and formatters to the corresponding UI Types as values.
- * Each formatter accepts valid value of specified Field Type
- * (may be EMPTY_FIELD_VALUE in case of no native EMPTY_VALUE in the specified UI Type)
+ * converter
+ * An object with UI Types as keys and { format, parse } as values.
+ * Each formatter accepts valid non-EMPTY_FIELD_VALUE value of specified Field Type
  * and converts it to the specified UI Type
  * or throws an error when unable to convert.
- *
- * parser
- * An object with UI Types as keys and parsers from the corresponding UI Types as values.
  * Each parser accepts a valid, natively non-EMPTY_VALUE of specified UI Type
  * and parses it to the specified Field Type
  * or throws an error when unable to convert.

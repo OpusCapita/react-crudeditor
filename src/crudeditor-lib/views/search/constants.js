@@ -2,15 +2,8 @@ import { VIEW_SEARCH } from '../../common/constants';
 
 const namespace = VIEW_SEARCH;
 
-import {
-  FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_NUMBER
-} from '../../../data-types-lib/constants';
-
 export const
   VIEW_NAME = VIEW_SEARCH,
-  RANGE_FIELD_TYPES = [FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER],
 
   DEFAULT_MAX = 30,
   DEFAULT_OFFSET = 0,

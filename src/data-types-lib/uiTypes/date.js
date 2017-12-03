@@ -5,9 +5,7 @@ export default {
     return EMPTY_VALUE;
   },
 
-  isEmpty: value => value === EMPTY_VALUE,
-
   isValid(value) {
-    return this.isEmpty(value) || value instanceof Date && !isNaN(value.getTime());
+    return value === EMPTY_VALUE || value instanceof Date && !isNaN(value.getTime());
   }
 };

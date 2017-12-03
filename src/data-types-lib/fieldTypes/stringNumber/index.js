@@ -1,7 +1,7 @@
 import Big from 'big.js';
 
-import typeNumber from './numberUiType';
-import typeString from './stringUiType';
+import numberUiType from './numberUiType';
+import stringUiType from './stringUiType';
 
 import {
   CONSTRAINT_INTEGER,
@@ -41,15 +41,9 @@ export default {
     }
   },
 
-  formatter: {
-    [UI_TYPE_NUMBER]: typeNumber.formatter,
-    [UI_TYPE_STRING]: typeString.formatter
-  },
-
-
-  parser: {
-    [UI_TYPE_NUMBER]: typeNumber.parser,
-    [UI_TYPE_STRING]: typeString.parser
+  converter: {
+    [UI_TYPE_NUMBER]: numberUiType,
+    [UI_TYPE_STRING]: stringUiType
   },
 
 

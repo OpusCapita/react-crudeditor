@@ -1,6 +1,6 @@
 export const
 
-  EMPTY_VALUE = null,
+  EMPTY_FIELD_VALUE = null,
 
   /* ███████████████████████████████████████████*\
    *███ FIELD TYPES (in alphabetical order) ███*
@@ -49,6 +49,7 @@ export const
 
   ERROR_FORBIDDEN_FRACTIONAL_PART = 'forbiddenFractionalPartError',
   ERROR_FORMAT = 'formatError',
+  ERROR_INVALID_BOOLEAN = 'invalidBooleanValue',
   ERROR_INVALID_DATE = 'invalidDateValue',
   ERROR_INVALID_FIELD_TYPE_VALUE = 'invalidFieldTypeValue',
   ERROR_INVALID_UI_TYPE_VALUE = 'invalidUiTypeValue',
@@ -56,6 +57,4 @@ export const
   ERROR_MIN_DECEEDED = 'minDeceededError',
   ERROR_MAX_EXCEEDED = 'maxExceededError',
   ERROR_REQUIRED_MISSING = 'requiredMissingError',
-  ERROR_UNKNOWN_UI_TYPE = 'unknownUiTypeError',
-  ERROR_UNKNOWN_CONSTRAINT = 'unknownConstraintError',
-  ERROR_UNKNOWN_FIELD_TYPE = 'unknownFieldTypeError';
+  ERROR_UNKNOWN_CONSTRAINT = 'unknownConstraintError';

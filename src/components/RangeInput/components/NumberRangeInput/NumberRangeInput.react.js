@@ -49,8 +49,8 @@ export default class NumberRangeInput extends PureComponent {
     this.inputFrom = elements[0];
     this.inputTo = elements[2];
 
-    this.inputFrom.addEventListener('keyup', this.keyupListener)
-    this.inputTo.addEventListener('keyup', this.keyupListener)
+    this.inputFrom.addEventListener('keydown', this.keydownListener)
+    this.inputTo.addEventListener('keydown', this.keydownListener)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,11 +61,11 @@ export default class NumberRangeInput extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.inputFrom.removeEventListener('keyup', this.keyupListener)
-    this.inputTo.removeEventListener('keyup', this.keyupListener)
+    this.inputFrom.removeEventListener('keydown', this.keydownListener)
+    this.inputTo.removeEventListener('keydown', this.keydownListener)
   }
 
-  keyupListener = e => {
+  keydownListener = e => {
     const { i18n } = this.context;
     const el = e.target;
     const side = el === this.inputFrom ? 'from' : 'to';
@@ -73,20 +73,22 @@ export default class NumberRangeInput extends PureComponent {
     const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
 
     if (el.value === this.state.strings[side] && currentCaretPosition !== 0) {
-      const key = event.key || e.keyCode || e.charCode;
+      const key = event.key === 'Backspace' ? 8 :
+        event.key === 'Delete' ? 46 :
+          null || e.keyCode || e.charCode;
 
-      if (
-        key === 8 &&
-        currentCaretPosition > 1 &&
-        /\D/.test(el.value[currentCaretPosition - 1])
-      ) {
+      if (key === 8) {
         e.preventDefault();
+
+        const nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
+          currentCaretPosition - 2 :
+          currentCaretPosition - 1;
 
         const patchedString = this.state.strings[side].
           split('').
-          filter((c, i) => i !== currentCaretPosition - 2).
+          filter((c, i) => i !== nextCaretPosition).
           join('');
-        const newNumber = i18n.parseNumber(patchedString);
+        const newNumber = i18n.parseNumber(patchedString || null);
         const newString = i18n.formatNumber(newNumber);
 
         this.setState(prevState => ({
@@ -98,19 +100,19 @@ export default class NumberRangeInput extends PureComponent {
             ...prevState.numbers,
             [side]: newNumber
           }
-        }), _ => setPatchedCaretPosition(el, currentCaretPosition - 1, el.value))
-      } else if (
-        key === 46 &&
-          currentCaretPosition < el.value.length &&
-          /\D/.test(el.value[currentCaretPosition])
-      ) {
+        }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
+      } else if (key === 46) {
         e.preventDefault();
+
+        const nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
+          currentCaretPosition + 1 :
+          currentCaretPosition;
 
         const patchedString = this.state.strings[side].
           split('').
-          filter((c, i) => i !== currentCaretPosition + 1).
+          filter((c, i) => i !== nextCaretPosition).
           join('');
-        const newNumber = i18n.parseNumber(patchedString);
+        const newNumber = i18n.parseNumber(patchedString || null);
         const newString = i18n.formatNumber(newNumber);
 
         this.setState(prevState => ({
@@ -122,7 +124,7 @@ export default class NumberRangeInput extends PureComponent {
             ...prevState.numbers,
             [side]: newNumber
           }
-        }), _ => setPatchedCaretPosition(el, currentCaretPosition, el.value))
+        }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
       }
     }
   }

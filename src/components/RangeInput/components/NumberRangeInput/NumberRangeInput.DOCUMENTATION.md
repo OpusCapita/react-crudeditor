@@ -16,6 +16,7 @@ Number range input component.
 
 ```js
 <NumberRangeInput
+  type="decimal"
   onChange={_scope.handleChange.bind(_scope)}
   onFocus={_scope.handleFocus.bind(_scope)}
   onBlur={_scope.handleBlur.bind(_scope)}

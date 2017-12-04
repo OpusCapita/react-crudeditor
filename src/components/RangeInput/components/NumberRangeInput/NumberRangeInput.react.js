@@ -23,7 +23,11 @@ export default class NumberRangeInput extends PureComponent {
     value: PropTypes.shape({
       from: PropTypes.number,
       to: PropTypes.number
-    })
+    }),
+    type: PropTypes.oneOf([
+      'integer',
+      'decimal'
+    ])
   }
 
   static contextTypes = {
@@ -32,7 +36,8 @@ export default class NumberRangeInput extends PureComponent {
 
   static defaultProps = {
     value: { from: null, to: null },
-    onChange: _ => {}
+    onChange: _ => { },
+    type: 'integer'
   }
 
   constructor(...args) {
@@ -65,91 +70,106 @@ export default class NumberRangeInput extends PureComponent {
     this.inputTo.removeEventListener('keydown', this.keydownListener)
   }
 
+  format = number => this.context.i18n[this.props.type === 'decimal' ?
+    'formatDecimalNumber' :
+    'formatNumber'
+  ](number)
+
+  parse = string => this.context.i18n[this.props.type === 'decimal' ?
+    'parseDecimalNumber' :
+    'parseNumber'
+  ](string || null)
+
   keydownListener = e => {
-    const { i18n } = this.context;
     const el = e.target;
     const side = el === this.inputFrom ? 'from' : 'to';
+    const initialString = this.state.strings[side];
 
     const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
 
-    if (el.value === this.state.strings[side] && currentCaretPosition !== 0) {
-      const key = event.key === 'Backspace' ? 8 :
-        event.key === 'Delete' ? 46 :
-          null || e.keyCode || e.charCode;
+    const key = event.key === 'Backspace' ? 8 :
+      event.key === 'Delete' ? 46 :
+        null || e.keyCode || e.charCode;
 
-      if (key === 8) {
-        e.preventDefault();
+    let nextCaretPosition = currentCaretPosition,
+      patchedString = initialString;
 
-        const nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
-          currentCaretPosition - 2 :
-          currentCaretPosition - 1;
+    if (key === 8) {
+      e.preventDefault();
 
-        const patchedString = this.state.strings[side].
-          split('').
-          filter((c, i) => i !== nextCaretPosition).
-          join('');
-        const newNumber = i18n.parseNumber(patchedString || null);
-        const newString = i18n.formatNumber(newNumber);
+      nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
+        currentCaretPosition - 2 :
+        currentCaretPosition - 1;
 
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            [side]: newString
-          },
-          numbers: {
-            ...prevState.numbers,
-            [side]: newNumber
-          }
-        }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
-      } else if (key === 46) {
-        e.preventDefault();
+      patchedString = initialString.
+        split('').
+        filter((c, i) => i !== nextCaretPosition).
+        join('');
+    } else if (key === 46) {
+      e.preventDefault();
 
-        const nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
-          currentCaretPosition + 1 :
-          currentCaretPosition;
+      nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
+        currentCaretPosition + 1 :
+        currentCaretPosition;
 
-        const patchedString = this.state.strings[side].
-          split('').
-          filter((c, i) => i !== nextCaretPosition).
-          join('');
-        const newNumber = i18n.parseNumber(patchedString || null);
-        const newString = i18n.formatNumber(newNumber);
+      patchedString = initialString.
+        split('').
+        filter((c, i) => i !== nextCaretPosition).
+        join('');
+    } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
+      // 0-9 only
+      e.preventDefault();
 
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            [side]: newString
-          },
-          numbers: {
-            ...prevState.numbers,
-            [side]: newNumber
-          }
-        }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
+      nextCaretPosition = currentCaretPosition + 1;
+
+      patchedString = [
+        ...initialString.split('').slice(0, currentCaretPosition),
+        String.fromCharCode(key),
+        ...initialString.split('').slice(currentCaretPosition)
+      ].join('');
+    }
+
+    if (patchedString !== initialString) {
+      const newNumber = this.parse(patchedString);
+      const newString = this.format(newNumber) || '';
+
+      if (newString.length > patchedString.length) {
+        nextCaretPosition++
       }
+
+      if (newString.length < patchedString.length) {
+        nextCaretPosition--
+      }
+
+      this.setState(prevState => ({
+        strings: {
+          ...prevState.strings,
+          [side]: newString
+        },
+        numbers: {
+          ...prevState.numbers,
+          [side]: newNumber
+        }
+      }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
     }
   }
 
-  formatPropValue = ({ from, to }) => {
-    const { i18n } = this.context;
-
-    return {
-      from: isDef(from) ? i18n.formatNumber(from) : null,
-      to: isDef(to) ? i18n.formatNumber(to) : null
-    }
-  }
+  formatPropValue = ({ from, to }) => ({
+    from: isDef(from) ? this.format(from) : '',
+    to: isDef(to) ? this.format(to) : ''
+  })
 
   // parse: string -> number
   // format: number -> string
   // value <{ from: <string>, to: <string> }>
   handleChange = ({ from, to }) => {
-    const { i18n } = this.context;
     // convert value strings to numbers
     // if ok -> check if from/to numbers have changed
     // if yes -> setstate for the changed ones; in a callback onChange with state.numbers
 
     try {
-      const fromNum = i18n.parseNumber(from);
-      const toNum = i18n.parseNumber(to);
+      const fromNum = this.parse(from);
+      const toNum = this.parse(to);
 
       const update = {};
       const { numbers } = this.state;
@@ -166,8 +186,8 @@ export default class NumberRangeInput extends PureComponent {
         this.setState(prevState => ({
           strings: {
             ...prevState.strings,
-            ...(update.from ? { from } : null),
-            ...(update.to ? { to } : null),
+            ...(update.from ? { from } : ''),
+            ...(update.to ? { to } : ''),
           },
           numbers: {
             ...prevState.numbers,

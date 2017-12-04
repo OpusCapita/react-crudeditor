@@ -24,9 +24,11 @@ describe('show view: show saga', () => {
     },
     softRedirectSaga: _ => null,
     action: {
-      payload: { instance: {
-        id: "someId"
-      } },
+      payload: {
+        instance: {
+          id: "someId"
+        }
+      },
       meta: { source: {} }
     }
   }

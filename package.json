@@ -10,8 +10,8 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js --require ignore-styles",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.babel.js",
     "build": "cross-env NODE_ENV=development webpack --config config/webpack.config.babel.js",
-    "start-showroom": "cross-env NODE_ENV=development showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
-    "build-showroom": "cross-env NODE_ENV=development showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js",
+    "start-showroom": "cross-env NODE_ENV=development showroom-scan ./src && webpack-dev-server --config config/webpack.config.showroom.js",
+    "build-showroom": "cross-env NODE_ENV=development showroom-scan ./src && webpack --config config/webpack.config.showroom.js",
     "npm-build": "rimraf lib && cross-env NODE_ENV=production webpack --config ./config/webpack.config.build.js",
     "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish",
     "publish-release": "npm run npm-publish -- --release"
@@ -136,6 +136,6 @@
     "lines": 80,
     "statements": 80,
     "functions": 80,
-    "branches": 80
+    "branches": 60
   }
 }

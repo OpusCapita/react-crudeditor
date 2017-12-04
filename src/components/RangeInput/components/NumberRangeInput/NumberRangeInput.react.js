@@ -84,6 +84,7 @@ export default class NumberRangeInput extends PureComponent {
     const el = e.target;
     const side = el === this.inputFrom ? 'from' : 'to';
     const initialString = this.state.strings[side];
+    const decimalSeparator = this.context.i18n._findFormattingInfo().numberDecimalSeparator;
 
     const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
 
@@ -101,10 +102,15 @@ export default class NumberRangeInput extends PureComponent {
         currentCaretPosition - 2 :
         currentCaretPosition - 1;
 
-      patchedString = initialString.
-        split('').
-        filter((c, i) => i !== nextCaretPosition).
-        join('');
+      if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
+        patchedString = [
+          ...initialString.split('').slice(0, nextCaretPosition),
+          0,
+          ...initialString.split('').slice(nextCaretPosition + 1)
+        ].join('')
+      } else {
+        patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+      }
     } else if (key === 46) {
       e.preventDefault();
 
@@ -112,12 +118,18 @@ export default class NumberRangeInput extends PureComponent {
         currentCaretPosition + 1 :
         currentCaretPosition;
 
-      patchedString = initialString.
-        split('').
-        filter((c, i) => i !== nextCaretPosition).
-        join('');
-    } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
-      // 0-9 only
+      // patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+      if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
+        patchedString = [
+          ...initialString.split('').slice(0, nextCaretPosition),
+          0,
+          ...initialString.split('').slice(nextCaretPosition + 1)
+        ].join('');
+        nextCaretPosition++;
+      } else {
+        patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+      }
+    } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) { // 0-9 only
       e.preventDefault();
 
       nextCaretPosition = currentCaretPosition + 1;
@@ -125,11 +137,23 @@ export default class NumberRangeInput extends PureComponent {
       patchedString = [
         ...initialString.split('').slice(0, currentCaretPosition),
         String.fromCharCode(key),
-        ...initialString.split('').slice(currentCaretPosition)
+        ...initialString.split('').slice(
+          currentCaretPosition +
+          (
+            this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition ?
+              1 : 0 // either patch one char or splice a new one into the string
+          )
+        )
       ].join('');
+    } else {
+      return; // pass all not intercepted keydowns to standard handlers
     }
 
     if (patchedString !== initialString) {
+      if (patchedString.indexOf(decimalSeparator) === 0) {
+        patchedString = '0' + patchedString;
+      }
+
       const newNumber = this.parse(patchedString);
       const newString = this.format(newNumber) || '';
 
@@ -139,6 +163,18 @@ export default class NumberRangeInput extends PureComponent {
 
       if (newString.length < patchedString.length) {
         nextCaretPosition--
+      }
+
+      if (
+        this.props.type === 'decimal' &&
+        newString.slice(newString.indexOf(decimalSeparator) + 1).length <
+        patchedString.slice(patchedString.indexOf(decimalSeparator) + 1).length
+      ) {
+        nextCaretPosition = newString.length - 1
+      }
+
+      if (nextCaretPosition === 0 && newString.indexOf('0' + decimalSeparator) === 0) {
+        nextCaretPosition = 1;
       }
 
       this.setState(prevState => ({
@@ -151,6 +187,8 @@ export default class NumberRangeInput extends PureComponent {
           [side]: newNumber
         }
       }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
+    } else {
+      setPatchedCaretPosition(el, nextCaretPosition, el.value)
     }
   }
 

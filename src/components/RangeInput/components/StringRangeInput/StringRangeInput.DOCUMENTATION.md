@@ -1,4 +1,4 @@
-# RangeInput
+# StringRangeInput
 
 ## Synopsis
 
@@ -15,8 +15,7 @@ String range input component.
 ## Code Example
 
 ```js
-<RangeInput
-  type="string"
+<StringRangeInput
   onChange={_scope.handleChange.bind(_scope)}
   onFocus={_scope.handleFocus.bind(_scope)}
   onBlur={_scope.handleBlur.bind(_scope)}
@@ -30,7 +29,7 @@ Egor Stambakio
 
 ## Component Name
 
-RangeInput
+StringRangeInput
 
 ## License
 

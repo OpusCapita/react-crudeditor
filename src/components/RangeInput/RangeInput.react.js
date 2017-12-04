@@ -1,120 +1,26 @@
 import React, { PureComponent } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import {
-  InputGroup,
-  FormControl
-} from 'react-bootstrap';
-import './RangeInput.less';
-import { isDef } from '../lib';
+import StringRangeInput from './components/StringRangeInput';
+import NumberRangeInput from './components/NumberRangeInput';
+import DateRangeInput from './components/DateRangeInput';
 
 export default class RangeInput extends PureComponent {
   static propTypes = {
-    value: PropTypes.oneOfType([
-      PropTypes.shape({
-        from: PropTypes.string,
-        to: PropTypes.string
-      })
-    ]),
-    onChange: PropTypes.func,
-    onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    type: PropTypes.oneOf([
+      'date',
+      'number',
+      'string'
+    ])
   }
-
-  static contextTypes = {
-    i18n: PropTypes.object
-  }
-
-  static defaultProps = {
-    value: {
-      from: null,
-      to: null
-    },
-    onChange: _ => {},
-    onBlur: _ => {},
-    onFocus: _ => {}
-  }
-
-  state = {
-    isFocused: false
-  }
-
-  componentDidMount() {
-    this.selfDOMNode = findDOMNode(this)
-    this.selfDOMNode.addEventListener('focusin', this.handleFocusIn)
-    this.selfDOMNode.addEventListener('focusout', this.handleFocusOut)
-  }
-
-  shouldComponentUpdate(nextProps) {
-    console.log('shouldComponentUpdate called')
-    const { value: { from: newFrom, to: newTo } } = nextProps;
-    const { value: { from: oldFrom, to: oldTo } } = this.props;
-
-    const result = oldFrom !== newFrom || oldTo !== newTo;
-
-    console.log({ result, oldFrom, oldTo, newFrom, newTo })
-
-    return result
-  }
-
-  componentWillUnmount() {
-    this.selfDOMNode.removeEventListener('focusin', this.handleFocusIn)
-    this.selfDOMNode.removeEventListener('focusout', this.handleFocusOut)
-  }
-
-  handleFocusOut = event => {
-    const data = { timeout: null };
-    const abortFocusOut = _ => clearTimeout(data.timeout);
-
-    data.timeout = setTimeout(_ => {
-      this.selfDOMNode.removeEventListener('focusin', abortFocusOut);
-      this.setState(
-        { isFocused: false },
-        _ => this.props.onBlur(event)
-      )
-    })
-
-    this.selfDOMNode.addEventListener('focusin', abortFocusOut)
-  }
-
-  handleFocusIn = event => !this.state.isFocused &&
-    this.setState(
-      { isFocused: true },
-      _ => this.props.onFocus(event)
-    )
-
-  handleChange = field => ({ target: { value } }) => this.props.onChange({
-    ...this.props.value,
-    [field]: value || null
-  })
 
   render() {
-    const { value } = this.props;
-
-    const { i18n } = this.context;
-
-    console.log('render called')
-
-    return (
-      <InputGroup className="crud--range-input">
-        <FormControl
-          id='range-input-from'
-          name='range-input-from'
-          type='text'
-          placeholder={i18n.getMessage('crudEditor.range.from')}
-          value={isDef(value.from) ? value.from : ''}
-          onChange={this.handleChange('from')}
-        />
-        <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
-        <FormControl
-          id='range-input-to'
-          name='range-input-to'
-          type='text'
-          placeholder={i18n.getMessage('crudEditor.range.to')}
-          value={isDef(value.to) ? value.to : ''}
-          onChange={this.handleChange('to')}
-        />
-      </InputGroup>
-    )
+    switch (this.props.type) {
+      case 'date':
+        return <DateRangeInput {...this.props} />
+      case 'number':
+        return <NumberRangeInput {...this.props} />
+      default:
+        return <StringRangeInput {...this.props} />
+    }
   }
 }

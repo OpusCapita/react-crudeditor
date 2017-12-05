@@ -31,7 +31,7 @@ export default class NumberRangeInput extends PureComponent {
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   }
 
   static defaultProps = {
@@ -44,7 +44,7 @@ export default class NumberRangeInput extends PureComponent {
     super(...args);
 
     this.state = {
-      strings: this.formatPropValue(this.props.value),
+      strings: this.formatRange(this.props.value),
       numbers: this.props.value
     }
   }
@@ -74,7 +74,7 @@ export default class NumberRangeInput extends PureComponent {
     }
 
     this.setState({
-      strings: this.formatPropValue(nextProps.value),
+      strings: this.formatRange(nextProps.value),
       numbers: nextProps.value
     })
   }
@@ -115,7 +115,7 @@ export default class NumberRangeInput extends PureComponent {
     if (key === 8) { // Backspace
       e.preventDefault();
 
-      if (initialNumber === 0) {
+      if (!initialNumber) {
         patchedString = ''
       } else if (currentCaretPosition === 1 && initialString.indexOf('-') === 0) {
         signChanged = true
@@ -137,7 +137,7 @@ export default class NumberRangeInput extends PureComponent {
     } else if (key === 46) { // Del
       e.preventDefault();
 
-      if (initialNumber === 0) {
+      if (!initialNumber) {
         patchedString = ''
       } else if (currentCaretPosition === 0 && initialString.indexOf('-') === 0) {
         signChanged = true
@@ -249,7 +249,7 @@ export default class NumberRangeInput extends PureComponent {
     }
   }
 
-  formatPropValue = ({ from, to }) => ({
+  formatRange = ({ from, to }) => ({
     from: isDef(from) ? this.format(from) : '',
     to: isDef(to) ? this.format(to) : ''
   })

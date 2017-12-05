@@ -71,9 +71,7 @@ export const handleKeydown = ({
     if (!initialNumber || (selectionEnd - selectionStart) === initialString.length) {
       patchedString = ''
     } else if (selectionStart !== selectionEnd) {
-
-
-      patchedString = initialString.slice(0,selectionStart) + '' +
+      patchedString = initialString.slice(0, selectionStart) + '' +
         initialString.slice(
           type === 'decimal' && decimalPointIndex > -1 && selectionEnd > decimalPointIndex ?
             decimalPointIndex :
@@ -104,7 +102,7 @@ export const handleKeydown = ({
     if (!initialNumber || (selectionEnd - selectionStart) === initialString.length) {
       patchedString = ''
     } else if (selectionStart !== selectionEnd) {
-      patchedString = initialString.slice(0,selectionStart) + '' +
+      patchedString = initialString.slice(0, selectionStart) + '' +
         initialString.slice(
           type === 'decimal' && decimalPointIndex > -1 && selectionEnd > decimalPointIndex ?
             decimalPointIndex :
@@ -250,7 +248,7 @@ export const handlePaste = ({
     const nextCaretPosition = selectionStart + clipText.length;
 
     callback({ newNumber, newString, nextCaretPosition })
-  } catch(e) {
+  } catch (e) {
     // num num parse errors (inserting decimal after decimal, etc.)
   }
 }

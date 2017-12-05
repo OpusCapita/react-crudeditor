@@ -2,7 +2,7 @@ import { isDef } from '../../../lib';
 
 // https://github.com/s-yadav/react-number-format/blob/master/src/utils.js
 // set the caret positon in an input field
-const setCaretPosition = (el, caretPos) => { // eslint-disable-line consistent-return
+const setCaretPosition = /* istanbul ignore next */ (el, caretPos) => { // eslint-disable-line consistent-return
   el.value = el.value; // eslint-disable-line no-param-reassign
   // ^ this is used to not only get "focus", but
   // to make sure we don't have everything selected
@@ -27,7 +27,7 @@ const setCaretPosition = (el, caretPos) => { // eslint-disable-line consistent-r
   }
 }
 
-export const setPatchedCaretPosition = (el, caretPos, currentValue) => {
+export const setPatchedCaretPosition = /* istanbul ignore next */ (el, caretPos, currentValue) => {
   /* setting caret position within timeout of 0ms is required for mobile chrome,
   otherwise browser resets the caret position after we set it
   We are also setting it without timeout so that in normal browser we don't see the flickering */
@@ -39,7 +39,7 @@ export const setPatchedCaretPosition = (el, caretPos, currentValue) => {
   });
 }
 
-export const handleKeydown = ({
+export const handleKeydown = /* istanbul ignore next */ ({
   e,
   type,
   initialNumber,
@@ -225,7 +225,7 @@ export const handleKeydown = ({
   }
 }
 
-export const handlePaste = ({
+export const handlePaste = /* istanbul ignore next */ ({
   e,
   initialString,
   callback,

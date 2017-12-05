@@ -73,7 +73,7 @@ export default class FieldNumber extends PureComponent {
     this.input.removeEventListener('paste', this.pasteListener)
   }
 
-  keydownListener = e => {
+  keydownListener = /* istanbul ignore next */ e => {
     const el = e.target;
     const initialString = this.state.string;
     const initialNumber = this.state.number;
@@ -100,7 +100,7 @@ export default class FieldNumber extends PureComponent {
     })
   }
 
-  pasteListener = e => {
+  pasteListener = /* istanbul ignore next */ e => {
     e.preventDefault();
     const el = e.target;
     const initialString = this.state.string;
@@ -122,12 +122,13 @@ export default class FieldNumber extends PureComponent {
     })
   }
 
-  format = number => this.context.i18n[this.props.type === 'decimal' ?
+  format = /* istanbul ignore next */ number => this.context.i18n[this.props.type === 'decimal' ?
     'formatDecimalNumber' :
     'formatNumber'
   ](number)
 
-  parse = string => this.context.i18n[this.props.type === 'decimal' ?
+
+  parse = /* istanbul ignore next */ string => this.context.i18n[this.props.type === 'decimal' ?
     'parseDecimalNumber' :
     'parseNumber'
   ](string || null)

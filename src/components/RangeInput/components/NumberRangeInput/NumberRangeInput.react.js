@@ -3,7 +3,11 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import StringRangeInput from '../StringRangeInput';
 import { isDef } from '../../../lib';
-import { setPatchedCaretPosition, handleKeydown } from './lib';
+import {
+  setPatchedCaretPosition,
+  handleKeydown,
+  handlePaste
+} from './lib';
 
 export default class NumberRangeInput extends PureComponent {
   static propTypes = {
@@ -43,7 +47,10 @@ export default class NumberRangeInput extends PureComponent {
     this.inputTo = elements[2];
 
     this.inputFrom.addEventListener('keydown', this.keydownListener)
+    this.inputFrom.addEventListener('paste', this.pasteListener)
+
     this.inputTo.addEventListener('keydown', this.keydownListener)
+    this.inputTo.addEventListener('paste', this.pasteListener)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -69,7 +76,9 @@ export default class NumberRangeInput extends PureComponent {
 
   componentWillUnmount() {
     this.inputFrom.removeEventListener('keydown', this.keydownListener)
+    this.inputFrom.removeEventListener('paste', this.pasteListener)
     this.inputTo.removeEventListener('keydown', this.keydownListener)
+    this.inputTo.removeEventListener('paste', this.pasteListener)
   }
 
   format = number => this.context.i18n[this.props.type === 'decimal' ?
@@ -110,6 +119,35 @@ export default class NumberRangeInput extends PureComponent {
       initialNumber,
       initialString,
       decimalSeparator,
+      callback,
+      parse: this.parse,
+      format: this.format
+    })
+  }
+
+  pasteListener = e => {
+    e.preventDefault();
+    const el = e.target;
+    const side = el === this.inputFrom ? 'from' : 'to';
+    const initialString = this.state.strings[side];
+
+    const callback = ({ newNumber, newString, nextCaretPosition }) => this.setState(prevState => ({
+      strings: {
+        ...prevState.strings,
+        [side]: newString
+      },
+      numbers: {
+        ...prevState.numbers,
+        [side]: newNumber
+      }
+    }), _ => {
+      setPatchedCaretPosition(el, nextCaretPosition, el.value);
+      this.props.onChange(this.state.numbers)
+    })
+
+    return handlePaste({
+      e,
+      initialString,
       callback,
       parse: this.parse,
       format: this.format

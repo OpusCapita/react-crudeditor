@@ -50,22 +50,36 @@ export const handleKeydown = ({
   format
 }) => {
   const el = e.target;
-  const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
+  const { selectionStart, selectionEnd } = el;
+  const currentCaretPosition = Math.max(selectionStart, selectionEnd);
 
   const key = e.key === 'Backspace' ? 8 :
     e.key === 'Delete' ? 46 :
       null || e.keyCode || e.charCode;
+
+  const decimalPointIndex = initialString.indexOf(decimalSeparator);
 
   let nextCaretPosition = currentCaretPosition,
     patchedString = initialString;
 
   let signChanged = false;
 
-  if (key === 8) { // Backspace
+  // BACKSPACE key
+  if (key === 8) {
     e.preventDefault();
 
-    if (!initialNumber) {
+    if (!initialNumber || (selectionEnd - selectionStart) === initialString.length) {
       patchedString = ''
+    } else if (selectionStart !== selectionEnd) {
+
+
+      patchedString = initialString.slice(0,selectionStart) + '' +
+        initialString.slice(
+          type === 'decimal' && decimalPointIndex > -1 && selectionEnd > decimalPointIndex ?
+            decimalPointIndex :
+            selectionEnd
+        );
+      nextCaretPosition = selectionStart
     } else if (currentCaretPosition === 1 && initialString.indexOf('-') === 0) {
       signChanged = true
     } else {
@@ -73,7 +87,7 @@ export const handleKeydown = ({
         currentCaretPosition - 2 :
         currentCaretPosition - 1;
 
-      if (type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
+      if (type === 'decimal' && decimalPointIndex < currentCaretPosition) {
         patchedString = [
           ...initialString.split('').slice(0, nextCaretPosition),
           0,
@@ -83,11 +97,20 @@ export const handleKeydown = ({
         patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
       }
     }
-  } else if (key === 46) { // Del
+  // DEL key
+  } else if (key === 46) {
     e.preventDefault();
 
-    if (!initialNumber) {
+    if (!initialNumber || (selectionEnd - selectionStart) === initialString.length) {
       patchedString = ''
+    } else if (selectionStart !== selectionEnd) {
+      patchedString = initialString.slice(0,selectionStart) + '' +
+        initialString.slice(
+          type === 'decimal' && decimalPointIndex > -1 && selectionEnd > decimalPointIndex ?
+            decimalPointIndex :
+            selectionEnd
+        );
+      nextCaretPosition = selectionStart
     } else if (currentCaretPosition === 0 && initialString.indexOf('-') === 0) {
       signChanged = true
     } else {
@@ -95,7 +118,7 @@ export const handleKeydown = ({
         currentCaretPosition + 1 :
         currentCaretPosition;
 
-      if (type === 'decimal' && initialString.indexOf(decimalSeparator) <= currentCaretPosition) {
+      if (type === 'decimal' && decimalPointIndex <= currentCaretPosition) {
         patchedString = [
           ...initialString.split('').slice(0, nextCaretPosition),
           0,
@@ -106,33 +129,48 @@ export const handleKeydown = ({
         patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
       }
     }
-  } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) { // 0-9 only
+  // 0-9 keys
+  } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) {
     e.preventDefault();
 
-    nextCaretPosition = currentCaretPosition + 1;
+    if (selectionStart !== selectionEnd) {
+      patchedString = initialString.slice(0, selectionStart) + '' +
+        String.fromCharCode(key) +
+        initialString.slice(selectionEnd);
 
-    patchedString = [
-      ...initialString.split('').slice(0, currentCaretPosition === initialString.length && type === 'decimal' ?
-        currentCaretPosition - 1 :
-        currentCaretPosition),
-      String.fromCharCode(key),
-      ...initialString.split('').slice(
-        currentCaretPosition +
-        (
-          type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition ?
-            1 : 0 // either patch one char or splice a new one into the string
+      nextCaretPosition = selectionStart + 1;
+    } else {
+      nextCaretPosition = currentCaretPosition + 1;
+
+      patchedString = [
+        ...initialString.split('').slice(0, currentCaretPosition === initialString.length && type === 'decimal' ?
+          currentCaretPosition - 1 :
+          currentCaretPosition),
+        String.fromCharCode(key),
+        ...initialString.split('').slice(
+          currentCaretPosition +
+          (
+            type === 'decimal' && decimalPointIndex < currentCaretPosition ?
+              1 : 0 // either patch one char or splice a new one into the string
+          )
         )
-      )
-    ].join('');
-  } else if (/[a-zA-Z_ ]/.test(String.fromCharCode(key)) || [192, 187].indexOf(key) > -1) {
-    // block non-numeric non-control keys
-    e.preventDefault();
-  } else if (key === 189) { // minus
+      ].join('');
+    }
+  // Minus key
+  } else if (key === 189) {
     e.preventDefault();
 
     if (currentCaretPosition === 0) {
       signChanged = true
     }
+  // block non-numeric non-control keys
+  } else if (
+    (
+      /[a-zA-Z_ ]/.test(String.fromCharCode(key)) ||
+      [192, 187].indexOf(key) > -1
+    ) && !(e.ctrlKey || e.metaKey)
+  ) {
+    e.preventDefault();
   } else {
     return; // pass all not intercepted keydowns to standard handlers
   }
@@ -173,7 +211,7 @@ export const handleKeydown = ({
       nextCaretPosition = newString.indexOf(decimalSeparator) + 2;
     }
 
-    if (type === 'decimal' && initialString.indexOf(decimalSeparator) === -1) {
+    if (type === 'decimal' && decimalPointIndex === -1) {
       nextCaretPosition = 1
     }
 
@@ -186,5 +224,33 @@ export const handleKeydown = ({
     })
   } else {
     setPatchedCaretPosition(el, nextCaretPosition, el.value)
+  }
+}
+
+export const handlePaste = ({
+  e,
+  initialString,
+  callback,
+  parse,
+  format
+}) => {
+  const el = e.target;
+  const { selectionStart, selectionEnd } = el;
+
+  const clipText = e.clipboardData.getData('text');
+
+  const patchedString = initialString.slice(0, selectionStart) + '' +
+    clipText +
+    initialString.slice(selectionEnd);
+
+  try {
+    const newNumber = parse(patchedString);
+    const newString = format(newNumber) || '';
+
+    const nextCaretPosition = selectionStart + clipText.length;
+
+    callback({ newNumber, newString, nextCaretPosition })
+  } catch(e) {
+    // num num parse errors (inserting decimal after decimal, etc.)
   }
 }

@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import Input from '../../components/Input'; // TODO: implement.
-import RangeInput from '../../components/RangeInput'; // TODO: implement.
+import RangeInput from '../../components/RangeInput';
 
 import {
   converter,
@@ -17,23 +17,27 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_NUMBER,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_DECIMAL,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING_NUMBER,
 
-  FIELD_TYPE_STRING_DATE_RANGE, // TODO: implement.
-  FIELD_TYPE_NUMBER_RANGE, // TODO: implement.
-  FIELD_TYPE_STRING_NUMBER_RANGE, // TODO: implement.
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
 
   UI_TYPE_BOOLEAN,
   UI_TYPE_DATE,
   UI_TYPE_NUMBER,
   UI_TYPE_STRING,
 
-  UI_TYPE_DATE_RANGE_ARRAY, // TODO: implement.
-  UI_TYPE_NUMBER_RANGE_OBJECT, // TODO: implement.
-  UI_TYPE_STRING_RANGE_OBJECT // TODO: implement.
+  UI_TYPE_DATE_RANGE_OBJECT,
+  UI_TYPE_INTEGER_RANGE_OBJECT,
+  UI_TYPE_DECIMAL_RANGE_OBJECT,
+  UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
 
 const
@@ -88,10 +92,13 @@ const namedComponentInfo = ({
 
       switch (props.type) {
         case 'date':
-          uiType = UI_TYPE_DATE_RANGE_ARRAY;
+          uiType = UI_TYPE_DATE_RANGE_OBJECT;
           break;
-        case 'number':
-          uiType = UI_TYPE_NUMBER_RANGE_OBJECT;
+        case 'integer':
+          uiType = UI_TYPE_INTEGER_RANGE_OBJECT;
+          break;
+        case 'decimal':
+          uiType = UI_TYPE_DECIMAL_RANGE_OBJECT;
           break;
         case 'string':
           uiType = UI_TYPE_STRING_RANGE_OBJECT;
@@ -119,10 +126,16 @@ const defaultFieldRenders = {
       type: 'checkbox'
     }
   },
-  [FIELD_TYPE_NUMBER]: {
+  [FIELD_TYPE_INTEGER]: {
     Component: 'input',
     props: {
-      type: 'number'
+      type: 'integer'
+    }
+  },
+  [FIELD_TYPE_DECIMAL]: {
+    Component: 'input',
+    props: {
+      type: 'decimal'
     }
   },
   [FIELD_TYPE_STRING]: {
@@ -143,10 +156,16 @@ const defaultFieldRenders = {
       type: 'string'
     }
   },
-  [FIELD_TYPE_NUMBER_RANGE]: {
+  [FIELD_TYPE_INTEGER_RANGE]: {
     Component: 'rangeInput',
     props: {
-      type: 'number'
+      type: 'integer'
+    }
+  },
+  [FIELD_TYPE_DECIMAL_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'decimal'
     }
   },
   [FIELD_TYPE_STRING_DATE_RANGE]: {
@@ -155,7 +174,13 @@ const defaultFieldRenders = {
       type: 'date'
     }
   },
-  [FIELD_TYPE_STRING_NUMBER_RANGE]: {
+  [FIELD_TYPE_STRING_INTEGER_RANGE]: {
+    Component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_STRING_DECIMAL_RANGE]: {
     Component: 'rangeInput',
     props: {
       type: 'string'

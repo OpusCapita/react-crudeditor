@@ -10,7 +10,8 @@ import {
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_NUMBER
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_INTEGER
 } from '../../../../data-types-lib/constants';
 
 import { fields } from '../'
@@ -174,7 +175,8 @@ export const
 
                 switch (fieldType) {
                   // Number and stringNumber fieldTypes are treated and compared as Numbers
-                  case FIELD_TYPE_NUMBER:
+                  case FIELD_TYPE_DECIMAL:
+                  case FIELD_TYPE_INTEGER:
                     gte = (itemValue, filterValue) => Number(itemValue) >= Number(filterValue);
                     lte = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
                     break;
@@ -218,7 +220,7 @@ export const
                 false;
               return rez && match
               // TODO add [] search
-            } else if ([FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType) > -1) {
+            } else if ([FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_DECIMAL, FIELD_TYPE_INTEGER].indexOf(fieldType) > -1) {
               const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {

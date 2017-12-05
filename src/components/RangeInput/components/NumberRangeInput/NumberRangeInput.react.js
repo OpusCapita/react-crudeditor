@@ -11,9 +11,7 @@ const setPatchedCaretPosition = (el, caretPos, currentValue) => {
   We are also setting it without timeout so that in normal browser we don't see the flickering */
   setCaretPosition(el, caretPos);
   setTimeout(_ => {
-    console.log(el.value, currentValue)
     if (el.value === currentValue) {
-      console.log('equal values')
       setCaretPosition(el, caretPos)
     }
   });
@@ -100,6 +98,7 @@ export default class NumberRangeInput extends PureComponent {
     const el = e.target;
     const side = el === this.inputFrom ? 'from' : 'to';
     const initialString = this.state.strings[side];
+    const initialNumber = this.state.numbers[side];
     const decimalSeparator = this.context.i18n._findFormattingInfo().numberDecimalSeparator;
 
     const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
@@ -116,7 +115,9 @@ export default class NumberRangeInput extends PureComponent {
     if (key === 8) { // Backspace
       e.preventDefault();
 
-      if (currentCaretPosition === 1 && initialString.indexOf('-') === 0) {
+      if (initialNumber === 0) {
+        patchedString = ''
+      } else if (currentCaretPosition === 1 && initialString.indexOf('-') === 0) {
         signChanged = true
       } else {
         nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
@@ -136,7 +137,9 @@ export default class NumberRangeInput extends PureComponent {
     } else if (key === 46) { // Del
       e.preventDefault();
 
-      if (currentCaretPosition === 0 && initialString.indexOf('-') === 0) {
+      if (initialNumber === 0) {
+        patchedString = ''
+      } else if (currentCaretPosition === 0 && initialString.indexOf('-') === 0) {
         signChanged = true
       } else {
         nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
@@ -233,7 +236,9 @@ export default class NumberRangeInput extends PureComponent {
         },
         numbers: {
           ...prevState.numbers,
-          [side]: (signChanged ? -1 : 1) * newNumber
+          [side]: isDef(newNumber) ?
+            (signChanged ? -1 : 1) * newNumber :
+            newNumber
         }
       }), _ => {
         setPatchedCaretPosition(el, nextCaretPosition, el.value);

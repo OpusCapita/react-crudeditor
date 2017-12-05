@@ -36,7 +36,7 @@ export default class NumberRangeInput extends PureComponent {
 
   static defaultProps = {
     value: { from: null, to: null },
-    onChange: _ => { },
+    onChange: _ => {},
     type: 'integer'
   }
 
@@ -199,7 +199,10 @@ export default class NumberRangeInput extends PureComponent {
           ...prevState.numbers,
           [side]: newNumber
         }
-      }), _ => setPatchedCaretPosition(el, nextCaretPosition, el.value))
+      }), _ => {
+        setPatchedCaretPosition(el, nextCaretPosition, el.value);
+        this.props.onChange(this.state.numbers)
+      })
     } else {
       setPatchedCaretPosition(el, nextCaretPosition, el.value)
     }
@@ -210,54 +213,13 @@ export default class NumberRangeInput extends PureComponent {
     to: isDef(to) ? this.format(to) : ''
   })
 
-  // parse: string -> number
-  // format: number -> string
-  // value <{ from: <string>, to: <string> }>
-  handleChange = ({ from, to }) => {
-    // convert value strings to numbers
-    // if ok -> check if from/to numbers have changed
-    // if yes -> setstate for the changed ones; in a callback onChange with state.numbers
-
-    try {
-      const fromNum = this.parse(from);
-      const toNum = this.parse(to);
-
-      const update = {};
-      const { numbers } = this.state;
-
-      if (fromNum !== numbers.from) {
-        update.from = true
-      }
-
-      if (toNum !== numbers.to) {
-        update.to = true
-      }
-
-      if (Object.keys(update).length) {
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            ...(update.from ? { from } : ''),
-            ...(update.to ? { to } : ''),
-          },
-          numbers: {
-            ...prevState.numbers,
-            ...(update.from ? { from: fromNum } : null),
-            ...(update.to ? { to: toNum } : null),
-          }
-        }), _ => this.props.onChange(this.state.numbers))
-      }
-    } catch (e) {
-      // swallow
-    }
-  }
-
   render() {
+
+    console.log(this.parse('-23,233.00'))
     return (
       <StringRangeInput
         {...this.props}
         value={this.state.strings}
-        onChange={this.handleChange}
       />
     )
   }

@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n';
-import translations from '../../../../crudeditor-lib/i18n';
+import translations from '../../crudeditor-lib/i18n';
 
 // This @showroomScopeDecorator modify React.Component prototype by adding _renderChildren() method.
 export default
 @showroomScopeDecorator
-class NumberRangeInputScope extends PureComponent {
+class GenericInputScope extends PureComponent {
   static childContextTypes = {
     i18n: PropTypes.object
   };
@@ -25,10 +25,10 @@ class NumberRangeInputScope extends PureComponent {
     return { i18n: this.i18n }
   }
 
-  handleChange = value => {
-    console.log(value);
-    this.setState({ value });
-  }
+  handleChange = value => this.setState({ value }, _ => {
+    console.log(this.state.value)
+    console.log('type: ' + typeof this.state.value)
+  })
 
   handleFocus = _ => console.log('FOCUS')
 

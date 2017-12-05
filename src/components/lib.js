@@ -8,3 +8,5 @@ export const getModelMessage = (i18n, key, defaultKey) => {
 }
 
 export const isDef = v => v !== null && v !== undefined;
+
+export const noop = _ => {};

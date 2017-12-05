@@ -8,19 +8,24 @@ export default class RangeInput extends PureComponent {
   static propTypes = {
     type: PropTypes.oneOf([
       'date',
-      'number',
-      'string'
+      'string',
+      'integer',
+      'decimal'
     ])
   }
 
   render() {
-    switch (this.props.type) {
+    const { type, ...props } = this.props;
+
+    switch (type) {
       case 'date':
-        return <DateRangeInput {...this.props} />
-      case 'number':
-        return <NumberRangeInput {...this.props} />
+        return <DateRangeInput {...props} />
+      case 'integer':
+        return <NumberRangeInput type="integer" {...props} />
+      case 'decimal':
+        return <NumberRangeInput type="decimal" {...props} />
       default:
-        return <StringRangeInput {...this.props} />
+        return <StringRangeInput {...props} />
     }
   }
 }

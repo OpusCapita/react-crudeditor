@@ -18,7 +18,8 @@ export default class StringRangeInput extends PureComponent {
     ]),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
+    readOnly: PropTypes.bool
   }
 
   static contextTypes = {
@@ -32,7 +33,8 @@ export default class StringRangeInput extends PureComponent {
     },
     onChange: _ => {},
     onBlur: _ => {},
-    onFocus: _ => {}
+    onFocus: _ => {},
+    readOnly: false
   }
 
   state = {
@@ -77,7 +79,7 @@ export default class StringRangeInput extends PureComponent {
   })
 
   render() {
-    const { value } = this.props;
+    const { value, readOnly } = this.props;
 
     const { i18n } = this.context;
 
@@ -90,6 +92,7 @@ export default class StringRangeInput extends PureComponent {
           placeholder={i18n.getMessage('crudEditor.range.from')}
           value={isDef(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
+          disabled={readOnly}
         />
         <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
@@ -99,6 +102,7 @@ export default class StringRangeInput extends PureComponent {
           placeholder={i18n.getMessage('crudEditor.range.to')}
           value={isDef(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}
+          disabled={readOnly}
         />
       </InputGroup>
     )

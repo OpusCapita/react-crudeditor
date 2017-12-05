@@ -13,7 +13,8 @@ export default class DateRangeInput extends PureComponent {
     }),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onFocus: PropTypes.func
+    onFocus: PropTypes.func,
+    readOnly: PropTypes.bool
   }
 
   static contextTypes = {
@@ -24,7 +25,8 @@ export default class DateRangeInput extends PureComponent {
     value: { from: null, to: null },
     onChange: _ => {},
     onBlur: _ => {},
-    onFocus: _ => {}
+    onFocus: _ => {},
+    readOnly: false
   }
 
   handleChange = value => this.props.onChange(array2range(value))
@@ -33,7 +35,8 @@ export default class DateRangeInput extends PureComponent {
     const {
       value,
       onFocus,
-      onBlur
+      onBlur,
+      readOnly
     } = this.props;
     const { i18n } = this.context;
 
@@ -44,6 +47,7 @@ export default class DateRangeInput extends PureComponent {
         onChange={this.handleChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        disabled={readOnly}
       />
     )
   }

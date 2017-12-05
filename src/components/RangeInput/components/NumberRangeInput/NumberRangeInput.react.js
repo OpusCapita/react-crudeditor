@@ -3,19 +3,7 @@ import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import StringRangeInput from '../StringRangeInput';
 import { isDef } from '../../../lib';
-import { setCaretPosition } from './lib';
-
-const setPatchedCaretPosition = (el, caretPos, currentValue) => {
-  /* setting caret position within timeout of 0ms is required for mobile chrome,
-  otherwise browser resets the caret position after we set it
-  We are also setting it without timeout so that in normal browser we don't see the flickering */
-  setCaretPosition(el, caretPos);
-  setTimeout(_ => {
-    if (el.value === currentValue) {
-      setCaretPosition(el, caretPos)
-    }
-  });
-}
+import { setPatchedCaretPosition, handleKeydown } from './lib';
 
 export default class NumberRangeInput extends PureComponent {
   static propTypes = {
@@ -23,23 +11,28 @@ export default class NumberRangeInput extends PureComponent {
     value: PropTypes.shape({
       from: PropTypes.number,
       to: PropTypes.number
-    })
+    }),
+    type: PropTypes.oneOf([
+      'integer',
+      'decimal'
+    ])
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   }
 
   static defaultProps = {
     value: { from: null, to: null },
-    onChange: _ => {}
+    onChange: _ => {},
+    type: 'integer'
   }
 
   constructor(...args) {
     super(...args);
 
     this.state = {
-      strings: this.formatPropValue(this.props.value),
+      strings: this.formatRange(this.props.value),
       numbers: this.props.value
     }
   }
@@ -49,142 +42,90 @@ export default class NumberRangeInput extends PureComponent {
     this.inputFrom = elements[0];
     this.inputTo = elements[2];
 
-    this.inputFrom.addEventListener('keyup', this.keyupListener)
-    this.inputTo.addEventListener('keyup', this.keyupListener)
+    this.inputFrom.addEventListener('keydown', this.keydownListener)
+    this.inputTo.addEventListener('keydown', this.keydownListener)
   }
 
   componentWillReceiveProps(nextProps) {
+    // check if sign has changed, and adjust caret position if true
+    const { value: currentValue } = this.props;
+    const { value: nextValue } = nextProps;
+    const el = document.activeElement;
+    const side = el === this.inputFrom ?
+      'from' :
+      el === this.inputTo ?
+        'to' :
+        null;
+
+    if (side && currentValue[side] === -1 * nextValue[side]) {
+      setPatchedCaretPosition(el, nextValue[side] <= 0 ? 1 : 0, this.format(nextValue[side]))
+    }
+
     this.setState({
-      strings: this.formatPropValue(nextProps.value),
-      numbers: nextProps.value
+      strings: this.formatRange(nextValue),
+      numbers: nextValue
     })
   }
 
   componentWillUnmount() {
-    this.inputFrom.removeEventListener('keyup', this.keyupListener)
-    this.inputTo.removeEventListener('keyup', this.keyupListener)
+    this.inputFrom.removeEventListener('keydown', this.keydownListener)
+    this.inputTo.removeEventListener('keydown', this.keydownListener)
   }
 
-  keyupListener = e => {
-    const { i18n } = this.context;
+  format = number => this.context.i18n[this.props.type === 'decimal' ?
+    'formatDecimalNumber' :
+    'formatNumber'
+  ](number)
+
+  parse = string => this.context.i18n[this.props.type === 'decimal' ?
+    'parseDecimalNumber' :
+    'parseNumber'
+  ](string || null)
+
+  keydownListener = e => {
     const el = e.target;
     const side = el === this.inputFrom ? 'from' : 'to';
+    const initialString = this.state.strings[side];
+    const initialNumber = this.state.numbers[side];
+    const { type } = this.props;
+    const decimalSeparator = this.context.i18n._findFormattingInfo().numberDecimalSeparator;
 
-    const currentCaretPosition = Math.max(el.selectionStart, el.selectionEnd);
-
-    if (el.value === this.state.strings[side] && currentCaretPosition !== 0) {
-      const key = event.key || e.keyCode || e.charCode;
-
-      if (
-        key === 8 &&
-        currentCaretPosition > 1 &&
-        /\D/.test(el.value[currentCaretPosition - 1])
-      ) {
-        e.preventDefault();
-
-        const patchedString = this.state.strings[side].
-          split('').
-          filter((c, i) => i !== currentCaretPosition - 2).
-          join('');
-        const newNumber = i18n.parseNumber(patchedString);
-        const newString = i18n.formatNumber(newNumber);
-
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            [side]: newString
-          },
-          numbers: {
-            ...prevState.numbers,
-            [side]: newNumber
-          }
-        }), _ => setPatchedCaretPosition(el, currentCaretPosition - 1, el.value))
-      } else if (
-        key === 46 &&
-          currentCaretPosition < el.value.length &&
-          /\D/.test(el.value[currentCaretPosition])
-      ) {
-        e.preventDefault();
-
-        const patchedString = this.state.strings[side].
-          split('').
-          filter((c, i) => i !== currentCaretPosition + 1).
-          join('');
-        const newNumber = i18n.parseNumber(patchedString);
-        const newString = i18n.formatNumber(newNumber);
-
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            [side]: newString
-          },
-          numbers: {
-            ...prevState.numbers,
-            [side]: newNumber
-          }
-        }), _ => setPatchedCaretPosition(el, currentCaretPosition, el.value))
+    const callback = ({ newNumber, newString, nextCaretPosition }) => this.setState(prevState => ({
+      strings: {
+        ...prevState.strings,
+        [side]: newString
+      },
+      numbers: {
+        ...prevState.numbers,
+        [side]: newNumber
       }
-    }
+    }), _ => {
+      setPatchedCaretPosition(el, nextCaretPosition, el.value);
+      this.props.onChange(this.state.numbers)
+    })
+
+    return handleKeydown({
+      e,
+      type,
+      initialNumber,
+      initialString,
+      decimalSeparator,
+      callback,
+      parse: this.parse,
+      format: this.format
+    })
   }
 
-  formatPropValue = ({ from, to }) => {
-    const { i18n } = this.context;
-
-    return {
-      from: isDef(from) ? i18n.formatNumber(from) : null,
-      to: isDef(to) ? i18n.formatNumber(to) : null
-    }
-  }
-
-  // parse: string -> number
-  // format: number -> string
-  // value <{ from: <string>, to: <string> }>
-  handleChange = ({ from, to }) => {
-    const { i18n } = this.context;
-    // convert value strings to numbers
-    // if ok -> check if from/to numbers have changed
-    // if yes -> setstate for the changed ones; in a callback onChange with state.numbers
-
-    try {
-      const fromNum = i18n.parseNumber(from);
-      const toNum = i18n.parseNumber(to);
-
-      const update = {};
-      const { numbers } = this.state;
-
-      if (fromNum !== numbers.from) {
-        update.from = true
-      }
-
-      if (toNum !== numbers.to) {
-        update.to = true
-      }
-
-      if (Object.keys(update).length) {
-        this.setState(prevState => ({
-          strings: {
-            ...prevState.strings,
-            ...(update.from ? { from } : null),
-            ...(update.to ? { to } : null),
-          },
-          numbers: {
-            ...prevState.numbers,
-            ...(update.from ? { from: fromNum } : null),
-            ...(update.to ? { to: toNum } : null),
-          }
-        }), _ => this.props.onChange(this.state.numbers))
-      }
-    } catch (e) {
-      // swallow
-    }
-  }
+  formatRange = ({ from, to }) => ({
+    from: isDef(from) ? this.format(from) : '',
+    to: isDef(to) ? this.format(to) : ''
+  })
 
   render() {
     return (
       <StringRangeInput
         {...this.props}
         value={this.state.strings}
-        onChange={this.handleChange}
       />
     )
   }

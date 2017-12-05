@@ -62,8 +62,8 @@ export default class NumberRangeInput extends PureComponent {
     }
 
     this.setState({
-      strings: this.formatRange(nextProps.value),
-      numbers: nextProps.value
+      strings: this.formatRange(nextValue),
+      numbers: nextValue
     })
   }
 

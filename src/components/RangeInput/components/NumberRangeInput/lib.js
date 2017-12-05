@@ -124,8 +124,6 @@ export const handleKeydown = ({
         )
       )
     ].join('');
-
-    console.log({ initialString, patchedString, currentCaretPosition })
   } else if (/[a-zA-Z_ ]/.test(String.fromCharCode(key)) || [192, 187].indexOf(key) > -1) {
     // block non-numeric non-control keys
     e.preventDefault();

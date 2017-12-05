@@ -6,7 +6,13 @@ Date range input component.
 
 ### Props Reference
 
-...
+| Name                           | Type                     | Description                                                                                             |
+| ------------------------------ | :----------------------  | -----------------------------------------------------------                                             |
+| readOnly                       | bool                     | true/false                                                                                              |
+| onChange                       | func                     |                                                                                                         |
+| onBlur                         | func                     |                                                                                                         |
+| onFocus                        | func                     |                                                                                                         |
+| value                          | Object                   | { from: <Date>, to: <Date> }                                                                        |
 
 ## Details
 

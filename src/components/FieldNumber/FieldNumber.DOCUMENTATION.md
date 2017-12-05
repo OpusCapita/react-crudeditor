@@ -1,8 +1,8 @@
-# NumberRangeInput
+# FieldNumber
 
 ## Synopsis
 
-Number range input component.
+Number input component.
 
 ### Props Reference
 
@@ -13,7 +13,7 @@ Number range input component.
 | onChange                       | func                     |                                                                                                         |
 | onBlur                         | func                     |                                                                                                         |
 | onFocus                        | func                     |                                                                                                         |
-| value                          | Object                   | { from: <number>, to: <number> }                                                                        |
+| value                          | number                   |                                                                                                         |
 
 ## Details
 
@@ -22,8 +22,9 @@ Number range input component.
 ## Code Example
 
 ```js
-<NumberRangeInput
+<FieldNumber
   type="decimal"
+  readOnly={false}
   onChange={_scope.handleChange.bind(_scope)}
   onFocus={_scope.handleFocus.bind(_scope)}
   onBlur={_scope.handleBlur.bind(_scope)}
@@ -37,7 +38,7 @@ Egor Stambakio
 
 ## Component Name
 
-NumberRangeInput
+FieldNumber
 
 ## License
 

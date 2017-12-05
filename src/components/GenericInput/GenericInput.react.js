@@ -19,13 +19,6 @@ export default class GenericInput extends PureComponent {
   render() {
     const { type, ...props } = this.props;
 
-    console.log({
-      FieldBoolean,
-      FieldDate,
-      FieldNumber,
-      FieldString
-    })
-
     switch (type) {
       case 'date':
         return <FieldDate {...props} />

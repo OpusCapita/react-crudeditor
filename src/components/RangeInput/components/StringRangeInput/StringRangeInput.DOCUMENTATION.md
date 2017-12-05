@@ -6,7 +6,14 @@ String range input component.
 
 ### Props Reference
 
-...
+| Name                           | Type                     | Description                                                                                             |
+| ------------------------------ | :----------------------  | -----------------------------------------------------------                                             |
+| type                           | string                   | 'integer' or 'decimal'                                                                                  |
+| readOnly                       | bool                     | true/false                                                                                              |
+| onChange                       | func                     |                                                                                                         |
+| onBlur                         | func                     |                                                                                                         |
+| onFocus                        | func                     |                                                                                                         |
+| value                          | Object                   | { from: <string>, to: <string> }                                                                        |
 
 ## Details
 

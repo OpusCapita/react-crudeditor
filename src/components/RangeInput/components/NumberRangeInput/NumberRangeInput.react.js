@@ -135,7 +135,9 @@ export default class NumberRangeInput extends PureComponent {
       nextCaretPosition = currentCaretPosition + 1;
 
       patchedString = [
-        ...initialString.split('').slice(0, currentCaretPosition),
+        ...initialString.split('').slice(0, currentCaretPosition === initialString.length ?
+          currentCaretPosition - 1 :
+          currentCaretPosition),
         String.fromCharCode(key),
         ...initialString.split('').slice(
           currentCaretPosition +
@@ -145,6 +147,9 @@ export default class NumberRangeInput extends PureComponent {
           )
         )
       ].join('');
+    } else if (/[a-zA-Z_ ]/.test(String.fromCharCode(key)) || key === 192) {
+      // block non-numeric non-control keys
+      e.preventDefault();
     } else {
       return; // pass all not intercepted keydowns to standard handlers
     }
@@ -175,6 +180,14 @@ export default class NumberRangeInput extends PureComponent {
 
       if (nextCaretPosition === 0 && newString.indexOf('0' + decimalSeparator) === 0) {
         nextCaretPosition = 1;
+      }
+
+      if (newString.indexOf(decimalSeparator) > -1 && nextCaretPosition > newString.indexOf(decimalSeparator) + 2) {
+        nextCaretPosition = newString.indexOf(decimalSeparator) + 2;
+      }
+
+      if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) === -1) {
+        nextCaretPosition = 1
       }
 
       this.setState(prevState => ({

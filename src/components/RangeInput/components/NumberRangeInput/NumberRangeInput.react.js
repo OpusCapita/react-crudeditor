@@ -214,8 +214,6 @@ export default class NumberRangeInput extends PureComponent {
   })
 
   render() {
-
-    console.log(this.parse('-23,233.00'))
     return (
       <StringRangeInput
         {...this.props}

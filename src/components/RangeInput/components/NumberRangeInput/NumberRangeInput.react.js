@@ -11,7 +11,9 @@ const setPatchedCaretPosition = (el, caretPos, currentValue) => {
   We are also setting it without timeout so that in normal browser we don't see the flickering */
   setCaretPosition(el, caretPos);
   setTimeout(_ => {
+    console.log(el.value, currentValue)
     if (el.value === currentValue) {
+      console.log('equal values')
       setCaretPosition(el, caretPos)
     }
   });
@@ -59,6 +61,20 @@ export default class NumberRangeInput extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
+    // check if sign has changed, and adjust caret position if true
+    const { value: currentValue } = this.props;
+    const { value: nextValue } = nextProps;
+    const el = document.activeElement;
+    const side = el === this.inputFrom ?
+      'from' :
+      el === this.inputTo ?
+        'to' :
+        null;
+
+    if (side && currentValue[side] === -1 * nextValue[side]) {
+      setPatchedCaretPosition(el, nextValue[side] <= 0 ? 1 : 0, this.format(nextValue[side]))
+    }
+
     this.setState({
       strings: this.formatPropValue(nextProps.value),
       numbers: nextProps.value
@@ -95,39 +111,49 @@ export default class NumberRangeInput extends PureComponent {
     let nextCaretPosition = currentCaretPosition,
       patchedString = initialString;
 
-    if (key === 8) {
+    let signChanged = false;
+
+    if (key === 8) { // Backspace
       e.preventDefault();
 
-      nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
-        currentCaretPosition - 2 :
-        currentCaretPosition - 1;
-
-      if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
-        patchedString = [
-          ...initialString.split('').slice(0, nextCaretPosition),
-          0,
-          ...initialString.split('').slice(nextCaretPosition + 1)
-        ].join('')
+      if (currentCaretPosition === 1 && initialString.indexOf('-') === 0) {
+        signChanged = true
       } else {
-        patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+        nextCaretPosition = /\D/.test(el.value[currentCaretPosition - 1]) ?
+          currentCaretPosition - 2 :
+          currentCaretPosition - 1;
+
+        if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
+          patchedString = [
+            ...initialString.split('').slice(0, nextCaretPosition),
+            0,
+            ...initialString.split('').slice(nextCaretPosition + 1)
+          ].join('')
+        } else {
+          patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+        }
       }
-    } else if (key === 46) {
+    } else if (key === 46) { // Del
       e.preventDefault();
 
-      nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
-        currentCaretPosition + 1 :
-        currentCaretPosition;
-
-      // patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
-      if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
-        patchedString = [
-          ...initialString.split('').slice(0, nextCaretPosition),
-          0,
-          ...initialString.split('').slice(nextCaretPosition + 1)
-        ].join('');
-        nextCaretPosition++;
+      if (currentCaretPosition === 0 && initialString.indexOf('-') === 0) {
+        signChanged = true
       } else {
-        patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+        nextCaretPosition = /\D/.test(el.value[currentCaretPosition]) ?
+          currentCaretPosition + 1 :
+          currentCaretPosition;
+
+        // patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+        if (this.props.type === 'decimal' && initialString.indexOf(decimalSeparator) < currentCaretPosition) {
+          patchedString = [
+            ...initialString.split('').slice(0, nextCaretPosition),
+            0,
+            ...initialString.split('').slice(nextCaretPosition + 1)
+          ].join('');
+          nextCaretPosition++;
+        } else {
+          patchedString = initialString.split('').filter((c, i) => i !== nextCaretPosition).join('');
+        }
       }
     } else if ((key >= 48 && key <= 57) || (key >= 96 && key <= 105)) { // 0-9 only
       e.preventDefault();
@@ -147,16 +173,26 @@ export default class NumberRangeInput extends PureComponent {
           )
         )
       ].join('');
-    } else if (/[a-zA-Z_ ]/.test(String.fromCharCode(key)) || key === 192) {
-      // block non-numeric non-control keys
+    // block non-numeric non-control keys
+    } else if (/[a-zA-Z_ ]/.test(String.fromCharCode(key)) || [192, 187].indexOf(key) > -1) {
       e.preventDefault();
+    } else if (key === 189) { // minus
+      e.preventDefault();
+
+      if (currentCaretPosition === 0) {
+        signChanged = true
+      }
     } else {
       return; // pass all not intercepted keydowns to standard handlers
     }
 
-    if (patchedString !== initialString) {
+    if (patchedString !== initialString || signChanged) {
       if (patchedString.indexOf(decimalSeparator) === 0) {
         patchedString = '0' + patchedString;
+      }
+
+      if (/^-/.test(patchedString) && patchedString.indexOf(decimalSeparator) === 1) {
+        patchedString = '-0' + patchedString.slice(1);
       }
 
       const newNumber = this.parse(patchedString);
@@ -197,7 +233,7 @@ export default class NumberRangeInput extends PureComponent {
         },
         numbers: {
           ...prevState.numbers,
-          [side]: newNumber
+          [side]: (signChanged ? -1 : 1) * newNumber
         }
       }), _ => {
         setPatchedCaretPosition(el, nextCaretPosition, el.value);

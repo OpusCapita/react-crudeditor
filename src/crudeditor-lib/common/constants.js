@@ -1,13 +1,6 @@
 const namespace = 'common';
 
 export const
-  AUDITABLE_FIELDS = [
-    'createdBy',
-    'changedBy',
-    'createdOn',
-    'changedOn'
-  ],
-
   ROLE_FIELD = 'field',
   ROLE_SECTION = 'section',
   ROLE_TAB = 'tab',

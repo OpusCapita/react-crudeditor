@@ -1,7 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { buildFieldRender } from '../lib';
-import { AUDITABLE_FIELDS } from '../../common/constants';
 export { getViewState } from './selectors';
 
 import {
@@ -38,7 +37,6 @@ export const getUi = modelDefinition => {
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).
-      filter(name => AUDITABLE_FIELDS.indexOf(name) === -1).
       map(name => ({ name }));
   }
 

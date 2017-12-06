@@ -1,3 +1,68 @@
+## [v0.0.29](Mon, 04 Dec 2017 11:48:56 GMT)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 617ab87)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 49344c4)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 43b6ca8)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, bc9183c)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 38451e3)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 193c92c)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 2204ef3)
+ - Merge pull request #85 from OpusCapita/styling-issues
+
+    Fixed dropdown styling issues (7233d96 14dc2cb, 633541b)
+ - Renamed a state prop. (Egor Stambakio <stambakio@scand.com>, 14dc2cb)
+ - Better comparison in edit reducer. (Egor Stambakio <stambakio@scand.com>, 22f17df)
+ - Merge branch 'master' into styling-issues (762ddd0 7233d96, da9fc2a)
+ - Fixed edit reducer TAB_SELECT handler. (Egor Stambakio <stambakio@scand.com>, 7233d96)
+ - Better code structure. (Egor Stambakio <stambakio@scand.com>, 762ddd0)
+ - Fixed overflow behavior #81 on Search listing. (Egor Stambakio <stambakio@scand.com>, efec91f)
+ - Minor changes (Andrei Mourzenkov <mourzenkov@scand.com>, f37c5b3)
+ - Merge branch 'master' into styling-issues (47b75ee 2b6b59a, fc67d2c)
+ - Merge pull request #76 from OpusCapita/issue-63
+
+    Confirmation for Tabs navigation on Edit view (2b6b59a 26d6a05, 158b160)
+ - Fixed a bug. (Egor Stambakio <stambakio@scand.com>, 26d6a05)
+ - Merge branch 'master' into issue-63 (427e7bd 2b6b59a, 874d0d4)
+ - 85% fixed table scroll. (Egor Stambakio <stambakio@scand.com>, 47b75ee)
+ - Merge pull request #82 from OpusCapita/issue-80
+
+    Replaced multiple navigation-only sagas with a single redirect saga (a081bd7 055cdae, 2b6b59a)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (d927246 4e78f3a, a081bd7)
+ - Modified test data (Andrei Mourzenkov <mourzenkov@scand.com>, d927246)
+ - Cleanup. (Egor Stambakio <stambakio@scand.com>, 055cdae)
+ - Replaced other navigation sagas with a single redirect saga. (Egor Stambakio <stambakio@scand.com>, e8c5145)
+ - Replaced exit sagas with a single redirect saga. (Egor Stambakio <stambakio@scand.com>, f4cc2bf)
+ - Fixed reviewer notes for #76. (estambakio-sc <egor.stambakio@opuscapita.com>, 427e7bd)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4e78f3a)
+ - Merge pull request #78 from OpusCapita/issue-77
+
+    Fixed onTransition remaining initial after props change (b750303 8ea94d4, eab8b91)
+ - Removed obsolete line. (Egor Stambakio <stambakio@scand.com>, b750303)
+ - Fixed #77 (Egor Stambakio <stambakio@scand.com>, 8ea94d4)
+ - Merge pull request #71 from OpusCapita/issue-67
+
+    Confirm outgoing clicks when view has unsaved changes (ec06e48 d856355, 9c9d493)
+ - Reverted JSX children mapping back to React.cloneElement (Egor Stambakio <stambakio@scand.com>, d856355)
+ - Removed an obsolete string. (Egor Stambakio <stambakio@scand.com>, 963089d)
+ - Implemented #63 (Egor Stambakio <stambakio@scand.com>, bc1ec97)
+ - Merge pull request #75 from OpusCapita/issue-74
+
+    Fixed #74. (c51f402 7b66fc8, ec06e48)
+ - Merge branch 'master' into issue-63 (3b06cf1 c51f402, de64993)
+ - Merge branch 'issue-67' into issue-63 (2bfabf5 90fe95f, 3b06cf1)
+ - Better mapping for confirm event handler. (Egor Stambakio <stambakio@scand.com>, 90fe95f)
+ - Started. (Egor Stambakio <stambakio@scand.com>, 2bfabf5)
+ - Fixed #74. (Egor Stambakio <stambakio@scand.com>, 7b66fc8)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (e8ab68b 5cce97a, c51f402)
+ - Bug with uiConfig not available in Error View is fixed (Andrei Mourzenkov <mourzenkov@scand.com>, e8ab68b)
+ - Eslint. (Egor Stambakio <stambakio@scand.com>, 5cce97a)
+ - Deleted Revisions button placeholder. (Egor Stambakio <stambakio@scand.com>, c283242)
+ - Cleanup. (Egor Stambakio <stambakio@scand.com>, 0ac816f)
+ - Added new confirm dialog. (Egor Stambakio <stambakio@scand.com>, 7243eaf)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, d926074)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 27c2069)
+ - ... (Egor Stambakio <stambakio@scand.com>, 4d993f8)
+ - Implemented #67. (Egor Stambakio <stambakio@scand.com>, 65df21d)
+
 ## [v0.0.28](Tue, 28 Nov 2017 16:28:42 GMT)
  - Fixed #64 (Andrei Mourzenkov <mourzenkov@scand.com>, 76b1f61)
  - Merge pull request #73 from OpusCapita/create-view-ops-consistensy

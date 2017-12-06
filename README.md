@@ -76,33 +76,17 @@
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.</dd>
   <dt id="composite-field">Composite Field</dt>
   <dd>In contrast to a <a href="#persistent-field">Persistent field</a>, <i>composite field</i> is not stored on server and represents some combination of <a href="#persistent-field">Persistent fields</a>.  It is only used for displaying an entity instance in Search Result listing.</dd>
-  <dt>Auditable field</dt>
-  <dd>One of the following <a href="#persistent-field">Persistent fields</a>:
-    <ul>
-      <li>createdBy</li>
-      <li>changedBy</li>
-      <li>createdOn</li>
-      <li>changedOn</li>
-    </ul>
-  </dd>
   <dt id="store-state">Store State</dt>
   <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. Standard types are
-    <ul>
-      <li>boolean,</li>
-      <li>date,</li>
-      <li>number,</li>
-      <li>string.</li>
-    </ul>
-    Other types are allowed as well, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#standard-field-types">standard</a> types as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    React Components for displaying fields of standard types are predefined.  Rendering of non-standard types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are default React Components for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
-    <i>Field Type</i> has nothing to do with JavaScript types since field value is always a string; it is to allow correct interpretation of the string.
+    <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
     <br />
     <i>Field Types</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.
@@ -112,7 +96,7 @@
     Value conversion is necessary for communication with a React Component rendering the field.  Every field value is formated from its <a href="#field-type">Field Type</a> to appropriate <i>UI Type</i> before sending to a React Component, and parsed from the <i>UI Type</i> back to its <a href="#field-type">Field Type</a> after the React Component modifies the value and returns it in onChange event handler.
     <br/>
     <br/>
-    <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data.
+    <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>UI Type</i>.  Thus any React Components displaying a field must have embedded <i>empty value</i> concept and be able to deal with <b>null</b>.
     <br/>
     <br/>
     <i>UI Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
@@ -502,29 +486,23 @@ Model Definition is an object describing an entity. It has the following structu
       return {
         /*
          * Only Persistent fields from model.fields are allowed.
-         * By default, all Persistent (excluding Auditable) fields from model.fields
+         * By default, all Persistent fields from model.fields
          * are used for building search criteria.
          */
         ?searchableFields: [{
           name: <string, persistent field name>,
 
           /*
-           * Default "render" property:
+           * There is no default "render" property for a fild of custom Field Type
+           * => "render" property must be explicitly defined in such a case.
+           *
+           * Default "render" property for a fild of standard Field Type:
            * {
-           *   // Default React Component assigned for displaying particular Field Type.
-           *   // The following field types have assigned Components:
-           *   // -- stringDate (DateRangeInput),
-           *   // -- stringNumber and number (NumberRangeInput),
-           *   // -- string (FormControl),
-           *   // -- boolean (Checkbox).
-           *   //
-           *   // null for unkown Field Type or Field Type without assigned Component =>
-           *   // "render" property must be explicitly defined in such a case.
-           *   Component: <string|null>,
+           *   Component: <string, id of default Component for displaying the Field Type>,
            *
            *   valueProp: {
            *     name: "value",
-           *     type: <string, UI Type peculiar to the Component>
+           *     type: <string, UI Type peculiar to the default React Component>
            *   }
            * }
            */
@@ -532,7 +510,7 @@ Model Definition is an object describing an entity. It has the following structu
 
             /*
              * Either custom FieldInputComponent (see corresponding subheading)
-             * or string with embedded React Component name.
+             * or id with embedded React Component name.
              */
             Component: <FieldInputComponent|string>,
 
@@ -541,27 +519,25 @@ Model Definition is an object describing an entity. It has the following structu
               ?name: <string, a name of Component prop with field value>,
 
               /*
-               * Meaningless for an embedded React Component,
+               * Redundant for an embedded React Component,
                * because UI Type it works with is already known to CRUD Editor.
                *
-               * In case of FieldInputComponent, type can be provided only when
-               * the following all conditions are satisfied:
-               * 1. its UI Type is embedded, i.e. known to CRID Editor, and
-               * 2. CRUD Editor knows how to convert the Field Type to/from the UI Type.
-               *
-               * If at least one condition is not satisfied and "type" is provided,
-               * CRUD Editor will raise an error.
-               * 
                * When omitted for FieldInputComponent, UI Type is considered to be unknown.
                * In such a case:
                * 1. either define converter,
-               * 2. or unconverted field value is sent to FieldInputComponent (i.e. of Field Type) and
+               * 2. or unconverted (i.e. of Field Type) field value is sent to FieldInputComponent and
                *    FieldInputComponent is presupposed to return a value of Field Type.
+               *
+               * Ignored when custom "converter" is defined.
                */
               ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
 
               /*
-               * Meaningless when both Component is FieldInputComponent and "type" property is defined.
+               * Custom converter which overwrites default converter, if any.
+               *
+               * There is a default converter when Field Type is known to CRUID Editor and
+               * 1. Component is embedded React Component, or
+               * 2. Component is FieldInputComponent and "type" with UI Type is specified.
                */
               ?converter: {
 
@@ -587,7 +563,7 @@ Model Definition is an object describing an entity. It has the following structu
 
         /*
          * Both persistent and composite fields are allowed.
-         * By default, all Persistent (incl. Auditable) fields from model.fields are used in result listing.
+         * By default, all Persistent fields from model.fields are used in result listing.
          * Only one field may have "sortByDefault" set to true.
          */
         ?resultFields: [{
@@ -627,9 +603,8 @@ Model Definition is an object describing an entity. It has the following structu
        *
        * If formLayout is not specified, create/edit/show View does not have any tabs/sections
        * and displays all fields from the model. The following fields are read-only in such case:
-       * -- all fields in show View,
-       * -- Auditable fields in edit View,
-       * -- Logical Key fields in edit View.
+       * -- all fields in Show view,
+       * -- Logical Key fields in Edit view.
        */
       ?formLayout: ({ tab, section, field }) => instance => {
         ...

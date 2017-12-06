@@ -83,6 +83,18 @@ export default function*({
       meta
     });
 
-    throw err;
+    try {
+      yield call(softRedirectSaga, {
+        viewName: VIEW_ERROR,
+        viewState: err
+      });
+    } catch (err) {
+      // shouldn't happen but
+      console.group('Redirect to error page failed')
+      console.log(err)
+      console.groupEnd()
+
+      throw err;
+    }
   }
 }

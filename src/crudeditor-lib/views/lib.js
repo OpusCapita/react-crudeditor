@@ -79,17 +79,14 @@ export const buildFieldRender = ({
 const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
-}) => _ => [VIEW_SHOW, VIEW_EDIT].indexOf(viewName) > -1 ?
-  Object.keys(fieldsMeta).
-    map(name => ({
-      field: name,
-      readOnly: viewName === VIEW_EDIT &&
-        fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
-      render: buildFieldRender({
-        type: fieldsMeta[name].type
-      })
-    })) :
-  [];
+}) => _ => Object.keys(fieldsMeta).map(name => ({
+  field: name,
+  readOnly: viewName === VIEW_EDIT &&
+    fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
+  render: buildFieldRender({
+    type: fieldsMeta[name].type
+  })
+}));
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

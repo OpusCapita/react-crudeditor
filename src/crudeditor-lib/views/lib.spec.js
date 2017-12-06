@@ -5,7 +5,7 @@ import sinon from 'sinon';
 
 import {
   buildFieldRender,
-  buildFormLayout,
+  // buildFormLayout,
   getLogicalKeyBuilder,
   findFieldLayout,
   getTab,
@@ -13,14 +13,14 @@ import {
   plusMinus
 } from './lib'
 
-import models, { fields } from '../../demo/models/contracts'
+import /* models , */ { fields } from '../../demo/models/contracts'
 
-import {
-  FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_STRING
-} from '../../data-types-lib/constants';
+// import {
+//   FIELD_TYPE_BOOLEAN,
+//   FIELD_TYPE_STRING_DATE,
+//   FIELD_TYPE_STRING_NUMBER,
+//   FIELD_TYPE_STRING
+// } from '../../data-types-lib/constants';
 
 const formLayout = [
   [
@@ -261,40 +261,40 @@ describe('Crudeditor-lib / views / lib', () => {
     });
   });
 
-  describe('buildFormLayout', () => {
-    it('should build a form layout', () => {
-      const result = buildFormLayout({
-        customBuilder: models.ui.edit.formLayout,
-        viewName: 'create',
-        fieldsMeta: fields
-      })(instance)
-      assert(
-        Array.isArray(result) && result.length > 0,
-        true
-      );
-    });
-    it('should return an empty object if not received a customBuilder', () => {
-      const result = buildFormLayout({
-        viewName: 'show',
-        fieldsMeta: Object.keys(fields).reduce((obj, f) => [
-          FIELD_TYPE_BOOLEAN,
-          FIELD_TYPE_STRING,
-          FIELD_TYPE_STRING_DATE,
-          FIELD_TYPE_STRING_NUMBER
-        ].indexOf(fields[f].type) > -1 ?
-          {
-            ...obj,
-            [f]: fields[f]
-          } :
-          obj
-          , {})
-      })(instance)
-      assert(
-        Array.isArray(result) && result.length > 0,
-        true
-      );
-    });
-  });
+  // describe('buildFormLayout', () => {
+  //   it('should build a form layout', () => {
+  //     const result = buildFormLayout({
+  //       customBuilder: models.ui.edit.formLayout,
+  //       viewName: 'create',
+  //       fieldsMeta: fields
+  //     })(instance)
+  //     assert(
+  //       Array.isArray(result) && result.length > 0,
+  //       true
+  //     );
+  //   });
+  //   it('should return an empty object if not received a customBuilder', () => {
+  //     const result = buildFormLayout({
+  //       viewName: 'show',
+  //       fieldsMeta: Object.keys(fields).reduce((obj, f) => [
+  //         FIELD_TYPE_BOOLEAN,
+  //         FIELD_TYPE_STRING,
+  //         FIELD_TYPE_STRING_DATE,
+  //         FIELD_TYPE_STRING_NUMBER
+  //       ].indexOf(fields[f].type) > -1 ?
+  //         {
+  //           ...obj,
+  //           [f]: fields[f]
+  //         } :
+  //         obj
+  //         , {})
+  //     })(instance)
+  //     assert(
+  //       Array.isArray(result) && result.length > 0,
+  //       true
+  //     );
+  //   });
+  // });
 
   describe('buildFieldRender', () => {
     it('should throw for unknown field type', () => {
@@ -308,15 +308,15 @@ describe('Crudeditor-lib / views / lib', () => {
       }
     });
 
-    it('should return an object', () => {
-      const result = buildFieldRender({
-        type: FIELD_TYPE_STRING_NUMBER
-      })
-      assert(
-        typeof result,
-        "object"
-      )
-    });
+    // it('should return an object', () => {
+    //   const result = buildFieldRender({
+    //     type: FIELD_TYPE_STRING_NUMBER
+    //   })
+    //   assert(
+    //     typeof result,
+    //     "object"
+    //   )
+    // });
   });
 
   describe('getTab', () => {

@@ -39,11 +39,11 @@ class SearchForm extends React.Component {
       model: {
         data: {
           formattedFilter,
-      searchableFields,
-      formFilter,
-      resultFilter
+          searchableFields,
+          formFilter,
+          resultFilter
         },
-      actions: {
+        actions: {
           resetFormFilter
         }
       },

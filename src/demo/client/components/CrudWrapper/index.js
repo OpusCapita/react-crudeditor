@@ -109,8 +109,7 @@ export default class CrudWrapper extends PureComponent {
           title: 'Another link',
           icon: 'send',
           handler(instance) {
-            console.log('another link handler');
-            console.log(instance)
+            console.log('another link handler', instance);
           }
         }]}
         uiConfig={{

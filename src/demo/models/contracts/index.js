@@ -223,7 +223,7 @@ export const fields = {
     'type': FIELD_TYPE_STRING_INTEGER,
     'constraints': {
       'min': 0,
-      'max': 800,
+      'max': "800",
       'required': false
     }
   },

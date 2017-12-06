@@ -76,15 +76,6 @@
   <dd>Entity attribute stored on server and returned as instance property by api.get() and api.search() calls. CRUD Editor does not necessarily knows about and works with <i>all</i> persistent fields, but only those listed in <a href="#model-definition">Model Definition</a>'s <b>model.fields</b>.</dd>
   <dt id="composite-field">Composite Field</dt>
   <dd>In contrast to a <a href="#persistent-field">Persistent field</a>, <i>composite field</i> is not stored on server and represents some combination of <a href="#persistent-field">Persistent fields</a>.  It is only used for displaying an entity instance in Search Result listing.</dd>
-  <dt>Auditable field</dt>
-  <dd>One of the following <a href="#persistent-field">Persistent fields</a>:
-    <ul>
-      <li>createdBy</li>
-      <li>changedBy</li>
-      <li>createdOn</li>
-      <li>changedOn</li>
-    </ul>
-  </dd>
   <dt id="store-state">Store State</dt>
   <dd><a href="#redux-store">Redux store</a> <a href="#state-structure">state</a> of CRUD Editor. It must be serializable.</dd>
   <dt id="editor-state">Editor State</dt>
@@ -495,7 +486,7 @@ Model Definition is an object describing an entity. It has the following structu
       return {
         /*
          * Only Persistent fields from model.fields are allowed.
-         * By default, all Persistent (excluding Auditable) fields from model.fields
+         * By default, all Persistent fields from model.fields
          * are used for building search criteria.
          */
         ?searchableFields: [{
@@ -572,7 +563,7 @@ Model Definition is an object describing an entity. It has the following structu
 
         /*
          * Both persistent and composite fields are allowed.
-         * By default, all Persistent (incl. Auditable) fields from model.fields are used in result listing.
+         * By default, all Persistent fields from model.fields are used in result listing.
          * Only one field may have "sortByDefault" set to true.
          */
         ?resultFields: [{
@@ -612,9 +603,8 @@ Model Definition is an object describing an entity. It has the following structu
        *
        * If formLayout is not specified, create/edit/show View does not have any tabs/sections
        * and displays all fields from the model. The following fields are read-only in such case:
-       * -- all fields in show View,
-       * -- Auditable fields in edit View,
-       * -- Logical Key fields in edit View.
+       * -- all fields in Show view,
+       * -- Logical Key fields in Edit view.
        */
       ?formLayout: ({ tab, section, field }) => instance => {
         ...

@@ -1,5 +1,7 @@
 const namespace = 'common';
 
+import { FIELD_TYPE_STRING } from '../../data-types-lib/constants';
+
 export const
   ROLE_FIELD = 'field',
   ROLE_SECTION = 'section',
@@ -11,7 +13,7 @@ export const
   VIEW_SHOW = 'show',
   VIEW_ERROR = 'error',
 
-  DEFAULT_FIELD_TYPE = 'string',
+  DEFAULT_FIELD_TYPE = FIELD_TYPE_STRING,
   DEFAULT_VIEW = VIEW_SEARCH,
   DEFAULT_TAB_COLUMNS = 1,
 

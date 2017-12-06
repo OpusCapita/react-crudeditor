@@ -6,7 +6,6 @@ import FieldNumber from '../../components/FieldNumber';
 import FieldDate from '../../components/FieldDate';
 
 import {
-  AUDITABLE_FIELDS,
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
   VIEW_SHOW
@@ -80,18 +79,14 @@ export const buildFieldRender = ({
 const buildDefaultFormLayout = ({
   viewName,
   fieldsMeta
-}) => _ => Object.keys(fieldsMeta).
-  filter(name => [VIEW_SHOW, VIEW_EDIT].indexOf(viewName) > -1 || AUDITABLE_FIELDS.indexOf(name) === -1).
-  map(name => ({
-    field: name,
-    readOnly: viewName === VIEW_EDIT && (
-      AUDITABLE_FIELDS.indexOf(name) > -1 || // Audiatable fields are read-only in Edit View.
-        fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
-    ),
-    render: buildFieldRender({
-      type: fieldsMeta[name].type
-    })
-  }));
+}) => _ => Object.keys(fieldsMeta).map(name => ({
+  field: name,
+  readOnly: viewName === VIEW_EDIT &&
+    fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
+  render: buildFieldRender({
+    type: fieldsMeta[name].type
+  })
+}));
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 

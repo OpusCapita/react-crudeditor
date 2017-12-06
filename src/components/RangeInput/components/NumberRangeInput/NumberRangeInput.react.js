@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import StringRangeInput from '../StringRangeInput';
-import { isDef } from '../../../lib';
+import { isDef, noop } from '../../../lib';
 import {
   setPatchedCaretPosition,
   handleKeydown,
@@ -28,7 +28,7 @@ export default class NumberRangeInput extends PureComponent {
 
   static defaultProps = {
     value: { from: null, to: null },
-    onChange: _ => {},
+    onChange: noop,
     type: 'integer'
   }
 

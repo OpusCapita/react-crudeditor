@@ -6,7 +6,7 @@ import {
   FormControl
 } from 'react-bootstrap';
 import './StringRangeInput.less';
-import { isDef } from '../../../lib';
+import { isDef, noop } from '../../../lib';
 
 export default class StringRangeInput extends PureComponent {
   static propTypes = {
@@ -31,9 +31,9 @@ export default class StringRangeInput extends PureComponent {
       from: null,
       to: null
     },
-    onChange: _ => {},
-    onBlur: _ => {},
-    onFocus: _ => {},
+    onChange: noop,
+    onBlur: noop,
+    onFocus: noop,
     readOnly: false
   }
 
@@ -45,6 +45,9 @@ export default class StringRangeInput extends PureComponent {
     this.selfDOMNode = findDOMNode(this)
     this.selfDOMNode.addEventListener('focusin', this.handleFocusIn)
     this.selfDOMNode.addEventListener('focusout', this.handleFocusOut)
+
+    // remove id on the second input so that form-group label id is auto-set only for the first input
+    this.selfDOMNode.children[2].removeAttribute('id');
   }
 
   componentWillUnmount() {
@@ -86,8 +89,6 @@ export default class StringRangeInput extends PureComponent {
     return (
       <InputGroup className="crud--range-input">
         <FormControl
-          id='range-input-from'
-          name='range-input-from'
           type='text'
           placeholder={i18n.getMessage('crudEditor.range.from')}
           value={isDef(value.from) ? value.from : ''}
@@ -96,8 +97,6 @@ export default class StringRangeInput extends PureComponent {
         />
         <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
-          id='range-input-to'
-          name='range-input-to'
           type='text'
           placeholder={i18n.getMessage('crudEditor.range.to')}
           value={isDef(value.to) ? value.to : ''}

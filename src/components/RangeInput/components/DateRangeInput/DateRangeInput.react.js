@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DateRangeInput as OCDateRangeInput } from '@opuscapita/react-dates';
+import { noop } from '../../../lib';
 
 const array2range = arr => ({ from: arr[0], to: arr[1] });
 const range2array = range => [range.from, range.to];
@@ -23,9 +24,9 @@ export default class DateRangeInput extends PureComponent {
 
   static defaultProps = {
     value: { from: null, to: null },
-    onChange: _ => {},
-    onBlur: _ => {},
-    onFocus: _ => {},
+    onChange: noop,
+    onBlur: noop,
+    onFocus: noop,
     readOnly: false
   }
 

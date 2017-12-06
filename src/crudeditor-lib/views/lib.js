@@ -259,7 +259,7 @@ export const buildFieldRender = ({
     }
 
     // Removing "type" because it was only needed to get default converter, if any.
-    //delete render.valueProp.type;
+    // delete render.valueProp.type;
   }
 
   if (!render.valueProp.hasOwnProperty('converter')) {

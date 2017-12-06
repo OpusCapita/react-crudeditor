@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import { Button, Form, FormGroup } from 'react-bootstrap';
+import { Button, Form, FormGroup, ControlLabel } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
@@ -39,11 +39,11 @@ class SearchForm extends React.Component {
       model: {
         data: {
           formattedFilter,
-          searchableFields,
-          formFilter,
-          resultFilter
+      searchableFields,
+      formFilter,
+      resultFilter
         },
-        actions: {
+      actions: {
           resetFormFilter
         }
       },
@@ -68,15 +68,13 @@ class SearchForm extends React.Component {
                 validationState={fieldErrors(name).length ? 'error' : null}
                 className="crud--search-form__form-group"
               >
-                <div>
-                  <label>{getModelMessage(i18n, `model.field.${name}`, name)}</label>
-                  <Component
-                    {...{ [valuePropName]: formattedFilter[name] }}
-                    onChange={handleFormFilterUpdate(name)}
-                    onBlur={handleFormFilterBlur(name)}
-                  />
-                  <FieldErrorLabel errors={fieldErrors(name)}/>
-                </div>
+                <ControlLabel>{getModelMessage(i18n, `model.field.${name}`, name)}</ControlLabel>
+                <Component
+                  {...{ [valuePropName]: formattedFilter[name] }}
+                  onChange={handleFormFilterUpdate(name)}
+                  onBlur={handleFormFilterBlur(name)}
+                />
+                <FieldErrorLabel errors={fieldErrors(name)} />
               </FormGroup>
             ))
           }
@@ -92,7 +90,7 @@ class SearchForm extends React.Component {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={ isEqual(formFilter, resultFilter) || fieldErrors() }
+            disabled={isEqual(formFilter, resultFilter) || fieldErrors()}
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

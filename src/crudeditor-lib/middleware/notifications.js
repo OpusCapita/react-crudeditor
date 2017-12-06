@@ -3,10 +3,10 @@ import { NotificationManager } from 'react-notifications';
 import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
-  // ALL_INSTANCE_FIELDS_VALIDATE,
   INSTANCE_VALIDATE_FAIL as CREATE_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as CREATE_INSTANCE_VALIDATE_SUCCESS,
-  ALL_INSTANCE_FIELDS_VALIDATE_FAIL as CREATE_ALL_INSTANCE_FIELDS_VALIDATE_FAIL
+  ALL_INSTANCE_FIELDS_VALIDATE_FAIL as CREATE_ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
+  VIEW_REDIRECT_FAIL as CREATE_VIEW_REDIRECT_FAIL
 } from '../views/create/constants';
 
 import {
@@ -15,7 +15,8 @@ import {
   INSTANCE_EDIT_SUCCESS,
   INSTANCE_VALIDATE_FAIL as EDIT_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS,
-  ALL_INSTANCE_FIELDS_VALIDATE_FAIL as EDIT_ALL_INSTANCE_FIELDS_VALIDATE_FAIL
+  ALL_INSTANCE_FIELDS_VALIDATE_FAIL as EDIT_ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
+  VIEW_REDIRECT_FAIL as EDIT_VIEW_REDIRECT_FAIL
 } from '../views/edit/constants';
 
 import {
@@ -23,6 +24,18 @@ import {
   INSTANCES_DELETE_SUCCESS,
   ERROR_NOT_FOUND
 } from '../common/constants';
+
+import {
+  VIEW_REDIRECT_FAIL as SEARCH_VIEW_REDIRECT_FAIL
+} from '../views/search/constants';
+
+import {
+  VIEW_REDIRECT_FAIL as SHOW_VIEW_REDIRECT_FAIL
+} from '../views/show/constants';
+
+import {
+  VIEW_REDIRECT_FAIL as ERROR_VIEW_REDIRECT_FAIL
+} from '../views/error/constants';
 
 export const
   NOTIFICATION_ERROR = 'error',
@@ -112,6 +125,18 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
     case CREATE_INSTANCE_VALIDATE_SUCCESS:
     case EDIT_INSTANCE_VALIDATE_SUCCESS:
       NotificationManager.remove({ id: NOTIFICATION_VALIDATION_ERROR });
+      break;
+    case SEARCH_VIEW_REDIRECT_FAIL:
+    case CREATE_VIEW_REDIRECT_FAIL:
+    case EDIT_VIEW_REDIRECT_FAIL:
+    case SHOW_VIEW_REDIRECT_FAIL:
+    case ERROR_VIEW_REDIRECT_FAIL:
+      NotificationManager.create({
+        id: NOTIFICATION_ERROR,
+        type: 'error',
+        timeOut: ERROR_NOTIFICATION_TIMEOUT,
+        message: action.payload.message
+      });
       break;
     default:
   }

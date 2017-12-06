@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import Input from '../../components/Input'; // TODO: implement.
+import GenericInput from '../../components/GenericInput';
 import RangeInput from '../../components/RangeInput';
 
 import {
@@ -21,7 +21,8 @@ import {
   FIELD_TYPE_DECIMAL,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_DECIMAL,
 
   FIELD_TYPE_STRING_DATE_RANGE,
   FIELD_TYPE_INTEGER_RANGE,
@@ -31,7 +32,8 @@ import {
 
   UI_TYPE_BOOLEAN,
   UI_TYPE_DATE,
-  UI_TYPE_NUMBER,
+  UI_TYPE_INTEGER,
+  UI_TYPE_DECIMAL,
   UI_TYPE_STRING,
 
   UI_TYPE_DATE_RANGE_OBJECT,
@@ -57,7 +59,7 @@ const namedComponentInfo = ({
 
   switch (name) {
     case COMPONENT_NAME_INPUT:
-      Component = Input;
+      Component = GenericInput;
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
@@ -71,8 +73,11 @@ const namedComponentInfo = ({
         case 'date':
           uiType = UI_TYPE_DATE;
           break;
-        case 'number':
-          uiType = UI_TYPE_NUMBER;
+        case 'integer':
+          uiType = UI_TYPE_INTEGER;
+          break;
+        case 'decimal':
+          uiType = UI_TYPE_DECIMAL;
           break;
         case 'string':
           uiType = UI_TYPE_STRING;
@@ -150,7 +155,13 @@ const defaultFieldRenders = {
       type: 'date'
     }
   },
-  [FIELD_TYPE_STRING_NUMBER]: {
+  [FIELD_TYPE_STRING_INTEGER]: {
+    Component: 'input',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_STRING_DECIMAL]: {
     Component: 'input',
     props: {
       type: 'string'
@@ -248,7 +259,8 @@ export const buildFieldRender = ({
       }
     }
 
-    delete render.valueProp.type; // Removing "type" because it was only needed to get default converter, if any.
+    // Removing "type" because it was only needed to get default converter, if any.
+    //delete render.valueProp.type;
   }
 
   if (!render.valueProp.hasOwnProperty('converter')) {

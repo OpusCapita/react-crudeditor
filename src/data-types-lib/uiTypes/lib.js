@@ -1,11 +1,17 @@
+import isEqual from 'lodash/isEqual';
+
 export const
   buildRangeUiType = baseUiType => ({
     get EMPTY_VALUE() {
-      return baseUiType.EMPTY_VALUE;
+      //return baseUiType.EMPTY_VALUE;
+      return {
+        from: baseUiType.EMPTY_VALUE,
+        to: baseUiType.EMPTY_VALUE
+      }
     },
 
     isValid(value) {
-      if (value === baseUiType.EMPTY_VALUE) {
+      if (isEqual(value, baseUiType.EMPTY_VALUE)) {
         return true;
       }
 

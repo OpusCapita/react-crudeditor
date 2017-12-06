@@ -12,7 +12,7 @@ import {
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  UI_TYPE_NUMBER,
+  UI_TYPE_INTEGER,
   UI_TYPE_STRING
 } from '../../constants';
 
@@ -25,7 +25,7 @@ export default {
     typeof value === 'number' && !isNaN(value) && value === Math.floor(value),
 
   converter: {
-    [UI_TYPE_NUMBER]: integerUiType,
+    [UI_TYPE_INTEGER]: integerUiType,
     [UI_TYPE_STRING]: stringUiType
   },
 

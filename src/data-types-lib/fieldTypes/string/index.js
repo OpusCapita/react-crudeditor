@@ -1,4 +1,5 @@
-import numberUiType from './numberUiType';
+import integerUiType from './integerUiType';
+import decimalUiType from './decimalUiType';
 import stringUiType from './stringUiType';
 
 import {
@@ -12,7 +13,8 @@ import {
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  UI_TYPE_NUMBER,
+  UI_TYPE_INTEGER,
+  UI_TYPE_DECIMAL,
   UI_TYPE_STRING
 } from '../../constants';
 
@@ -23,7 +25,8 @@ export default {
   isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'string',
 
   converter: {
-    [UI_TYPE_NUMBER]: numberUiType,
+    [UI_TYPE_INTEGER]: integerUiType,
+    [UI_TYPE_DECIMAL]: decimalUiType,
     [UI_TYPE_STRING]: stringUiType
   },
 

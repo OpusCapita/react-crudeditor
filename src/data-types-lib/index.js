@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual';
+
 import uiTypes from './uiTypes';
 import fieldTypes from './fieldTypes';
 
@@ -55,7 +57,7 @@ export const
           throw error;
         }
 
-        return value === uiTypes[uiType].EMPTY_VALUE ?
+        return isEqual(value, uiTypes[uiType].EMPTY_VALUE) ?
           EMPTY_FIELD_VALUE :
           converter.parse(value);
       }

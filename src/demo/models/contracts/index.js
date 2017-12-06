@@ -12,7 +12,7 @@ const VIEW_SHOW = 'show';
 
 export const fields = {
   'testNumberTypeField': {
-    'type': 'number',
+    'type': 'decimal',
     'constraints': {
       'required': false,
       'max': Number.MAX_SAFE_INTEGER
@@ -53,7 +53,7 @@ export const fields = {
     }
   },
   'freeShippingBoundary': {
-    'type': 'stringNumber',
+    'type': 'integer',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -135,7 +135,7 @@ export const fields = {
     }
   },
   'totalContractedAmount': {
-    'type': 'stringNumber',
+    'type': 'integer',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -143,7 +143,7 @@ export const fields = {
     }
   },
   'smallVolumeSurcharge': {
-    'type': 'stringNumber',
+    'type': 'decimal',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -163,7 +163,7 @@ export const fields = {
     }
   },
   'maxOrderValue': {
-    'type': 'stringNumber',
+    'type': 'integer',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -195,7 +195,7 @@ export const fields = {
     }
   },
   'freightSurcharge': {
-    'type': 'stringNumber',
+    'type': 'decimal',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -209,7 +209,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': 'stringNumber',
+    'type': 'integer',
     'constraints': {
       'min': 0,
       'max': 800,
@@ -240,7 +240,7 @@ export const fields = {
   },
   'parentContract': {},
   'minOrderValue': {
-    'type': 'stringNumber',
+    'type': 'integer',
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -255,7 +255,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } }),
+    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'integer' } } }),
     field({ name: 'parentContract', render: { Component: ContractReferenceSearch } }),
     // field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
@@ -330,7 +330,7 @@ export default {
         { name: 'extContractId' },
         { name: 'extContractLineId' },
         { name: 'parentContract', render: { Component: ContractReferenceSearch } },
-        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'number' } } },
+        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'integer' } } },
         { name: 'maxOrderValue' },
         // { name: 'testNumberTypeField' },
         { name: 'createdOn' }

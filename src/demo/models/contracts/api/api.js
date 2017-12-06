@@ -9,7 +9,8 @@ import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_STRING_NUMBER,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_DECIMAL,
   FIELD_TYPE_DECIMAL,
   FIELD_TYPE_INTEGER
 } from '../../../../data-types-lib/constants';
@@ -40,19 +41,28 @@ export const testNumberFieldType = "testNumberTypeField";
 
 const data = { // remove doubles
   contracts: Object.keys(
-    initialData.contracts.map(({ contractId }) => contractId).
+    initialData.contracts.
+      map(({ contractId }) => contractId).
       reduce((obj, id) => ({ ...obj, [id]: '' }), {})
-  ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).map(
-    c => ({
+  ).
+    map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).
+    map(c => ({
+      ...c,
+      ...NUMBER_FIELDS.reduce(
+        (rez, numberField) => rez[numberField] === null || rez[numberField] === undefined ?
+          rez : {
+            ...rez,
+            [numberField]: Number(rez[numberField])
+          },
+        {}
+      ),
       [testNumberFieldType]: Math.random() * 1000000,
       parentContract: Math.random() > 0.8 ?
         null :
         initialData.contracts.map(({ contractId }) => contractId)[
           Math.floor(Math.random() * initialData.contracts.length)
-        ],
-      ...c
-    })
-  )
+        ]
+    }))
 }
 
 const setCreatedFields = instance => {
@@ -181,7 +191,8 @@ export const
                     lte = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
                     break;
 
-                  case FIELD_TYPE_STRING_NUMBER:
+                  case FIELD_TYPE_STRING_INTEGER:
+                  case FIELD_TYPE_STRING_DECIMAL:
                     gte = (itemValue, filterValue) => Big(itemValue).gte(Big(filterValue));
                     lte = (itemValue, filterValue) => Big(itemValue).lte(Big(filterValue));
                     break;
@@ -220,7 +231,13 @@ export const
                 false;
               return rez && match
               // TODO add [] search
-            } else if ([FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_DECIMAL, FIELD_TYPE_INTEGER].indexOf(fieldType) > -1) {
+            } else if ([
+              FIELD_TYPE_STRING_INTEGER,
+              FIELD_TYPE_STRING_DECIMAL,
+              FIELD_TYPE_DECIMAL,
+              FIELD_TYPE_INTEGER
+            ].indexOf(fieldType) > -1
+            ) {
               const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {

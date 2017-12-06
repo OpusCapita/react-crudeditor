@@ -1,4 +1,4 @@
-import numberUiType from './numberUiType';
+import decimalUiType from './decimalUiType';
 import stringUiType from './stringUiType';
 
 import {
@@ -12,7 +12,7 @@ import {
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  UI_TYPE_NUMBER,
+  UI_TYPE_DECIMAL,
   UI_TYPE_STRING
 } from '../../constants';
 
@@ -23,7 +23,7 @@ export default {
   isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'number' && !isNaN(value),
 
   converter: {
-    [UI_TYPE_NUMBER]: numberUiType,
+    [UI_TYPE_DECIMAL]: decimalUiType,
     [UI_TYPE_STRING]: stringUiType
   },
 

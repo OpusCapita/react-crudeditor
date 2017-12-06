@@ -6,13 +6,24 @@ import CustomSpinner from './components/CustomSpinner';
 import ContractReferenceSearch from './components/ContractReferenceSearch';
 import CustomTabComponent from './components/CustomTabComponent';
 
+import {
+  FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_STRING,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_DATE,
+
+  UI_TYPE_INTEGER
+} from '../../../data-types-lib/constants';
+
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';
 const VIEW_SHOW = 'show';
 
 export const fields = {
   'testNumberTypeField': {
-    'type': 'decimal',
+    'type': FIELD_TYPE_DECIMAL,
     'constraints': {
       'required': false,
       'max': Number.MAX_SAFE_INTEGER
@@ -25,35 +36,35 @@ export const fields = {
     }
   },
   'hierarchyCode': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 100,
       'required': false
     }
   },
   'termsOfPaymentId': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 20,
       'required': false
     }
   },
   'description': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 100,
       'required': false
     }
   },
   'termsOfDeliveryId': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 20,
       'required': false
     }
   },
   'freeShippingBoundary': {
-    'type': 'integer',
+    'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -61,13 +72,13 @@ export const fields = {
     }
   },
   'createdOn': {
-    'type': 'stringDate',
+    'type': FIELD_TYPE_STRING_DATE,
     'constraints': {
       'required': true
     }
   },
   'changedOn': {
-    'type': 'stringDate',
+    'type': FIELD_TYPE_STRING_DATE,
     'constraints': {
       'required': true
     }
@@ -79,7 +90,7 @@ export const fields = {
     }
   },
   'minOrderValueRequired': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
@@ -91,7 +102,7 @@ export const fields = {
     }
   },
   'extContractId': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 10,
       'required': false
@@ -104,7 +115,7 @@ export const fields = {
     }
   },
   'changedBy': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'required': true
     }
@@ -122,20 +133,20 @@ export const fields = {
     }
   },
   'currencyId': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 3,
       'required': false
     }
   },
   'isFrameContract': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
   'totalContractedAmount': {
-    'type': 'integer',
+    'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -143,7 +154,7 @@ export const fields = {
     }
   },
   'smallVolumeSurcharge': {
-    'type': 'decimal',
+    'type': FIELD_TYPE_DECIMAL,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -157,13 +168,13 @@ export const fields = {
     }
   },
   'isOffer': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
   'maxOrderValue': {
-    'type': 'integer',
+    'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -177,13 +188,13 @@ export const fields = {
     }
   },
   'isPreferred': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
   'isInternal': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
@@ -195,7 +206,7 @@ export const fields = {
     }
   },
   'freightSurcharge': {
-    'type': 'decimal',
+    'type': FIELD_TYPE_DECIMAL,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -203,13 +214,13 @@ export const fields = {
     }
   },
   'isStandard': {
-    'type': 'boolean',
+    'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
   'statusId': {
-    'type': 'integer',
+    'type': FIELD_TYPE_STRING_INTEGER,
     'constraints': {
       'min': 0,
       'max': 800,
@@ -218,13 +229,13 @@ export const fields = {
     }
   },
   'createdBy': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'required': true
     }
   },
   'extContractLineId': {
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 10,
       'required': false
@@ -232,7 +243,7 @@ export const fields = {
   },
   'contractId': {
     unique: true,
-    'type': 'string',
+    'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 100,
       'required': true
@@ -240,7 +251,7 @@ export const fields = {
   },
   'parentContract': {},
   'minOrderValue': {
-    'type': 'integer',
+    'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
       'max': 999999999,
@@ -255,7 +266,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: 'integer' } } }),
+    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } }),
     field({ name: 'parentContract', render: { Component: ContractReferenceSearch } }),
     // field({ name: 'currencyId', render: { Component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
@@ -330,7 +341,7 @@ export default {
         { name: 'extContractId' },
         { name: 'extContractLineId' },
         { name: 'parentContract', render: { Component: ContractReferenceSearch } },
-        { name: 'statusId', render: { Component: StatusField, valueProp: { type: 'integer' } } },
+        { name: 'statusId', render: { Component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } },
         { name: 'maxOrderValue' },
         // { name: 'testNumberTypeField' },
         { name: 'createdOn' }

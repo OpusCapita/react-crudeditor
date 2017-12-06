@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep';
+// import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import Big from 'big.js';
 
@@ -17,22 +17,10 @@ import {
 
 import { fields } from '../'
 
-const NUMBER_FIELDS = [
-  'maxOrderValue',
-  'minOrderValue',
-  'freeShippingBoundary',
-  'totalContractedAmount',
-  'smallVolumeSurcharge',
-  'freightSurcharge'
-];
-
 const internal2api = contract => Object.entries(contract).reduce(
   (rez, [fieldName, fieldValue]) => ({
     ...rez,
-    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      fieldValue.toString() :
-      fieldValue
-    )
+    [fieldName]: fieldValue
   }),
   {}
 );
@@ -48,14 +36,6 @@ const data = { // remove doubles
     map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).
     map(c => ({
       ...c,
-      ...NUMBER_FIELDS.reduce(
-        (rez, numberField) => rez[numberField] === null || rez[numberField] === undefined ?
-          rez : {
-            ...rez,
-            [numberField]: Number(rez[numberField])
-          },
-        {}
-      ),
       [testNumberFieldType]: Math.random() * 1000000,
       parentContract: Math.random() > 0.8 ?
         null :

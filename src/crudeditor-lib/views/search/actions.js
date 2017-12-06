@@ -28,12 +28,12 @@ export const
   }),
 
   updateFormFilter = ({
-    path,
+    name,
     value
   }) => ({
     type: FORM_FILTER_UPDATE,
     payload: {
-      path,
+      name,
       value
     }
   }),

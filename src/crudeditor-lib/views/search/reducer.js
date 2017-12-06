@@ -338,7 +338,7 @@ export default modelDefinition => {
           };
         }
 
-        if (storeState.errors.fiels[fieldName]) {
+        if (storeState.errors.fields[fieldName]) {
           newStoreStateSlice.errors = u.omit(fieldName);
         }
       }

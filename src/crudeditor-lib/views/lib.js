@@ -84,7 +84,7 @@ const buildDefaultFormLayout = ({
     map(name => ({
       field: name,
       readOnly: viewName === VIEW_EDIT && (
-          fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
+        fieldsMeta[name].unique // Logical Key fields are read-only in Edit View.
       ),
       render: buildFieldRender({
         type: fieldsMeta[name].type

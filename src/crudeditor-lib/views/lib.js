@@ -1,3 +1,4 @@
+import React from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 
 import GenericInput from '../../components/GenericInput';
@@ -239,7 +240,7 @@ export const buildFieldRender = ({
       throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.Component}" component`);
     }
 
-    render.Component = Component;
+    render.Component = ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>;
   }
 
   if (!render.valueProp.hasOwnProperty('name')) {

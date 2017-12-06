@@ -27,7 +27,6 @@ class GenericInputScope extends PureComponent {
 
   handleChange = value => this.setState({ value }, _ => {
     console.log(this.state.value)
-    console.log('type: ' + typeof this.state.value)
   })
 
   handleFocus = _ => console.log('FOCUS')

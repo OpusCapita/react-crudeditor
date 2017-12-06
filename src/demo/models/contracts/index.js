@@ -224,7 +224,6 @@ export const fields = {
     'constraints': {
       'min': 0,
       'max': 800,
-      'integer': true,
       'required': false
     }
   },

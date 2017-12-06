@@ -9,7 +9,8 @@ import {
   getLogicalKeyBuilder,
   findFieldLayout,
   getTab,
-  viewOperations
+  viewOperations,
+  plusMinus
 } from './lib'
 
 import models, { fields } from '../../demo/models/contracts'
@@ -377,6 +378,42 @@ describe('Crudeditor-lib / views / lib', () => {
       expect(softRedirectView.calledWith({ // eslint-disable-line no-unused-expressions
         name: 'viewName1'
       })).to.be.true
+    });
+
+    it('should return an empty array for empty undefined/null viewState', () => {
+      const softRedirectView = sinon.spy();
+      const operations = _ => [{
+        name: 'one',
+        handler: _ => ({
+          name: 'viewName1'
+        })
+      }];
+      const ops = viewOperations({
+        viewName: 'aaa',
+        viewState: null,
+        operations,
+        softRedirectView
+      })({});
+      expect(ops).to.be.instanceof(Array); // eslint-disable-line no-unused-expressions
+      expect(ops.length).to.equal(0); // eslint-disable-line no-unused-expressions
+    });
+  });
+
+  describe('plusMinus', () => {
+    it('should return an iterator', () => {
+      const iterator = plusMinus();
+
+      const one = iterator.next({ i: 1 });
+      assert.deepEqual(one.value, { init: true, i: 0 })
+
+      const two = iterator.next({ i: 1 });
+      assert.deepEqual(two.value, { init: false, i: 1 })
+
+      const three = iterator.next({ i: 1 });
+      assert.deepEqual(three.value, { init: false, i: 2 })
+
+      const four = iterator.next({ i: -1 });
+      assert.deepEqual(four.value, { init: false, i: 1 })
     });
   });
 });

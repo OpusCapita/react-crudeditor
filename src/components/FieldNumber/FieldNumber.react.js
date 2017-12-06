@@ -5,7 +5,8 @@ import { FormControl } from 'react-bootstrap';
 import { noop, isDef } from '../lib';
 import {
   setPatchedCaretPosition,
-  handleKeydown
+  handleKeydown,
+  handlePaste
 } from '../RangeInput/components/NumberRangeInput/lib';
 
 export default class FieldNumber extends PureComponent {
@@ -47,7 +48,8 @@ export default class FieldNumber extends PureComponent {
 
   componentDidMount() {
     this.input = findDOMNode(this);
-    this.input.addEventListener('keydown', this.keydownListener)
+    this.input.addEventListener('keydown', this.keydownListener);
+    this.input.addEventListener('paste', this.pasteListener);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,9 +70,10 @@ export default class FieldNumber extends PureComponent {
 
   componentWillUnmount() {
     this.input.removeEventListener('keydown', this.keydownListener)
+    this.input.removeEventListener('paste', this.pasteListener)
   }
 
-  keydownListener = e => {
+  keydownListener = /* istanbul ignore next */ e => {
     const el = e.target;
     const initialString = this.state.string;
     const initialNumber = this.state.number;
@@ -97,12 +100,35 @@ export default class FieldNumber extends PureComponent {
     })
   }
 
-  format = number => this.context.i18n[this.props.type === 'decimal' ?
+  pasteListener = /* istanbul ignore next */ e => {
+    e.preventDefault();
+    const el = e.target;
+    const initialString = this.state.string;
+
+    const callback = ({ newNumber, newString, nextCaretPosition }) => this.setState(prevState => ({
+      string: newString,
+      number: newNumber
+    }), _ => {
+      setPatchedCaretPosition(el, nextCaretPosition, el.value);
+      this.props.onChange(this.state.number)
+    })
+
+    return handlePaste({
+      e,
+      initialString,
+      callback,
+      parse: this.parse,
+      format: this.format
+    })
+  }
+
+  format = /* istanbul ignore next */ number => this.context.i18n[this.props.type === 'decimal' ?
     'formatDecimalNumber' :
     'formatNumber'
   ](number)
 
-  parse = string => this.context.i18n[this.props.type === 'decimal' ?
+
+  parse = /* istanbul ignore next */ string => this.context.i18n[this.props.type === 'decimal' ?
     'parseDecimalNumber' :
     'parseNumber'
   ](string || null)

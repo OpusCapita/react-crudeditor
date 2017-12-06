@@ -429,13 +429,13 @@ export const viewOperations = ({
   viewState,
   operations,
   softRedirectView
-}) => instance => (viewState && operations( // viewState is undefined when view is not initialized yet.
+}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
   instance,
   {
     name: viewName,
     state: viewState
   }
-) || []).reduce(
+)) || []).reduce(
   (rez, { handler, name, ...rest }) => [
     ...rez,
     ...(handler ?

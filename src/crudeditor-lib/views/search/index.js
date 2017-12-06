@@ -49,7 +49,7 @@ export const getUi = modelDefinition => {
 
     field.render = buildFieldRender({ // eslint-disable-line no-param-reassign
       render: field.render,
-      type: rangeFieldType[fieldType] || fieldType
+      type: !field.render && rangeFieldType[fieldType] || fieldType
     });
   });
 

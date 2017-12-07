@@ -739,7 +739,7 @@ Model Definition is an object describing an entity. It has the following structu
 ```
 ### Built-in components 
 
-You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: `BUILTIN_INPUT` and `BUILTIN_RANGE_INPUT` which you can import from the CrudEditor lib.
+You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: [BUILTIN_INPUT](#builtin_input) and [BUILTIN_RANGE_INPUT](#builtin_range_input) which you can import from the CrudEditor lib.
 
 #### Example
 ```
@@ -780,33 +780,33 @@ If you define just a field type (and omit any custom render), the following comp
 
 Field Type | Component | props.type
 ---|---|---
-FIELD_TYPE_BOOLEAN | [BUILTIN_INPUT](#builtin_range_input) | 'checkbox'
-FIELD_TYPE_STRING   | BUILTIN_INPUT | 'string'
-FIELD_TYPE_DECIMAL_RANGE  | BUILTIN_RANGE_INPUT | 'decimal'
-FIELD_TYPE_INTEGER_RANGE  | BUILTIN_RANGE_INPUT | 'integer'
-FIELD_TYPE_STRING_DATE_RANGE  | BUILTIN_RANGE_INPUT | 'date'
-FIELD_TYPE_STRING_DECIMAL_RANGE | BUILTIN_RANGE_INPUT | 'string'
-FIELD_TYPE_STRING_INTEGER_RANGE | BUILTIN_RANGE_INPUT | 'string'
+FIELD_TYPE_BOOLEAN | [BUILTIN_INPUT](#builtin_input) | 'checkbox'
+FIELD_TYPE_STRING   | [BUILTIN_INPUT](#builtin_input) | 'string'
+FIELD_TYPE_DECIMAL_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'
+FIELD_TYPE_INTEGER_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer'
+FIELD_TYPE_STRING_DATE_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'
+FIELD_TYPE_STRING_DECIMAL_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
+FIELD_TYPE_STRING_INTEGER_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
 
 #### Mappings specific to Create, Edit and Show views
 
 Field Type | Component | props.type
 ---|---|---
-FIELD_TYPE_DECIMAL | BUILTIN_INPUT | 'decimal' 
-FIELD_TYPE_INTEGER  | BUILTIN_INPUT | 'integer'
-FIELD_TYPE_STRING_DATE  | BUILTIN_INPUT | 'date' 
-FIELD_TYPE_STRING_DECIMAL | BUILTIN_INPUT | 'string'
-FIELD_TYPE_STRING_INTEGER | BUILTIN_INPUT | 'string'
+FIELD_TYPE_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'decimal' 
+FIELD_TYPE_INTEGER  | [BUILTIN_INPUT](#builtin_input) | 'integer'
+FIELD_TYPE_STRING_DATE  | [BUILTIN_INPUT](#builtin_input) | 'date' 
+FIELD_TYPE_STRING_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'string'
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_INPUT](#builtin_input) | 'string'
 
 #### Mappings specific to Search view (searchable fields)
 
 Field Type | Component | props.type 
 ---|---|---
-FIELD_TYPE_DECIMAL | BUILTIN_RANGE_INPUT | 'decimal'  
-FIELD_TYPE_INTEGER  | BUILTIN_RANGE_INPUT | 'integer' 
-FIELD_TYPE_STRING_DATE  | BUILTIN_RANGE_INPUT | 'date'  
-FIELD_TYPE_STRING_DECIMAL | BUILTIN_RANGE_INPUT | 'string'  
-FIELD_TYPE_STRING_INTEGER | BUILTIN_RANGE_INPUT | 'string'  
+FIELD_TYPE_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'  
+FIELD_TYPE_INTEGER  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer' 
+FIELD_TYPE_STRING_DATE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'  
+FIELD_TYPE_STRING_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
 
 ### FieldInputComponent
 

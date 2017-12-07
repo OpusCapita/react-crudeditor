@@ -16,8 +16,8 @@ import {
 
   UI_TYPE_INTEGER,
 
-  // DEFAULT_INPUT_COMPONENT,
-  // DEFAULT_RANGE_INPUT_COMPONENT
+  // BUILTIN_INPUT,
+  // BUILTIN_RANGE_INPUT
 } from '../../../crudeditor-lib';
 
 const VIEW_CREATE = 'create';
@@ -346,7 +346,7 @@ export default {
         { name: 'maxOrderValue' },
         // THE SAME CAN BE ACHIEVED WITH THE FOLLOWING
         // EXAMPLE OF USING BUILT-IN RANGE INPUT COMPONENT:
-        // { name: 'maxOrderValue', render: { component: DEFAULT_RANGE_INPUT_COMPONENT, props: { type: 'integer' } } },
+        // { name: 'maxOrderValue', render: { component: BUILTIN_RANGE_INPUT, props: { type: 'integer' } } },
         { name: 'createdOn' }
       ],
       resultFields: [

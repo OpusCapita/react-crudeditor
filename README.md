@@ -736,7 +736,6 @@ Model Definition is an object describing an entity. It has the following structu
   }
 }
 ```
-
 ### Built-in components 
 
 You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: `DEFAULT_INPUT_COMPONENT` and `DEFAULT_RANGE_INPUT_COMPONENT` which you can import from the CrudEditor lib.
@@ -770,6 +769,37 @@ Type name | UI Type | Auto-convertable field types
 { name: 'maxOrderValue', render: { component: DEFAULT_RANGE_INPUT_COMPONENT, props: { type: 'integer' } } }
 ```
 Built-in components also accept all props defined for `FieldInputComponent`.
+
+### Field types and correnponding built-in components
+
+If you define just a field type (and omit any custom render), the following components will be default for your fields (see below a note about Searchable fields): 
+
+Field Type | Component | props.type | Description
+---|---|---|---
+FIELD_TYPE_BOOLEAN | DEFAULT_INPUT_COMPONENT | 'checkbox' | Checkbox
+FIELD_TYPE_DECIMAL | DEFAULT_INPUT_COMPONENT | 'decimal'  | Input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber
+FIELD_TYPE_INTEGER  | DEFAULT_INPUT_COMPONENT | 'integer' | Input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber
+FIELD_TYPE_STRING   | DEFAULT_INPUT_COMPONENT | 'string'  |  Regular input field
+FIELD_TYPE_STRING_DATE  | DEFAULT_INPUT_COMPONENT | 'date'  | [DateInput](https://opuscapita.github.io/react-dates//branches/master/index.html?currentComponentName=DateInput)
+FIELD_TYPE_STRING_DECIMAL | DEFAULT_INPUT_COMPONENT | 'string'  |  Regular input field which works with strings
+FIELD_TYPE_STRING_INTEGER | DEFAULT_INPUT_COMPONENT | 'string'  |  Regular input field which works with strings
+FIELD_TYPE_DECIMAL_RANGE  | DEFAULT_RANGE_INPUT_COMPONENT | 'decimal' | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber 
+FIELD_TYPE_INTEGER_RANGE  | DEFAULT_RANGE_INPUT_COMPONENT | 'integer' | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber
+FIELD_TYPE_STRING_DATE_RANGE  | DEFAULT_RANGE_INPUT_COMPONENT | 'date' | [DateRangeInput](https://opuscapita.github.io/react-dates//branches/master/index.html?currentComponentName=DateRangeInput)
+FIELD_TYPE_STRING_DECIMAL_RANGE | DEFAULT_RANGE_INPUT_COMPONENT | 'string' | Range input which works with strings
+FIELD_TYPE_STRING_INTEGER_RANGE | DEFAULT_RANGE_INPUT_COMPONENT | 'string' | Range input which works with strings
+
+#### Important note about Searchable Fields
+
+On a **search form** there's a different mapping for several field types: 
+
+Field Type | Component | props.type | Description
+---|---|---|---
+FIELD_TYPE_DECIMAL | DEFAULT_RANGE_INPUT_COMPONENT | 'decimal'  | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber
+FIELD_TYPE_INTEGER  | DEFAULT_RANGE_INPUT_COMPONENT | 'integer' | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber
+FIELD_TYPE_STRING_DATE  | DEFAULT_RANGE_INPUT_COMPONENT | 'date'  | [DateRangeInput](https://opuscapita.github.io/react-dates//branches/master/index.html?currentComponentName=DateRangeInput)
+FIELD_TYPE_STRING_DECIMAL | DEFAULT_RANGE_INPUT_COMPONENT | 'string'  |  Range input field which works with strings
+FIELD_TYPE_STRING_INTEGER | DEFAULT_RANGE_INPUT_COMPONENT | 'string'  |  Range input field which works with strings
 
 ### FieldInputComponent
 

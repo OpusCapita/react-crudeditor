@@ -29,7 +29,6 @@ const StatusField = ({ value, onChange, onBlur, readOnly }, { i18n }) => {
     value={value || value === 0 ? value : ''}
     onChange={({ target: { value } }) => {
       const v = Number(value) === parseInt(value, 10) ? Number(value) : null;
-      console.log('Statusfield component value: ', v)
       return onChange && onChange(v)
     }}
     onBlur={onBlur}

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
@@ -44,6 +45,10 @@ class SearchResultListing extends PureComponent {
     });
   }
 
+  componentDidMount() {
+    this._myRef = findDOMNode(this)
+  }
+
   componentWillReceiveProps({
     model: {
       data: {
@@ -73,8 +78,6 @@ class SearchResultListing extends PureComponent {
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
 
-  handleRef = el => this._myRef = el; // eslint-disable-line no-return-assign
-
   render() {
     const {
       data: {
@@ -98,7 +101,7 @@ class SearchResultListing extends PureComponent {
     const { i18n } = this.context;
 
     return (
-      <div className="crud--search-result-listing__table-container" ref={this.handleRef}>
+      <div className="crud--search-result-listing__table-container">
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>

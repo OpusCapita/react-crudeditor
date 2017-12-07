@@ -36,11 +36,13 @@ const modelPropTypes = {
         constraints: PropTypes.shape({
           max: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.instanceOf(Date)
+            PropTypes.instanceOf(Date),
+            PropTypes.string
           ]),
           min: PropTypes.oneOfType([
             PropTypes.number,
-            PropTypes.instanceOf(Date)
+            PropTypes.instanceOf(Date),
+            PropTypes.string
           ]),
           required: PropTypes.bool,
           email: PropTypes.bool,

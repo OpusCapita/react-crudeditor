@@ -15,7 +15,7 @@ import {
   FIELD_TYPE_STRING_DATE,
 
   UI_TYPE_INTEGER
-} from '../../../data-types-lib/constants';
+} from '../../../crudeditor-lib';
 
 const VIEW_CREATE = 'create';
 const VIEW_EDIT = 'edit';

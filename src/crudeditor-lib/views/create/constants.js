@@ -11,7 +11,6 @@ export const
   \*████████████████████████████████████████████*/
 
   ALL_INSTANCE_FIELDS_VALIDATE = namespace + '/ALL_INSTANCE_FIELDS_VALIDATE',
-  ALL_INSTANCE_FIELDS_VALIDATE_FAIL = namespace + '/ALL_INSTANCE_FIELDS_VALIDATE_FAIL',
 
   INSTANCE_FIELD_CHANGE = namespace + '/INSTANCE_FIELD_CHANGE',
   INSTANCE_FIELD_VALIDATE = namespace + '/INSTANCE_FIELD_VALIDATE',

@@ -4,7 +4,6 @@ import {
   AFTER_ACTION_NEW,
 
   ALL_INSTANCE_FIELDS_VALIDATE,
-  ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
 
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_FAIL,
@@ -55,11 +54,6 @@ function* validateSaga(modelDefinition, meta) {
   );
 
   if (Object.keys(fieldErrors).length) {
-    yield put({ // FIXME: remove as unnecessary, use next() in the middleware instead.
-      type: ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
-      payload: fieldErrors
-    });
-
     throw fieldErrors;
   }
 

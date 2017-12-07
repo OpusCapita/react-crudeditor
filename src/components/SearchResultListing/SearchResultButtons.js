@@ -19,7 +19,7 @@ export default class SearchResultButtons extends PureComponent {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     index: PropTypes.number,
-    parentRef: PropTypes.element
+    parentRef: PropTypes.object
   }
 
   static contextTypes = {

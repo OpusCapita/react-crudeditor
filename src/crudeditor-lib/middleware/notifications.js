@@ -137,32 +137,27 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         message: action.payload.message
       });
       break;
+    case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:
+    case EDIT_ALL_INSTANCE_FIELDS_VALIDATE:
+      const result = next(action);
+      const currentView = store.getState().common.activeViewName;
+      const errorsObj = store.getState().views[currentView].errors.fields;
+      const errorsExist = Object.keys(errorsObj).reduce((arr, key) => arr.concat(errorsObj[key]), []).length > 0;
+
+      if (errorsExist) {
+        NotificationManager.create({
+          id: NOTIFICATION_ERROR,
+          type: 'error',
+          timeOut: ERROR_NOTIFICATION_TIMEOUT,
+          message: context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+        });
+      }
+
+      return result;
     default:
   }
 
-  if ([
-    CREATE_ALL_INSTANCE_FIELDS_VALIDATE,
-    EDIT_ALL_INSTANCE_FIELDS_VALIDATE
-  ].indexOf(action.type) > -1) {
-    const currentView = store.getState().common.activeViewName;
-
-    next(action);
-
-    const afterErrors = store.getState().views[currentView].errors.fields;
-
-    const errorsExist = Object.keys(afterErrors).reduce((arr, key) => arr.concat(afterErrors[key]), []).length > 0;
-
-    if (errorsExist) {
-      NotificationManager.create({
-        id: NOTIFICATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: context.i18n.getMessage('crudEditor.objectSaveFailed.message')
-      });
-    }
-  } else {
-    next(action)
-  }
+  return next(action);
 }
 
 export default eventsMiddleware;

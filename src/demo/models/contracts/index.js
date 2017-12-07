@@ -254,7 +254,6 @@ export const fields = {
     'constraints': {
       'min': 0,
       'max': 999999999,
-      'integer': true,
       'required': false
     }
   }
@@ -264,10 +263,10 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'general', columns: 2 }, // Best look with N = 2, 3, 4 (default is 1)
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
-    // field({ name: 'translations', render: { Component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { Component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } }),
-    field({ name: 'parentContract', render: { Component: ContractReferenceSearch } }),
-    // field({ name: 'currencyId', render: { Component: CurrencyField }}),
+    // field({ name: 'translations', render: { component: TranslatableTextEditor }}),
+    field({ name: 'statusId', render: { component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } }),
+    field({ name: 'parentContract', render: { component: ContractReferenceSearch } }),
+    // field({ name: 'currencyId', render: { component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
       field({ name: 'createdBy', readOnly: true }),
       field({ name: 'createdOn', readOnly: true }),
@@ -301,7 +300,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
       field({ name: 'isOffer' })
     )
   ),
-  tab({ name: 'custom', Component: CustomTabComponent, disabled: viewName === VIEW_CREATE })
+  tab({ name: 'custom', component: CustomTabComponent, disabled: viewName === VIEW_CREATE })
 ];
 
 export default {
@@ -339,8 +338,8 @@ export default {
         { name: 'description' },
         { name: 'extContractId' },
         { name: 'extContractLineId' },
-        { name: 'parentContract', render: { Component: ContractReferenceSearch } },
-        { name: 'statusId', render: { Component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } },
+        { name: 'parentContract', render: { component: ContractReferenceSearch } },
+        { name: 'statusId', render: { component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } },
         { name: 'maxOrderValue' },
         // { name: 'testNumberTypeField' },
         { name: 'createdOn' }
@@ -350,7 +349,7 @@ export default {
         { name: 'description', sortable: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
-        { name: 'validRange', Component: DateRangeCellRender }]
+        { name: 'validRange', component: DateRangeCellRender }]
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {

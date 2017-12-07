@@ -7,7 +7,7 @@ import FormGrid from '../FormGrid';
 
 const ShowMain = (props) => {
   const { model } = props;
-  const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
+  const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
 
   return (<div>
     <Heading model={model} />

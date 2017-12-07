@@ -157,7 +157,7 @@ class SearchResultListing extends PureComponent {
                     </td>)
                   }
                   {
-                    resultFields.map(({ name, Component, textAlignment }) => (
+                    resultFields.map(({ name, component: Component, textAlignment }) => (
                       <td
                         key={`td-${name}`}
                         className={

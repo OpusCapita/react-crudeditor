@@ -7,7 +7,7 @@ import WithSpinner from '../Spinner/SpinnerOverlayHOC';
 import FormGrid from '../FormGrid';
 
 const CreateMain = ({ model, fieldErrorsWrapper }) => {
-  const ActiveTabComponent = model.data.activeTab && model.data.activeTab.Component;
+  const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
 
   return (<div>
     <Heading model={model} />

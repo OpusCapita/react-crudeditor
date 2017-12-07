@@ -41,8 +41,8 @@ export const getUi = modelDefinition => {
   }
 
   searchMeta.searchableFields.forEach(field => {
-    if (field.render && !field.render.Component) {
-      throw new Error(`searchableField "${field.name}" must have render.Component since custom render is specified`);
+    if (field.render && !field.render.component) {
+      throw new Error(`searchableField "${field.name}" must have render.component since custom render is specified`);
     }
 
     const fieldType = fieldsMeta[field.name].type;

@@ -30,7 +30,7 @@ const formGrid = ({ model, fieldErrorsWrapper }) => {
                     entry={{
                       name: field.field,
                       readOnly: field.readOnly,
-                      Component: field.render.Component,
+                      component: field.render.component,
                       valuePropName: field.render.valueProp.name
                     }}
                   />

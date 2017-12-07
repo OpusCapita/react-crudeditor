@@ -47,19 +47,19 @@ const
   COMPONENT_NAME_RANGE_INPUT = 'rangeInput';
 
 /*
- * The function receives render object with component name in "Component" property.
+ * The function receives render object with component name in "component" property.
  * It returns React Component with the name and UI Type corrresponding to the Component.
  * As side effect, it also assigns default "type" to render.props, if not specified.
  */
 const namedComponentInfo = ({
-  Component: name,
+  component: name,
   props
 }) => {
-  let Component, uiType, valuePropName;
+  let component, uiType, valuePropName;
 
   switch (name) {
     case COMPONENT_NAME_INPUT:
-      Component = GenericInput;
+      component = GenericInput;
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
@@ -88,7 +88,7 @@ const namedComponentInfo = ({
 
       break;
     case COMPONENT_NAME_RANGE_INPUT:
-      Component = RangeInput;
+      component = RangeInput;
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
@@ -118,7 +118,7 @@ const namedComponentInfo = ({
   }
 
   return {
-    Component,
+    component,
     uiType,
     valuePropName
   };
@@ -126,73 +126,73 @@ const namedComponentInfo = ({
 
 const defaultFieldRenders = {
   [FIELD_TYPE_BOOLEAN]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'checkbox'
     }
   },
   [FIELD_TYPE_INTEGER]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'integer'
     }
   },
   [FIELD_TYPE_DECIMAL]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'decimal'
     }
   },
   [FIELD_TYPE_STRING]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DATE]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'date'
     }
   },
   [FIELD_TYPE_STRING_INTEGER]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DECIMAL]: {
-    Component: 'input',
+    component: 'input',
     props: {
       type: 'string'
     }
   },
   [FIELD_TYPE_INTEGER_RANGE]: {
-    Component: 'rangeInput',
+    component: 'rangeInput',
     props: {
       type: 'integer'
     }
   },
   [FIELD_TYPE_DECIMAL_RANGE]: {
-    Component: 'rangeInput',
+    component: 'rangeInput',
     props: {
       type: 'decimal'
     }
   },
   [FIELD_TYPE_STRING_DATE_RANGE]: {
-    Component: 'rangeInput',
+    component: 'rangeInput',
     props: {
       type: 'date'
     }
   },
   [FIELD_TYPE_STRING_INTEGER_RANGE]: {
-    Component: 'rangeInput',
+    component: 'rangeInput',
     props: {
       type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DECIMAL_RANGE]: {
-    Component: 'rangeInput',
+    component: 'rangeInput',
     props: {
       type: 'string'
     }
@@ -209,13 +209,13 @@ export const buildFieldRender = ({
     cloneDeep(customRender) :
     defaultFieldRenders[fieldType] || (_ => {
       throw new TypeError(
-        `Field type ${fieldType} is unknown or does not have an assigned render Component. Define custom component`
+        `Field type ${fieldType} is unknown or does not have an assigned render component. Define custom component`
       );
     })();
 
-  if (!render.hasOwnProperty('Component')) {
+  if (!render.hasOwnProperty('component')) {
     // TODO: remove after the check is added to model validation.
-    throw new TypeError('render.Component must be defined');
+    throw new TypeError('render.component must be defined');
   }
   if (!render.hasOwnProperty('props')) {
     render.props = {};
@@ -225,22 +225,22 @@ export const buildFieldRender = ({
     render.valueProp = {};
   }
 
-  if (typeof render.Component === 'string') {
-    const { Component, uiType, valuePropName } = namedComponentInfo(render);
+  if (typeof render.component === 'string') {
+    const { component: Component, uiType, valuePropName } = namedComponentInfo(render);
 
     if (!render.valueProp.hasOwnProperty('type')) {
       render.valueProp.type = uiType;
     } else if (render.valueProp.type !== uiType) {
-      throw new TypeError(`Invalid "${render.valueProp.type}" valueProp.type for "${render.Component}" component`);
+      throw new TypeError(`Invalid "${render.valueProp.type}" valueProp.type for "${render.component}" component`);
     }
 
     if (!render.valueProp.hasOwnProperty('name')) {
       render.valueProp.name = valuePropName;
     } else if (render.valueProp.name !== valuePropName) {
-      throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.Component}" component`);
+      throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.component}" component`);
     }
 
-    render.Component = ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>;
+    render.component = ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>;
   }
 
   if (!render.valueProp.hasOwnProperty('name')) {
@@ -304,7 +304,7 @@ const buildFieldLayout = (viewName, fieldsMeta) =>
       }) ||
       (value => true),
 
-    // assigning default Component to fields w/o custom Component.
+    // assigning default component to fields w/o custom component.
     render: buildFieldRender({
       render,
       type: fieldsMeta[fieldName].type
@@ -343,7 +343,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
     entries[name] = props[name];
   });
 
-  return entries.length || entries.Component ? entries : null;
+  return entries.length || entries.component ? entries : null;
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████

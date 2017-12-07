@@ -61,7 +61,7 @@ class SearchForm extends React.Component {
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
         <div className="crud--search-form__controls">
           {
-            searchableFields.map(({ name, Component, valuePropName }) => (
+            searchableFields.map(({ name, component: Component, valuePropName }) => (
               <FormGroup
                 key={`form-group-${name}`}
                 controlId={`fg-${name}`}

@@ -11,7 +11,7 @@ class EditField extends Component {
       entry: {
         name: fieldName,
         readOnly,
-        Component: FieldInput,
+        component: FieldInput,
         valuePropName
       },
       model: {

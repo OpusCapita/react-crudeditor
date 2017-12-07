@@ -96,14 +96,14 @@ export const
     searchableFields: uiMeta.search.searchableFields.map(({
       name,
       render: {
-        Component,
+        component,
         valueProp: {
           name: valuePropName
         }
       }
     }) => ({
       name,
-      Component,
+      component,
       valuePropName
     })),
     selectedInstances: storeState.selectedInstances,

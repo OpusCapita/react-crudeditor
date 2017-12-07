@@ -774,7 +774,7 @@ props.type | Description | UI Type | Auto-convertable field types
 
 Field types and correnponding built-in components.
 
-If you define just a field type (and omit any custom render), the following components will be default for your fields (see below a note about Searchable fields): 
+If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view): 
 
 #### Common mappings for all views
 

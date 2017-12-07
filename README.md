@@ -21,9 +21,9 @@
     * [props.uiConfig](#editorcomponent-propsuiconfig)
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
-    * [Built-in components](#built-in-components)
-    * [Default Field Types](#default-field-types)
     * [FieldInputComponent](#fieldinputcomponent)
+      * [Built-in components](#built-in-components)
+      * [Default Field Types](#default-field-types)
     * [FieldRenderComponent](#fieldrendercomponent)
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
@@ -738,6 +738,20 @@ Model Definition is an object describing an entity. It has the following structu
   }
 }
 ```
+
+## FieldInputComponent
+
+Custom React component for rendering [Formatted Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.
+
+Props:
+
+Name | Type | Necessity | Default | Description
+---|---|---|---|---
+readOnly | boolean | optional | false | Wheter field value can be changed
+value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
+onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+
 ### Built-in components 
 
 You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: [BUILTIN_INPUT](#builtin_input) and [BUILTIN_RANGE_INPUT](#builtin_range_input) which you can import from the CrudEditor lib.
@@ -807,21 +821,7 @@ FIELD_TYPE_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'
 FIELD_TYPE_INTEGER  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer' 
 FIELD_TYPE_STRING_DATE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'  
 FIELD_TYPE_STRING_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
-FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
-
-### FieldInputComponent
-
-Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.
-
-Props:
-
-Name | Type | Necessity | Default | Description
----|---|---|---|---
-id | string | optional | - | ID of DOM element which must be focused on label click
-readOnly | boolean | optional | false | Wheter field value can be changed
-value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
-onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
-onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string' 
 
 ### FieldRenderComponent
 

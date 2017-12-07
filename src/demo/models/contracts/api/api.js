@@ -36,6 +36,7 @@ const data = { // remove doubles
     map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).
     map(c => ({
       ...c,
+      nonExisting: Math.random(),
       [testNumberFieldType]: Math.random() * 1000000,
       parentContract: Math.random() > 0.8 ?
         null :

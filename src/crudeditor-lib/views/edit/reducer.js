@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import { findFieldLayout, getTab } from '../lib';
+import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
@@ -43,16 +44,6 @@ import {
 
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
-
-export const unifyBooleanFields = (instance = {}, fieldsMeta) => ({
-  ...instance,
-  ...Object.keys(instance).
-    filter(fieldName => fieldsMeta[fieldName].type === 'boolean').
-    reduce((obj, fieldName) => ({
-      ...obj,
-      [fieldName]: instance[fieldName] || null
-    }), {})
-})
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
 const synchronizeInstances = ({ instance, newStoreStateSlice, formLayout }) => {
@@ -264,6 +255,12 @@ export default modelDefinition => (
         break PARSE_LABEL;
       }
 
+      const persistentValue = storeState.persistentInstance[fieldName];
+
+      if (modelDefinition.model.fields[fieldName].type === FIELD_TYPE_BOOLEAN && !persistentValue && !newFormValue) {
+        newFormValue = persistentValue;  // null and false are considered the same.
+      }
+
       if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {
         newStoreStateSlice.formInstance = {
           [fieldName]: u.constant(newFormValue)
@@ -374,10 +371,7 @@ export default modelDefinition => (
     const { tabName } = payload; // may be falsy, i.e. not specified.
 
     // reset to persistentInstance
-    if (!isEqual(
-      unifyBooleanFields(storeState.formInstance, modelDefinition.model.fields),
-      unifyBooleanFields(storeState.persistentInstance, modelDefinition.model.fields)
-    )) {
+    if (!isEqual(storeState.formInstance, storeState.persistentInstance)) {
       synchronizeInstances({
         instance: storeState.persistentInstance,
         newStoreStateSlice,

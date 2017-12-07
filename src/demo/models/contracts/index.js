@@ -16,8 +16,8 @@ import {
 
   UI_TYPE_INTEGER,
 
-  DEFAULT_INPUT_COMPONENT,
-  DEFAULT_RANGE_INPUT_COMPONENT
+  // DEFAULT_INPUT_COMPONENT,
+  // DEFAULT_RANGE_INPUT_COMPONENT
 } from '../../../crudeditor-lib';
 
 const VIEW_CREATE = 'create';
@@ -343,10 +343,10 @@ export default {
         { name: 'extContractLineId' },
         { name: 'parentContract', render: { component: ContractReferenceSearch } },
         { name: 'statusId', render: { component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } },
-        // { name: 'maxOrderValue' },
+        { name: 'maxOrderValue' },
         // THE SAME CAN BE ACHIEVED WITH THE FOLLOWING
         // EXAMPLE OF USING BUILT-IN RANGE INPUT COMPONENT:
-        { name: 'maxOrderValue', render: { component: DEFAULT_RANGE_INPUT_COMPONENT, props: { type: 'integer' } } },
+        // { name: 'maxOrderValue', render: { component: DEFAULT_RANGE_INPUT_COMPONENT, props: { type: 'integer' } } },
         { name: 'createdOn' }
       ],
       resultFields: [

@@ -23,7 +23,7 @@
     * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
       * [Built-in components](#built-in-components)
-      * [Default Field Types](#default-field-types)
+      * [Default FieldInput components](#default-fieldinput-components)
     * [FieldRenderComponent](#fieldrendercomponent)
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
@@ -84,9 +84,9 @@
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. There are <a href="#standard-field-types">standard</a> types as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#default-fieldinput-components">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    There are default React Components for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are <a href="#built-in-components">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
@@ -785,7 +785,7 @@ props.type | Description | UI Type | Auto-convertable field types
 `integer` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber | UI_TYPE_INTEGER_RANGE_OBJECT | FIELD_TYPE_STRING_INTEGER_RANGE, FIELD_TYPE_INTEGER_RANGE
 `decimal` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber | UI_TYPE_DECIMAL_RANGE_OBJECT | FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_DECIMAL_RANGE
 
-### Default field types
+### Default FieldInput components
 
 Field types and correnponding [built-in components](#built-in-components).
 

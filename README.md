@@ -737,6 +737,40 @@ Model Definition is an object describing an entity. It has the following structu
 }
 ```
 
+### Built-in components 
+
+You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: `DEFAULT_INPUT_COMPONENT` and `DEFAULT_RANGE_INPUT_COMPONENT` which you can import from the CrudEditor lib.
+
+Name | Description | Specific props
+---|---|---
+DEFAULT_INPUT_COMPONENT | Singular input | type: `string` (default), `checkbox`, `date`, `integer`, `decimal` 
+DEFAULT_RANGE_INPUT_COMPONENT | Range input | type: `string` (default), `date`, `integer`, `decimal` 
+
+#### DEFAULT_INPUT_COMPONENT type reference
+
+Type name | UI Type | Auto-convertable field types
+---|---|---
+`string` | UI_TYPE_STRING | FIELD_TYPE_STRING, FIELD_TYPE_BOOLEAN, FIELD_TYPE_DECIMAL, FIELD_TYPE_INTEGER, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_DECIMAL, FIELD_TYPE_STRING_INTEGER
+`checkbox` | UI_TYPE_BOOLEAN | FIELD_TYPE_BOOLEAN
+`date` | UI_TYPE_DATE | FIELD_TYPE_STRING_DATE
+`integer` | UI_TYPE_INTEGER | FIELD_TYPE_STRING_INTEGER, FIELD_TYPE_INTEGER, FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING
+`decimal` | UI_TYPE_DECIMAL | FIELD_TYPE_STRING_DECIMAL, FIELD_TYPE_DECIMAL, FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING
+
+#### DEFAULT_RANGE_INPUT_COMPONENT type reference
+
+Type name | UI Type | Auto-convertable field types
+---|---|---
+`string` | UI_TYPE_STRING_RANGE_OBJECT | FIELD_TYPE_DECIMAL_RANGE, FIELD_TYPE_INTEGER_RANGE, FIELD_TYPE_STRING_DATE_RANGE, FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_STRING_INTEGER_RANGE
+`date` | UI_TYPE_DATE_RANGE_OBJECT | FIELD_TYPE_STRING_DATE_RANGE
+`integer` | UI_TYPE_INTEGER_RANGE_OBJECT | FIELD_TYPE_STRING_INTEGER_RANGE, FIELD_TYPE_INTEGER_RANGE
+`decimal` | UI_TYPE_DECIMAL_RANGE_OBJECT | FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_DECIMAL_RANGE
+
+#### Example
+```
+{ name: 'maxOrderValue', render: { component: DEFAULT_RANGE_INPUT_COMPONENT, props: { type: 'integer' } } }
+```
+Built-in components also accept all props defined for `FieldInputComponent`.
+
 ### FieldInputComponent
 
 Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.

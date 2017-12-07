@@ -22,6 +22,8 @@
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
+      * [Built-in components](#built-in-components)
+      * [Default FieldInput components](#default-fieldinput-components)
     * [FieldRenderComponent](#fieldrendercomponent)
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
@@ -82,9 +84,9 @@
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. There are <a href="#standard-field-types">standard</a> types as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#default-fieldinput-components">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    There are default React Components for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are <a href="#built-in-components">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
@@ -737,19 +739,89 @@ Model Definition is an object describing an entity. It has the following structu
 }
 ```
 
-### FieldInputComponent
+## FieldInputComponent
 
-Custom React component for rendering [Formated Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.
+Custom React component for rendering [Formatted Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.
 
 Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-id | string | optional | - | ID of DOM element which must be focused on label click
 readOnly | boolean | optional | false | Wheter field value can be changed
 value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
 onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+
+### Built-in components 
+
+You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: [BUILTIN_INPUT](#builtin_input) and [BUILTIN_RANGE_INPUT](#builtin_range_input) which you can import from the CrudEditor lib.
+
+#### Example
+```
+{ name: 'maxOrderValue', render: { component: BUILTIN_RANGE_INPUT, props: { type: 'integer' } } }
+```
+Built-in components also accept all props defined for [FieldInputComponent](#fieldinputcomponent).
+
+#### BUILTIN_INPUT
+
+Singular input field.
+
+props.type | Description | UI Type | Auto-convertable field types
+---|---|---|---
+`string` | Regular input field which works with strings | UI_TYPE_STRING | FIELD_TYPE_STRING, FIELD_TYPE_BOOLEAN, FIELD_TYPE_DECIMAL, FIELD_TYPE_INTEGER, FIELD_TYPE_STRING_DATE, FIELD_TYPE_STRING_DECIMAL, FIELD_TYPE_STRING_INTEGER
+`checkbox` | Checkbox | UI_TYPE_BOOLEAN | FIELD_TYPE_BOOLEAN
+`date` | [DateInput](https://opuscapita.github.io/react-dates//branches/master/index.html?currentComponentName=DateInput) | UI_TYPE_DATE | FIELD_TYPE_STRING_DATE
+`integer` | Input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber | UI_TYPE_INTEGER | FIELD_TYPE_STRING_INTEGER, FIELD_TYPE_INTEGER, FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING
+`decimal` | Input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber | UI_TYPE_DECIMAL | FIELD_TYPE_STRING_DECIMAL, FIELD_TYPE_DECIMAL, FIELD_TYPE_BOOLEAN, FIELD_TYPE_STRING
+
+#### BUILTIN_RANGE_INPUT
+
+Range input field.
+
+props.type | Description | UI Type | Auto-convertable field types
+---|---|---|---
+`string` | Range input which works with strings | UI_TYPE_STRING_RANGE_OBJECT | FIELD_TYPE_DECIMAL_RANGE, FIELD_TYPE_INTEGER_RANGE, FIELD_TYPE_STRING_DATE_RANGE, FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_STRING_INTEGER_RANGE
+`date` | [DateRangeInput](https://opuscapita.github.io/react-dates//branches/master/index.html?currentComponentName=DateRangeInput) | UI_TYPE_DATE_RANGE_OBJECT | FIELD_TYPE_STRING_DATE_RANGE
+`integer` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber | UI_TYPE_INTEGER_RANGE_OBJECT | FIELD_TYPE_STRING_INTEGER_RANGE, FIELD_TYPE_INTEGER_RANGE
+`decimal` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber | UI_TYPE_DECIMAL_RANGE_OBJECT | FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_DECIMAL_RANGE
+
+### Default FieldInput components
+
+Field types and correnponding [built-in components](#built-in-components).
+
+If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view): 
+
+#### Common mappings for all views
+
+Field Type | Component | props.type
+---|---|---
+FIELD_TYPE_BOOLEAN | [BUILTIN_INPUT](#builtin_input) | 'checkbox'
+FIELD_TYPE_STRING   | [BUILTIN_INPUT](#builtin_input) | 'string'
+FIELD_TYPE_DECIMAL_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'
+FIELD_TYPE_INTEGER_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer'
+FIELD_TYPE_STRING_DATE_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'
+FIELD_TYPE_STRING_DECIMAL_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
+FIELD_TYPE_STRING_INTEGER_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
+
+#### Mappings specific to Create, Edit and Show views
+
+Field Type | Component | props.type
+---|---|---
+FIELD_TYPE_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'decimal' 
+FIELD_TYPE_INTEGER  | [BUILTIN_INPUT](#builtin_input) | 'integer'
+FIELD_TYPE_STRING_DATE  | [BUILTIN_INPUT](#builtin_input) | 'date' 
+FIELD_TYPE_STRING_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'string'
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_INPUT](#builtin_input) | 'string'
+
+#### Mappings specific to Search view (searchable fields)
+
+Field Type | Component | props.type 
+---|---|---
+FIELD_TYPE_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'  
+FIELD_TYPE_INTEGER  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer' 
+FIELD_TYPE_STRING_DATE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'  
+FIELD_TYPE_STRING_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string' 
 
 ### FieldRenderComponent
 

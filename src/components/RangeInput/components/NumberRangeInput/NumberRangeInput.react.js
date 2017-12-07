@@ -36,8 +36,8 @@ export default class NumberRangeInput extends PureComponent {
     super(...args);
 
     this.state = {
-      strings: this.formatRange(this.props.value),
-      numbers: this.props.value
+      strings: this.formatRange(this.props.value || this.defaultValue),
+      numbers: this.props.value || this.defaultValue
     }
   }
 
@@ -55,8 +55,8 @@ export default class NumberRangeInput extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     // check if sign has changed, and adjust caret position if true
-    const { value: currentValue } = this.props;
-    const { value: nextValue } = nextProps;
+    const nextValue = nextProps.value || this.defaultValue;
+    const currentValue = this.props.value || this.defaultValue;
     const el = document.activeElement;
     const side = el === this.inputFrom ?
       'from' :
@@ -80,6 +80,8 @@ export default class NumberRangeInput extends PureComponent {
     this.inputTo.removeEventListener('keydown', this.keydownListener)
     this.inputTo.removeEventListener('paste', this.pasteListener)
   }
+
+  defaultValue = { from: null, to: null }
 
   format = number => this.context.i18n[this.props.type === 'decimal' ?
     'formatDecimalNumber' :

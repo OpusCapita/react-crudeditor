@@ -12,14 +12,16 @@ class SearchForm extends React.Component {
     model: PropTypes.shape({
       data: PropTypes.shape({
         formFilter: PropTypes.object,
-        fieldErrors: PropTypes.object
+        formattedFilter: PropTypes.object,
+        searchableFields: PropTypes.array,
+        resultFilter: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
     fieldErrorsWrapper: PropTypes.shape({
-      toggleFieldErrors: PropTypes.func,
-      shouldShowErrors: PropTypes.func,
-      errorsExistAndVisible: PropTypes.bool
+      handleFormFilterBlur: PropTypes.func,
+      handleFormFilterUpdate: PropTypes.func,
+      fieldErrors: PropTypes.func
     }).isRequired
   }
 

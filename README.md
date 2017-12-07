@@ -21,6 +21,7 @@
     * [props.uiConfig](#editorcomponent-propsuiconfig)
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
+    * [Built-in components](#built-in-components)
     * [Default Field Types](#default-field-types)
     * [FieldInputComponent](#fieldinputcomponent)
     * [FieldRenderComponent](#fieldrendercomponent)
@@ -745,7 +746,7 @@ You can define a custom `component` prop for a field, tab, section or searchable
 ```
 { name: 'maxOrderValue', render: { component: BUILTIN_RANGE_INPUT, props: { type: 'integer' } } }
 ```
-Built-in components also accept all props defined for `FieldInputComponent`.
+Built-in components also accept all props defined for [FieldInputComponent](#fieldinputcomponent).
 
 #### BUILTIN_INPUT
 

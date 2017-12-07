@@ -498,7 +498,7 @@ Model Definition is an object describing an entity. It has the following structu
            *
            * Default "render" property for a fild of standard Field Type:
            * {
-           *   Component: <string, id of default Component for displaying the Field Type>,
+           *   component: <string, id of default component for displaying the Field Type>,
            *
            *   valueProp: {
            *     name: "value",
@@ -512,7 +512,7 @@ Model Definition is an object describing an entity. It has the following structu
              * Either custom FieldInputComponent (see corresponding subheading)
              * or id with embedded React Component name.
              */
-            Component: <FieldInputComponent|string>,
+            component: <FieldInputComponent|string>,
 
             ?props: <object, the component props to overwrite defaults>,
             ?valueProp: {
@@ -536,8 +536,8 @@ Model Definition is an object describing an entity. It has the following structu
                * Custom converter which overwrites default converter, if any.
                *
                * There is a default converter when Field Type is known to CRUID Editor and
-               * 1. Component is embedded React Component, or
-               * 2. Component is FieldInputComponent and "type" with UI Type is specified.
+               * 1. component is embedded React Component, or
+               * 2. component is FieldInputComponent and "type" with UI Type is specified.
                */
               ?converter: {
 
@@ -571,7 +571,7 @@ Model Definition is an object describing an entity. It has the following structu
           ?sortable: <boolean, false by default>,
           ?sortByDefault: <boolean, false by default>,
           ?textAlignment: <"left"|"center"|"right">,
-          ?Component: <FieldRenderComponent>  // see "FieldRenderComponent" subheading.
+          ?component: <FieldRenderComponent>  // see "FieldRenderComponent" subheading.
         }, ...]
       };
     },
@@ -613,7 +613,7 @@ Model Definition is an object describing an entity. It has the following structu
             {
               name: <string, tab name>,
               ?disabled: <boolean, false by default>,
-              ?Component: <function, TabFormComponent>,
+              ?component: <function, TabFormComponent>,
               ?columns: <number, 1 by default>
             },
             ?section(
@@ -622,7 +622,7 @@ Model Definition is an object describing an entity. It has the following structu
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,
                 ?render: {
-                  Component: <function, FieldInputComponent>,
+                  component: <function, FieldInputComponent>,
                   ?valueProp: {
                     ?name: <string, a name of Component's prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
@@ -634,9 +634,9 @@ Model Definition is an object describing an entity. It has the following structu
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,
                 render: {
-                  Component: props => <FieldInputComponent propName={propValue} {...props}>,
+                  component: props => <FieldInputComponent propName={propValue} {...props}>,
                   ?valueProp: {
-                    ?name: <string, a name of Component prop with field value, "value" by default>,
+                    ?name: <string, a name of component prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                   }
                 }
@@ -647,9 +647,9 @@ Model Definition is an object describing an entity. It has the following structu
               name: <string, field name>,
               ?readOnly: <boolean, false by default>,
               ?render: {
-                Component: <function, FieldInputComponent>,
+                component: <function, FieldInputComponent>,
                 ?valueProp: {
-                  ?name: <string, a name of Component's prop with field value, "value" by default>,
+                  ?name: <string, a name of component's prop with field value, "value" by default>,
                   ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
@@ -661,9 +661,9 @@ Model Definition is an object describing an entity. It has the following structu
               name: <string, field name>,
               ?readOnly: <boolean, false by default>,
               ?render: {
-                Component: <function, FieldInputComponent>,
+                component: <function, FieldInputComponent>,
                 ?valueProp: {
-                  ?name: <string, a name of Component's prop with field value, "value" by default>,
+                  ?name: <string, a name of component's prop with field value, "value" by default>,
                   ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
                 }
               }
@@ -674,9 +674,9 @@ Model Definition is an object describing an entity. It has the following structu
             name: <string, field name>,
             ?readOnly: <boolean, false by default>,
             ?render: {
-              Component: <function, FieldInputComponent>,
+              component: <function, FieldInputComponent>,
               ?valueProp: {
-                ?name: <string, a name of Component's prop with field value, "value" by default>,
+                ?name: <string, a name of component's prop with field value, "value" by default>,
                 ?type: <string, embedded UI Type (see corresponding "Terminology" section)>
               }
             }
@@ -748,8 +748,8 @@ Name | Type | Necessity | Default | Description
 id | string | optional | - | ID of DOM element which must be focused on label click
 readOnly | boolean | optional | false | Wheter field value can be changed
 value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
-onChange | function | mandatory | - | Handler called when Component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
-onBlur | function | optional | - | Handler called when Component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
+onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
 ### FieldRenderComponent
 
@@ -940,7 +940,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
            * array representing a tab. Its elements are sections/fields. The array also has props:
            * -- "tab", string with tab name,
            * -- "disabled", boolean.
-           * -- "Component", optional custom React Component, see TabFormComponent subheading.
+           * -- "component", optional custom React Component, see TabFormComponent subheading.
            */
           [
 
@@ -956,7 +956,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
               {
                 field: <string, field name>,
                 readOnly: <boolean>,
-                Component: <function, FieldInputComponent or default React Component for displaying the field>
+                component: <function, FieldInputComponent or default React Component for displaying the field>
               },
               ...
             ],
@@ -1068,14 +1068,14 @@ Every view passes *model* property to external React Components it uses.  The pr
     resultInstances: state.resultInstances,
     searchableFields: [{
       name: <string, persistent field name>,
-      Component: <function, React Component for rendering Formated Instance's field>,
-      valuePropName: <string, a name of Component prop with field value>,
+      component: <function, React Component for rendering Formated Instance's field>,
+      valuePropName: <string, a name of component's prop with field value>,
 
       /*
-       * Boolean, whether two react Components for from-to ranging must be rendered.
+       * Boolean, whether two react components for from-to ranging must be rendered.
        * if true, filter field value consists of two keys, "from" and "to",
-       * and two distinct Components are rendered for each of them.
-       * NOTE: always false for custom Component.
+       * and two distinct components are rendered for each of them.
+       * NOTE: always false for custom component.
        */
       isRange: <boolean>
 

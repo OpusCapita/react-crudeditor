@@ -38,7 +38,7 @@ const mergeProps = (
       createInstance: _ => softRedirectView({
         name: VIEW_CREATE,
         state: {
-          predefinedFields: (d => { console.log({ d }); return d; })(defaultNewInstance)
+          predefinedFields: defaultNewInstance
         }
       }),
       editInstance: ({

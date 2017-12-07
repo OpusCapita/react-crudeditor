@@ -301,7 +301,6 @@ export default modelDefinition => {
         try {
           newFormValue = converter.parse(fieldValue);
         } catch (err) {
-          console.log({ err })
           const errors = Array.isArray(err) ? err : [err];
 
           newStoreStateSlice.formFilter = {
@@ -325,20 +324,15 @@ export default modelDefinition => {
           break PARSE_LABEL;
         }
 
-        console.log({ newFormValue })
         if (!isEqual(newFormValue, storeState.formFilter[fieldName])) {
-          console.log('gonna set formvalue')
           newStoreStateSlice.formFilter = {
             [fieldName]: u.constant(newFormValue)
           };
         }
 
-        console.log(`gonna convert`)
         const newFormattedValue = converter.format(newFormValue);
-        console.log({ newFormattedValue })
 
         if (!isEqual(newFormattedValue, storeState.formattedFilter[fieldName])) {
-          console.log('set')
           newStoreStateSlice.formattedFilter = {
             [fieldName]: u.constant(newFormattedValue)
           };

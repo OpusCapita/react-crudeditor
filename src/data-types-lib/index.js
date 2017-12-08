@@ -84,7 +84,7 @@ export const
       return undefined;
     }
 
-    return value => {
+    return (value, instance) => {
       if (value === EMPTY_FIELD_VALUE) {
         // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
         // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
@@ -105,7 +105,7 @@ export const
 
       if (validate) {
         try {
-          customValidationResult = validate(value)
+          customValidationResult = validate(value, instance)
         } catch (err) {
           throw err
         }

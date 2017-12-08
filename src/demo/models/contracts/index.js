@@ -57,8 +57,8 @@ export const fields = {
     'constraints': {
       'max': 100,
       'required': false,
-      validate: (fieldValue, instance) => {
-        if (fieldValue.toLowerCase().indexOf('booo') !== -1) {
+      validate: (value, instance) => {
+        if (value.toLowerCase().indexOf('booo') !== -1) {
           const err = {
             code: 400,
             id: 'forbiddenWordBooo',

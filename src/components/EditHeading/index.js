@@ -4,6 +4,7 @@ import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
+
 import {
   Nav,
   NavItem,
@@ -13,7 +14,6 @@ import {
   Button,
   Glyphicon
 } from 'react-bootstrap';
-import { unifyBooleanFields } from '../../crudeditor-lib/views/edit/reducer';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -35,10 +35,7 @@ export default class EditHeading extends PureComponent {
       fieldsMeta
     } = this.props.model.data;
     // compare persistent and form instances to decide weither to show confirm box or not
-    return formInstance && !isEqual(
-      unifyBooleanFields(formInstance, fieldsMeta),
-      unifyBooleanFields(persistentInstance, fieldsMeta)
-    );
+    return formInstance && !isEqual(formInstance, persistentInstance);
   }
 
   render() {

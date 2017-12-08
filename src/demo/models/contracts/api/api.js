@@ -1,7 +1,7 @@
 // import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import Big from 'big.js';
-
+import { isDef } from '../../../../components/lib';
 import initialData from './data';
 import { DEFAULT_FIELD_TYPE } from '../../../../crudeditor-lib/common/constants.js';
 
@@ -36,6 +36,7 @@ const data = { // remove doubles
     map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).
     map(c => ({
       ...c,
+      nonExisting: Math.random(),
       [testNumberFieldType]: Math.random() * 1000000,
       parentContract: Math.random() > 0.8 ?
         null :
@@ -186,11 +187,11 @@ export const
                     return false;
                 }
 
-                if (fieldValue.from !== undefined) {
+                if (isDef(fieldValue.from)) {
                   match = match && gte(itemValue, fieldValue.from)
                 }
 
-                if (fieldValue.to !== undefined) {
+                if (isDef(fieldValue.to)) {
                   match = match && lte(itemValue, fieldValue.to)
                 }
               } else {

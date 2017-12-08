@@ -42,7 +42,7 @@ import {
   UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
 
-const
+export const
   COMPONENT_NAME_INPUT = 'input',
   COMPONENT_NAME_RANGE_INPUT = 'rangeInput';
 
@@ -225,8 +225,10 @@ export const buildFieldRender = ({
     render.valueProp = {};
   }
 
+  let Component;
+
   if (typeof render.component === 'string') {
-    const { component: Component, uiType, valuePropName } = namedComponentInfo(render);
+    const { component, uiType, valuePropName } = namedComponentInfo(render);
 
     if (!render.valueProp.hasOwnProperty('type')) {
       render.valueProp.type = uiType;
@@ -240,7 +242,9 @@ export const buildFieldRender = ({
       throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.component}" component`);
     }
 
-    render.component = ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>;
+    Component = component;
+  } else {
+    Component = render.component;
   }
 
   if (!render.valueProp.hasOwnProperty('name')) {
@@ -270,7 +274,10 @@ export const buildFieldRender = ({
     };
   }
 
-  return render;
+  return {
+    ...render,
+    component: ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>
+  };
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -17,12 +17,12 @@ import {
   UI_TYPE_INTEGER,
 
   // BUILTIN_INPUT,
-  // BUILTIN_RANGE_INPUT
-} from '../../../crudeditor-lib';
+  // BUILTIN_RANGE_INPUT,
 
-const VIEW_CREATE = 'create';
-const VIEW_EDIT = 'edit';
-const VIEW_SHOW = 'show';
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW
+} from '../../../crudeditor-lib';
 
 export const fields = {
   'testNumberTypeField': {

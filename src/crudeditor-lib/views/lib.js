@@ -288,11 +288,10 @@ const buildDefaultFormLayout = ({ viewName, fieldsMeta }) => _ => Object.keys(fi
   render: buildFieldRender({
     type: fieldsMeta[name].type
   }),
-  validate: fieldsMeta[name].validate ||
-    standardFieldValidate({
-      type: fieldsMeta[name].type,
-      constraints: fieldsMeta[name].constraints
-    }) ||
+  validate: standardFieldValidate({
+    type: fieldsMeta[name].type,
+    constraints: fieldsMeta[name].constraints
+  }) ||
     (value => true)
 }));
 

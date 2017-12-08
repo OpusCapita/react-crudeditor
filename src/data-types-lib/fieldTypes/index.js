@@ -3,11 +3,7 @@ import stringType from './string';
 import stringDateType from './stringDate';
 import stringDecimalType from './stringDecimal';
 import stringIntegerType from './stringInteger';
-import integerType from './integer';
-import decimalType from './decimal';
 
-import decimalRangeType from './decimalRange';
-import integerRangeType from './integerRange';
 import stringDateRangeType from './stringDateRange';
 import stringDecimalRangeType from './stringDecimalRange';
 import stringIntegerRangeType from './stringIntegerRange';

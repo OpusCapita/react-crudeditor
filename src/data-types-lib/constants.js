@@ -17,7 +17,7 @@ export const
    */
   FIELD_TYPE_INTEGER = 'integer',
 
-   /*
+  /*
    * JavaScript type "string" with decimal number of any size,
    * i.e. rational number written in Base 10 and having finite number of digits after decimal point.
    * It may be in exponential, as well as normal (non-exponential) notation.

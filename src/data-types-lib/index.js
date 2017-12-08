@@ -74,6 +74,7 @@ export const
     type: fieldType,
     constraints: {
       required,
+      validate,
       ...constraints
     }
   }) => {
@@ -98,6 +99,16 @@ export const
         }
 
         return true;
+      }
+
+      let customValidationResult = false;
+
+      if (validate) {
+        try {
+          customValidationResult = validate(value)
+        } catch (err) {
+          throw err
+        }
       }
 
       const validator = buildValidator(value);
@@ -126,6 +137,6 @@ export const
         throw errors;
       }
 
-      return true;
+      return validate ? customValidationResult : true;
     }
   };

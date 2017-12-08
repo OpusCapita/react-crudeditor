@@ -56,7 +56,19 @@ export const fields = {
     'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 100,
-      'required': false
+      'required': false,
+      validate: (fieldValue, instance) => {
+        if (fieldValue.toLowerCase().indexOf('booo') !== -1) {
+          const err = {
+            code: 400,
+            id: 'forbiddenWordBooo',
+            message: 'Description cannot contain `booo`!'
+          }
+          throw err;
+        }
+
+        return true
+      }
     }
   },
   'termsOfDeliveryId': {

@@ -59,11 +59,11 @@ export const fields = {
       'required': false,
       validate: (value, instance) => {
         if (value.toLowerCase().indexOf('booo') !== -1) {
-          const err = {
+          const err = [{
             code: 400,
             id: 'forbiddenWordBooo',
             message: 'Description cannot contain `booo`!'
-          }
+          }]
           throw err;
         }
 

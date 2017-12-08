@@ -19,9 +19,7 @@ export default {
    * █████████████████████████████████████████████████████
    */
   parse: value => {
-    const optimized = value;
-
-    if (!optimized) {
+    if (!value.trim()) {
       return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
     }
 
@@ -35,6 +33,6 @@ export default {
       throw error;
     }
 
-    return new Date(optimized).toISOString();
+    return new Date(value).toISOString();
   }
 };

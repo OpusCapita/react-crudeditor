@@ -31,8 +31,7 @@ export default class EditHeading extends PureComponent {
   showConfirmDialog = _ => {
     const {
       formInstance,
-      persistentInstance,
-      fieldsMeta
+      persistentInstance
     } = this.props.model.data;
     // compare persistent and form instances to decide weither to show confirm box or not
     return formInstance && !isEqual(formInstance, persistentInstance);

@@ -258,7 +258,7 @@ export default modelDefinition => (
       const persistentValue = storeState.persistentInstance[fieldName];
 
       if (modelDefinition.model.fields[fieldName].type === FIELD_TYPE_BOOLEAN && !persistentValue && !newFormValue) {
-        newFormValue = persistentValue;  // null and false are considered the same.
+        newFormValue = persistentValue; // null and false are considered the same.
       }
 
       if (!isEqual(newFormValue, storeState.formInstance[fieldName])) {

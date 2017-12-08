@@ -40,6 +40,8 @@ describe("ConfirmDialog", _ => {
       context
     });
 
-    expect(wrapper.getDOMNode()).to.have.property('className').equal('confirm-dialog-span'); // eslint-disable-line no-unused-expressions
+    /* eslint-disable no-unused-expressions */
+    expect(wrapper.getDOMNode()).to.have.property('className').equal('confirm-dialog-span');
+    /* eslint-enable no-unused-expressions */
   });
 });

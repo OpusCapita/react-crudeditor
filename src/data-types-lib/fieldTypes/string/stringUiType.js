@@ -14,5 +14,5 @@ export default {
    * ████  FIELD_TYPE_STRING  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████
    */
-  parse: value => value.trim() || EMPTY_FIELD_VALUE
+  parse: value => value || EMPTY_FIELD_VALUE
 };

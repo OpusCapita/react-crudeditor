@@ -287,7 +287,12 @@ const buildDefaultFormLayout = ({ viewName, fieldsMeta }) => _ => Object.keys(fi
   readOnly: viewName === VIEW_EDIT && fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
   render: buildFieldRender({
     type: fieldsMeta[name].type
-  })
+  }),
+  validate: standardFieldValidate({
+    type: fieldsMeta[name].type,
+    constraints: fieldsMeta[name].constraints
+  }) ||
+    (value => true)
 }));
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████

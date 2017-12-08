@@ -13,6 +13,11 @@ export const
   VIEW_SHOW = 'show',
   VIEW_ERROR = 'error',
 
+  PERMISSION_VIEW = 'view',
+  PERMISSION_CREATE = 'create',
+  PERMISSION_EDIT = 'edit',
+  PERMISSION_DELETE = 'delete',
+
   DEFAULT_FIELD_TYPE = FIELD_TYPE_STRING,
   DEFAULT_VIEW = VIEW_SEARCH,
   DEFAULT_TAB_COLUMNS = 1,

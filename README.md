@@ -279,14 +279,14 @@ An array of [External Operations](#external-operation).  Each has a handler whic
 [
   {
     title: <string, external operation translated name>,
-    
+
     /*
      * name of an icon to be displayed inside a button, ex. "trash", "edit";
      * see full list at
      * http://getbootstrap.com/components/#glyphicons
      */
     ?icon: <string>,
-    
+
     handler(instance) {
       ...
       return;  // Return value is ignored.
@@ -334,7 +334,7 @@ Model Definition is an object describing an entity. It has the following structu
          * At least one field must have "unique" property set to true.
          */
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
-        
+
         ?type: <string, field type (see corresponding "Terminology" section)>,  // TODO more types and their constraints.
 
         /*
@@ -355,7 +355,7 @@ Model Definition is an object describing an entity. It has the following structu
            * Custom field-validator returning boolean true in case of successful validation,
            * or throwing an array of errors if validation failed.
            */
-          validate(<serializable, field value>, <object, entity instance>) {
+          ?validate(<serializable, field value>, <object, entity instance>) {
             ...
             throw [<Field Validation Error>, ...];
             ...
@@ -374,14 +374,14 @@ Model Definition is an object describing an entity. It has the following structu
      * or throws an object with errors if validation failed.
      * The function may also be asyncronous and return a resolved/rejected promise.
      */
-    validate(<object, entity instance>) {
+    ?validate(<object, entity instance>) {
       ...
       throw [<Instance Validation Error>, ...];
       ...
       return true;
     }
   },
-  
+
   permissions: {
     crudOperations: {
       ?create: <boolean, false by default>,
@@ -727,7 +727,7 @@ Model Definition is an object describing an entity. It has the following structu
       ...
       return [{
         name: <string, operation ID>,
-        
+
         /*
          * name of an icon to be displayed inside a button, ex. "trash", "edit";
          * see full list at
@@ -762,7 +762,7 @@ value | serializable | mandatory | - | [Persistent field](#persistent-field) val
 onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
-### Built-in components 
+### Built-in components
 
 You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: [BUILTIN_INPUT](#builtin_input) and [BUILTIN_RANGE_INPUT](#builtin_range_input) which you can import from the CrudEditor lib.
 
@@ -799,7 +799,7 @@ props.type | Description | UI Type | Auto-convertable field types
 
 Field types and correnponding [built-in components](#built-in-components).
 
-If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view): 
+If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view):
 
 #### Common mappings for all views
 
@@ -817,21 +817,21 @@ FIELD_TYPE_STRING_INTEGER_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 
 
 Field Type | Component | props.type
 ---|---|---
-FIELD_TYPE_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'decimal' 
+FIELD_TYPE_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'decimal'
 FIELD_TYPE_INTEGER  | [BUILTIN_INPUT](#builtin_input) | 'integer'
-FIELD_TYPE_STRING_DATE  | [BUILTIN_INPUT](#builtin_input) | 'date' 
+FIELD_TYPE_STRING_DATE  | [BUILTIN_INPUT](#builtin_input) | 'date'
 FIELD_TYPE_STRING_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'string'
 FIELD_TYPE_STRING_INTEGER | [BUILTIN_INPUT](#builtin_input) | 'string'
 
 #### Mappings specific to Search view (searchable fields)
 
-Field Type | Component | props.type 
+Field Type | Component | props.type
 ---|---|---
-FIELD_TYPE_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'  
-FIELD_TYPE_INTEGER  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer' 
-FIELD_TYPE_STRING_DATE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'  
-FIELD_TYPE_STRING_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'  
-FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string' 
+FIELD_TYPE_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'decimal'
+FIELD_TYPE_INTEGER  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'integer'
+FIELD_TYPE_STRING_DATE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'date'
+FIELD_TYPE_STRING_DECIMAL | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
+FIELD_TYPE_STRING_INTEGER | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
 
 ### FieldRenderComponent
 

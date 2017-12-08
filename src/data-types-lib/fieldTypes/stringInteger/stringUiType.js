@@ -30,7 +30,7 @@ export default {
     let big;
 
     try {
-      big = new Big(optimized).toString();
+      big = new Big(optimized);
     } catch (_) {
       const error = {
         code: ERROR_CODE_PARSING,
@@ -51,6 +51,6 @@ export default {
       throw error;
     }
 
-    return big;
+    return big.toString();
   }
 };

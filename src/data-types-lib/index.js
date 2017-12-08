@@ -74,6 +74,7 @@ export const
     type: fieldType,
     constraints: {
       required,
+      validate,
       ...constraints
     }
   }) => {
@@ -83,7 +84,7 @@ export const
       return undefined;
     }
 
-    return value => {
+    return (value, instance) => {
       if (value === EMPTY_FIELD_VALUE) {
         // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
         // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
@@ -98,6 +99,16 @@ export const
         }
 
         return true;
+      }
+
+      let customValidationResult = false;
+
+      if (validate) {
+        try {
+          customValidationResult = validate(value, instance)
+        } catch (err) {
+          throw err
+        }
       }
 
       const validator = buildValidator(value);
@@ -126,6 +137,6 @@ export const
         throw errors;
       }
 
-      return true;
+      return validate ? customValidationResult : true;
     }
   };

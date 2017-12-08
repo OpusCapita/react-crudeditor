@@ -276,7 +276,7 @@ export default modelDefinition => (
       }
 
       try {
-        validate(newFormValue);
+        validate(newFormValue, storeState.formInstance);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -308,7 +308,7 @@ export default modelDefinition => (
     if (fieldValue !== UNPARSABLE_FIELD_VALUE) {
       PARSE_LABEL: {
         try {
-          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue);
+          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 
@@ -352,7 +352,7 @@ export default modelDefinition => (
       }
 
       try {
-        fieldLayout.validate(fieldValue);
+        fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 

@@ -10,7 +10,7 @@ export default {
 
   /*
    * █████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ►  UI_TYPE_INTEGER  ████
+   * ████  FIELD_TYPE_INTEGER  ►  UI_TYPE_INTEGER  ████
    * █████████████████████████████████████████████████████████
    */
   format: origValue => {
@@ -33,7 +33,7 @@ export default {
 
   /*
    * █████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ◄  UI_TYPE_INTEGER  ████
+   * ████  FIELD_TYPE_INTEGER  ◄  UI_TYPE_INTEGER  ████
    * █████████████████████████████████████████████████████████
    */
   parse: value => new Big(value).toString()

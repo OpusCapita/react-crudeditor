@@ -8,16 +8,6 @@ export const
 
   FIELD_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
 
-  // JavaScript type "number" only with real numbers having a finate sequence
-  // of digits to the right of the decimal point.
-  // Both fixed and exponential notations are allowed.
-  FIELD_TYPE_DECIMAL = 'decimal',
-
-  // JavaScript type "number" with integers only,
-  // i.e. natual numbers, their counterpart and 0.
-  // Both fixed and exponential notations are allowed.
-  FIELD_TYPE_INTEGER = 'integer',
-
   FIELD_TYPE_STRING = 'string', // JavaScript type "string".
 
   /*
@@ -25,16 +15,16 @@ export const
    * i.e. rational number written in Base 10 and having no decimal part.
    * It may be in exponential, as well as normal (non-exponential) notation.
    */
-  FIELD_TYPE_STRING_DECIMAL = 'stringDecimal',
+  FIELD_TYPE_INTEGER = 'integer',
 
-  FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with date.
-
-  /*
+   /*
    * JavaScript type "string" with decimal number of any size,
    * i.e. rational number written in Base 10 and having finite number of digits after decimal point.
    * It may be in exponential, as well as normal (non-exponential) notation.
    */
-  FIELD_TYPE_STRING_INTEGER = 'stringInteger',
+  FIELD_TYPE_DECIMAL = 'decimal',
+
+  FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with date.
 
   // JavaScript object with two properties "from" and "to".
   // Each property value is of FIELD_TYPE_STRING_DATE.
@@ -42,18 +32,10 @@ export const
 
   // JavaScript object with two properties "from" and "to".
   // Each property value is of FIELD_TYPE_INTEGER.
-  FIELD_TYPE_INTEGER_RANGE = 'integerRange',
-
-  // JavaScript object with two properties "from" and "to".
-  // Each property value is of FIELD_TYPE_DECIMAL.
-  FIELD_TYPE_DECIMAL_RANGE = 'decimalRange',
-
-  // JavaScript object with two properties "from" and "to".
-  // Each property value is of FIELD_TYPE_STRING_INTEGER.
   FIELD_TYPE_STRING_INTEGER_RANGE = 'stringIntegerRange',
 
   // JavaScript object with two properties "from" and "to".
-  // Each property value is of FIELD_TYPE_STRING_DECIMAL.
+  // Each property value is of FIELD_TYPE_DECIMAL.
   FIELD_TYPE_STRING_DECIMAL_RANGE = 'stringDecimalRange',
 
   /* ███████████████████████████████████████████*\

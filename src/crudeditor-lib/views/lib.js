@@ -17,16 +17,12 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_INTEGER,
-  FIELD_TYPE_DECIMAL,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_INTEGER,
-  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_DECIMAL,
 
   FIELD_TYPE_STRING_DATE_RANGE,
-  FIELD_TYPE_INTEGER_RANGE,
-  FIELD_TYPE_DECIMAL_RANGE,
   FIELD_TYPE_STRING_INTEGER_RANGE,
   FIELD_TYPE_STRING_DECIMAL_RANGE,
 
@@ -131,18 +127,6 @@ const defaultFieldRenders = {
       type: 'checkbox'
     }
   },
-  [FIELD_TYPE_INTEGER]: {
-    component: 'input',
-    props: {
-      type: 'integer'
-    }
-  },
-  [FIELD_TYPE_DECIMAL]: {
-    component: 'input',
-    props: {
-      type: 'decimal'
-    }
-  },
   [FIELD_TYPE_STRING]: {
     component: 'input',
     props: {
@@ -155,28 +139,16 @@ const defaultFieldRenders = {
       type: 'date'
     }
   },
-  [FIELD_TYPE_STRING_INTEGER]: {
+  [FIELD_TYPE_INTEGER]: {
     component: 'input',
     props: {
       type: 'string'
     }
   },
-  [FIELD_TYPE_STRING_DECIMAL]: {
+  [FIELD_TYPE_DECIMAL]: {
     component: 'input',
     props: {
       type: 'string'
-    }
-  },
-  [FIELD_TYPE_INTEGER_RANGE]: {
-    component: 'rangeInput',
-    props: {
-      type: 'integer'
-    }
-  },
-  [FIELD_TYPE_DECIMAL_RANGE]: {
-    component: 'rangeInput',
-    props: {
-      type: 'decimal'
     }
   },
   [FIELD_TYPE_STRING_DATE_RANGE]: {

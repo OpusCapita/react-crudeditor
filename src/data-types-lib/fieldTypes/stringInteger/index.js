@@ -27,7 +27,7 @@ export default {
       return true;
     }
 
-    if (typeof value !== 'string') {
+    if (typeof value === 'string' && isNaN(Number(value))) {
       return false;
     }
 

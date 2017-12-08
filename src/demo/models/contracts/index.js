@@ -8,11 +8,10 @@ import CustomTabComponent from './components/CustomTabComponent';
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_DECIMAL,
-  FIELD_TYPE_INTEGER,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_INTEGER,
   FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_DECIMAL,
 
   UI_TYPE_INTEGER,
 
@@ -223,7 +222,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': FIELD_TYPE_STRING_INTEGER,
+    'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
       'max': "800",

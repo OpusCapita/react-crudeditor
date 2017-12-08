@@ -10,14 +10,14 @@ export default {
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ►  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_INTEGER  ►  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   format: value => new Big(value).toString(),
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ◄  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_INTEGER  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   parse: value => {
@@ -30,7 +30,7 @@ export default {
     let big;
 
     try {
-      big = new Big(optimized).toString();
+      big = new Big(optimized);
     } catch (_) {
       const error = {
         code: ERROR_CODE_PARSING,
@@ -51,6 +51,6 @@ export default {
       throw error;
     }
 
-    return big;
+    return big.toString();
   }
 };

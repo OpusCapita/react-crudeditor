@@ -19,7 +19,7 @@ export default {
    * █████████████████████████████████████████████████████
    */
   parse: value => {
-    const optimized = value.trim();
+    const optimized = value;
 
     if (!optimized) {
       return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.

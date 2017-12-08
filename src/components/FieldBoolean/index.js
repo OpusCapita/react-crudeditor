@@ -1,15 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox } from 'react-bootstrap';
+import { noop } from '../lib';
 
-class FieldBoolean extends React.PureComponent {
+export default class FieldBoolean extends React.PureComponent {
+  static propTypes = {
+    readOnly: PropTypes.bool,
+    value: PropTypes.bool,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
+  }
+
+  static defaultProps = {
+    readOnly: false,
+    onChange: noop,
+    onBlur: noop
+  }
+
   constructor(...args) {
     super(...args);
 
-    if (!this.props.readOnly) {
-      this.handleChange = _ => this.props.onChange && this.props.onChange(!this.props.value);
-      this.handleBlur = _ => this.props.onBlur && this.props.onBlur();
-    }
+    this.handleChange = this.props.readOnly ?
+      noop :
+      _ => this.props.onChange(!this.props.value);
+
+    this.handleBlur = this.props.readOnly ?
+      noop :
+      this.props.onBlur;
   }
 
   render = _ =>
@@ -20,12 +37,3 @@ class FieldBoolean extends React.PureComponent {
       onBlur={this.handleBlur}
     />)
 }
-
-FieldBoolean.propTypes = {
-  readOnly: PropTypes.bool,
-  value: PropTypes.bool,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func
-}
-
-export default FieldBoolean;

@@ -34,19 +34,4 @@ describe("FieldBoolean", _ => {
     expect(onBlur.calledOnce).to.be.true; // eslint-disable-line no-unused-expressions
     expect(onChange.calledWith(true)).to.be.true; // eslint-disable-line no-unused-expressions
   });
-
-  it("should mute handlers in readonly mode", () => {
-    const onChange = sinon.spy();
-    const onBlur = sinon.spy();
-    const props = {
-      readOnly: true,
-      value: false,
-      onChange,
-      onBlur
-    };
-    const wrapper = Enzyme.mount(<FieldBoolean {...props} />);
-    const checkbox = wrapper.find(Checkbox)
-    expect(checkbox.prop('onChange')).to.not.exist; // eslint-disable-line no-unused-expressions
-    expect(checkbox.prop('onBlur')).to.not.exist; // eslint-disable-line no-unused-expressions
-  });
 });

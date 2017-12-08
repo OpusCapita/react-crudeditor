@@ -18,7 +18,7 @@ if (!Object.entries) {
 }
 
 const removeTestField = obj => Object.keys(obj).
-  filter(key => [testNumberFieldType, 'parentContract'].indexOf(key) === -1).
+  filter(key => [testNumberFieldType, 'parentContract', 'nonExisting'].indexOf(key) === -1).
   reduce((o, cur) => ({ ...o, [cur]: obj[cur] }), {});
 
 const stripAuditable = obj => Object.keys(obj).

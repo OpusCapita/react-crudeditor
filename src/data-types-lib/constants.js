@@ -2,9 +2,10 @@ export const
 
   EMPTY_FIELD_VALUE = null,
 
-  /* ███████████████████████████████████████████*\
-   *███ FIELD TYPES (in alphabetical order) ███*
-  \*███████████████████████████████████████████*/
+  /* ███████████████████████████████████████████
+   * ███ FIELD TYPES (in alphabetical order) ███
+   * ███████████████████████████████████████████
+   */
 
   FIELD_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
 
@@ -56,9 +57,10 @@ export const
   // Each property value is of FIELD_TYPE_STRING_DECIMAL.
   FIELD_TYPE_STRING_DECIMAL_RANGE = 'stringDecimalRange',
 
-  /* ███████████████████████████████████████████*\
-   *███  UI TYPES (in alphabetical order)   ███*
-  \*███████████████████████████████████████████*/
+  /* ███████████████████████████████████████████
+   * ███  UI TYPES (in alphabetical order)   ███
+   * ███████████████████████████████████████████
+   */
 
   UI_TYPE_BOOLEAN = 'boolean', // JavaScript type "boolean".
 
@@ -92,24 +94,27 @@ export const
   // Each property value is of UI_TYPE_STRING.
   UI_TYPE_STRING_RANGE_OBJECT = 'stringRangeObject',
 
-  /* ███████████████████████████████████████████*\
-   *███ CONSTRAINTS (in alphabetical order) ███*
-  \*███████████████████████████████████████████*/
+  /* ███████████████████████████████████████████
+   * ███ CONSTRAINTS (in alphabetical order) ███
+   * ███████████████████████████████████████████
+   */
 
   CONSTRAINT_MIN = 'min',
   CONSTRAINT_MAX = 'max',
 
-  /* ███████████████████████████████████████████*\
-   *███ ERROR CODES (in alphabetical order) ███*
-  \*███████████████████████████████████████████*/
+  /* ███████████████████████████████████████████
+   * ███ ERROR CODES (in alphabetical order) ███
+   * ███████████████████████████████████████████
+   */
 
   ERROR_CODE_FORMATING = 400,
   ERROR_CODE_PARSING = 400,
   ERROR_CODE_VALIDATION = 400,
 
-  /* ███████████████████████████████████████████*\
-   *███  ERROR IDS (in alphabetical order)  ███*
-  \*███████████████████████████████████████████*/
+  /* ███████████████████████████████████████████
+   * ███  ERROR IDS (in alphabetical order)  ███
+   * ███████████████████████████████████████████
+   */
 
   ERROR_FORMAT = 'formatError',
   ERROR_INVALID_BOOLEAN = 'invalidBooleanValue',

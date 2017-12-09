@@ -31,9 +31,10 @@ export const
 
   UNPARSABLE_FIELD_VALUE = undefined,
 
-  /* █████████████████████████████████████████████*\
-   *███ VIEW STATUSES (in alphabetical order) ███*
-  \*█████████████████████████████████████████████*/
+  /* █████████████████████████████████████████████
+   * ███ VIEW STATUSES (in alphabetical order) ███
+   * █████████████████████████████████████████████
+   */
 
   STATUS_CREATING = 'creating',
   STATUS_EXTRACTING = 'extracting',
@@ -45,9 +46,10 @@ export const
   STATUS_UNINITIALIZED = 'uninitialized',
   STATUS_UPDATING = 'updating',
 
-  /* ███████████████████████████████████████*\
-   *███ ACTIONS (in alphabetical order) ███*
-  \*███████████████████████████████████████*/
+  /* ███████████████████████████████████████
+   * ███ ACTIONS (in alphabetical order) ███
+   * ███████████████████████████████████████
+   */
 
   ACTIVE_VIEW_CHANGE = namespace + '/ACTIVE_VIEW_CHANGE',
 
@@ -60,9 +62,10 @@ export const
 
   VIEW_SOFT_REDIRECT = namespace + '/VIEW_SOFT_REDIRECT',
 
-  /* ██████████████████████████████████████*\
-   *███ ERRORS (in alphabetical order) ███*
-  \*██████████████████████████████████████*/
+  /* ██████████████████████████████████████
+   * ███ ERRORS (in alphabetical order) ███
+   * ██████████████████████████████████████
+   */
 
   ERROR_CODE_INTERNAL = 500,
   ERROR_NOT_FOUND = 404,

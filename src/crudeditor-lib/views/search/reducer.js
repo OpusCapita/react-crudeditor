@@ -152,7 +152,7 @@ export const buildDefaultStoreState = modelDefinition => ({
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => {
+export default (modelDefinition, i18n) => {
   const buildLogicalKey = getLogicalKeyBuilder(modelDefinition.model.fields);
 
   // Remove benchmarkInstances from sourceInstances by comparing their Logical Keys.
@@ -173,6 +173,7 @@ export default modelDefinition => {
 
     const newStoreStateSlice = {};
 
+    /* eslint-disable padded-blocks */
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
     if (type === VIEW_INITIALIZE_REQUEST) {
@@ -181,16 +182,21 @@ export default modelDefinition => {
         newStoreStateSlice.hideSearchForm = hideSearchForm;
       }
       newStoreStateSlice.status = STATUS_INITIALIZING;
+
     } else if (type === VIEW_INITIALIZE_FAIL) {
       newStoreStateSlice.status = STATUS_UNINITIALIZED;
+
     } else if (type === VIEW_INITIALIZE_SUCCESS) {
       newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === VIEW_REDIRECT_REQUEST) {
       newStoreStateSlice.status = STATUS_REDIRECTING;
+
     } else if (type === VIEW_REDIRECT_FAIL) {
       newStoreStateSlice.status = STATUS_READY;
+
     } else if (type === VIEW_REDIRECT_SUCCESS) {
       // Do not reset store to initial uninitialized state because
       // filter, order, sort, etc. must remain after returning from other Views.
@@ -210,8 +216,10 @@ export default modelDefinition => {
       newStoreStateSlice.status = STATUS_UNINITIALIZED;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCES_DELETE_REQUEST) {
       newStoreStateSlice.status = STATUS_DELETING;
+
     } else if (type === INSTANCES_DELETE_SUCCESS) {
       const { instances } = payload;
       newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
@@ -219,14 +227,17 @@ export default modelDefinition => {
       newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
 
       newStoreStateSlice.status = STATUS_READY;
+
     } else if (type === INSTANCES_DELETE_FAIL) {
       newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCES_SEARCH_REQUEST && storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_SEARCHING;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCES_SEARCH_SUCCESS) {
       const {
         filter,
@@ -269,15 +280,18 @@ export default modelDefinition => {
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCES_SEARCH_FAIL && storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === FORM_FILTER_RESET) {
       newStoreStateSlice.formattedFilter = u.constant(buildDefaultFormattedFilter(modelDefinition));
       newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === FORM_FILTER_UPDATE) {
       const {
         name: fieldName,
@@ -344,26 +358,34 @@ export default modelDefinition => {
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === ALL_INSTANCES_SELECT) {
       newStoreStateSlice.selectedInstances = storeState.resultInstances;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === ALL_INSTANCES_DESELECT) {
       newStoreStateSlice.selectedInstances = [];
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCE_SELECT) {
       let { instance } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.concat([instance]);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === INSTANCE_DESELECT) {
       let { instance } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => ins !== instance);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
     } else if (type === SEARCH_FORM_TOGGLE) {
       newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+    /* eslint-enable padded-blocks */
     }
 
     return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

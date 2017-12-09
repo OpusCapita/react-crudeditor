@@ -46,11 +46,10 @@ import {
 } from '../../common/constants';
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
-const synchronizeInstances = ({ instance, newStoreStateSlice, formLayout }) => {
-  /* eslint-disable no-param-reassign */
-  newStoreStateSlice.formInstance = u.constant(cloneDeep(instance));
+const synchronizeInstances = ({ instance, formLayout }) => ({
+  formInstance: u.constant(cloneDeep(instance)),
 
-  newStoreStateSlice.formattedInstance = u.constant(Object.keys(instance).reduce(
+  formattedInstance: u.constant(Object.keys(instance).reduce(
     (rez, fieldName) => {
       const fieldLayout = findFieldLayout(fieldName)(formLayout);
 
@@ -60,9 +59,9 @@ const synchronizeInstances = ({ instance, newStoreStateSlice, formLayout }) => {
       } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
     },
     {}
-  ));
+  )),
 
-  newStoreStateSlice.errors = u.constant({
+  errors: u.constant({
     fields: Object.keys(instance).reduce(
       (rez, fieldName) => ({
         ...rez,
@@ -70,9 +69,8 @@ const synchronizeInstances = ({ instance, newStoreStateSlice, formLayout }) => {
       }),
       {}
     )
-  });
-  /* eslint-enable no-param-reassign */
-}
+  })
+});
 
 const defaultStoreStateTemplate = {
 
@@ -124,7 +122,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -134,20 +132,26 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
     newStoreStateSlice.status = STATUS_INITIALIZING;
+
   } else if (type === VIEW_INITIALIZE_FAIL) {
     newStoreStateSlice.status = STATUS_UNINITIALIZED;
+
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+
   } else if (type === VIEW_REDIRECT_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
@@ -155,16 +159,20 @@ export default modelDefinition => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   } else if (type === INSTANCES_DELETE_REQUEST) {
     newStoreStateSlice.status = STATUS_DELETING;
+
   } else if (type === INSTANCES_DELETE_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_EDIT_REQUEST && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
+
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_UPDATING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if ([INSTANCE_EDIT_SUCCESS, INSTANCE_SAVE_SUCCESS].indexOf(type) > -1) {
     const { instance } = payload;
 
@@ -199,18 +207,23 @@ export default modelDefinition => (
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
-    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
-    synchronizeInstances({ instance, newStoreStateSlice, formLayout });
+
+    newStoreStateSlice = {
+      ...newStoreStateSlice,
+      ...synchronizeInstances({ instance, formLayout })
+    };
 
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if ([INSTANCE_EDIT_FAIL, INSTANCE_SAVE_FAIL].indexOf(type) > -1 && storeState.status !== STATUS_INITIALIZING) {
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_FIELD_CHANGE) {
     const {
       name: fieldName,
@@ -276,7 +289,10 @@ export default modelDefinition => (
       }
 
       try {
-        validate(newFormValue);
+        validate(newFormValue, {
+          ...storeState.formInstance,
+          [fieldName]: newFormValue
+        });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -301,6 +317,7 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_FIELD_VALIDATE) {
     const fieldName = payload.name;
     const fieldValue = storeState.formInstance[fieldName];
@@ -308,7 +325,7 @@ export default modelDefinition => (
     if (fieldValue !== UNPARSABLE_FIELD_VALUE) {
       PARSE_LABEL: {
         try {
-          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue);
+          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 
@@ -333,7 +350,8 @@ export default modelDefinition => (
       }
     }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
       const fieldValue = storeState.formInstance[fieldName];
@@ -352,7 +370,7 @@ export default modelDefinition => (
       }
 
       try {
-        fieldLayout.validate(fieldValue);
+        fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -367,22 +385,26 @@ export default modelDefinition => (
     });
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be falsy, i.e. not specified.
 
     // reset to persistentInstance
     if (!isEqual(storeState.formInstance, storeState.persistentInstance)) {
-      synchronizeInstances({
-        instance: storeState.persistentInstance,
-        newStoreStateSlice,
-        formLayout: storeState.formLayout
-      });
+      newStoreStateSlice = {
+        ...newStoreStateSlice,
+        ...synchronizeInstances({
+          instance: storeState.persistentInstance,
+          formLayout: storeState.formLayout
+        })
+      };
     }
 
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

@@ -8,9 +8,10 @@ export const
   AFTER_ACTION_NEW = 'new',
   AFTER_ACTION_NEXT = 'next',
 
-  /* ████████████████████████████████████████████*\
-   *███ ACTION TYPES (in alphabetical order) ███*
-  \*████████████████████████████████████████████*/
+  /* ████████████████████████████████████████████
+   * ███ ACTION TYPES (in alphabetical order) ███
+   * ████████████████████████████████████████████
+   */
 
   INSTANCE_EDIT_FAIL = namespace + '/INSTANCE_EDIT_FAIL',
   INSTANCE_EDIT_REQUEST = namespace + '/INSTANCE_EDIT_REQUEST',

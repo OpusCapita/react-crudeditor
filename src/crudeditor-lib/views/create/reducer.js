@@ -79,7 +79,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -89,6 +89,7 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE) {
@@ -159,32 +160,40 @@ export default modelDefinition => (
 
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SAVE_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = activeTab;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_FIELD_CHANGE) {
     const {
       name: fieldName,
@@ -244,7 +253,10 @@ export default modelDefinition => (
       }
 
       try {
-        validate(newFormValue);
+        validate(newFormValue, {
+          ...storeState.formInstance,
+          [fieldName]: newFormValue
+        });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -269,6 +281,7 @@ export default modelDefinition => (
     }
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_FIELD_VALIDATE) {
     const fieldName = payload.name;
     const fieldValue = storeState.formInstance[fieldName];
@@ -276,7 +289,7 @@ export default modelDefinition => (
     if (fieldValue !== UNPARSABLE_FIELD_VALUE) {
       PARSE_LABEL: {
         try {
-          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue);
+          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 
@@ -301,7 +314,8 @@ export default modelDefinition => (
       }
     }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
       const fieldValue = storeState.formInstance[fieldName];
@@ -320,7 +334,7 @@ export default modelDefinition => (
       }
 
       try {
-        fieldLayout.validate(fieldValue);
+        fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -334,7 +348,8 @@ export default modelDefinition => (
       }
     });
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

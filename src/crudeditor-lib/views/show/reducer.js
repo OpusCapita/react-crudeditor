@@ -61,7 +61,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -71,27 +71,35 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
     newStoreStateSlice.status = STATUS_INITIALIZING;
+
   } else if (type === VIEW_INITIALIZE_FAIL) {
     newStoreStateSlice.status = STATUS_UNINITIALIZED;
+
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+
   } else if (type === VIEW_REDIRECT_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SHOW_REQUEST) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
+
   } else if (type === INSTANCE_SHOW_SUCCESS) {
     const { instance } = payload;
 
@@ -133,19 +141,19 @@ export default modelDefinition => (
       {}
     ));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
     }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

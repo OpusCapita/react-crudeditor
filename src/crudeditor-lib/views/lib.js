@@ -214,7 +214,6 @@ export const buildFieldRender = ({
     })();
 
   if (!render.hasOwnProperty('component')) {
-    // TODO: remove after the check is added to model validation.
     throw new TypeError('render.component must be defined');
   }
   if (!render.hasOwnProperty('props')) {

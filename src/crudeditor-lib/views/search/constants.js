@@ -9,9 +9,10 @@ export const
   DEFAULT_OFFSET = 0,
   DEFAULT_ORDER = 'asc',
 
-  /* ████████████████████████████████████████████*\
-   *███ ACTION TYPES (in alphabetical order) ███*
-  \*████████████████████████████████████████████*/
+  /* ████████████████████████████████████████████
+   * ███ ACTION TYPES (in alphabetical order) ███
+   * ████████████████████████████████████████████
+   */
 
   ALL_INSTANCES_SELECT = namespace + '/ALL_INSTANCES_SELECT',
   ALL_INSTANCES_DESELECT = namespace + '/ALL_INSTANCES_DESELECT',

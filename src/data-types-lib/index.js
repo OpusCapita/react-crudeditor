@@ -74,6 +74,7 @@ export const
     type: fieldType,
     constraints: {
       required,
+      validate: customValidate,
       ...constraints
     }
   }) => {
@@ -83,44 +84,46 @@ export const
       return undefined;
     }
 
-    return value => {
+    return (value, instance) => {
+      const errors = [];
+
+      if (customValidate) {
+        try {
+          customValidate(value, instance);
+        } catch (error) {
+          errors.push(...(Array.isArray(error) ? error : [error]));
+        }
+      }
+
       if (value === EMPTY_FIELD_VALUE) {
         // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
         // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
         if (required) {
-          const error = [{
+          errors.push([{
             code: ERROR_CODE_VALIDATION,
             id: ERROR_REQUIRED_MISSING,
             message: 'Required value must be set'
-          }];
-
-          throw error;
+          }]);
         }
+      } else {
+        const validator = buildValidator(value);
 
-        return true;
-      }
-
-      const validator = buildValidator(value);
-
-      const errors = Object.keys(constraints).reduce(
-        (errors, name) => {
-          if (!validator.hasOwnProperty(name)) {
-            return [...errors, {
+        Object.keys(constraints).forEach(name => {
+          if (validator.hasOwnProperty(name)) {
+            try {
+              validator[name](constraints[name]);
+            } catch (error) {
+              errors.push(...(Array.isArray(error) ? error : [error]));
+            }
+          } else {
+            errors.push({
               code: ERROR_CODE_VALIDATION,
               id: ERROR_UNKNOWN_CONSTRAINT,
               message: `Unable to validate against unknown constraint "${name}"`
-            }];
+            });
           }
-
-          try {
-            validator[name](constraints[name]);
-            return errors;
-          } catch (error) {
-            return [...errors, error];
-          }
-        },
-        []
-      );
+        });
+      }
 
       if (errors.length) {
         throw errors;

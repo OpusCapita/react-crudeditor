@@ -12,10 +12,6 @@ const buildSelectorWrapper = (...path) => selector => (storeState, modelDefiniti
 
 export const
 
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   buildViewSelectorWrapper = viewName => buildSelectorWrapper('views', viewName),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   buildCommonSelectorWrapper = _ => buildSelectorWrapper('common');

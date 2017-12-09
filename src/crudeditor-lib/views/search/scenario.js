@@ -20,6 +20,8 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
+// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
 /*
  * View life cycle scenario saga.
  * It must handle all errors and do clean-up on cancelation (happens on soft/hard redirect).
@@ -110,6 +112,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
     }
   }
 }
+
+// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 /*
  * The saga initializes the view and

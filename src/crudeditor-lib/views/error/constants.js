@@ -5,9 +5,10 @@ const namespace = VIEW_ERROR;
 export const
   VIEW_NAME = VIEW_ERROR,
 
-  /* ████████████████████████████████████████████*\
-   *███ ACTION TYPES (in alphabetical order) ███*
-  \*████████████████████████████████████████████*/
+  /* ████████████████████████████████████████████
+   * ███ ACTION TYPES (in alphabetical order) ███
+   * ████████████████████████████████████████████
+   */
 
   VIEW_INITIALIZE = namespace + '/VIEW_INITIALIZE',
 

@@ -48,16 +48,16 @@ const
   SUCCESS_NOTIFICATION_TIMEOUT = 3000,
   ERROR_NOTIFICATION_TIMEOUT = 3000;
 
-// eventsMiddleware is a function which accepts context as an argument and
+// eventsMiddleware is a function which accepts i18n as an argument and
 // returns a standard Redux middleware function
-const eventsMiddleware = ({ context, modelDefinition }) => store => next => action => {
+const eventsMiddleware = ({ i18n, modelDefinition }) => store => next => action => {
   switch (action.type) {
     case CREATE_INSTANCE_SAVE_SUCCESS:
       NotificationManager.create({
         id: NOTIFICATION_SUCCESS,
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
-        message: context.i18n.getMessage('crudEditor.objectSaved.message')
+        message: i18n.getMessage('crudEditor.objectSaved.message')
       });
       break;
     case EDIT_INSTANCE_SAVE_SUCCESS:
@@ -65,7 +65,7 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         id: NOTIFICATION_SUCCESS,
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
-        message: context.i18n.getMessage('crudEditor.objectUpdated.message')
+        message: i18n.getMessage('crudEditor.objectUpdated.message')
       });
       break;
     case CREATE_INSTANCE_SAVE_FAIL:
@@ -74,7 +74,7 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         id: NOTIFICATION_ERROR,
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+        message: i18n.getMessage('crudEditor.objectSaveFailed.message')
       });
       break;
     case INSTANCES_DELETE_FAIL:
@@ -83,8 +83,8 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: action.payload === 1 ?
-          context.i18n.getMessage('crudEditor.objectDeleteFailed.message') :
-          context.i18n.getMessage('crudEditor.objectsDeleteFailed.message', {
+          i18n.getMessage('crudEditor.objectDeleteFailed.message') :
+          i18n.getMessage('crudEditor.objectsDeleteFailed.message', {
             count: action.payload
           })
       });
@@ -95,8 +95,8 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: action.payload.instances.length === 1 ?
-          context.i18n.getMessage('crudEditor.objectDeleted.message') :
-          context.i18n.getMessage('crudEditor.objectsDeleted.message', {
+          i18n.getMessage('crudEditor.objectDeleted.message') :
+          i18n.getMessage('crudEditor.objectsDeleted.message', {
             labels: action.payload.instances.map(modelDefinition.ui.instanceLabel).join(', ')
           })
       });
@@ -107,7 +107,7 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
           id: NOTIFICATION_ERROR,
           type: 'error',
           timeOut: ERROR_NOTIFICATION_TIMEOUT,
-          message: context.i18n.getMessage('crudEditor.found.items.message', { count: 0 })
+          message: i18n.getMessage('crudEditor.found.items.message', { count: 0 })
         });
       }
       break;
@@ -118,7 +118,7 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
         id: NOTIFICATION_VALIDATION_ERROR,
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: context.i18n.getMessage('default.invalid.validator.message')
+        message: i18n.getMessage('default.invalid.validator.message')
       });
       break;
     case CREATE_INSTANCE_VALIDATE_SUCCESS:
@@ -149,7 +149,7 @@ const eventsMiddleware = ({ context, modelDefinition }) => store => next => acti
           id: NOTIFICATION_ERROR,
           type: 'error',
           timeOut: ERROR_NOTIFICATION_TIMEOUT,
-          message: context.i18n.getMessage('crudEditor.objectSaveFailed.message')
+          message: i18n.getMessage('crudEditor.objectSaveFailed.message')
         });
       }
 

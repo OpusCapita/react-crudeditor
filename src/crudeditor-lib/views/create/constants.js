@@ -6,9 +6,10 @@ export const
   VIEW_NAME = VIEW_CREATE,
   AFTER_ACTION_NEW = 'new',
 
-  /* ████████████████████████████████████████████*\
-   *███ ACTION TYPES (in alphabetical order) ███*
-  \*████████████████████████████████████████████*/
+  /* ████████████████████████████████████████████
+   * ███ ACTION TYPES (in alphabetical order) ███
+   * ████████████████████████████████████████████
+   */
 
   ALL_INSTANCE_FIELDS_VALIDATE = namespace + '/ALL_INSTANCE_FIELDS_VALIDATE',
 

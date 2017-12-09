@@ -138,10 +138,37 @@ export default baseModelDefinition => {
       const prefixedTranslations = getPrefixedTranslations(modelDefinition.model.translations, prefix);
       this.context.i18n.register(prefix, prefixedTranslations);
 
+      const modelMessageKeys = Object.keys(modelDefinition.model.translations).reduce(
+        (acc, lang) => [
+          ...acc,
+          ...Object.keys(modelDefinition.model.translations[lang])
+        ],
+        []
+      );
+
+      const originalI18n = this.context.i18n;
+
+      const adjustedI18n = Object.create(originalI18n, {
+        // this method mimics @opuscapita/i18n getMessage
+        // it queries for prefixed model messages to allow multi-model/multi-crud apps
+        getMessage: {
+          get() {
+            return (key, payload) => originalI18n.getMessage(
+              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
+              payload
+            );
+          }
+        }
+      });
+
+      this.adjustedContext = {
+        i18n: adjustedI18n
+      };
+
       const sagaMiddleware = createSagaMiddleware();
 
       this.store = createStore(
-        getReducer(modelDefinition),
+        getReducer(modelDefinition, adjustedI18n),
         (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
           // XXX: ensure each middleware calls "next(action)" synchronously,
           // or else ensure that "redux-saga" is the last middleware in the call chain.
@@ -150,7 +177,12 @@ export default baseModelDefinition => {
             getOnTransition: this.getOnTransition,
             modelDefinition
           }),
-          notificationsMiddleware({ context: this.context, modelDefinition }),
+
+          notificationsMiddleware({
+            i18n: adjustedI18n,
+            modelDefinition
+          }),
+
           sagaMiddleware
         ))
       );
@@ -159,28 +191,7 @@ export default baseModelDefinition => {
     }
 
     getChildContext() {
-      const
-        { translations } = modelDefinition.model,
-        modelMessageKeys = Object.keys(translations).reduce(
-          (acc, lang) => [...acc, ...Object.keys(translations[lang])],
-          []
-        ),
-        i18nSource = this.context.i18n;
-
-      return {
-        i18n: Object.create(i18nSource, {
-          // this method mimics @opuscapita/i18n getMessage
-          // it queries for prefixed model messages to allow multi-model/multi-crud apps
-          getMessage: {
-            get() {
-              return (key, payload) => i18nSource.getMessage(
-                modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
-                payload
-              )
-            }
-          }
-        })
-      }
+      return this.adjustedContext;
     }
 
     componentWillReceiveProps(props) {
@@ -214,5 +225,5 @@ export default baseModelDefinition => {
       </Provider>)
   }
 
-  return CrudWrapper
+  return CrudWrapper;
 };

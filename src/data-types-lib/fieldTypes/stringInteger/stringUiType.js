@@ -10,14 +10,14 @@ export default {
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ►  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_INTEGER  ►  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   format: value => new Big(value).toString(),
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_INTEGER  ◄  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_INTEGER  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   parse: value => {

@@ -10,14 +10,14 @@ export default {
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_DECIMAL  ►  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   format: value => new Big(value).toString(),
 
   /*
    * ████████████████████████████████████████████████████████
-   * ████  FIELD_TYPE_STRING_DECIMAL  ◄  UI_TYPE_STRING  ████
+   * ████  FIELD_TYPE_DECIMAL  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
   parse: value => {
@@ -29,7 +29,7 @@ export default {
 
     try {
       return new Big(optimized).toString();
-    } catch (_) {
+    } catch (e) {
       const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_DECIMAL,

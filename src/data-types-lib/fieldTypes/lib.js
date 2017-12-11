@@ -36,7 +36,7 @@ const getConverter = ({ EMPTY_UI_VALUE, converter }) => ['format', 'parse'].redu
 export const
   buildRangeFieldType = (baseFieldType, baseUiTypes) => ({
 
-    isValid: value => {
+    isValid(value) {
       if (value === EMPTY_FIELD_VALUE) {
         return true;
       }

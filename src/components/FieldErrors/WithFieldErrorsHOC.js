@@ -29,48 +29,51 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     showFieldErrors: {}
   }
 
-  // fieldName <string> or <[string, string{'to', 'from'}]>
-  // show <boolean>
-  toggleFieldErrors = (fieldName, show) => this.setState(
-    prevState => typeof fieldName !== 'boolean' ? {
-      showFieldErrors: {
-        ...prevState.showFieldErrors,
-        [fieldName]: show
-      }
-    } : { // if fieldName is boolean - set value for all fields
-      showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
-        reduce((obj, key) => ({ ...obj, [key]: fieldName }), {})
-    }
-  );
+    // fieldName <string> or <[string, string{'to', 'from'}]>
+    // show <boolean>
+    toggleFieldErrors = (fieldName, show) => this.setState(
+      prevState => ({
+        showFieldErrors: typeof fieldName === 'boolean' ?
+          Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
+            (obj, key) => ({
+              ...obj,
+              [key]: fieldName
+            }),
+            {}
+          ) : {
+            ...prevState.showFieldErrors,
+            [fieldName]: show
+          }
+      })
+    );
 
-  shouldShowErrors = fieldName => !!(
-    this.state.showFieldErrors[fieldName] &&
-    this.props.model.data.fieldErrors[fieldName] &&
-    this.props.model.data.fieldErrors[fieldName].length > 0
-  )
+    shouldShowErrors = fieldName => !!(
+      this.state.showFieldErrors[fieldName] &&
+      this.props.model.data.fieldErrors[fieldName]
+    )
 
-  // public API function for getting field errors
-  fieldErrors = fieldName => {
-    const { fieldErrors: errors } = this.props.model.data;
-    const { showFieldErrors: showErrors } = this.state;
+    // public API function for getting field errors
+    fieldErrors = fieldName => {
+      const { fieldErrors: errors } = this.props.model.data;
+      const { showFieldErrors: showErrors } = this.state;
 
-    // called without arguments should return a boolean (are there any errors to display on view or not)
-    if (!fieldName) {
-      return !!Object.keys(showErrors).
-        filter(
-          f => typeof showErrors[f] === 'object' ?
-            Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
-            showErrors[f]
-        ).
+      // called without arguments should return a boolean (are there any errors to display on view or not)
+      if (!fieldName) {
+        return !!Object.keys(showErrors).
+          filter(
+            f => typeof showErrors[f] === 'object' ?
+              Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
+              showErrors[f]
+          ).
         // here we have fields which are set to be true in showErrors
         // now we need to check if there are actual errors for these fields
-        some(f => errors[f] && errors[f].length > 0);
-    }
+          some(f => errors[f] && errors[f].length > 0);
+      }
 
-    return this.shouldShowErrors(fieldName) ?
-      errors[fieldName] :
-      [];
-  }
+      return this.shouldShowErrors(fieldName) ?
+        errors[fieldName] :
+        [];
+    }
 
   // DOM events handlers passed to UI components
 

@@ -140,11 +140,11 @@ const eventsMiddleware = ({ i18n, modelDefinition }) => store => next => action 
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:
     case EDIT_ALL_INSTANCE_FIELDS_VALIDATE:
       const result = next(action);
-      const currentView = store.getState().common.activeViewName;
-      const errorsObj = store.getState().views[currentView].errors.fields;
-      const errorsExist = Object.keys(errorsObj).reduce((arr, key) => arr.concat(errorsObj[key]), []).length > 0;
+      const storeState = store.getState();
+      const currentView = storeState.common.activeViewName;
+      const fieldErrors = storeState.views[currentView].errors.fields;
 
-      if (errorsExist) {
+      if (Object.keys(fieldErrors).length > 0) {
         NotificationManager.create({
           id: NOTIFICATION_ERROR,
           type: 'error',

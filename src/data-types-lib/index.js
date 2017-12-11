@@ -99,11 +99,11 @@ export const
         // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
         // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
         if (required) {
-          errors.push([{
+          errors.push({
             code: ERROR_CODE_VALIDATION,
             id: ERROR_REQUIRED_MISSING,
             message: 'Required value must be set'
-          }]);
+          });
         }
       } else {
         const validator = buildValidator(value);

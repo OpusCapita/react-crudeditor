@@ -11,23 +11,29 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: value => String(value),
+  format: (value, { i18n } = {}) => value === EMPTY_FIELD_VALUE ?
+    String(value) :
+    i18n.formatDecimalNumber(value),
 
   /*
    * █████████████████████████████████████████████████
    * ████  FIELD_TYPE_DECIMAL  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  parse: value => {
-    const optimized = value.trim();
+  parse: (value, { i18n }) => {
+    let optimized;
+
+    try {
+      optimized = i18n.parseDecimalNumber(value)
+    } catch (err) {
+      throw err
+    }
 
     if (!optimized) {
       return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
     }
 
-    let n = parseFloat(optimized);
-
-    if (isNaN(optimized) || isNaN(n) || String(n) !== optimized) {
+    if (isNaN(optimized)) {
       const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_DECIMAL,
@@ -37,6 +43,6 @@ export default {
       throw error;
     }
 
-    return n;
+    return optimized;
   }
 };

@@ -31,7 +31,7 @@ export const
     }
 
     return {
-      format(value) {
+      format(value, { i18n } = {}) {
         if (!fieldTypes[fieldType].isValid(value)) {
           const error = {
             code: ERROR_CODE_FORMATING,
@@ -44,9 +44,9 @@ export const
 
         return value === EMPTY_FIELD_VALUE ?
           uiTypes[uiType].EMPTY_VALUE :
-          converter.format(value);
+          converter.format(value, { i18n });
       },
-      parse(value) {
+      parse(value, { i18n } = {}) {
         if (!uiTypes[uiType].isValid(value)) {
           const error = {
             code: ERROR_CODE_PARSING,
@@ -59,7 +59,7 @@ export const
 
         return isEqual(value, uiTypes[uiType].EMPTY_VALUE) ?
           EMPTY_FIELD_VALUE :
-          converter.parse(value);
+          converter.parse(value, { i18n });
       }
     }
   },

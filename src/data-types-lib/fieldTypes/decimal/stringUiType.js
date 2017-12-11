@@ -11,7 +11,7 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: (value, { i18n } = {}) => value === EMPTY_FIELD_VALUE ?
+  format: ({ value, i18n }) => value === EMPTY_FIELD_VALUE ?
     String(value) :
     i18n.formatDecimalNumber(value),
 
@@ -20,7 +20,7 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  parse: (value, { i18n }) => {
+  parse: ({ value, i18n }) => {
     let optimized;
 
     try {

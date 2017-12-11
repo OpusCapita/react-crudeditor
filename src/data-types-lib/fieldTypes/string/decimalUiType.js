@@ -10,7 +10,7 @@ export default {
    * ████  FIELD_TYPE_STRING  ►  UI_TYPE_DECIMAL  ████
    * █████████████████████████████████████████████████
    */
-  format: value => {
+  format: ({ value }) => {
     const n = Number(value);
 
     if (n !== parseFloat(value)) {
@@ -31,5 +31,5 @@ export default {
    * ████  FIELD_TYPE_STRING  ◄  UI_TYPE_DECIMAL  ████
    * █████████████████████████████████████████████████
    */
-  parse: value => value.toString()
+  parse: ({ value }) => value.toString()
 };

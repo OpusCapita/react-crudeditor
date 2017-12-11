@@ -7,7 +7,7 @@ const convert = ({ value, EMPTY_UI_VALUE, direction, converter, edge, i18n }) =>
     [EMPTY_UI_VALUE, EMPTY_FIELD_VALUE];
 
   return value.hasOwnProperty(edge) && value[edge] !== emptySource ?
-    converter[direction](value[edge], { i18n }) :
+    converter[direction]({ value: value[edge], i18n }) :
     emptyDestination;
 };
 
@@ -22,7 +22,7 @@ const getRange = ({ value, EMPTY_UI_VALUE, direction, converter, i18n }) => ['fr
 const getConverter = ({ EMPTY_UI_VALUE, converter }) => ['format', 'parse'].reduce(
   (rez, direction) => ({
     ...rez,
-    [direction]: (value, { i18n }) => getRange({
+    [direction]: ({ value, i18n }) => getRange({
       value,
       EMPTY_UI_VALUE,
       direction,

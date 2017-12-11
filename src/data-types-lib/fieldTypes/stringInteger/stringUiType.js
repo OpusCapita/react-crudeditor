@@ -13,14 +13,14 @@ export default {
    * ████  FIELD_TYPE_STRING_INTEGER  ►  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
-  format: value => new Big(value).toString(),
+  format: ({ value }) => new Big(value).toString(),
 
   /*
    * ████████████████████████████████████████████████████████
    * ████  FIELD_TYPE_STRING_INTEGER  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████████████
    */
-  parse: value => {
+  parse: ({ value }) => {
     const optimized = value.trim();
 
     if (!optimized) {

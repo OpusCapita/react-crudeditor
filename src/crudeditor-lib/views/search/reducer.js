@@ -77,7 +77,7 @@ const buildDefaultFormattedFilter = ({
     }
   }) => ({
     ...rez,
-    [fieldName]: format(EMPTY_FIELD_VALUE)
+    [fieldName]: format({ value: EMPTY_FIELD_VALUE })
   }),
   {}
 );
@@ -106,7 +106,7 @@ const buildFormattedFilter = ({
 
     return {
       ...rez,
-      [fieldName]: format(filter[fieldName], { i18n })
+      [fieldName]: format({ value: filter[fieldName], i18n })
     };
   },
   {}
@@ -316,7 +316,7 @@ export default (modelDefinition, i18n) => {
         let newFormValue;
 
         try {
-          newFormValue = converter.parse(fieldValue, { i18n });
+          newFormValue = converter.parse({ value: fieldValue, i18n });
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 
@@ -347,7 +347,7 @@ export default (modelDefinition, i18n) => {
           };
         }
 
-        const newFormattedValue = converter.format(newFormValue, { i18n });
+        const newFormattedValue = converter.format({ value: newFormValue, i18n });
 
         if (!isEqual(newFormattedValue, storeState.formattedFilter[fieldName])) {
           newStoreStateSlice.formattedFilter = {

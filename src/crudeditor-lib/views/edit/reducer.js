@@ -55,7 +55,7 @@ const synchronizeInstances = ({ instance, formLayout, i18n }) => ({
 
       return fieldLayout ? {
         ...rez,
-        [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName], { i18n })
+        [fieldName]: fieldLayout.render.valueProp.converter.format({ value: instance[fieldName], i18n })
       } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
     },
     {}
@@ -243,7 +243,7 @@ export default (modelDefinition, i18n) => (
       let newFormValue;
 
       try {
-        newFormValue = converter.parse(fieldValue, { i18n });
+        newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -280,7 +280,7 @@ export default (modelDefinition, i18n) => (
         };
       }
 
-      const newFormattedValue = converter.format(newFormValue, { i18n });
+      const newFormattedValue = converter.format({ value: newFormValue, i18n });
 
       if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
         newStoreStateSlice.formattedInstance = {

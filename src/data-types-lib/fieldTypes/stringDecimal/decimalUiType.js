@@ -13,7 +13,7 @@ export default {
    * ████  FIELD_TYPE_STRING_DECIMAL  ►  UI_TYPE_DECIMAL  ████
    * █████████████████████████████████████████████████████████
    */
-  format: origValue => {
+  format: ({ value: origValue }) => {
     const value = new Big(origValue);
     const n = Number(value);
 
@@ -36,5 +36,5 @@ export default {
    * ████  FIELD_TYPE_STRING_DECIMAL  ◄  UI_TYPE_DECIMAL  ████
    * █████████████████████████████████████████████████████████
    */
-  parse: value => new Big(value).toString()
+  parse: ({ value }) => new Big(value).toString()
 };

@@ -21,15 +21,15 @@ export default {
    * █████████████████████████████████████████████████
    */
   parse: ({ value, i18n }) => {
-    let optimized;
+    let n;
 
     try {
-      optimized = i18n.parseDecimalNumber(value || null)
+      n = i18n.parseDecimalNumber(value || null)
     } catch (err) {
       throw err
     }
 
-    if (isNaN(optimized)) {
+    if (isNaN(n)) {
       const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_DECIMAL,
@@ -39,6 +39,6 @@ export default {
       throw error;
     }
 
-    return optimized;
+    return n;
   }
 };

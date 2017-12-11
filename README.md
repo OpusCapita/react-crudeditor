@@ -631,6 +631,12 @@ Model Definition is an object describing an entity. It has the following structu
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                     ?converter: { format, parse }
                   }
+                },
+                ?validate(<serializable, field value>, <object, entity instance>) { // Field-validator.
+                  ...
+                  throw [<Instance Validation Error>, ...];
+                  ...
+                  return true;
                 }
               }),
               // Passing additional propName property to FieldInputComponent:
@@ -644,6 +650,12 @@ Model Definition is an object describing an entity. It has the following structu
                     ?name: <string, a name of Component prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                     ?converter: { format, parse }
+                  },
+                  ?validate(<serializable, field value>, <object, entity instance>) { // Field-validator.
+                    ...
+                    throw [<Instance Validation Error>, ...];
+                    ...
+                    return true;
                   }
                 }
               }),
@@ -660,6 +672,12 @@ Model Definition is an object describing an entity. It has the following structu
                   ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                   ?converter: { format, parse }
                 }
+              },
+              ?validate(<serializable, field value>, <object, entity instance>) { // Field-validator.
+                ...
+                throw [<Instance Validation Error>, ...];
+                ...
+                return true;
               }
             }),
             ...
@@ -677,6 +695,12 @@ Model Definition is an object describing an entity. It has the following structu
                   ?converter: { format, parse }
                 }
               }
+              ?validate(<serializable, field value>, <object, entity instance>) { // Field-validator.
+                ...
+                throw [<Instance Validation Error>, ...];
+                ...
+                return true;
+              }
             }),
             ...
           ),
@@ -691,6 +715,12 @@ Model Definition is an object describing an entity. It has the following structu
                 ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                 ?converter: { format, parse }
               }
+            }
+            ?validate(<serializable, field value>, <object, entity instance>) { // Field-validator.
+              ...
+              throw [<Instance Validation Error>, ...];
+              ...
+              return true;
             }
           }),
           ...

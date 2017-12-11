@@ -32,13 +32,9 @@ import {
 
   UI_TYPE_BOOLEAN,
   UI_TYPE_DATE,
-  UI_TYPE_INTEGER,
-  UI_TYPE_DECIMAL,
   UI_TYPE_STRING,
 
   UI_TYPE_DATE_RANGE_OBJECT,
-  UI_TYPE_INTEGER_RANGE_OBJECT,
-  UI_TYPE_DECIMAL_RANGE_OBJECT,
   UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
 
@@ -73,12 +69,6 @@ const namedComponentInfo = ({
         case 'date':
           uiType = UI_TYPE_DATE;
           break;
-        case 'integer':
-          uiType = UI_TYPE_INTEGER;
-          break;
-        case 'decimal':
-          uiType = UI_TYPE_DECIMAL;
-          break;
         case 'string':
           uiType = UI_TYPE_STRING;
           break;
@@ -98,12 +88,6 @@ const namedComponentInfo = ({
       switch (props.type) {
         case 'date':
           uiType = UI_TYPE_DATE_RANGE_OBJECT;
-          break;
-        case 'integer':
-          uiType = UI_TYPE_INTEGER_RANGE_OBJECT;
-          break;
-        case 'decimal':
-          uiType = UI_TYPE_DECIMAL_RANGE_OBJECT;
           break;
         case 'string':
           uiType = UI_TYPE_STRING_RANGE_OBJECT;
@@ -134,13 +118,13 @@ const defaultFieldRenders = {
   [FIELD_TYPE_INTEGER]: {
     component: 'input',
     props: {
-      type: 'integer'
+      type: 'string'
     }
   },
   [FIELD_TYPE_DECIMAL]: {
     component: 'input',
     props: {
-      type: 'decimal'
+      type: 'string'
     }
   },
   [FIELD_TYPE_STRING]: {
@@ -170,13 +154,13 @@ const defaultFieldRenders = {
   [FIELD_TYPE_INTEGER_RANGE]: {
     component: 'rangeInput',
     props: {
-      type: 'integer'
+      type: 'string'
     }
   },
   [FIELD_TYPE_DECIMAL_RANGE]: {
     component: 'rangeInput',
     props: {
-      type: 'decimal'
+      type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DATE_RANGE]: {
@@ -268,8 +252,8 @@ export const buildFieldRender = ({
 
   if (!render.valueProp.hasOwnProperty('converter')) {
     render.valueProp.converter = {
-      format: value => value,
-      parse: value => value
+      format: ({ value }) => value,
+      parse: ({ value }) => value
     };
   }
 

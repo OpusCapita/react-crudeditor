@@ -46,7 +46,7 @@ import {
 } from '../../common/constants';
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
-const synchronizeInstances = ({ instance, formLayout }) => ({
+const synchronizeInstances = ({ instance, formLayout, i18n }) => ({
   formInstance: u.constant(cloneDeep(instance)),
 
   formattedInstance: u.constant(Object.keys(instance).reduce(
@@ -55,7 +55,7 @@ const synchronizeInstances = ({ instance, formLayout }) => ({
 
       return fieldLayout ? {
         ...rez,
-        [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName])
+        [fieldName]: fieldLayout.render.valueProp.converter.format({ value: instance[fieldName], i18n })
       } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
     },
     {}
@@ -204,7 +204,7 @@ export default (modelDefinition, i18n) => (
 
     newStoreStateSlice = {
       ...newStoreStateSlice,
-      ...synchronizeInstances({ instance, formLayout })
+      ...synchronizeInstances({ instance, formLayout, i18n })
     };
 
     if (storeState.status !== STATUS_INITIALIZING) {
@@ -237,7 +237,7 @@ export default (modelDefinition, i18n) => (
       let newFormValue;
 
       try {
-        newFormValue = converter.parse(fieldValue);
+        newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -274,7 +274,7 @@ export default (modelDefinition, i18n) => (
         };
       }
 
-      const newFormattedValue = converter.format(newFormValue);
+      const newFormattedValue = converter.format({ value: newFormValue, i18n });
 
       if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
         newStoreStateSlice.formattedInstance = {
@@ -387,7 +387,8 @@ export default (modelDefinition, i18n) => (
         ...newStoreStateSlice,
         ...synchronizeInstances({
           instance: storeState.persistentInstance,
-          formLayout: storeState.formLayout
+          formLayout: storeState.formLayout,
+          i18n
         })
       };
     }

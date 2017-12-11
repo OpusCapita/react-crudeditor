@@ -7,12 +7,12 @@ export default {
    * ████  FIELD_TYPE_STRING  ►  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████
    */
-  format: value => value,
+  format: ({ value }) => value,
 
   /*
    * ████████████████████████████████████████████████
    * ████  FIELD_TYPE_STRING  ◄  UI_TYPE_STRING  ████
    * ████████████████████████████████████████████████
    */
-  parse: value => value || EMPTY_FIELD_VALUE
+  parse: ({ value }) => value || EMPTY_FIELD_VALUE
 };

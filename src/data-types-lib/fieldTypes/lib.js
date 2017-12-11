@@ -1,20 +1,20 @@
 import { EMPTY_FIELD_VALUE } from '../constants';
 import uiTypes from '../uiTypes';
 
-const convert = ({ value, EMPTY_UI_VALUE, direction, converter, edge }) => {
+const convert = ({ value, EMPTY_UI_VALUE, direction, converter, edge, i18n }) => {
   const [emptySource, emptyDestination] = direction === 'format' ?
     [EMPTY_FIELD_VALUE, EMPTY_UI_VALUE] :
     [EMPTY_UI_VALUE, EMPTY_FIELD_VALUE];
 
   return value.hasOwnProperty(edge) && value[edge] !== emptySource ?
-    converter[direction](value[edge]) :
+    converter[direction]({ value: value[edge], i18n }) :
     emptyDestination;
 };
 
-const getRange = ({ value, EMPTY_UI_VALUE, direction, converter }) => ['from', 'to'].reduce(
+const getRange = ({ value, EMPTY_UI_VALUE, direction, converter, i18n }) => ['from', 'to'].reduce(
   (rez, edge) => ({
     ...rez,
-    [edge]: convert({ value, EMPTY_UI_VALUE, direction, converter, edge })
+    [edge]: convert({ value, EMPTY_UI_VALUE, direction, converter, edge, i18n })
   }),
   {}
 );
@@ -22,11 +22,12 @@ const getRange = ({ value, EMPTY_UI_VALUE, direction, converter }) => ['from', '
 const getConverter = ({ EMPTY_UI_VALUE, converter }) => ['format', 'parse'].reduce(
   (rez, direction) => ({
     ...rez,
-    [direction]: value => getRange({
+    [direction]: ({ value, i18n }) => getRange({
       value,
       EMPTY_UI_VALUE,
       direction,
-      converter
+      converter,
+      i18n
     })
   }),
   {}

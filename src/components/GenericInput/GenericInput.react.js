@@ -14,15 +14,25 @@ export default class GenericInput extends PureComponent {
   }
 
   render() {
-    const { type, ...props } = this.props;
+    const { type, children, ...props } = this.props;
+
+    let Component = null;
 
     switch (type) {
       case 'date':
-        return <FieldDate {...props} />
+        Component = FieldDate;
+        break;
       case 'checkbox':
-        return <FieldBoolean {...props} />
+        Component = FieldBoolean;
+        break;
       default:
-        return <FieldString {...props} />
+        Component = FieldString;
     }
+
+    return (
+      <Component {...props}>
+        {children}
+      </Component>
+    )
   }
 }

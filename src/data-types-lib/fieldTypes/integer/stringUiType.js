@@ -24,7 +24,7 @@ export default {
     let optimized;
 
     try {
-      optimized = i18n.parseNumber(value || '')
+      optimized = i18n.parseNumber(value || null)
     } catch (err) {
       throw err;
     }

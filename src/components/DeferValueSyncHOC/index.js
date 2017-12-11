@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { noop } from '../lib';
 
-export default WrappedComponent => class DeferValueSync extends PureComponent {
+export default WrappedComponent => class DeferValueSyncHOC extends PureComponent {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
@@ -10,9 +9,7 @@ export default WrappedComponent => class DeferValueSync extends PureComponent {
   }
 
   static defaultProps = {
-    value: null,
-    onChange: noop,
-    onBlur: noop
+    value: null
   }
 
   constructor(...args) {
@@ -23,21 +20,21 @@ export default WrappedComponent => class DeferValueSync extends PureComponent {
     }
   }
 
-  handleChange = value => this.setState({ value }, _ => this.props.onChange(value));
+  handleChange = value => this.setState({ value }, _ => this.props.onChange && this.props.onChange(value));
 
   handleBlur = _ => this.setState({
     value: this.props.value
-  }, _ => this.props.onBlur());
+  }, _ => this.props.onBlur && this.props.onBlur());
 
   render() {
-    const { children, ...props } = this.props;
+    const { children, onChange, onBlur, ...props } = this.props;
     const { value } = this.state;
 
     const newProps = {
       ...props,
       value,
-      onChange: this.handleChange,
-      onBlur: this.handleBlur
+      ...(onChange ? { onChange: this.handleChange } : null),
+      ...(onBlur ? { onBlur: this.handleBlur } : null)
     }
 
     return (

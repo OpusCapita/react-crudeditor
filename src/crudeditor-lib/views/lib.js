@@ -3,7 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import GenericInput from '../../components/GenericInput';
 import RangeInput from '../../components/RangeInput';
-import deferValueSync from '../../components/DeferValueSync';
+import deferValueSync from '../../components/DeferValueSyncHOC';
 
 import {
   converter,

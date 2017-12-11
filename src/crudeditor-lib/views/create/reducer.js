@@ -137,7 +137,7 @@ export default (modelDefinition, i18n) => (
 
         return fieldLayout ? {
           ...rez,
-          [fieldName]: fieldLayout.render.valueProp.converter.format(formInstance[fieldName])
+          [fieldName]: fieldLayout.render.valueProp.converter.format(formInstance[fieldName], { i18n })
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed.
       },
       {}
@@ -213,7 +213,7 @@ export default (modelDefinition, i18n) => (
       let newFormValue;
 
       try {
-        newFormValue = converter.parse(fieldValue);
+        newFormValue = converter.parse(fieldValue, { i18n });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
@@ -244,7 +244,7 @@ export default (modelDefinition, i18n) => (
         };
       }
 
-      const newFormattedValue = converter.format(newFormValue);
+      const newFormattedValue = converter.format(newFormValue, { i18n });
 
       if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
         newStoreStateSlice.formattedInstance = {

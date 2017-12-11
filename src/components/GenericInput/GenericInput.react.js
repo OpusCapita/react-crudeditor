@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import FieldString from '../FieldString';
 import FieldDate from '../FieldDate';
-import FieldNumber from '../FieldNumber';
 import FieldBoolean from '../FieldBoolean';
 import deferValueSync from '../DeferValueSync';
 
@@ -11,9 +10,7 @@ export default class GenericInput extends PureComponent {
     type: PropTypes.oneOf([
       'checkbox',
       'date',
-      'string',
-      'integer',
-      'decimal'
+      'string'
     ])
   }
 

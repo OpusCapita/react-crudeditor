@@ -89,7 +89,8 @@ const buildFormattedFilter = ({
       search: { searchableFields }
     }
   },
-  filter
+  filter,
+  i18n
 }) => Object.keys(filter).reduce(
   (rez, fieldName) => {
     let format;
@@ -105,7 +106,7 @@ const buildFormattedFilter = ({
 
     return {
       ...rez,
-      [fieldName]: format(filter[fieldName])
+      [fieldName]: format(filter[fieldName], { i18n })
     };
   },
   {}
@@ -206,7 +207,8 @@ export default (modelDefinition, i18n) => {
 
       newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
         modelDefinition,
-        filter: storeState.resultFilter
+        filter: storeState.resultFilter,
+        i18n
       }));
 
       newStoreStateSlice.errors = u.constant({
@@ -254,7 +256,8 @@ export default (modelDefinition, i18n) => {
 
       newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
         modelDefinition,
-        filter
+        filter,
+        i18n
       }));
 
       newStoreStateSlice.sortParams = {
@@ -313,7 +316,7 @@ export default (modelDefinition, i18n) => {
         let newFormValue;
 
         try {
-          newFormValue = converter.parse(fieldValue);
+          newFormValue = converter.parse(fieldValue, { i18n });
         } catch (err) {
           const errors = Array.isArray(err) ? err : [err];
 
@@ -344,7 +347,7 @@ export default (modelDefinition, i18n) => {
           };
         }
 
-        const newFormattedValue = converter.format(newFormValue);
+        const newFormattedValue = converter.format(newFormValue, { i18n });
 
         if (!isEqual(newFormattedValue, storeState.formattedFilter[fieldName])) {
           newStoreStateSlice.formattedFilter = {

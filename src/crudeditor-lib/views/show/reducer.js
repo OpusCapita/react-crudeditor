@@ -135,7 +135,7 @@ export default (modelDefinition, i18n) => (
 
         return fieldLayout ? {
           ...rez,
-          [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName])
+          [fieldName]: fieldLayout.render.valueProp.converter.format(instance[fieldName], { i18n })
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
       },
       {}

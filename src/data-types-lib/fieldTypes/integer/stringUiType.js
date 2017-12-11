@@ -11,23 +11,25 @@ export default {
    * ████  FIELD_TYPE_INTEGER  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: value => String(value),
+  format: (value, { i18n } = {}) => value === EMPTY_FIELD_VALUE ?
+    String(value) :
+    i18n.formatNumber(value),
 
   /*
    * █████████████████████████████████████████████████
    * ████  FIELD_TYPE_INTEGER  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  parse: value => {
-    const optimized = value.trim();
+  parse: (value, { i18n }) => {
+    let optimized;
 
-    if (!optimized) {
-      return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
+    try {
+      optimized = i18n.parseNumber(value || null)
+    } catch (err) {
+      throw err;
     }
 
-    let n = parseInt(optimized, 10);
-
-    if (isNaN(optimized) || isNaN(n) || String(n) !== optimized) {
+    if (isNaN(optimized)) {
       const error = {
         code: ERROR_CODE_PARSING,
         id: ERROR_INVALID_INTEGER,
@@ -37,6 +39,6 @@ export default {
       throw error;
     }
 
-    return n;
+    return optimized;
   }
 };

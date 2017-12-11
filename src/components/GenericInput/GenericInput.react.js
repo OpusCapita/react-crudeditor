@@ -4,6 +4,7 @@ import FieldString from '../FieldString';
 import FieldDate from '../FieldDate';
 import FieldNumber from '../FieldNumber';
 import FieldBoolean from '../FieldBoolean';
+import deferValueSync from '../DeferValueSync';
 
 export default class GenericInput extends PureComponent {
   static propTypes = {
@@ -19,17 +20,21 @@ export default class GenericInput extends PureComponent {
   render() {
     const { type, ...props } = this.props;
 
+    let Component = null;
+
     switch (type) {
       case 'date':
-        return <FieldDate {...props} />
-      case 'integer':
-        return <FieldNumber type="integer" {...props} />
-      case 'decimal':
-        return <FieldNumber type="decimal" {...props} />
+        Component = FieldDate;
+        break;
       case 'checkbox':
-        return <FieldBoolean {...props} />
+        Component = FieldBoolean;
+        break;
       default:
-        return <FieldString {...props} />
+        Component = FieldString;
     }
+
+    const DeferredComponent = deferValueSync(Component);
+
+    return <DeferredComponent {...props}/>
   }
 }

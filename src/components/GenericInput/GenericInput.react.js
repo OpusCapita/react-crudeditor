@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import FieldString from '../FieldString';
 import FieldDate from '../FieldDate';
 import FieldBoolean from '../FieldBoolean';
-import deferValueSync from '../DeferValueSync';
 
 export default class GenericInput extends PureComponent {
   static propTypes = {
@@ -15,7 +14,7 @@ export default class GenericInput extends PureComponent {
   }
 
   render() {
-    const { type, ...props } = this.props;
+    const { type, children, ...props } = this.props;
 
     let Component = null;
 
@@ -30,8 +29,10 @@ export default class GenericInput extends PureComponent {
         Component = FieldString;
     }
 
-    const DeferredComponent = deferValueSync(Component);
-
-    return <DeferredComponent {...props}/>
+    return (
+      <Component {...props}>
+        {children}
+      </Component>
+    )
   }
 }

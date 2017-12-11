@@ -1,4 +1,4 @@
-import React, { PureComponent, Children } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { noop } from '../lib';
 
@@ -23,21 +23,11 @@ export default WrappedComponent => class DeferValueSync extends PureComponent {
     }
   }
 
-  handleChange = value => {
-    console.log('hoc onChange', {value})
+  handleChange = value => this.setState({ value }, _ => this.props.onChange(value));
 
-    this.setState({
-      value
-    }, _ => this.props.onChange(value))
-  }
-
-  handleBlur = _ => {
-    console.log('hoc onBlur', {stateValue: this.state.value})
-
-    this.setState({
-      value: this.props.value
-    }, _ => this.props.onBlur())
-  }
+  handleBlur = _ => this.setState({
+    value: this.props.value
+  }, _ => this.props.onBlur());
 
   render() {
     const { children, ...props } = this.props;
@@ -49,7 +39,6 @@ export default WrappedComponent => class DeferValueSync extends PureComponent {
       onChange: this.handleChange,
       onBlur: this.handleBlur
     }
-
 
     return (
       <WrappedComponent {...newProps}>

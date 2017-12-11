@@ -38,9 +38,9 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
         [fieldName]: show
       }
     } : { // if fieldName is boolean - set value for all fields
-        showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
-          reduce((obj, key) => ({ ...obj, [key]: fieldName }), {})
-      }
+      showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
+        reduce((obj, key) => ({ ...obj, [key]: fieldName }), {})
+    }
   );
 
   shouldShowErrors = fieldName => !!(
@@ -58,9 +58,9 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     if (!fieldName) {
       return !!Object.keys(showErrors).
         filter(
-        f => typeof showErrors[f] === 'object' ?
-          Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
-          showErrors[f]
+          f => typeof showErrors[f] === 'object' ?
+            Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
+            showErrors[f]
         ).
         // here we have fields which are set to be true in showErrors
         // now we need to check if there are actual errors for these fields

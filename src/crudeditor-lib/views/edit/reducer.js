@@ -62,13 +62,7 @@ const synchronizeInstances = ({ instance, formLayout }) => ({
   )),
 
   errors: u.constant({
-    fields: Object.keys(instance).reduce(
-      (rez, fieldName) => ({
-        ...rez,
-        [fieldName]: []
-      }),
-      {}
-    )
+    fields: {}
   })
 });
 
@@ -104,8 +98,8 @@ const defaultStoreStateTemplate = {
   errors: {
 
     // object with keys as field names,
-    // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
-    // (the object has keys for all fields).
+    // values as arrays of Parsing Errors and Field Validation Errors, may not be empty.
+    // (the object does not have keys for fields with successfully parsed/validated values).
     fields: {}
   },
 
@@ -307,12 +301,8 @@ export default (modelDefinition, i18n) => (
         break PARSE_LABEL;
       }
 
-      if (storeState.errors.fields[fieldName].length) {
-        newStoreStateSlice.errors = {
-          fields: {
-            [fieldName]: []
-          }
-        };
+      if (storeState.errors.fields[fieldName]) {
+        newStoreStateSlice.errors = u.omit(fieldName);
       }
     }
 
@@ -340,12 +330,8 @@ export default (modelDefinition, i18n) => (
           break PARSE_LABEL;
         }
 
-        if (storeState.errors.fields[fieldName].length) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: []
-            }
-          };
+        if (storeState.errors.fields[fieldName]) {
+          newStoreStateSlice.errors = u.omit(fieldName);
         }
       }
     }
@@ -381,6 +367,12 @@ export default (modelDefinition, i18n) => (
             }
           };
         }
+
+        return;
+      }
+
+      if (storeState.errors.fields[fieldName]) {
+        newStoreStateSlice.errors = u.omit(fieldName);
       }
     });
 

@@ -371,7 +371,11 @@ export default (modelDefinition, i18n) => {
 
     } else if (type === INSTANCE_SELECT) {
       let { instance } = payload;
-      newStoreStateSlice.selectedInstances = storeState.selectedInstances.concat([instance]);
+
+      newStoreStateSlice.selectedInstances = [
+        ...storeState.selectedInstances,
+        instance
+      ];
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

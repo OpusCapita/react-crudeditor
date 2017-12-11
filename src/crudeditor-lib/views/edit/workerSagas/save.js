@@ -33,27 +33,20 @@ function* validateSaga(modelDefinition, meta) {
 
   const [
     instance,
-    errors
+    fieldErrors
   ] = yield select(({
     views: {
       [VIEW_NAME]: {
         formInstance,
-        errors
+        errors: {
+          fields: fieldErrors
+        }
       }
     }
   }) => [
     formInstance,
-    errors
+    fieldErrors
   ]);
-
-  const fieldErrors = Object.keys(errors.fields).reduce(
-    (rez, name) => errors.fields[name].length === 0 ?
-      rez : {
-        ...rez,
-        [name]: errors.fields[name]
-      },
-    {}
-  );
 
   if (Object.keys(fieldErrors).length) {
     throw fieldErrors;

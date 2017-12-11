@@ -33,21 +33,24 @@ const withFieldErrors = WrappedComponent => {
     // fieldName <string> or <[string, string{'to', 'from'}]>
     // show <boolean>
     toggleFieldErrors = (fieldName, show) => this.setState(
-      prevState => typeof fieldName !== 'boolean' ? {
-        showFieldErrors: {
-          ...prevState.showFieldErrors,
-          [fieldName]: show
-        }
-      } : { // if fieldName is boolean - set value for all fields
-        showFieldErrors: Object.keys(this.props.model.data.fieldErrors).
-          reduce((obj, key) => ({ ...obj, [key]: fieldName }), {})
-      }
+      prevState => ({
+        showFieldErrors: typeof fieldName === 'boolean' ?
+          Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
+            (obj, key) => ({
+              ...obj,
+              [key]: fieldName
+            }),
+            {}
+          ) : {
+            ...prevState.showFieldErrors,
+            [fieldName]: show
+          }
+      })
     );
 
     shouldShowErrors = fieldName => !!(
       this.state.showFieldErrors[fieldName] &&
-      this.props.model.data.fieldErrors[fieldName] &&
-      this.props.model.data.fieldErrors[fieldName].length > 0
+      this.props.model.data.fieldErrors[fieldName]
     )
 
     // public API function for getting field errors

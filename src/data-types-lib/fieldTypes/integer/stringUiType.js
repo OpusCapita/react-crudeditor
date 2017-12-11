@@ -29,10 +29,6 @@ export default {
       throw err;
     }
 
-    if (!optimized) {
-      return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
-    }
-
     if (isNaN(optimized)) {
       const error = {
         code: ERROR_CODE_PARSING,

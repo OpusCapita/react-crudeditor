@@ -24,7 +24,7 @@ export default {
     let optimized;
 
     try {
-      optimized = i18n.parseDecimalNumber(value)
+      optimized = i18n.parseDecimalNumber(value || '')
     } catch (err) {
       throw err
     }

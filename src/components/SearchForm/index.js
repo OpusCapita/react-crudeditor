@@ -18,10 +18,9 @@ class SearchForm extends React.Component {
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
-    fieldErrorsWrapper: PropTypes.shape({
-      handleFormFilterBlur: PropTypes.func,
-      handleFormFilterUpdate: PropTypes.func,
-      fieldErrors: PropTypes.func
+    fieldErrors: PropTypes.shape({
+      errors: PropTypes.object,
+      toggleFieldErrors: PropTypes.func
     }).isRequired
   }
 
@@ -36,6 +35,25 @@ class SearchForm extends React.Component {
     });
   }
 
+  handleFormFilterUpdate = fieldName => newFieldValue => {
+    this.props.fieldErrors.toggleFieldErrors(fieldName, false);
+
+    this.props.model.actions.updateFormFilter({
+      name: fieldName,
+      value: newFieldValue
+    });
+  }
+
+  handleFormFilterBlur = fieldName => _ => this.props.fieldErrors.toggleFieldErrors(fieldName, true);
+
+  fieldErrors = name => {
+    const { fieldErrors: { errors } } = this.props;
+    const fieldErrors = errors[name];
+    return name ?
+      fieldErrors ? fieldErrors : [] :
+      !!Object.keys(errors).length
+  }
+
   render() {
     const {
       model: {
@@ -48,12 +66,6 @@ class SearchForm extends React.Component {
         actions: {
           resetFormFilter
         }
-      },
-      // fieldErrorsWrapper comes from WithFieldErrors HOC
-      fieldErrorsWrapper: {
-        handleFormFilterBlur,
-        handleFormFilterUpdate,
-        fieldErrors
       }
     } = this.props;
 
@@ -67,16 +79,16 @@ class SearchForm extends React.Component {
               <FormGroup
                 key={`form-group-${name}`}
                 controlId={`fg-${name}`}
-                validationState={fieldErrors(name).length ? 'error' : null}
+                validationState={this.fieldErrors(name).length ? 'error' : null}
                 className="crud--search-form__form-group"
               >
                 <ControlLabel>{getModelMessage(i18n, `model.field.${name}`, name)}</ControlLabel>
                 <Component
                   {...{ [valuePropName]: formattedFilter[name] }}
-                  onChange={handleFormFilterUpdate(name)}
-                  onBlur={handleFormFilterBlur(name)}
+                  onChange={this.handleFormFilterUpdate(name)}
+                  onBlur={this.handleFormFilterBlur(name)}
                 />
-                <FieldErrorLabel errors={fieldErrors(name)} />
+                <FieldErrorLabel errors={this.fieldErrors(name)} />
               </FormGroup>
             ))
           }
@@ -92,7 +104,7 @@ class SearchForm extends React.Component {
             bsStyle="primary"
             type="submit"
             ref={ref => (this.submitBtn = ref)}
-            disabled={isEqual(formFilter, resultFilter) || fieldErrors()}
+            disabled={isEqual(formFilter, resultFilter) || this.fieldErrors()}
           >
             {i18n.getMessage('crudEditor.search.button')}
           </Button>

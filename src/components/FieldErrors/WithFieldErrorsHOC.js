@@ -29,113 +29,37 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     showFieldErrors: {}
   }
 
-    // fieldName <string> or <[string, string{'to', 'from'}]>
-    // show <boolean>
-    toggleFieldErrors = (fieldName, show) => this.setState(
-      prevState => ({
-        showFieldErrors: typeof fieldName === 'boolean' ?
-          Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
-            (obj, key) => ({
-              ...obj,
-              [key]: fieldName
-            }),
-            {}
-          ) : {
-            ...prevState.showFieldErrors,
-            [fieldName]: show
-          }
-      })
-    );
-
-    shouldShowErrors = fieldName => !!(
-      this.state.showFieldErrors[fieldName] &&
-      this.props.model.data.fieldErrors[fieldName]
-    )
-
-    // public API function for getting field errors
-    fieldErrors = fieldName => {
-      const { fieldErrors: errors } = this.props.model.data;
-      const { showFieldErrors: showErrors } = this.state;
-
-      // called without arguments should return a boolean (are there any errors to display on view or not)
-      if (!fieldName) {
-        return !!Object.keys(showErrors).
-          filter(
-            f => typeof showErrors[f] === 'object' ?
-              Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
-              showErrors[f]
-          ).
-        // here we have fields which are set to be true in showErrors
-        // now we need to check if there are actual errors for these fields
-          some(f => errors[f] && errors[f].length > 0);
-      }
-
-      return this.shouldShowErrors(fieldName) ?
-        errors[fieldName] :
-        [];
-    }
-
-  // DOM events handlers passed to UI components
-
-  // CONSUMER: EditField
-
-  // name: field name, value: onChange value
-  handleChange = name => value => {
-    this.toggleFieldErrors(name, false)
-
-    return this.props.model.actions.changeInstanceField ?
-      this.props.model.actions.changeInstanceField({
-        name,
-        value
-      }) :
-      null;
-  }
-
-  handleBlur = name => _ => this.toggleFieldErrors(name, true)
-
-  // CONSUMER: EditTab
-
-  handleSubmit = e => {
-    e.preventDefault();
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-      this.toggleFieldErrors(true);
-      this.props.model.actions.saveInstance();
-    }
-  }
-
-  handleSaveAndNew = _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.toggleFieldErrors(true);
-    }
-    this.props.model.actions.saveAndNewInstance()
-  }
-
-  // CONSUMER: SearchForm
-
-  handleFormFilterUpdate = fieldName => newFieldValue => {
-    this.toggleFieldErrors(fieldName, false);
-
-    this.props.model.actions.updateFormFilter({
-      name: fieldName,
-      value: newFieldValue
-    });
-  }
-
-  handleFormFilterBlur = fieldName => _ => this.toggleFieldErrors(fieldName, true);
+  // fieldName <string> or <[string, string{'to', 'from'}]>
+  // show <boolean>
+  toggleFieldErrors = (fieldName, show) => this.setState(
+    prevState => ({
+      showFieldErrors: typeof fieldName === 'boolean' ?
+        Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
+          (obj, key) => ({
+            ...obj,
+            [key]: fieldName
+          }),
+          {}
+        ) : {
+          ...prevState.showFieldErrors,
+          [fieldName]: show
+        }
+    }));
 
   render() {
     const { children, ...props } = this.props;
+    const { fieldErrors } = this.props.model.data;
+    const { showFieldErrors } = this.state;
+
+    const errors = Object.keys(fieldErrors).
+      filter(key => showFieldErrors[key]).
+      reduce((obj, key) => ({ ...obj, [key]: fieldErrors[key] }), {});
 
     const newProps = {
       ...props,
-      fieldErrorsWrapper: {
-        handleChange: this.handleChange,
-        handleBlur: this.handleBlur,
-        handleSubmit: this.handleSubmit,
-        handleSaveAndNew: this.handleSaveAndNew,
-        fieldErrors: this.fieldErrors,
-        handleFormFilterBlur: this.handleFormFilterBlur,
-        handleFormFilterUpdate: this.handleFormFilterUpdate
+      fieldErrors: {
+        errors,
+        toggleFieldErrors: this.toggleFieldErrors
       }
     }
 

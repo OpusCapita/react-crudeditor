@@ -63,6 +63,23 @@ export default class EditTab extends React.PureComponent {
     return typeof internalHandler === 'function' && this.hasUnsavedChanges();
   }
 
+  //
+  handleSubmit = e => {
+    e.preventDefault();
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
+      this.props.fieldErrors.toggleFieldErrors(true);
+      this.props.model.actions.saveInstance();
+    }
+  }
+
+  handleSaveAndNew = _ => {
+    if (this.props.model.data.viewName === VIEW_CREATE) {
+      this.props.fieldErrors.toggleFieldErrors(true);
+    }
+    this.props.model.actions.saveAndNewInstance()
+  }
+  //
+
   render() {
     const {
       children: sectionsAndFields,
@@ -84,9 +101,8 @@ export default class EditTab extends React.PureComponent {
           external: externalOperations
         }
       },
-      fieldErrorsWrapper: {
-        handleSaveAndNew,
-        handleSubmit
+      fieldErrors: {
+        errors
       } = {}
     } = this.props;
 
@@ -157,7 +173,7 @@ export default class EditTab extends React.PureComponent {
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
       buttons.push(
         <Button
-          onClick={handleSaveAndNew}
+          onClick={this.handleSaveAndNew}
           disabled={disableSave}
           key="Save and New"
         >
@@ -189,7 +205,7 @@ export default class EditTab extends React.PureComponent {
     }
 
     return (
-      <Form horizontal={true} onSubmit={handleSubmit}>
+      <Form horizontal={true} onSubmit={this.handleSubmit}>
         <Col sm={12}>
           { sectionsAndFields }
         </Col>

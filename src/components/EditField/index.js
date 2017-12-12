@@ -6,6 +6,32 @@ import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
 class EditField extends Component {
+  handleChange = name => value => {
+    this.props.fieldErrors.toggleFieldErrors(name, false)
+
+    return this.props.model.actions.changeInstanceField ?
+      this.props.model.actions.changeInstanceField({
+        name,
+        value
+      }) :
+      null;
+  }
+
+  handleBlur = name => _ => this.props.fieldErrors.toggleFieldErrors(name, true)
+
+  errors = _ => {
+    const {
+      entry: {
+        name
+      },
+      fieldErrors: {
+        errors
+      }
+    } = this.props;
+
+    return errors[name] ? errors[name] : []
+  }
+
   render() {
     const {
       entry: {
@@ -20,15 +46,6 @@ class EditField extends Component {
           formattedInstance: instance
         }
       },
-      fieldErrorsWrapper: {
-        handleChange,
-        handleBlur,
-        fieldErrors
-      } = {
-        handleChange: _ => {},
-        handleBlur: _ => {},
-        fieldErrors: _ => []
-      },
       columns
     } = this.props;
 
@@ -38,14 +55,14 @@ class EditField extends Component {
       id: fieldName,
       readOnly,
       [valuePropName]: instance[fieldName],
-      onBlur: handleBlur(fieldName),
-      onChange: handleChange(fieldName)
+      onBlur: this.handleBlur(fieldName),
+      onChange: this.handleChange(fieldName)
     }
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={fieldErrors(fieldName).length ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={this.errors().length ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -53,7 +70,7 @@ class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={fieldErrors(fieldName)}/>
+          <FieldErrorLabel errors={this.errors()}/>
         </Col>
       </FormGroup>
     );

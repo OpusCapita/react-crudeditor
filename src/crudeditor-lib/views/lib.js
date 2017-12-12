@@ -3,6 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import GenericInput from '../../components/GenericInput';
 import RangeInput from '../../components/RangeInput';
+import deferValueSync from '../../components/DeferValueSyncHOC';
 
 import {
   converter,
@@ -55,7 +56,7 @@ const namedComponentInfo = ({
 
   switch (name) {
     case COMPONENT_NAME_INPUT:
-      component = GenericInput;
+      component = deferValueSync(GenericInput);
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {
@@ -78,7 +79,7 @@ const namedComponentInfo = ({
 
       break;
     case COMPONENT_NAME_RANGE_INPUT:
-      component = RangeInput;
+      component = deferValueSync(RangeInput);
       valuePropName = 'value';
 
       if (!props.hasOwnProperty('type')) {

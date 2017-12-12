@@ -58,7 +58,7 @@ export const fields = {
       'max': 100,
       'required': false,
       validate(value, instance) {
-        if (value.toLowerCase().indexOf('booo') !== -1) {
+        if ((value || '').toLowerCase().indexOf('booo') !== -1) {
           const err = [{
             code: 400,
             id: 'forbiddenWordBooo',

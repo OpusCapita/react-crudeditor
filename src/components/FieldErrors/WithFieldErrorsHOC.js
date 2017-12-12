@@ -10,25 +10,24 @@ import {
 // it provides a source of truth for displaying errors and disabling/enabling action buttons
 // it passes down the component tree 'fieldErrorsWrapper' object with HOC-specific props along with parent props
 //
-const withFieldErrors = WrappedComponent => {
-  return class WithFieldErrors extends PureComponent {
-    static propTypes = {
-      model: PropTypes.shape({
-        data: PropTypes.shape({
-          fieldErrors: PropTypes.object,
-          viewName: PropTypes.string
-        }),
-        actions: PropTypes.objectOf(PropTypes.func)
-      }).isRequired
-    }
+export default WrappedComponent => class WithFieldErrors extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        fieldErrors: PropTypes.object,
+        viewName: PropTypes.string
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
 
-    static contextTypes = {
-      i18n: PropTypes.object
-    };
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
 
-    state = {
-      showFieldErrors: {}
-    }
+  state = {
+    showFieldErrors: {}
+  }
 
     // fieldName <string> or <[string, string{'to', 'from'}]>
     // show <boolean>
@@ -76,77 +75,74 @@ const withFieldErrors = WrappedComponent => {
         [];
     }
 
-    // DOM events handlers passed to UI components
+  // DOM events handlers passed to UI components
 
-    // CONSUMER: EditField
+  // CONSUMER: EditField
 
-    // name: field name, value: onChange value
-    handleChange = name => value => {
-      this.toggleFieldErrors(name, false)
+  // name: field name, value: onChange value
+  handleChange = name => value => {
+    this.toggleFieldErrors(name, false)
 
-      return this.props.model.actions.changeInstanceField ?
-        this.props.model.actions.changeInstanceField({
-          name,
-          value
-        }) :
-        null;
-    }
+    return this.props.model.actions.changeInstanceField ?
+      this.props.model.actions.changeInstanceField({
+        name,
+        value
+      }) :
+      null;
+  }
 
-    handleBlur = name => _ => this.toggleFieldErrors(name, true)
+  handleBlur = name => _ => this.toggleFieldErrors(name, true)
 
-    // CONSUMER: EditTab
+  // CONSUMER: EditTab
 
-    handleSubmit = e => {
-      e.preventDefault();
-      if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-        this.toggleFieldErrors(true);
-        this.props.model.actions.saveInstance();
-      }
-    }
-
-    handleSaveAndNew = _ => {
-      if (this.props.model.data.viewName === VIEW_CREATE) {
-        this.toggleFieldErrors(true);
-      }
-      this.props.model.actions.saveAndNewInstance()
-    }
-
-    // CONSUMER: SearchForm
-
-    handleFormFilterUpdate = fieldName => newFieldValue => {
-      this.toggleFieldErrors(fieldName, false);
-
-      this.props.model.actions.updateFormFilter({
-        name: fieldName,
-        value: newFieldValue
-      });
-    }
-
-    handleFormFilterBlur = fieldName => _ => this.toggleFieldErrors(fieldName, true);
-
-    render() {
-      const { children, ...props } = this.props;
-
-      const newProps = {
-        ...props,
-        fieldErrorsWrapper: {
-          handleChange: this.handleChange,
-          handleBlur: this.handleBlur,
-          handleSubmit: this.handleSubmit,
-          handleSaveAndNew: this.handleSaveAndNew,
-          fieldErrors: this.fieldErrors,
-          handleFormFilterBlur: this.handleFormFilterBlur,
-          handleFormFilterUpdate: this.handleFormFilterUpdate
-        }
-      }
-
-      return (
-        <WrappedComponent {...newProps}>
-          {children}
-        </WrappedComponent>
-      );
+  handleSubmit = e => {
+    e.preventDefault();
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
+      this.toggleFieldErrors(true);
+      this.props.model.actions.saveInstance();
     }
   }
-}
 
-export default withFieldErrors;
+  handleSaveAndNew = _ => {
+    if (this.props.model.data.viewName === VIEW_CREATE) {
+      this.toggleFieldErrors(true);
+    }
+    this.props.model.actions.saveAndNewInstance()
+  }
+
+  // CONSUMER: SearchForm
+
+  handleFormFilterUpdate = fieldName => newFieldValue => {
+    this.toggleFieldErrors(fieldName, false);
+
+    this.props.model.actions.updateFormFilter({
+      name: fieldName,
+      value: newFieldValue
+    });
+  }
+
+  handleFormFilterBlur = fieldName => _ => this.toggleFieldErrors(fieldName, true);
+
+  render() {
+    const { children, ...props } = this.props;
+
+    const newProps = {
+      ...props,
+      fieldErrorsWrapper: {
+        handleChange: this.handleChange,
+        handleBlur: this.handleBlur,
+        handleSubmit: this.handleSubmit,
+        handleSaveAndNew: this.handleSaveAndNew,
+        fieldErrors: this.fieldErrors,
+        handleFormFilterBlur: this.handleFormFilterBlur,
+        handleFormFilterUpdate: this.handleFormFilterUpdate
+      }
+    }
+
+    return (
+      <WrappedComponent {...newProps}>
+        {children}
+      </WrappedComponent>
+    );
+  }
+}

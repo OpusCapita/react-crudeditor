@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { FormControl } from 'react-bootstrap';
+import { noop } from '../lib';
 
-class FieldString extends React.PureComponent {
-  constructor(...args) {
-    super(...args);
-
-    if (!this.props.readOnly) {
-      this.handleChange = ({
-        target: { value }
-      }) => this.props.onChange && this.props.onChange(value);
-
-      this.handleBlur = _ => this.props.onBlur && this.props.onBlur();
-    }
+export default class FieldString extends PureComponent {
+  static propTypes = {
+    readOnly: PropTypes.bool,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
   }
+
+  static defaultProps = {
+    readOnly: false,
+    value: '',
+    onChange: noop,
+    onBlur: noop
+  }
+
+  handleChange = ({ target: { value } }) => this.props.onChange(value);
 
   render = _ =>
     (<FormControl
       value={this.props.value || ''}
       readOnly={!!this.props.readOnly}
       onChange={this.handleChange}
-      onBlur={this.handleBlur}
+      onBlur={this.props.onBlur}
       type='text'
     />)
 }
 
-FieldString.propTypes = {
-  readOnly: PropTypes.bool,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func
-}
-
-export default FieldString;

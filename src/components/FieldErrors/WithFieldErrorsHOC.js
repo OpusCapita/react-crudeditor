@@ -11,7 +11,8 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     model: PropTypes.shape({
       data: PropTypes.shape({
         fieldErrors: PropTypes.object,
-        viewName: PropTypes.string
+        fieldsMeta: PropTypes.object,
+        formFilter: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
@@ -21,16 +22,29 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     i18n: PropTypes.object
   };
 
-  state = {
-    showFieldErrors: {}
+  constructor(...args) {
+    super(...args);
+
+    const {
+      fieldsMeta, // EDIT and CREATE views
+      formFilter // SEARCH view
+    } = this.props.model.data
+
+    // create an object with all possible fields for current view
+    // object doesn't shrink in the future; we only toggle boolean value
+    this.state = {
+      showFieldErrors: Object.keys(fieldsMeta || formFilter).
+        reduce((obj, key) => ({ ...obj, [key]: false }), {})
+    }
   }
 
   // fieldName <string> or <[string, string{'to', 'from'}]>
   // show <boolean>
   toggleFieldErrors = (fieldName, show) => this.setState(
     prevState => ({
+      // if fieldName is boolean - set value for all fields
       showFieldErrors: typeof fieldName === 'boolean' ?
-        Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
+        Object.keys(prevState.showFieldErrors).reduce(
           (obj, key) => ({
             ...obj,
             [key]: fieldName

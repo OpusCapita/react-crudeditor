@@ -5,7 +5,25 @@ import { getModelMessage } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
-class EditField extends Component {
+export default class EditField extends Component {
+  static propTypes = {
+    model: PropTypes.shape({
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired,
+    entry: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    }),
+    fieldErrors: PropTypes.shape({
+      errors: PropTypes.objectOf(PropTypes.array),
+      toggleFieldErrors: PropTypes.func
+    }),
+    columns: PropTypes.number
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  }
+
   handleChange = name => value => {
     this.props.fieldErrors.toggleFieldErrors(name, false)
 
@@ -26,10 +44,10 @@ class EditField extends Component {
       },
       fieldErrors: {
         errors
-      }
+      } = {}
     } = this.props;
 
-    return errors[name] ? errors[name] : []
+    return errors && errors[name] ? errors[name] : []
   }
 
   render() {
@@ -77,23 +95,3 @@ class EditField extends Component {
   }
 }
 
-EditField.propTypes = {
-  model: PropTypes.shape({
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired,
-  entry: PropTypes.shape({
-    name: PropTypes.string.isRequired
-  }),
-  fieldErrorsWrapper: PropTypes.shape({
-    handleChange: PropTypes.func,
-    handleBlur: PropTypes.func,
-    fieldErrors: PropTypes.func
-  }),
-  columns: PropTypes.number
-}
-
-EditField.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditField;

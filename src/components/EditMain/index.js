@@ -21,7 +21,7 @@ const EditMain = ({ model, fieldErrors }) => {
 
 EditMain.propTypes = {
   model: PropTypes.object.isRequired,
-  fieldErrorsWrapper: PropTypes.object
+  fieldErrors: PropTypes.object
 }
 
 export default WithSpinner(WithFieldErrors(EditMain));

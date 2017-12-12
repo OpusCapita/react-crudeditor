@@ -6,15 +6,17 @@ import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import WithSpinner from '../Spinner/SpinnerOverlayHOC';
 import FormGrid from '../FormGrid';
 
-const CreateMain = ({ model, fieldErrorsWrapper }) => {
+const CreateMain = ({ model, fieldErrors }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
+
+  console.log({ fieldErrors })
 
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model} fieldErrorsWrapper={fieldErrorsWrapper}>
-        <FormGrid model={model} fieldErrorsWrapper={fieldErrorsWrapper}/>
+      <Tab model={model} fieldErrors={fieldErrors}>
+        <FormGrid model={model} fieldErrors={fieldErrors}/>
       </Tab>
     }
   </div>)
@@ -22,7 +24,7 @@ const CreateMain = ({ model, fieldErrorsWrapper }) => {
 
 CreateMain.propTypes = {
   model: PropTypes.object.isRequired,
-  fieldErrorsWrapper: PropTypes.object
+  fieldErrors: PropTypes.object
 }
 
 export default WithSpinner(WithFieldErrors(CreateMain));

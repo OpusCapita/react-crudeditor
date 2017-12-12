@@ -37,7 +37,10 @@ export default class EditTab extends React.PureComponent {
         })).isRequired
       })
     }).isRequired,
-    fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
+    fieldErrors: PropTypes.shape({
+      toggleFieldErrors: PropTypes.func,
+      errors: PropTypes.objectOf(PropTypes.array)
+    })
   }
 
   static contextTypes = {
@@ -100,10 +103,7 @@ export default class EditTab extends React.PureComponent {
           internal: internalOperations,
           external: externalOperations
         }
-      },
-      fieldErrors: {
-        errors
-      } = {}
+      }
     } = this.props;
 
     const { i18n } = this.context;

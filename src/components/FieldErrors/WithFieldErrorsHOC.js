@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  VIEW_CREATE,
-  VIEW_EDIT
-} from '../../crudeditor-lib/common/constants';
 
 //
 // WithFieldErrors is a Higher-Order Component used to wrap components containing editable forms

@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  VIEW_CREATE,
-  VIEW_EDIT
-} from '../../crudeditor-lib/common/constants';
 
 //
 // WithFieldErrors is a Higher-Order Component used to wrap components containing editable forms
@@ -14,10 +10,8 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
-        fieldErrors: PropTypes.object,
-        viewName: PropTypes.string
-      }),
-      actions: PropTypes.objectOf(PropTypes.func)
+        fieldErrors: PropTypes.object
+      })
     }).isRequired
   }
 
@@ -26,121 +20,56 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
   };
 
   state = {
-    showFieldErrors: {}
+    defaultShow: false, // Either true (show all field fields by default) or false (hide all field errors by default).
+    exceptions: [] // An array of exceptions from default (empty when no exceptions).
   }
 
-    // fieldName <string> or <[string, string{'to', 'from'}]>
-    // show <boolean>
-    toggleFieldErrors = (fieldName, show) => this.setState(
-      prevState => ({
-        showFieldErrors: typeof fieldName === 'boolean' ?
-          Object.keys(this.props.model.data.fieldErrors).reduce( // if fieldName is boolean - set value for all fields
-            (obj, key) => ({
-              ...obj,
-              [key]: fieldName
-            }),
-            {}
-          ) : {
-            ...prevState.showFieldErrors,
-            [fieldName]: show
-          }
-      })
-    );
+  toggleFieldErrors = (
+    show, // <boolean>
+    fieldName // field name which "show" value must be applied to. If not specified, "show" value becomes "defaultShow".
+  ) => this.setState(prevState => {
+    const nextState = {};
 
-    shouldShowErrors = fieldName => !!(
-      this.state.showFieldErrors[fieldName] &&
-      this.props.model.data.fieldErrors[fieldName]
-    )
+    if (fieldName) {
+      const fieldIndex = prevState.exceptions.indexOf(fieldName);
 
-    // public API function for getting field errors
-    fieldErrors = fieldName => {
-      const { fieldErrors: errors } = this.props.model.data;
-      const { showFieldErrors: showErrors } = this.state;
-
-      // called without arguments should return a boolean (are there any errors to display on view or not)
-      if (!fieldName) {
-        return !!Object.keys(showErrors).
-          filter(
-            f => typeof showErrors[f] === 'object' ?
-              Object.keys(showErrors[f]).some(k => showErrors[f][k]) :
-              showErrors[f]
-          ).
-        // here we have fields which are set to be true in showErrors
-        // now we need to check if there are actual errors for these fields
-          some(f => errors[f] && errors[f].length > 0);
+      if (show === prevState.defaultShow && fieldIndex !== -1) {
+        // Default behaviour is requested but the field is among exceptions => removing it from exceptions.
+        nextState.exceptions = prevState.exceptions.filter(exception => exception !== fieldName);
+      } else if (show !== prevState.defaultShow && fieldIndex === -1) {
+        // Exceptional behaviour is requested but the field is not among exceptions => adding it to exceptions.
+        nextState.exceptions = [
+          ...prevState.exceptions,
+          fieldName
+        ];
       }
-
-      return this.shouldShowErrors(fieldName) ?
-        errors[fieldName] :
-        [];
+    } else if (show !== prevState.defaultShow) {
+      nextState.defaultShow = show;
     }
 
-  // DOM events handlers passed to UI components
-
-  // CONSUMER: EditField
-
-  // name: field name, value: onChange value
-  handleChange = name => value => {
-    this.toggleFieldErrors(name, false)
-
-    return this.props.model.actions.changeInstanceField ?
-      this.props.model.actions.changeInstanceField({
-        name,
-        value
-      }) :
-      null;
-  }
-
-  handleBlur = name => _ => this.toggleFieldErrors(name, true)
-
-  // CONSUMER: EditTab
-
-  handleSubmit = e => {
-    e.preventDefault();
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-      this.toggleFieldErrors(true);
-      this.props.model.actions.saveInstance();
-    }
-  }
-
-  handleSaveAndNew = _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.toggleFieldErrors(true);
-    }
-    this.props.model.actions.saveAndNewInstance()
-  }
-
-  // CONSUMER: SearchForm
-
-  handleFormFilterUpdate = fieldName => newFieldValue => {
-    this.toggleFieldErrors(fieldName, false);
-
-    this.props.model.actions.updateFormFilter({
-      name: fieldName,
-      value: newFieldValue
-    });
-  }
-
-  handleFormFilterBlur = fieldName => _ => this.toggleFieldErrors(fieldName, true);
+    return nextState;
+  })
 
   render() {
     const { children, ...props } = this.props;
+    const { defaultShow, exceptions } = this.state;
+    const allErrors = props.model.data.fieldErrors;
 
-    const newProps = {
-      ...props,
-      fieldErrorsWrapper: {
-        handleChange: this.handleChange,
-        handleBlur: this.handleBlur,
-        handleSubmit: this.handleSubmit,
-        handleSaveAndNew: this.handleSaveAndNew,
-        fieldErrors: this.fieldErrors,
-        handleFormFilterBlur: this.handleFormFilterBlur,
-        handleFormFilterUpdate: this.handleFormFilterUpdate
-      }
-    }
+    const filteredErrors = Object.keys(allErrors).
+      filter(fieldName => defaultShow ?
+        exceptions.indexOf(fieldName) === -1 :
+        exceptions.indexOf(fieldName) !== -1
+      ).
+      reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: allErrors[fieldName]
+        }),
+        {}
+      );
 
     return (
-      <WrappedComponent {...newProps}>
+      <WrappedComponent {...props} fieldErrors={filteredErrors} toggleFieldErrors={this.toggleFieldErrors}>
         {children}
       </WrappedComponent>
     );

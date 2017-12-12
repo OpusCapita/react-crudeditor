@@ -5,7 +5,36 @@ import { getModelMessage } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
 // XXX: Component, not PureComponent must be used to catch instance's field value change.
-class EditField extends Component {
+export default class EditField extends Component {
+  static propTypes = {
+    model: PropTypes.shape({
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired,
+    entry: PropTypes.shape({
+      name: PropTypes.string.isRequired
+    }),
+    fieldErrors: PropTypes.object.isRequired,
+    toggleFieldErrors: PropTypes.func.isRequired,
+    columns: PropTypes.number
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  }
+
+  handleChange = name => value => {
+    this.props.toggleFieldErrors(false, name);
+
+    if (this.props.model.actions.changeInstanceField) {
+      this.props.model.actions.changeInstanceField({
+        name,
+        value
+      });
+    }
+  }
+
+  handleBlur = name => _ => this.props.toggleFieldErrors(true, name)
+
   render() {
     const {
       entry: {
@@ -20,16 +49,8 @@ class EditField extends Component {
           formattedInstance: instance
         }
       },
-      fieldErrorsWrapper: {
-        handleChange,
-        handleBlur,
-        fieldErrors
-      } = {
-        handleChange: _ => {},
-        handleBlur: _ => {},
-        fieldErrors: _ => []
-      },
-      columns
+      columns,
+      fieldErrors
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
@@ -38,14 +59,14 @@ class EditField extends Component {
       id: fieldName,
       readOnly,
       [valuePropName]: instance[fieldName],
-      onBlur: handleBlur(fieldName),
-      onChange: handleChange(fieldName)
+      onBlur: this.handleBlur(fieldName),
+      onChange: this.handleChange(fieldName)
     }
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={fieldErrors(fieldName).length ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={fieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -53,30 +74,10 @@ class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={fieldErrors(fieldName)}/>
+          <FieldErrorLabel errors={fieldErrors[fieldName] || []}/>
         </Col>
       </FormGroup>
     );
   }
 }
 
-EditField.propTypes = {
-  model: PropTypes.shape({
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired,
-  entry: PropTypes.shape({
-    name: PropTypes.string.isRequired
-  }),
-  fieldErrorsWrapper: PropTypes.shape({
-    handleChange: PropTypes.func,
-    handleBlur: PropTypes.func,
-    fieldErrors: PropTypes.func
-  }),
-  columns: PropTypes.number
-}
-
-EditField.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditField;

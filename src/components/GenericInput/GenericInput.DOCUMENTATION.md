@@ -18,7 +18,7 @@ Generic input component.
 
 ```js
 <GenericInput
-  type="integer"
+  type="string"
   onChange={_scope.handleChange.bind(_scope)}
   onFocus={_scope.handleFocus.bind(_scope)}
   onBlur={_scope.handleBlur.bind(_scope)}

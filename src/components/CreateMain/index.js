@@ -9,8 +9,6 @@ import FormGrid from '../FormGrid';
 const CreateMain = ({ model, fieldErrors }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
 
-  console.log({ fieldErrors })
-
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?

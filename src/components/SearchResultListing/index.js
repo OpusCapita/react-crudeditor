@@ -130,7 +130,7 @@ class SearchResultListing extends PureComponent {
                             sortField === name &&
                             <Glyphicon
                               className="crud--search-result-listing__sort-icon"
-                              glyph={`arrow-${sortOrder === 'asc' ? 'down' : 'up'}`}
+                              glyph={`arrow-${sortOrder === 'asc' ? 'up' : 'down'}`}
                             />
                           }
                         </a> :

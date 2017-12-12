@@ -10,11 +10,8 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
-        fieldErrors: PropTypes.object,
-        fieldsMeta: PropTypes.object,
-        formFilter: PropTypes.object
-      }),
-      actions: PropTypes.objectOf(PropTypes.func)
+        fieldErrors: PropTypes.object
+      })
     }).isRequired
   }
 
@@ -22,59 +19,57 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     i18n: PropTypes.object
   };
 
-  constructor(...args) {
-    super(...args);
-
-    const {
-      fieldsMeta, // EDIT and CREATE views
-      formFilter // SEARCH view
-    } = this.props.model.data
-
-    // create an object with all possible fields for current view
-    // object doesn't shrink in the future; we only toggle boolean value
-    this.state = {
-      showFieldErrors: Object.keys(fieldsMeta || formFilter).
-        reduce((obj, key) => ({ ...obj, [key]: false }), {})
-    }
+  state = {
+    defaultShow: false, // Either true (show all field fields by default) or false (hide all field errors by default).
+    exceptions: [] // An array of exceptions from default (empty when no exceptions).
   }
 
-  // fieldName <string> or <[string, string{'to', 'from'}]>
-  // show <boolean>
-  toggleFieldErrors = (fieldName, show) => this.setState(
-    prevState => ({
-      // if fieldName is boolean - set value for all fields
-      showFieldErrors: typeof fieldName === 'boolean' ?
-        Object.keys(prevState.showFieldErrors).reduce(
-          (obj, key) => ({
-            ...obj,
-            [key]: fieldName
-          }),
-          {}
-        ) : {
-          ...prevState.showFieldErrors,
-          [fieldName]: show
-        }
-    }));
+  toggleFieldErrors = (
+    show, // <boolean>
+    fieldName // field name which "show" value must be applied to. If not specified, "show" value becomes "defaultShow".
+  ) => this.setState(prevState => {
+    const nextState = {};
+
+    if (fieldName) {
+      const fieldIndex = prevState.exceptions.indexOf(fieldName);
+
+      if (show === prevState.defaultShow && fieldIndex !== -1) {
+        // Default behaviour is requested but the field is among exceptions => removing it from exceptions.
+        nextState.exceptions = prevState.exceptions.filter(exception => exception !== fieldName);
+      } else if (show !== prevState.defaultShow && fieldIndex === -1) {
+        // Exceptional behaviour is requested but the field is not among exceptions => adding it to exceptions.
+        nextState.exceptions = [
+          ...prevState.exceptions,
+          fieldName
+        ];
+      }
+    } else if (show !== prevState.defaultShow) {
+      nextState.defaultShow = show;
+    }
+
+    return nextState;
+  })
 
   render() {
     const { children, ...props } = this.props;
-    const { fieldErrors } = this.props.model.data;
-    const { showFieldErrors } = this.state;
+    const { defaultShow, exceptions } = this.state;
+    const allErrors = props.model.data.fieldErrors;
 
-    const errors = Object.keys(fieldErrors).
-      filter(key => showFieldErrors[key]).
-      reduce((obj, key) => ({ ...obj, [key]: fieldErrors[key] }), {});
-
-    const newProps = {
-      ...props,
-      fieldErrors: {
-        errors,
-        toggleFieldErrors: this.toggleFieldErrors
-      }
-    }
+    const filteredErrors = Object.keys(allErrors).
+      filter(fieldName => defaultShow ?
+        exceptions.indexOf(fieldName) === -1 :
+        exceptions.indexOf(fieldName) !== -1
+      ).
+      reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: allErrors[fieldName]
+        }),
+        {}
+      );
 
     return (
-      <WrappedComponent {...newProps}>
+      <WrappedComponent {...props} fieldErrors={filteredErrors} toggleFieldErrors={this.toggleFieldErrors}>
         {children}
       </WrappedComponent>
     );

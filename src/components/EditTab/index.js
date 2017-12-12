@@ -37,10 +37,7 @@ export default class EditTab extends React.PureComponent {
         })).isRequired
       })
     }).isRequired,
-    fieldErrors: PropTypes.shape({
-      toggleFieldErrors: PropTypes.func,
-      errors: PropTypes.objectOf(PropTypes.array)
-    })
+    toggleFieldErrors: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -70,14 +67,14 @@ export default class EditTab extends React.PureComponent {
   handleSubmit = e => {
     e.preventDefault();
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-      this.props.fieldErrors.toggleFieldErrors(true);
+      this.props.toggleFieldErrors(true);
       this.props.model.actions.saveInstance();
     }
   }
 
   handleSaveAndNew = _ => {
     if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.fieldErrors.toggleFieldErrors(true);
+      this.props.toggleFieldErrors(true);
     }
     this.props.model.actions.saveAndNewInstance()
   }

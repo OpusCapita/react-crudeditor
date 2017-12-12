@@ -13,10 +13,8 @@ export default class EditField extends Component {
     entry: PropTypes.shape({
       name: PropTypes.string.isRequired
     }),
-    fieldErrors: PropTypes.shape({
-      errors: PropTypes.objectOf(PropTypes.array),
-      toggleFieldErrors: PropTypes.func
-    }),
+    fieldErrors: PropTypes.object.isRequired,
+    toggleFieldErrors: PropTypes.func.isRequired,
     columns: PropTypes.number
   }
 
@@ -25,30 +23,17 @@ export default class EditField extends Component {
   }
 
   handleChange = name => value => {
-    this.props.fieldErrors.toggleFieldErrors(name, false)
+    this.props.toggleFieldErrors(false, name);
 
-    return this.props.model.actions.changeInstanceField ?
+    if (this.props.model.actions.changeInstanceField) {
       this.props.model.actions.changeInstanceField({
         name,
         value
-      }) :
-      null;
+      });
+    }
   }
 
-  handleBlur = name => _ => this.props.fieldErrors.toggleFieldErrors(name, true)
-
-  errors = _ => {
-    const {
-      entry: {
-        name
-      },
-      fieldErrors: {
-        errors
-      } = {}
-    } = this.props;
-
-    return errors && errors[name] ? errors[name] : []
-  }
+  handleBlur = name => _ => this.props.toggleFieldErrors(true, name)
 
   render() {
     const {
@@ -64,7 +49,8 @@ export default class EditField extends Component {
           formattedInstance: instance
         }
       },
-      columns
+      columns,
+      fieldErrors
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
@@ -80,7 +66,7 @@ export default class EditField extends Component {
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={this.errors().length ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={fieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -88,7 +74,7 @@ export default class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={this.errors()}/>
+          <FieldErrorLabel errors={fieldErrors[fieldName] || []}/>
         </Col>
       </FormGroup>
     );

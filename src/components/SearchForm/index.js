@@ -18,10 +18,8 @@ class SearchForm extends React.Component {
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
-    fieldErrors: PropTypes.shape({
-      errors: PropTypes.object,
-      toggleFieldErrors: PropTypes.func
-    }).isRequired
+    fieldErrors: PropTypes.object.isRequired,
+    toggleFieldErrors: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -36,7 +34,7 @@ class SearchForm extends React.Component {
   }
 
   handleFormFilterUpdate = fieldName => newFieldValue => {
-    this.props.fieldErrors.toggleFieldErrors(fieldName, false);
+    this.props.toggleFieldErrors(false, fieldName);
 
     this.props.model.actions.updateFormFilter({
       name: fieldName,
@@ -44,15 +42,11 @@ class SearchForm extends React.Component {
     });
   }
 
-  handleFormFilterBlur = fieldName => _ => this.props.fieldErrors.toggleFieldErrors(fieldName, true);
+  handleFormFilterBlur = fieldName => _ => this.props.toggleFieldErrors(true, fieldName);
 
-  fieldErrors = name => {
-    const { fieldErrors: { errors } } = this.props;
-    const fieldErrors = errors[name];
-    return name ?
-      fieldErrors ? fieldErrors : [] :
-      !!Object.keys(errors).length
-  }
+  fieldErrors = name => name ?
+    (this.props.fieldErrors[name] || []) :
+    !!Object.keys(this.props.fieldErrors).length
 
   render() {
     const {

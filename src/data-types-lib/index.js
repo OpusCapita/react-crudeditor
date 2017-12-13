@@ -1,3 +1,5 @@
+import isEqual from 'lodash/isEqual';
+
 import uiTypes from './uiTypes';
 import fieldTypes from './fieldTypes';
 
@@ -11,173 +13,55 @@ import {
   ERROR_INVALID_FIELD_TYPE_VALUE,
   ERROR_INVALID_UI_TYPE_VALUE,
   ERROR_REQUIRED_MISSING,
-  ERROR_UNKNOWN_CONSTRAINT,
-  ERROR_UNKNOWN_UI_TYPE,
-  ERROR_UNKNOWN_FIELD_TYPE
+  ERROR_UNKNOWN_CONSTRAINT
 } from './constants';
 
 export const
 
-  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-   *
-   * Input value is of fieldType.
-   * Ouput is the input value converted to uiType.
-   * An error is thrown in case of conversion failure.
-   */
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  format = ({
-    value,
-    type: fieldType,
-    targetType: uiType,
-
-    /*
-     * boolean, false by default, which means forwarding a value if (one of the following):
-     * -- input UI Type is unknown,
-     * -- input Field Type is unknown,
-     * -- input UI Type is unknown to the Field Type's formatter.
-     */
-    throwOnUnknownType = false
+  converter = ({
+    fieldType,
+    uiType
   }) => {
-    if (!fieldTypes[fieldType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_FIELD_TYPE,
-          message: `Unknown Field Type "${fieldType}"`
-        };
+    const converter = (fieldTypes[fieldType] || { converter: {} }).converter[uiType];
 
-        throw error;
+    if (!converter) {
+      return undefined;
+    }
+
+    return {
+      format({ value, i18n }) {
+        if (!fieldTypes[fieldType].isValid(value)) {
+          const error = {
+            code: ERROR_CODE_FORMATING,
+            id: ERROR_INVALID_FIELD_TYPE_VALUE,
+            message: `Invalid value "${value}" of Field Type "${fieldType}"`
+          };
+
+          throw error;
+        }
+
+        return value === EMPTY_FIELD_VALUE ?
+          uiTypes[uiType].EMPTY_VALUE :
+          converter.format({ value, i18n });
+      },
+      parse({ value, i18n }) {
+        if (!uiTypes[uiType].isValid(value)) {
+          const error = {
+            code: ERROR_CODE_PARSING,
+            id: ERROR_INVALID_UI_TYPE_VALUE,
+            message: `Invalid value "${value}" of UI Type "${uiType}"`
+          };
+
+          throw error;
+        }
+
+        return isEqual(value, uiTypes[uiType].EMPTY_VALUE) ?
+          EMPTY_FIELD_VALUE :
+          converter.parse({ value, i18n });
       }
-
-      return value; // forward value of unknown Field Type.
     }
-
-    if (!fieldTypes[fieldType].isValid(value)) {
-      const error = {
-        code: ERROR_CODE_FORMATING,
-        id: ERROR_INVALID_FIELD_TYPE_VALUE,
-        message: `Invalid value "${value}" of Field Type "${fieldType}"`
-      };
-
-      throw error;
-    }
-
-    if (!uiTypes[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Target Type "${uiType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown UI Type.
-    }
-
-    if (value === EMPTY_FIELD_VALUE && uiTypes[uiType].hasOwnProperty('EMPTY_VALUE')) {
-      return uiTypes[uiType].EMPTY_VALUE;
-    }
-
-    const formatter = fieldTypes[fieldType].formatter;
-
-    if (!formatter[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_FORMATING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Target Type "${uiType}" for the formatter`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value when UI Type is unknown to Field Type's formatter.
-    }
-
-    return formatter[uiType](value);
-  },
-
-
-  /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-   *
-   * Input value is of uiType.
-   * Output is value converted to fieldType.
-   * An error is thrown in case of conversion failure.
-   */
-  parse = ({
-    value,
-    type: fieldType,
-    sourceType: uiType,
-
-    /*
-     * boolean, false by default, which means forwarding a value if (one of the following):
-     * -- input UI Type is unknown,
-     * -- input Field Type is unknown,
-     * -- input UI Type is unknown to the Field Type's parser.
-     */
-    throwOnUnknownType = false
-  }) => {
-    if (!uiTypes[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Source Type "${uiType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown UI Type.
-    }
-
-    if (!uiTypes[uiType].isValid(value)) {
-      const error = {
-        code: ERROR_CODE_PARSING,
-        id: ERROR_INVALID_UI_TYPE_VALUE,
-        message: `Invalid value "${value}" of Source Type "${uiType}"`
-      };
-
-      throw error;
-    }
-
-    if (uiTypes[uiType].isEmpty(value)) {
-      return EMPTY_FIELD_VALUE;
-    }
-
-    if (!fieldTypes[fieldType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_FIELD_TYPE,
-          message: `Unknown Field Type "${fieldType}"`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value of unknown Field Type.
-    }
-
-    const parser = fieldTypes[fieldType].parser;
-
-    if (!parser[uiType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_PARSING,
-          id: ERROR_UNKNOWN_UI_TYPE,
-          message: `Unknown Source Type "${uiType}" for the parser`
-        };
-
-        throw error;
-      }
-
-      return value; // forward value when UI Type is unknown to the Field Type's parser.
-    }
-
-    return parser[uiType](value);
   },
 
   /* ███████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -187,69 +71,64 @@ export const
    * An array of errors is thrown in case of validation failure.
    */
   validate = ({
-    value,
     type: fieldType,
     constraints: {
       required,
+      validate: customValidate,
       ...constraints
-    },
-    throwOnUnknownType = false
+    }
   }) => {
-    if (value === EMPTY_FIELD_VALUE) {
-      // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
-      // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
-      if (required) {
-        const error = [{
-          code: ERROR_CODE_VALIDATION,
-          id: ERROR_REQUIRED_MISSING,
-          message: 'Required value must be set'
-        }];
+    const { buildValidator } = fieldTypes[fieldType] || {};
 
-        throw error;
+    if (!buildValidator) {
+      return undefined;
+    }
+
+    return (value, instance) => {
+      const errors = [];
+
+      if (customValidate) {
+        try {
+          customValidate(value, instance);
+        } catch (error) {
+          errors.push(...(Array.isArray(error) ? error : [error]));
+        }
+      }
+
+      if (value === EMPTY_FIELD_VALUE) {
+        // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
+        // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+        if (required) {
+          errors.push({
+            code: ERROR_CODE_VALIDATION,
+            id: ERROR_REQUIRED_MISSING,
+            message: 'Required value must be set'
+          });
+        }
+      } else {
+        const validator = buildValidator(value);
+
+        Object.keys(constraints).forEach(name => {
+          if (validator.hasOwnProperty(name)) {
+            try {
+              validator[name](constraints[name]);
+            } catch (error) {
+              errors.push(...(Array.isArray(error) ? error : [error]));
+            }
+          } else {
+            errors.push({
+              code: ERROR_CODE_VALIDATION,
+              id: ERROR_UNKNOWN_CONSTRAINT,
+              message: `Unable to validate against unknown constraint "${name}"`
+            });
+          }
+        });
+      }
+
+      if (errors.length) {
+        throw errors;
       }
 
       return true;
     }
-
-    if (!fieldTypes[fieldType]) {
-      if (throwOnUnknownType) {
-        const error = {
-          code: ERROR_CODE_VALIDATION,
-          id: ERROR_UNKNOWN_FIELD_TYPE,
-          message: `Unknown Field Type "${fieldType}"`
-        };
-
-        throw error;
-      }
-
-      return true; // skip validation of unknown Field Type.
-    }
-
-    const validator = fieldTypes[fieldType].buildValidator(value);
-
-    const errors = Object.keys(constraints).reduce(
-      (errors, name) => {
-        if (!validator.hasOwnProperty(name)) {
-          return [...errors, {
-            code: ERROR_CODE_VALIDATION,
-            id: ERROR_UNKNOWN_CONSTRAINT,
-            message: `Unable to validate against unknown constraint "${name}"`
-          }];
-        }
-
-        try {
-          validator[name](constraints[name]);
-          return errors;
-        } catch (error) {
-          return [...errors, error];
-        }
-      },
-      []
-    );
-
-    if (errors.length) {
-      throw errors;
-    }
-
-    return true;
   };

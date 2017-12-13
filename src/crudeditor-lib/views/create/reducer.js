@@ -5,6 +5,9 @@ import u from 'updeep';
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
 
+  INSTANCE_FIELD_CHANGE,
+  INSTANCE_FIELD_VALIDATE,
+
   INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_REQUEST,
   INSTANCE_SAVE_SUCCESS,
@@ -15,9 +18,7 @@ import {
   VIEW_REDIRECT_SUCCESS,
   VIEW_REDIRECT_FAIL,
 
-  TAB_SELECT,
-
-  INSTANCE_FIELD_CHANGE
+  TAB_SELECT
 } from './constants';
 
 import {
@@ -30,12 +31,6 @@ import {
 } from '../../common/constants';
 
 import { findFieldLayout, getTab } from '../lib';
-
-import {
-  format as formatField,
-  parse as parseField,
-  validate as validateField
-} from '../../../data-types-lib';
 
 const defaultStoreStateTemplate = {
 
@@ -50,14 +45,14 @@ const defaultStoreStateTemplate = {
    */
   formInstance: undefined,
 
-  /* Formated instance as displayed in the form.
+  /* Formatted instance as displayed in the form.
    * {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
    * }
-   * NOTE: formInstance values and formatedInstance values represent different values in case of parsing error
+   * NOTE: formInstance values and formattedInstance values represent different values in case of parsing error
    * (i.e. rendered value cannot be parsed into its string representation).
    */
-  formatedInstance: undefined,
+  formattedInstance: undefined,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -70,8 +65,8 @@ const defaultStoreStateTemplate = {
   errors: {
 
     // object with keys as field names,
-    // values as arrays of Parsing Errors and Field Validation Errors, may be empty.
-    // (the object has keys for all fields).
+    // values as arrays of Parsing Errors and Field Validation Errors, may not be empty.
+    // (the object does not have keys for fields with successfully parsed/validated values).
     fields: {}
   },
 
@@ -84,7 +79,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -94,16 +89,32 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE) {
     const { predefinedFields } = payload;
 
     if (!isEqual(predefinedFields, storeState.predefinedFields)) {
-      newStoreStateSlice.predefinedFields = predefinedFields;
+      newStoreStateSlice.predefinedFields = u.constant(predefinedFields);
     }
 
-    const formLayout = modelDefinition.ui.create.formLayout(predefinedFields).
+    // create form instance using all existing fields
+    // then rewrite predefined values coming from search view
+    const formInstance = {
+      ...Object.keys(modelDefinition.model.fields).reduce(
+        (rez, fieldName) => ({
+          ...rez,
+          [fieldName]: EMPTY_FIELD_VALUE
+        }),
+        {}
+      ),
+      ...cloneDeep(predefinedFields)
+    };
+
+    newStoreStateSlice.formInstance = u.constant(formInstance);
+
+    const formLayout = modelDefinition.ui.create.formLayout(formInstance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
 
     let hasTabs;
@@ -120,106 +131,95 @@ export default modelDefinition => (
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
 
-    // create default instance using all existing fields
-    // then rewrite predefined values coming from search view
-    const defaultInstance = {
-      ...Object.keys(modelDefinition.model.fields).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: EMPTY_FIELD_VALUE
-        }),
-        {}
-      ),
-      ...predefinedFields
-    };
-
-    const formatedInstance = Object.keys(defaultInstance).reduce(
+    const formattedInstance = Object.keys(formInstance).reduce(
       (rez, fieldName) => {
         const fieldLayout = findFieldLayout(fieldName)(formLayout);
+
         return fieldLayout ? {
           ...rez,
-          [fieldName]: formatField({
-            value: defaultInstance[fieldName],
-            type: modelDefinition.model.fields[fieldName].type,
-            targetType: fieldLayout.render.valueProp.type
-          })
+          [fieldName]: fieldLayout.render.valueProp.converter.format({ value: formInstance[fieldName], i18n })
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed.
       },
       {}
     );
 
-    newStoreStateSlice.formatedInstance = u.constant(formatedInstance);
+    newStoreStateSlice.formattedInstance = u.constant(formattedInstance);
 
     newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
-    newStoreStateSlice.formInstance = u.constant(cloneDeep(defaultInstance));
-    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(defaultInstance);
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(formInstance);
 
     newStoreStateSlice.errors = u.constant({
-      fields: Object.keys(defaultInstance).reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: []
-        }),
-        {}
-      )
+      fields: {}
     });
 
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+
   } else if (type === INSTANCE_SAVE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SAVE_REQUEST) {
     newStoreStateSlice.status = STATUS_CREATING;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SAVE_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = activeTab;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_FIELD_CHANGE) {
     const {
       name: fieldName,
       value: fieldValue
     } = payload;
 
-    newStoreStateSlice.formatedInstance = {
-      [fieldName]: u.constant(fieldValue)
-    };
-
-    const fieldMeta = modelDefinition.model.fields[fieldName];
-    const uiType = findFieldLayout(fieldName)(storeState.formLayout).render.valueProp.type;
+    const {
+      validate,
+      render: {
+        valueProp: {
+          converter
+        }
+      }
+    } = findFieldLayout(fieldName)(storeState.formLayout);
 
     PARSE_LABEL: {
       let newFormValue;
 
       try {
-        newFormValue = parseField({
-          value: fieldValue,
-          type: fieldMeta.type,
-          sourceType: uiType
-        });
+        newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
 
         newStoreStateSlice.formInstance = {
           [fieldName]: UNPARSABLE_FIELD_VALUE
         };
+
+        if (!isEqual(fieldValue, storeState.formattedInstance[fieldName])) {
+          newStoreStateSlice.formattedInstance = {
+            [fieldName]: u.constant(fieldValue)
+          };
+        }
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
           newStoreStateSlice.errors = {
@@ -238,23 +238,18 @@ export default modelDefinition => (
         };
       }
 
-      const newFormatedValue = formatField({
-        value: newFormValue,
-        type: fieldMeta.type,
-        targetType: uiType
-      });
+      const newFormattedValue = converter.format({ value: newFormValue, i18n });
 
-      if (!isEqual(newFormatedValue, storeState.formatedInstance[fieldName])) {
-        newStoreStateSlice.formatedInstance = {
-          [fieldName]: u.constant(newFormatedValue)
+      if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
+        newStoreStateSlice.formattedInstance = {
+          [fieldName]: u.constant(newFormattedValue)
         };
       }
 
       try {
-        validateField({
-          value: newFormValue,
-          type: fieldMeta.type,
-          constraints: fieldMeta.constraints
+        validate(newFormValue, {
+          ...storeState.formInstance,
+          [fieldName]: newFormValue
         });
       } catch (err) {
         const errors = Array.isArray(err) ? err : [err];
@@ -270,51 +265,89 @@ export default modelDefinition => (
         break PARSE_LABEL;
       }
 
-      if (storeState.errors.fields[fieldName].length) {
+      if (storeState.errors.fields[fieldName]) {
         newStoreStateSlice.errors = {
-          fields: {
-            [fieldName]: []
-          }
+          fields: u.omit(fieldName)
         };
       }
     }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  } else if (type === INSTANCE_FIELD_VALIDATE) {
+    const fieldName = payload.name;
+    const fieldValue = storeState.formInstance[fieldName];
+
+    if (fieldValue !== UNPARSABLE_FIELD_VALUE) {
+      PARSE_LABEL: {
+        try {
+          findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
+        } catch (err) {
+          const errors = Array.isArray(err) ? err : [err];
+
+          if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+            newStoreStateSlice.errors = {
+              fields: {
+                [fieldName]: errors
+              }
+            };
+          }
+
+          break PARSE_LABEL;
+        }
+
+        if (storeState.errors.fields[fieldName]) {
+          newStoreStateSlice.errors = {
+            fields: u.omit(fieldName)
+          };
+        }
+      }
+    }
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
+      const fieldValue = storeState.formInstance[fieldName];
       const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);
 
       if (
-        // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View
+        // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Create View
         !fieldLayout ||
 
         // Field is read-only => no validation needed
         fieldLayout.readOnly ||
 
-        // Field has been parsed/validated and errors found => skip duplicate validation.
-        storeState.errors.fields[fieldName].length
+        fieldValue === UNPARSABLE_FIELD_VALUE
       ) {
         return;
       }
 
-      const fieldMeta = modelDefinition.model.fields[fieldName];
-
       try {
-        validateField({
-          value: storeState.formInstance[fieldName],
-          type: fieldMeta.type,
-          constraints: fieldMeta.constraints
-        });
+        fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
+        const errors = Array.isArray(err) ? err : [err];
+
+        if (!isEqual(errors, storeState.errors.fields[fieldName])) {
+          newStoreStateSlice.errors = {
+            fields: {
+              [fieldName]: errors
+            }
+          };
+        }
+
+        return;
+      }
+
+      if (storeState.errors.fields[fieldName]) {
         newStoreStateSlice.errors = {
-          fields: {
-            [fieldName]: Array.isArray(err) ? err : [err]
-          }
+          fields: u.omit(fieldName)
         };
       }
     });
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

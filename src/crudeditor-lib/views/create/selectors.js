@@ -36,7 +36,7 @@ export const
     formInstance: storeState.formInstance,
     fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
-    formatedInstance: storeState.formatedInstance,
+    formattedInstance: storeState.formattedInstance,
     instanceLabel: storeState.instanceLabel,
     isLoading: ([STATUS_REDIRECTING, STATUS_CREATING].indexOf(storeState.status) > -1),
     tabs: storeState.formLayout.filter(({ tab }) => tab),

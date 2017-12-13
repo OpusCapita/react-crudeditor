@@ -4,6 +4,7 @@ import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
+import FormGrid from '../FormGrid';
 
 import {
   VIEW_CREATE,
@@ -37,7 +38,8 @@ export default class EditTab extends React.PureComponent {
         })).isRequired
       })
     }).isRequired,
-    fieldErrorsWrapper: PropTypes.objectOf(PropTypes.func)
+    toggleFieldErrors: PropTypes.func,
+    fieldErrors: PropTypes.object
   }
 
   static contextTypes = {
@@ -59,13 +61,25 @@ export default class EditTab extends React.PureComponent {
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
   }
 
-  showConfirmDialog = internalHandler => _ => {
-    return typeof internalHandler === 'function' && this.hasUnsavedChanges();
+  showConfirmDialog = _ => this.hasUnsavedChanges()
+
+  handleSubmit = e => {
+    e.preventDefault();
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
+      this.props.toggleFieldErrors(true);
+      this.props.model.actions.saveInstance();
+    }
+  }
+
+  handleSaveAndNew = _ => {
+    if (this.props.model.data.viewName === VIEW_CREATE) {
+      this.props.toggleFieldErrors(true);
+    }
+    this.props.model.actions.saveAndNewInstance()
   }
 
   render() {
     const {
-      children: sectionsAndFields,
       model: {
         actions: {
           exitView,
@@ -84,10 +98,8 @@ export default class EditTab extends React.PureComponent {
           external: externalOperations
         }
       },
-      fieldErrorsWrapper: {
-        handleSaveAndNew,
-        handleSubmit
-      } = {}
+      fieldErrors,
+      toggleFieldErrors
     } = this.props;
 
     const { i18n } = this.context;
@@ -107,23 +119,18 @@ export default class EditTab extends React.PureComponent {
     }
 
     buttons.push(
-      ...internalOperations(persistentInstance).
-        map(({ name, icon, handler, type }, index) => {
-          const internalHandler = handler();
-
-          return (
-            <ConfirmUnsavedChanges
-              key={`internal-operation-${index}`}
-              showDialog={this.showConfirmDialog(internalHandler)}
-            >
-              <Button onClick={(internalHandler || (_ => null))}>
-                {icon && <Glyphicon glyph={icon} />}
-                {icon && ' '}
-                {getModelMessage(i18n, `model.label.${name}`, name)}
-              </Button>
-            </ConfirmUnsavedChanges>
-          )
-        })
+      ...internalOperations(persistentInstance).map(({ name, icon, handler, type }, index) => (
+        <ConfirmUnsavedChanges
+          key={`internal-operation-${index}`}
+          showDialog={this.showConfirmDialog}
+        >
+          <Button onClick={handler}>
+            {icon && <Glyphicon glyph={icon} />}
+            {icon && ' '}
+            {getModelMessage(i18n, `model.label.${name}`, name)}
+          </Button>
+        </ConfirmUnsavedChanges>
+      ))
     );
 
     buttons.push(
@@ -157,7 +164,7 @@ export default class EditTab extends React.PureComponent {
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
       buttons.push(
         <Button
-          onClick={handleSaveAndNew}
+          onClick={this.handleSaveAndNew}
           disabled={disableSave}
           key="Save and New"
         >
@@ -189,9 +196,9 @@ export default class EditTab extends React.PureComponent {
     }
 
     return (
-      <Form horizontal={true} onSubmit={handleSubmit}>
+      <Form horizontal={true} onSubmit={this.handleSubmit}>
         <Col sm={12}>
-          { sectionsAndFields }
+          <FormGrid model={this.props.model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
         </Col>
         <FormGroup>
           <Col sm={12}>

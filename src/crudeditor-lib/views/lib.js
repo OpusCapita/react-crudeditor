@@ -1,9 +1,14 @@
+import React from 'react';
 import cloneDeep from 'lodash/cloneDeep';
 
-import FieldString from '../../components/FieldString';
-import FieldBoolean from '../../components/FieldBoolean';
-import FieldNumber from '../../components/FieldNumber';
-import FieldDate from '../../components/FieldDate';
+import GenericInput from '../../components/GenericInput';
+import RangeInput from '../../components/RangeInput';
+import deferValueSync from '../../components/DeferValueSyncHOC';
+
+import {
+  converter,
+  validate as standardFieldValidate
+} from '../../data-types-lib';
 
 import {
   DEFAULT_TAB_COLUMNS,
@@ -13,35 +18,169 @@ import {
 
 import {
   FIELD_TYPE_BOOLEAN,
-  FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_DECIMAL,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_NUMBER
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_DECIMAL,
+
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
+
+  UI_TYPE_BOOLEAN,
+  UI_TYPE_DATE,
+  UI_TYPE_STRING,
+
+  UI_TYPE_DATE_RANGE_OBJECT,
+  UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
 
-const defaultFieldRenders = {
-  // default valueProp.type 'string' may be omitted.
+export const
+  COMPONENT_NAME_INPUT = 'input',
+  COMPONENT_NAME_RANGE_INPUT = 'rangeInput';
 
+/*
+ * The function receives render object with component name in "component" property.
+ * It returns React Component with the name and UI Type corrresponding to the Component.
+ * As side effect, it also assigns default "type" to render.props, if not specified.
+ */
+const namedComponentInfo = ({
+  component: name,
+  props
+}) => {
+  let component, uiType, valuePropName;
+
+  switch (name) {
+    case COMPONENT_NAME_INPUT:
+      component = deferValueSync(GenericInput);
+      valuePropName = 'value';
+
+      if (!props.hasOwnProperty('type')) {
+        props.type = 'string'; // eslint-disable-line no-param-reassign
+      }
+
+      switch (props.type) {
+        case 'checkbox':
+          uiType = UI_TYPE_BOOLEAN;
+          break;
+        case 'date':
+          uiType = UI_TYPE_DATE;
+          break;
+        case 'string':
+          uiType = UI_TYPE_STRING;
+          break;
+        default:
+          throw new TypeError(`Unknown type "${props.type}" of "${COMPONENT_NAME_INPUT}" render component`);
+      }
+
+      break;
+    case COMPONENT_NAME_RANGE_INPUT:
+      component = deferValueSync(RangeInput);
+      valuePropName = 'value';
+
+      if (!props.hasOwnProperty('type')) {
+        props.type = 'string'; // eslint-disable-line no-param-reassign
+      }
+
+      switch (props.type) {
+        case 'date':
+          uiType = UI_TYPE_DATE_RANGE_OBJECT;
+          break;
+        case 'string':
+          uiType = UI_TYPE_STRING_RANGE_OBJECT;
+          break;
+        default:
+          throw new TypeError(`Unknown type "${props.type}" of "${COMPONENT_NAME_RANGE_INPUT}" render component`);
+      }
+
+      break;
+    default:
+      throw new TypeError(`Unknown render component "${name}"`);
+  }
+
+  return {
+    component,
+    uiType,
+    valuePropName
+  };
+}
+
+const defaultFieldRenders = {
   [FIELD_TYPE_BOOLEAN]: {
-    Component: FieldBoolean,
-    valueProp: {
-      type: 'boolean'
+    component: 'input',
+    props: {
+      type: 'checkbox'
+    }
+  },
+  [FIELD_TYPE_INTEGER]: {
+    component: 'input',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_DECIMAL]: {
+    component: 'input',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_STRING]: {
+    component: 'input',
+    props: {
+      type: 'string'
     }
   },
   [FIELD_TYPE_STRING_DATE]: {
-    Component: FieldDate,
-    valueProp: {
+    component: 'input',
+    props: {
       type: 'date'
     }
   },
-  [FIELD_TYPE_STRING_NUMBER]: {
-    Component: FieldString
+  [FIELD_TYPE_STRING_INTEGER]: {
+    component: 'input',
+    props: {
+      type: 'string'
+    }
   },
-  [FIELD_TYPE_STRING]: {
-    Component: FieldString
+  [FIELD_TYPE_STRING_DECIMAL]: {
+    component: 'input',
+    props: {
+      type: 'string'
+    }
   },
-  [FIELD_TYPE_NUMBER]: {
-    Component: FieldNumber
+  [FIELD_TYPE_INTEGER_RANGE]: {
+    component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_DECIMAL_RANGE]: {
+    component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_STRING_DATE_RANGE]: {
+    component: 'rangeInput',
+    props: {
+      type: 'date'
+    }
+  },
+  [FIELD_TYPE_STRING_INTEGER_RANGE]: {
+    component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
+  },
+  [FIELD_TYPE_STRING_DECIMAL_RANGE]: {
+    component: 'rangeInput',
+    props: {
+      type: 'string'
+    }
   }
 };
 
@@ -55,53 +194,118 @@ export const buildFieldRender = ({
     cloneDeep(customRender) :
     defaultFieldRenders[fieldType] || (_ => {
       throw new TypeError(
-        `Unknown field type "${fieldType}". Please, either specify known field type or use custom render`
+        `Field type ${fieldType} is unknown or does not have an assigned render component. Define custom component`
       );
     })();
 
-  if (!render.valueProp) {
+  if (!render.hasOwnProperty('component')) {
+    throw new TypeError('render.component must be defined');
+  }
+  if (!render.hasOwnProperty('props')) {
+    render.props = {};
+  }
+
+  if (!render.hasOwnProperty('valueProp')) {
     render.valueProp = {};
   }
 
-  if (!render.valueProp.name) {
+  let Component;
+
+  if (typeof render.component === 'string') {
+    const { component, uiType, valuePropName } = namedComponentInfo(render);
+
+    if (!render.valueProp.hasOwnProperty('type')) {
+      render.valueProp.type = uiType;
+    } else if (render.valueProp.type !== uiType) {
+      throw new TypeError(`Invalid "${render.valueProp.type}" valueProp.type for "${render.component}" component`);
+    }
+
+    if (!render.valueProp.hasOwnProperty('name')) {
+      render.valueProp.name = valuePropName;
+    } else if (render.valueProp.name !== valuePropName) {
+      throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.component}" component`);
+    }
+
+    Component = component;
+  } else {
+    Component = render.component;
+  }
+
+  if (!render.valueProp.hasOwnProperty('name')) {
     render.valueProp.name = 'value';
   }
 
-  if (!render.valueProp.type) {
-    render.valueProp.type = 'string';
+  if (render.valueProp.hasOwnProperty('type')) {
+    if (!render.valueProp.hasOwnProperty('converter')) {
+      const defaultConverter = converter({
+        fieldType,
+        uiType: render.valueProp.type
+      });
+
+      if (defaultConverter) {
+        render.valueProp.converter = defaultConverter;
+      }
+    }
+
+    // Removing "type" because it was only needed to get default converter, if any.
+    // delete render.valueProp.type;
   }
 
-  return render;
+  if (!render.valueProp.hasOwnProperty('converter')) {
+    render.valueProp.converter = {
+      format: ({ value }) => value,
+      parse: ({ value }) => value
+    };
+  }
+
+  return {
+    ...render,
+    component: ({ children, ...props }) => <Component {...props} {...render.props}>{children}</Component>
+  };
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const buildDefaultFormLayout = ({
-  viewName,
-  fieldsMeta
-}) => _ => Object.keys(fieldsMeta).map(name => ({
+const buildDefaultFormLayout = ({ viewName, fieldsMeta }) => _ => Object.keys(fieldsMeta).map(name => ({
   field: name,
-  readOnly: viewName === VIEW_EDIT &&
-    fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
+  readOnly: viewName === VIEW_EDIT && fieldsMeta[name].unique, // Logical Key fields are read-only in Edit View.
   render: buildFieldRender({
     type: fieldsMeta[name].type
-  })
+  }),
+  validate: standardFieldValidate({
+    type: fieldsMeta[name].type,
+    constraints: fieldsMeta[name].constraints
+  }) ||
+    (value => true)
 }));
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-const buildFieldLayout = (viewName, fieldsMeta) => ({ name: fieldId, readOnly, render }) => ({
-  field: fieldId,
-
-  // making all fields read-only in "show" view.
-  readOnly: viewName === VIEW_SHOW || !!readOnly,
-
-  // assigning default Component to fields w/o custom Component.
-  render: buildFieldRender({
+const buildFieldLayout = (viewName, fieldsMeta) =>
+  ({
+    name: fieldName,
+    readOnly,
     render,
-    type: fieldsMeta[fieldId].type
-  })
-});
+    validate: customValidate
+  }) => ({
+    field: fieldName,
+
+    // making all fields read-only in "show" view.
+    readOnly: viewName === VIEW_SHOW || !!readOnly,
+
+    validate: customValidate ||
+      standardFieldValidate({
+        type: fieldsMeta[fieldName].type,
+        constraints: fieldsMeta[fieldName].constraints
+      }) ||
+      (value => true),
+
+    // assigning default component to fields w/o custom component.
+    render: buildFieldRender({
+      render,
+      type: fieldsMeta[fieldName].type
+    })
+  });
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -135,7 +339,7 @@ const tabLayout = ({ name: tabId, columns, ...props }, ...allEntries) => {
     entries[name] = props[name];
   });
 
-  return entries.length || entries.Component ? entries : null;
+  return entries.length || entries.component ? entries : null;
 };
 
 // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -228,24 +432,26 @@ export const viewOperations = ({
   viewState,
   operations,
   softRedirectView
-}) => instance => (viewState && operations( // viewState is undefined when view is not initialized yet.
+}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
   instance,
   {
     name: viewName,
     state: viewState
   }
-) || []).reduce(
-  (rez, { handler, name, ...rest }) => [
+)) || []).reduce(
+  (rez, { handler, ...rest }) => [
     ...rez,
     ...(handler ?
       [{
         ...rest,
-        name,
-        handler: _ => { // eslint-disable-line consistent-return
+        handler: _ => {
           const view = handler();
+
           if (view && view.name) {
-            return _ => softRedirectView(view);
+            softRedirectView(view);
           }
+
+          return view;
         }
       }] :
       []

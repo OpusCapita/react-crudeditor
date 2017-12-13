@@ -1,7 +1,7 @@
-import cloneDeep from 'lodash/cloneDeep';
+// import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import Big from 'big.js';
-
+import { isDef } from '../../../../components/lib';
 import initialData from './data';
 import { DEFAULT_FIELD_TYPE } from '../../../../crudeditor-lib/common/constants.js';
 
@@ -9,28 +9,18 @@ import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING_DATE,
   FIELD_TYPE_STRING,
-  FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_NUMBER
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_INTEGER
 } from '../../../../data-types-lib/constants';
 
 import { fields } from '../'
 
-const NUMBER_FIELDS = [
-  'maxOrderValue',
-  'minOrderValue',
-  'freeShippingBoundary',
-  'totalContractedAmount',
-  'smallVolumeSurcharge',
-  'freightSurcharge'
-];
-
 const internal2api = contract => Object.entries(contract).reduce(
   (rez, [fieldName, fieldValue]) => ({
     ...rez,
-    [fieldName]: cloneDeep(fieldValue !== null && NUMBER_FIELDS.includes(fieldName) ?
-      fieldValue.toString() :
-      fieldValue
-    )
+    [fieldName]: fieldValue
   }),
   {}
 );
@@ -39,19 +29,21 @@ export const testNumberFieldType = "testNumberTypeField";
 
 const data = { // remove doubles
   contracts: Object.keys(
-    initialData.contracts.map(({ contractId }) => contractId).
+    initialData.contracts.
+      map(({ contractId }) => contractId).
       reduce((obj, id) => ({ ...obj, [id]: '' }), {})
-  ).map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).map(
-    c => ({
+  ).
+    map(id => find(initialData.contracts, ({ contractId }) => contractId === id)).
+    map(c => ({
+      ...c,
+      nonExisting: Math.random(),
       [testNumberFieldType]: Math.random() * 1000000,
       parentContract: Math.random() > 0.8 ?
         null :
         initialData.contracts.map(({ contractId }) => contractId)[
           Math.floor(Math.random() * initialData.contracts.length)
-        ],
-      ...c
-    })
-  )
+        ]
+    }))
 }
 
 const setCreatedFields = instance => {
@@ -174,12 +166,14 @@ export const
 
                 switch (fieldType) {
                   // Number and stringNumber fieldTypes are treated and compared as Numbers
-                  case FIELD_TYPE_NUMBER:
+                  case FIELD_TYPE_DECIMAL:
+                  case FIELD_TYPE_INTEGER:
                     gte = (itemValue, filterValue) => Number(itemValue) >= Number(filterValue);
                     lte = (itemValue, filterValue) => Number(itemValue) <= Number(filterValue);
                     break;
 
-                  case FIELD_TYPE_STRING_NUMBER:
+                  case FIELD_TYPE_STRING_INTEGER:
+                  case FIELD_TYPE_STRING_DECIMAL:
                     gte = (itemValue, filterValue) => Big(itemValue).gte(Big(filterValue));
                     lte = (itemValue, filterValue) => Big(itemValue).lte(Big(filterValue));
                     break;
@@ -193,12 +187,12 @@ export const
                     return false;
                 }
 
-                if (fieldValue.from !== undefined) {
-                  match = match && gte(itemValue, fieldValue.from)
+                if (isDef(fieldValue.from)) {
+                  match = match && gte(itemValue, String(fieldValue.from).trim())
                 }
 
-                if (fieldValue.to !== undefined) {
-                  match = match && lte(itemValue, fieldValue.to)
+                if (isDef(fieldValue.to)) {
+                  match = match && lte(itemValue, String(fieldValue.to).trim())
                 }
               } else {
                 // null returns false for any range
@@ -214,15 +208,21 @@ export const
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING) {
               const match = itemValue !== null ?
-                itemValue.toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
+                itemValue.toLowerCase().indexOf(fieldValue.trim().toLowerCase()) > -1 :
                 false;
               return rez && match
               // TODO add [] search
-            } else if ([FIELD_TYPE_STRING_NUMBER, FIELD_TYPE_NUMBER].indexOf(fieldType) > -1) {
-              const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
+            } else if ([
+              FIELD_TYPE_STRING_INTEGER,
+              FIELD_TYPE_STRING_DECIMAL,
+              FIELD_TYPE_DECIMAL,
+              FIELD_TYPE_INTEGER
+            ].indexOf(fieldType) > -1
+            ) {
+              const match = itemValue !== null && Number(String(fieldValue).trim()) === Number(itemValue);
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {
-              const match = new Date(fieldValue).valueOf() === new Date(itemValue).valueOf();
+              const match = new Date(String(fieldValue).trim()).valueOf() === new Date(itemValue).valueOf();
               return rez && match
             }
 
@@ -237,7 +237,13 @@ export const
     const totalCount = result.length;
 
     if (sort) {
-      result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
+      const fieldType = fields[sort].type || DEFAULT_FIELD_TYPE;
+      if (fieldType === FIELD_TYPE_STRING) {
+        result = result.sort((a, b) => (a[sort] || '').localeCompare(b[sort] || '', { sensitivity: 'base' }));
+      } else {
+        result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
+      }
+
       if (order && order === 'desc') {
         result.reverse();
       }

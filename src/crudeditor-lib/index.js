@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
@@ -26,11 +26,65 @@ import {
   getPrefixedTranslations
 } from './lib';
 
+import {
+  FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_STRING,
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  UI_TYPE_BOOLEAN,
+  UI_TYPE_DATE,
+  UI_TYPE_DECIMAL,
+  UI_TYPE_INTEGER,
+  UI_TYPE_STRING,
+  UI_TYPE_DATE_RANGE_OBJECT,
+  UI_TYPE_DECIMAL_RANGE_OBJECT,
+  UI_TYPE_INTEGER_RANGE_OBJECT,
+  UI_TYPE_STRING_RANGE_OBJECT
+} from '../data-types-lib/constants';
+
+import {
+  COMPONENT_NAME_INPUT as BUILTIN_INPUT,
+  COMPONENT_NAME_RANGE_INPUT as BUILTIN_RANGE_INPUT
+} from './views/lib';
+
 export {
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SEARCH,
-  VIEW_SHOW
+  VIEW_SHOW,
+
+  FIELD_TYPE_BOOLEAN,
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_STRING,
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  UI_TYPE_BOOLEAN,
+  UI_TYPE_DATE,
+  UI_TYPE_DECIMAL,
+  UI_TYPE_INTEGER,
+  UI_TYPE_STRING,
+  UI_TYPE_DATE_RANGE_OBJECT,
+  UI_TYPE_DECIMAL_RANGE_OBJECT,
+  UI_TYPE_INTEGER_RANGE_OBJECT,
+  UI_TYPE_STRING_RANGE_OBJECT,
+
+  BUILTIN_INPUT,
+  BUILTIN_RANGE_INPUT
 }
 
 const appName = 'crudEditor';
@@ -41,7 +95,7 @@ export default baseModelDefinition => {
   let onTransition = null;
   let lastState = {};
 
-  class CrudWrapper extends React.Component {
+  class CrudWrapper extends PureComponent {
     static propTypes = {
       view: PropTypes.shape({
         name: PropTypes.string,
@@ -84,10 +138,37 @@ export default baseModelDefinition => {
       const prefixedTranslations = getPrefixedTranslations(modelDefinition.model.translations, prefix);
       this.context.i18n.register(prefix, prefixedTranslations);
 
+      const modelMessageKeys = Object.keys(modelDefinition.model.translations).reduce(
+        (acc, lang) => [
+          ...acc,
+          ...Object.keys(modelDefinition.model.translations[lang])
+        ],
+        []
+      );
+
+      const originalI18n = this.context.i18n;
+
+      const adjustedI18n = Object.create(originalI18n, {
+        // this method mimics @opuscapita/i18n getMessage
+        // it queries for prefixed model messages to allow multi-model/multi-crud apps
+        getMessage: {
+          get() {
+            return (key, payload) => originalI18n.getMessage(
+              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
+              payload
+            );
+          }
+        }
+      });
+
+      this.adjustedContext = {
+        i18n: adjustedI18n
+      };
+
       const sagaMiddleware = createSagaMiddleware();
 
       this.store = createStore(
-        getReducer(modelDefinition),
+        getReducer(modelDefinition, adjustedI18n),
         (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose)(applyMiddleware(
           // XXX: ensure each middleware calls "next(action)" synchronously,
           // or else ensure that "redux-saga" is the last middleware in the call chain.
@@ -96,7 +177,12 @@ export default baseModelDefinition => {
             getOnTransition: this.getOnTransition,
             modelDefinition
           }),
-          notificationsMiddleware({ context: this.context, modelDefinition }),
+
+          notificationsMiddleware({
+            i18n: adjustedI18n,
+            modelDefinition
+          }),
+
           sagaMiddleware
         ))
       );
@@ -105,28 +191,7 @@ export default baseModelDefinition => {
     }
 
     getChildContext() {
-      const
-        { translations } = modelDefinition.model,
-        modelMessageKeys = Object.keys(translations).reduce(
-          (acc, lang) => [...acc, ...Object.keys(translations[lang])],
-          []
-        ),
-        i18nSource = this.context.i18n;
-
-      return {
-        i18n: Object.create(i18nSource, {
-          // this method mimics @opuscapita/i18n getMessage
-          // it queries for prefixed model messages to allow multi-model/multi-crud apps
-          getMessage: {
-            get() {
-              return (key, payload) => i18nSource.getMessage(
-                modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
-                payload
-              )
-            }
-          }
-        })
-      }
+      return this.adjustedContext;
     }
 
     componentWillReceiveProps(props) {
@@ -160,5 +225,5 @@ export default baseModelDefinition => {
       </Provider>)
   }
 
-  return CrudWrapper
+  return CrudWrapper;
 };

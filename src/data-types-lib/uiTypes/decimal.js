@@ -5,9 +5,7 @@ export default {
     return EMPTY_VALUE;
   },
 
-  isEmpty: value => value === EMPTY_VALUE,
-
   isValid(value) {
-    return this.isEmpty(value) || typeof value === 'number' && !isNaN(value);
+    return value === EMPTY_VALUE || typeof value === 'number' && !isNaN(value);
   }
 };

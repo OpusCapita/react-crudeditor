@@ -41,7 +41,7 @@ export const
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
-    formatedInstance: storeState.formatedInstance,
+    formattedInstance: storeState.formattedInstance,
     formInstance: storeState.formInstance,
     fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,

@@ -1,13 +1,31 @@
+import booleanType from './boolean';
 import stringType from './string';
 import stringDateType from './stringDate';
-import stringNumberType from './stringNumber';
-import numberType from './number';
+import stringDecimalType from './stringDecimal';
+import stringIntegerType from './stringInteger';
+import integerType from './integer';
+import decimalType from './decimal';
+
+import decimalRangeType from './decimalRange';
+import integerRangeType from './integerRange';
+import stringDateRangeType from './stringDateRange';
+import stringDecimalRangeType from './stringDecimalRange';
+import stringIntegerRangeType from './stringIntegerRange';
 
 import {
+  FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
-  FIELD_TYPE_STRING_NUMBER,
-  FIELD_TYPE_NUMBER
+  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_DECIMAL,
+
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DECIMAL_RANGE
 } from '../constants';
 
 /*
@@ -16,15 +34,11 @@ import {
  * isValid(value)
  * Method returning boolean whether input value is indeed of specified Field Type.
  *
- * formatter
- * An object with UI Types as keys and formatters to the corresponding UI Types as values.
- * Each formatter accepts valid value of specified Field Type
- * (may be EMPTY_FIELD_VALUE in case of no native EMPTY_VALUE in the specified UI Type)
+ * converter
+ * An object with UI Types as keys and { format, parse } as values.
+ * Each formatter accepts valid non-EMPTY_FIELD_VALUE value of specified Field Type
  * and converts it to the specified UI Type
  * or throws an error when unable to convert.
- *
- * parser
- * An object with UI Types as keys and parsers to the corresponding UI Types as values.
  * Each parser accepts a valid, natively non-EMPTY_VALUE of specified UI Type
  * and parses it to the specified Field Type
  * or throws an error when unable to convert.
@@ -38,8 +52,17 @@ import {
  * or throws error object otherwise.
  */
 export default {
+  [FIELD_TYPE_BOOLEAN]: booleanType,
   [FIELD_TYPE_STRING]: stringType,
   [FIELD_TYPE_STRING_DATE]: stringDateType,
-  [FIELD_TYPE_STRING_NUMBER]: stringNumberType,
-  [FIELD_TYPE_NUMBER]: numberType
+  [FIELD_TYPE_STRING_DECIMAL]: stringDecimalType,
+  [FIELD_TYPE_STRING_INTEGER]: stringIntegerType,
+  [FIELD_TYPE_INTEGER]: integerType,
+  [FIELD_TYPE_DECIMAL]: decimalType,
+
+  [FIELD_TYPE_STRING_DATE_RANGE]: stringDateRangeType,
+  [FIELD_TYPE_INTEGER_RANGE]: integerRangeType,
+  [FIELD_TYPE_DECIMAL_RANGE]: decimalRangeType,
+  [FIELD_TYPE_STRING_INTEGER_RANGE]: stringIntegerRangeType,
+  [FIELD_TYPE_STRING_DECIMAL_RANGE]: stringDecimalRangeType
 };

@@ -17,7 +17,7 @@ import {
   INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS,
 
-  ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
+  ALL_INSTANCE_FIELDS_VALIDATE,
 
   VIEW_NAME
 } from '../constants';
@@ -26,35 +26,29 @@ import {
  * Instance validation
  */
 function* validateSaga(modelDefinition, meta) {
+  yield put({
+    type: ALL_INSTANCE_FIELDS_VALIDATE,
+    meta
+  });
+
   const [
     instance,
-    errors
+    fieldErrors
   ] = yield select(({
     views: {
       [VIEW_NAME]: {
         formInstance,
-        errors
+        errors: {
+          fields: fieldErrors
+        }
       }
     }
   }) => [
     formInstance,
-    errors
+    fieldErrors
   ]);
 
-  const fieldErrors = Object.keys(errors.fields).reduce(
-    (rez, name) => errors.fields[name].length === 0 ?
-      rez : {
-        ...rez,
-        [name]: errors.fields[name]
-      },
-    {}
-  );
-
   if (Object.keys(fieldErrors).length) {
-    yield put({
-      type: ALL_INSTANCE_FIELDS_VALIDATE_FAIL,
-      payload: fieldErrors
-    });
     throw fieldErrors;
   }
 

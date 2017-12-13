@@ -1,9 +1,28 @@
 import cloneDeep from 'lodash/cloneDeep';
 
-import { RANGE_FIELD_TYPES } from './constants';
 import { buildFieldRender } from '../lib';
-
 export { getViewState } from './selectors';
+
+import {
+  FIELD_TYPE_DECIMAL,
+  FIELD_TYPE_DECIMAL_RANGE,
+  FIELD_TYPE_INTEGER,
+  FIELD_TYPE_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_DATE_RANGE,
+  FIELD_TYPE_STRING_INTEGER,
+  FIELD_TYPE_STRING_INTEGER_RANGE,
+  FIELD_TYPE_STRING_DECIMAL,
+  FIELD_TYPE_STRING_DECIMAL_RANGE
+} from '../../../data-types-lib/constants';
+
+const rangeFieldType = {
+  [FIELD_TYPE_INTEGER]: FIELD_TYPE_INTEGER_RANGE,
+  [FIELD_TYPE_DECIMAL]: FIELD_TYPE_DECIMAL_RANGE,
+  [FIELD_TYPE_STRING_DATE]: FIELD_TYPE_STRING_DATE_RANGE,
+  [FIELD_TYPE_STRING_INTEGER]: FIELD_TYPE_STRING_INTEGER_RANGE,
+  [FIELD_TYPE_STRING_DECIMAL]: FIELD_TYPE_STRING_DECIMAL_RANGE
+};
 
 export const getUi = modelDefinition => {
   const fieldsMeta = modelDefinition.model.fields;
@@ -22,28 +41,16 @@ export const getUi = modelDefinition => {
   }
 
   searchMeta.searchableFields.forEach(field => {
-    if (field.render) {
-      if (!field.render.Component) {
-        throw new Error(`searchableField "${field.name}" must have render.Component since custom render is specified`);
-      }
-      if (field.render.hasOwnProperty('isRange')) {
-        // field.render has isRange and it is set to true.
-        throw new Error(
-          `searchableField "${field.name}" must not have render.isRange since custom render is specified`
-        );
-      }
+    if (field.render && !field.render.component) {
+      throw new Error(`searchableField "${field.name}" must have render.component since custom render is specified`);
     }
 
-    field.render = { // eslint-disable-line no-param-reassign
-      isRange: field.render ?
-        false :
-        RANGE_FIELD_TYPES.indexOf(fieldsMeta[field.name].type) !== -1,
+    const fieldType = fieldsMeta[field.name].type;
 
-      ...buildFieldRender({
-        render: field.render,
-        type: fieldsMeta[field.name].type
-      }),
-    };
+    field.render = buildFieldRender({ // eslint-disable-line no-param-reassign
+      render: field.render,
+      type: !field.render && rangeFieldType[fieldType] || fieldType
+    });
   });
 
   return searchMeta;

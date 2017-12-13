@@ -42,20 +42,4 @@ describe("FieldString", _ => {
     expect(onBlur.calledOnce).to.be.true; // eslint-disable-line no-unused-expressions
     expect(onChange.calledWith('new string')).to.be.true; // eslint-disable-line no-unused-expressions
   });
-
-  it("should mute handlers in readonly mode", () => {
-    const onChange = sinon.spy();
-    const onBlur = sinon.spy();
-    const props = {
-      readOnly: true,
-      value: 'some other string',
-      onChange,
-      onBlur
-    };
-    const wrapper = Enzyme.mount(<FieldString {...props} />);
-    const fc = wrapper.find(FormControl)
-    expect(fc.prop('value')).to.equal(props.value);
-    expect(fc.prop('onChange')).to.not.exist; // eslint-disable-line no-unused-expressions
-    expect(fc.prop('onBlur')).to.not.exist; // eslint-disable-line no-unused-expressions
-  });
 });

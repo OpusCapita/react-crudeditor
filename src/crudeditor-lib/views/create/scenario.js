@@ -11,6 +11,8 @@ import {
 } from './constants';
 import { VIEW_SOFT_REDIRECT } from '../../common/constants';
 
+// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
 // See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
 function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
   const choices = {
@@ -78,6 +80,8 @@ function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
     }
   }
 }
+
+// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 // See Search View scenario for detailed description of the saga.
 export default function*({

@@ -1,35 +1,35 @@
 import assert from 'assert'
 
-import number from './number'
+import decimal from './decimal'
 
-describe('uiTypes: number', () => {
+describe('uiTypes: decimal', () => {
   const vNumber = 14;
   const ivNumber = '23e';
 
-  it('should return valid for number', () => {
+  it('should return valid for decimal', () => {
     assert.strictEqual(
-      number.isValid(vNumber),
+      decimal.isValid(vNumber),
       true
     );
   });
 
   it('should return valid for null', () => {
     assert.strictEqual(
-      number.isValid(null),
+      decimal.isValid(null),
       true
     );
   });
 
   it('should return null as empty value', () => {
     assert.strictEqual(
-      number.EMPTY_VALUE,
+      decimal.EMPTY_VALUE,
       null
     );
   });
 
-  it('should return invalid for not-a-number', () => {
+  it('should return invalid for not-a-decimal', () => {
     assert.strictEqual(
-      number.isValid(ivNumber),
+      decimal.isValid(ivNumber),
       false
     );
   });

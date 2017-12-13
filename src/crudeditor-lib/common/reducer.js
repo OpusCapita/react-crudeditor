@@ -12,18 +12,14 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelMetaData => (
+export default (modelMetaData, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
   const newStoreStateSlice = {};
 
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
   if (type === ACTIVE_VIEW_CHANGE) {
     newStoreStateSlice.activeViewName = payload.viewName;
-
-  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

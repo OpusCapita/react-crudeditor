@@ -1,5 +1,5 @@
-import typeDate from './dateUiType';
-import typeString from './stringUiType';
+import dateUiType from './dateUiType';
+import stringUiType from './stringUiType';
 
 import {
   CONSTRAINT_MIN,
@@ -32,15 +32,9 @@ export default {
     return (new Date(value) !== "Invalid Date") && !isNaN(new Date(value));
   },
 
-  formatter: {
-    [UI_TYPE_DATE]: typeDate.formatter,
-    [UI_TYPE_STRING]: typeString.formatter
-  },
-
-
-  parser: {
-    [UI_TYPE_DATE]: typeDate.parser,
-    [UI_TYPE_STRING]: typeString.parser
+  converter: {
+    [UI_TYPE_DATE]: dateUiType,
+    [UI_TYPE_STRING]: stringUiType
   },
 
 

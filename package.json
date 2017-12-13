@@ -10,8 +10,8 @@
     "test": "rimraf ./.nyc_output ./coverage && cross-env nyc mocha --recursive src/**/*.spec.js --require ignore-styles",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.babel.js",
     "build": "cross-env NODE_ENV=development webpack --config config/webpack.config.babel.js",
-    "start-showroom": "cross-env NODE_ENV=development showroom-scan ./src/demo/showroom && webpack-dev-server --config config/webpack.config.showroom.js",
-    "build-showroom": "cross-env NODE_ENV=development showroom-scan ./src/demo/showroom && webpack --config config/webpack.config.showroom.js",
+    "start-showroom": "cross-env NODE_ENV=development showroom-scan ./src && webpack-dev-server --config config/webpack.config.showroom.js",
+    "build-showroom": "cross-env NODE_ENV=development showroom-scan ./src && webpack --config config/webpack.config.showroom.js",
     "npm-build": "rimraf lib && cross-env NODE_ENV=production webpack --config ./config/webpack.config.build.js",
     "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish",
     "publish-release": "npm run npm-publish -- --release"
@@ -52,7 +52,7 @@
     "@opuscapita/npm-scripts": "2.0.1-beta.1",
     "@opuscapita/react-navigation": "0.0.20",
     "@opuscapita/react-reference-select": "1.0.4",
-    "@opuscapita/react-showroom-client": "1.2.10",
+    "@opuscapita/react-showroom-client": "1.3.0-beta.4",
     "@opuscapita/react-showroom-server": "1.3.0",
     "@opuscapita/styles": "1.0.0",
     "autoprefixer": "7.1.2",
@@ -76,7 +76,7 @@
     "chai": "4.1.2",
     "cross-env": "5.0.5",
     "css-loader": "0.28.4",
-    "enzyme": "3.1.0",
+    "enzyme": "3.2.0",
     "enzyme-adapter-react-15": "1.0.1",
     "eslint": "4.8.0",
     "eslint-config-opuscapita": "1.0.9",
@@ -133,9 +133,9 @@
     "require": [
       "./config/mocha-config.js"
     ],
-    "lines": 80,
-    "statements": 80,
-    "functions": 80,
-    "branches": 80
+    "lines": 50,
+    "statements": 50,
+    "functions": 50,
+    "branches": 20
   }
 }

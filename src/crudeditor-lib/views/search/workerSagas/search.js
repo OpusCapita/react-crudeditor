@@ -31,8 +31,6 @@ export default function*({
     offset
   } = payload;
 
-  const { searchableFields } = modelDefinition.ui.search;
-
   const [
     currentFilter,
     currentSort,
@@ -99,14 +97,8 @@ export default function*({
       order === currentOrder &&
       max === currentMax &&
       isEqual(
-        cleanFilter({
-          searchableFields,
-          filter
-        }),
-        cleanFilter({
-          searchableFields,
-          filter: currentFilter
-        })
+        cleanFilter(filter),
+        cleanFilter(currentFilter)
       ) ?
       (offset || offset === 0 ? offset : currentOffset) :
       0;
@@ -118,8 +110,7 @@ export default function*({
   });
 
   let instances, totalCount;
-
-  const cleanedFilter = cleanFilter({ searchableFields, filter })
+  const cleanedFilter = cleanFilter(filter);
 
   try {
     ({ instances, totalCount } = yield call(modelDefinition.api.search, {

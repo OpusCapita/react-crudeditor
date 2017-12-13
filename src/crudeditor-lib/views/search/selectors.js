@@ -39,10 +39,7 @@ const _getViewState = ({
     search: searchMeta
   }
 }) => {
-  const filter = cleanFilter({
-    searchableFields: searchMeta.searchableFields,
-    filter: resultFilter
-  });
+  const filter = cleanFilter(resultFilter);
 
   return {
     ...(filter ? { filter } : {}),
@@ -62,12 +59,12 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
-    modelDefinition.ui.create.defaultNewInstance ?
-      cloneDeep(modelDefinition.ui.create.defaultNewInstance({
-        filter: {}, // Setting filter to empty object if it is not specified in view state.
-        ..._getViewState(storeState, modelDefinition)
-      })) :
-      {}
+    modelDefinition.ui.create.defaultNewInstance &&
+    cloneDeep(modelDefinition.ui.create.defaultNewInstance({
+      filter: {}, // Setting filter to empty object if it is not specified in view state.
+      ..._getViewState(storeState, modelDefinition)
+    })) ||
+    {}
   ),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
@@ -82,7 +79,7 @@ export const
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
-    formatedFilter: storeState.formatedFilter,
+    formattedFilter: storeState.formattedFilter,
     isLoading: [
       STATUS_DELETING,
       STATUS_INITIALIZING,
@@ -99,16 +96,14 @@ export const
     searchableFields: uiMeta.search.searchableFields.map(({
       name,
       render: {
-        Component,
-        isRange,
+        component,
         valueProp: {
           name: valuePropName
         }
       }
     }) => ({
       name,
-      isRange,
-      Component,
+      component,
       valuePropName
     })),
     selectedInstances: storeState.selectedInstances,

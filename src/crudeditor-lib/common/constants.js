@@ -1,5 +1,7 @@
 const namespace = 'common';
 
+import { FIELD_TYPE_STRING } from '../../data-types-lib/constants';
+
 export const
   ROLE_FIELD = 'field',
   ROLE_SECTION = 'section',
@@ -11,7 +13,12 @@ export const
   VIEW_SHOW = 'show',
   VIEW_ERROR = 'error',
 
-  DEFAULT_FIELD_TYPE = 'string',
+  PERMISSION_VIEW = 'view',
+  PERMISSION_CREATE = 'create',
+  PERMISSION_EDIT = 'edit',
+  PERMISSION_DELETE = 'delete',
+
+  DEFAULT_FIELD_TYPE = FIELD_TYPE_STRING,
   DEFAULT_VIEW = VIEW_SEARCH,
   DEFAULT_TAB_COLUMNS = 1,
 
@@ -24,9 +31,10 @@ export const
 
   UNPARSABLE_FIELD_VALUE = undefined,
 
-  /* █████████████████████████████████████████████*\
-   *███ VIEW STATUSES (in alphabetical order) ███*
-  \*█████████████████████████████████████████████*/
+  /* █████████████████████████████████████████████
+   * ███ VIEW STATUSES (in alphabetical order) ███
+   * █████████████████████████████████████████████
+   */
 
   STATUS_CREATING = 'creating',
   STATUS_EXTRACTING = 'extracting',
@@ -38,9 +46,10 @@ export const
   STATUS_UNINITIALIZED = 'uninitialized',
   STATUS_UPDATING = 'updating',
 
-  /* ███████████████████████████████████████*\
-   *███ ACTIONS (in alphabetical order) ███*
-  \*███████████████████████████████████████*/
+  /* ███████████████████████████████████████
+   * ███ ACTIONS (in alphabetical order) ███
+   * ███████████████████████████████████████
+   */
 
   ACTIVE_VIEW_CHANGE = namespace + '/ACTIVE_VIEW_CHANGE',
 
@@ -53,9 +62,10 @@ export const
 
   VIEW_SOFT_REDIRECT = namespace + '/VIEW_SOFT_REDIRECT',
 
-  /* ██████████████████████████████████████*\
-   *███ ERRORS (in alphabetical order) ███*
-  \*██████████████████████████████████████*/
+  /* ██████████████████████████████████████
+   * ███ ERRORS (in alphabetical order) ███
+   * ██████████████████████████████████████
+   */
 
   ERROR_CODE_INTERNAL = 500,
   ERROR_NOT_FOUND = 404,

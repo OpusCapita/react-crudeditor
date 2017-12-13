@@ -1,5 +1,6 @@
-import typeNumber from './numberUiType';
-import typeString from './stringUiType';
+import integerUiType from './integerUiType';
+import decimalUiType from './decimalUiType';
+import stringUiType from './stringUiType';
 
 import {
   CONSTRAINT_MIN,
@@ -12,7 +13,8 @@ import {
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  UI_TYPE_NUMBER,
+  UI_TYPE_INTEGER,
+  UI_TYPE_DECIMAL,
   UI_TYPE_STRING
 } from '../../constants';
 
@@ -22,14 +24,10 @@ export default {
 
   isValid: value => value === EMPTY_FIELD_VALUE || typeof value === 'string',
 
-  formatter: {
-    [UI_TYPE_NUMBER]: typeNumber.formatter,
-    [UI_TYPE_STRING]: typeString.formatter
-  },
-
-  parser: {
-    [UI_TYPE_NUMBER]: typeNumber.parser,
-    [UI_TYPE_STRING]: typeString.parser
+  converter: {
+    [UI_TYPE_INTEGER]: integerUiType,
+    [UI_TYPE_DECIMAL]: decimalUiType,
+    [UI_TYPE_STRING]: stringUiType
   },
 
   buildValidator: value => ({

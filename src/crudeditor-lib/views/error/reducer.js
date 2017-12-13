@@ -35,7 +35,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -45,6 +45,7 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if ([VIEW_INITIALIZE, VIEW_REDIRECT_FAIL].indexOf(type) > -1) {
@@ -58,15 +59,18 @@ export default modelDefinition => (
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

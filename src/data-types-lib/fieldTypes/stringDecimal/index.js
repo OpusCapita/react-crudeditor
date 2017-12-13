@@ -1,10 +1,9 @@
 import Big from 'big.js';
 
-import typeNumber from './numberUiType';
-import typeString from './stringUiType';
+import decimalUiType from './decimalUiType';
+import stringUiType from './stringUiType';
 
 import {
-  CONSTRAINT_INTEGER,
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
 
@@ -12,11 +11,10 @@ import {
 
   ERROR_CODE_VALIDATION,
 
-  ERROR_FORBIDDEN_FRACTIONAL_PART,
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
 
-  UI_TYPE_NUMBER,
+  UI_TYPE_DECIMAL,
   UI_TYPE_STRING
 } from '../../constants';
 
@@ -41,15 +39,9 @@ export default {
     }
   },
 
-  formatter: {
-    [UI_TYPE_NUMBER]: typeNumber.formatter,
-    [UI_TYPE_STRING]: typeString.formatter
-  },
-
-
-  parser: {
-    [UI_TYPE_NUMBER]: typeNumber.parser,
-    [UI_TYPE_STRING]: typeString.parser
+  converter: {
+    [UI_TYPE_DECIMAL]: decimalUiType,
+    [UI_TYPE_STRING]: stringUiType
   },
 
 
@@ -57,16 +49,6 @@ export default {
     const value = new Big(origValue);
 
     return {
-
-      /*
-       * Requires value to be an integer (no floating point).
-       * param is boolean.
-       */
-      [CONSTRAINT_INTEGER]: param => !param || value.eq(value.round()) || throwError({
-        code: ERROR_CODE_VALIDATION,
-        id: ERROR_FORBIDDEN_FRACTIONAL_PART,
-        message: 'Fractional part is forbidden'
-      }),
 
       /*
        * Specifies the minimum value allowed.

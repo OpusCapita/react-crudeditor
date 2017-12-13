@@ -1,5 +1,11 @@
-export default {
-  isEmpty: value => false, // No native empty value.
+const EMPTY_VALUE = null;
 
-  isValid: value => typeof value === 'string'
+export default {
+  get EMPTY_VALUE() {
+    return EMPTY_VALUE;
+  },
+
+  isValid(value) {
+    return value === EMPTY_VALUE || typeof value === 'string';
+  }
 };

@@ -13,7 +13,12 @@ import {
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW,
-  VIEW_ERROR
+  VIEW_ERROR,
+
+  PERMISSION_CREATE,
+  PERMISSION_DELETE,
+  PERMISSION_EDIT,
+  PERMISSION_VIEW
 } from './common/constants';
 
 // https://stackoverflow.com/a/31169012
@@ -26,77 +31,93 @@ const allPropTypes = (...types) => (...args) => {
   return new Error(errors.map((e) => e.message).join('\n'));
 };
 
-const modelPropTypes = {
-  model: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    fields: allPropTypes(
-      PropTypes.objectOf(PropTypes.shape({
-        unique: PropTypes.bool,
-        type: PropTypes.string,
-        constraints: PropTypes.shape({
-          max: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.instanceOf(Date)
-          ]),
-          min: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.instanceOf(Date)
-          ]),
-          required: PropTypes.bool,
-          email: PropTypes.bool,
-          matches: PropTypes.instanceOf(RegExp),
-          url: PropTypes.bool,
-          validate: PropTypes.func
-        })
-      })).isRequired,
-      (props, propName, componentName) => {
-        if (!props[propName]) {
-          return; // don't duplicate an Error because it'll be returned by 'isRequired' above
-        }
-        const noUniqueFields = Object.keys(props[propName]).
-          filter(fieldName => props[propName][fieldName].unique).length === 0;
+const allowedAny = (actions = [], { permissions: { crudOperations } = {} }) => [
+  PERMISSION_CREATE,
+  PERMISSION_EDIT,
+  PERMISSION_DELETE,
+  PERMISSION_VIEW
+].filter(action => actions.indexOf(action) > -1).
+  reduce((result, action) => result || !!crudOperations[action], false);
 
-        if (noUniqueFields) {
-          // eslint-disable-next-line consistent-return
-          return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
+const checkPropTypes = modelDefinition => {
+  const modelPropTypes = {
+    model: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      fields: allPropTypes(
+        PropTypes.objectOf(PropTypes.shape({
+          unique: PropTypes.bool,
+          type: PropTypes.string,
+          constraints: PropTypes.shape({
+            max: PropTypes.oneOfType([
+              PropTypes.number,
+              PropTypes.instanceOf(Date),
+              PropTypes.string
+            ]),
+            min: PropTypes.oneOfType([
+              PropTypes.number,
+              PropTypes.instanceOf(Date),
+              PropTypes.string
+            ]),
+            required: PropTypes.bool,
+            email: PropTypes.bool,
+            matches: PropTypes.instanceOf(RegExp),
+            url: PropTypes.bool,
+            validate: PropTypes.func
+          })
+        })).isRequired,
+        (props, propName, componentName) => {
+          if (!props[propName]) {
+            return; // don't duplicate an Error because it'll be returned by 'isRequired' above
+          }
+          const noUniqueFields = Object.keys(props[propName]).
+            filter(fieldName => props[propName][fieldName].unique).length === 0;
+
+          if (noUniqueFields) {
+            // eslint-disable-next-line consistent-return
+            return new Error(`${componentName}: At least one field should have property 'unique: true'.`);
+          }
         }
-      }
-    ),
-    validate: PropTypes.func.isRequired
-  }).isRequired,
-  permissions: PropTypes.shape({
-    crudOperations: PropTypes.shape({
-      create: PropTypes.bool,
-      edit: PropTypes.bool,
-      delete: PropTypes.bool,
-      view: PropTypes.bool
-    }).isRequired
-  }).isRequired,
-  api: PropTypes.shape({
-    get: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired,
-    delete: PropTypes.func.isRequired,
-    create: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired
-  }).isRequired,
-  ui: PropTypes.shape({
-    Spinner: PropTypes.func,
-    search: PropTypes.func,
-    instanceLabel: PropTypes.func,
-    create: PropTypes.shape({
-      defaultNewInstance: PropTypes.func,
-      formLayout: PropTypes.func
+      ),
+      validate: PropTypes.func
+    }).isRequired,
+    permissions: PropTypes.shape({
+      crudOperations: PropTypes.shape({
+        [PERMISSION_CREATE]: PropTypes.bool,
+        [PERMISSION_EDIT]: PropTypes.bool,
+        [PERMISSION_DELETE]: PropTypes.bool,
+        [PERMISSION_VIEW]: PropTypes.bool
+      }).isRequired
+    }).isRequired,
+    api: PropTypes.shape({
+      get: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+        PropTypes.func.isRequired : PropTypes.func,
+      search: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+        PropTypes.func.isRequired : PropTypes.func,
+      delete: allowedAny([PERMISSION_DELETE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+      create: allowedAny([PERMISSION_CREATE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+      update: allowedAny([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
     }),
-    edit: PropTypes.shape({
-      formLayout: PropTypes.func
-    }),
-    show: PropTypes.shape({
-      formLayout: PropTypes.func
-    }),
-    customViews: PropTypes.objectOf(PropTypes.func),
-    operations: PropTypes.func
-  })
-};
+    ui: PropTypes.shape({
+      Spinner: PropTypes.func,
+      search: PropTypes.func,
+      instanceLabel: PropTypes.func,
+      create: PropTypes.shape({
+        defaultNewInstance: PropTypes.func,
+        formLayout: PropTypes.func
+      }),
+      edit: PropTypes.shape({
+        formLayout: PropTypes.func
+      }),
+      show: PropTypes.shape({
+        formLayout: PropTypes.func
+      }),
+      customViews: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.func
+    })
+  };
+
+  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
+}
 
 export const storeState2appState = (storeState, modelDefinition) => {
   const getViewState = {
@@ -130,7 +151,7 @@ export function fillDefaults(baseModelDefinition) {
   const modelDefinition = cloneDeep(baseModelDefinition);
 
   // validate modelDefinition using 'prop-types'
-  PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
+  checkPropTypes(modelDefinition);
 
   const fieldsMeta = modelDefinition.model.fields;
 
@@ -158,7 +179,12 @@ export function fillDefaults(baseModelDefinition) {
 
   const { crudOperations } = modelDefinition.permissions;
 
-  ['create', 'edit', 'delete', 'view'].forEach(operationPermission => {
+  [
+    PERMISSION_CREATE,
+    PERMISSION_EDIT,
+    PERMISSION_DELETE,
+    PERMISSION_VIEW
+  ].forEach(operationPermission => {
     if (!crudOperations.hasOwnProperty(operationPermission)) {
       crudOperations[operationPermission] = false
     }

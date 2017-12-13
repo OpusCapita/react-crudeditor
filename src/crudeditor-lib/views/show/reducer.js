@@ -2,10 +2,6 @@ import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
 
 import {
-  format as formatField,
-} from '../../../data-types-lib';
-
-import {
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_REQUEST,
 
@@ -35,14 +31,14 @@ const defaultStoreStateTemplate = {
   // Instance as saved on server-side.
   persistentInstance: undefined,
 
-  /* Formated instance as displayed in the form.
+  /* Formatted instance as displayed in the form.
    * {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
    * }
-   * NOTE: formInstance values and formatedInstance values represent different values in case of parsing error
+   * NOTE: formInstance values and formattedInstance values represent different values in case of parsing error
    * (i.e. rendered value cannot be parsed into its string representation).
    */
-  formatedInstance: undefined,
+  formattedInstance: undefined,
 
   // Must always be an array, may be empty.
   formLayout: [],
@@ -65,7 +61,7 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default modelDefinition => (
+export default (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {
@@ -75,27 +71,35 @@ export default modelDefinition => (
 
   let newStoreStateSlice = {};
 
+  /* eslint-disable padded-blocks */
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   if (type === VIEW_INITIALIZE_REQUEST) {
     newStoreStateSlice.status = STATUS_INITIALIZING;
+
   } else if (type === VIEW_INITIALIZE_FAIL) {
     newStoreStateSlice.status = STATUS_UNINITIALIZED;
+
   } else if (type === VIEW_INITIALIZE_SUCCESS) {
     newStoreStateSlice.status = STATUS_READY;
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
+
   } else if (type === VIEW_REDIRECT_FAIL) {
     newStoreStateSlice.status = STATUS_READY;
+
   } else if (type === VIEW_REDIRECT_SUCCESS) {
     // Reseting the store to initial uninitialized state.
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCE_SHOW_REQUEST) {
     newStoreStateSlice.status = STATUS_EXTRACTING;
+
   } else if (type === INSTANCE_SHOW_SUCCESS) {
     const { instance } = payload;
 
@@ -125,34 +129,31 @@ export default modelDefinition => (
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
-    newStoreStateSlice.formatedInstance = u.constant(Object.keys(instance).reduce(
+    newStoreStateSlice.formattedInstance = u.constant(Object.keys(instance).reduce(
       (rez, fieldName) => {
         const fieldLayout = findFieldLayout(fieldName)(formLayout);
+
         return fieldLayout ? {
           ...rez,
-          [fieldName]: formatField({
-            value: instance[fieldName],
-            type: modelDefinition.model.fields[fieldName].type,
-            targetType: fieldLayout.render.valueProp.type
-          })
+          [fieldName]: fieldLayout.render.valueProp.converter.format({ value: instance[fieldName], i18n })
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed in Edit View.
       },
       {}
     ));
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
-
     if (storeState.status !== STATUS_INITIALIZING) {
       newStoreStateSlice.status = STATUS_READY;
     }
 
-    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
     const activeTab = getTab(storeState, tabName);
     newStoreStateSlice.activeTab = u.constant(activeTab);
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+  /* eslint-enable padded-blocks */
   }
 
   return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

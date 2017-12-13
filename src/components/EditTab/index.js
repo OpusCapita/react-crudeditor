@@ -38,7 +38,7 @@ export default class EditTab extends React.PureComponent {
         })).isRequired
       })
     }).isRequired,
-    toggleFieldErrors: PropTypes.func.isRequired,
+    toggleFieldErrors: PropTypes.func,
     fieldErrors: PropTypes.object
   }
 

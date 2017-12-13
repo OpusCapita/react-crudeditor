@@ -38,14 +38,13 @@ export default class FieldErrorLabel extends PureComponent {
       return getMessage(errorMessages[id].key, { payload: errorMessages[id].payload })
     }
 
-    // try to find a translation defined by model
+    // Try to find a translation defined by model.
     const key = `model.field.${fieldName}.error.${id}`;
     const text = getMessage(key, payload);
 
-    // text === key if translation is not found
-    return text !== key ?
-      text :
-      message || id
+    return text === key ?
+      message || id : // Translation is not found.
+      text;
   }
 
   render() {

@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Pagination, Dropdown, MenuItem } from 'react-bootstrap';
-
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import PaginationPanel from './PaginationPanel';
 import './SearchPaginationPanel.less';
 
-class SearchResultPaginationPanel extends React.PureComponent {
+export default class SearchResultPaginationPanel extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        pageParams: PropTypes.shape({
+          max: PropTypes.number
+        }),
+        totalCount: PropTypes.number
+      }),
+      actions: PropTypes.objectOf(PropTypes.func)
+    }).isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object
+  };
+
   handlePaginate = activePage => this.props.model.actions.searchInstances({
     offset: (activePage - 1) * this.props.model.data.pageParams.max
   })
@@ -20,6 +36,8 @@ class SearchResultPaginationPanel extends React.PureComponent {
       }
     } = this.props.model.data;
 
+    const { i18n } = this.context;
+
     return (
       <div className="crud--search-pagination-panel clearfix">
         <div className='paginate'>
@@ -30,7 +48,9 @@ class SearchResultPaginationPanel extends React.PureComponent {
             className="crud--search-pagination-panel__per-page-dropdown"
           >
             <Dropdown.Toggle>
-              {this.context.i18n.getMessage('crudEditor.search.resultsPerPage')}: <b>{max}</b>
+              {i18n.getMessage('crudEditor.search.resultsPerPage')}
+              {':\u0020'}
+              <b>{max !== -1 ? max : i18n.getMessage('crudEditor.search.all')}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem eventKey={-1} active={max === -1}>All</MenuItem>
@@ -44,17 +64,13 @@ class SearchResultPaginationPanel extends React.PureComponent {
         </div>
 
         {
-          totalCount > max &&
+          totalCount > max && max > 0 &&
           <div className="crud--search-pagination-panel__paginate">
-            <Pagination
-              activePage={offset / max + 1}
-              onSelect={this.handlePaginate}
-              items={Math.ceil(totalCount / max)}
-              className="crud--search-pagination-panel__pagination"
-              maxButtons={5}
-              boundaryLinks={true}
-              first={true}
-              last={true}
+            <PaginationPanel
+              totalCount={totalCount}
+              max={max}
+              offset={offset}
+              onPaginate={this.handlePaginate}
             />
           </div>
         }
@@ -66,21 +82,3 @@ class SearchResultPaginationPanel extends React.PureComponent {
     );
   }
 }
-
-SearchResultPaginationPanel.propTypes = {
-  model: PropTypes.shape({
-    data: PropTypes.shape({
-      pageParams: PropTypes.shape({
-        max: PropTypes.number
-      }),
-      totalCount: PropTypes.number
-    }),
-    actions: PropTypes.objectOf(PropTypes.func)
-  }).isRequired
-}
-
-SearchResultPaginationPanel.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default SearchResultPaginationPanel;

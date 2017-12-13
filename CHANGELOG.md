@@ -1,3 +1,202 @@
+## [v0.0.30](Wed, 13 Dec 2017 13:13:42 GMT)
+ - Merge pull request #139 from OpusCapita/issue-25
+
+    Issue 25 (a7f280c fb1fdc2, ed43399)
+ - Correcting comments in Search Saga (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, fb1fdc2)
+ - Merge pull request #131 from OpusCapita/issue-123
+
+    Sort preserves current offset (772f7a4 bf2ce17, da1beee)
+ - Merge pull request #138 from OpusCapita/issue-25
+
+    Issue 25 (eb0db9d 772f7a4, a7f280c)
+ - Merge pull request #137 from OpusCapita/issue-135
+
+    Fixed issue 135 (451dce1 373ce64, 772f7a4)
+ - Merge branch 'issue-25' of https://github.com/OpusCapita/react-crudeditor into issue-25 (71fca05 4c07d18, 451dce1)
+ - Fixing internal operation call _before_ button press (Andrei Mourzenkov <mourzenkov@scand.com>, 71fca05)
+ - Adjusted prop-types for show view. (Egor Stambakio <stambakio@scand.com>, 373ce64)
+ - Fixed #135 (Egor Stambakio <stambakio@scand.com>, 503a028)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4c07d18)
+ - Merge pull request #136 from OpusCapita/issue-134
+
+    i18n for custom field validation errors (c1a6762 4aa6610, d9c70c0)
+ - Minor syntax enhancements (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4aa6610)
+ - Implemented #134 (Egor Stambakio <stambakio@scand.com>, ede7ace)
+ - Merge pull request #133 from OpusCapita/issue-128
+
+    Added missing instanceLabel to Edit view reducer (136813c 952b490, c1a6762)
+ - Fixed #128 (Egor Stambakio <stambakio@scand.com>, 952b490)
+ - Merge branch 'issue-115-v2' into issue-25 (40d04c1 13d4b0c, 136813c)
+ - Merge pull request #132 from OpusCapita/issue-124
+
+    Edited demo server behavior to trim edge whitespaces (42d7ec2 0dbed35, 40d04c1)
+ - WithFieldErrorsHOC keeps filtered errors in state for performance sake (Andrei Mourzenkov <mourzenkov@scand.com>, 13d4b0c)
+ - Fixed #124 (Egor Stambakio <stambakio@scand.com>, 0dbed35)
+ - Merge pull request #130 from OpusCapita/issue-122
+
+    Adjusted pagination to be consistent with existing editors (205b05c 5ddefcb, 42d7ec2)
+ - Merge pull request #129 from OpusCapita/issue-117
+
+    Proper sorting for strings in demo model (678ae0c c684393, 205b05c)
+ - Merge pull request #120 from OpusCapita/issue-118
+
+    Fixed sort icon direction (4e46ec7 ab77ea0, 678ae0c)
+ - Indentation (Egor Stambakio <stambakio@scand.com>, bf2ce17)
+ - Fixed #123 (Egor Stambakio <stambakio@scand.com>, d747e7a)
+ - Fixed #122 (Egor Stambakio <stambakio@scand.com>, 5ddefcb)
+ - Fixed #117 (Egor Stambakio <stambakio@scand.com>, c684393)
+ - Merge pull request #119 from OpusCapita/issue-115-v2
+
+    Refactored fieldErrors HOC (c6dae4f 32fb8fa, 4e46ec7)
+ - Redundant query of model props is removed from WithFieldErrorsHOC.js (Andrei Mourzenkov <mourzenkov@scand.com>, 32fb8fa)
+ - Fixed #118 (Egor Stambakio <stambakio@scand.com>, ab77ea0)
+ - Implemented better initial fields in errors HOC. (Egor Stambakio <stambakio@scand.com>, 628874a)
+ - Deleted a console.log woohooo (Egor Stambakio <stambakio@scand.com>, d44f6d8)
+ - Fixed minor bugs. (Egor Stambakio <stambakio@scand.com>, 2212ae5)
+ - Reimplemented fieldErrors HOC. (Egor Stambakio <stambakio@scand.com>, 1b53078)
+ - Fixed GenericInput showroom issue (Egor Stambakio <stambakio@scand.com>, c6dae4f)
+ - Keeping errors in the store after their correction is fixed (Andrei Mourzenkov <mourzenkov@scand.com>, 3f19aab)
+ - Merge pull request #116 from OpusCapita/issue-106
+
+    Defer until onBlur (01c3199 490f33d, c5b14c6)
+ - Fixed tests (estambakio-sc <egor.stambakio@opuscapita.com>, 490f33d)
+ - Merged issue-25 (da9c21f 01c3199, 42b07fd)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 01c3199)
+ - Monor variable name corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 267cad4)
+ - Merge pull request #113 from OpusCapita/issue-112
+
+    Defer redux-component value sync until onBlur (5f5a3aa 99f510a, da9c21f)
+ - Merge pull request #109 from OpusCapita/issue-106
+
+    Removed number-related components, moved i18n format/parse to converters (5e7ace5 5f5a3aa, b2181db)
+ - Removed default onChange, onBlur handlers from HOC. (Egor Stambakio <stambakio@scand.com>, 99f510a)
+ - Named args for format/parse functions. (Egor Stambakio <stambakio@scand.com>, 5f5a3aa)
+ - Component value synchronizes with Redux onBlur (Egor Stambakio <stambakio@scand.com>, d2ff23c)
+ - Merge pull request #111 from OpusCapita/issue-109
+
+    Fixed #110 (545a854 2799f86, 5e7ace5)
+ - Unified errors structure in all Views stores (Andrei Mourzenkov <mourzenkov@scand.com>, 545a854)
+ - Merged #106 (44b221d 3ae3d9c, a86f3b2)
+ - Created a HOC. (Egor Stambakio <stambakio@scand.com>, 44b221d)
+ - Fixed #109 (Egor Stambakio <stambakio@scand.com>, 2799f86)
+ - Handling i18n parsing edge cases. (Egor Stambakio <stambakio@scand.com>, 3ae3d9c)
+ - Removed obsolete checks. (Egor Stambakio <stambakio@scand.com>, 65c28c3)
+ - Fixed #106 (Egor Stambakio <stambakio@scand.com>, 143fe30)
+ - Fixed #104 (Egor Stambakio <stambakio@scand.com>, 850b6e1)
+ - Fix ##108 and add 'i18n' to all reducers (Andrei Mourzenkov <mourzenkov@scand.com>, ec1da11)
+ - Merge pull request #105 from OpusCapita/test-stripped-model
+
+    Tested stripped model, fixed some bugs and implemented #104 (ecc0108 a64025c, 6087dc7)
+ - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a64025c)
+ - Tested stripped model, fixed some bugs and implemented #104 (Egor Stambakio <stambakio@scand.com>, 9e3cb4b)
+ - Merge pull request #103 from OpusCapita/issue-102
+
+    Allow whitespaces in string inputs (c18b30b 532f622, ecc0108)
+ - Done (Egor Stambakio <stambakio@scand.com>, 532f622)
+ - Fixed #102 (Egor Stambakio <stambakio@scand.com>, 43850f2)
+ - Merge branch 'issue-25' of https://github.com/OpusCapita/react-crudeditor into issue-25 (fc4f7b2 956973a, c18b30b)
+ - Merge branch 'issue-25' of https://github.com/OpusCapita/react-crudeditor into issue-25 (4791fb9 7151b03, 956973a)
+ - Fix #97 (Andrei Mourzenkov <mourzenkov@scand.com>, 4791fb9)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 7151b03)
+ - Added a test (Egor Stambakio <stambakio@scand.com>, fc4f7b2)
+ - Merge pull request #101 from OpusCapita/issue-94
+
+    Added field type to component mapping into Readme, and fixed some bugs (ae4b728 0b02d37, 076c445)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 0b02d37)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 135fc36)
+ - Minor demo api fix (Egor Stambakio <stambakio@scand.com>, 03a4dde)
+ - Renamed exported names of builtin components. (Egor Stambakio <stambakio@scand.com>, 5f0289f)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, dacb416)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 97a3b18)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 47c92e5)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 5eba8d2)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, d7e9069)
+ - Merged issue-25 (3c594cc ae4b728, 1f4a3e3)
+ - Update README.md
+
+    Added field types to components mapping. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3c594cc)
+ - Merge pull request #99 from OpusCapita/issue-95
+
+    Implemented middleware-scoped all_fields_valudate fail notification (44f8d62 9066656, ae4b728)
+ - Fixed according to reeviewer notes. (Egor Stambakio <stambakio@scand.com>, 9066656)
+ - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 56ccc09)
+ - Update README.md
+
+    Added built-in components description. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, b5db467)
+ - Merge pull request #100 from OpusCapita/issue-93
+
+    Renamed Component -> component (f4d5432 4ece7a9, 44f8d62)
+ - Fixed a bug, exported default components names for #94. (Egor Stambakio <stambakio@scand.com>, 89dd2c7)
+ - Update README.md
+
+    Renamed `Component` -> 'component' props. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4ece7a9)
+ - Renamed Component -> component props. (Egor Stambakio <stambakio@scand.com>, 3662c02)
+ - Implemented middleware-scoped all_fields_valudate fail notification for #95. (Egor Stambakio <stambakio@scand.com>, d59e89a)
+ - Removed debug info. (Egor Stambakio <stambakio@scand.com>, f4d5432)
+ - Main modules exports field/ui types constants. (Egor Stambakio <stambakio@scand.com>, 1a64c3a)
+ - Fixing correct rendering of fields with custom Component in searchableFields (Andrei Mourzenkov <mourzenkov@scand.com>, f8aae75)
+ - Minor model changes (Andrei Mourzenkov <mourzenkov@scand.com>, 4c1d968)
+ - Default field type name is taken from data-types-lib (Andrei Mourzenkov <mourzenkov@scand.com>, a0ceccc)
+ - Fixed not passing component type as a prop. (Egor Stambakio <stambakio@scand.com>, accc52b)
+ - Bug fixing (Andrei Mourzenkov <mourzenkov@scand.com>, 92d2d00)
+ - Edit view opens. (Egor Stambakio <stambakio@scand.com>, c923d8f)
+ - Adjusted tests to make this branch buildable on showroom. (Egor Stambakio <stambakio@scand.com>, ac220bf)
+ - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 3cf23b8)
+ - Merging master (1dc6ec4 eb0db9d, ba5a81c)
+ - Testing in progress... (Andrei Mourzenkov <mourzenkov@scand.com>, 1dc6ec4)
+ - Merge pull request #92 from OpusCapita/issue-87
+
+    Updated package.json for newer peer react & react-dom dependencies. (09088b9 38ad52c, eb0db9d)
+ - Update README.md
+
+    Removed 'auditable fields' references. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 09088b9)
+ - Merge pull request #91 from OpusCapita/issue-79
+
+    Removed auditable fields definition from crud constants (d08e737 e9dd762, e8bf73c)
+ - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, e9dd762)
+ - Updated package.json for newer peer react & react-dom dependencies. (Egor Stambakio <stambakio@scand.com>, 38ad52c)
+ - Minor fix. (Egor Stambakio <stambakio@scand.com>, 13025f8)
+ - Lint (Egor Stambakio <stambakio@scand.com>, d2fe1aa)
+ - Removed AUDITABLE_FIELDS altogether. (Egor Stambakio <stambakio@scand.com>, 599ef1e)
+ - Merge pull request #89 from OpusCapita/issue-84
+
+    Notification for redirect attempt to forbidden view (9c3dfe9 48e4e89, d08e737)
+ - Implemented #84 (Egor Stambakio <stambakio@scand.com>, 48e4e89)
+ - Merge branch 'range-input' into issue-25 (0153375 03e1f44, 3e33f37)
+ - Ignored event handlers in coverage stats. (Egor Stambakio <stambakio@scand.com>, 03e1f44)
+ - Adding tests for better coverage; still need more. (Egor Stambakio <stambakio@scand.com>, 137fcbe)
+ - Implemented ctrl+v, range select->delete/input handling. (Egor Stambakio <stambakio@scand.com>, 96de633)
+ - Merging range-input branch (Andrei Mourzenkov <mourzenkov@scand.com>, 0153375)
+ - Merge branch 'range-input' into issue-25 (02e0fe2 f8381f4, 92af5a2)
+ - Range Field/UI Types are added (Andrei Mourzenkov <mourzenkov@scand.com>, 02e0fe2)
+ - Added proper FieldNumber component & minor changes. (Egor Stambakio <stambakio@scand.com>, f8381f4)
+ - Separated keydown handler into a reusable function. (Egor Stambakio <stambakio@scand.com>, 329daa0)
+ - Minor improvements. (Egor Stambakio <stambakio@scand.com>, 98f1c76)
+ - Adden null value to NumberRangeInput. (Egor Stambakio <stambakio@scand.com>, cf2fc46)
+ - Added minus sign handling. (Egor Stambakio <stambakio@scand.com>, fe7b8d1)
+ - Fixed lint errors. (Egor Stambakio <stambakio@scand.com>, 301d3ab)
+ - Better onChange for NumberRangeInput; sign TODO. (Egor Stambakio <stambakio@scand.com>, 079ff72)
+ - Adjusted caret positioning in NumberRangeInput. (Egor Stambakio <stambakio@scand.com>, 305f9f2)
+ - Added GenericInput for consistence with #86; need to implement a new FieldNumber component. (Egor Stambakio <stambakio@scand.com>, 773ac34)
+ - Added some tests. (Egor Stambakio <stambakio@scand.com>, cae97c6)
+ - Implemented NumberRangeInput with proper caret handling for respective key presses. (Egor Stambakio <stambakio@scand.com>, d7d9638)
+ - Mostly done; TODO handle input after decimal point. (Egor Stambakio <stambakio@scand.com>, 13e5f35)
+ - Merge branch 'range-input' into issue-25 (3affe91 ac23e23, 62b6d1a)
+ - Implemented proper caret handling; int/dec numbers TODO. (Egor Stambakio <stambakio@scand.com>, cd6d284)
+ - Implemented unified RangeInput; still need to handle caret position on NumberRangeInput. (Egor Stambakio <stambakio@scand.com>, ac23e23)
+ - New render property structure is implemented (Andrei Mourzenkov <mourzenkov@scand.com>, 3affe91)
+ - Work-in-progress (Andrei Mourzenkov <mourzenkov@scand.com>, 57533e0)
+ - ... (Egor Stambakio <stambakio@scand.com>, 5d2b1a7)
+ - friday evening (Egor Stambakio <stambakio@scand.com>, 45727f4)
+ - RangeInput works with strings; NumberRangeInput added. (Egor Stambakio <stambakio@scand.com>, 6d94898)
+ - To swap back to string type (Egor Stambakio <stambakio@scand.com>, 5a30d3a)
+ - Added Date range; still some debugging is needed. (Egor Stambakio <stambakio@scand.com>, 32839c6)
+ - Better type inference. (Egor Stambakio <stambakio@scand.com>, 43aeaeb)
+ - Expose RangeInput on Gh-Pages Showroom. (Egor Stambakio <stambakio@scand.com>, 926c7d1)
+ - Implemented proper onFocus and onBlur handlers for #86. (Egor Stambakio <stambakio@scand.com>, bd8ef2c)
+ - Added showroom wrapper for RangeInput component. (Egor Stambakio <stambakio@scand.com>, f62bb06)
+ - Done skeleton for RangeInput component. (Egor Stambakio <stambakio@scand.com>, 0622473)
+
 ## [v0.0.29](Mon, 04 Dec 2017 11:48:56 GMT)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 617ab87)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 49344c4)

@@ -25,6 +25,45 @@ import {
 } from '../../../crudeditor-lib';
 
 export const fields = {
+  'contractId': {
+    unique: true,
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      'max': 100,
+      'required': true
+    }
+  },
+  'description': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      'max': 100,
+      'required': false,
+      validate(value, instance) {
+        if ((value || '').toLowerCase().indexOf('booo') !== -1) {
+          const err = [{
+            code: 400,
+            // `id` is used to find translations for this particular error
+            // define translations with the following key structure:
+            // model.field.FIELD_NAME.error.ERROR_ID, where ERROR_ID is `id` defined below
+            id: 'forbiddenWord',
+            // `message` is a default message in case translation is not found
+            message: 'Description cannot contain `booo`!',
+            // optional `payload` for error translations
+            // here you can define props which you use in i18n messages
+            // example: for i18n message `Hello {name}! This field cannot exceed {maxValue}`
+            // define `name` and `maxValue` props
+            payload: {
+              forbiddenWord: 'BOOO'
+            }
+          }];
+
+          throw err;
+        }
+
+        return true;
+      }
+    }
+  },
   'testNumberTypeField': {
     'type': FIELD_TYPE_DECIMAL,
     'constraints': {
@@ -50,26 +89,6 @@ export const fields = {
     'constraints': {
       'max': 20,
       'required': false
-    }
-  },
-  'description': {
-    'type': FIELD_TYPE_STRING,
-    'constraints': {
-      'max': 100,
-      'required': false,
-      validate(value, instance) {
-        if ((value || '').toLowerCase().indexOf('booo') !== -1) {
-          const err = [{
-            code: 400,
-            id: 'forbiddenWordBooo',
-            message: 'Description cannot contain `booo`!'
-          }];
-
-          throw err;
-        }
-
-        return true;
-      }
     }
   },
   'termsOfDeliveryId': {
@@ -254,14 +273,6 @@ export const fields = {
     'constraints': {
       'max': 10,
       'required': false
-    }
-  },
-  'contractId': {
-    unique: true,
-    'type': FIELD_TYPE_STRING,
-    'constraints': {
-      'max': 100,
-      'required': true
     }
   },
   'parentContract': {},

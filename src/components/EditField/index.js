@@ -74,7 +74,7 @@ export default class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={fieldErrors[fieldName] || []}/>
+          <FieldErrorLabel errors={fieldErrors[fieldName] || []} fieldName={fieldName}/>
         </Col>
       </FormGroup>
     );

@@ -82,7 +82,7 @@ class SearchForm extends React.Component {
                   onChange={this.handleFormFilterUpdate(name)}
                   onBlur={this.handleFormFilterBlur(name)}
                 />
-                <FieldErrorLabel errors={this.fieldErrors(name)} />
+                <FieldErrorLabel errors={this.fieldErrors(name)} fieldName={name}/>
               </FormGroup>
             ))
           }

@@ -10,6 +10,9 @@ export default {
   "model.field.hierarchyCode": "Hierarchy Code",
   "model.field.termsOfPaymentId": "Terms Of Payment Id",
   "model.field.description": "Description",
+
+  "model.field.description.error.forbiddenWord": "Description may not contain `{forbiddenWord}`",
+
   "model.field.termsOfDeliveryId": "Terms Of Delivery Id",
   "model.field.freeShippingBoundary": "Free Shipping Boundary",
   "model.field.createdOn": "Created On",

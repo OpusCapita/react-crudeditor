@@ -13,15 +13,17 @@ import {
 
 export default class FieldErrorLabel extends PureComponent {
   static propTypes = {
-    errors: PropTypes.arrayOf(PropTypes.object)
+    errors: PropTypes.arrayOf(PropTypes.object),
+    fieldName: PropTypes.string.isRequired
   }
 
   static contextTypes = {
     i18n: PropTypes.object.isRequired
   };
 
-  getErrorMessage = ({ id, message }) => {
+  getErrorMessage = ({ id, message, payload }) => {
     const { getMessage } = this.context.i18n;
+    const { fieldName } = this.props;
 
     const errorMessages = {
       [ERROR_MIN_DECEEDED]: { key: "default.invalid.min.message", payload: message },
@@ -32,9 +34,18 @@ export default class FieldErrorLabel extends PureComponent {
       [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" }
     }
 
-    return errorMessages[id] ? // if we have a translation
-    getMessage(errorMessages[id].key, { payload: errorMessages[id].payload }) :
-      message || id; // otherwise print error message or at least error id
+    if (errorMessages[id]) {
+      return getMessage(errorMessages[id].key, { payload: errorMessages[id].payload })
+    }
+
+    // try to find a translation defined by model
+    const key = `model.field.${fieldName}.error.${id}`;
+    const text = getMessage(key, payload);
+
+    // text === key if translation is not found
+    return text !== key ?
+      text :
+      message || id
   }
 
   render() {

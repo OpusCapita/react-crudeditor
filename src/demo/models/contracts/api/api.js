@@ -188,11 +188,11 @@ export const
                 }
 
                 if (isDef(fieldValue.from)) {
-                  match = match && gte(itemValue, fieldValue.from)
+                  match = match && gte(itemValue, String(fieldValue.from).trim())
                 }
 
                 if (isDef(fieldValue.to)) {
-                  match = match && lte(itemValue, fieldValue.to)
+                  match = match && lte(itemValue, String(fieldValue.to).trim())
                 }
               } else {
                 // null returns false for any range
@@ -208,7 +208,7 @@ export const
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING) {
               const match = itemValue !== null ?
-                itemValue.toLowerCase().indexOf(fieldValue.toLowerCase()) > -1 :
+                itemValue.toLowerCase().indexOf(fieldValue.trim().toLowerCase()) > -1 :
                 false;
               return rez && match
               // TODO add [] search
@@ -219,10 +219,10 @@ export const
               FIELD_TYPE_INTEGER
             ].indexOf(fieldType) > -1
             ) {
-              const match = itemValue !== null && Number(fieldValue) === Number(itemValue);
+              const match = itemValue !== null && Number(String(fieldValue).trim()) === Number(itemValue);
               return rez && match
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {
-              const match = new Date(fieldValue).valueOf() === new Date(itemValue).valueOf();
+              const match = new Date(String(fieldValue).trim()).valueOf() === new Date(itemValue).valueOf();
               return rez && match
             }
 

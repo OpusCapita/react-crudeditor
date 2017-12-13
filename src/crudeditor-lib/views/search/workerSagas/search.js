@@ -94,14 +94,13 @@ export default function*({
 
     // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
     offset = sort === currentSort &&
-      order === currentOrder &&
       max === currentMax &&
       isEqual(
         cleanFilter(filter),
         cleanFilter(currentFilter)
       ) ?
-      (offset || offset === 0 ? offset : currentOffset) :
-      0;
+        (offset || offset === 0 ? offset : currentOffset) :
+        0;
   }
 
   yield put({

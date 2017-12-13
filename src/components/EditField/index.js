@@ -13,8 +13,8 @@ export default class EditField extends Component {
     entry: PropTypes.shape({
       name: PropTypes.string.isRequired
     }),
-    fieldErrors: PropTypes.object.isRequired,
-    toggleFieldErrors: PropTypes.func.isRequired,
+    fieldErrors: PropTypes.object,
+    toggleFieldErrors: PropTypes.func,
     columns: PropTypes.number
   }
 
@@ -66,7 +66,7 @@ export default class EditField extends Component {
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={fieldErrors[fieldName] ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={!readOnly && fieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -74,7 +74,7 @@ export default class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={fieldErrors[fieldName] || []} fieldName={fieldName}/>
+          <FieldErrorLabel errors={!readOnly && fieldErrors[fieldName] || []} fieldName={fieldName}/>
         </Col>
       </FormGroup>
     );

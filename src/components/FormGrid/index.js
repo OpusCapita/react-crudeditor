@@ -84,8 +84,8 @@ const formGrid = ({ model, fieldErrors, toggleFieldErrors }) => {
 
 formGrid.propTypes = {
   model: PropTypes.object,
-  fieldErrors: PropTypes.object.isRequired,
-  toggleFieldErrors: PropTypes.func.isRequired
+  fieldErrors: PropTypes.object,
+  toggleFieldErrors: PropTypes.func
 }
 
 export default formGrid;

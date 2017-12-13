@@ -4,7 +4,6 @@ import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import WithSpinner from '../Spinner/SpinnerOverlayHOC';
-import FormGrid from '../FormGrid';
 
 const CreateMain = ({ model, fieldErrors, toggleFieldErrors }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
@@ -13,9 +12,7 @@ const CreateMain = ({ model, fieldErrors, toggleFieldErrors }) => {
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model} toggleFieldErrors={toggleFieldErrors}>
-        <FormGrid model={model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
-      </Tab>
+      <Tab model={model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
     }
   </div>)
 }

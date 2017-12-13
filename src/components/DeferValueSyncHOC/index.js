@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 
 export default WrappedComponent => class DeferValueSyncHOC extends PureComponent {
@@ -20,6 +21,10 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
     }
   }
 
+  componentDidMount() {
+    this.me = findDOMNode(this)
+  }
+
   handleChange = value => this.setState({ value }, _ => this.props.onChange && this.props.onChange(value));
 
   handleBlur = _ => this.setState({
@@ -28,11 +33,12 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
 
   render() {
     const { children, onChange, onBlur, ...props } = this.props;
-    const { value } = this.state;
 
     const newProps = {
       ...props,
-      value,
+      value: this.me === document.activeElement ?
+        this.state.value :
+        this.props.value,
       ...(onChange ? { onChange: this.handleChange } : null),
       ...(onBlur ? { onBlur: this.handleBlur } : null)
     }

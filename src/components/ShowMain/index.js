@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import WithSpinner from '../Spinner/SpinnerOverlayHOC';
-import FormGrid from '../FormGrid';
 
 const ShowMain = (props) => {
   const { model } = props;
@@ -13,9 +12,7 @@ const ShowMain = (props) => {
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model}>
-        <FormGrid model={model}/>
-      </Tab>
+      <Tab model={model}/>
     }
   </div>);
 };

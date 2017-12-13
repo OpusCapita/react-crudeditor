@@ -4,6 +4,7 @@ import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
+import FormGrid from '../FormGrid';
 
 import {
   VIEW_CREATE,
@@ -37,7 +38,8 @@ export default class EditTab extends React.PureComponent {
         })).isRequired
       })
     }).isRequired,
-    toggleFieldErrors: PropTypes.func.isRequired
+    toggleFieldErrors: PropTypes.func.isRequired,
+    fieldErrors: PropTypes.object
   }
 
   static contextTypes = {
@@ -63,7 +65,6 @@ export default class EditTab extends React.PureComponent {
     return typeof internalHandler === 'function' && this.hasUnsavedChanges();
   }
 
-  //
   handleSubmit = e => {
     e.preventDefault();
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
@@ -78,11 +79,9 @@ export default class EditTab extends React.PureComponent {
     }
     this.props.model.actions.saveAndNewInstance()
   }
-  //
 
   render() {
     const {
-      children: sectionsAndFields,
       model: {
         actions: {
           exitView,
@@ -100,7 +99,9 @@ export default class EditTab extends React.PureComponent {
           internal: internalOperations,
           external: externalOperations
         }
-      }
+      },
+      fieldErrors,
+      toggleFieldErrors
     } = this.props;
 
     const { i18n } = this.context;
@@ -204,7 +205,7 @@ export default class EditTab extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
         <Col sm={12}>
-          { sectionsAndFields }
+          <FormGrid model={this.props.model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
         </Col>
         <FormGroup>
           <Col sm={12}>

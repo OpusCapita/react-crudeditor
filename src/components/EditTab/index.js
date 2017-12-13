@@ -59,9 +59,7 @@ export default class EditTab extends React.PureComponent {
       (viewName === VIEW_CREATE && Object.keys(formInstance).some(key => formInstance[key] !== null));
   }
 
-  showConfirmDialog = internalHandler => _ => {
-    return typeof internalHandler === 'function' && this.hasUnsavedChanges();
-  }
+  showConfirmDialog = _ => this.hasUnsavedChanges()
 
   //
   handleSubmit = e => {
@@ -120,23 +118,18 @@ export default class EditTab extends React.PureComponent {
     }
 
     buttons.push(
-      ...internalOperations(persistentInstance).
-        map(({ name, icon, handler, type }, index) => {
-          const internalHandler = handler();
-
-          return (
-            <ConfirmUnsavedChanges
-              key={`internal-operation-${index}`}
-              showDialog={this.showConfirmDialog(internalHandler)}
-            >
-              <Button onClick={(internalHandler || (_ => null))}>
-                {icon && <Glyphicon glyph={icon} />}
-                {icon && ' '}
-                {getModelMessage(i18n, `model.label.${name}`, name)}
-              </Button>
-            </ConfirmUnsavedChanges>
-          )
-        })
+      ...internalOperations(persistentInstance).map(({ name, icon, handler, type }, index) => (
+        <ConfirmUnsavedChanges
+          key={`internal-operation-${index}`}
+          showDialog={this.showConfirmDialog}
+        >
+          <Button onClick={handler}>
+            {icon && <Glyphicon glyph={icon} />}
+            {icon && ' '}
+            {getModelMessage(i18n, `model.label.${name}`, name)}
+          </Button>
+        </ConfirmUnsavedChanges>
+      ))
     );
 
     buttons.push(

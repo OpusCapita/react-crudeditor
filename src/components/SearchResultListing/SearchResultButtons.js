@@ -138,9 +138,8 @@ export default class SearchResultButtons extends PureComponent {
             )
         ),
         ...this.props.internalOperations.
-          map(({ name, handler, ...rest }) => ({
+          map(({ name, ...rest }) => ({
             ...rest,
-            handler: handler() || (_ => null),
             title: getModelMessage(i18n, `model.label.${name}`, name),
             uid: `custom-operation-${uid}`
           }))
@@ -149,12 +148,10 @@ export default class SearchResultButtons extends PureComponent {
 
     buttons.push(
       this.operationsButton(
-        this.props.externalOperations.
-          map(({ title, ...rest }) => ({
-            ...rest,
-            title,
-            uid: `external-operation-${uid}`
-          }))
+        this.props.externalOperations.map(operation => ({
+          ...operation,
+          uid: `external-operation-${uid}`
+        }))
       )
     );
 

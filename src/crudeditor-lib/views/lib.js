@@ -439,17 +439,19 @@ export const viewOperations = ({
     state: viewState
   }
 )) || []).reduce(
-  (rez, { handler, name, ...rest }) => [
+  (rez, { handler, ...rest }) => [
     ...rez,
     ...(handler ?
       [{
         ...rest,
-        name,
-        handler: _ => { // eslint-disable-line consistent-return
+        handler: _ => {
           const view = handler();
+
           if (view && view.name) {
-            return _ => softRedirectView(view);
+            softRedirectView(view);
           }
+
+          return view;
         }
       }] :
       []

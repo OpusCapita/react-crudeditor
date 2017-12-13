@@ -92,9 +92,8 @@ export default function*({
     order = order || currentOrder;
     max = max || currentMax;
 
-    // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
+    // Reset offset to 0 with new sortField, pageMax or filter.
     offset = sort === currentSort &&
-      order === currentOrder &&
       max === currentMax &&
       isEqual(
         cleanFilter(filter),

@@ -26,7 +26,15 @@ export default {
     try {
       n = i18n.parseNumber(value || null)
     } catch (err) {
-      throw err;
+      if (err.name === 'ParseError') {
+        const error = {
+          code: ERROR_CODE_PARSING,
+          id: ERROR_INVALID_INTEGER,
+          message: 'Invalid integer'
+        }
+        throw error
+      }
+      throw err
     }
 
     if (isNaN(n)) {

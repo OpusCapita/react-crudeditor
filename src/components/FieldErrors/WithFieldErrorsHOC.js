@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
@@ -19,10 +20,34 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     i18n: PropTypes.object
   };
 
-  state = {
-    defaultShow: false, // Either true (show all field fields by default) or false (hide all field errors by default).
-    exceptions: [] // An array of exceptions from default (empty when no exceptions).
+  constructor(...args) {
+    super(...args);
+
+    this.state = {
+      defaultShow: false, // Either true (show all field fields by default) or false (hide all field errors by default).
+      exceptions: [] // An array of exceptions from default (empty when no exceptions).
+    };
+
+    this.state.errors = this.filterErrors({
+      ...this.state,
+      fieldErrors: this.props.model.data.fieldErrors
+    });
   }
+
+  componentWillReceiveProps = nextProps => this.setState(prevState => {
+    const nextState = {};
+
+    const fieldErrors = this.filterErrors({
+      ...prevState,
+      fieldErrors: nextProps.model.data.fieldErrors
+    });
+
+    if (!isEqual(fieldErrors, prevState.errors)) {
+      nextState.errors = fieldErrors;
+    }
+
+    return nextState;
+  })
 
   toggleFieldErrors = (
     show, // <boolean>
@@ -47,29 +72,39 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
       nextState.defaultShow = show;
     }
 
+    if (Object.keys(nextState).length) { // Set of fields for show has changed => recalculate "errors".
+      const fieldErrors = this.filterErrors({
+        defaultShow: nextState.hasOwnProperty('defaultShow') ? nextState.defaultShow : prevState.defaultShow,
+        exceptions: nextState.exceptions || prevState.exceptions,
+        fieldErrors: this.props.model.data.fieldErrors
+      });
+
+      if (!isEqual(fieldErrors, prevState.errors)) {
+        nextState.errors = fieldErrors;
+      }
+    }
+
     return nextState;
   })
 
+  filterErrors = ({ defaultShow, exceptions, fieldErrors }) => Object.keys(fieldErrors).
+    filter(fieldName => defaultShow ?
+      exceptions.indexOf(fieldName) === -1 :
+      exceptions.indexOf(fieldName) !== -1
+    ).
+    reduce(
+      (rez, fieldName) => ({
+        ...rez,
+        [fieldName]: fieldErrors[fieldName]
+      }),
+      {}
+    )
+
   render() {
     const { children, ...props } = this.props;
-    const { defaultShow, exceptions } = this.state;
-    const allErrors = props.model.data.fieldErrors;
-
-    const filteredErrors = Object.keys(allErrors).
-      filter(fieldName => defaultShow ?
-        exceptions.indexOf(fieldName) === -1 :
-        exceptions.indexOf(fieldName) !== -1
-      ).
-      reduce(
-        (rez, fieldName) => ({
-          ...rez,
-          [fieldName]: allErrors[fieldName]
-        }),
-        {}
-      );
 
     return (
-      <WrappedComponent {...props} fieldErrors={filteredErrors} toggleFieldErrors={this.toggleFieldErrors}>
+      <WrappedComponent {...props} fieldErrors={this.state.errors} toggleFieldErrors={this.toggleFieldErrors}>
         {children}
       </WrappedComponent>
     );

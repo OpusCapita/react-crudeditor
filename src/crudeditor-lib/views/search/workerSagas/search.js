@@ -94,7 +94,6 @@ export default function*({
 
     // Reset offset to 0 with new sortField, sortOrder, pageMax or filter.
     offset = sort === currentSort &&
-      order === currentOrder &&
       max === currentMax &&
       isEqual(
         cleanFilter(filter),

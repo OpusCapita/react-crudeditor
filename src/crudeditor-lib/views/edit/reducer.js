@@ -201,6 +201,7 @@ export default (modelDefinition, i18n) => (
 
     newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
+    newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
     newStoreStateSlice = {
       ...newStoreStateSlice,

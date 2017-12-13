@@ -99,8 +99,8 @@ export default function*({
         cleanFilter(filter),
         cleanFilter(currentFilter)
       ) ?
-        (offset || offset === 0 ? offset : currentOffset) :
-        0;
+      (offset || offset === 0 ? offset : currentOffset) :
+      0;
   }
 
   yield put({

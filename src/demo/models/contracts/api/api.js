@@ -237,7 +237,13 @@ export const
     const totalCount = result.length;
 
     if (sort) {
-      result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
+      const fieldType = fields[sort].type || DEFAULT_FIELD_TYPE;
+      if (fieldType === FIELD_TYPE_STRING) {
+        result = result.sort((a, b) => (a[sort] || '').localeCompare(b[sort] || '', { sensitivity: 'base' }));
+      } else {
+        result = result.sort((a, b) => (a[sort] < b[sort]) ? -1 : 1);
+      }
+
       if (order && order === 'desc') {
         result.reverse();
       }

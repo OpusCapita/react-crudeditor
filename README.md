@@ -1122,8 +1122,12 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
 ```javascript
 {
   code: 400,
+  // define translations for errors using this pattern for message key:
+  // model.field.FIELD_NAME.error.ERROR_ID, where ERROR_ID is `id` defined below
   id: <string, error id used by translation service>,
-  message: <string, default error message in English>
+  // default error message in case translations are not defined
+  ?message: <string, default error message in English>,
+  ?payload: <object, optional parameters for i18n service>
 }
 ```
 

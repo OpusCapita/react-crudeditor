@@ -431,14 +431,14 @@ export function* plusMinus() {
   }
 }
 
-// viewOperations creates custom operations handler for particular view
+// viewOperations creates operations (buttons) for particular view
 export const viewOperations = ({
   viewName,
   viewState,
   operations,
   softRedirectView,
   standardHandlers
-}) => ({ instance, tab, index }) => {
+}) => ({ instance, ...restArgs }) => {
   if (!viewState) { // viewState is undefined when view is not initialized yet.
     return [];
   }
@@ -458,7 +458,7 @@ export const viewOperations = ({
         ...rez,
         {
           name,
-          handler: _ => standardHandlers[name]({ instance, tab, index })
+          handler: _ => standardHandlers[name]({ instance, ...restArgs })
         }
       ],
       []
@@ -467,7 +467,7 @@ export const viewOperations = ({
   return modelOps.
     filter(({ hidden }) => !hidden).
     reduce(
-      (rez, { name, handler, ...rest }) => [
+      (rez, { name, handler, hidden, ...rest }) => [
         ...rez,
         ...(handler ?
           [{
@@ -487,7 +487,7 @@ export const viewOperations = ({
             [{
               name,
               ...rest,
-              handler: _ => standardHandlers[name]({ instance, tab, index })
+              handler: _ => standardHandlers[name]({ instance, ...restArgs })
             }] :
             []
         )
@@ -495,49 +495,3 @@ export const viewOperations = ({
       standardOps
     )
 }
-//
-// ((viewState && operations(
-//   instance,
-//   {
-//     name: viewName,
-//     state: viewState
-//   }
-// )) || []).reduce(
-//   (rez, { name, handler, ...rest }) => [
-//     ...rez,
-//     ...(handler ?
-//       [{
-//         name,
-//         ...rest,
-//         handler: _ => _ => {
-//           const view = handler();
-
-//           if (view && view.name) {
-//             softRedirectView(view);
-//           }
-
-//           return view;
-//         }
-//       }] :
-//       Object.keys(standardHandlers).indexOf(name) !== -1 ?
-//         [{
-//           name,
-//           ...rest,
-//           handler: _ => standardHandlers[name]({ instance, tab, index })
-//         }] :
-//         []
-//     )
-//   ],
-//   Object.keys(standardHandlers).
-//     filter(key => !allEntries.find(({ name }) => name === key)).
-//     reduce(
-//       (rez, key) => [
-//         ...rez,
-//         {
-//           name: key,
-//           handler: _ => standardHandlers[name]({ instance, tab, index })
-//         }
-//       ],
-//       []
-//     )
-// );

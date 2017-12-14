@@ -15,7 +15,8 @@ import {
   OPERATION_SAVE,
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
-  OPERATION_SHOW
+  OPERATION_SHOW,
+  OPERATION_CANCEL
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -33,7 +34,8 @@ const standardOperations = [
   OPERATION_SAVE,
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
-  OPERATION_SHOW
+  OPERATION_SHOW,
+  OPERATION_CANCEL
 ]
 
 export default class EditTab extends React.PureComponent {
@@ -62,10 +64,6 @@ export default class EditTab extends React.PureComponent {
     i18n: PropTypes.object
   };
 
-  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
-
-  handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
-
   hasUnsavedChanges = _ => {
     const {
       viewName,
@@ -87,19 +85,16 @@ export default class EditTab extends React.PureComponent {
     }
   }
 
-  handleSaveAndNew = _ => {
+  handleSaveAndNew = handler => _ => {
     if (this.props.model.data.viewName === VIEW_CREATE) {
       this.props.toggleFieldErrors(true);
     }
-    this.props.model.actions.saveAndNewInstance()
+    handler();
   }
 
   render() {
     const {
       model: {
-        actions: {
-          exitView
-        },
         data: {
           viewName,
           persistentInstance,
@@ -125,10 +120,18 @@ export default class EditTab extends React.PureComponent {
 
     const internalOperations = internal({ instance: persistentInstance });
 
-    if (permissions.view) {
+    const cancelOperation = internalOperations.find(({ name }) => name === OPERATION_CANCEL);
+
+    if (permissions.view && cancelOperation) {
+      const { handler, disabled } = cancelOperation;
+      
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
-          <Button bsStyle='link' onClick={exitView}>
+          <Button
+            bsStyle='link'
+            onClick={handler}
+            {...(disabled ? 'disabled' : null)}
+          >
             {i18n.getMessage('crudEditor.cancel.button')}
           </Button>
         </ConfirmUnsavedChanges>
@@ -197,7 +200,7 @@ export default class EditTab extends React.PureComponent {
 
       buttons.push(
         <Button
-          onClick={handler}
+          onClick={this.handleSaveAndNew(handler)}
           disabled={disableSave || disabled}
           key="Save and New"
         >

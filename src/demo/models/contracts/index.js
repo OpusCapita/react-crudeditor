@@ -443,7 +443,7 @@ export default {
             },
             {
               name: 'delete',
-              handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
+              // handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
               // disabled: true,
               // hidden: true
             },
@@ -452,7 +452,7 @@ export default {
               // handler: _ => console.log(`Hey there, I'm a dummy EDIT handler!`),
               // disabled: true,
               // hidden: true
-            },
+            }
           ]
       )
     ]

@@ -18,12 +18,14 @@ export const
   PERMISSION_EDIT = 'edit',
   PERMISSION_DELETE = 'delete',
 
-  OPERATION_SHOW = 'view',
+  OPERATION_SHOW = 'show',
   OPERATION_EDIT = 'edit',
   OPERATION_DELETE = 'delete',
   OPERATION_SAVE = 'save',
   OPERATION_SAVEANDNEXT = 'saveAndNext',
   OPERATION_SAVEANDNEW = 'saveAndNew',
+  OPERATION_CANCEL = 'cancel',
+  OPERATION_CREATE = 'create',
 
   DEFAULT_FIELD_TYPE = FIELD_TYPE_STRING,
   DEFAULT_VIEW = VIEW_SEARCH,

@@ -9,7 +9,8 @@ import {
   OPERATION_DELETE,
   OPERATION_SAVE,
   OPERATION_SAVEANDNEW,
-  OPERATION_SAVEANDNEXT
+  OPERATION_SAVEANDNEXT,
+  OPERATION_CANCEL
 } from '../../common/constants';
 import { viewOperations } from '../lib';
 
@@ -46,9 +47,12 @@ const mergeProps = (
     uiConfig
   },
   {
-    saveAndNextInstance,
     editAdjacentInstance,
     softRedirectView,
+    deleteInstances,
+    saveInstance,
+    saveAndNewInstance,
+    saveAndNextInstance,
     ...otherActions
   },
   ownProps
@@ -56,7 +60,6 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    // here we adjust action creators to reflect flags values
     actions: {
       ...otherActions,
       ...(prevInstanceExists ? {
@@ -73,12 +76,13 @@ const mergeProps = (
         operations,
         softRedirectView,
         standardHandlers: {
-          [OPERATION_DELETE]: ({ instance }) => otherActions.deleteInstances([instance]),
-          [OPERATION_SAVE]: _ => otherActions.saveInstance(),
-          [OPERATION_SAVEANDNEW]: _ => otherActions.saveAndNewInstance(),
+          [OPERATION_DELETE]: ({ instance }) => deleteInstances([instance]),
+          [OPERATION_SAVE]: saveInstance,
+          [OPERATION_SAVEANDNEW]: saveAndNewInstance,
           ...(nextInstanceExists ? {
-            [OPERATION_SAVEANDNEXT]: _ => otherActions.saveAndNextInstance()
-          } : {})
+            [OPERATION_SAVEANDNEXT]: saveAndNextInstance
+          } : null),
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH })
         }
       }),
       external: externalOperations
@@ -100,7 +104,6 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

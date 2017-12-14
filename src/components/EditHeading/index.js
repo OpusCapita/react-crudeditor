@@ -53,7 +53,7 @@ export default class EditHeading extends PureComponent {
         },
         actions: {
           selectTab,
-          exitView,
+          exitView, // TODO replace with 'cancel' operation
           gotoNextInstance,
           gotoPrevInstance
         },

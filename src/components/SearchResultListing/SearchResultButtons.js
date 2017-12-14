@@ -113,30 +113,14 @@ export default class SearchResultButtons extends PureComponent {
 
   render() {
     const {
-      model: {
-        data: {
-          permissions: {
-            crudOperations: permissions
-          }
-        },
-        operations: {
-          internal,
-          external
-        }
-      },
+      permissions,
       index: uid,
-      instance
+      internalOperations,
+      externalOperations
     } = this.props;
 
     const { i18n } = this.context;
     const buttons = [];
-
-    const internalOperations = internal({ instance, index: uid })
-
-    const externalOperations = external.map(({ handler, ...rest }) => ({
-      ...rest,
-      handler: _ => handler(instance)
-    }));
 
     const editOperation = internalOperations.find(({ name }) => name === OPERATION_EDIT);
     const showOperation = internalOperations.find(({ name }) => name === OPERATION_SHOW);

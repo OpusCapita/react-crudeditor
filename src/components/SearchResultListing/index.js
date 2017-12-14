@@ -176,17 +176,13 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
-                      model={this.props.model}
-                      // internalOperations={internalOperations(instance)}
-                      // externalOperations={externalOperations.map(({ handler, ...rest }) => ({
-                      //   ...rest,
-                      //   handler: _ => handler(instance)
-                      // }))}
-                      // onShow={this.handleShow(instance, index)}
-                      // onEdit={this.handleEdit(instance, index)}
-                      // onDelete={this.handleDelete(instance)}
+                      permissions={permissions}
+                      internalOperations={internalOperations({ instance, index })}
+                      externalOperations={externalOperations.map(({ handler, ...rest }) => ({
+                        ...rest,
+                        handler: _ => handler(instance)
+                      }))}
                       index={index}
-                      instance={instance}
                       parentRef={this._myRef}
                     />
                   </td>

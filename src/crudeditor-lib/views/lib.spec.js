@@ -373,8 +373,7 @@ describe('Crudeditor-lib / views / lib', () => {
       const op = ops[0];
       expect(op.name).to.equal('one'); // eslint-disable-line no-unused-expressions
       expect(op.handler).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
-      expect(op.handler()).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
-      op.handler()();
+      op.handler();
       expect(softRedirectView.calledWith({ // eslint-disable-line no-unused-expressions
         name: 'viewName1'
       })).to.be.true

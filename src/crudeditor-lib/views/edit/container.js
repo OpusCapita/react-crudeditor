@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import {
+  VIEW_SEARCH,
+
+  OPERATION_DELETE,
+  OPERATION_SAVE,
+  OPERATION_SAVEANDNEW,
+  OPERATION_SAVEANDNEXT
+} from '../../common/constants';
 import { viewOperations } from '../lib';
 
 import {
@@ -56,7 +63,6 @@ const mergeProps = (
         gotoPrevInstance: _ => editAdjacentInstance('prev')
       } : {}),
       ...(nextInstanceExists ? {
-        saveAndNextInstance,
         gotoNextInstance: _ => editAdjacentInstance('next')
       } : {})
     },
@@ -65,7 +71,15 @@ const mergeProps = (
         viewName: VIEW_NAME,
         viewState,
         operations,
-        softRedirectView
+        softRedirectView,
+        standardHandlers: {
+          [OPERATION_DELETE]: ({ instance }) => otherActions.deleteInstances([instance]),
+          [OPERATION_SAVE]: _ => otherActions.saveInstance(),
+          [OPERATION_SAVEANDNEW]: _ => otherActions.saveAndNewInstance(),
+          ...(nextInstanceExists ? {
+            [OPERATION_SAVEANDNEXT]: _ => otherActions.saveAndNextInstance()
+          } : {})
+        }
       }),
       external: externalOperations
     },

@@ -421,7 +421,8 @@ export default {
                     parentContract: instance.contractId
                   }
                 }
-              })
+              }),
+              // disabled: true
             },
             {
               name: 'duplicate',
@@ -439,7 +440,19 @@ export default {
                     reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
                 }
               })
-            }
+            },
+            {
+              name: 'delete',
+              handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
+              // disabled: true,
+              // hidden: true
+            },
+            {
+              name: 'edit',
+              // handler: _ => console.log(`Hey there, I'm a dummy EDIT handler!`),
+              // disabled: true,
+              // hidden: true
+            },
           ]
       )
     ]

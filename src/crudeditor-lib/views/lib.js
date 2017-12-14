@@ -13,7 +13,10 @@ import {
 import {
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+  OPERATION_SHOW,
+  OPERATION_EDIT,
+  OPERATION_DELETE
 } from '../common/constants';
 
 import {
@@ -38,6 +41,8 @@ import {
   UI_TYPE_DATE_RANGE_OBJECT,
   UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
+
+const standardOperations = [OPERATION_SHOW, OPERATION_EDIT, OPERATION_DELETE];
 
 export const
   COMPONENT_NAME_INPUT = 'input',
@@ -426,36 +431,113 @@ export function* plusMinus() {
   }
 }
 
-// viewOperations creates custom/external operations handler for particular view
+// viewOperations creates custom operations handler for particular view
 export const viewOperations = ({
   viewName,
   viewState,
   operations,
-  softRedirectView
-}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
-  instance,
-  {
-    name: viewName,
-    state: viewState
+  softRedirectView,
+  standardHandlers
+}) => ({ instance, tab, index }) => {
+  if (!viewState) { // viewState is undefined when view is not initialized yet.
+    return [];
   }
-)) || []).reduce(
-  (rez, { handler, ...rest }) => [
-    ...rez,
-    ...(handler ?
-      [{
-        ...rest,
-        handler: _ => {
-          const view = handler();
 
-          if (view && view.name) {
-            softRedirectView(view);
-          }
+  const modelOps = operations(
+    instance,
+    {
+      name: viewName,
+      state: viewState
+    }
+  ) || [];
 
-          return view;
+  const standardOps = Object.keys(standardHandlers).
+    filter(key => !modelOps.find(({ name }) => name === key)).
+    reduce(
+      (rez, name) => [
+        ...rez,
+        {
+          name,
+          handler: _ => standardHandlers[name]({ instance, tab, index })
         }
-      }] :
+      ],
       []
+    );
+
+  return modelOps.
+    filter(({ hidden }) => !hidden).
+    reduce(
+      (rez, { name, handler, ...rest }) => [
+        ...rez,
+        ...(handler ?
+          [{
+            name,
+            ...rest,
+            handler: _ => {
+              const view = handler();
+
+              if (view && view.name) {
+                softRedirectView(view);
+              }
+
+              return view;
+            }
+          }] :
+          Object.keys(standardHandlers).indexOf(name) !== -1 ?
+            [{
+              name,
+              ...rest,
+              handler: _ => standardHandlers[name]({ instance, tab, index })
+            }] :
+            []
+        )
+      ],
+      standardOps
     )
-  ],
-  []
-);
+}
+//
+// ((viewState && operations(
+//   instance,
+//   {
+//     name: viewName,
+//     state: viewState
+//   }
+// )) || []).reduce(
+//   (rez, { name, handler, ...rest }) => [
+//     ...rez,
+//     ...(handler ?
+//       [{
+//         name,
+//         ...rest,
+//         handler: _ => _ => {
+//           const view = handler();
+
+//           if (view && view.name) {
+//             softRedirectView(view);
+//           }
+
+//           return view;
+//         }
+//       }] :
+//       Object.keys(standardHandlers).indexOf(name) !== -1 ?
+//         [{
+//           name,
+//           ...rest,
+//           handler: _ => standardHandlers[name]({ instance, tab, index })
+//         }] :
+//         []
+//     )
+//   ],
+//   Object.keys(standardHandlers).
+//     filter(key => !allEntries.find(({ name }) => name === key)).
+//     reduce(
+//       (rez, key) => [
+//         ...rez,
+//         {
+//           name: key,
+//           handler: _ => standardHandlers[name]({ instance, tab, index })
+//         }
+//       ],
+//       []
+//     )
+// );

@@ -7,7 +7,15 @@ import {
   softRedirectView
 } from '../../common/actions';
 import { VIEW_NAME } from './constants';
-import { VIEW_EDIT, VIEW_SHOW, VIEW_CREATE } from '../../common/constants';
+import {
+  VIEW_EDIT,
+  VIEW_SHOW,
+  VIEW_CREATE,
+
+  OPERATION_SHOW,
+  OPERATION_EDIT,
+  OPERATION_DELETE
+} from '../../common/constants';
 import { viewOperations } from '../lib';
 
 import {
@@ -40,36 +48,6 @@ const mergeProps = (
         state: {
           predefinedFields: defaultNewInstance
         }
-      }),
-      editInstance: ({
-        instance,
-        tab,
-        index // an index of instance in the array of search results => add navigation to Edit View.
-      }) => softRedirectView({
-        name: VIEW_EDIT,
-        state: {
-          instance,
-          tab,
-          navigation: {
-            offset: viewModelData.pageParams.offset + index,
-            totalCount: viewModelData.totalCount
-          }
-        }
-      }),
-      showInstance: ({
-        instance,
-        tab,
-        index // an index of instance in the array of search results => add navigation to Show View.
-      }) => softRedirectView({
-        name: VIEW_SHOW,
-        state: {
-          instance,
-          tab,
-          navigation: {
-            offset: viewModelData.pageParams.offset + index,
-            totalCount: viewModelData.totalCount
-          }
-        }
       })
     },
     operations: {
@@ -77,7 +55,40 @@ const mergeProps = (
         viewName: VIEW_NAME,
         viewState,
         operations,
-        softRedirectView
+        softRedirectView,
+        standardHandlers: {
+          [OPERATION_SHOW]: ({
+            instance,
+            tab,
+            index // an index of instance in the array of search results => add navigation to Show View.
+          }) => softRedirectView({
+            name: VIEW_SHOW,
+            state: {
+              instance,
+              tab,
+              navigation: {
+                offset: viewModelData.pageParams.offset + index,
+                totalCount: viewModelData.totalCount
+              }
+            }
+          }),
+          [OPERATION_EDIT]: ({
+            instance,
+            tab,
+            index // an index of instance in the array of search results => add navigation to Edit View.
+          }) => softRedirectView({
+            name: VIEW_EDIT,
+            state: {
+              instance,
+              tab,
+              navigation: {
+                offset: viewModelData.pageParams.offset + index,
+                totalCount: viewModelData.totalCount
+              }
+            }
+          }),
+          [OPERATION_DELETE]: ({ instance }) => dispatchProps.deleteInstances([instance])
+        }
       }),
       external: externalOperations
     },

@@ -27,12 +27,11 @@ export default {
       n = i18n.parseNumber(value || null)
     } catch (err) {
       if (err.name === 'ParseError') {
-        const error = {
+        err = { // eslint-disable-line no-ex-assign
           code: ERROR_CODE_PARSING,
           id: ERROR_INVALID_INTEGER,
           message: 'Invalid integer'
         }
-        throw error
       }
       throw err
     }

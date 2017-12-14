@@ -195,11 +195,10 @@ export default (modelDefinition, i18n) => (
 
     newStoreStateSlice.formLayout = u.constant(formLayout);
 
-    const activeTab = storeState.activeTab ?
-      getTab(storeState, storeState.activeTab.tab) :
-      formLayout.filter(({ tab }) => !!tab)[0];
+    newStoreStateSlice.activeTab = u.constant(
+      getTab(formLayout, (storeState.activeTab || {}).tab)
+    );
 
-    newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 
@@ -400,8 +399,9 @@ export default (modelDefinition, i18n) => (
       };
     }
 
-    const activeTab = getTab(storeState, tabName);
-    newStoreStateSlice.activeTab = u.constant(activeTab);
+    newStoreStateSlice.activeTab = u.constant(
+      getTab(storeState.formLayout, tabName)
+    );
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
   /* eslint-enable padded-blocks */

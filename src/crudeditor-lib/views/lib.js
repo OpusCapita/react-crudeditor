@@ -385,11 +385,11 @@ export const findFieldLayout = fieldName => {
   return layoutWalker;
 };
 
-export const getTab = (storeState, tabName) => {
+export const getTab = (formLayout, tabName) => {
   // The function returns tab object by tabName,
   // or default tab if tabName is not specified (i.e. falsy).
 
-  const tabs = storeState.formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
+  const tabs = formLayout.filter(({ tab }) => !!tab); // [] in case of no tabs.
   let rezTab = tabs[0]; // default tab, undefined in case of no tabs.
 
   if (tabName) {
@@ -403,7 +403,7 @@ export const getTab = (storeState, tabName) => {
     });
   }
 
-  return rezTab
+  return rezTab;
 }
 
 // 'plusMinus' is a generator used to increment/decrement 'navigation offset' value

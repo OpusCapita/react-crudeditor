@@ -34,7 +34,7 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     });
   }
 
-  componentWillReceiveProps = nextProps => this.setState(prevState => {
+  componentWillReceiveProps = nextProps => nextProps !== this.props && this.setState(prevState => {
     const nextState = {};
 
     const fieldErrors = this.filterErrors({
@@ -68,8 +68,14 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
           fieldName
         ];
       }
-    } else if (show !== prevState.defaultShow) {
-      nextState.defaultShow = show;
+    } else {
+      if (show !== prevState.defaultShow) {
+        nextState.defaultShow = show;
+      }
+
+      if (prevState.exceptions.length) {
+        nextState.exceptions = [];
+      }
     }
 
     if (Object.keys(nextState).length) { // Set of fields for show has changed => recalculate "errors".

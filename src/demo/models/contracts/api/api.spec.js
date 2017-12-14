@@ -287,7 +287,10 @@ describe('Sync api functions:', () => {
         instances,
         getContracts().filter(
           ({ createdOn }) => new Date(createdOn) >= new Date(filter.createdOn.from) &&
-            new Date(createdOn) <= new Date(filter.createdOn.to)
+            new Date(createdOn) <= (d => {
+              d.setDate(d.getDate() + 1);
+              return d
+            })(new Date(filter.createdOn.to))
         )
       );
 
@@ -341,7 +344,10 @@ describe('Sync api functions:', () => {
       assert.deepEqual(
         instances,
         getContracts().filter(
-          ({ createdOn }) => new Date(createdOn) <= new Date(filter.createdOn.to)
+          ({ createdOn }) => new Date(createdOn) <= (d => {
+            d.setDate(d.getDate() + 1);
+            return d
+          })(new Date(filter.createdOn.to))
         )
       );
 

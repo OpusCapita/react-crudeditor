@@ -180,7 +180,11 @@ export const
 
                   case FIELD_TYPE_STRING_DATE:
                     gte = (itemValue, filterValue) => new Date(itemValue) >= new Date(filterValue);
-                    lte = (itemValue, filterValue) => new Date(itemValue) <= new Date(filterValue);
+                    lte = (itemValue, filterValue) => {
+                      const filterDate = new Date(filterValue);
+                      filterDate.setDate(filterDate.getDate() + 1);
+                      return new Date(itemValue) <= filterDate;
+                    }
                     break;
                   default:
                     console.log("Search api switch: Unknown RANGE field type: " + fieldType);

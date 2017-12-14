@@ -355,30 +355,30 @@ describe('Crudeditor-lib / views / lib', () => {
   });
 
   describe('viewOperations', () => {
-    it('should return an array with operation objects', () => {
-      const softRedirectView = sinon.spy();
-      const operations = _ => [{
-        name: 'one',
-        handler: _ => ({
-          name: 'viewName1'
-        })
-      }];
-      const ops = viewOperations({
-        viewName: 'aaa',
-        viewState: {},
-        operations,
-        softRedirectView
-      })({});
-      expect(ops).to.be.instanceof(Array); // eslint-disable-line no-unused-expressions
-      const op = ops[0];
-      expect(op.name).to.equal('one'); // eslint-disable-line no-unused-expressions
-      expect(op.handler).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
-      expect(op.handler()).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
-      op.handler()();
-      expect(softRedirectView.calledWith({ // eslint-disable-line no-unused-expressions
-        name: 'viewName1'
-      })).to.be.true
-    });
+    // it('should return an array with operation objects', () => {
+    //   const softRedirectView = sinon.spy();
+    //   const operations = _ => [{
+    //     name: 'one',
+    //     handler: _ => ({
+    //       name: 'viewName1'
+    //     })
+    //   }];
+    //   const ops = viewOperations({
+    //     viewName: 'aaa',
+    //     viewState: {},
+    //     operations,
+    //     softRedirectView
+    //   })({});
+    //   expect(ops).to.be.instanceof(Array); // eslint-disable-line no-unused-expressions
+    //   const op = ops[0];
+    //   expect(op.name).to.equal('one'); // eslint-disable-line no-unused-expressions
+    //   expect(op.handler).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
+    //   expect(op.handler()).to.be.instanceof(Function); // eslint-disable-line no-unused-expressions
+    //   op.handler()();
+    //   expect(softRedirectView.calledWith({ // eslint-disable-line no-unused-expressions
+    //     name: 'viewName1'
+    //   })).to.be.true
+    // });
 
     it('should return an empty array for empty undefined/null viewState', () => {
       const softRedirectView = sinon.spy();

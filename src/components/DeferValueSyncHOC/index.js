@@ -22,14 +22,27 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
   }
 
   componentDidMount() {
-    this.me = findDOMNode(this)
+    this.me = findDOMNode(this);
+    this.me.addEventListener('keydown', this.handleEnterKey)
+  }
+
+  componentWillUnmount() {
+    this.me.removeEventListener('keydown', this.handleEnterKey)
+  }
+
+  syncPropsAndState = callback => this.setState({ value: this.props.value }, callback);
+
+  handleEnterKey = e => {
+    const key = e.key === 'Enter' ? 13 : e.keyCode || e.charCode;
+
+    if (key === 13) {
+      this.syncPropsAndState()
+    }
   }
 
   handleChange = value => this.setState({ value }, _ => this.props.onChange && this.props.onChange(value));
 
-  handleBlur = _ => this.setState({
-    value: this.props.value
-  }, _ => this.props.onBlur && this.props.onBlur());
+  handleBlur = _ => this.syncPropsAndState(_ => this.props.onBlur && this.props.onBlur());
 
   render() {
     const { children, onChange, onBlur, ...props } = this.props;

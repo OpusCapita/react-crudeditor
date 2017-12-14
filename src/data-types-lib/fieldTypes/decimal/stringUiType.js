@@ -26,6 +26,13 @@ export default {
     try {
       n = i18n.parseDecimalNumber(value || null)
     } catch (err) {
+      if (err.name === 'ParseError') {
+        err = { // eslint-disable-line no-ex-assign
+          code: ERROR_CODE_PARSING,
+          id: ERROR_INVALID_DECIMAL,
+          message: 'Invalid decimal number'
+        }
+      }
       throw err
     }
 

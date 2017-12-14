@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Svg from '@opuscapita/react-svg/lib/SVG';
+import { SVG as Svg } from '@opuscapita/react-svg';
 import spinnerSVG from './spinner2.svg';
 import './SpinnerOverlay.less';
 

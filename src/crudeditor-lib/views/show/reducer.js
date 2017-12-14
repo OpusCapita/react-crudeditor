@@ -124,8 +124,12 @@ export default (modelDefinition, i18n) => (
       }
     });
 
+    const activeTab = storeState.activeTab ?
+      getTab(storeState, storeState.activeTab.tab) :
+      formLayout.filter(({ tab }) => !!tab)[0];
+
     newStoreStateSlice.formLayout = u.constant(formLayout);
-    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
+    newStoreStateSlice.activeTab = u.constant(activeTab);
     newStoreStateSlice.persistentInstance = u.constant(instance);
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(instance);
 

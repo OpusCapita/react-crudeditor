@@ -768,6 +768,7 @@ Model Definition is an object describing an entity. It has the following structu
          *   - "saveAndNew".
          * If the name is internal operation name,
          * the corresponding internal operation is modified or overwritten.
+         */
         name: <string, operation ID>,
 
         /*

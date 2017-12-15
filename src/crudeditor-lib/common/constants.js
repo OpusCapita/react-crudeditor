@@ -30,6 +30,8 @@ export const
   OPERATION_HOME = 'home',
   OPERATION_PREV = 'prev',
   OPERATION_NEXT = 'next',
+  OPERATION_SEARCH = 'search',
+  OPERATION_RESET = 'reset',
 
   STANDARD_OPERATIONS = [
     OPERATION_SHOW,

@@ -16,7 +16,9 @@ import {
   OPERATION_EDIT,
   OPERATION_DELETE,
   OPERATION_DELETE_SELECTED,
-  OPERATION_CREATE
+  OPERATION_CREATE,
+  OPERATION_RESET,
+  OPERATION_SEARCH
 } from '../../common/constants';
 import {
   customOperations,
@@ -48,7 +50,13 @@ const mergeProps = (
     standardOpsConfig,
     uiConfig
   },
-  { softRedirectView, deleteInstances, ...dispatchProps },
+  {
+    softRedirectView,
+    deleteInstances,
+    resetFormFilter,
+    searchInstances,
+    ...dispatchProps
+  },
   ownProps
 ) => ({
   ...ownProps,
@@ -69,6 +77,8 @@ const mergeProps = (
         handlers: {
           [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
           [OPERATION_DELETE_SELECTED]: ({ instances }) => deleteInstances(instances),
+          [OPERATION_RESET]: resetFormFilter,
+          [OPERATION_SEARCH]: ({ filter }) => searchInstances({ filter }),
           [OPERATION_SHOW]: ({
             instance,
             tab,

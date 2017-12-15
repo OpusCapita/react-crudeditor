@@ -1,3 +1,33 @@
+## [v0.0.31](Fri, 15 Dec 2017 10:42:47 GMT)
+ - Ability for custom operations to modifying internal ones is removed from docs (88933b4 e9afb33, 605e90c)
+ - Ability for custom operations to modifying internal ones is removed from docs (Andrei Mourzenkov <mourzenkov@scand.com>, 88933b4)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, e9afb33)
+ - Bug with inconsistent display of Field Errors is fixed (Andrei Mourzenkov <mourzenkov@scand.com>, 55afb0b)
+ - Merge pull request #148 from OpusCapita/issue-147
+
+    Preserve selected tab when navigating between instances on Show view (d9ed72f 5c8969d, be147c4)
+ - Merge pull request #146 from OpusCapita/issue-144
+
+    Enter key triggers sync with formatted value (e52247d 1e0a159, d9ed72f)
+ - Merge pull request #145 from OpusCapita/issue-42
+
+    Updated dependencies to ensure React 16.x compatibility (4d1c2e2 1104b53, e52247d)
+ - Docs changes: custom operation modifying internal one (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4d1c2e2)
+ - Fixed #147 (Egor Stambakio <stambakio@scand.com>, 5c8969d)
+ - Fixed #144 (Egor Stambakio <stambakio@scand.com>, 1e0a159)
+ - Merge pull request #143 from OpusCapita/issue-126
+
+    Date range search includes the whole upper boundary day (906acf0 1de5868, e63fa8f)
+ - Edited a test. (Egor Stambakio <stambakio@scand.com>, 1104b53)
+ - Merge pull request #142 from OpusCapita/issue-141
+
+    Proper errors for invalid numbers in fields (f895fba 817fc19, 906acf0)
+ - Fixed test. (Egor Stambakio <stambakio@scand.com>, 1de5868)
+ - Removed a variable (Egor Stambakio <stambakio@scand.com>, 817fc19)
+ - Upgraded package versions to ensure react 16 compatibility. (Egor Stambakio <stambakio@scand.com>, aae72fa)
+ - Fixed #126 (Egor Stambakio <stambakio@scand.com>, 0a61c63)
+ - Fixed #141 (Egor Stambakio <stambakio@scand.com>, 5c7d1dc)
+
 ## [v0.0.30](Wed, 13 Dec 2017 13:13:42 GMT)
  - Merge pull request #139 from OpusCapita/issue-25
 

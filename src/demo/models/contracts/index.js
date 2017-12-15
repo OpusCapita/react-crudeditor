@@ -422,7 +422,7 @@ export default {
                   }
                 }
               }),
-              // disabled: true
+              disabled: true
             },
             {
               name: 'duplicate',
@@ -439,11 +439,12 @@ export default {
                     ].indexOf(key) === -1).
                     reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
                 }
-              })
+              }),
+              // hidden: true
             },
             {
               name: 'delete',
-              // handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
+              handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
               // disabled: true,
               // hidden: true
             },
@@ -451,8 +452,12 @@ export default {
               name: 'edit',
               // handler: _ => console.log(`Hey there, I'm a dummy EDIT handler!`),
               // disabled: true,
-              // hidden: true
-            }
+              hidden: true
+            },
+            // {
+            //   name: 'show',
+            //   hidden: true
+            // }
           ]
       )
     ]

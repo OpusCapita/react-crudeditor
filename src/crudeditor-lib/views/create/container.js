@@ -5,7 +5,13 @@ import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
 import { viewOperations } from '../lib';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import {
+  VIEW_SEARCH,
+
+  OPERATION_SAVE,
+  OPERATION_SAVEANDNEW,
+  OPERATION_CANCEL
+} from '../../common/constants';
 
 import {
   getViewModelData,
@@ -30,6 +36,8 @@ const mergeProps = (
   },
   {
     softRedirectView,
+    saveInstance,
+    saveAndNewInstance,
     ...dispatchProps
   },
   ownProps
@@ -43,7 +51,12 @@ const mergeProps = (
         viewName: VIEW_NAME,
         viewState,
         operations,
-        softRedirectView
+        softRedirectView,
+        standardHandlers: {
+          [OPERATION_SAVE]: saveInstance,
+          [OPERATION_SAVEANDNEW]: saveAndNewInstance,
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH })
+        }
       }),
       external: externalOperations
     },
@@ -59,7 +72,6 @@ export default connect(
     externalOperations,
     uiConfig
   }), {
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     selectTab,
     validateInstanceField,

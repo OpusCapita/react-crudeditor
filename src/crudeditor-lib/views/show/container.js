@@ -11,7 +11,10 @@ import {
 } from './actions';
 import { viewOperations } from '../lib';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import {
+  VIEW_SEARCH,
+  OPERATION_CANCEL
+} from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
 
 const mergeProps = (
@@ -63,7 +66,10 @@ const mergeProps = (
         viewName: VIEW_NAME,
         viewState,
         operations,
-        softRedirectView
+        softRedirectView,
+        standardHandlers: {
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH })
+        }
       }),
       external: externalOperations
     },
@@ -83,7 +89,6 @@ export default connect(
     uiConfig
   }), {
     selectTab,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     showAdjacentInstance,
     softRedirectView
   },

@@ -451,23 +451,10 @@ export const viewOperations = ({
     }
   ) || [];
 
-  const standardOps = Object.keys(standardHandlers).
-    filter(key => !modelOps.find(({ name }) => name === key)).
-    reduce(
-      (rez, name) => [
-        ...rez,
-        {
-          name,
-          handler: _ => standardHandlers[name]({ instance, ...restArgs })
-        }
-      ],
-      []
-    );
-
   return modelOps.
-    filter(({ hidden }) => !hidden).
+    filter(({ name }) => Object.keys(standardHandlers).indexOf(name) === -1).
     reduce(
-      (rez, { name, handler, hidden, ...rest }) => [
+      (rez, { name, handler, ...rest }) => [
         ...rez,
         ...(handler ?
           [{
@@ -483,15 +470,21 @@ export const viewOperations = ({
               return view;
             }
           }] :
-          Object.keys(standardHandlers).indexOf(name) !== -1 ?
-            [{
-              name,
-              ...rest,
-              handler: _ => standardHandlers[name]({ instance, ...restArgs })
-            }] :
-            []
+          []
         )
       ],
-      standardOps
-    )
+      Object.keys(standardHandlers).reduce(
+        (rez, name) => [
+          ...rez,
+          {
+            name,
+            handler: _ => standardHandlers[name]({ instance, ...restArgs }),
+            // possibly augment standard operations with values provided via model
+            ...(modelOps.find(({ name: modelOpName }) => name === modelOpName) || {})
+          }
+        ],
+        []
+      )
+    ).
+    filter(({ hidden }) => !hidden)
 }

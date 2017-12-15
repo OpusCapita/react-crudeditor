@@ -53,7 +53,7 @@
   <dd>Field(s) and their value(s) constituting visible unique identifier of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
-  <dd>Optional actions to be perfomed with an entity instance. Each operation corresponds to a button (or menu item in Split button dropdown) on UI. There are three kinds of operations:
+  <dd>Optional actions to be perfomed with an entity instance. Each operation has a dedicated button (or menu item in Split button dropdown) on UI. There are three kinds of operations:
     <ul>
       <li id="standard-operation">
         <i>Standard</i> - predefined operation. Its handler is defined inside CRUD Editor. Standard operations IDs:

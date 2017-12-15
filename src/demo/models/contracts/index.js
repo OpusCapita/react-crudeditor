@@ -383,11 +383,12 @@ export default {
       standardOperations: {
         'delete': {
           // hidden: true,
-          disabled: true
+          // disabled: true,
+          // hideIcon: true,
+          icon: 'fire'
         },
-        'save': {
-          hidden: true,
-          disabled: true
+        'edit': {
+          // hidden: true
         }
       }
     }),
@@ -409,20 +410,7 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT),
-      standardOperations: {
-        'delete': {
-          // hidden: true,
-          disabled: true
-        },
-        'prev': {
-          // hidden: true,
-          // disabled: true
-        },
-        'next': {
-          // hidden: true
-        }
-      }
+      formLayout: buildFormLayout(VIEW_EDIT)
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)

@@ -11,13 +11,10 @@ import {
   VIEW_EDIT,
 
   OPERATION_DELETE,
-  OPERATION_EDIT,
   OPERATION_SAVE,
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
-  OPERATION_SHOW,
-  OPERATION_CANCEL,
-  STANDARD_OPERATIONS
+  OPERATION_CANCEL
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -25,8 +22,7 @@ import {
   Form,
   FormGroup,
   Col,
-  ButtonToolbar,
-  Glyphicon
+  ButtonToolbar
 } from 'react-bootstrap';
 
 export default class EditTab extends React.PureComponent {
@@ -115,7 +111,7 @@ export default class EditTab extends React.PureComponent {
     const cancelOperation = standardOperations.find(({ name }) => name === OPERATION_CANCEL);
 
     if (permissions.view && cancelOperation) {
-      const { handler, disabled } = cancelOperation;
+      const { handler, disabled, title } = cancelOperation;
 
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
@@ -124,7 +120,7 @@ export default class EditTab extends React.PureComponent {
             onClick={handler}
             disabled={!!disabled}
           >
-            {i18n.getMessage('crudEditor.cancel.button')}
+            {title || i18n.getMessage('crudEditor.cancel.button')}
           </Button>
         </ConfirmUnsavedChanges>
       )
@@ -132,31 +128,27 @@ export default class EditTab extends React.PureComponent {
 
     buttons.push(
       ...customOperations.
-      map(({ name, icon, handler, disabled }, index) => (
-        <ConfirmUnsavedChanges
-          key={`internal-operation-${index}`}
-          showDialog={this.showConfirmDialog}
-        >
-          <Button
-            onClick={handler}
-            disabled={!!disabled}
+        map(({ name, handler, disabled }, index) => (
+          <ConfirmUnsavedChanges
+            key={`internal-operation-${index}`}
+            showDialog={this.showConfirmDialog}
           >
-            {icon && <Glyphicon glyph={icon} />}
-            {icon && ' '}
-            {getModelMessage(i18n, `model.label.${name}`, name)}
-          </Button>
-        </ConfirmUnsavedChanges>
-      ))
+            <Button
+              onClick={handler}
+              disabled={!!disabled}
+            >
+              {getModelMessage(i18n, `model.label.${name}`, name)}
+            </Button>
+          </ConfirmUnsavedChanges>
+        ))
     );
 
     buttons.push(
-      ...externalOperations.map(({ title, icon, handler }, index) => (
+      ...externalOperations.map(({ title, handler }, index) => (
         <Button
           onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
         >
-          {icon && <Glyphicon glyph={icon} />}
-          {icon && ' '}
           {title}
         </Button>
       ))
@@ -165,7 +157,7 @@ export default class EditTab extends React.PureComponent {
     const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
 
     if (viewName === VIEW_EDIT && permissions.delete && deleteOperation) {
-      const { handler, disabled } = deleteOperation;
+      const { handler, disabled, title } = deleteOperation;
 
       buttons.push(
         <ConfirmDialog
@@ -178,7 +170,7 @@ export default class EditTab extends React.PureComponent {
             onClick={handler}
             disabled={!!disabled}
           >
-            {i18n.getMessage('crudEditor.delete.button')}
+            {title || i18n.getMessage('crudEditor.delete.button')}
           </Button>
         </ConfirmDialog>
       )
@@ -187,7 +179,7 @@ export default class EditTab extends React.PureComponent {
     const saveAndNewOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEW);
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create && saveAndNewOperation) {
-      const { handler, disabled } = saveAndNewOperation;
+      const { handler, disabled, title } = saveAndNewOperation;
 
       buttons.push(
         <Button
@@ -195,14 +187,14 @@ export default class EditTab extends React.PureComponent {
           disabled={disableSave || disabled}
           key="Save and New"
         >
-          {i18n.getMessage('crudEditor.saveAndNew.button')}
+          {title || i18n.getMessage('crudEditor.saveAndNew.button')}
         </Button>)
     }
 
     const saveAndNextOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEXT);
 
     if (viewName === VIEW_EDIT && saveAndNextOperation) {
-      const { handler, disabled } = saveAndNextOperation;
+      const { handler, disabled, title } = saveAndNextOperation;
 
       buttons.push(
         <Button
@@ -210,14 +202,14 @@ export default class EditTab extends React.PureComponent {
           disabled={disableSave || disabled}
           key="Save and Next"
         >
-          {i18n.getMessage('crudEditor.saveAndNext.button')}
+          {title || i18n.getMessage('crudEditor.saveAndNext.button')}
         </Button>)
     }
 
     const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && saveOperation) {
-      const { disabled } = saveOperation;
+      const { disabled, title } = saveOperation;
 
       buttons.push(
         <Button
@@ -226,7 +218,7 @@ export default class EditTab extends React.PureComponent {
           type='submit'
           key="Save"
         >
-          {i18n.getMessage('crudEditor.save.button')}
+          {title || i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }
 

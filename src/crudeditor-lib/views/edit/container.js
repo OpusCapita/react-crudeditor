@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { isDef } from '../../../components/lib';
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
 import {
@@ -104,11 +103,11 @@ const mergeProps = (
         config: {
           ...standardOpsConfig,
           'prev': {
-            ...standardOpsConfig.prev,
+            ...(standardOpsConfig.prev || {}),
             disabled: !prevInstanceExists ? true : !!(standardOpsConfig.prev || {}).disabled
           },
           'next': {
-            ...standardOpsConfig.next,
+            ...(standardOpsConfig.next || {}),
             disabled: !nextInstanceExists ? true : !!(standardOpsConfig.next || {}).disabled
           }
         }

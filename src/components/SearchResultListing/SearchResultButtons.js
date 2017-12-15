@@ -4,7 +4,6 @@ import {
   Glyphicon,
   Button,
   ButtonGroup,
-  SplitButton,
   Dropdown,
   MenuItem
 } from 'react-bootstrap';
@@ -13,15 +12,19 @@ import { getModelMessage } from '../lib';
 import {
   OPERATION_SHOW,
   OPERATION_EDIT,
-  OPERATION_DELETE,
-  STANDARD_OPERATIONS
+  OPERATION_DELETE
 } from '../../crudeditor-lib/common/constants';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
     instance: PropTypes.object,
     index: PropTypes.number,
-    parentRef: PropTypes.object
+    parentRef: PropTypes.object,
+
+    permissions: PropTypes.object.isRequired,
+    customOperations: PropTypes.array,
+    externalOperations: PropTypes.array,
+    standardOperations: PropTypes.array.isRequired
   }
 
   static contextTypes = {
@@ -61,7 +64,7 @@ export default class SearchResultButtons extends PureComponent {
       return null;
     }
 
-    const { icon, handler, title, uid, disabled } = operations[0];
+    const { icon, handler, title, uid, disabled, hideIcon } = operations[0];
 
     if (operations.length === 1) {
       return (
@@ -70,8 +73,8 @@ export default class SearchResultButtons extends PureComponent {
           key={uid}
           {...(disabled ? { disabled } : null)}
         >
-          {icon && <Glyphicon glyph={icon} />}
-          {icon && ' '}
+          {icon && !hideIcon && <Glyphicon glyph={icon} />}
+          {icon && !hideIcon && ' '}
           {title}
         </Button>
       );
@@ -89,22 +92,22 @@ export default class SearchResultButtons extends PureComponent {
         </Button>
         <Dropdown.Toggle/>
         <Dropdown.Menu>
-        {
-          operations.slice(1).map(({ icon, handler, title, uid, disabled }, index) => (
-            <MenuItem
-              key={index}
-              eventKey={index}
-              onClick={handler}
-              {...(disabled ? { disabled } : null)}
-            >
-              <span className="btn-sm text-left">
-                {icon && <Glyphicon glyph={icon}/>}
-                {icon && '\u00A0\u00A0'}
-                {title}
-              </span>
-            </MenuItem>
-          ))
-        }
+          {
+            operations.slice(1).map(({ icon, handler, title, uid, disabled, hideIcon }, index) => (
+              <MenuItem
+                key={index}
+                eventKey={index}
+                onClick={handler}
+                {...(disabled ? { disabled } : null)}
+              >
+                <span className="btn-sm text-left">
+                  {icon && !hideIcon && <Glyphicon glyph={icon}/>}
+                  {icon && !hideIcon && '\u00A0\u00A0'}
+                  {title}
+                </span>
+              </MenuItem>
+            ))
+          }
         </Dropdown.Menu>
       </Dropdown>
     );

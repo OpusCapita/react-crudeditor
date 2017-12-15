@@ -16,7 +16,8 @@ export default class SearchBulkOperationsPanel extends PureComponent {
           })
         })
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.object.isRequired
     }).isRequired
   }
 
@@ -47,7 +48,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
     const buttons = [];
 
     if (canDelete && deleteOperation) {
-      const { handler, disabled, ...rest } = deleteOperation;
+      const { handler, disabled } = deleteOperation;
 
       buttons.push(
         <ConfirmDialog

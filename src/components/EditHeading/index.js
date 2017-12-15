@@ -88,29 +88,37 @@ export default class EditHeading extends PureComponent {
     const prevOperation = standardOperations.find(({ name }) => name === OPERATION_PREV);
     const nextOperation = standardOperations.find(({ name }) => name === OPERATION_NEXT);
 
-    const prev = prevOperation && (
-      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
-        <Button
-          disabled={prevOperation.disabled}
-          onClick={prevOperation.handler}
-        >
-          <Glyphicon glyph="arrow-left"/>
-        </Button>
-      </ConfirmUnsavedChanges>
-    );
+    const arrows = [];
 
-    const next = nextOperation && (
-      <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
-        <Button
-          disabled={nextOperation.disabled}
-          onClick={nextOperation.handler}
-        >
-          <Glyphicon glyph="arrow-right"/>
-        </Button>
-      </ConfirmUnsavedChanges>
-    );
+    if (prevOperation) {
+      const { handler, disabled } = prevOperation;
 
-    const arrows = [prev, next];
+      arrows.push(
+        <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
+          <Button
+            disabled={!!disabled}
+            onClick={handler}
+          >
+            <Glyphicon glyph="arrow-left"/>
+          </Button>
+        </ConfirmUnsavedChanges>
+      )
+    }
+
+    if (nextOperation) {
+      const { handler, disabled } = nextOperation;
+
+      arrows.push(
+        <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
+          <Button
+            disabled={disabled}
+            onClick={handler}
+          >
+            <Glyphicon glyph="arrow-right"/>
+          </Button>
+        </ConfirmUnsavedChanges>
+      )
+    }
 
     const H = 'h' + headerLevel;
 

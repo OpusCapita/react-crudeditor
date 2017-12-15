@@ -478,7 +478,7 @@ export const standardOperations = ({
   filter(name => !(config[name] || {}).hidden).
   reduce(
     (rez, name) => {
-      const { hidden, ...rest } = (config[name] || {});
+      const { hidden, ...rest } = (config[name] || {}); // eslint-disable-line no-unused-vars
 
       return [
         ...rez,

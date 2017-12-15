@@ -17,14 +17,19 @@ import { VIEW_NAME } from './constants';
 import {
   VIEW_SEARCH,
   OPERATION_CANCEL,
-  OPERATION_HOME
+  OPERATION_HOME,
+  OPERATION_NEXT,
+  OPERATION_PREV
 } from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
 
 const mergeProps = (
   {
     viewModelData,
-    flags,
+    flags: {
+      nextInstanceExists,
+      prevInstanceExists
+    },
     viewState,
     customOpsConfig,
     externalOperations,
@@ -33,6 +38,7 @@ const mergeProps = (
   },
   {
     softRedirectView,
+    showAdjacentInstance,
     ...dispatchProps
   },
   ownProps
@@ -40,32 +46,7 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: (
-      ({
-        showAdjacentInstance,
-        ...otherActions
-      }, {
-        nextInstanceExists,
-        prevInstanceExists
-      }) => {
-        let result = { ...otherActions };
-
-        if (nextInstanceExists) {
-          result = {
-            ...result,
-            gotoNextInstance: showAdjacentInstance.bind(null, 'next')
-          }
-        }
-
-        if (prevInstanceExists) {
-          result = {
-            ...result,
-            gotoPrevInstance: showAdjacentInstance.bind(null, 'prev')
-          }
-        }
-
-        return result
-      })(dispatchProps, flags),
+    actions: dispatchProps,
     operations: {
       custom: customOperations({
         viewName: VIEW_NAME,
@@ -77,9 +58,21 @@ const mergeProps = (
       standard: standardOperations({
         handlers: {
           [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
-          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH })
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_PREV]: _ => showAdjacentInstance('prev'),
+          [OPERATION_NEXT]: _ => showAdjacentInstance('next')
         },
-        config: standardOpsConfig
+        config: {
+          ...standardOpsConfig,
+          'prev': {
+            ...(standardOpsConfig.prev || {}),
+            disabled: !prevInstanceExists ? true : !!(standardOpsConfig.prev || {}).disabled
+          },
+          'next': {
+            ...(standardOpsConfig.next || {}),
+            disabled: !nextInstanceExists ? true : !!(standardOpsConfig.next || {}).disabled
+          }
+        }
       })
     },
     uiConfig
@@ -94,7 +87,7 @@ export default connect(
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     customOpsConfig: modelDefinition.ui.customOperations,
-    standardOpsConfig: modelDefinition.ui.show.standardOperations,
+    standardOpsConfig: modelDefinition.ui.show.standardOperations || {},
     externalOperations,
     uiConfig
   }), {

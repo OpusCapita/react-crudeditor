@@ -58,12 +58,12 @@
       <li id="standard-operation">
         <i>Standard</i> - predefined operation. Its handler is defined inside CRUD Editor. Standard operations IDs:
           <ol>
-            <li>"delete"</li>,
-            <li>"edit"</li>,
-            <li>"save"</li>,
-            <li>"saveAndNext"</li>,
-            <li>"saveAndNew"</li>,
-            <li>"show"</li>,
+            <li>"delete"</li>
+            <li>"edit"</li>
+            <li>"save"</li>
+            <li>"saveAndNext"</li>
+            <li>"saveAndNew"</li>
+            <li>"show"</li>
           </ol>
       </li>
       <br />

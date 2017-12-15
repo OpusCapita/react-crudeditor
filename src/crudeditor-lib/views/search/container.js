@@ -78,7 +78,7 @@ const mergeProps = (
           [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
           [OPERATION_DELETE_SELECTED]: ({ instances }) => deleteInstances(instances),
           [OPERATION_RESET]: resetFormFilter,
-          [OPERATION_SEARCH]: ({ filter }) => searchInstances({ filter }),
+          [OPERATION_SEARCH]: (...args) => searchInstances(...args),
           [OPERATION_SHOW]: ({
             instance,
             tab,

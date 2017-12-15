@@ -43,12 +43,17 @@ export default class EditTab extends React.PureComponent {
       })
     }).isRequired,
     toggleFieldErrors: PropTypes.func,
-    fieldErrors: PropTypes.object
+    toggledFieldErrors: PropTypes.object
   }
 
   static contextTypes = {
     i18n: PropTypes.object
   };
+
+  handleSaveAndNext = handler => _ => {
+    this.props.toggleFieldErrors(true);
+    handler();
+  }
 
   hasUnsavedChanges = _ => {
     const {
@@ -65,17 +70,13 @@ export default class EditTab extends React.PureComponent {
 
   handleSubmit = handler => e => {
     e.preventDefault();
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-      this.props.toggleFieldErrors(true);
-      handler();
-    }
+    this.props.toggleFieldErrors(true);
+    handler();
   }
 
   handleSaveAndNew = handler => _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.toggleFieldErrors(true);
-    }
-    handler();
+    this.props.toggleFieldErrors(true);
+    handler()
   }
 
   render() {
@@ -95,13 +96,13 @@ export default class EditTab extends React.PureComponent {
           standard
         }
       },
-      fieldErrors,
+      toggledFieldErrors,
       toggleFieldErrors
     } = this.props;
 
     const { i18n } = this.context;
 
-    const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
+    const disableSave = formInstance && isEqual(persistentInstance, formInstance);
 
     const buttons = [];
 
@@ -198,7 +199,7 @@ export default class EditTab extends React.PureComponent {
 
       buttons.push(
         <Button
-          onClick={handler} // TODO toggle errors
+          onClick={this.handleSaveAndNext(handler)}
           disabled={disableSave || disabled}
           key="Save and Next"
         >
@@ -225,7 +226,11 @@ export default class EditTab extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit((saveOperation || {}).handler)}>
         <Col sm={12}>
-          <FormGrid model={this.props.model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
+          <FormGrid
+            model={this.props.model}
+            toggledFieldErrors={toggledFieldErrors}
+            toggleFieldErrors={toggleFieldErrors}
+          />
         </Col>
         <FormGroup>
           <Col sm={12}>

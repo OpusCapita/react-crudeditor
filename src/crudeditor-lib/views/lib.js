@@ -485,7 +485,7 @@ export const standardOperations = ({
         {
           ...rest,
           name,
-          handler: _ => handlers[name](...args),
+          handler: _ => handlers[name](...args)
         }
       ]
     },

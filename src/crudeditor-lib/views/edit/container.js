@@ -66,15 +66,7 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: {
-      ...otherActions,
-      ...(prevInstanceExists ? {
-        gotoPrevInstance: _ => editAdjacentInstance('prev')
-      } : {}),
-      ...(nextInstanceExists ? {
-        gotoNextInstance: _ => editAdjacentInstance('next')
-      } : {})
-    },
+    actions: otherActions,
     operations: {
       custom: customOperations({
         viewName: VIEW_NAME,

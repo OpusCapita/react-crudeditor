@@ -53,10 +53,18 @@
   <dd>Field(s) and their value(s) constituting visible unique identifier of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
-  <dd>Optional actions to be perfomed with an entity instance. There are three kinds of operations:
+  <dd>Optional actions to be perfomed with an entity instance. Each operation has a dedicated button (or menu item in Split button dropdown) on UI. There are three kinds of operations:
     <ul>
-      <li id="internal-operation">
-        <i>Internal</i> - predefined operation. Its handler is defined inside CRUD Editor.
+      <li id="standard-operation">
+        <i>Standard</i> - predefined operation. Its handler is defined inside CRUD Editor. Standard operations IDs:
+          <ol>
+            <li>"delete"</li>
+            <li>"edit"</li>
+            <li>"save"</li>
+            <li>"saveAndNext"</li>
+            <li>"saveAndNew"</li>
+            <li>"show"</li>
+          </ol>
       </li>
       <br />
       <li id="custom-operation">
@@ -559,6 +567,7 @@ Model Definition is an object describing an entity. It has the following structu
                   ...
                   return <serializable>;
                 }
+              }
             }
           }
         }, ...],
@@ -574,7 +583,18 @@ Model Definition is an object describing an entity. It has the following structu
           ?sortByDefault: <boolean, false by default>,
           ?textAlignment: <"left"|"center"|"right">,
           ?component: <FieldRenderComponent>  // see "FieldRenderComponent" subheading.
-        }, ...]
+        }, ...],
+
+        /*
+         * Configuration for hiding/disabling Standard Operations (see corresponding Terminology section).
+         */
+        ?standardOperations: {
+          <name, stadard operation ID>: {
+            ?hidden: <boolean, false by default>,
+            ?disabled: <boolean, false by default>
+          },
+          ...
+        }
       };
     },
 
@@ -750,24 +770,12 @@ Model Definition is an object describing an entity. It has the following structu
      * Custom operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
      */
-    ?operations: function(<object, entity persistent instance>, {
+    ?customOperations: function(<object, entity persistent instance>, {
       name: <string, View name>,  // See EditorComponent props.view.name
       state: <object, Full View State>  // See EditorComponent props.view.state
     }) {
       ...
       return [{
-
-        /*
-         * Operation ID used to set correct translation for the button title.
-         * The following IDs are reserved for internal operations:
-         *   - "edit",
-         *   - "show",
-         *   - "delete",
-         *   - "save",
-         *   - "saveAndNext",
-         *   - "saveAndNew".
-         * If the name is internal operation name,
-         * the corresponding internal operation is modified or overwritten.
         name: <string, operation ID>,
 
         /*
@@ -777,14 +785,8 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?icon: <string>,
 
-        ?hidden: <boolean, false by default>,
-        ?disabled: <boolean, false by default>,
-
         /*
-         * The handler is optional when modifying internal operation,
-         * and mandatory otherwise (the button is not displayed if there is no handler).
-         * If absent when modifying internal operation,
-         * default internal operation handler is preserved.
+         * The operation button is not displayed if there is no hanlder.
          */
         ?handler() {
           ...
@@ -848,7 +850,7 @@ props.type | Description | UI Type | Auto-convertable field types
 
 ### Default FieldInput components
 
-Field types and correnponding [built-in components](#built-in-components).
+Field types and corresponding [built-in components](#built-in-components).
 
 If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view):
 
@@ -1482,7 +1484,7 @@ Not implemented:
 - isCreateSupported,
 - duplicationConfiguration,
 - cmlExportConfiguration.
-- Allow custom operations to overwrite internal operations.
+- Allow custom operations to overwrite standard operations.
 
 ## Footnotes
 

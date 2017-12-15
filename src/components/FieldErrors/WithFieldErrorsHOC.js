@@ -110,7 +110,7 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     const { children, ...props } = this.props;
 
     return (
-      <WrappedComponent {...props} fieldErrors={this.state.errors} toggleFieldErrors={this.toggleFieldErrors}>
+      <WrappedComponent {...props} toggledFieldErrors={this.state.errors} toggleFieldErrors={this.toggleFieldErrors}>
         {children}
       </WrappedComponent>
     );

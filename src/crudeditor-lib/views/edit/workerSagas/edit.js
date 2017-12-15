@@ -42,6 +42,23 @@ export default function*({
     throw err;
   }
 
+  console.log({
+    type: INSTANCE_EDIT_SUCCESS,
+    payload: {
+      instance: persistentInstance,
+      ...(navigation ?
+        {
+          nextInstanceExists: navigation.offset < navigation.totalCount - 1,
+          prevInstanceExists: navigation.offset > 0 && navigation.totalCount > 0,
+          error: navigation.error
+        } :
+        {}
+      )
+    },
+    meta,
+    navigation
+  })
+
   yield put({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {

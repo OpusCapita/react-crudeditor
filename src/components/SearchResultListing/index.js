@@ -178,12 +178,12 @@ class SearchResultListing extends PureComponent {
                   <td className="text-right">
                     <SearchResultButtons
                       permissions={permissions}
-                      customOperations={customOperations({ instance, index })}
+                      customOperations={customOperations({ instance })}
                       externalOperations={externalOperations.map(({ handler, ...rest }) => ({
                         ...rest,
                         handler: _ => handler(instance)
                       }))}
-                      standardOperations={standardOperations({ instance })}
+                      standardOperations={standardOperations({ instance, index })}
                       index={index}
                       parentRef={this._myRef}
                     />

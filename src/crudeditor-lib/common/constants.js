@@ -28,6 +28,8 @@ export const
   OPERATION_CANCEL = 'cancel',
   OPERATION_CREATE = 'create',
   OPERATION_HOME = 'home',
+  OPERATION_PREV = 'prev',
+  OPERATION_NEXT = 'next',
 
   STANDARD_OPERATIONS = [
     OPERATION_SHOW,

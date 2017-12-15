@@ -483,7 +483,7 @@ export const standardOperations = ({
       return [
         ...rez,
         {
-          ...(rest || {}),
+          ...rest,
           name,
           handler: _ => handlers[name](...args),
         }

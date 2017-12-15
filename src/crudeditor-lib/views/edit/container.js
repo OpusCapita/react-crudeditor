@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { isDef } from '../../../components/lib';
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
 import {
@@ -11,7 +11,9 @@ import {
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
   OPERATION_CANCEL,
-  OPERATION_HOME
+  OPERATION_HOME,
+  OPERATION_PREV,
+  OPERATION_NEXT
 } from '../../common/constants';
 import {
   customOperations,
@@ -87,13 +89,29 @@ const mergeProps = (
           [OPERATION_DELETE]: ({ instance }) => deleteInstances([instance]),
           [OPERATION_SAVE]: saveInstance,
           [OPERATION_SAVEANDNEW]: saveAndNewInstance,
-          ...(nextInstanceExists ? {
-            [OPERATION_SAVEANDNEXT]: saveAndNextInstance
-          } : null),
           [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
-          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH })
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_PREV]: _ => editAdjacentInstance('prev'),
+          [OPERATION_NEXT]: _ => editAdjacentInstance('next'),
+          ...(
+            nextInstanceExists ?
+              {
+                [OPERATION_SAVEANDNEXT]: saveAndNextInstance
+              } :
+              null
+          )
         },
-        config: standardOpsConfig
+        config: {
+          ...standardOpsConfig,
+          'prev': {
+            ...standardOpsConfig.prev,
+            disabled: !prevInstanceExists ? true : !!(standardOpsConfig.prev || {}).disabled
+          },
+          'next': {
+            ...standardOpsConfig.next,
+            disabled: !nextInstanceExists ? true : !!(standardOpsConfig.next || {}).disabled
+          }
+        }
       })
     },
     uiConfig
@@ -108,7 +126,7 @@ export default connect(
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     customOpsConfig: modelDefinition.ui.customOperations,
-    standardOpsConfig: modelDefinition.ui.edit.standardOperations,
+    standardOpsConfig: modelDefinition.ui.edit.standardOperations || {},
     externalOperations,
     uiConfig
   }), {

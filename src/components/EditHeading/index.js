@@ -2,7 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
-import { VIEW_CREATE, OPERATION_HOME } from '../../crudeditor-lib/common/constants';
+import {
+  VIEW_CREATE,
+  OPERATION_HOME,
+  OPERATION_PREV,
+  OPERATION_NEXT
+} from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
 import {
@@ -53,9 +58,7 @@ export default class EditHeading extends PureComponent {
           persistentInstance
         },
         actions: {
-          selectTab,
-          gotoNextInstance,
-          gotoPrevInstance
+          selectTab
         },
         uiConfig: {
           headerLevel = 1
@@ -68,7 +71,9 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const homeOperation = standard({ instance: persistentInstance }).find(({ name }) => name === OPERATION_HOME);
+    const standardOperations = standard({ instance: persistentInstance });
+
+    const homeOperation = standardOperations.find(({ name }) => name === OPERATION_HOME);
 
     const title = permissions.view && homeOperation && !homeOperation.disabled ?
       (
@@ -80,24 +85,32 @@ export default class EditHeading extends PureComponent {
       ) :
       getModelMessage(i18n, 'model.name');
 
-    const arrows = [
+    const prevOperation = standardOperations.find(({ name }) => name === OPERATION_PREV);
+    const nextOperation = standardOperations.find(({ name }) => name === OPERATION_NEXT);
+
+    const prev = prevOperation && (
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
         <Button
-          disabled={!gotoPrevInstance}
-          onClick={gotoPrevInstance}
+          disabled={prevOperation.disabled}
+          onClick={prevOperation.handler}
         >
           <Glyphicon glyph="arrow-left"/>
         </Button>
-      </ConfirmUnsavedChanges>,
+      </ConfirmUnsavedChanges>
+    );
+
+    const next = nextOperation && (
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
         <Button
-          disabled={!gotoNextInstance}
-          onClick={gotoNextInstance}
+          disabled={nextOperation.disabled}
+          onClick={nextOperation.handler}
         >
           <Glyphicon glyph="arrow-right"/>
         </Button>
       </ConfirmUnsavedChanges>
-    ]
+    );
+
+    const arrows = [prev, next];
 
     const H = 'h' + headerLevel;
 

@@ -409,7 +409,20 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT)
+      formLayout: buildFormLayout(VIEW_EDIT),
+      standardOperations: {
+        'delete': {
+          // hidden: true,
+          disabled: true
+        },
+        'prev': {
+          // hidden: true,
+          // disabled: true
+        },
+        'next': {
+          // hidden: true
+        }
+      }
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
@@ -433,7 +446,7 @@ export default {
                   }
                 }
               }),
-              disabled: true
+              // disabled: true
             },
             {
               name: 'duplicate',

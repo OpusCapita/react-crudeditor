@@ -587,6 +587,7 @@ Model Definition is an object describing an entity. It has the following structu
 
         /*
          * Configuration for hiding/disabling Standard Operations (see corresponding Terminology section).
+         */
         ?standardOperations: {
           <name, stadard operation ID>: {
             ?hidden: <boolean, false by default>,

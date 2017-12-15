@@ -5,21 +5,21 @@ import Tab from '../EditTab';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import WithSpinner from '../Spinner/SpinnerOverlayHOC';
 
-const EditMain = ({ model, fieldErrors, toggleFieldErrors }) => {
+const EditMain = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   const ActiveTabComponent = model.data.activeTab && model.data.activeTab.component;
 
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
       <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
-      <Tab model={model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
+      <Tab model={model} toggledFieldErrors={toggledFieldErrors} toggleFieldErrors={toggleFieldErrors}/>
     }
   </div>);
 };
 
 EditMain.propTypes = {
   model: PropTypes.object.isRequired,
-  fieldErrors: PropTypes.object.isRequired,
+  toggledFieldErrors: PropTypes.object.isRequired,
   toggleFieldErrors: PropTypes.func.isRequired
 }
 

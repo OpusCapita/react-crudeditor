@@ -13,7 +13,7 @@ export default class EditField extends Component {
     entry: PropTypes.shape({
       name: PropTypes.string.isRequired
     }),
-    fieldErrors: PropTypes.object,
+    toggledFieldErrors: PropTypes.object,
     toggleFieldErrors: PropTypes.func,
     columns: PropTypes.number
   }
@@ -23,7 +23,9 @@ export default class EditField extends Component {
   }
 
   handleChange = name => value => {
-    this.props.toggleFieldErrors(false, name);
+    if (this.props.toggleFieldErrors) {
+      this.props.toggleFieldErrors(false, name);
+    }
 
     if (this.props.model.actions.changeInstanceField) {
       this.props.model.actions.changeInstanceField({
@@ -33,7 +35,7 @@ export default class EditField extends Component {
     }
   }
 
-  handleBlur = name => _ => this.props.toggleFieldErrors(true, name)
+  handleBlur = name => _ => this.props.toggleFieldErrors && this.props.toggleFieldErrors(true, name)
 
   render() {
     const {
@@ -50,7 +52,7 @@ export default class EditField extends Component {
         }
       },
       columns,
-      fieldErrors
+      toggledFieldErrors
     } = this.props;
 
     const required = fieldsMeta[fieldName].constraints && fieldsMeta[fieldName].constraints.required;
@@ -66,7 +68,7 @@ export default class EditField extends Component {
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
     return (
-      <FormGroup controlId={fieldName} validationState={!readOnly && fieldErrors[fieldName] ? 'error' : null}>
+      <FormGroup controlId={fieldName} validationState={!readOnly && toggledFieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
             getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
@@ -74,7 +76,7 @@ export default class EditField extends Component {
         </Col>
         <Col sm={12 - labelColumns}>
           <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={!readOnly && fieldErrors[fieldName] || []} fieldName={fieldName}/>
+          <FieldErrorLabel errors={!readOnly && toggledFieldErrors[fieldName] || []} fieldName={fieldName}/>
         </Col>
       </FormGroup>
     );

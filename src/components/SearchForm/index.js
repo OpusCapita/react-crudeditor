@@ -18,7 +18,7 @@ class SearchForm extends React.Component {
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
-    fieldErrors: PropTypes.object.isRequired,
+    toggledFieldErrors: PropTypes.object.isRequired,
     toggleFieldErrors: PropTypes.func.isRequired
   }
 
@@ -45,8 +45,8 @@ class SearchForm extends React.Component {
   handleFormFilterBlur = fieldName => _ => this.props.toggleFieldErrors(true, fieldName);
 
   fieldErrors = name => name ?
-    (this.props.fieldErrors[name] || []) :
-    !!Object.keys(this.props.fieldErrors).length
+    (this.props.toggledFieldErrors[name] || []) :
+    !!Object.keys(this.props.toggledFieldErrors).length
 
   render() {
     const {

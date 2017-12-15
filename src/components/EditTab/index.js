@@ -39,7 +39,7 @@ export default class EditTab extends React.PureComponent {
       })
     }).isRequired,
     toggleFieldErrors: PropTypes.func,
-    fieldErrors: PropTypes.object
+    toggledFieldErrors: PropTypes.object
   }
 
   static contextTypes = {
@@ -48,7 +48,10 @@ export default class EditTab extends React.PureComponent {
 
   handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
 
-  handleSaveAndNext = _ => this.props.model.actions.saveAndNextInstance();
+  handleSaveAndNext = _ => {
+    this.props.toggleFieldErrors(true);
+    this.props.model.actions.saveAndNextInstance();
+  }
 
   hasUnsavedChanges = _ => {
     const {
@@ -65,16 +68,12 @@ export default class EditTab extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(this.props.model.data.viewName) > -1) {
-      this.props.toggleFieldErrors(true);
-      this.props.model.actions.saveInstance();
-    }
+    this.props.toggleFieldErrors(true);
+    this.props.model.actions.saveInstance();
   }
 
   handleSaveAndNew = _ => {
-    if (this.props.model.data.viewName === VIEW_CREATE) {
-      this.props.toggleFieldErrors(true);
-    }
+    this.props.toggleFieldErrors(true);
     this.props.model.actions.saveAndNewInstance()
   }
 
@@ -98,7 +97,7 @@ export default class EditTab extends React.PureComponent {
           external: externalOperations
         }
       },
-      fieldErrors,
+      toggledFieldErrors,
       toggleFieldErrors
     } = this.props;
 
@@ -198,7 +197,11 @@ export default class EditTab extends React.PureComponent {
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit}>
         <Col sm={12}>
-          <FormGrid model={this.props.model} fieldErrors={fieldErrors} toggleFieldErrors={toggleFieldErrors}/>
+          <FormGrid
+            model={this.props.model}
+            toggledFieldErrors={toggledFieldErrors}
+            toggleFieldErrors={toggleFieldErrors}
+          />
         </Col>
         <FormGroup>
           <Col sm={12}>

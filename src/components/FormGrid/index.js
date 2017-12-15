@@ -6,7 +6,7 @@ import Field from '../EditField';
 
 const DEFAULT_COLUMNS_COUNT = 1;
 
-const formGrid = ({ model, fieldErrors, toggleFieldErrors }) => {
+const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   let uniqueKey = 1;
 
   const buildRow = (fields, columnsCnt) => (
@@ -24,7 +24,7 @@ const formGrid = ({ model, fieldErrors, toggleFieldErrors }) => {
                 map((field, fieldIndex) => (
                   <Field
                     model={model}
-                    fieldErrors={fieldErrors}
+                    toggledFieldErrors={toggledFieldErrors}
                     toggleFieldErrors={toggleFieldErrors}
                     columns={columnsCnt}
                     key={'field-' + uniqueKey + '-' + columnIndex + '-' + fieldIndex}
@@ -84,7 +84,7 @@ const formGrid = ({ model, fieldErrors, toggleFieldErrors }) => {
 
 formGrid.propTypes = {
   model: PropTypes.object,
-  fieldErrors: PropTypes.object,
+  toggledFieldErrors: PropTypes.object,
   toggleFieldErrors: PropTypes.func
 }
 

@@ -16,7 +16,9 @@ export default class SearchResultPaginationPanel extends PureComponent {
         }),
         totalCount: PropTypes.number
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      operations: PropTypes.shape({
+        standard: PropTypes.func.isRequired
+      })
     }).isRequired
   }
 
@@ -29,14 +31,14 @@ export default class SearchResultPaginationPanel extends PureComponent {
     const { handler } = standard({
       offset: (activePage - 1) * this.props.model.data.pageParams.max
     }).find(({ name }) => name === OPERATION_SEARCH);
-    
+
     return handler()
   }
 
   handleMaxChange = pageMax => {
     const { standard } = this.props.model.operations;
     const { handler } = standard({ max: pageMax }).find(({ name }) => name === OPERATION_SEARCH);
-    
+
     return handler()
   }
 

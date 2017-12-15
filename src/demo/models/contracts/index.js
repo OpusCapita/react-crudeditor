@@ -378,7 +378,18 @@ export default {
         { name: 'description', sortable: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
-        { name: 'validRange', component: DateRangeCellRender }]
+        { name: 'validRange', component: DateRangeCellRender }],
+
+      standardOperations: {
+        'delete': {
+          // hidden: true,
+          disabled: true
+        },
+        'save': {
+          hidden: true,
+          disabled: true
+        }
+      }
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
@@ -404,7 +415,7 @@ export default {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
     Spinner: CustomSpinner,
-    operations: (instance, {
+    customOperations: (instance, {
       name: viewName,
       state: viewState
     }) => [
@@ -441,23 +452,7 @@ export default {
                 }
               }),
               // hidden: true
-            },
-            {
-              name: 'delete',
-              handler: _ => console.log(`Hey there, I'm a dummy delete handler!`),
-              // disabled: true,
-              // hidden: true
-            },
-            {
-              name: 'edit',
-              // handler: _ => console.log(`Hey there, I'm a dummy EDIT handler!`),
-              // disabled: true,
-              hidden: true
-            },
-            // {
-            //   name: 'show',
-            //   hidden: true
-            // }
+            }
           ]
       )
     ]

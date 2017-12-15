@@ -13,10 +13,9 @@ import { getModelMessage } from '../lib';
 import {
   OPERATION_SHOW,
   OPERATION_EDIT,
-  OPERATION_DELETE
+  OPERATION_DELETE,
+  STANDARD_OPERATIONS
 } from '../../crudeditor-lib/common/constants';
-
-const standardOperations = [OPERATION_SHOW, OPERATION_EDIT, OPERATION_DELETE];
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
@@ -115,15 +114,16 @@ export default class SearchResultButtons extends PureComponent {
     const {
       permissions,
       index: uid,
-      internalOperations,
-      externalOperations
+      customOperations,
+      externalOperations,
+      standardOperations
     } = this.props;
 
     const { i18n } = this.context;
     const buttons = [];
 
-    const editOperation = internalOperations.find(({ name }) => name === OPERATION_EDIT);
-    const showOperation = internalOperations.find(({ name }) => name === OPERATION_SHOW);
+    const editOperation = standardOperations.find(({ name }) => name === OPERATION_EDIT);
+    const showOperation = standardOperations.find(({ name }) => name === OPERATION_SHOW);
 
     buttons.push(
       this.operationsButton([
@@ -145,8 +145,7 @@ export default class SearchResultButtons extends PureComponent {
                 []
             )
         ),
-        ...internalOperations.
-          filter(({ name }) => standardOperations.indexOf(name) === -1).
+        ...customOperations.
           map(({ name, ...rest }) => ({
             ...rest,
             title: getModelMessage(i18n, `model.label.${name}`, name),
@@ -164,7 +163,7 @@ export default class SearchResultButtons extends PureComponent {
       )
     );
 
-    const deleteOperation = internalOperations.find(({ name }) => name === OPERATION_DELETE);
+    const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
 
     if (permissions.delete && deleteOperation) {
       const deleteButton = this.operationsButton([{

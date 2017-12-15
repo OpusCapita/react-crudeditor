@@ -10,9 +10,13 @@ import {
   OPERATION_SAVE,
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
-  OPERATION_CANCEL
+  OPERATION_CANCEL,
+  OPERATION_HOME
 } from '../../common/constants';
-import { viewOperations } from '../lib';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 
 import {
   getViewModelData,
@@ -38,7 +42,8 @@ const mergeProps = (
   {
     viewModelData,
     viewState,
-    operations,
+    customOpsConfig,
+    standardOpsConfig,
     flags: {
       nextInstanceExists,
       prevInstanceExists
@@ -70,22 +75,26 @@ const mergeProps = (
       } : {})
     },
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
-        softRedirectView,
-        standardHandlers: {
+        operations: customOpsConfig,
+        softRedirectView
+      }),
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
           [OPERATION_DELETE]: ({ instance }) => deleteInstances([instance]),
           [OPERATION_SAVE]: saveInstance,
           [OPERATION_SAVEANDNEW]: saveAndNewInstance,
           ...(nextInstanceExists ? {
             [OPERATION_SAVEANDNEXT]: saveAndNextInstance
           } : null),
-          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH })
-        }
-      }),
-      external: externalOperations
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH })
+        },
+        config: standardOpsConfig
+      })
     },
     uiConfig
   }
@@ -98,7 +107,8 @@ export default connect(
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
+    standardOpsConfig: modelDefinition.ui.edit.standardOperations,
     externalOperations,
     uiConfig
   }), {

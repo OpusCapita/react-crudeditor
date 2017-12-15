@@ -14,9 +14,14 @@ import {
 
   OPERATION_SHOW,
   OPERATION_EDIT,
-  OPERATION_DELETE
+  OPERATION_DELETE,
+  OPERATION_DELETE_SELECTED,
+  OPERATION_CREATE
 } from '../../common/constants';
-import { viewOperations } from '../lib';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 
 import {
   getDefaultNewInstance,
@@ -34,29 +39,36 @@ import {
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData, viewState, operations, externalOperations, uiConfig },
-  { softRedirectView, ...dispatchProps },
+  {
+    defaultNewInstance,
+    viewModelData,
+    viewState,
+    externalOperations,
+    customOpsConfig,
+    standardOpsConfig,
+    uiConfig
+  },
+  { softRedirectView, deleteInstances, ...dispatchProps },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
     actions: {
-      ...dispatchProps,
-      createInstance: _ => softRedirectView({
-        name: VIEW_CREATE,
-        state: {
-          predefinedFields: defaultNewInstance
-        }
-      })
+      ...dispatchProps
     },
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
-        softRedirectView,
-        standardHandlers: {
+        operations: customOpsConfig,
+        softRedirectView
+      }),
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
+          [OPERATION_DELETE_SELECTED]: ({ instances }) => deleteInstances(instances),
           [OPERATION_SHOW]: ({
             instance,
             tab,
@@ -87,10 +99,15 @@ const mergeProps = (
               }
             }
           }),
-          [OPERATION_DELETE]: ({ instance }) => dispatchProps.deleteInstances([instance])
-        }
-      }),
-      external: externalOperations
+          [OPERATION_CREATE]: _ => softRedirectView({
+            name: VIEW_CREATE,
+            state: {
+              predefinedFields: defaultNewInstance
+            }
+          }),
+        },
+        config: standardOpsConfig
+      })
     },
     uiConfig
   }
@@ -101,8 +118,9 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
     externalOperations,
+    standardOpsConfig: modelDefinition.ui.search.standardOperations,
     uiConfig
   }),
   {

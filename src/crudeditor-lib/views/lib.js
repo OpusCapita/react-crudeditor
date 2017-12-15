@@ -13,10 +13,7 @@ import {
 import {
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
-  VIEW_SHOW,
-  OPERATION_SHOW,
-  OPERATION_EDIT,
-  OPERATION_DELETE
+  VIEW_SHOW
 } from '../common/constants';
 
 import {
@@ -41,8 +38,6 @@ import {
   UI_TYPE_DATE_RANGE_OBJECT,
   UI_TYPE_STRING_RANGE_OBJECT
 } from '../../data-types-lib/constants';
-
-const standardOperations = [OPERATION_SHOW, OPERATION_EDIT, OPERATION_DELETE];
 
 export const
   COMPONENT_NAME_INPUT = 'input',
@@ -432,13 +427,12 @@ export function* plusMinus() {
 }
 
 // viewOperations creates operations (buttons) for particular view
-export const viewOperations = ({
+export const customOperations = ({
   viewName,
   viewState,
   operations,
-  softRedirectView,
-  standardHandlers
-}) => ({ instance, ...restArgs }) => {
+  softRedirectView
+}) => ({ instance }) => {
   if (!viewState) { // viewState is undefined when view is not initialized yet.
     return [];
   }
@@ -452,7 +446,7 @@ export const viewOperations = ({
   ) || [];
 
   return modelOps.
-    filter(({ name }) => Object.keys(standardHandlers).indexOf(name) === -1).
+    filter(({ hidden }) => !hidden).
     reduce(
       (rez, { name, handler, ...rest }) => [
         ...rez,
@@ -473,18 +467,27 @@ export const viewOperations = ({
           []
         )
       ],
-      Object.keys(standardHandlers).reduce(
-        (rez, name) => [
-          ...rez,
-          {
-            name,
-            handler: _ => standardHandlers[name]({ instance, ...restArgs }),
-            // possibly augment standard operations with values provided via model
-            ...(modelOps.find(({ name: modelOpName }) => name === modelOpName) || {})
-          }
-        ],
-        []
-      )
-    ).
-    filter(({ hidden }) => !hidden)
+      []
+    )
 }
+
+export const standardOperations = ({
+  handlers,
+  config = {}
+}) => (...args) => Object.keys(handlers).
+  filter(name => !(config[name] || {}).hidden).
+  reduce(
+    (rez, name) => {
+      const { hidden, ...rest } = (config[name] || {});
+
+      return [
+        ...rez,
+        {
+          ...(rest || {}),
+          name,
+          handler: _ => handlers[name](...args),
+        }
+      ]
+    },
+    []
+  )

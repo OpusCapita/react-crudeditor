@@ -9,11 +9,15 @@ import {
   selectTab,
   showAdjacentInstance
 } from './actions';
-import { viewOperations } from '../lib';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 import { VIEW_NAME } from './constants';
 import {
   VIEW_SEARCH,
-  OPERATION_CANCEL
+  OPERATION_CANCEL,
+  OPERATION_HOME
 } from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
 
@@ -22,8 +26,9 @@ const mergeProps = (
     viewModelData,
     flags,
     viewState,
-    operations,
+    customOpsConfig,
     externalOperations,
+    standardOpsConfig,
     uiConfig
   },
   {
@@ -62,16 +67,20 @@ const mergeProps = (
         return result
       })(dispatchProps, flags),
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
-        softRedirectView,
-        standardHandlers: {
-          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH })
-        }
+        operations: customOpsConfig,
+        softRedirectView
       }),
-      external: externalOperations
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH })
+        },
+        config: standardOpsConfig
+      })
     },
     uiConfig
   },
@@ -84,7 +93,8 @@ export default connect(
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
+    standardOpsConfig: modelDefinition.ui.show.standardOperations,
     externalOperations,
     uiConfig
   }), {

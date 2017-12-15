@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
-import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
+import { VIEW_CREATE, OPERATION_HOME } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
 import {
@@ -49,26 +49,31 @@ export default class EditHeading extends PureComponent {
           viewName,
           permissions: {
             crudOperations: permissions
-          }
+          },
+          persistentInstance
         },
         actions: {
           selectTab,
-          exitView, // TODO replace with 'cancel' operation
           gotoNextInstance,
           gotoPrevInstance
         },
         uiConfig: {
           headerLevel = 1
+        },
+        operations: {
+          standard
         }
       }
     } = this.props;
 
     const { i18n } = this.context;
 
-    const title = permissions.view ?
+    const homeOperation = standard({ instance: persistentInstance }).find(({ name }) => name === OPERATION_HOME);
+
+    const title = permissions.view && homeOperation && !homeOperation.disabled ?
       (
         <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
-          <a style={{ cursor: 'pointer' }} onClick={exitView}>
+          <a style={{ cursor: 'pointer' }} onClick={homeOperation.handler}>
             {getModelMessage(i18n, 'model.name')}
           </a>
         </ConfirmUnsavedChanges>

@@ -16,7 +16,8 @@ import {
   OPERATION_SAVEANDNEW,
   OPERATION_SAVEANDNEXT,
   OPERATION_SHOW,
-  OPERATION_CANCEL
+  OPERATION_CANCEL,
+  STANDARD_OPERATIONS
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -28,16 +29,6 @@ import {
   Glyphicon
 } from 'react-bootstrap';
 
-const standardOperations = [
-  OPERATION_DELETE,
-  OPERATION_EDIT,
-  OPERATION_SAVE,
-  OPERATION_SAVEANDNEW,
-  OPERATION_SAVEANDNEXT,
-  OPERATION_SHOW,
-  OPERATION_CANCEL
-]
-
 export default class EditTab extends React.PureComponent {
   static propTypes = {
     model: PropTypes.shape({
@@ -46,9 +37,8 @@ export default class EditTab extends React.PureComponent {
         persistentInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
-      actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internal: PropTypes.func.isRequired,
+        custom: PropTypes.func.isRequired,
         external: PropTypes.arrayOf(PropTypes.shape({
           title: PropTypes.string,
           icon: PropTypes.string,
@@ -104,8 +94,9 @@ export default class EditTab extends React.PureComponent {
           }
         },
         operations: {
-          internal,
-          external: externalOperations
+          custom,
+          external: externalOperations,
+          standard
         }
       },
       fieldErrors,
@@ -118,19 +109,20 @@ export default class EditTab extends React.PureComponent {
 
     const buttons = [];
 
-    const internalOperations = internal({ instance: persistentInstance });
+    const customOperations = custom({ instance: persistentInstance });
+    const standardOperations = standard({ instance: persistentInstance });
 
-    const cancelOperation = internalOperations.find(({ name }) => name === OPERATION_CANCEL);
+    const cancelOperation = standardOperations.find(({ name }) => name === OPERATION_CANCEL);
 
     if (permissions.view && cancelOperation) {
       const { handler, disabled } = cancelOperation;
-      
+
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
           <Button
             bsStyle='link'
             onClick={handler}
-            {...(disabled ? 'disabled' : null)}
+            disabled={!!disabled}
           >
             {i18n.getMessage('crudEditor.cancel.button')}
           </Button>
@@ -139,8 +131,7 @@ export default class EditTab extends React.PureComponent {
     }
 
     buttons.push(
-      ...internalOperations.
-      filter(({ name }) => standardOperations.indexOf(name) === -1).
+      ...customOperations.
       map(({ name, icon, handler, disabled }, index) => (
         <ConfirmUnsavedChanges
           key={`internal-operation-${index}`}
@@ -148,7 +139,7 @@ export default class EditTab extends React.PureComponent {
         >
           <Button
             onClick={handler}
-            {...(disabled ? { disabled } : null)}
+            disabled={!!disabled}
           >
             {icon && <Glyphicon glyph={icon} />}
             {icon && ' '}
@@ -159,7 +150,7 @@ export default class EditTab extends React.PureComponent {
     );
 
     buttons.push(
-      externalOperations.map(({ title, icon, handler }, index) => (
+      ...externalOperations.map(({ title, icon, handler }, index) => (
         <Button
           onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
@@ -171,7 +162,7 @@ export default class EditTab extends React.PureComponent {
       ))
     )
 
-    const deleteOperation = internalOperations.find(({ name }) => name === OPERATION_DELETE);
+    const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
 
     if (viewName === VIEW_EDIT && permissions.delete && deleteOperation) {
       const { handler, disabled } = deleteOperation;
@@ -185,7 +176,7 @@ export default class EditTab extends React.PureComponent {
         >
           <Button
             onClick={handler}
-            {...(disabled ? 'disabled' : null)}
+            disabled={!!disabled}
           >
             {i18n.getMessage('crudEditor.delete.button')}
           </Button>
@@ -193,7 +184,7 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    const saveAndNewOperation = internalOperations.find(({ name }) => name === OPERATION_SAVEANDNEW);
+    const saveAndNewOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEW);
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create && saveAndNewOperation) {
       const { handler, disabled } = saveAndNewOperation;
@@ -208,14 +199,14 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    const saveAndNextOperation = internalOperations.find(({ name }) => name === OPERATION_SAVEANDNEXT);
+    const saveAndNextOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEXT);
 
     if (viewName === VIEW_EDIT && saveAndNextOperation) {
       const { handler, disabled } = saveAndNextOperation;
 
       buttons.push(
         <Button
-          onClick={handler}
+          onClick={handler} // TODO toggle errors
           disabled={disableSave || disabled}
           key="Save and Next"
         >
@@ -223,7 +214,7 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    const saveOperation = internalOperations.find(({ name }) => name === OPERATION_SAVE);
+    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && saveOperation) {
       const { disabled } = saveOperation;

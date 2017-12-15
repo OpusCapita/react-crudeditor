@@ -145,7 +145,10 @@ export default (modelDefinition, i18n) => (
 
     newStoreStateSlice.formattedInstance = u.constant(formattedInstance);
 
-    newStoreStateSlice.activeTab = u.constant(formLayout.filter(({ tab }) => !!tab)[0]);
+    newStoreStateSlice.activeTab = u.constant(
+      getTab(formLayout)
+    );
+
     newStoreStateSlice.instanceLabel = modelDefinition.ui.instanceLabel(formInstance);
 
     newStoreStateSlice.errors = u.constant({
@@ -183,8 +186,10 @@ export default (modelDefinition, i18n) => (
 
   } else if (type === TAB_SELECT) {
     const { tabName } = payload; // may be not specified (i.e. falsy).
-    const activeTab = getTab(storeState, tabName);
-    newStoreStateSlice.activeTab = activeTab;
+
+    newStoreStateSlice.activeTab = u.constant(
+      getTab(storeState.formLayout, tabName)
+    );
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 

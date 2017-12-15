@@ -756,6 +756,18 @@ Model Definition is an object describing an entity. It has the following structu
     }) {
       ...
       return [{
+
+        /*
+         * Operation ID used to set correct translation for the button title.
+         * The following IDs are reserved for internal operations:
+         *   - "edit",
+         *   - "show",
+         *   - "delete",
+         *   - "save",
+         *   - "saveAndNext",
+         *   - "saveAndNew".
+         * If the name is internal operation name,
+         * the corresponding internal operation is modified or overwritten.
         name: <string, operation ID>,
 
         /*
@@ -765,7 +777,16 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?icon: <string>,
 
-        handler() {
+        ?hidden: <boolean, false by default>,
+        ?disabled: <boolean, false by default>,
+
+        /*
+         * The handler is optional when modifying internal operation,
+         * and mandatory otherwise (the button is not displayed if there is no handler).
+         * If absent when modifying internal operation,
+         * default internal operation handler is preserved.
+         */
+        ?handler() {
           ...
           // return value is either undefined or view name/state.
           return {

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
@@ -95,7 +95,7 @@ export default baseModelDefinition => {
   let onTransition = null;
   let lastState = {};
 
-  class CrudWrapper extends PureComponent {
+  class CrudWrapper extends Component {
     static propTypes = {
       view: PropTypes.shape({
         name: PropTypes.string,

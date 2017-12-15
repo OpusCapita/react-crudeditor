@@ -380,17 +380,11 @@ export default {
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', component: DateRangeCellRender }],
 
-      // standardOperations: {
-      //   'delete': {
-      //     // hidden: true,
-      //     // disabled: true,
-      //     // hideIcon: true,
-      //     icon: 'fire'
-      //   },
-      //   'edit': {
-      //     // hidden: true
-      //   }
-      // }
+      standardOperations: {
+        'edit': {
+          hideIcon: true
+        }
+      }
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {

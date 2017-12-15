@@ -86,8 +86,8 @@ export default class SearchResultButtons extends PureComponent {
           onClick={handler}
           {...(disabled ? { disabled } : null)}
         >
-          {icon && <Glyphicon glyph={icon} />}
-          {icon && ' '}
+          {icon && !hideIcon && <Glyphicon glyph={icon} />}
+          {icon && !hideIcon && ' '}
           {title}
         </Button>
         <Dropdown.Toggle/>

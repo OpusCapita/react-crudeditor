@@ -13,18 +13,18 @@ import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
 import {
+  storeState2appState,
+  fillDefaults,
+  getPrefixedTranslations
+} from './lib';
+
+import {
   DEFAULT_VIEW,
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SEARCH,
   VIEW_SHOW
 } from './common/constants';
-
-import {
-  storeState2appState,
-  fillDefaults,
-  getPrefixedTranslations
-} from './lib';
 
 import {
   FIELD_TYPE_BOOLEAN,
@@ -121,8 +121,6 @@ export default baseModelDefinition => {
     }
 
     static defaultProps = {
-      locale: 'en',
-      fallbackLocale: 'en',
       externalOperations: [],
       uiConfig: {}
     };

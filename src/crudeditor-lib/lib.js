@@ -103,16 +103,19 @@ const checkPropTypes = modelDefinition => {
       instanceLabel: PropTypes.func,
       create: PropTypes.shape({
         defaultNewInstance: PropTypes.func,
-        formLayout: PropTypes.func
+        formLayout: PropTypes.func,
+        standardOperations: PropTypes.object
       }),
       edit: PropTypes.shape({
-        formLayout: PropTypes.func
+        formLayout: PropTypes.func,
+        standardOperations: PropTypes.object
       }),
       show: PropTypes.shape({
-        formLayout: PropTypes.func
+        formLayout: PropTypes.func,
+        standardOperations: PropTypes.object
       }),
       customViews: PropTypes.objectOf(PropTypes.func),
-      operations: PropTypes.func
+      customOperations: PropTypes.func
     })
   };
 
@@ -190,8 +193,8 @@ export function fillDefaults(baseModelDefinition) {
     }
   });
 
-  if (!modelDefinition.ui.operations) {
-    modelDefinition.ui.operations = _ => [];
+  if (!modelDefinition.ui.customOperations) {
+    modelDefinition.ui.customOperations = _ => [];
   }
 
   const getUi = {

@@ -25,7 +25,14 @@ module.exports = {
         options: {
           babelrc: false,
           presets: [
-            ["env", { "modules": false }],
+            ["env",
+              {
+                "modules": false,
+                "targets": {
+                  "browsers": ["last 2 versions", "ie >= 11", "safari >= 7", "Firefox ESR"]
+                }
+              }
+            ],
             "react"
           ],
           plugins: [

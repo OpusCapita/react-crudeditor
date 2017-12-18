@@ -51,10 +51,8 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
       ...props,
       value: this.me && (
         this.me === document.activeElement ||
-        (
           this.me.hasChildNodes() &&
           Array.prototype.some.call(this.me.children, el => el === document.activeElement)
-        )
       ) ?
         this.state.value :
         this.props.value,

@@ -206,6 +206,8 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
+    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
+
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && saveOperation) {
       buttons.push(
         <Button
@@ -217,8 +219,6 @@ export default class EditTab extends React.PureComponent {
           {i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }
-
-    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit((saveOperation || {}).handler)}>

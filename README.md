@@ -22,8 +22,8 @@
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
     * [FieldInputComponent](#fieldinputcomponent)
-      * [Built-in components](#built-in-components)
-      * [Default FieldInput components](#default-fieldinput-components)
+      * [Embedded FieldInputComponents](#embedded-fieldinputcomponents)
+      * [Default FieldInputComponents](#default-fieldinputcomponents)
     * [FieldRenderComponent](#fieldrendercomponent)
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
@@ -95,7 +95,7 @@
   <dd>
     Field classification, "string" by default. There are <a href="#default-fieldinput-components">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    There are <a href="#built-in-components">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
@@ -817,9 +817,9 @@ value | serializable | mandatory | - | [Persistent field](#persistent-field) val
 onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
-### Built-in components
+### Embedded FieldInputComponents
 
-There are two embedded FieldInputComponents:
+In CRUD Editor here are two embedded FieldInputComponents:
 
 FieldInputComponent | id
 ---|---
@@ -859,9 +859,7 @@ props.type | Description | UI Type | Auto-convertable field types
 
 ### Default FieldInputComponents
 
-Field types and corresponding [built-in components](#built-in-components).
-
-If you define just a [Field Type](#field-type) in [Model Definition](#model-definition)'s **model.fields.\<field name\>.type** (and omit any custom render in **searchableFields** and **formLayout**), the following components will be default for your fields:
+If you define just a [Field Type](#field-type) in [Model Definition](#model-definition)'s **model.fields.\<field name\>.type** (and omit any custom render in **searchableFields** and **formLayout**), the following components will be default for the fields:
 
 #### Common mappings for all Views
 

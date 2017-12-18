@@ -59,7 +59,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
         >
           <Button
             bsSize='sm'
-            disabled={selectedInstances.length === 0 || disabled}
+            disabled={disabled}
             onClick={handler}
           >
             {i18n.getMessage('crudEditor.deleteSelected.button')}

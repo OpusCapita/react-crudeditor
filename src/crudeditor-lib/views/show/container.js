@@ -63,15 +63,13 @@ const mergeProps = (
           [OPERATION_NEXT]: _ => showAdjacentInstance('next')
         },
         config: {
-          ...standardOpsConfig,
-          'prev': {
-            ...(standardOpsConfig.prev || {}),
-            disabled: !prevInstanceExists ? true : !!(standardOpsConfig.prev || {}).disabled
-          },
-          'next': {
-            ...(standardOpsConfig.next || {}),
-            disabled: !nextInstanceExists ? true : !!(standardOpsConfig.next || {}).disabled
-          }
+          ...(standardOperations || {}),
+          prev: _ => ({
+            disabled: !prevInstanceExists
+          }),
+          next: _ => ({
+            disabled: !nextInstanceExists
+          })
         }
       })
     },
@@ -87,7 +85,7 @@ export default connect(
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     customOpsConfig: modelDefinition.ui.customOperations,
-    standardOpsConfig: modelDefinition.ui.show.standardOperations || {},
+    standardOpsConfig: modelDefinition.ui.show.standardOperations,
     externalOperations,
     uiConfig
   }), {

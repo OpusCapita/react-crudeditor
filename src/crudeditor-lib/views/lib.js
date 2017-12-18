@@ -16,7 +16,9 @@ import {
   VIEW_SHOW,
 
   OPERATION_DELETE,
-  OPERATION_DELETE_SELECTED
+  OPERATION_DELETE_SELECTED,
+  OPERATION_NEXT,
+  OPERATION_PREV
 } from '../common/constants';
 
 import {
@@ -480,8 +482,8 @@ export const standardOperations = ({
 }) => ({ instance, ...moreProps } = {}) => Object.keys(handlers).
   reduce(
     (rez, name) => {
-      // for now we manually suppress any customization other than 'delete' button
-      const customConfig = name === OPERATION_DELETE ?
+      // for now we manually suppress any other operations
+      const customConfig = [OPERATION_DELETE, OPERATION_NEXT, OPERATION_PREV].indexOf(name) > -1 ?
         config[name] :
         null;
 
@@ -494,9 +496,10 @@ export const standardOperations = ({
         const { instances } = moreProps;
 
         if (Array.isArray(instances)) {
-          customProps.disabled = instances.some(instance => config[OPERATION_DELETE] &&
-            config[OPERATION_DELETE] instanceof Function &&
-            !!(config[OPERATION_DELETE]({ instance }) || {}).disabled
+          customProps.disabled = instances.length === 0 || instances.some(
+            instance => config[OPERATION_DELETE] &&
+              config[OPERATION_DELETE] instanceof Function &&
+              !!(config[OPERATION_DELETE]({ instance }) || {}).disabled
           )
         }
       }

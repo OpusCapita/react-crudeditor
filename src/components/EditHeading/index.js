@@ -75,7 +75,7 @@ export default class EditHeading extends PureComponent {
 
     const homeOperation = standardOperations.find(({ name }) => name === OPERATION_HOME);
 
-    const title = permissions.view && homeOperation && !homeOperation.disabled ?
+    const title = permissions.view && homeOperation ?
       (
         <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
           <a style={{ cursor: 'pointer' }} onClick={homeOperation.handler}>
@@ -96,7 +96,7 @@ export default class EditHeading extends PureComponent {
       arrows.push(
         <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
           <Button
-            disabled={!!disabled}
+            disabled={disabled}
             onClick={handler}
           >
             <Glyphicon glyph="arrow-left"/>

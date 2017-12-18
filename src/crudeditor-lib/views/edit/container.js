@@ -93,15 +93,13 @@ const mergeProps = (
           )
         },
         config: {
-          ...standardOpsConfig,
-          'prev': {
-            ...(standardOpsConfig.prev || {}),
-            disabled: !prevInstanceExists ? true : !!(standardOpsConfig.prev || {}).disabled
-          },
-          'next': {
-            ...(standardOpsConfig.next || {}),
-            disabled: !nextInstanceExists ? true : !!(standardOpsConfig.next || {}).disabled
-          }
+          ...(standardOperations || {}),
+          prev: _ => ({
+            disabled: !prevInstanceExists
+          }),
+          next: _ => ({
+            disabled: !nextInstanceExists
+          })
         }
       })
     },
@@ -117,7 +115,7 @@ export default connect(
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
     customOpsConfig: modelDefinition.ui.customOperations,
-    standardOpsConfig: modelDefinition.ui.edit.standardOperations || {},
+    standardOpsConfig: modelDefinition.ui.edit.standardOperations,
     externalOperations,
     uiConfig
   }), {

@@ -18,7 +18,13 @@ const ShowMain = (props) => {
 };
 
 ShowMain.propTypes = {
-  model: PropTypes.object.isRequired
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      activeTab: PropTypes.array.isRequired,
+      viewName: PropTypes.string.isRequired,
+      persistentInstance: PropTypes.object.isRequired
+    }).isRequired
+  })
 }
 
 export default WithSpinner(ShowMain);

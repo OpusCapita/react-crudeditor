@@ -11,11 +11,11 @@ class SearchForm extends React.Component {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
-        formFilter: PropTypes.object,
-        formattedFilter: PropTypes.object,
-        searchableFields: PropTypes.array,
-        resultFilter: PropTypes.object
-      }),
+        formFilter: PropTypes.object.isRequired,
+        formattedFilter: PropTypes.object.isRequired,
+        searchableFields: PropTypes.arrayOf(PropTypes.object),
+        resultFilter: PropTypes.object.isRequired
+      }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired,
     toggledFieldErrors: PropTypes.object.isRequired,

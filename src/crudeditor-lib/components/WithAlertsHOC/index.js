@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import ReactDOM, { findDOMNode } from 'react-dom'
 import PropTypes from 'prop-types';
 
 import { NotificationContainer, NotificationManager } from 'react-notifications';
@@ -18,23 +19,32 @@ const withAlerts = WrappedComponent => {
       i18n: PropTypes.object
     };
 
+    componentDidMount() {
+      this.me = findDOMNode(this);
+      this.notificationsContainer = document.createElement('div');
+      this.me.parentElement.appendChild(this.notificationsContainer);
+      ReactDOM.render(<NotificationContainer/>, this.notificationsContainer);
+    }
+
     componentWillUnmount() {
-      [NOTIFICATION_SUCCESS,
+      [
+        NOTIFICATION_SUCCESS,
         NOTIFICATION_ERROR,
         NOTIFICATION_VALIDATION_WARNING,
         NOTIFICATION_VALIDATION_ERROR
-      ].forEach(id => NotificationManager.remove({ id }))
+      ].forEach(id => NotificationManager.remove({ id }));
+
+      ReactDOM.unmountComponentAtNode(this.notificationsContainer);
+      this.me.parentElement.removeChild(this.notificationsContainer);
     }
 
     render() {
       const { children, ...props } = this.props;
 
-      return (<div>
+      return (
         <WrappedComponent {...props}>
           {children}
         </WrappedComponent>
-        <NotificationContainer/>
-      </div>
       );
     }
   }

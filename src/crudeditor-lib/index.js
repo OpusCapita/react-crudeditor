@@ -121,8 +121,6 @@ export default baseModelDefinition => {
     }
 
     static defaultProps = {
-      locale: 'en',
-      fallbackLocale: 'en',
       externalOperations: [],
       uiConfig: {}
     };

@@ -9,6 +9,8 @@ const DEFAULT_COLUMNS_COUNT = 1;
 const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   let uniqueKey = 1;
 
+  console.log({model})
+
   const buildRow = (fields, columnsCnt) => (
     <Row key={'row-' + ++uniqueKey}>
       {
@@ -83,7 +85,30 @@ const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
 }
 
 formGrid.propTypes = {
-  model: PropTypes.object,
+  model: PropTypes.shape({
+    data: PropTypes.shape({
+      activeEntries: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.shape({
+          field: PropTypes.string,
+          readOnly: PropTypes.bool,
+          validate: PropTypes.func,
+          render: PropTypes.shape({
+            component: PropTypes.func,
+            props: PropTypes.object,
+            valueProp: PropTypes.shape({
+              type: PropTypes.string,
+              name: PropTypes.string,
+              converter: PropTypes.shape({
+                format: PropTypes.func,
+                parse: PropTypes.func
+              })
+            })
+          })
+        }),
+        PropTypes.array
+      ]))
+    })
+  }),
   toggledFieldErrors: PropTypes.object,
   toggleFieldErrors: PropTypes.func
 }

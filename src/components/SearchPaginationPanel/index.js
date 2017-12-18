@@ -12,7 +12,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
           max: PropTypes.number
         }),
         totalCount: PropTypes.number
-      }),
+      }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
   }

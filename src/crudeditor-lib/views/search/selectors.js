@@ -75,7 +75,7 @@ export const
     permissions
   }) => ({
     permissions,
-    Spinner: uiMeta.Spinner,
+    spinner: uiMeta.spinner,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,

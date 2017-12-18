@@ -25,11 +25,11 @@ export const
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
-    ui: { Spinner },
+    ui: { spinner },
     permissions
   }) => ({
     permissions,
-    Spinner,
+    spinner,
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,

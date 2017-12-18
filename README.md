@@ -28,10 +28,10 @@
     * [TabFormComponent](#tabformcomponent)
     * [ViewComponent](#viewcomponent)
     * [doTransition](#dotransition)
-    * [I18n for model definition](#i18n-for-model-definition)
+    * [i18n Translations](#i18n-translations)
 - [Redux Store](#redux-store)
     * [State Structure](#state-structure)
-    * [Parsing Error and Field/Instance Validation Error](#parsing-error-and-fieldinstance-validaton-error)
+    * [Parsing Error and Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error)
     * [Internal Error](#internal-error)
 - [*model* Property](#model-property)
     * [Search View *model* Property](#search-view-model-property)
@@ -388,7 +388,9 @@ Model Definition is an object describing an entity. It has the following structu
       throw [<Instance Validation Error>, ...];
       ...
       return true;
-    }
+    },
+
+    translations: <object, i18n translations> // See "i18n tranlations" section.
   },
 
   permissions: {
@@ -947,17 +949,21 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsvi
 
 If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial View rendering).
 
-### I18n for model definition
+### i18n Tranlations
 
-Actual texts for model name (shown in the header) and field/section/tab labels are defined in [Model Definition](#model-definition)'s **model.translations**. The shape of **model.translations** object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library.
+[Model Definition](#model-definition)'s **model.translations** object defines translations for:
 
-Message keys convention: 
+* model name (shown in the header),
+* field/section/tab labels,
+* Custom [Field/Instance Validation Errors](#parsing-error-and-fieldinstance-validation-error).
+
+The shape of **model.translations** object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library. Message keys convention:
 
 1. Model name is defined by `model.name` key.
-1. Model tabs labels are defined by keys with the following pattern: `model.tab.TAB_NAME`.
-1. Model sections labels are defined by keys with the following pattern: `model.section.SECTION_NAME`.
-1. Model fields labels are defined by keys with the following pattern: `model.field.FIELD_NAME`.
-1. Messages for custom field validation errors are defined by keys with the following pattern: `model.field.FIELD_NAME.error.ERROR_ID`.
+2. Model tabs labels are defined by keys with the following pattern: `model.tab.TAB_NAME`.
+3. Model sections labels are defined by keys with the following pattern: `model.section.SECTION_NAME`.
+4. Model fields labels are defined by keys with the following pattern: `model.field.FIELD_NAME`.
+5. Messages for custom field validation errors are defined by keys with the following pattern: `model.field.FIELD_NAME.error.ERROR_ID`.
 
 If no translation is defined for some field/section/tab, the corresponding label is obtained by converting camelcase id/name to titlecase message. For example, `maxOrderValue` is displayed as `Max Order Value`.
 
@@ -1162,11 +1168,8 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
 ```javascript
 {
   code: 400,
-  // define translations for errors using this pattern for message key:
-  // model.field.FIELD_NAME.error.ERROR_ID, where ERROR_ID is `id` defined below
   id: <string, error id used by translation service>,
-  // default error message in case translations are not defined
-  ?message: <string, default error message in English>,
+  ?message: <string, default error message in English - in case translations are not defined>,
   ?payload: <object, optional parameters for i18n service>
 }
 ```

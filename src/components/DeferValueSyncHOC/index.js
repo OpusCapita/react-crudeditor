@@ -49,7 +49,13 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
 
     const newProps = {
       ...props,
-      value: this.me === document.activeElement ?
+      value: this.me && (
+        this.me === document.activeElement ||
+        (
+          this.me.hasChildNodes() &&
+          Array.prototype.some.call(this.me.children, el => el === document.activeElement)
+        )
+      ) ?
         this.state.value :
         this.props.value,
       ...(onChange ? { onChange: this.handleChange } : null),

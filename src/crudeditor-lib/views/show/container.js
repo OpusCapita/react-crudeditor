@@ -64,10 +64,10 @@ const mergeProps = (
         },
         config: {
           ...(standardOperations || {}),
-          prev: _ => ({
+          [OPERATION_PREV]: _ => ({
             disabled: !prevInstanceExists
           }),
-          next: _ => ({
+          [OPERATION_NEXT]: _ => ({
             disabled: !nextInstanceExists
           })
         }

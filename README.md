@@ -949,7 +949,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 
 ### I18n for model definition
 
-Actual texts for model name (shown in the header) and field labels as well as section or tab labels, are defined as an object in `translations` prop of model definition object. The shape of translations object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library.
+Actual texts for model name (shown in the header) and field/section/tab labels are defined in [Model Definition](#model-definition)'s **model.translations**. The shape of **model.translations** object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library.
 
 Message keys convention: 
 
@@ -959,9 +959,9 @@ Message keys convention:
 1. Model fields labels are defined by keys with the following pattern: `model.field.FIELD_NAME`.
 1. Messages for custom field validation errors are defined by keys with the following pattern: `model.field.FIELD_NAME.error.ERROR_ID`.
 
-If no translation is defined in model definition for some field/section/tab, the corresponding label is obtained by convertion from camelcase id/name to titlecase message. For example, `maxOrderValue` is displayed as `Max Order Value`.
+If no translation is defined for some field/section/tab, the corresponding label is obtained by converting camelcase id/name to titlecase message. For example, `maxOrderValue` is displayed as `Max Order Value`.
 
-Crud editor requires `i18n` prop in context with [I18nManager](https://github.com/OpusCapita/i18n) as a value.
+[React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 
 ## Redux Store
 

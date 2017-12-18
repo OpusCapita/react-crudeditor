@@ -1,4 +1,4 @@
-import 'babel-polyfill'
+import 'core-js/es6/promise';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppRouter from './routes';

@@ -77,7 +77,7 @@ const mergeProps = (
       external: externalOperations,
       standard: standardOperations({
         handlers: {
-          [OPERATION_DELETE]: ({ instance }) => deleteInstances([instance]),
+          [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
           [OPERATION_SAVE]: saveInstance,
           [OPERATION_SAVEANDNEW]: saveAndNewInstance,
           [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),

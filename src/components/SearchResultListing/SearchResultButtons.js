@@ -64,7 +64,7 @@ export default class SearchResultButtons extends PureComponent {
       return null;
     }
 
-    const { icon, handler, title, uid, disabled, hideIcon } = operations[0];
+    const { icon, handler, title, uid, disabled } = operations[0];
 
     if (operations.length === 1) {
       return (
@@ -73,8 +73,8 @@ export default class SearchResultButtons extends PureComponent {
           key={uid}
           {...(disabled ? { disabled } : null)}
         >
-          {icon && !hideIcon && <Glyphicon glyph={icon} />}
-          {icon && !hideIcon && ' '}
+          {icon && <Glyphicon glyph={icon} />}
+          {icon && ' '}
           {title}
         </Button>
       );
@@ -86,14 +86,14 @@ export default class SearchResultButtons extends PureComponent {
           onClick={handler}
           {...(disabled ? { disabled } : null)}
         >
-          {icon && !hideIcon && <Glyphicon glyph={icon} />}
-          {icon && !hideIcon && ' '}
+          {icon && <Glyphicon glyph={icon} />}
+          {icon && ' '}
           {title}
         </Button>
         <Dropdown.Toggle/>
         <Dropdown.Menu>
           {
-            operations.slice(1).map(({ icon, handler, title, uid, disabled, hideIcon }, index) => (
+            operations.slice(1).map(({ icon, handler, title, uid, disabled }, index) => (
               <MenuItem
                 key={index}
                 eventKey={index}
@@ -101,8 +101,8 @@ export default class SearchResultButtons extends PureComponent {
                 {...(disabled ? { disabled } : null)}
               >
                 <span className="btn-sm text-left">
-                  {icon && !hideIcon && <Glyphicon glyph={icon}/>}
-                  {icon && !hideIcon && '\u00A0\u00A0'}
+                  {icon && <Glyphicon glyph={icon}/>}
+                  {icon && '\u00A0\u00A0'}
                   {title}
                 </span>
               </MenuItem>

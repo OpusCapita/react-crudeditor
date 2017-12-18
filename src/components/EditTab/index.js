@@ -112,16 +112,15 @@ export default class EditTab extends React.PureComponent {
     const cancelOperation = standardOperations.find(({ name }) => name === OPERATION_CANCEL);
 
     if (permissions.view && cancelOperation) {
-      const { handler, disabled, title } = cancelOperation;
+      const { handler } = cancelOperation;
 
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
           <Button
             bsStyle='link'
             onClick={handler}
-            disabled={!!disabled}
           >
-            {title || i18n.getMessage('crudEditor.cancel.button')}
+            {i18n.getMessage('crudEditor.cancel.button')}
           </Button>
         </ConfirmUnsavedChanges>
       )
@@ -158,7 +157,7 @@ export default class EditTab extends React.PureComponent {
     const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
 
     if (viewName === VIEW_EDIT && permissions.delete && deleteOperation) {
-      const { handler, disabled, title } = deleteOperation;
+      const { handler, disabled } = deleteOperation;
 
       buttons.push(
         <ConfirmDialog
@@ -171,7 +170,7 @@ export default class EditTab extends React.PureComponent {
             onClick={handler}
             disabled={!!disabled}
           >
-            {title || i18n.getMessage('crudEditor.delete.button')}
+            {i18n.getMessage('crudEditor.delete.button')}
           </Button>
         </ConfirmDialog>
       )
@@ -180,48 +179,46 @@ export default class EditTab extends React.PureComponent {
     const saveAndNewOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEW);
 
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create && saveAndNewOperation) {
-      const { handler, disabled, title } = saveAndNewOperation;
+      const { handler } = saveAndNewOperation;
 
       buttons.push(
         <Button
           onClick={this.handleSaveAndNew(handler)}
-          disabled={disableSave || disabled}
+          disabled={disableSave}
           key="Save and New"
         >
-          {title || i18n.getMessage('crudEditor.saveAndNew.button')}
+          {i18n.getMessage('crudEditor.saveAndNew.button')}
         </Button>)
     }
 
     const saveAndNextOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEXT);
 
     if (viewName === VIEW_EDIT && saveAndNextOperation) {
-      const { handler, disabled, title } = saveAndNextOperation;
+      const { handler } = saveAndNextOperation;
 
       buttons.push(
         <Button
           onClick={this.handleSaveAndNext(handler)}
-          disabled={disableSave || disabled}
+          disabled={disableSave}
           key="Save and Next"
         >
-          {title || i18n.getMessage('crudEditor.saveAndNext.button')}
+          {i18n.getMessage('crudEditor.saveAndNext.button')}
         </Button>)
     }
 
-    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
-
     if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && saveOperation) {
-      const { disabled, title } = saveOperation;
-
       buttons.push(
         <Button
-          disabled={disableSave || disabled}
+          disabled={disableSave}
           bsStyle='primary'
           type='submit'
           key="Save"
         >
-          {title || i18n.getMessage('crudEditor.save.button')}
+          {i18n.getMessage('crudEditor.save.button')}
         </Button>)
     }
+
+    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit((saveOperation || {}).handler)}>

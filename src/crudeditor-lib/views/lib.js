@@ -13,7 +13,10 @@ import {
 import {
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+
+  OPERATION_DELETE,
+  OPERATION_DELETE_SELECTED
 } from '../common/constants';
 
 import {
@@ -474,18 +477,36 @@ export const customOperations = ({
 export const standardOperations = ({
   handlers,
   config = {}
-}) => (...args) => Object.keys(handlers).
-  filter(name => !(config[name] || {}).hidden).
+}) => ({ instance, ...moreProps } = {}) => Object.keys(handlers).
   reduce(
     (rez, name) => {
-      const { hidden, ...rest } = (config[name] || {}); // eslint-disable-line no-unused-vars
+      // for now we manually suppress any customization other than 'delete' button
+      const customConfig = name === OPERATION_DELETE ?
+        config[name] :
+        null;
+
+      const customProps = customConfig && customConfig instanceof Function ?
+        customConfig({ instance }) :
+        {};
+
+      // disable 'deleteSelected' if some selected items have 'delete' disabled by custom logic
+      if (name === OPERATION_DELETE_SELECTED) {
+        const { instances } = moreProps;
+
+        if (Array.isArray(instances)) {
+          customProps.disabled = instances.some(instance => config[OPERATION_DELETE] &&
+            config[OPERATION_DELETE] instanceof Function &&
+            !!(config[OPERATION_DELETE]({ instance }) || {}).disabled
+          )
+        }
+      }
 
       return [
         ...rez,
         {
-          ...rest,
+          ...customProps,
           name,
-          handler: _ => handlers[name](...args)
+          handler: _ => handlers[name]({ instance, ...moreProps })
         }
       ]
     },

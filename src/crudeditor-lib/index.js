@@ -23,7 +23,9 @@ import {
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SEARCH,
-  VIEW_SHOW
+  VIEW_SHOW,
+
+  OPERATION_DELETE
 } from './common/constants';
 
 import {
@@ -60,6 +62,8 @@ export {
   VIEW_EDIT,
   VIEW_SEARCH,
   VIEW_SHOW,
+
+  OPERATION_DELETE,
 
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_DECIMAL,

@@ -344,7 +344,7 @@ Model Definition is an object describing an entity. It has the following structu
          */
         ?unique: <boolean, whether the field is a part of Logical Key, false by default>,
 
-        ?type: <string, field type (see corresponding "Terminology" section)>,  // TODO more types and their constraints.
+        ?type: <string, field type (see corresponding "Terminology" section)>,
 
         /*
          * Constraints for field validation.
@@ -511,11 +511,11 @@ Model Definition is an object describing an entity. It has the following structu
            *
            * Default "render" property for a fild of standard Field Type:
            * {
-           *   component: <string, id of default component for displaying the Field Type>,
+           *   component: <string, id of default FieldInputComponent for displaying the Field Type>,
            *
            *   valueProp: {
            *     name: "value",
-           *     type: <string, UI Type peculiar to the default React Component>
+           *     type: <string, UI Type peculiar to the default FieldInputComponent>
            *   }
            * }
            */
@@ -523,19 +523,19 @@ Model Definition is an object describing an entity. It has the following structu
 
             /*
              * Either custom FieldInputComponent (see corresponding subheading)
-             * or id with embedded React Component name.
+             * or id of embedded FieldInputComponent.
              */
             component: <FieldInputComponent|string>,
 
             ?props: <object, the component props to overwrite defaults>,
             ?valueProp: {
-              ?name: <string, a name of Component prop with field value>,
+              ?name: <string, a name of component prop with field value>,
 
               /*
-               * Redundant for an embedded React Component,
+               * Redundant for an embedded FieldInputComponent,
                * because UI Type it works with is already known to CRUD Editor.
                *
-               * When omitted for FieldInputComponent, UI Type is considered to be unknown.
+               * When omitted for custom FieldInputComponent, UI Type is considered to be unknown.
                * In such a case:
                * 1. either define converter,
                * 2. or unconverted (i.e. of Field Type) field value is sent to FieldInputComponent and
@@ -549,8 +549,8 @@ Model Definition is an object describing an entity. It has the following structu
                * Custom converter which overwrites default converter, if any.
                *
                * There is a default converter when Field Type is known to CRUID Editor and
-               * 1. component is embedded React Component, or
-               * 2. component is FieldInputComponent and "type" with UI Type is specified.
+               * 1. component is embedded FieldInputComponent, or
+               * 2. component is custom FieldInputComponent and "type" with UI Type is specified.
                */
               ?converter: {
 
@@ -650,7 +650,7 @@ Model Definition is an object describing an entity. It has the following structu
                   component: <FieldInputComponent|string>,
                   ?props: <object, the component props to overwrite defaults>,
                   ?valueProp: {
-                    ?name: <string, a name of Component prop with field value, "value" by default>,
+                    ?name: <string, a name of component prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                     ?converter: { format, parse }
                   }
@@ -662,7 +662,6 @@ Model Definition is an object describing an entity. It has the following structu
                   return true;
                 }
               }),
-              // Passing additional propName property to FieldInputComponent:
               ?field({
                 name: <string, field name>,
                 ?readOnly: <boolean, false by default>,
@@ -807,26 +806,33 @@ Model Definition is an object describing an entity. It has the following structu
 
 ## FieldInputComponent
 
-Custom React component for rendering [Formatted Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.  If the field search is a range search, *FieldInputComponent*s for Search Form and Create/Edit/Show Form are distinct. onChange-handler accepts `{from: <...>, to: <...>}` new field value in former case.
+Custom React Component for rendering [Formatted Instance](#formated-instance)'s field in Search Form or Create/Edit/Show Form.
 
 Props:
 
 Name | Type | Necessity | Default | Description
 ---|---|---|---|---
-readOnly | boolean | optional | false | Wheter field value can be changed
+readOnly | boolean | optional | false | Whether field value can be changed
 value | serializable | mandatory | - | [Persistent field](#persistent-field) value formated to appropriate [UI Type](#ui-type)
 onChange | function | mandatory | - | Handler called when component's value changes.<pre><code class="javascript">function(&lt;serializable, new field value&gt;) &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 onBlur | function | optional | - | Handler called when component loses focus.<pre><code class="javascript">function() &#123;<br />&nbsp;&nbsp;...<br />&nbsp;&nbsp;return;  // return value is ignored<br />&#125;</code></pre>
 
 ### Built-in components
 
-You can define a custom `component` prop for a field, tab, section or searchable field. It can be a React component, or a `string`, in which case CrudEditor treats it as a built-in component. There are 2 built-in components: [BUILTIN_INPUT](#builtin_input) and [BUILTIN_RANGE_INPUT](#builtin_range_input) which you can import from the CrudEditor lib.
+There are two embedded FieldInputComponents:
 
-#### Example
+FieldInputComponent | id
+---|---
+[BUILTIN_INPUT](#builtin_input) | "input"
+[BUILTIN_RANGE_INPUT](#builtin_range_input) | "rangeInput"
+
+For being treated as embedded, string id must be used.  Additionally, the embedded FieldInputComponents can be imported from CRUD Editor package:
+
+```javascript
+import { BUILTIN_INPUT, BUILTIN_RANGE_INPUT } from '@opuscapita/react-crudeditor';
 ```
-{ name: 'maxOrderValue', render: { component: BUILTIN_RANGE_INPUT, props: { type: 'integer' } } }
-```
-Built-in components also accept all props defined for [FieldInputComponent](#fieldinputcomponent).
+
+Embedded FieldInputComponents also accept all props defined for [FieldInputComponent](#fieldinputcomponent).
 
 #### BUILTIN_INPUT
 
@@ -851,13 +857,13 @@ props.type | Description | UI Type | Auto-convertable field types
 `integer` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatNumber | UI_TYPE_INTEGER_RANGE_OBJECT | FIELD_TYPE_STRING_INTEGER_RANGE, FIELD_TYPE_INTEGER_RANGE
 `decimal` | Range input which accepts only numbers and `-` sign and formats using [i18n](https://github.com/OpusCapita/i18n).formatDecimalNumber | UI_TYPE_DECIMAL_RANGE_OBJECT | FIELD_TYPE_STRING_DECIMAL_RANGE, FIELD_TYPE_DECIMAL_RANGE
 
-### Default FieldInput components
+### Default FieldInputComponents
 
 Field types and corresponding [built-in components](#built-in-components).
 
-If you define just a field type (and omit any custom render), the following components will be default for your fields (see below mappings [specific to Create, Edit and Show](#mappings-specific-to-create-edit-and-show-views) views and [specific to Search](#mappings-specific-to-search-view-searchable-fields) view):
+If you define just a [Field Type](#field-type) in [Model Definition](#model-definition)'s **model.fields.<field name>.type** (and omit any custom render in **searchableFields** and **formLayout**), the following components will be default for your fields:
 
-#### Common mappings for all views
+#### Common mappings for all Views
 
 Field Type | Component | props.type
 ---|---|---
@@ -869,7 +875,7 @@ FIELD_TYPE_STRING_DATE_RANGE  | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'd
 FIELD_TYPE_STRING_DECIMAL_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
 FIELD_TYPE_STRING_INTEGER_RANGE | [BUILTIN_RANGE_INPUT](#builtin_range_input) | 'string'
 
-#### Mappings specific to Create, Edit and Show views
+#### Mappings specific to Create/Edit/Show View
 
 Field Type | Component | props.type
 ---|---|---
@@ -879,7 +885,7 @@ FIELD_TYPE_STRING_DATE  | [BUILTIN_INPUT](#builtin_input) | 'date'
 FIELD_TYPE_STRING_DECIMAL | [BUILTIN_INPUT](#builtin_input) | 'string'
 FIELD_TYPE_STRING_INTEGER | [BUILTIN_INPUT](#builtin_input) | 'string'
 
-#### Mappings specific to Search view (searchable fields)
+#### Mappings specific to Search View (searchable fields)
 
 Field Type | Component | props.type
 ---|---|---

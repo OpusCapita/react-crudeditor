@@ -861,7 +861,7 @@ props.type | Description | UI Type | Auto-convertable field types
 
 Field types and corresponding [built-in components](#built-in-components).
 
-If you define just a [Field Type](#field-type) in [Model Definition](#model-definition)'s **model.fields.<field name>.type** (and omit any custom render in **searchableFields** and **formLayout**), the following components will be default for your fields:
+If you define just a [Field Type](#field-type) in [Model Definition](#model-definition)'s **model.fields.\<field name\>.type** (and omit any custom render in **searchableFields** and **formLayout**), the following components will be default for your fields:
 
 #### Common mappings for all Views
 
@@ -966,10 +966,10 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 The shape of **model.translations** object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library. Message keys convention:
 
 1. Model name is defined by `model.name` key.
-2. Model tabs labels are defined by keys with the following pattern: `model.tab.TAB_NAME`.
-3. Model sections labels are defined by keys with the following pattern: `model.section.SECTION_NAME`.
-4. Model fields labels are defined by keys with the following pattern: `model.field.FIELD_NAME`.
-5. Messages for custom field validation errors are defined by keys with the following pattern: `model.field.FIELD_NAME.error.ERROR_ID`.
+2. Model tabs labels are defined by keys with the following pattern: `model.tab.<tab name>`
+3. Model sections labels are defined by keys with the following pattern: `model.section.<section name>`
+4. Model fields labels are defined by keys with the following pattern: `model.field.<field name>`
+5. Messages for custom field validation errors are defined by keys with the following pattern: `model.field.<field name>.error.<error id>`.
 
 If no translation is defined for some field/section/tab, the corresponding label is obtained by converting camelcase id/name to titlecase message. For example, `maxOrderValue` is displayed as `Max Order Value`.
 

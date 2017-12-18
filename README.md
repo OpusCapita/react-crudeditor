@@ -955,7 +955,7 @@ state | `{}` | Full/sliced to-be-displayed [View State](#editorcomponent-propsvi
 
 If View State is sliced, not given or `{}`, all not-mentioned properties retain their current values (or default values in case of initial View rendering).
 
-### i18n Tranlations
+### i18n Translations
 
 [Model Definition](#model-definition)'s **model.translations** object defines translations for:
 

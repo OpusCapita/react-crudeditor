@@ -11,8 +11,9 @@ export default ({
   const onTransition = getOnTransition();
   const rez = next(action);
   const storeState = getState();
+  const activeViewName = storeState.common.activeViewName;
 
-  if (storeState.views[storeState.common.activeViewName].status !== STATUS_READY) {
+  if (!activeViewName || storeState.views[activeViewName].status !== STATUS_READY) {
     return rez;
   }
 

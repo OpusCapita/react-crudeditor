@@ -1,12 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import PropTypes from 'prop-types';
 
-import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
-import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
-import { getViewState as getEditViewState, getUi as getEditUi } from './views/edit';
-import { getViewState as getShowViewState, getUi as getShowUi } from './views/show';
-import { getViewState as getErrorViewState } from './views/error';
-
 import {
   DEFAULT_FIELD_TYPE,
   VIEW_SEARCH,
@@ -20,6 +14,20 @@ import {
   PERMISSION_EDIT,
   PERMISSION_VIEW
 } from './common/constants';
+
+import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
+import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
+import { getViewState as getEditViewState, getUi as getEditUi } from './views/edit';
+import { getViewState as getShowViewState, getUi as getShowUi } from './views/show';
+import { getViewState as getErrorViewState } from './views/error';
+
+const getViewState = {
+  [VIEW_SEARCH]: getSearchViewState,
+  [VIEW_CREATE]: getCreateViewState,
+  [VIEW_EDIT]: getEditViewState,
+  [VIEW_SHOW]: getShowViewState,
+  [VIEW_ERROR]: getErrorViewState
+};
 
 // https://stackoverflow.com/a/31169012
 const allPropTypes = (...types) => (...args) => {
@@ -119,20 +127,12 @@ const checkPropTypes = modelDefinition => {
   PropTypes.checkPropTypes(modelPropTypes, modelDefinition, 'property', 'React-CrudEditor Model');
 }
 
-export const storeState2appState = (storeState, modelDefinition) => {
-  const getViewState = {
-    [VIEW_SEARCH]: getSearchViewState,
-    [VIEW_CREATE]: getCreateViewState,
-    [VIEW_EDIT]: getEditViewState,
-    [VIEW_SHOW]: getShowViewState,
-    [VIEW_ERROR]: getErrorViewState
-  };
-
-  return {
+export const storeState2appState = (storeState, modelDefinition) => storeState.common.activeViewName ?
+  {
     name: storeState.common.activeViewName,
     state: cloneDeep(getViewState[storeState.common.activeViewName](storeState, modelDefinition))
-  }
-};
+  } :
+  undefined;
 
 export function getPrefixedTranslations(translations, prefix) {
   return Object.keys(translations).

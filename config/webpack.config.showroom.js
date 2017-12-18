@@ -25,16 +25,14 @@ module.exports = {
         options: {
           babelrc: false,
           presets: [
-            ["es2015", { "modules": false }],
-            "es2016",
-            "es2017",
-            "react",
-            "stage-0"
+            ["env", { "modules": false }],
+            "react"
           ],
           plugins: [
             "transform-decorators-legacy",
             "transform-class-properties",
-            "transform-runtime"
+            "transform-runtime",
+            "transform-object-rest-spread"
           ]
         },
         exclude: /node_modules/,

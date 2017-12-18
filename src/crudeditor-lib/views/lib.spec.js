@@ -330,7 +330,7 @@ describe('Crudeditor-lib / views / lib', () => {
     storeState.formLayout[1].tab = "additional";
 
     it('should return a tab from formLayout', () => {
-      const result = getTab(storeState, 'additional');
+      const result = getTab(storeState.formLayout, 'additional');
       assert.deepEqual(
         result,
         storeState.formLayout[1]
@@ -338,7 +338,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
 
     it('should return the first tab if name is not specified', () => {
-      const result = getTab(storeState);
+      const result = getTab(storeState.formLayout);
       assert.deepEqual(
         result,
         storeState.formLayout[0]
@@ -346,7 +346,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
 
     it('should return the first tab if name is unknown', () => {
-      const result = getTab(storeState, 'kwhe8923o23y8[023');
+      const result = getTab(storeState.formLayout, 'kwhe8923o23y8[023');
       assert.deepEqual(
         result,
         storeState.formLayout[0]

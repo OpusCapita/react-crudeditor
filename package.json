@@ -50,8 +50,8 @@
   "devDependencies": {
     "@opuscapita/i18n": "1.1.0",
     "@opuscapita/npm-scripts": "2.0.1-beta.1",
-    "@opuscapita/react-navigation": "0.0.20",
-    "@opuscapita/react-reference-select": "1.0.4",
+    "@opuscapita/react-navigation": "0.0.38",
+    "@opuscapita/react-reference-select": "2.0.1",
     "@opuscapita/react-showroom-client": "1.3.0-beta.4",
     "@opuscapita/react-showroom-server": "1.3.0",
     "@opuscapita/styles": "1.0.0",

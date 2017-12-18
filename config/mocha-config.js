@@ -7,8 +7,14 @@ const JSDOM = require('jsdom').JSDOM;
 process.env.NODE_ENV = 'test';
 
 require('babel-register')({
-  "presets": ["es2015", "es2016", "es2017", "stage-0", "react"],
-  "plugins": ["istanbul"]
+  "presets": ["env", "react"],
+  "plugins": [
+    "istanbul",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-runtime",
+    "transform-object-rest-spread"
+  ]
 })
 
 global.document = new JSDOM('<!doctype html><html><body></body></html>');

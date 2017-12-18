@@ -957,23 +957,19 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 
 ### i18n Translations
 
-[Model Definition](#model-definition)'s **model.translations** object defines translations for:
+[Model Definition](#model-definition)'s **model.translations** object has translations for labels/messages defined in the model. Its shape should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library.
 
-* model name (shown in the header),
-* field/section/tab labels,
-* Custom [Field/Instance Validation Errors](#parsing-error-and-fieldinstance-validation-error).
-
-The shape of **model.translations** object should correspond to preferred format for [@opuscapita/i18n](https://github.com/OpusCapita/i18n) library. Message keys convention:
+Translation keys convention:
 
 Translation Object | Translation Key
 ---|---
-Model name label | `model.name`
+Model name (shown in the header) | `model.name`
 Model tab label | `model.tab.<tab name>`
 Model section label | `model.section.<section name>`
 Model field label | `model.field.<field name>`
-Custom field validation error message | `model.field.<field name>.error.<error id>`
+Custom [Field/Instance Validation Errors](#parsing-error-and-fieldinstance-validation-error) | `model.field.<field name>.error.<error id>`
 
-If no translation is defined for some field/section/tab/error, the corresponding label/message text is obtained by converting camelcase id/name to titlecase message. For example, `maxOrderValue` is displayed as `Max Order Value`.
+If some translation is not defined, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
 
 [React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 

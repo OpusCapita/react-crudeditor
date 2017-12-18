@@ -41,7 +41,7 @@ module.exports = {
               {
                 "modules": false,
                 "targets": {
-                  "browsers": ["last 2 versions", "ie >= 11", "safari >= 7", "Firefox ESR"]
+                  "browsers": ["last 2 versions", "ie >= 11", "not ie <= 10", "safari >= 7", "Firefox ESR"]
                 }
               }
             ],

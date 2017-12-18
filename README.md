@@ -967,7 +967,7 @@ Model name (shown in the header) | `model.name`
 Model tab label | `model.tab.<tab name>`
 Model section label | `model.section.<section name>`
 Model field label | `model.field.<field name>`
-Custom [Field/Instance Validation Errors](#parsing-error-and-fieldinstance-validation-error) | `model.field.<field name>.error.<error id>`
+Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
 
 If some translation is not defined, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
 

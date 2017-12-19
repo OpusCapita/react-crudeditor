@@ -21,7 +21,7 @@ const EditMain = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
 EditMain.propTypes = {
   model: PropTypes.shape({
     data: PropTypes.shape({
-      activeTab: PropTypes.array.isRequired,
+      activeTab: PropTypes.array,
       viewName: PropTypes.oneOf([VIEW_NAME]).isRequired,
       persistentInstance: PropTypes.object.isRequired
     }).isRequired

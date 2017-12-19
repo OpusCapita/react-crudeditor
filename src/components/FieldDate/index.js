@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { DateInput } from '@opuscapita/react-dates';
+import { noop } from '../lib';
 
-export default class FieldDate extends React.PureComponent {
+export default class FieldDate extends PureComponent {
   static propTypes = {
     readOnly: PropTypes.bool,
     value: PropTypes.instanceOf(Date),
     onChange: PropTypes.func,
     onBlur: PropTypes.func
   };
+
+  static defaultProps = {
+    readOnly: false,
+    value: null
+  }
 
   static contextTypes = {
     i18n: PropTypes.object.isRequired
@@ -27,7 +33,7 @@ export default class FieldDate extends React.PureComponent {
           }
         }
       } :
-      _ => null // prevents a propTypes warning about missing onChange handler for DateInput component
+      noop // prevents a propTypes warning about missing onChange handler for DateInput component
   }
 
   render = _ =>

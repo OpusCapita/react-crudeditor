@@ -13,7 +13,12 @@ import {
 
 export default class FieldErrorLabel extends PureComponent {
   static propTypes = {
-    errors: PropTypes.arrayOf(PropTypes.object),
+    errors: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+      code: PropTypes.number,
+      message: PropTypes.string,
+      payload: PropTypes.string
+    })),
     fieldName: PropTypes.string.isRequired
   }
 

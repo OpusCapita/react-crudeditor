@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Heading from '../EditHeading';
 import Tab from '../EditTab';
 import WithSpinner from '../Spinner/SpinnerOverlayHOC';
+import { VIEW_NAME } from '../../crudeditor-lib/views/show/constants';
 
 const ShowMain = (props) => {
   const { model } = props;
@@ -21,7 +22,7 @@ ShowMain.propTypes = {
   model: PropTypes.shape({
     data: PropTypes.shape({
       activeTab: PropTypes.array.isRequired,
-      viewName: PropTypes.string.isRequired,
+      viewName: PropTypes.oneOf([VIEW_NAME]).isRequired,
       persistentInstance: PropTypes.object.isRequired
     }).isRequired
   })

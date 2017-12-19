@@ -43,20 +43,19 @@ const ErrorMain = ({
 
 ErrorMain.propTypes = {
   model: PropTypes.shape({
-    actions: PropTypes.objectOf(PropTypes.func),
+    actions: PropTypes.shape({
+      goHome: PropTypes.func.isRequired
+    }),
     data: PropTypes.shape({
-      errors: PropTypes.array
+      errors: PropTypes.arrayOf(PropTypes.object).isRequired
     }),
     uiConfig: PropTypes.object.isRequired
   }).isRequired,
   modelDefinition: PropTypes.shape({
     permissions: PropTypes.shape({
       crudOperations: PropTypes.shape({
-        create: PropTypes.bool,
-        edit: PropTypes.bool,
-        delete: PropTypes.bool,
         view: PropTypes.bool,
-      })
+      }).isRequired
     })
   })
 }

@@ -9,8 +9,6 @@ const DEFAULT_COLUMNS_COUNT = 1;
 const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   let uniqueKey = 1;
 
-  console.log({model})
-
   const buildRow = (fields, columnsCnt) => (
     <Row key={'row-' + ++uniqueKey}>
       {

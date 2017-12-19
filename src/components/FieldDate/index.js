@@ -9,21 +9,21 @@ export default class FieldDate extends PureComponent {
     value: PropTypes.instanceOf(Date),
     onChange: PropTypes.func,
     onBlur: PropTypes.func
-  };
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  }
 
   static defaultProps = {
     readOnly: false,
     value: null
   }
 
-  static contextTypes = {
-    i18n: PropTypes.object.isRequired
-  };
-
   constructor(...args) {
     super(...args);
 
-    this.handleChange = (!this.props.readOnly) ?
+    this.handleChange = !this.props.readOnly ?
       value => {
         // see description in render() function
         if (this.props.onChange) {

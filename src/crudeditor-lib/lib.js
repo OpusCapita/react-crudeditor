@@ -104,15 +104,15 @@ const checkPropTypes = modelDefinition => {
       create: PropTypes.shape({
         defaultNewInstance: PropTypes.func,
         formLayout: PropTypes.func,
-        standardOperations: PropTypes.object
+        standardOperations: PropTypes.objectOf(PropTypes.func)
       }),
       edit: PropTypes.shape({
         formLayout: PropTypes.func,
-        standardOperations: PropTypes.object
+        standardOperations: PropTypes.objectOf(PropTypes.func)
       }),
       show: PropTypes.shape({
         formLayout: PropTypes.func,
-        standardOperations: PropTypes.object
+        standardOperations: PropTypes.objectOf(PropTypes.func)
       }),
       customViews: PropTypes.objectOf(PropTypes.func),
       customOperations: PropTypes.func

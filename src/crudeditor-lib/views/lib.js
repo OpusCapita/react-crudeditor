@@ -482,7 +482,7 @@ export const standardOperations = ({
 }) => ({ instance, ...moreProps } = {}) => Object.keys(handlers).
   reduce(
     (rez, name) => {
-      // for now we manually suppress any other operations
+      // for now we manually suppress modification of any other operations
       const customConfig = [OPERATION_DELETE, OPERATION_NEXT, OPERATION_PREV].indexOf(name) > -1 ?
         config[name] :
         null;

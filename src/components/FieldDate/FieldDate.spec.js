@@ -6,7 +6,6 @@ import sinon from 'sinon';
 import FieldDate from "./";
 import { DateInput } from '@opuscapita/react-dates';
 import { I18nManager } from '@opuscapita/i18n';
-import { noop } from '../lib';
 
 const context = { i18n: new I18nManager() }
 
@@ -62,7 +61,7 @@ describe("FieldDate", _ => {
       context
     });
     const fc = wrapper.find(DateInput)
-    expect(fc.prop('onChange')()).to.not.exist;
+    expect(fc.prop('onChange')()).to.not.exist; // eslint-disable-line no-unused-expressions
     expect(fc.prop('onBlur')).to.equal(DateInput.defaultProps.onBlur)
   });
 });

@@ -90,7 +90,8 @@ class SearchResultListing extends PureComponent {
         },
         permissions: {
           crudOperations: permissions
-        }
+        },
+        standardOpsConfig
       },
       operations: {
         internal: internalOperations,
@@ -176,6 +177,12 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
+                      standardOpsConfig={
+                        Object.keys(standardOpsConfig || {}).reduce((ops, opName) => ({
+                          ...ops,
+                          [opName]: standardOpsConfig[opName](instance)
+                        }), {})
+                      }
                       permissions={permissions}
                       internalOperations={internalOperations(instance)}
                       externalOperations={externalOperations.map(({ handler, ...rest }) => ({

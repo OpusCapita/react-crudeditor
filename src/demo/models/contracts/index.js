@@ -378,7 +378,13 @@ export default {
         { name: 'description', sortable: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
-        { name: 'validRange', component: DateRangeCellRender }]
+        { name: 'validRange', component: DateRangeCellRender }
+      ],
+      standardOperations: {
+        'delete': instance => ({
+          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
+        })
+      }
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {

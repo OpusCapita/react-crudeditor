@@ -14,7 +14,8 @@ export default class SearchBulkOperationsPanel extends PureComponent {
           crudOperations: PropTypes.shape({
             delete: PropTypes.bool.isRequired
           })
-        })
+        }),
+        standardOpsConfig: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
@@ -28,7 +29,16 @@ export default class SearchBulkOperationsPanel extends PureComponent {
 
   render() {
     const { i18n } = this.context;
-    const canDelete = this.props.model.data.permissions.crudOperations.delete;
+    const {
+      permissions: {
+        crudOperations
+      },
+      standardOpsConfig: {
+        delete: deleteConfig = _ => {}
+      } = {},
+      selectedInstances
+    } = this.props.model.data;
+    const canDelete = crudOperations.delete;
 
     return (
       <div className='crud---search-bulk-operations-panel'>
@@ -41,7 +51,13 @@ export default class SearchBulkOperationsPanel extends PureComponent {
             >
               <Button
                 bsSize='sm'
-                disabled={this.props.model.data.selectedInstances.length === 0}
+                disabled={
+                  selectedInstances.length === 0 ||
+                  selectedInstances.reduce(
+                    (result, instance) => result || !!(deleteConfig(instance) || {}).disabled
+                    , false
+                  )
+                }
                 onClick={this.handleDelete}
               >
                 {i18n.getMessage('crudEditor.deleteSelected.button')}

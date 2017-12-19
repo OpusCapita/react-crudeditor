@@ -33,11 +33,13 @@ const withSpinner = WrappedComponent => {
       return (
         <div className="ready-for-spinner">
           {Spinner}
-          <div className={`${Spinner ? 'under-active-spinner' : ''}`}>
-            <WrappedComponent model={model} {...props}>
-              {children}
-            </WrappedComponent>
-          </div>
+          <WrappedComponent
+            {...props}
+            model={model}
+            {...(Spinner ? { overflow: 'hidden' } : null)}
+          >
+            {children}
+          </WrappedComponent>
         </div>
       );
     }

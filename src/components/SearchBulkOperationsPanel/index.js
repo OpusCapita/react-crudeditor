@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
-
+import { OPERATION_DELETE_SELECTED } from '../../crudeditor-lib/common/constants';
 import ConfirmDialog from '../ConfirmDialog';
 import './SearchBulkOperationsPanel.less';
 
@@ -16,7 +16,8 @@ export default class SearchBulkOperationsPanel extends PureComponent {
           })
         })
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.object.isRequired
     }).isRequired
   }
 
@@ -24,31 +25,52 @@ export default class SearchBulkOperationsPanel extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
-
   render() {
     const { i18n } = this.context;
-    const canDelete = this.props.model.data.permissions.crudOperations.delete;
+
+    const {
+      data: {
+        permissions: {
+          crudOperations: {
+            delete: canDelete
+          }
+        },
+        selectedInstances
+      },
+      operations: {
+        standard
+      }
+    } = this.props.model;
+
+    const deleteOperation = standard({ instances: selectedInstances }).
+      find(({ name }) => name === OPERATION_DELETE_SELECTED);
+
+    const buttons = [];
+
+    if (canDelete && deleteOperation) {
+      const { handler, disabled } = deleteOperation;
+
+      buttons.push(
+        <ConfirmDialog
+          message={i18n.getMessage('crudEditor.deleteSelected.confirmation')}
+          textConfirm={i18n.getMessage('crudEditor.delete.button')}
+          textCancel={i18n.getMessage('crudEditor.cancel.button')}
+          key='deleteSelected'
+        >
+          <Button
+            bsSize='sm'
+            disabled={disabled}
+            onClick={handler}
+          >
+            {i18n.getMessage('crudEditor.deleteSelected.button')}
+          </Button>
+        </ConfirmDialog>
+      )
+    }
 
     return (
       <div className='crud---search-bulk-operations-panel'>
-        {
-          canDelete && (<div>
-            <ConfirmDialog
-              message={i18n.getMessage('crudEditor.deleteSelected.confirmation')}
-              textConfirm={i18n.getMessage('crudEditor.delete.button')}
-              textCancel={i18n.getMessage('crudEditor.cancel.button')}
-            >
-              <Button
-                bsSize='sm'
-                disabled={this.props.model.data.selectedInstances.length === 0}
-                onClick={this.handleDelete}
-              >
-                {i18n.getMessage('crudEditor.deleteSelected.button')}
-              </Button>
-            </ConfirmDialog>
-          </div>)
-        }
+        {buttons}
         <div>
           {/* export menu here*/}
         </div>

@@ -7,8 +7,23 @@ import {
   softRedirectView
 } from '../../common/actions';
 import { VIEW_NAME } from './constants';
-import { VIEW_EDIT, VIEW_SHOW, VIEW_CREATE } from '../../common/constants';
-import { viewOperations } from '../lib';
+import {
+  VIEW_EDIT,
+  VIEW_SHOW,
+  VIEW_CREATE,
+
+  OPERATION_SHOW,
+  OPERATION_EDIT,
+  OPERATION_DELETE,
+  OPERATION_DELETE_SELECTED,
+  OPERATION_CREATE,
+  OPERATION_RESET,
+  OPERATION_SEARCH
+} from '../../common/constants';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 
 import {
   getDefaultNewInstance,
@@ -26,60 +41,83 @@ import {
 } from './actions';
 
 const mergeProps = (
-  { defaultNewInstance, viewModelData, viewState, operations, externalOperations, uiConfig },
-  { softRedirectView, ...dispatchProps },
+  {
+    defaultNewInstance,
+    viewModelData,
+    viewState,
+    externalOperations,
+    customOpsConfig,
+    standardOpsConfig,
+    uiConfig
+  },
+  {
+    softRedirectView,
+    deleteInstances,
+    resetFormFilter,
+    searchInstances,
+    ...dispatchProps
+  },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
     actions: {
-      ...dispatchProps,
-      createInstance: _ => softRedirectView({
-        name: VIEW_CREATE,
-        state: {
-          predefinedFields: defaultNewInstance
-        }
-      }),
-      editInstance: ({
-        instance,
-        tab,
-        index // an index of instance in the array of search results => add navigation to Edit View.
-      }) => softRedirectView({
-        name: VIEW_EDIT,
-        state: {
-          instance,
-          tab,
-          navigation: {
-            offset: viewModelData.pageParams.offset + index,
-            totalCount: viewModelData.totalCount
-          }
-        }
-      }),
-      showInstance: ({
-        instance,
-        tab,
-        index // an index of instance in the array of search results => add navigation to Show View.
-      }) => softRedirectView({
-        name: VIEW_SHOW,
-        state: {
-          instance,
-          tab,
-          navigation: {
-            offset: viewModelData.pageParams.offset + index,
-            totalCount: viewModelData.totalCount
-          }
-        }
-      })
+      ...dispatchProps
     },
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
+        operations: customOpsConfig,
         softRedirectView
       }),
-      external: externalOperations
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
+          [OPERATION_DELETE_SELECTED]: ({ instances }) => deleteInstances(instances),
+          [OPERATION_RESET]: resetFormFilter,
+          [OPERATION_SEARCH]: (...args) => searchInstances(...args),
+          [OPERATION_SHOW]: ({
+            instance,
+            tab,
+            index // an index of instance in the array of search results => add navigation to Show View.
+          }) => softRedirectView({
+            name: VIEW_SHOW,
+            state: {
+              instance,
+              tab,
+              navigation: {
+                offset: viewModelData.pageParams.offset + index,
+                totalCount: viewModelData.totalCount
+              }
+            }
+          }),
+          [OPERATION_EDIT]: ({
+            instance,
+            tab,
+            index // an index of instance in the array of search results => add navigation to Edit View.
+          }) => softRedirectView({
+            name: VIEW_EDIT,
+            state: {
+              instance,
+              tab,
+              navigation: {
+                offset: viewModelData.pageParams.offset + index,
+                totalCount: viewModelData.totalCount
+              }
+            }
+          }),
+          [OPERATION_CREATE]: _ => softRedirectView({
+            name: VIEW_CREATE,
+            state: {
+              predefinedFields: defaultNewInstance
+            }
+          }),
+        },
+        config: standardOpsConfig
+      })
     },
     uiConfig
   }
@@ -90,8 +128,9 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
     externalOperations,
+    standardOpsConfig: modelDefinition.ui.search.standardOperations,
     uiConfig
   }),
   {

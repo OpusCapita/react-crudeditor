@@ -9,7 +9,7 @@ import {
   getLogicalKeyBuilder,
   findFieldLayout,
   getTab,
-  viewOperations,
+  customOperations,
   plusMinus
 } from './lib'
 
@@ -363,7 +363,7 @@ describe('Crudeditor-lib / views / lib', () => {
           name: 'viewName1'
         })
       }];
-      const ops = viewOperations({
+      const ops = customOperations({
         viewName: 'aaa',
         viewState: {},
         operations,
@@ -387,7 +387,7 @@ describe('Crudeditor-lib / views / lib', () => {
           name: 'viewName1'
         })
       }];
-      const ops = viewOperations({
+      const ops = customOperations({
         viewName: 'aaa',
         viewState: null,
         operations,

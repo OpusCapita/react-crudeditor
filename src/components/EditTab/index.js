@@ -8,7 +8,13 @@ import FormGrid from '../FormGrid';
 
 import {
   VIEW_CREATE,
-  VIEW_EDIT
+  VIEW_EDIT,
+
+  OPERATION_DELETE,
+  OPERATION_SAVE,
+  OPERATION_SAVEANDNEW,
+  OPERATION_SAVEANDNEXT,
+  OPERATION_CANCEL
 } from '../../crudeditor-lib/common/constants';
 
 import {
@@ -16,8 +22,7 @@ import {
   Form,
   FormGroup,
   Col,
-  ButtonToolbar,
-  Glyphicon
+  ButtonToolbar
 } from 'react-bootstrap';
 
 export default class EditTab extends React.PureComponent {
@@ -28,9 +33,8 @@ export default class EditTab extends React.PureComponent {
         persistentInstance: PropTypes.object,
         formInstance: PropTypes.object
       }),
-      actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internal: PropTypes.func.isRequired,
+        custom: PropTypes.func.isRequired,
         external: PropTypes.arrayOf(PropTypes.shape({
           title: PropTypes.string,
           icon: PropTypes.string,
@@ -46,11 +50,9 @@ export default class EditTab extends React.PureComponent {
     i18n: PropTypes.object
   };
 
-  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.persistentInstance)
-
-  handleSaveAndNext = _ => {
+  handleSaveAndNext = handler => _ => {
     this.props.toggleFieldErrors(true);
-    this.props.model.actions.saveAndNextInstance();
+    handler();
   }
 
   hasUnsavedChanges = _ => {
@@ -66,24 +68,20 @@ export default class EditTab extends React.PureComponent {
 
   showConfirmDialog = _ => this.hasUnsavedChanges()
 
-  handleSubmit = e => {
+  handleSubmit = handler => e => {
     e.preventDefault();
     this.props.toggleFieldErrors(true);
-    this.props.model.actions.saveInstance();
+    handler();
   }
 
-  handleSaveAndNew = _ => {
+  handleSaveAndNew = handler => _ => {
     this.props.toggleFieldErrors(true);
-    this.props.model.actions.saveAndNewInstance()
+    handler()
   }
 
   render() {
     const {
       model: {
-        actions: {
-          exitView,
-          saveAndNextInstance
-        },
         data: {
           viewName,
           persistentInstance,
@@ -93,8 +91,9 @@ export default class EditTab extends React.PureComponent {
           }
         },
         operations: {
-          internal: internalOperations,
-          external: externalOperations
+          custom,
+          external: externalOperations,
+          standard
         }
       },
       toggledFieldErrors,
@@ -103,14 +102,24 @@ export default class EditTab extends React.PureComponent {
 
     const { i18n } = this.context;
 
-    const disableSave = (formInstance && isEqual(persistentInstance, formInstance));
+    const disableSave = formInstance && isEqual(persistentInstance, formInstance);
 
     const buttons = [];
 
-    if (permissions.view) {
+    const customOperations = custom({ instance: persistentInstance });
+    const standardOperations = standard({ instance: persistentInstance });
+
+    const cancelOperation = standardOperations.find(({ name }) => name === OPERATION_CANCEL);
+
+    if (permissions.view && cancelOperation) {
+      const { handler } = cancelOperation;
+
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
-          <Button bsStyle='link' onClick={exitView}>
+          <Button
+            bsStyle='link'
+            onClick={handler}
+          >
             {i18n.getMessage('crudEditor.cancel.button')}
           </Button>
         </ConfirmUnsavedChanges>
@@ -118,34 +127,38 @@ export default class EditTab extends React.PureComponent {
     }
 
     buttons.push(
-      ...internalOperations(persistentInstance).map(({ name, icon, handler, type }, index) => (
-        <ConfirmUnsavedChanges
-          key={`internal-operation-${index}`}
-          showDialog={this.showConfirmDialog}
-        >
-          <Button onClick={handler}>
-            {icon && <Glyphicon glyph={icon} />}
-            {icon && ' '}
-            {getModelMessage(i18n, `model.label.${name}`, name)}
-          </Button>
-        </ConfirmUnsavedChanges>
-      ))
+      ...customOperations.
+        map(({ name, handler, disabled }, index) => (
+          <ConfirmUnsavedChanges
+            key={`internal-operation-${index}`}
+            showDialog={this.showConfirmDialog}
+          >
+            <Button
+              onClick={handler}
+              disabled={!!disabled}
+            >
+              {getModelMessage(i18n, `model.label.${name}`, name)}
+            </Button>
+          </ConfirmUnsavedChanges>
+        ))
     );
 
     buttons.push(
-      externalOperations.map(({ title, icon, handler }, index) => (
+      ...externalOperations.map(({ title, handler }, index) => (
         <Button
           onClick={_ => handler(persistentInstance)}
           key={`external-operation-${index}`}
         >
-          {icon && <Glyphicon glyph={icon} />}
-          {icon && ' '}
           {title}
         </Button>
       ))
     )
 
-    if (viewName === VIEW_EDIT && permissions.delete) {
+    const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
+
+    if (viewName === VIEW_EDIT && permissions.delete && deleteOperation) {
+      const { handler, disabled } = deleteOperation;
+
       buttons.push(
         <ConfirmDialog
           message={i18n.getMessage('crudEditor.delete.confirmation')}
@@ -153,17 +166,24 @@ export default class EditTab extends React.PureComponent {
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
-          <Button onClick={this.handleDelete}>
+          <Button
+            onClick={handler}
+            disabled={!!disabled}
+          >
             {i18n.getMessage('crudEditor.delete.button')}
           </Button>
         </ConfirmDialog>
       )
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
+    const saveAndNewOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEW);
+
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create && saveAndNewOperation) {
+      const { handler } = saveAndNewOperation;
+
       buttons.push(
         <Button
-          onClick={this.handleSaveAndNew}
+          onClick={this.handleSaveAndNew(handler)}
           disabled={disableSave}
           key="Save and New"
         >
@@ -171,10 +191,14 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if (viewName === VIEW_EDIT && saveAndNextInstance) {
+    const saveAndNextOperation = standardOperations.find(({ name }) => name === OPERATION_SAVEANDNEXT);
+
+    if (viewName === VIEW_EDIT && saveAndNextOperation) {
+      const { handler } = saveAndNextOperation;
+
       buttons.push(
         <Button
-          onClick={this.handleSaveAndNext}
+          onClick={this.handleSaveAndNext(handler)}
           disabled={disableSave}
           key="Save and Next"
         >
@@ -182,7 +206,9 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1) {
+    const saveOperation = standardOperations.find(({ name }) => name === OPERATION_SAVE);
+
+    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && saveOperation) {
       buttons.push(
         <Button
           disabled={disableSave}
@@ -195,7 +221,7 @@ export default class EditTab extends React.PureComponent {
     }
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit}>
+      <Form horizontal={true} onSubmit={this.handleSubmit((saveOperation || {}).handler)}>
         <Col sm={12}>
           <FormGrid
             model={this.props.model}

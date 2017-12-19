@@ -4,22 +4,27 @@ import {
   Glyphicon,
   Button,
   ButtonGroup,
-  SplitButton,
+  Dropdown,
   MenuItem
 } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
 import { getModelMessage } from '../lib';
+import {
+  OPERATION_SHOW,
+  OPERATION_EDIT,
+  OPERATION_DELETE
+} from '../../crudeditor-lib/common/constants';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
-    permissions: PropTypes.object.isRequired,
-    internalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
-    externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onShow: PropTypes.func,
-    onEdit: PropTypes.func,
-    onDelete: PropTypes.func,
+    instance: PropTypes.object,
     index: PropTypes.number,
-    parentRef: PropTypes.object
+    parentRef: PropTypes.object,
+
+    permissions: PropTypes.object.isRequired,
+    customOperations: PropTypes.array,
+    externalOperations: PropTypes.array,
+    standardOperations: PropTypes.array.isRequired
   }
 
   static contextTypes = {
@@ -35,7 +40,7 @@ export default class SearchResultButtons extends PureComponent {
   handleToggleDropdown = (dropdownOpened, event, { source }) => {
     const { parentRef } = this.props;
     const parentWidth = parentRef.clientWidth;
-    const tableWidth = parentRef.firstChild.scrollWidth
+    const tableWidth = parentRef.firstChild.scrollWidth;
 
     // table is wider than visible div -> show scroll
     if (parentWidth < tableWidth) {
@@ -59,11 +64,15 @@ export default class SearchResultButtons extends PureComponent {
       return null;
     }
 
-    const { icon, handler, title, uid } = operations[0];
+    const { icon, handler, title, uid, disabled } = operations[0];
 
     if (operations.length === 1) {
       return (
-        <Button onClick={handler} key={uid}>
+        <Button
+          onClick={handler}
+          key={uid}
+          {...(disabled ? { disabled } : null)}
+        >
           {icon && <Glyphicon glyph={icon} />}
           {icon && ' '}
           {title}
@@ -72,72 +81,74 @@ export default class SearchResultButtons extends PureComponent {
     }
 
     return (
-      <SplitButton
-        title={
-          <span>
-            {icon && <Glyphicon glyph={icon}/>}
-            {icon && '\u00A0'}
-            {title}
-          </span>
-        }
-        id={uid}
-        key={uid}
-        onClick={handler}
-        bsSize="sm"
-        onToggle={this.handleToggleDropdown}
-      >
-        {
-          operations.slice(1).map(({ icon, handler, title, uid }, index) => (
-            <MenuItem
-              key={index}
-              eventKey={index}
-              onClick={handler}
-            >
-              <span className="btn-sm text-left">
-                {icon && <Glyphicon glyph={icon}/>}
-                {icon && '\u00A0\u00A0'}
-                {title}
-              </span>
-            </MenuItem>
-          ))
-        }
-      </SplitButton>
+      <Dropdown key={uid} id={uid} bsStyle="sm" onToggle={this.handleToggleDropdown}>
+        <Button
+          onClick={handler}
+          {...(disabled ? { disabled } : null)}
+        >
+          {icon && <Glyphicon glyph={icon} />}
+          {icon && ' '}
+          {title}
+        </Button>
+        <Dropdown.Toggle/>
+        <Dropdown.Menu>
+          {
+            operations.slice(1).map(({ icon, handler, title, uid, disabled }, index) => (
+              <MenuItem
+                key={index}
+                eventKey={index}
+                onClick={handler}
+                {...(disabled ? { disabled } : null)}
+              >
+                <span className="btn-sm text-left">
+                  {icon && <Glyphicon glyph={icon}/>}
+                  {icon && '\u00A0\u00A0'}
+                  {title}
+                </span>
+              </MenuItem>
+            ))
+          }
+        </Dropdown.Menu>
+      </Dropdown>
     );
   }
 
   render() {
     const {
-      onShow,
-      onEdit,
-      onDelete,
       permissions,
-      index: uid
+      index: uid,
+      customOperations,
+      externalOperations,
+      standardOperations
     } = this.props;
 
     const { i18n } = this.context;
     const buttons = [];
 
+    const editOperation = standardOperations.find(({ name }) => name === OPERATION_EDIT);
+    const showOperation = standardOperations.find(({ name }) => name === OPERATION_SHOW);
+
     buttons.push(
       this.operationsButton([
         ...(
-          permissions.edit ?
+          permissions.edit && editOperation ?
             [{
               icon: 'edit',
               title: i18n.getMessage('crudEditor.edit.button'),
-              handler: onEdit,
-              uid: `internal-operation-${uid}`
+              uid: `internal-operation-${uid}`,
+              ...editOperation
             }] : (
-              permissions.view ?
+              permissions.view && showOperation ?
                 [{
                   icon: 'eye-open',
                   title: i18n.getMessage('crudEditor.show.button'),
-                  handler: onShow,
-                  uid: `internal-operation-${uid}`
+                  uid: `internal-operation-${uid}`,
+                  ...showOperation
                 }] :
                 []
             )
         ),
-        ...this.props.internalOperations.
+        ...customOperations.
           map(({ name, ...rest }) => ({
             ...rest,
             title: getModelMessage(i18n, `model.label.${name}`, name),
@@ -148,14 +159,23 @@ export default class SearchResultButtons extends PureComponent {
 
     buttons.push(
       this.operationsButton(
-        this.props.externalOperations.map(operation => ({
+        externalOperations.map(operation => ({
           ...operation,
           uid: `external-operation-${uid}`
         }))
       )
     );
 
-    if (permissions.delete) {
+    const deleteOperation = standardOperations.find(({ name }) => name === OPERATION_DELETE);
+
+    if (permissions.delete && deleteOperation) {
+      const deleteButton = this.operationsButton([{
+        icon: 'trash',
+        title: i18n.getMessage('crudEditor.delete.button'),
+        uid: `delete-operation-${uid}`,
+        ...deleteOperation
+      }])
+
       buttons.push(
         <ConfirmDialog
           message={i18n.getMessage('crudEditor.delete.confirmation')}
@@ -163,14 +183,7 @@ export default class SearchResultButtons extends PureComponent {
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="delete"
         >
-          <Button
-            onClick={onDelete}
-            bsSize="sm"
-          >
-            <Glyphicon glyph='trash' />
-            {' '}
-            {i18n.getMessage('crudEditor.delete.button')}
-          </Button>
+          {deleteButton}
         </ConfirmDialog>
       )
     }

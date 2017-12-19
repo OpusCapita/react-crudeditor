@@ -21,7 +21,7 @@ class SearchResultListing extends PureComponent {
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
-        internal: PropTypes.func.isRequired,
+        custom: PropTypes.func.isRequired,
         external: PropTypes.arrayOf(PropTypes.object).isRequired
       })
     }).isRequired
@@ -93,8 +93,9 @@ class SearchResultListing extends PureComponent {
         }
       },
       operations: {
-        internal: internalOperations,
-        external: externalOperations
+        custom: customOperations,
+        external: externalOperations,
+        standard: standardOperations
       }
     } = this.props.model;
 
@@ -177,14 +178,12 @@ class SearchResultListing extends PureComponent {
                   <td className="text-right">
                     <SearchResultButtons
                       permissions={permissions}
-                      internalOperations={internalOperations(instance)}
+                      customOperations={customOperations({ instance })}
                       externalOperations={externalOperations.map(({ handler, ...rest }) => ({
                         ...rest,
                         handler: _ => handler(instance)
                       }))}
-                      onShow={this.handleShow(instance, index)}
-                      onEdit={this.handleEdit(instance, index)}
-                      onDelete={this.handleDelete(instance)}
+                      standardOperations={standardOperations({ instance, index })}
                       index={index}
                       parentRef={this._myRef}
                     />

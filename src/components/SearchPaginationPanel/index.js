@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import PaginationPanel from './PaginationPanel';
+import {
+  OPERATION_SEARCH
+} from '../../crudeditor-lib/common/constants';
 import './SearchPaginationPanel.less';
 
 export default class SearchResultPaginationPanel extends PureComponent {
@@ -13,7 +16,9 @@ export default class SearchResultPaginationPanel extends PureComponent {
         }),
         totalCount: PropTypes.number
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      operations: PropTypes.shape({
+        standard: PropTypes.func.isRequired
+      })
     }).isRequired
   }
 
@@ -21,11 +26,21 @@ export default class SearchResultPaginationPanel extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handlePaginate = activePage => this.props.model.actions.searchInstances({
-    offset: (activePage - 1) * this.props.model.data.pageParams.max
-  })
+  handlePaginate = activePage => {
+    const { standard } = this.props.model.operations;
+    const { handler } = standard({
+      offset: (activePage - 1) * this.props.model.data.pageParams.max
+    }).find(({ name }) => name === OPERATION_SEARCH);
 
-  handleMaxChange = pageMax => this.props.model.actions.searchInstances({ max: pageMax })
+    return handler()
+  }
+
+  handleMaxChange = pageMax => {
+    const { standard } = this.props.model.operations;
+    const { handler } = standard({ max: pageMax }).find(({ name }) => name === OPERATION_SEARCH);
+
+    return handler()
+  }
 
   render() {
     const {

@@ -1,10 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
-import { viewOperations } from '../lib';
+import {
+  VIEW_SEARCH,
+
+  OPERATION_DELETE,
+  OPERATION_SAVE,
+  OPERATION_SAVEANDNEW,
+  OPERATION_SAVEANDNEXT,
+  OPERATION_CANCEL,
+  OPERATION_HOME,
+  OPERATION_PREV,
+  OPERATION_NEXT
+} from '../../common/constants';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 
 import {
   getViewModelData,
@@ -30,7 +43,8 @@ const mergeProps = (
   {
     viewModelData,
     viewState,
-    operations,
+    customOpsConfig,
+    standardOpsConfig,
     flags: {
       nextInstanceExists,
       prevInstanceExists
@@ -39,9 +53,12 @@ const mergeProps = (
     uiConfig
   },
   {
-    saveAndNextInstance,
     editAdjacentInstance,
     softRedirectView,
+    deleteInstances,
+    saveInstance,
+    saveAndNewInstance,
+    saveAndNextInstance,
     ...otherActions
   },
   ownProps
@@ -49,25 +66,42 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    // here we adjust action creators to reflect flags values
-    actions: {
-      ...otherActions,
-      ...(prevInstanceExists ? {
-        gotoPrevInstance: _ => editAdjacentInstance('prev')
-      } : {}),
-      ...(nextInstanceExists ? {
-        saveAndNextInstance,
-        gotoNextInstance: _ => editAdjacentInstance('next')
-      } : {})
-    },
+    actions: otherActions,
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
+        operations: customOpsConfig,
         softRedirectView
       }),
-      external: externalOperations
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_DELETE]: ({ instance }) => deleteInstances(instance),
+          [OPERATION_SAVE]: saveInstance,
+          [OPERATION_SAVEANDNEW]: saveAndNewInstance,
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_PREV]: _ => editAdjacentInstance('prev'),
+          [OPERATION_NEXT]: _ => editAdjacentInstance('next'),
+          ...(
+            nextInstanceExists ?
+              {
+                [OPERATION_SAVEANDNEXT]: saveAndNextInstance
+              } :
+              null
+          )
+        },
+        config: {
+          ...(standardOperations || {}),
+          [OPERATION_PREV]: _ => ({
+            disabled: !prevInstanceExists
+          }),
+          [OPERATION_NEXT]: _ => ({
+            disabled: !nextInstanceExists
+          })
+        }
+      })
     },
     uiConfig
   }
@@ -80,13 +114,13 @@ export default connect(
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
+    standardOpsConfig: modelDefinition.ui.edit.standardOperations,
     externalOperations,
     uiConfig
   }), {
     changeInstanceField,
     deleteInstances,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     saveAndNewInstance,
     saveAndNextInstance,

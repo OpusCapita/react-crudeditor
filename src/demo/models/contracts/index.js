@@ -21,7 +21,9 @@ import {
 
   VIEW_CREATE,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+
+  OPERATION_DELETE
 } from '../../../crudeditor-lib';
 
 export const fields = {
@@ -378,7 +380,14 @@ export default {
         { name: 'description', sortable: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
-        { name: 'validRange', component: DateRangeCellRender }]
+        { name: 'validRange', component: DateRangeCellRender }
+      ],
+      // custom options for built-in operations (aka buttons)
+      standardOperations: {
+        [OPERATION_DELETE]: ({ instance }) => ({
+          disabled: ((instance || {}).contractId || '').indexOf('j') > -1
+        })
+      }
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
@@ -398,13 +407,20 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT)
+      formLayout: buildFormLayout(VIEW_EDIT),
+
+      standardOperations: {
+        [OPERATION_DELETE]: ({ instance }) => ({
+          disabled: instance.contractId.indexOf('j') > -1
+        })
+      }
+
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
     Spinner: CustomSpinner,
-    operations: (instance, {
+    customOperations: (instance, {
       name: viewName,
       state: viewState
     }) => [
@@ -421,7 +437,8 @@ export default {
                     parentContract: instance.contractId
                   }
                 }
-              })
+              }),
+              // disabled: true
             },
             {
               name: 'duplicate',
@@ -438,7 +455,8 @@ export default {
                     ].indexOf(key) === -1).
                     reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
                 }
-              })
+              }),
+              // hidden: true
             }
           ]
       )

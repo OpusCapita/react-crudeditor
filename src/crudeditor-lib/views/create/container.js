@@ -3,9 +3,19 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
-import { viewOperations } from '../lib';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import {
+  VIEW_SEARCH,
+
+  OPERATION_SAVE,
+  OPERATION_SAVEANDNEW,
+  OPERATION_CANCEL,
+  OPERATION_HOME
+} from '../../common/constants';
 
 import {
   getViewModelData,
@@ -24,12 +34,15 @@ const mergeProps = (
   {
     viewModelData,
     viewState,
-    operations,
+    customOpsConfig,
+    standardOpsConfig,
     externalOperations,
     uiConfig
   },
   {
     softRedirectView,
+    saveInstance,
+    saveAndNewInstance,
     ...dispatchProps
   },
   ownProps
@@ -39,13 +52,22 @@ const mergeProps = (
     data: viewModelData,
     actions: dispatchProps,
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
+        operations: customOpsConfig,
         softRedirectView
       }),
-      external: externalOperations
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_SAVE]: saveInstance,
+          [OPERATION_SAVEANDNEW]: saveAndNewInstance,
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH })
+        },
+        config: standardOpsConfig
+      })
     },
     uiConfig
   }
@@ -55,11 +77,11 @@ export default connect(
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
+    standardOpsConfig: modelDefinition.ui.create.standardOperations,
     externalOperations,
     uiConfig
   }), {
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     selectTab,
     validateInstanceField,

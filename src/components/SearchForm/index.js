@@ -5,6 +5,10 @@ import { Button, Form, FormGroup, ControlLabel } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
+import {
+  OPERATION_RESET,
+  OPERATION_SEARCH
+} from '../../crudeditor-lib/common/constants';
 import './SearchForm.less';
 
 class SearchForm extends React.Component {
@@ -16,7 +20,10 @@ class SearchForm extends React.Component {
         searchableFields: PropTypes.array,
         resultFilter: PropTypes.object
       }),
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      operations: PropTypes.shape({
+        standard: PropTypes.func.isRequired
+      })
     }).isRequired,
     toggledFieldErrors: PropTypes.object.isRequired,
     toggleFieldErrors: PropTypes.func.isRequired
@@ -28,9 +35,15 @@ class SearchForm extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.model.actions.searchInstances({
-      filter: this.props.model.data.formFilter
-    });
+
+    const { standard } = this.props.model.operations;
+
+    const searchOperation = standard({ filter: this.props.model.data.formFilter }).
+      find(({ name }) => name === OPERATION_SEARCH);
+
+    if (searchOperation) {
+      searchOperation.handler()
+    }
   }
 
   handleFormFilterUpdate = fieldName => newFieldValue => {
@@ -57,13 +70,52 @@ class SearchForm extends React.Component {
           formFilter,
           resultFilter
         },
-        actions: {
-          resetFormFilter
+        operations: {
+          standard
         }
       }
     } = this.props;
 
     const { i18n } = this.context;
+
+    const buttons = [];
+
+    const standardOperations = standard({});
+
+    const resetOperation = standardOperations.find(({ name }) => name === OPERATION_RESET);
+
+    if (resetOperation) {
+      const { handler, disabled } = resetOperation;
+
+      buttons.push(
+        <Button
+          bsStyle='link'
+          key='reset'
+          onClick={handler}
+          disabled={!!disabled}
+        >
+          {i18n.getMessage('crudEditor.reset.button')}
+        </Button>
+      )
+    }
+
+    const searchOperation = standardOperations.find(({ name }) => name === OPERATION_SEARCH);
+
+    if (searchOperation) {
+      const { disabled } = searchOperation;
+
+      buttons.push(
+        <Button
+          bsStyle='primary'
+          type='submit'
+          key='search'
+          ref={ref => (this.submitBtn = ref)}
+          disabled={isEqual(formFilter, resultFilter) || this.fieldErrors() || disabled}
+        >
+          {i18n.getMessage('crudEditor.search.button')}
+        </Button>
+      )
+    }
 
     return (
       <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
@@ -88,20 +140,7 @@ class SearchForm extends React.Component {
           }
         </div>
         <div className="crud--search-form__submit-group">
-          <Button
-            bsStyle='link'
-            onClick={resetFormFilter}
-          >
-            {i18n.getMessage('crudEditor.reset.button')}
-          </Button>
-          <Button
-            bsStyle="primary"
-            type="submit"
-            ref={ref => (this.submitBtn = ref)}
-            disabled={isEqual(formFilter, resultFilter) || this.fieldErrors()}
-          >
-            {i18n.getMessage('crudEditor.search.button')}
-          </Button>
+          {buttons}
         </div>
       </Form>
     );

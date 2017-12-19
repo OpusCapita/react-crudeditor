@@ -9,22 +9,36 @@ import {
   selectTab,
   showAdjacentInstance
 } from './actions';
-import { viewOperations } from '../lib';
+import {
+  customOperations,
+  standardOperations
+} from '../lib';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import {
+  VIEW_SEARCH,
+  OPERATION_CANCEL,
+  OPERATION_HOME,
+  OPERATION_NEXT,
+  OPERATION_PREV
+} from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
 
 const mergeProps = (
   {
     viewModelData,
-    flags,
+    flags: {
+      nextInstanceExists,
+      prevInstanceExists
+    },
     viewState,
-    operations,
+    customOpsConfig,
     externalOperations,
+    standardOpsConfig,
     uiConfig
   },
   {
     softRedirectView,
+    showAdjacentInstance,
     ...dispatchProps
   },
   ownProps
@@ -32,40 +46,32 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: (
-      ({
-        showAdjacentInstance,
-        ...otherActions
-      }, {
-        nextInstanceExists,
-        prevInstanceExists
-      }) => {
-        let result = { ...otherActions };
-
-        if (nextInstanceExists) {
-          result = {
-            ...result,
-            gotoNextInstance: showAdjacentInstance.bind(null, 'next')
-          }
-        }
-
-        if (prevInstanceExists) {
-          result = {
-            ...result,
-            gotoPrevInstance: showAdjacentInstance.bind(null, 'prev')
-          }
-        }
-
-        return result
-      })(dispatchProps, flags),
+    actions: dispatchProps,
     operations: {
-      internal: viewOperations({
+      custom: customOperations({
         viewName: VIEW_NAME,
         viewState,
-        operations,
+        operations: customOpsConfig,
         softRedirectView
       }),
-      external: externalOperations
+      external: externalOperations,
+      standard: standardOperations({
+        handlers: {
+          [OPERATION_CANCEL]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_HOME]: _ => softRedirectView({ name: VIEW_SEARCH }),
+          [OPERATION_PREV]: _ => showAdjacentInstance('prev'),
+          [OPERATION_NEXT]: _ => showAdjacentInstance('next')
+        },
+        config: {
+          ...(standardOperations || {}),
+          [OPERATION_PREV]: _ => ({
+            disabled: !prevInstanceExists
+          }),
+          [OPERATION_NEXT]: _ => ({
+            disabled: !nextInstanceExists
+          })
+        }
+      })
     },
     uiConfig
   },
@@ -78,12 +84,12 @@ export default connect(
       flags
     }))(getViewModelData(storeState, modelDefinition)),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
+    customOpsConfig: modelDefinition.ui.customOperations,
+    standardOpsConfig: modelDefinition.ui.show.standardOperations,
     externalOperations,
     uiConfig
   }), {
     selectTab,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     showAdjacentInstance,
     softRedirectView
   },

@@ -9,6 +9,7 @@ import {
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
+import { OPERATION_CREATE } from '../../crudeditor-lib/common/constants';
 import './SearchMain.less';
 
 export default class SearchMain extends PureComponent {
@@ -28,10 +29,6 @@ export default class SearchMain extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handleCreate = (e) => {
-    this.props.model.actions.createInstance();
-  }
-
   render() {
     const { model } = this.props;
 
@@ -49,11 +46,34 @@ export default class SearchMain extends PureComponent {
       },
       uiConfig: {
         headerLevel = 1
+      },
+      operations: {
+        standard
       }
     } = model;
 
     const { i18n } = this.context;
     const H = 'h' + headerLevel;
+
+    const createOperation = standard({}).find(({ name }) => name === OPERATION_CREATE);
+
+    const buttons = [];
+
+    if (canCreate && createOperation) {
+      const { handler, disabled } = createOperation;
+
+      buttons.push(
+        <button
+          type="button"
+          className="btn btn-sm btn-primary"
+          onClick={handler}
+          key='create'
+          {...(disabled ? 'disabled' : null)}
+        >
+          {i18n.getMessage('crudEditor.create.button')}
+        </button>
+      )
+    }
 
     return (
       <div className="crud--search-main">
@@ -73,16 +93,7 @@ export default class SearchMain extends PureComponent {
             </Col>
             <Col xs={4}>
               <div style={{ float: "right" }}>
-                {
-                  canCreate &&
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary"
-                  onClick={this.handleCreate}
-                >
-                  {i18n.getMessage('crudEditor.create.button')}
-                </button>
-                }
+                {buttons}
               </div>
             </Col>
           </Row>

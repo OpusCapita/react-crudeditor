@@ -13,7 +13,12 @@ import {
 import {
   DEFAULT_TAB_COLUMNS,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+
+  OPERATION_DELETE,
+  OPERATION_DELETE_SELECTED,
+  OPERATION_NEXT,
+  OPERATION_PREV
 } from '../common/constants';
 
 import {
@@ -426,36 +431,87 @@ export function* plusMinus() {
   }
 }
 
-// viewOperations creates custom/external operations handler for particular view
-export const viewOperations = ({
+// viewOperations creates operations (buttons) for particular view
+export const customOperations = ({
   viewName,
   viewState,
   operations,
   softRedirectView
-}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
-  instance,
-  {
-    name: viewName,
-    state: viewState
+}) => ({ instance }) => {
+  if (!viewState) { // viewState is undefined when view is not initialized yet.
+    return [];
   }
-)) || []).reduce(
-  (rez, { handler, ...rest }) => [
-    ...rez,
-    ...(handler ?
-      [{
-        ...rest,
-        handler: _ => {
-          const view = handler();
 
-          if (view && view.name) {
-            softRedirectView(view);
-          }
+  const modelOps = operations(
+    instance,
+    {
+      name: viewName,
+      state: viewState
+    }
+  ) || [];
 
-          return view;
-        }
-      }] :
+  return modelOps.
+    filter(({ hidden }) => !hidden).
+    reduce(
+      (rez, { name, handler, ...rest }) => [
+        ...rez,
+        ...(handler ?
+          [{
+            name,
+            ...rest,
+            handler: _ => {
+              const view = handler();
+
+              if (view && view.name) {
+                softRedirectView(view);
+              }
+
+              return view;
+            }
+          }] :
+          []
+        )
+      ],
       []
     )
-  ],
-  []
-);
+}
+
+export const standardOperations = ({
+  handlers,
+  config = {}
+}) => ({ instance, ...moreProps } = {}) => Object.keys(handlers).
+  reduce(
+    (rez, name) => {
+      // for now we manually suppress modification of any other operations
+      const customConfig = [OPERATION_DELETE, OPERATION_NEXT, OPERATION_PREV].indexOf(name) > -1 ?
+        config[name] :
+        null;
+
+      const customProps = customConfig && customConfig instanceof Function ?
+        customConfig({ instance }) :
+        {};
+
+      // disable 'deleteSelected' if some selected items have 'delete' disabled by custom logic
+      if (name === OPERATION_DELETE_SELECTED) {
+        const { instances } = moreProps;
+
+        if (Array.isArray(instances)) {
+          customProps.disabled = instances.length === 0 || instances.some(
+            instance => config[OPERATION_DELETE] &&
+              config[OPERATION_DELETE] instanceof Function &&
+              !!(config[OPERATION_DELETE]({ instance }) || {}).disabled
+          )
+        }
+      }
+
+      return [
+        ...rez,
+        {
+          ...customProps,
+          name,
+          handler: _ => handlers[name]({ instance, ...moreProps })
+        }
+      ]
+    },
+    []
+  )

@@ -15,7 +15,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
             delete: PropTypes.bool.isRequired
           })
         }),
-        standardOpsConfig: PropTypes.object
+        standardOperations: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
@@ -33,7 +33,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
       permissions: {
         crudOperations
       },
-      standardOpsConfig: {
+      standardOperations: {
         delete: deleteConfig = _ => {}
       } = {},
       selectedInstances

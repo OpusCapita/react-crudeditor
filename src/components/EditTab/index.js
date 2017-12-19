@@ -27,7 +27,7 @@ export default class EditTab extends React.PureComponent {
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
         formInstance: PropTypes.object,
-        standardOpsConfig: PropTypes.shape({
+        standardOperations: PropTypes.shape({
           delete: PropTypes.object
         })
       }),
@@ -94,9 +94,9 @@ export default class EditTab extends React.PureComponent {
           permissions: {
             crudOperations: permissions
           },
-          standardOpsConfig: {
+          standardOperations: {
             delete: deleteConfig = {}
-          } = {}
+          }
         },
         operations: {
           internal: internalOperations,

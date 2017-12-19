@@ -20,7 +20,7 @@ export default class SearchResultButtons extends PureComponent {
     onDelete: PropTypes.func,
     index: PropTypes.number,
     parentRef: PropTypes.object,
-    standardOpsConfig: PropTypes.objectOf(PropTypes.object)
+    standardOperations: PropTypes.objectOf(PropTypes.object)
   }
 
   static contextTypes = {
@@ -113,7 +113,7 @@ export default class SearchResultButtons extends PureComponent {
       onDelete,
       permissions,
       index: uid,
-      standardOpsConfig
+      standardOperations
     } = this.props;
 
     const { i18n } = this.context;
@@ -168,7 +168,7 @@ export default class SearchResultButtons extends PureComponent {
           <Button
             onClick={onDelete}
             bsSize="sm"
-            disabled={!!(standardOpsConfig.delete || {}).disabled}
+            disabled={!!(standardOperations.delete || {}).disabled}
           >
             <Glyphicon glyph='trash' />
             {' '}

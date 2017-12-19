@@ -36,16 +36,16 @@ export const
     ui: {
       Spinner,
       edit: {
-        standardOperations: standardOpsConfig = {}
+        standardOperations = {}
       }
     },
     permissions
   }) => ({
     permissions,
     Spinner,
-    standardOpsConfig: Object.keys(standardOpsConfig).reduce((config, opName) => ({
+    standardOperations: Object.keys(standardOperations).reduce((config, opName) => ({
       ...config,
-      [opName]: standardOpsConfig[opName](storeState.persistentInstance)
+      [opName]: standardOperations[opName](storeState.persistentInstance)
     }), {}),
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,

@@ -91,7 +91,7 @@ class SearchResultListing extends PureComponent {
         permissions: {
           crudOperations: permissions
         },
-        standardOpsConfig
+        standardOperations
       },
       operations: {
         internal: internalOperations,
@@ -177,10 +177,10 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
-                      standardOpsConfig={
-                        Object.keys(standardOpsConfig || {}).reduce((ops, opName) => ({
+                      standardOperations={
+                        Object.keys(standardOperations || {}).reduce((ops, opName) => ({
                           ...ops,
-                          [opName]: standardOpsConfig[opName](instance)
+                          [opName]: standardOperations[opName](instance)
                         }), {})
                       }
                       permissions={permissions}

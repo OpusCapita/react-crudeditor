@@ -74,7 +74,7 @@ export const
     ui: {
       Spinner,
       search: {
-        standardOperations: standardOpsConfig,
+        standardOperations,
         resultFields,
         searchableFields
       }
@@ -83,7 +83,7 @@ export const
   }) => ({
     permissions,
     Spinner,
-    standardOpsConfig,
+    standardOperations,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,

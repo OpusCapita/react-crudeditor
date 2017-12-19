@@ -1,3 +1,58 @@
+## [v0.0.32](Tue, 19 Dec 2017 11:23:25 GMT)
+ - standardOperations are updated in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 5d50128)
+ - Merge pull request #164 from OpusCapita/issue-150-simple
+
+    Simple implementation of #150 - configurable disable for Delete button (067c265 2e21df8, 0005e3d)
+ - Merged master, resolved conflicts. (122948f 067c265, 2e21df8)
+ - Fixed according to reviewer notes. (Egor Stambakio <stambakio@scand.com>, 122948f)
+ - Merge pull request #163 from OpusCapita/issue-156
+
+    Improved prop-types coverage (cccbbac a89af06, 067c265)
+ - Added delete button config to edit view. (Egor Stambakio <stambakio@scand.com>, 23d13f1)
+ - Done simple solution for Delete button on search view. (Egor Stambakio <stambakio@scand.com>, ee0ce84)
+ - More lint to lint god. (Egor Stambakio <stambakio@scand.com>, a89af06)
+ - Lint & tests (Egor Stambakio <stambakio@scand.com>, 9989bcd)
+ - Improved prop-types coverage. (Egor Stambakio <stambakio@scand.com>, 04e9b83)
+ - 1/3 propTypes revisited. (Egor Stambakio <stambakio@scand.com>, 73beec9)
+ - Fix #162 (Andrei Mourzenkov <mourzenkov@scand.com>, cccbbac)
+ - Reformatted model.translations in README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4c37421)
+ - Minor syntax corrections in docs (Andrei Mourzenkov <mourzenkov@scand.com>, a701a00)
+ - Reformatting 'i18n Translations' section in README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4d46d08)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (10c60c1 46aa436, 7588fd4)
+ - Merge pull request #160 from OpusCapita/issue-159
+
+    Final shape. (d84e9f9 9d1e2fe, 46aa436)
+ - Reformatting 'i18n Translations' section in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 10c60c1)
+ - Added core-js to dev dependencies. (Egor Stambakio <stambakio@scand.com>, 9d1e2fe)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, d84e9f9)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 079c531)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (f3b4538 88dbcf9, 4674361)
+ - Modified FieldInputComponent description in docs (Andrei Mourzenkov <mourzenkov@scand.com>, f3b4538)
+ - Final shape. (Egor Stambakio <stambakio@scand.com>, 3626668)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 88dbcf9)
+ - model.translations in README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 2a37543)
+ - Merge pull request #157 from OpusCapita/issue-149
+
+    Migrated to babel-preset-env (87c1135 58e8d43, 3405689)
+ - Explicitly defined supported browser versions. (Egor Stambakio <stambakio@scand.com>, 58e8d43)
+ - Merge pull request #158 from OpusCapita/issue-42-2
+
+    Updated packages (0da4bf3 4bfb588, 87c1135)
+ - Updated packages (Egor Stambakio <stambakio@scand.com>, 4bfb588)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 0da4bf3)
+ - Fixed #149 (Egor Stambakio <stambakio@scand.com>, de2a347)
+ - Minor syntax optimization (Andrei Mourzenkov <mourzenkov@scand.com>, e49054e)
+ - Merge pull request #155 from OpusCapita/issue-152
+
+    Need to check for child === activeElement for range inputs (92aafa6 6d2453e, 24949ed)
+ - Fixed #152 (Egor Stambakio <stambakio@scand.com>, 6d2453e)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 92aafa6)
+ - Update README.md (Kirill Volkovich <kvolkovich-sc@users.noreply.github.com>, e1eb8ee)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c50d9cd)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (0d15388 54caf94, c26fcfc)
+ - Fix #151 (Andrei Mourzenkov <mourzenkov@scand.com>, 0d15388)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 54caf94)
+
 ## [v0.0.31](Fri, 15 Dec 2017 10:42:47 GMT)
  - Ability for custom operations to modifying internal ones is removed from docs (88933b4 e9afb33, 605e90c)
  - Ability for custom operations to modifying internal ones is removed from docs (Andrei Mourzenkov <mourzenkov@scand.com>, 88933b4)

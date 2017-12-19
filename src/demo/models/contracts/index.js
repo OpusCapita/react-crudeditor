@@ -414,7 +414,7 @@ export default {
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
-    Spinner: CustomSpinner,
+    spinner: CustomSpinner,
     operations: (instance, {
       name: viewName,
       state: viewState

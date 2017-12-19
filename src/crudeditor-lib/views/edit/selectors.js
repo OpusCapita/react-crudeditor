@@ -34,7 +34,7 @@ export const
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
     ui: {
-      Spinner,
+      spinner,
       edit: {
         standardOperations = {}
       }
@@ -42,7 +42,7 @@ export const
     permissions
   }) => ({
     permissions,
-    Spinner,
+    spinner,
     standardOperations: Object.keys(standardOperations).reduce((config, opName) => ({
       ...config,
       [opName]: standardOperations[opName](storeState.persistentInstance)

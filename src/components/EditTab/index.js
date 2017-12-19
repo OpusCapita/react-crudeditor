@@ -96,7 +96,7 @@ export default class EditTab extends React.PureComponent {
           },
           standardOperations: {
             delete: deleteConfig = {}
-          }
+          } = {}
         },
         operations: {
           internal: internalOperations,

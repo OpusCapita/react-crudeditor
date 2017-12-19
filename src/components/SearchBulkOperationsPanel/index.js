@@ -13,8 +13,8 @@ export default class SearchBulkOperationsPanel extends PureComponent {
         permissions: PropTypes.shape({
           crudOperations: PropTypes.shape({
             delete: PropTypes.bool.isRequired
-          })
-        }),
+          }).isRequired
+        }).isRequired,
         standardOperations: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)

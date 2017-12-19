@@ -5,6 +5,15 @@ import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
 
 class CrudMain extends PureComponent {
+  static propTypes = {
+    viewName: PropTypes.string,
+    viewState: PropTypes.object,
+    modelDefinition: PropTypes.object.isRequired,
+    hardRedirectView: PropTypes.func.isRequired,
+    externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
+    uiConfig: PropTypes.object.isRequired
+  }
+
   constructor(...args) {
     super(...args);
 
@@ -27,15 +36,6 @@ class CrudMain extends PureComponent {
       uiConfig={this.props.uiConfig}
     />
   )
-}
-
-CrudMain.propTypes = {
-  viewName: PropTypes.string,
-  viewState: PropTypes.object,
-  modelDefinition: PropTypes.object,
-  hardRedirectView: PropTypes.func,
-  externalOperations: PropTypes.arrayOf(PropTypes.object),
-  uiConfig: PropTypes.object
 }
 
 export default connect(

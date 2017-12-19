@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
 import { getModelMessage } from '../lib';
 import './styles.less';
 
-class EditSelection extends React.Component {
+export default class EditSelection extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired
+  }
+
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  }
+
   state = {
     collapsed: false
   }
@@ -46,12 +54,3 @@ class EditSelection extends React.Component {
   }
 }
 
-EditSelection.propTypes = {
-  title: PropTypes.string
-}
-
-EditSelection.contextTypes = {
-  i18n: PropTypes.object
-};
-
-export default EditSelection;

@@ -8,7 +8,11 @@ import './SearchResult.less';
 
 class SearchResult extends PureComponent {
   static propTypes = {
-    model: PropTypes.object.isRequired
+    model: PropTypes.shape({
+      data: PropTypes.shape({
+        totalCount: PropTypes.number
+      }).isRequired
+    }).isRequired
   }
 
   static contextTypes = {

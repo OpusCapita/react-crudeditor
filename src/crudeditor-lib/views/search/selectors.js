@@ -72,7 +72,7 @@ export const
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
     ui: {
-      Spinner,
+      spinner,
       search: {
         standardOperations,
         resultFields,
@@ -82,7 +82,7 @@ export const
     permissions
   }) => ({
     permissions,
-    Spinner,
+    spinner,
     standardOperations,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,

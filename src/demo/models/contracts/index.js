@@ -378,7 +378,13 @@ export default {
         { name: 'description', sortable: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
-        { name: 'validRange', component: DateRangeCellRender }]
+        { name: 'validRange', component: DateRangeCellRender }
+      ],
+      standardOperations: {
+        'delete': instance => ({
+          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
+        })
+      }
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
@@ -398,7 +404,12 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT)
+      formLayout: buildFormLayout(VIEW_EDIT),
+      standardOperations: {
+        'delete': instance => ({
+          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
+        })
+      }
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)

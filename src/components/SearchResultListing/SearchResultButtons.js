@@ -19,7 +19,8 @@ export default class SearchResultButtons extends PureComponent {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     index: PropTypes.number,
-    parentRef: PropTypes.object
+    parentRef: PropTypes.object,
+    standardOperations: PropTypes.objectOf(PropTypes.object)
   }
 
   static contextTypes = {
@@ -111,7 +112,8 @@ export default class SearchResultButtons extends PureComponent {
       onEdit,
       onDelete,
       permissions,
-      index: uid
+      index: uid,
+      standardOperations
     } = this.props;
 
     const { i18n } = this.context;
@@ -166,6 +168,7 @@ export default class SearchResultButtons extends PureComponent {
           <Button
             onClick={onDelete}
             bsSize="sm"
+            disabled={!!(standardOperations.delete || {}).disabled}
           >
             <Glyphicon glyph='trash' />
             {' '}

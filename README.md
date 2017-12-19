@@ -589,12 +589,15 @@ Model Definition is an object describing an entity. It has the following structu
         }, ...],
 
         /*
-         * Configuration for hiding/disabling Standard Operations (see corresponding Terminology section).
+         * Configuration for Standard Operations (see corresponding Terminology section).
+         * NOTE: only "delete" can be configured now.
          */
         ?standardOperations: {
-          <name, stadard operation ID>: {
-            ?hidden: <boolean, false by default>,
-            ?disabled: <boolean, false by default>
+          <name, stadard operation ID>: <object, entity instance> => {
+            ...
+            return {
+              ?disabled: <boolean, false by default>
+            };
           },
           ...
         }
@@ -747,15 +750,57 @@ Model Definition is an object describing an entity. It has the following structu
           }),
           ...
         ]
+      },
+
+      /*
+       * Configuration for Standard Operations (see corresponding Terminology section).
+       * NOTE: nothing can be configured now.
+       */
+      ?standardOperations: {
+        <name, stadard operation ID>: <object, entity instance> => {
+          ...
+          return {
+            ?disabled: <boolean, false by default>
+          };
+        },
+        ...
       }
     },
 
     ?edit: {
       ?formLayout: <function>  // see ui.create.formLayout for details
+
+      /*
+       * Configuration for Standard Operations (see corresponding Terminology section).
+       * NOTE: only "delete" can be configured now.
+       */
+      ?standardOperations: {
+        <name, stadard operation ID>: <object, entity instance> => {
+          ...
+          return {
+            ?disabled: <boolean, false by default>
+          };
+        },
+        ...
+      }
     },
 
     ?show: {
       ?formLayout: <function>  // see ui.create.formLayout for details
+
+      /*
+       * Configuration for Standard Operations (see corresponding Terminology section).
+       * NOTE: nothing can be configured now.
+       */
+      ?standardOperations: {
+        <name, stadard operation ID>: <object, entity instance> => {
+          ...
+          return {
+            ?disabled: <boolean, false by default>
+          };
+        },
+        ...
+      }
     },
 
 

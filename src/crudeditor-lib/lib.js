@@ -106,7 +106,7 @@ const checkPropTypes = modelDefinition => {
       update: allowedAny([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
     }),
     ui: PropTypes.shape({
-      Spinner: PropTypes.func,
+      spinner: PropTypes.func,
       search: PropTypes.func,
       instanceLabel: PropTypes.func,
       create: PropTypes.shape({

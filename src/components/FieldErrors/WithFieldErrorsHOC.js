@@ -11,7 +11,11 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
-        fieldErrors: PropTypes.object
+        fieldErrors: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
+          id: PropTypes.string,
+          code: PropTypes.number,
+          message: PropTypes.string
+        })))
       })
     }).isRequired
   }

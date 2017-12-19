@@ -10,16 +10,16 @@ class SearchResultListing extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
-        resultInstances: PropTypes.array,
-        selectedInstances: PropTypes.array,
-        resultFields: PropTypes.array,
+        resultInstances: PropTypes.arrayOf(PropTypes.object),
+        selectedInstances: PropTypes.arrayOf(PropTypes.object),
+        resultFields: PropTypes.arrayOf(PropTypes.object),
         sortParams: PropTypes.object,
         isLoading: PropTypes.bool,
         permissions: PropTypes.shape({
           crudOperations: PropTypes.object.isRequired
         })
       }),
-      actions: PropTypes.objectOf(PropTypes.func),
+      actions: PropTypes.objectOf(PropTypes.func).isRequired,
       operations: PropTypes.shape({
         internal: PropTypes.func.isRequired,
         external: PropTypes.arrayOf(PropTypes.object).isRequired

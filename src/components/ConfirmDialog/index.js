@@ -8,9 +8,9 @@ import './styles.less';
 export default class ConditionalConfirm extends PureComponent {
   static propTypes = {
     trigger: PropTypes.string,
-    message: PropTypes.string,
-    textCancel: PropTypes.string,
-    textConfirm: PropTypes.string,
+    message: PropTypes.string.isRequired,
+    textCancel: PropTypes.string.isRequired,
+    textConfirm: PropTypes.string.isRequired,
     showDialog: PropTypes.func
   }
 

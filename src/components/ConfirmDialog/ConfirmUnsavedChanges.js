@@ -9,7 +9,7 @@ export default class ConfirmUnsavedChanges extends PureComponent {
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   }
 
   render() {

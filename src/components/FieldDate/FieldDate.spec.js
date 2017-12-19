@@ -61,7 +61,7 @@ describe("FieldDate", _ => {
       context
     });
     const fc = wrapper.find(DateInput)
-    expect(fc.prop('onChange')()).to.equal(null);
+    expect(fc.prop('onChange')()).to.not.exist; // eslint-disable-line no-unused-expressions
     expect(fc.prop('onBlur')).to.equal(DateInput.defaultProps.onBlur)
   });
 });

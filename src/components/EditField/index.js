@@ -8,14 +8,24 @@ import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 export default class EditField extends Component {
   static propTypes = {
     model: PropTypes.shape({
-      actions: PropTypes.objectOf(PropTypes.func)
+      actions: PropTypes.objectOf(PropTypes.func),
+      data: PropTypes.shape({
+        fieldsMeta: PropTypes.objectOf(PropTypes.shape({
+          type: PropTypes.string.isRequired,
+          constraints: PropTypes.object
+        })),
+        formattedInstance: PropTypes.object.isRequired
+      })
     }).isRequired,
     entry: PropTypes.shape({
-      name: PropTypes.string.isRequired
+      name: PropTypes.string.isRequired,
+      readOnly: PropTypes.bool,
+      component: PropTypes.func.isRequired,
+      valuePropName: PropTypes.string.isRequired
     }),
     toggledFieldErrors: PropTypes.object,
     toggleFieldErrors: PropTypes.func,
-    columns: PropTypes.number
+    columns: PropTypes.number.isRequired
   }
 
   static contextTypes = {

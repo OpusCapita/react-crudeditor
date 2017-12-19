@@ -10,12 +10,10 @@ import { isDef, noop } from '../../../lib';
 
 export default class StringRangeInput extends PureComponent {
   static propTypes = {
-    value: PropTypes.oneOfType([
-      PropTypes.shape({
-        from: PropTypes.string,
-        to: PropTypes.string
-      })
-    ]),
+    value: PropTypes.shape({
+      from: PropTypes.string,
+      to: PropTypes.string
+    }),
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,

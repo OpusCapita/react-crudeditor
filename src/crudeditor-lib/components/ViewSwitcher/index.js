@@ -46,9 +46,9 @@ const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiC
 
 ViewSwitcher.propTypes = {
   activeViewName: PropTypes.string,
-  modelDefinition: PropTypes.object,
-  externalOperations: PropTypes.arrayOf(PropTypes.object),
-  uiConfig: PropTypes.object
+  modelDefinition: PropTypes.object.isRequired,
+  externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
+  uiConfig: PropTypes.object.isRequired
 }
 
 export default connect(

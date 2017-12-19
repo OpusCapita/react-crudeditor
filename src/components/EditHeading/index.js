@@ -18,14 +18,26 @@ import {
 export default class EditHeading extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
-      data: PropTypes.object,
+      data: PropTypes.shape({
+        activeTab: PropTypes.array,
+        instanceLabel: PropTypes.string,
+        tabs: PropTypes.array,
+        viewName: PropTypes.string.isRequired,
+        permissions: PropTypes.shape({
+          crudOperations: PropTypes.shape({
+            view: PropTypes.bool
+          }).isRequired
+        }).isRequired,
+        formInstance: PropTypes.object,
+        persistentInstance: PropTypes.object
+      }),
       actions: PropTypes.objectOf(PropTypes.func),
       uiConfig: PropTypes.object.isRequired
     }).isRequired
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   };
 
   showConfirmDialog = _ => {

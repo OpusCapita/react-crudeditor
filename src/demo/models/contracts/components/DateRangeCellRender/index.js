@@ -21,8 +21,8 @@ const DateRangeCellRender = ({ name, instance }, { i18n }) => {
 };
 
 DateRangeCellRender.propTypes = {
-  name: PropTypes.string,
-  instance: PropTypes.object
+  name: PropTypes.string.isRequired,
+  instance: PropTypes.object.isRequired
 }
 
 DateRangeCellRender.contextTypes = {

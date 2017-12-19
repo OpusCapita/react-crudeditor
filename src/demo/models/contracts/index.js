@@ -404,7 +404,12 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT)
+      formLayout: buildFormLayout(VIEW_EDIT),
+      standardOperations: {
+        'delete': instance => ({
+          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
+        })
+      }
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)

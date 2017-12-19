@@ -114,7 +114,10 @@ const checkPropTypes = modelDefinition => {
         formLayout: PropTypes.func
       }),
       edit: PropTypes.shape({
-        formLayout: PropTypes.func
+        formLayout: PropTypes.func,
+        standardOperations: PropTypes.shape({
+          delete: PropTypes.func
+        })
       }),
       show: PropTypes.shape({
         formLayout: PropTypes.func

@@ -71,12 +71,19 @@ export const
 
   getViewModelData = wrapper((storeState, {
     model: modelMeta,
-    ui: uiMeta,
+    ui: {
+      Spinner,
+      search: {
+        standardOperations: standardOpsConfig,
+        resultFields,
+        searchableFields
+      }
+    },
     permissions
   }) => ({
     permissions,
-    Spinner: uiMeta.Spinner,
-    standardOpsConfig: uiMeta.search.standardOperations,
+    Spinner,
+    standardOpsConfig,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,
@@ -91,10 +98,10 @@ export const
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset
     },
-    resultFields: uiMeta.search.resultFields,
+    resultFields,
     resultFilter: storeState.resultFilter,
     resultInstances: storeState.resultInstances,
-    searchableFields: uiMeta.search.searchableFields.map(({
+    searchableFields: searchableFields.map(({
       name,
       render: {
         component,

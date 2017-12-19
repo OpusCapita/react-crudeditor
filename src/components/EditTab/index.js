@@ -26,7 +26,10 @@ export default class EditTab extends React.PureComponent {
       data: PropTypes.shape({
         viewName: PropTypes.string,
         persistentInstance: PropTypes.object,
-        formInstance: PropTypes.object
+        formInstance: PropTypes.object,
+        standardOpsConfig: PropTypes.shape({
+          delete: PropTypes.object
+        })
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       operations: PropTypes.shape({
@@ -90,7 +93,10 @@ export default class EditTab extends React.PureComponent {
           formInstance,
           permissions: {
             crudOperations: permissions
-          }
+          },
+          standardOpsConfig: {
+            delete: deleteConfig = {}
+          } = {}
         },
         operations: {
           internal: internalOperations,
@@ -153,7 +159,10 @@ export default class EditTab extends React.PureComponent {
           textCancel={i18n.getMessage('crudEditor.cancel.button')}
           key="Delete"
         >
-          <Button onClick={this.handleDelete}>
+          <Button
+            onClick={this.handleDelete}
+            disabled={!!deleteConfig.disabled}
+          >
             {i18n.getMessage('crudEditor.delete.button')}
           </Button>
         </ConfirmDialog>

@@ -1,3 +1,5 @@
+## [v0.0.34](Wed, 20 Dec 2017 10:31:35 GMT)
+
 ## [v0.0.33](Wed, 20 Dec 2017 10:22:51 GMT)
  - Merge pull request #165 from OpusCapita/issue-42-3
 

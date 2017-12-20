@@ -1,3 +1,8 @@
+## [v0.0.35](Wed, 20 Dec 2017 15:14:11 GMT)
+ - Fix #167 (Andrei Mourzenkov <mourzenkov@scand.com>, caf8080)
+ - DEFAULT_FIELD_TYPE is added to named export (Andrei Mourzenkov <mourzenkov@scand.com>, 0a0be8f)
+ - Fix #166 (Andrei Mourzenkov <mourzenkov@scand.com>, e127254)
+
 ## [v0.0.34](Wed, 20 Dec 2017 10:31:35 GMT)
 
 ## [v0.0.33](Wed, 20 Dec 2017 10:22:51 GMT)

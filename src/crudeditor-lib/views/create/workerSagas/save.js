@@ -17,7 +17,7 @@ import {
   VIEW_NAME
 } from '../constants';
 
-import { VIEW_ERROR, VIEW_EDIT } from '../../../common/constants';
+import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW } from '../../../common/constants';
 import redirectSaga from '../../../common/workerSagas/redirect';
 
 /*
@@ -140,7 +140,7 @@ export default function*({
         action: {
           payload: {
             view: {
-              name: VIEW_EDIT,
+              name: modelDefinition.permissions.crudOperations.edit ? VIEW_EDIT : VIEW_SHOW,
               state: {
                 instance: savedInstance,
                 tab: tab && tab.tab

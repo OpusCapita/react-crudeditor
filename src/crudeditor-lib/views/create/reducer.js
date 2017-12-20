@@ -272,7 +272,7 @@ export default (modelDefinition, i18n) => (
 
       if (storeState.errors.fields[fieldName]) {
         newStoreStateSlice.errors = {
-          fields: u.omit(fieldName)
+          fields: u.omit([fieldName])
         };
       }
     }
@@ -303,7 +303,7 @@ export default (modelDefinition, i18n) => (
 
         if (storeState.errors.fields[fieldName]) {
           newStoreStateSlice.errors = {
-            fields: u.omit(fieldName)
+            fields: u.omit([fieldName])
           };
         }
       }
@@ -346,7 +346,7 @@ export default (modelDefinition, i18n) => (
 
       if (storeState.errors.fields[fieldName]) {
         newStoreStateSlice.errors = {
-          fields: u.omit(fieldName)
+          fields: u.omit([fieldName])
         };
       }
     });

@@ -13,6 +13,7 @@ import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
 
 import {
+  DEFAULT_FIELD_TYPE,
   DEFAULT_VIEW,
   VIEW_CREATE,
   VIEW_EDIT,
@@ -61,6 +62,7 @@ export {
   VIEW_SEARCH,
   VIEW_SHOW,
 
+  DEFAULT_FIELD_TYPE,
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_DECIMAL,
   FIELD_TYPE_INTEGER,

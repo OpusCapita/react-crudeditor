@@ -15,27 +15,16 @@ export default class CustomTabComponent extends PureComponent {
     this._secondCrud = createCrud(secondModel)
   }
 
-  componentDidMount() {
-    // console.log('custom tab mounted')
-  }
-
-  componentWillReceiveProps() {
-    // console.log('custom tab will receive props')
-
-    // uncomment this to create new crud on every load
-    // this._secondCrud = createCrud(secondModel)
-  }
-
-  componentWillUnmount() {
-    // console.log('custom tab will unmount')
-  }
+  handleTransition = state => {
+    this._lastState = state
+  };
 
   render() {
     const SecondCrud = this._secondCrud;
 
     return SecondCrud && (
       <SecondCrud
-        view={{
+        view={this._lastState || {
           name: 'search',
           state: {
             hideSearchForm: true,
@@ -46,6 +35,8 @@ export default class CustomTabComponent extends PureComponent {
         uiConfig={{
           headerLevel: 3
         }}
+
+        onTransition={this.handleTransition}
       />
     )
   }

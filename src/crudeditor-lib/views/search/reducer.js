@@ -357,6 +357,7 @@ export default (modelDefinition, i18n) => {
 
         if (storeState.errors.fields[fieldName]) {
           newStoreStateSlice.errors = {
+            // u.omit() argument must be an array, since lodash v. 4.17.4 no longer supports a string.
             fields: u.omit([fieldName])
           };
         }

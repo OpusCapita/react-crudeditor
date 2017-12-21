@@ -49,4 +49,4 @@ export default class CustomTabComponent extends PureComponent {
       />
     )
   }
-};
+}

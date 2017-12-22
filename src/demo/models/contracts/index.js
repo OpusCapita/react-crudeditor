@@ -388,7 +388,7 @@ export default {
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
-      defaultNewInstance: ({ filter }) => Object.keys(filter).reduce(
+      defaultNewInstance: ({ filter } = {}) => Object.keys(filter || {}).reduce(
         (rez, fieldName) => {
           const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
 
@@ -399,7 +399,11 @@ export default {
               [fieldName]: filter[fieldName]
             };
         },
-        {}
+        {
+          // Edit view (SaveAndNew handler) receives a result of function call w/o parameters
+          // for example:
+          // description: 'Hell yeah im a default description!'
+        }
       ),
       formLayout: buildFormLayout(VIEW_CREATE)
     },

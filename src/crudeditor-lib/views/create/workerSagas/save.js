@@ -125,9 +125,15 @@ export default function*({
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance
+    const { defaultNewInstance } = modelDefinition.ui.create;
+
     yield put({
       type: VIEW_INITIALIZE,
-      payload: { predefinedFields: {} },
+      payload: {
+        predefinedFields: {
+          ...(defaultNewInstance ? defaultNewInstance() : null)
+        }
+      },
       meta
     });
   } else {

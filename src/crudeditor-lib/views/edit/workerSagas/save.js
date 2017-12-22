@@ -128,6 +128,8 @@ export default function*({
 
   if (afterAction === AFTER_ACTION_NEW) {
     try {
+      const { defaultNewInstance } = modelDefinition.ui.create;
+
       yield call(redirectSaga, {
         modelDefinition,
         softRedirectSaga,
@@ -136,7 +138,9 @@ export default function*({
             view: {
               name: VIEW_CREATE,
               state: {
-                predefinedFields: {} // TODO: build correct pre-filled instance.
+                predefinedFields: {
+                  ...(defaultNewInstance ? defaultNewInstance() : null)
+                }
               }
             }
           },

@@ -1,23 +1,43 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import createCrud from '../../../../../crudeditor-lib';
+import secondModel from '../../../second-model';
 
-const CustomTabComponent = ({ viewName, instance }) => (
-  <div>
-    <h1>Custom Tab Component Example</h1>
-    <h4><a href="https://github.com/OpusCapita/react-crudeditor#tabformcomponent" target="_blank">Click me for Documentation reference</a></h4>
-    <h3>props.viewName: {viewName}</h3>
-    <h3>props.instance:</h3>
-    <ul>
-      {
-        Object.keys(instance).map(key => <li key={key}>{`${key}: ${JSON.stringify(instance[key])}`}</li>)
-      }
-    </ul>
-  </div>
-)
+export default class CustomTabComponent extends PureComponent {
+  static propTypes = {
+    viewName: PropTypes.string.isRequired,
+    instance: PropTypes.object.isRequired
+  }
 
-CustomTabComponent.propTypes = {
-  viewName: PropTypes.string.isRequired,
-  instance: PropTypes.object.isRequired
+  constructor(...args) {
+    super(...args);
+
+    this._secondCrud = createCrud(secondModel)
+  }
+
+  handleTransition = state => {
+    this._lastState = state
+  };
+
+  render() {
+    const SecondCrud = this._secondCrud;
+
+    return (
+      <SecondCrud
+        view={this._lastState || {
+          name: 'search',
+          state: {
+            hideSearchForm: true,
+            max: 10
+          }
+        }}
+
+        uiConfig={{
+          headerLevel: 3
+        }}
+
+        onTransition={this.handleTransition}
+      />
+    )
+  }
 }
-
-export default CustomTabComponent;

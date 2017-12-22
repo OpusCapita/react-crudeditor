@@ -15,10 +15,6 @@ import {
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
-    static contextTypes = {
-      i18n: PropTypes.object
-    };
-
     componentDidMount() {
       this.me = findDOMNode(this);
 

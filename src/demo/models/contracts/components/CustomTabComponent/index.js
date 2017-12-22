@@ -22,7 +22,7 @@ export default class CustomTabComponent extends PureComponent {
   render() {
     const SecondCrud = this._secondCrud;
 
-    return SecondCrud && (
+    return (
       <SecondCrud
         view={this._lastState || {
           name: 'search',

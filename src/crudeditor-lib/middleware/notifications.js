@@ -41,7 +41,6 @@ import {
 export const
   NOTIFICATION_ERROR = 'error',
   NOTIFICATION_SUCCESS = 'success',
-  NOTIFICATION_VALIDATION_WARNING = 'warning',
   NOTIFICATION_VALIDATION_ERROR = 'instanceValidationError';
 
 const

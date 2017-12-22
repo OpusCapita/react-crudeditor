@@ -12,7 +12,11 @@ const EditMain = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
-      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
+      <ActiveTabComponent
+        viewName={model.data.viewName}
+        instance={model.data.persistentInstance}
+        uiConfig={model.uiConfig}
+      /> :
       <Tab model={model} toggledFieldErrors={toggledFieldErrors} toggleFieldErrors={toggleFieldErrors}/>
     }
   </div>);

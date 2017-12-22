@@ -11,6 +11,7 @@ import appStateChangeDetect from './middleware/appStateChangeDetect';
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
+import DefaultSpinner from './components/DefaultSpinner';
 
 import {
   DEFAULT_FIELD_TYPE,
@@ -110,7 +111,8 @@ export default baseModelDefinition => {
         handler: PropTypes.func
       })),
       uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number
+        headerLevel: PropTypes.number,
+        spinner: PropTypes.func
       })
     }
 
@@ -124,7 +126,12 @@ export default baseModelDefinition => {
 
     static defaultProps = {
       externalOperations: [],
-      uiConfig: {}
+      uiConfig: {
+        // we need to set default spinner again in render() because defaultProps only perform shallow merge
+        // and thus don't merge missing nested props to an existing object
+        // as a result if uiConfig is defined but has no spinner, spinner === undefined
+        spinner: DefaultSpinner
+      }
     };
 
     constructor(...args) {
@@ -220,7 +227,10 @@ export default baseModelDefinition => {
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
           externalOperations={this.props.externalOperations}
-          uiConfig={this.props.uiConfig}
+          uiConfig={{
+            spinner: DefaultSpinner,
+            ...this.props.uiConfig
+          }}
         />
       </Provider>)
   }

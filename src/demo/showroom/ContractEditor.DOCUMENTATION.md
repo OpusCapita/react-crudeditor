@@ -57,6 +57,9 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
       }
     ]
   }
+  uiConfig={{
+    spinner: _scope.spinner
+  }}
 />;
 ```
 

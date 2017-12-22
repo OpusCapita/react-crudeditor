@@ -32,7 +32,6 @@ export const
     permissions
   }) => ({
     permissions,
-    spinner,
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,

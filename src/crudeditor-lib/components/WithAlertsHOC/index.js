@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import ReactDOM, { findDOMNode } from 'react-dom'
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import './styles.css';

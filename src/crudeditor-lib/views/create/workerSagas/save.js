@@ -19,6 +19,7 @@ import {
 
 import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW } from '../../../common/constants';
 import redirectSaga from '../../../common/workerSagas/redirect';
+import { getDefaultNewInstance } from '../../search/selectors';
 
 /*
  * Instance validation
@@ -127,7 +128,9 @@ export default function*({
     // create another instance
     yield put({
       type: VIEW_INITIALIZE,
-      payload: { predefinedFields: {} },
+      payload: {
+        predefinedFields: yield select(storeState => getDefaultNewInstance(storeState, modelDefinition))
+      },
       meta
     });
   } else {

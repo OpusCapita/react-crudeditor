@@ -4,6 +4,7 @@ import editSaga from './edit';
 import searchSaga from '../../search/workerSagas/search';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
+import { getDefaultNewInstance } from '../../search/selectors';
 
 import {
   AFTER_ACTION_NEXT,
@@ -136,7 +137,7 @@ export default function*({
             view: {
               name: VIEW_CREATE,
               state: {
-                predefinedFields: {} // TODO: build correct pre-filled instance.
+                predefinedFields: yield select(storeState => getDefaultNewInstance(storeState, modelDefinition))
               }
             }
           },

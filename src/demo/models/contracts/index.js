@@ -388,7 +388,7 @@ export default {
     }),
     instanceLabel: instance => instance._objectLabel || instance.contractId || '',
     create: {
-      defaultNewInstance: ({ filter }) => Object.keys(filter).reduce(
+      defaultNewInstance: ({ filter } = {}) => Object.keys(filter || {}).reduce(
         (rez, fieldName) => {
           const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
 

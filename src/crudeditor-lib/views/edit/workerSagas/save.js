@@ -4,6 +4,7 @@ import editSaga from './edit';
 import searchSaga from '../../search/workerSagas/search';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
+import { getDefaultNewInstance } from '../../search/selectors';
 
 import {
   AFTER_ACTION_NEXT,
@@ -128,8 +129,6 @@ export default function*({
 
   if (afterAction === AFTER_ACTION_NEW) {
     try {
-      const { defaultNewInstance } = modelDefinition.ui.create;
-
       yield call(redirectSaga, {
         modelDefinition,
         softRedirectSaga,
@@ -138,9 +137,7 @@ export default function*({
             view: {
               name: VIEW_CREATE,
               state: {
-                predefinedFields: {
-                  ...(defaultNewInstance ? defaultNewInstance() : null)
-                }
+                predefinedFields: yield select(storeState => getDefaultNewInstance(storeState, modelDefinition))
               }
             }
           },

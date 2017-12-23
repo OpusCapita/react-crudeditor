@@ -399,11 +399,7 @@ export default {
               [fieldName]: filter[fieldName]
             };
         },
-        {
-          // Edit view (SaveAndNew handler) receives a result of function call w/o parameters
-          // for example:
-          // description: 'Hell yeah im a default description!'
-        }
+        {}
       ),
       formLayout: buildFormLayout(VIEW_CREATE)
     },

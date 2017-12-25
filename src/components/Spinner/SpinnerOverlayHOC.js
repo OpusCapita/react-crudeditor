@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { SVG as Svg } from '@opuscapita/react-svg';
-import spinnerSVG from './spinner2.svg';
 import './SpinnerOverlay.less';
 
 const withSpinner = WrappedComponent => {
@@ -9,23 +7,23 @@ const withSpinner = WrappedComponent => {
     static propTypes = {
       model: PropTypes.shape({
         data: PropTypes.shape({
-          spinner: PropTypes.func,
           isLoading: PropTypes.bool
-        }).isRequired
+        }).isRequired,
+        uiConfig: PropTypes.shape({
+          spinner: PropTypes.func.isRequired
+        })
       }).isRequired
     }
 
     render() {
       const { children, model, ...props } = this.props;
 
-      const CustomSpinner = model.data.spinner;
-
-      const defaultSpinner = (<Svg svg={spinnerSVG} style={{ width: '64px', height: '64px' }} />);
+      const SpinnerComponent = model.uiConfig.spinner;
 
       const Spinner = model.data.isLoading ?
         (
           <div className="crud--spinner-overlay">
-            { CustomSpinner ? <CustomSpinner/> : defaultSpinner }
+            <SpinnerComponent/>
           </div>
         ) :
         null;

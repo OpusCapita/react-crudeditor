@@ -6,7 +6,8 @@ import secondModel from '../../../second-model';
 export default class CustomTabComponent extends PureComponent {
   static propTypes = {
     viewName: PropTypes.string.isRequired,
-    instance: PropTypes.object.isRequired
+    instance: PropTypes.object.isRequired,
+    uiConfig: PropTypes.object.isRequired
   }
 
   constructor(...args) {
@@ -21,6 +22,7 @@ export default class CustomTabComponent extends PureComponent {
 
   render() {
     const SecondCrud = this._secondCrud;
+    const { spinner, headerLevel = 1 } = this.props.uiConfig;
 
     return (
       <SecondCrud
@@ -33,7 +35,8 @@ export default class CustomTabComponent extends PureComponent {
         }}
 
         uiConfig={{
-          headerLevel: 3
+          headerLevel: headerLevel + 1,
+          spinner
         }}
 
         onTransition={this.handleTransition}

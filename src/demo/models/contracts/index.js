@@ -2,7 +2,6 @@ import api from './api';
 import DateRangeCellRender from './components/DateRangeCellRender';
 import StatusField from './components/StatusField';
 import translations from './i18n';
-import CustomSpinner from './components/CustomSpinner';
 import ContractReferenceSearch from './components/ContractReferenceSearch';
 import CustomTabComponent from './components/CustomTabComponent';
 
@@ -414,7 +413,6 @@ export default {
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
-    spinner: CustomSpinner,
     operations: (instance, {
       name: viewName,
       state: viewState

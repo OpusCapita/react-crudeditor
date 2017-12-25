@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
+import CustomSpinner from './CustomSpinner';
 // import './ContractEditorScope.less'
 
 function getParameterByName(name, url) {
@@ -28,6 +29,8 @@ class ContractEditorScope extends React.Component {
 
     // check for URL query parameter 'lang', otherwise use default language
     this.i18n = new I18nManager({ locale: getParameterByName('lang') || 'en' });
+
+    this.spinner = CustomSpinner
   }
 
   getChildContext() {

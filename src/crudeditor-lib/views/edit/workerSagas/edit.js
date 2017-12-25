@@ -16,7 +16,7 @@ export default function*({
   action: {
     payload: {
       instance,
-      navigation
+      offset
     },
     meta
   }
@@ -46,14 +46,7 @@ export default function*({
     type: INSTANCE_EDIT_SUCCESS,
     payload: {
       instance: persistentInstance,
-      ...(navigation ?
-        {
-          nextInstanceExists: navigation.offset < navigation.totalCount - 1,
-          prevInstanceExists: navigation.offset > 0 && navigation.totalCount > 0,
-          error: navigation.error
-        } :
-        {}
-      )
+      offset
     },
     meta
   });

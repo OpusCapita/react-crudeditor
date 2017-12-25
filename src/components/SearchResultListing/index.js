@@ -17,6 +17,9 @@ class SearchResultListing extends PureComponent {
         isLoading: PropTypes.bool,
         permissions: PropTypes.shape({
           crudOperations: PropTypes.object.isRequired
+        }),
+        pageParams: PropTypes.shape({
+          offset: PropTypes.number.isRequired
         })
       }),
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
@@ -71,9 +74,17 @@ class SearchResultListing extends PureComponent {
       }
     }) => this.props.model.actions.toggleSelected({ selected, instance });
 
-    this.handleShow = (instance, index) => () => this.props.model.actions.showInstance({ instance, index });
-    this.handleEdit = (instance, index) => () => this.props.model.actions.editInstance({ instance, index });
-    this.handleDelete = instance => () => this.props.model.actions.deleteInstances([instance]);
+    this.handleShow = (instance, index) => _ => this.props.model.actions.showInstance({
+      instance,
+      offset: this.props.model.data.pageParams.offset + index
+    });
+
+    this.handleEdit = (instance, index) => _ => this.props.model.actions.editInstance({
+      instance,
+      offset: this.props.model.data.pageParams.offset + index
+    });
+
+    this.handleDelete = instance => _ => this.props.model.actions.deleteInstances([instance]);
   }
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)

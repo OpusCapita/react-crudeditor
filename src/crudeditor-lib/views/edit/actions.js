@@ -5,12 +5,10 @@ import {
   INSTANCE_FIELD_CHANGE,
   INSTANCE_SAVE,
   TAB_SELECT,
-  INSTANCE_EDIT_ADJACENT
+  ADJACENT_INSTANCE_EDIT
 } from './constants';
 
 export const
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   changeInstanceField = ({
     name: fieldName,
@@ -23,8 +21,6 @@ export const
     }
   }),
 
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   validateInstanceField = fieldName => ({
     type: INSTANCE_FIELD_VALIDATE,
     payload: {
@@ -32,13 +28,9 @@ export const
     }
   }),
 
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   saveInstance = _ => ({
     type: INSTANCE_SAVE
   }),
-
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   saveAndNewInstance = _ => ({
     type: INSTANCE_SAVE,
@@ -47,7 +39,6 @@ export const
     }
   }),
 
-
   saveAndNextInstance = _ => ({
     type: INSTANCE_SAVE,
     payload: {
@@ -55,14 +46,21 @@ export const
     }
   }),
 
-  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
-
   selectTab = tabName => ({
     type: TAB_SELECT,
     payload: { tabName }
   }),
 
-  editAdjacentInstance = side => ({
-    type: INSTANCE_EDIT_ADJACENT,
-    payload: { side }
+  editPreviousInstance = _ => ({
+    type: ADJACENT_INSTANCE_EDIT,
+    payload: {
+      step: -1
+    }
+  }),
+
+  editNextInstance = _ => ({
+    type: ADJACENT_INSTANCE_EDIT,
+    payload: {
+      step: 1
+    }
   });

@@ -1,8 +1,9 @@
-import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
+import { call, cancelled, put, spawn } from 'redux-saga/effects';
 
-import deleteSaga from '../../common/workerSagas/delete';
+import deleteSaga from './workerSagas/delete';
 import searchSaga from './workerSagas/search';
 import redirectSaga from '../../common/workerSagas/redirect';
+import scenarioSaga from '../../common/scenario';
 
 import {
   INSTANCES_DELETE,
@@ -20,100 +21,15 @@ import {
   VIEW_REDIRECT_SUCCESS
 } from './constants';
 
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-/*
- * View life cycle scenario saga.
- * It must handle all errors and do clean-up on cancelation (happens on soft/hard redirect).
- *
- * When the view wants to exit during its life cycle, it must call softRedirectSaga
- * which cancels life cycle scenario-saga in case of successful redirect,
- * or throws error(s) otherwise
- * => softRedirectSaga must be passed to all worker sagas.
- */
-function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
-  const choices = {
-    blocking: {
-      [INSTANCES_DELETE]: deleteSaga,
-    },
-    nonBlocking: {
-      [INSTANCES_SEARCH]: searchSaga,
-      [VIEW_SOFT_REDIRECT]: redirectSaga
-    }
+const transitions = {
+  blocking: {
+    [INSTANCES_DELETE]: deleteSaga,
+  },
+  nonBlocking: {
+    [INSTANCES_SEARCH]: searchSaga,
+    [VIEW_SOFT_REDIRECT]: redirectSaga
   }
-
-  let lastTask;
-
-  while (true) {
-    const action = yield take([
-      ...Object.keys(choices.blocking),
-      ...Object.keys(choices.nonBlocking)
-    ]);
-
-    // Automatically cancel any task started previously if it's still running.
-    if (lastTask) {
-      yield cancel(lastTask);
-    }
-
-    if (Object.keys(choices.blocking).indexOf(action.type) > -1) {
-      try {
-        yield call(choices.blocking[action.type], {
-          modelDefinition,
-          softRedirectSaga,
-          action: {
-            ...action,
-            meta: {
-              ...action.meta,
-              spawner: VIEW_NAME
-            }
-          }
-        });
-        // refresh search results
-        if (action.type === INSTANCES_DELETE) {
-          try {
-            yield call(searchSaga, {
-              modelDefinition,
-              softRedirectSaga,
-              action: {
-                payload: {}
-              }
-            });
-          } catch (err) {
-            throw err;
-          }
-        }
-      } catch (err) {
-        // Swallow custom errors.
-        if (err instanceof Error) {
-          throw err;
-        }
-      }
-    } else if (Object.keys(choices.nonBlocking).indexOf(action.type) > -1) {
-      lastTask = yield fork(function*() {
-        try {
-          yield call(choices.nonBlocking[action.type], {
-            modelDefinition,
-            softRedirectSaga,
-            action: {
-              ...action,
-              meta: {
-                ...action.meta,
-                spawner: VIEW_NAME
-              }
-            }
-          });
-        } catch (err) {
-          // Swallow custom errors.
-          if (err instanceof Error) {
-            throw err;
-          }
-        }
-      });
-    }
-  }
-}
-
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+};
 
 /*
  * The saga initializes the view and
@@ -177,7 +93,12 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
+      yield call(scenarioSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        transitions,
+        viewName: VIEW_NAME
+      });
     } finally {
       if (yield cancelled()) {
         yield put({

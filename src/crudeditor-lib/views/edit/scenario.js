@@ -1,19 +1,20 @@
-import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
+import { call, cancelled, put, spawn } from 'redux-saga/effects';
 
 import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
 import saveSaga from './workerSagas/save';
 import editAdjacentSaga from './workerSagas/editAdjacent';
 import redirectSaga from '../../common/workerSagas/redirect';
+import scenarioSaga from '../../common/scenario';
 
 import {
   INSTANCES_DELETE,
   VIEW_SOFT_REDIRECT
 } from '../../common/constants';
-import { plusMinus } from '../lib';
 
 import {
   INSTANCE_SAVE,
+  ADJACENT_INSTANCE_EDIT,
   TAB_SELECT,
   VIEW_NAME,
 
@@ -21,95 +22,19 @@ import {
   VIEW_INITIALIZE_FAIL,
   VIEW_INITIALIZE_SUCCESS,
 
-  VIEW_REDIRECT_SUCCESS,
-
-  INSTANCE_EDIT_ADJACENT
+  VIEW_REDIRECT_SUCCESS
 } from './constants';
 
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-// See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga, navigation }) {
-  const choices = {
-    blocking: {
-      [INSTANCES_DELETE]: deleteSaga,
-      [INSTANCE_EDIT_ADJACENT]: editAdjacentSaga
-    },
-    nonBlocking: {
-      [INSTANCE_SAVE]: saveSaga,
-      [VIEW_SOFT_REDIRECT]: redirectSaga
-    }
+const transitions = {
+  blocking: {
+    [INSTANCES_DELETE]: deleteSaga
+  },
+  nonBlocking: {
+    [INSTANCE_SAVE]: saveSaga,
+    [ADJACENT_INSTANCE_EDIT]: editAdjacentSaga,
+    [VIEW_SOFT_REDIRECT]: redirectSaga
   }
-
-  // create an iterator which will remember navigation offset for this scenario
-  const nextInc = plusMinus();
-
-  let lastTask;
-
-  while (true) {
-    const action = yield take([
-      ...Object.keys(choices.blocking),
-      ...Object.keys(choices.nonBlocking)
-    ]);
-
-    // Automatically cancel any task started previously if it's still running.
-    if (lastTask) {
-      yield cancel(lastTask);
-    }
-
-    if (Object.keys(choices.blocking).indexOf(action.type) > -1) {
-      try {
-        yield call(choices.blocking[action.type], {
-          modelDefinition,
-          softRedirectSaga,
-          action: {
-            ...action,
-            meta: {
-              ...action.meta,
-              spawner: VIEW_NAME
-            }
-          },
-          navigation: {
-            ...navigation,
-            nextInc
-          }
-        });
-      } catch (err) {
-        // Swallow custom errors.
-        if (err instanceof Error) {
-          throw err;
-        }
-      }
-    } else if (Object.keys(choices.nonBlocking).indexOf(action.type) > -1) {
-      lastTask = yield fork(function*() {
-        try {
-          yield call(choices.nonBlocking[action.type], {
-            modelDefinition,
-            softRedirectSaga,
-            action: {
-              ...action,
-              meta: {
-                ...action.meta,
-                spawner: VIEW_NAME
-              }
-            },
-            navigation: {
-              ...navigation,
-              nextInc
-            }
-          });
-        } catch (err) {
-          // Swallow custom errors.
-          if (err instanceof Error) {
-            throw err;
-          }
-        }
-      });
-    }
-  }
-}
-
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+};
 
 // See Search View scenario for detailed description of the saga.
 export default function*({
@@ -117,10 +42,9 @@ export default function*({
   softRedirectSaga,
   viewState: {
     instance,
-    tab: tabName,
-    // get navigation from 'search' view
-    navigation
+    tab: tabName
   },
+  offset,
   source
 }) {
   yield put({
@@ -134,7 +58,7 @@ export default function*({
       action: {
         payload: {
           instance,
-          navigation
+          offset
         },
         meta: { source }
       }
@@ -162,7 +86,12 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga, navigation });
+      yield call(scenarioSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        transitions,
+        viewName: VIEW_NAME
+      });
     } finally {
       if (yield cancelled()) {
         yield put({

@@ -1,9 +1,13 @@
 import { NotificationManager } from 'react-notifications';
 
 import {
+  INSTANCES_DELETE_FAIL,
+  INSTANCES_DELETE_SUCCESS
+} from '../common/constants';
+
+import {
   INSTANCE_SAVE_FAIL as CREATE_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as CREATE_INSTANCE_SAVE_SUCCESS,
-
   INSTANCE_VALIDATE_FAIL as CREATE_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as CREATE_INSTANCE_VALIDATE_SUCCESS,
   ALL_INSTANCE_FIELDS_VALIDATE as CREATE_ALL_INSTANCE_FIELDS_VALIDATE,
@@ -13,25 +17,20 @@ import {
 import {
   INSTANCE_SAVE_FAIL as EDIT_INSTANCE_SAVE_FAIL,
   INSTANCE_SAVE_SUCCESS as EDIT_INSTANCE_SAVE_SUCCESS,
-  INSTANCE_EDIT_SUCCESS,
   INSTANCE_VALIDATE_FAIL as EDIT_INSTANCE_VALIDATE_FAIL,
   INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS,
   ALL_INSTANCE_FIELDS_VALIDATE as EDIT_ALL_INSTANCE_FIELDS_VALIDATE,
-  VIEW_REDIRECT_FAIL as EDIT_VIEW_REDIRECT_FAIL
+  VIEW_REDIRECT_FAIL as EDIT_VIEW_REDIRECT_FAIL,
+  ADJACENT_INSTANCE_EDIT_FAIL
 } from '../views/edit/constants';
-
-import {
-  INSTANCES_DELETE_FAIL,
-  INSTANCES_DELETE_SUCCESS,
-  ERROR_NOT_FOUND
-} from '../common/constants';
 
 import {
   VIEW_REDIRECT_FAIL as SEARCH_VIEW_REDIRECT_FAIL
 } from '../views/search/constants';
 
 import {
-  VIEW_REDIRECT_FAIL as SHOW_VIEW_REDIRECT_FAIL
+  VIEW_REDIRECT_FAIL as SHOW_VIEW_REDIRECT_FAIL,
+  ADJACENT_INSTANCE_SHOW_FAIL
 } from '../views/show/constants';
 
 import {
@@ -101,15 +100,14 @@ const eventsMiddleware = ({ i18n, modelDefinition }) => store => next => action 
           })
       });
       break;
-    case INSTANCE_EDIT_SUCCESS:
-      if (action.payload.error === ERROR_NOT_FOUND) {
-        NotificationManager.create({
-          id: NOTIFICATION_ERROR,
-          type: 'error',
-          timeOut: ERROR_NOTIFICATION_TIMEOUT,
-          message: i18n.getMessage('crudEditor.found.items.message', { count: 0 })
-        });
-      }
+    case ADJACENT_INSTANCE_EDIT_FAIL:
+    case ADJACENT_INSTANCE_SHOW_FAIL:
+      NotificationManager.create({
+        id: NOTIFICATION_ERROR,
+        type: 'error',
+        timeOut: ERROR_NOTIFICATION_TIMEOUT,
+        message: i18n.getMessage('crudEditor.found.items.message', { count: 0 })
+      });
       break;
     case CREATE_INSTANCE_VALIDATE_FAIL:
     case EDIT_INSTANCE_VALIDATE_FAIL:

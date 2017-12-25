@@ -7,12 +7,20 @@ import {
   STATUS_DELETING,
   STATUS_INITIALIZING,
   STATUS_REDIRECTING,
+  STATUS_SEARCHING,
   STATUS_UPDATING
 } from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getAdjacentInstancesInfo = wrapper(({ offset }, totalCount) => ({
+    previous: typeof offset === 'number' && offset > 0,
+    next: typeof offset === 'number' && offset < (totalCount - 1)
+  })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -55,12 +63,12 @@ export const
     fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
     instanceLabel: storeState.instanceLabel,
-    flags: storeState.flags,
     isLoading: [
       STATUS_EXTRACTING,
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
+      STATUS_SEARCHING,
       STATUS_UPDATING
     ].indexOf(storeState.status) > -1,
     persistentInstance: storeState.persistentInstance,

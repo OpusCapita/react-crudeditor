@@ -9,8 +9,7 @@ import {
   getLogicalKeyBuilder,
   findFieldLayout,
   getTab,
-  viewOperations,
-  plusMinus
+  viewOperations
 } from './lib'
 
 import /* models , */ { fields } from '../../demo/models/contracts'
@@ -395,24 +394,6 @@ describe('Crudeditor-lib / views / lib', () => {
       })({});
       expect(ops).to.be.instanceof(Array); // eslint-disable-line no-unused-expressions
       expect(ops.length).to.equal(0); // eslint-disable-line no-unused-expressions
-    });
-  });
-
-  describe('plusMinus', () => {
-    it('should return an iterator', () => {
-      const iterator = plusMinus();
-
-      const one = iterator.next({ i: 1 });
-      assert.deepEqual(one.value, { init: true, i: 0 })
-
-      const two = iterator.next({ i: 1 });
-      assert.deepEqual(two.value, { init: false, i: 1 })
-
-      const three = iterator.next({ i: 1 });
-      assert.deepEqual(three.value, { init: false, i: 2 })
-
-      const four = iterator.next({ i: -1 });
-      assert.deepEqual(four.value, { init: false, i: 1 })
     });
   });
 });

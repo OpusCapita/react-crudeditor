@@ -144,5 +144,5 @@ export default function*({
     meta
   });
 
-  return { instances, totalCount, offset };
+  return instances;
 }

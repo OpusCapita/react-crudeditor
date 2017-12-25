@@ -60,7 +60,8 @@ export default function*({
       view: {
         name: viewName,
         state: viewState
-      }
+      },
+      ...additionalArgs
     },
     meta
   }
@@ -73,7 +74,8 @@ export default function*({
   try {
     yield call(softRedirectSaga, {
       viewName,
-      viewState
+      viewState,
+      ...additionalArgs
     });
   } catch (err) {
     yield put({

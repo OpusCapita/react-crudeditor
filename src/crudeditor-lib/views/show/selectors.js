@@ -15,9 +15,9 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getAdjacentInstancesInfo = wrapper(({ offset }, totalCount) => ({
+  getAdjacentInstancesInfo = wrapper(({ offset }, getTotalCount) => ({
     previous: typeof offset === 'number' && offset > 0,
-    next: typeof offset === 'number' && offset < (totalCount - 1)
+    next: typeof offset === 'number' && offset < (getTotalCount() - 1)
   })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████

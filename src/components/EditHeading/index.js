@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+
 import { getModelMessage } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
@@ -58,8 +59,8 @@ export default class EditHeading extends PureComponent {
         actions: {
           selectTab,
           exitView,
-          editPreviousInstance,
-          editNextInstance
+          gotoPreviousInstance,
+          gotoNextInstance
         },
         uiConfig: {
           headerLevel = 1
@@ -82,16 +83,16 @@ export default class EditHeading extends PureComponent {
     const arrows = [
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
         <Button
-          disabled={!editPreviousInstance}
-          onClick={editPreviousInstance}
+          disabled={!gotoPreviousInstance}
+          onClick={gotoPreviousInstance}
         >
           <Glyphicon glyph="arrow-left"/>
         </Button>
       </ConfirmUnsavedChanges>,
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
         <Button
-          disabled={!editNextInstance}
-          onClick={editNextInstance}
+          disabled={!gotoNextInstance}
+          onClick={gotoNextInstance}
         >
           <Glyphicon glyph="arrow-right"/>
         </Button>

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
@@ -39,6 +40,11 @@ export default class EditHeading extends PureComponent {
   static contextTypes = {
     i18n: PropTypes.object.isRequired
   };
+
+  componentDidUpdate() {
+    findDOMNode(this.prev).blur();
+    findDOMNode(this.next).blur();
+  }
 
   showConfirmDialog = _ => {
     const {
@@ -92,6 +98,7 @@ export default class EditHeading extends PureComponent {
         <Button
           disabled={!gotoPrevInstance}
           onClick={gotoPrevInstance}
+          ref={el => this.prev = el}
         >
           <Glyphicon glyph="arrow-left"/>
         </Button>
@@ -100,6 +107,7 @@ export default class EditHeading extends PureComponent {
         <Button
           disabled={!gotoNextInstance}
           onClick={gotoNextInstance}
+          ref={el => this.next = el}
         >
           <Glyphicon glyph="arrow-right"/>
         </Button>

@@ -1,9 +1,8 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import editSaga from './edit';
-import searchSaga from '../../search/workerSagas/search';
+import editAdjacentSaga from './editAdjacent';
 import redirectSaga from '../../../common/workerSagas/redirect';
-import { VIEW_CREATE, ERROR_NOT_FOUND } from '../../../common/constants';
+import { VIEW_CREATE } from '../../../common/constants';
 import { getDefaultNewInstance } from '../../search/selectors';
 
 import {
@@ -78,17 +77,17 @@ function* validateSaga(modelDefinition, meta) {
 }
 
 function* updateSaga(modelDefinition, meta) {
-  const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
-
   yield put({
     type: INSTANCE_SAVE_REQUEST,
     meta
   });
 
-  let updated;
+  let instance;
 
   try {
-    updated = yield call(modelDefinition.api.update, { instance });
+    instance = yield call(modelDefinition.api.update, {
+      instance: yield select(storeState => storeState.views[VIEW_NAME].formInstance)
+    });
   } catch (err) {
     yield put({
       type: INSTANCE_SAVE_FAIL,
@@ -102,13 +101,11 @@ function* updateSaga(modelDefinition, meta) {
 
   yield put({
     type: INSTANCE_SAVE_SUCCESS,
-    payload: {
-      instance: updated
-    },
+    payload: { instance },
     meta
   });
 
-  return updated;
+  return instance;
 }
 
 /*
@@ -120,76 +117,38 @@ export default function*({
   action: {
     payload: { afterAction } = {},
     meta
-  },
-  navigation
+  }
 }) {
-  yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
-  const instance = yield call(updateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  yield call(validateSaga, modelDefinition, meta);
+  yield call(updateSaga, modelDefinition, meta);
 
   if (afterAction === AFTER_ACTION_NEW) {
-    try {
-      yield call(redirectSaga, {
-        modelDefinition,
-        softRedirectSaga,
-        action: {
-          payload: {
-            view: {
-              name: VIEW_CREATE,
-              state: {
-                predefinedFields: yield select(storeState => getDefaultNewInstance(storeState, modelDefinition))
-              }
+    yield call(redirectSaga, {
+      modelDefinition,
+      softRedirectSaga,
+      action: {
+        payload: {
+          view: {
+            name: VIEW_CREATE,
+            state: {
+              predefinedFields: yield select(storeState => getDefaultNewInstance(storeState, modelDefinition))
             }
-          },
-          meta
-        }
-      })
-    } catch (err) {
-      throw err;
-    }
-  } else if (afterAction === AFTER_ACTION_NEXT) {
-    try {
-      const { offset: navOffset, nextInc } = navigation;
-
-      let { i, init } = nextInc.next({ i: 1 }).value
-
-      if (init) {
-        i = nextInc.next({ i: 1 }).value.i
-      }
-
-      const offset = navOffset + i;
-
-      const { instances, totalCount, offset: newOffset } = yield call(searchSaga, {
-        modelDefinition,
-        action: {
-          payload: {
-            offset
-          },
-          meta
-        }
-      });
-
-      try {
-        yield call(editSaga, {
-          modelDefinition,
-          action: {
-            payload: {
-              instance: instances.length === 0 ? instance : instances[0],
-              navigation: {
-                ...navigation,
-                offset: newOffset,
-                totalCount,
-                ...(instances.length === 0 ? { error: ERROR_NOT_FOUND } : {})
-              }
-            },
-            meta
           }
-        });
-      } catch (err) {
-        throw err;
+        },
+        meta
       }
-    } catch (err) {
-      throw err;
-    }
+    });
+  } else if (afterAction === AFTER_ACTION_NEXT) {
+    yield call(editAdjacentSaga, {
+      modelDefinition,
+      action: {
+        payload: {
+          step: 1
+        },
+        meta
+      }
+    });
   }
 }

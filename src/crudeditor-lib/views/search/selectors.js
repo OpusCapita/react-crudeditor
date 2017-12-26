@@ -24,6 +24,8 @@ import {
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
+const _getTotalCount = ({ totalCount }) => totalCount;
+
 const _getViewState = ({
   resultFilter,
   sortParams: {
@@ -55,6 +57,10 @@ export const
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   getViewState = wrapper(_getViewState),
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getTotalCount = wrapper(_getTotalCount),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -119,6 +125,6 @@ export const
       order: storeState.sortParams.order
     },
     status: storeState.status,
-    totalCount: storeState.totalCount,
+    totalCount: _getTotalCount(storeState),
     hideSearchForm: storeState.hideSearchForm
   }));

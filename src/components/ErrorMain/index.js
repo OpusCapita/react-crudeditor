@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 
 const ErrorMain = ({
   model: {
-    data: { errors },
+    data: {
+      errors,
+      permissions: {
+        crudOperations: {
+          view: viewPermission
+        }
+      }
+    },
     actions: { goHome },
     uiConfig: {
       headerLevel = 1
-    }
-  },
-  modelDefinition: {
-    permissions: {
-      crudOperations
     }
   }
 }) => {
@@ -32,7 +34,7 @@ const ErrorMain = ({
           ))
       }
       {
-        crudOperations.view &&
+        viewPermission &&
         <Button bsStyle='link' onClick={goHome} key="Cancel">
           Home
         </Button>
@@ -47,17 +49,15 @@ ErrorMain.propTypes = {
       goHome: PropTypes.func.isRequired
     }),
     data: PropTypes.shape({
-      errors: PropTypes.arrayOf(PropTypes.object).isRequired
+      errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+      permissions: PropTypes.shape({
+        crudOperations: PropTypes.shape({
+          view: PropTypes.bool,
+        }).isRequired
+      })
     }),
     uiConfig: PropTypes.object.isRequired
-  }).isRequired,
-  modelDefinition: PropTypes.shape({
-    permissions: PropTypes.shape({
-      crudOperations: PropTypes.shape({
-        view: PropTypes.bool,
-      }).isRequired
-    })
-  })
+  }).isRequired
 }
 
 export default ErrorMain;

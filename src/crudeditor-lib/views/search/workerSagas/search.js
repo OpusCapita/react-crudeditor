@@ -93,7 +93,8 @@ export default function*({
     max = max || currentMax;
 
     // Reset offset to 0 with new sortField, pageMax or filter.
-    offset = sort === currentSort &&
+    offset = meta.spawner !== VIEW_NAME ||
+      sort === currentSort &&
       max === currentMax &&
       isEqual(
         cleanFilter(filter),
@@ -144,5 +145,5 @@ export default function*({
     meta
   });
 
-  return { instances, totalCount, offset };
+  return instances;
 }

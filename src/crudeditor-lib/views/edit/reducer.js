@@ -36,6 +36,7 @@ import {
   STATUS_INITIALIZING,
   STATUS_READY,
   STATUS_REDIRECTING,
+  STATUS_SEARCHING,
   STATUS_UNINITIALIZED,
   STATUS_UPDATING,
 
@@ -44,6 +45,12 @@ import {
 
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
+
+import {
+  INSTANCES_SEARCH_REQUEST,
+  INSTANCES_SEARCH_FAIL,
+  INSTANCES_SEARCH_SUCCESS
+} from '../search/constants';
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
 const synchronizeInstances = ({ instance, formLayout, i18n }) => ({
@@ -97,18 +104,20 @@ const defaultStoreStateTemplate = {
 
   errors: {
 
-    // object with keys as field names,
-    // values as arrays of Parsing Errors and Field Validation Errors, may not be empty.
-    // (the object does not have keys for fields with successfully parsed/validated values).
+    /* object with keys as field names,
+     * values as arrays of Parsing Errors and Field Validation Errors, may not be empty.
+     * (the object does not have keys for fields with successfully parsed/validated values).
+     */
     fields: {}
   },
 
-  status: STATUS_UNINITIALIZED,
+  /* instance's absolute offset in search result (0 <= offset < totalCount),
+   * or
+   * undefined if absolute offset is unknown (in cases of hard redirect to Edit View or soft redirect from Create View).
+   */
+  offset: undefined,
 
-  flags: {
-    nextInstanceExists: false,
-    prevInstanceExists: false
-  }
+  status: STATUS_UNINITIALIZED
 };
 
 /*
@@ -140,6 +149,14 @@ export default (modelDefinition, i18n) => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
+  } else if (type === INSTANCES_SEARCH_REQUEST) {
+    newStoreStateSlice.status = STATUS_SEARCHING;
+
+  } else if ([INSTANCES_SEARCH_FAIL, INSTANCES_SEARCH_SUCCESS].indexOf(type) > -1) {
+    newStoreStateSlice.status = STATUS_READY;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
 
@@ -151,6 +168,7 @@ export default (modelDefinition, i18n) => (
     newStoreStateSlice = u.constant(cloneDeep(defaultStoreStateTemplate));
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === INSTANCES_DELETE_REQUEST) {
     newStoreStateSlice.status = STATUS_DELETING;
 
@@ -171,11 +189,7 @@ export default (modelDefinition, i18n) => (
     const { instance } = payload;
 
     if (type === INSTANCE_EDIT_SUCCESS) {
-      const { nextInstanceExists = false, prevInstanceExists = false } = payload;
-      newStoreStateSlice.flags = {
-        nextInstanceExists,
-        prevInstanceExists
-      }
+      newStoreStateSlice.offset = payload.offset;
     }
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).

@@ -20,9 +20,16 @@ import {
   STATUS_INITIALIZING,
   STATUS_READY,
   STATUS_REDIRECTING,
+  STATUS_SEARCHING,
   STATUS_UNINITIALIZED,
   STATUS_EXTRACTING
 } from '../../common/constants';
+
+import {
+  INSTANCES_SEARCH_REQUEST,
+  INSTANCES_SEARCH_FAIL,
+  INSTANCES_SEARCH_SUCCESS
+} from '../search/constants';
 
 import { findFieldLayout, getTab } from '../lib';
 
@@ -48,12 +55,13 @@ const defaultStoreStateTemplate = {
 
   instanceLabel: undefined,
 
-  status: STATUS_UNINITIALIZED,
+  /* instance's absolute offset in search result (0 <= offset < totalCount),
+   * or
+   * undefined if absolute offset is unknown (in cases of hard redirect to Search View).
+   */
+  offset: undefined,
 
-  flags: {
-    nextInstanceExists: false,
-    prevInstanceExists: false
-  }
+  status: STATUS_UNINITIALIZED
 };
 
 /*
@@ -85,6 +93,14 @@ export default (modelDefinition, i18n) => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
+  } else if (type === INSTANCES_SEARCH_REQUEST) {
+    newStoreStateSlice.status = STATUS_SEARCHING;
+
+  } else if ([INSTANCES_SEARCH_FAIL, INSTANCES_SEARCH_SUCCESS].indexOf(type) > -1) {
+    newStoreStateSlice.status = STATUS_READY;
+
+  // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
+
   } else if (type === VIEW_REDIRECT_REQUEST) {
     newStoreStateSlice.status = STATUS_REDIRECTING;
 
@@ -101,13 +117,8 @@ export default (modelDefinition, i18n) => (
     newStoreStateSlice.status = STATUS_EXTRACTING;
 
   } else if (type === INSTANCE_SHOW_SUCCESS) {
-    const { instance } = payload;
-
-    const { nextInstanceExists = false, prevInstanceExists = false } = payload;
-    newStoreStateSlice.flags = {
-      nextInstanceExists,
-      prevInstanceExists
-    }
+    const { instance, offset } = payload;
+    newStoreStateSlice.offset = offset;
 
     const formLayout = modelDefinition.ui.show.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.

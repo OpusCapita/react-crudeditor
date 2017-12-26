@@ -3,14 +3,22 @@ import { getLogicalKeyBuilder } from '../lib';
 import { VIEW_NAME } from './constants';
 
 import {
+  STATUS_EXTRACTING,
   STATUS_INITIALIZING,
   STATUS_REDIRECTING,
-  STATUS_EXTRACTING
+  STATUS_SEARCHING
 } from '../../common/constants';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
 export const
+
+  // █████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+  getAdjacentInstancesInfo = wrapper(({ offset }, totalCount) => ({
+    previous: typeof offset === 'number' && offset > 0,
+    next: typeof offset === 'number' && offset < (totalCount - 1)
+  })),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -39,12 +47,12 @@ export const
     entityName: modelMeta.name,
     formattedInstance: storeState.formattedInstance,
     fieldsMeta: modelMeta.fields,
-    flags: storeState.flags,
     instanceLabel: storeState.instanceLabel,
     isLoading: [
+      STATUS_EXTRACTING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
-      STATUS_EXTRACTING
+      STATUS_SEARCHING
     ].indexOf(storeState.status) > -1,
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),

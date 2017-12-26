@@ -5,10 +5,12 @@ import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
 import { viewOperations } from '../lib';
+import { getTotalCount } from '../search/selectors';
 
 import {
   getViewModelData,
-  getViewState
+  getViewState,
+  getAdjacentInstancesInfo
 } from './selectors';
 
 import {
@@ -23,42 +25,35 @@ import {
   saveAndNextInstance,
   selectTab,
   validateInstanceField,
-  editAdjacentInstance
+  editPreviousInstance,
+  editNextInstance
 } from './actions';
 
 const mergeProps = (
   {
     viewModelData,
+    adjacentInstancesExist,
     viewState,
     operations,
-    flags: {
-      nextInstanceExists,
-      prevInstanceExists
-    },
     externalOperations,
     uiConfig
   },
   {
     saveAndNextInstance,
-    editAdjacentInstance,
+    editPreviousInstance,
+    editNextInstance,
     softRedirectView,
-    ...otherActions
+    ...dispatchProps
   },
   ownProps
 ) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    // here we adjust action creators to reflect flags values
     actions: {
-      ...otherActions,
-      ...(prevInstanceExists ? {
-        gotoPrevInstance: _ => editAdjacentInstance('prev')
-      } : {}),
-      ...(nextInstanceExists ? {
-        saveAndNextInstance,
-        gotoNextInstance: _ => editAdjacentInstance('next')
-      } : {})
+      ...dispatchProps,
+      ...(adjacentInstancesExist.previous && { editPreviousInstance }),
+      ...(adjacentInstancesExist.next && { saveAndNextInstance, editNextInstance })
     },
     operations: {
       internal: viewOperations({
@@ -75,10 +70,8 @@ const mergeProps = (
 
 export default connect(
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
-    ...(({ flags, ...viewModelData }) => ({
-      viewModelData,
-      flags
-    }))(getViewModelData(storeState, modelDefinition)),
+    viewModelData: getViewModelData(storeState, modelDefinition),
+    adjacentInstancesExist: getAdjacentInstancesInfo(storeState, getTotalCount(storeState)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     externalOperations,
@@ -92,16 +85,11 @@ export default connect(
     saveAndNextInstance,
     selectTab,
     validateInstanceField,
-    editAdjacentInstance,
+    editPreviousInstance,
+    editNextInstance,
     softRedirectView
   },
   mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
-    {children}
-  </Main>)
+)(
+  ({ viewModel }) => <Main model={viewModel} />
 );

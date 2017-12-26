@@ -44,7 +44,7 @@ export default function*(modelDefinition) {
    * (by canceling active activeViewScenarioTask and displaying requested view).
    * When view initialization failured, the saga throws error(s).
    */
-  function* softRedirectSaga({ viewName, viewState }) {
+  function* softRedirectSaga({ viewName, viewState, ...additionalArgs }) {
     const initializeViewSaga = initializeViewSagas[viewName];
 
     if (!initializeViewSaga) {
@@ -60,7 +60,8 @@ export default function*(modelDefinition) {
     activeViewScenarioTask = yield call(initializeViewSaga, {
       modelDefinition,
       softRedirectSaga,
-      viewState
+      viewState,
+      ...additionalArgs
     });
 
     yield put({

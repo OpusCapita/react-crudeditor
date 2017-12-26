@@ -406,26 +406,6 @@ export const getTab = (formLayout, tabName) => {
   return rezTab;
 }
 
-// 'plusMinus' is a generator used to increment/decrement 'navigation offset' value
-// to handle 'Save and Next' and next/previous navigation functionality
-// usage:
-// iterator = plusMinus()
-// increment: iterator.next({i: 1})
-// decrement: iterator.next({i: -1})
-// on the first iteration iterator returns 'init' === true, you may check it
-// if you need to run custom init logic
-export function* plusMinus() {
-  let i = 0, init = true;
-
-  while (true) {
-    const next = yield { i, init };
-    if (init) {
-      init = false
-    }
-    i += next.i
-  }
-}
-
 // viewOperations creates custom/external operations handler for particular view
 export const viewOperations = ({
   viewName,

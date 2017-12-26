@@ -66,8 +66,8 @@ export default class EditHeading extends PureComponent {
         actions: {
           selectTab,
           exitView,
-          gotoNextInstance,
-          gotoPrevInstance
+          editPreviousInstance,
+          editNextInstance
         },
         uiConfig: {
           headerLevel = 1
@@ -90,16 +90,16 @@ export default class EditHeading extends PureComponent {
     const arrows = [
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
         <Button
-          disabled={!gotoPrevInstance}
-          onClick={gotoPrevInstance}
+          disabled={!editPreviousInstance}
+          onClick={editPreviousInstance}
         >
           <Glyphicon glyph="arrow-left"/>
         </Button>
       </ConfirmUnsavedChanges>,
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
         <Button
-          disabled={!gotoNextInstance}
-          onClick={gotoNextInstance}
+          disabled={!editNextInstance}
+          onClick={editNextInstance}
         >
           <Glyphicon glyph="arrow-right"/>
         </Button>

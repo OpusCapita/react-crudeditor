@@ -1,7 +1,9 @@
-import { take, cancel, call, fork, cancelled, put, spawn } from 'redux-saga/effects';
+import { call, cancelled, put, spawn } from 'redux-saga/effects';
 
 import saveSaga from './workerSagas/save';
 import redirectSaga from '../../common/workerSagas/redirect';
+import { VIEW_SOFT_REDIRECT } from '../../common/constants';
+import scenarioSaga from '../../common/scenario';
 
 import {
   INSTANCE_SAVE,
@@ -9,79 +11,15 @@ import {
   VIEW_REDIRECT_SUCCESS,
   VIEW_NAME
 } from './constants';
-import { VIEW_SOFT_REDIRECT } from '../../common/constants';
 
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
-
-// See Search View scenarioSaga in ../search/scenario for detailed description of the saga.
-function* scenarioSaga({ modelDefinition, softRedirectSaga }) {
-  const choices = {
-    blocking: {
-      [INSTANCE_SAVE]: saveSaga
-    },
-    nonBlocking: {
-      [VIEW_SOFT_REDIRECT]: redirectSaga
-    }
-  }
-
-  let lastTask;
-
-  while (true) {
-    const action = yield take([
-      ...Object.keys(choices.blocking),
-      ...Object.keys(choices.nonBlocking)
-    ]);
-
-    // Automatically cancel any task started previously if it's still running.
-    if (lastTask) {
-      yield cancel(lastTask);
-    }
-
-    if (Object.keys(choices.blocking).indexOf(action.type) > -1) {
-      try {
-        yield call(choices.blocking[action.type], {
-          modelDefinition,
-          softRedirectSaga,
-          action: {
-            ...action,
-            meta: {
-              ...action.meta,
-              spawner: VIEW_NAME
-            }
-          }
-        });
-      } catch (err) {
-        // Swallow custom errors.
-        if (err instanceof Error) {
-          throw err;
-        }
-      }
-    } else if (Object.keys(choices.nonBlocking).indexOf(action.type) > -1) {
-      lastTask = yield fork(function*() {
-        try {
-          yield call(choices.nonBlocking[action.type], {
-            modelDefinition,
-            softRedirectSaga,
-            action: {
-              ...action,
-              meta: {
-                ...action.meta,
-                spawner: VIEW_NAME
-              }
-            }
-          });
-        } catch (err) {
-          // Swallow custom errors.
-          if (err instanceof Error) {
-            throw err;
-          }
-        }
-      });
-    }
+const transitions = {
+  blocking: {
+    [INSTANCE_SAVE]: saveSaga
+  },
+  nonBlocking: {
+    [VIEW_SOFT_REDIRECT]: redirectSaga
   }
 }
-
-// ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
 // See Search View scenario for detailed description of the saga.
 export default function*({
@@ -100,7 +38,12 @@ export default function*({
 
   return (yield spawn(function*() {
     try {
-      yield call(scenarioSaga, { modelDefinition, softRedirectSaga });
+      yield call(scenarioSaga, {
+        modelDefinition,
+        softRedirectSaga,
+        transitions,
+        viewName: VIEW_NAME
+      });
     } finally {
       if (yield cancelled()) {
         yield put({

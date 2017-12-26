@@ -2,8 +2,12 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import { getDefaultSortField } from './lib';
 import { getLogicalKeyBuilder } from '../lib';
+
+import {
+  getDefaultSortField,
+  cleanFilter
+} from './lib';
 
 import {
   DEFAULT_MAX,
@@ -168,7 +172,10 @@ export default (modelDefinition, i18n) => {
     );
 
   return (storeState = buildDefaultStoreState(modelDefinition), { type, payload, error, meta }) => {
-    if (storeState.status === STATUS_UNINITIALIZED && type !== VIEW_INITIALIZE_REQUEST) {
+    if (
+      storeState.status === STATUS_UNINITIALIZED &&
+      [VIEW_INITIALIZE_REQUEST, INSTANCES_SEARCH_SUCCESS].indexOf(type) === -1
+    ) {
       return storeState;
     }
 
@@ -200,7 +207,7 @@ export default (modelDefinition, i18n) => {
 
     } else if (type === VIEW_REDIRECT_SUCCESS) {
       // Do not reset store to initial uninitialized state because
-      // filter, order, sort, etc. must remain after returning from other Views.
+      // totalCount, filter, order, sort, etc. must remain after returning from other Views.
       newStoreStateSlice.formFilter = u.constant(cloneDeep(storeState.resultFilter));
 
       newStoreStateSlice.selectedInstances = [];
@@ -251,35 +258,46 @@ export default (modelDefinition, i18n) => {
         totalCount
       } = payload;
 
-      newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
-      newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+      if (storeState.status === STATUS_UNINITIALIZED) {
+        if (isEqual(
+          cleanFilter(filter),
+          cleanFilter(storeState.resultFilter)
+        )) {
+          // Updating totalCount since another View has made "search" API call with the same filter.
+          // XXX: totalCount for current Search View filter is used by other Views => it must always be up-to-date.
+          newStoreStateSlice.totalCount = totalCount;
+        }
+      } else {
+        newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
+        newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
 
-      newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
-        modelDefinition,
-        filter,
-        i18n
-      }));
+        newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
+          modelDefinition,
+          filter,
+          i18n
+        }));
 
-      newStoreStateSlice.sortParams = {
-        field: sort,
-        order
-      };
+        newStoreStateSlice.sortParams = {
+          field: sort,
+          order
+        };
 
-      newStoreStateSlice.pageParams = {
-        max,
-        offset
-      };
+        newStoreStateSlice.pageParams = {
+          max,
+          offset
+        };
 
-      newStoreStateSlice.totalCount = totalCount;
+        newStoreStateSlice.totalCount = totalCount;
 
-      // XXX: updeep-package does not check arrays for equality.
-      if (!isEqual(instances, storeState.resultInstances)) {
-        newStoreStateSlice.resultInstances = instances;
-        newStoreStateSlice.selectedInstances = [];
-      }
+        // XXX: updeep-package does not check arrays for equality.
+        if (!isEqual(instances, storeState.resultInstances)) {
+          newStoreStateSlice.resultInstances = instances;
+          newStoreStateSlice.selectedInstances = [];
+        }
 
-      if (storeState.status !== STATUS_INITIALIZING) {
-        newStoreStateSlice.status = STATUS_READY;
+        if (storeState.status !== STATUS_INITIALIZING) {
+          newStoreStateSlice.status = STATUS_READY;
+        }
       }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

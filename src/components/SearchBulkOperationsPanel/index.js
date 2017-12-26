@@ -20,7 +20,14 @@ export default class SearchBulkOperationsPanel extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handle = (func, data) => _ => func(data);
+  handleDelete = _ => {
+    const {
+      data: { selectedInstances },
+      actions: { deleteInstances }
+    } = this.props.model;
+
+    return deleteInstances(selectedInstances)
+  }
 
   render() {
     const { i18n } = this.context;
@@ -54,7 +61,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
                     , false
                   )
                 }
-                onClick={this.handle(deleteInstances, selectedInstances)}
+                onClick={this.handleDelete}
               >
                 {i18n.getMessage('crudEditor.deleteSelected.button')}
               </Button>

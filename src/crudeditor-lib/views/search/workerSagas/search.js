@@ -130,7 +130,6 @@ export default function*({
 
     throw err;
   }
-  console.log('API.SEARCH: filter', JSON.stringify(cleanedFilter), '\nOFFSET', offset, '\nSORT', sort, '\nORDER', order, '\nMAX', max, '\nTOTAL COUNT', totalCount, '\nINSTANCES', JSON.stringify(instances));
 
   yield put({
     type: INSTANCES_SEARCH_SUCCESS,

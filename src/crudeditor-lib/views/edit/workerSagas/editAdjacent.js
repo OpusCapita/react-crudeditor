@@ -18,7 +18,6 @@ export default function*({
   // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
   const offset = step + (yield select(storeState => storeState.views[VIEW_NAME].offset));
-  console.log('=== EDIT ADJACENT SAGA WITH NEW offset', offset);
 
   const [instance] = yield call(searchSaga, {
     modelDefinition,

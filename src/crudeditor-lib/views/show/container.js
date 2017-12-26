@@ -26,6 +26,9 @@ const mergeProps = (
     adjacentInstancesExist,
     viewState,
     operations,
+    permissions: {
+      crudOperations
+    },
     externalOperations,
     uiConfig
   },
@@ -33,6 +36,7 @@ const mergeProps = (
     showPreviousInstance,
     showNextInstance,
     softRedirectView,
+    exitView,
     ...dispatchProps
   },
   ownProps
@@ -43,7 +47,8 @@ const mergeProps = (
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: showPreviousInstance }),
-      ...(adjacentInstancesExist.next && { gotoNextInstance: showNextInstance })
+      ...(adjacentInstancesExist.next && { gotoNextInstance: showNextInstance }),
+      ...(crudOperations.view && { exitView })
     },
     operations: {
       internal: viewOperations({
@@ -64,6 +69,7 @@ export default connect(
     adjacentInstancesExist: getAdjacentInstancesInfo(storeState, getTotalCount(storeState)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
+    permissions: modelDefinition.permissions,
     externalOperations,
     uiConfig
   }), {

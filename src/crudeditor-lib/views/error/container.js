@@ -6,11 +6,26 @@ import { getViewModelData } from './selectors';
 import { softRedirectView } from '../../common/actions';
 import { VIEW_SEARCH } from '../../common/constants';
 
-const mergeProps = ({ viewModelData, uiConfig }, dispatchProps, ownProps) => ({
+const mergeProps = ({
+  viewModelData,
+  permissions: {
+    crudOperations
+  },
+  uiConfig
+},
+{
+  goHome,
+  ...dispatchProps
+},
+ownProps
+) => ({
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: dispatchProps,
+    actions: {
+      ...(crudOperations.delete && { goHome }),
+      ...dispatchProps
+    },
     uiConfig
   },
 });
@@ -18,6 +33,7 @@ const mergeProps = ({ viewModelData, uiConfig }, dispatchProps, ownProps) => ({
 export default connect(
   (storeState, { modelDefinition, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
+    permissions: modelDefinition.permissions,
     uiConfig
   }),
   {

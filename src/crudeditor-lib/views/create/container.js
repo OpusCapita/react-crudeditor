@@ -25,11 +25,15 @@ const mergeProps = (
     viewModelData,
     viewState,
     operations,
+    permissions: {
+      crudOperations
+    },
     externalOperations,
     uiConfig
   },
   {
     softRedirectView,
+    exitView,
     ...dispatchProps
   },
   ownProps
@@ -37,7 +41,10 @@ const mergeProps = (
   ...ownProps,
   viewModel: {
     data: viewModelData,
-    actions: dispatchProps,
+    actions: {
+      ...dispatchProps,
+      ...(crudOperations.view && { exitView })
+    },
     operations: {
       internal: viewOperations({
         viewName: VIEW_NAME,
@@ -56,6 +63,7 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
+    permissions: modelDefinition.permissions,
     externalOperations,
     uiConfig
   }), {

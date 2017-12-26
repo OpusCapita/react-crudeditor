@@ -32,11 +32,15 @@ const mergeProps = (
     viewModelData,
     viewState,
     operations,
+    permissions: {
+      crudOperations
+    },
     externalOperations,
     uiConfig
   },
   {
     softRedirectView,
+    deleteInstances,
     ...dispatchProps
   },
   ownProps
@@ -46,22 +50,29 @@ const mergeProps = (
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      createInstance: _ => softRedirectView({
-        name: VIEW_CREATE,
-        state: {
-          predefinedFields: defaultNewInstance
-        }
+      ...(crudOperations.create && {
+        createInstance: _ => softRedirectView({
+          name: VIEW_CREATE,
+          state: {
+            predefinedFields: defaultNewInstance
+          }
+        })
       }),
-      editInstance: ({ instance, tab, offset }) => softRedirectView({
-        name: VIEW_EDIT,
-        state: { instance, tab },
-        offset
+      ...(crudOperations.edit ? {
+        editInstance: ({ instance, tab, offset }) => softRedirectView({
+          name: VIEW_EDIT,
+          state: { instance, tab },
+          offset
+        })
+      } : {
+        showInstance: ({ instance, tab, offset }) => softRedirectView({
+          name: VIEW_SHOW,
+          state: { instance, tab },
+          offset
+        })
       }),
-      showInstance: ({ instance, tab, offset }) => softRedirectView({
-        name: VIEW_SHOW,
-        state: { instance, tab },
-        offset
-      })
+      ...(crudOperations.delete && { deleteInstances }
+      )
     },
     operations: {
       internal: viewOperations({
@@ -82,6 +93,7 @@ export default connect(
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
+    permissions: modelDefinition.permissions,
     externalOperations,
     uiConfig
   }),

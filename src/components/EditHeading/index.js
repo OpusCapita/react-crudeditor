@@ -23,11 +23,6 @@ export default class EditHeading extends PureComponent {
         instanceLabel: PropTypes.string,
         tabs: PropTypes.array,
         viewName: PropTypes.string.isRequired,
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.shape({
-            view: PropTypes.bool
-          }).isRequired
-        }).isRequired,
         formInstance: PropTypes.object,
         persistentInstance: PropTypes.object
       }),
@@ -58,10 +53,7 @@ export default class EditHeading extends PureComponent {
           } = {},
           instanceLabel,
           tabs,
-          viewName,
-          permissions: {
-            crudOperations: permissions
-          }
+          viewName
         },
         actions: {
           selectTab,
@@ -77,7 +69,7 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const title = permissions.view ?
+    const title = exitView ?
       (
         <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
           <a style={{ cursor: 'pointer' }} onClick={exitView}>

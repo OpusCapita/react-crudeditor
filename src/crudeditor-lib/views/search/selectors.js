@@ -83,10 +83,8 @@ export const
         resultFields,
         searchableFields
       }
-    },
-    permissions
+    }
   }) => ({
-    permissions,
     spinner,
     standardOperations,
     entityName: modelMeta.name,

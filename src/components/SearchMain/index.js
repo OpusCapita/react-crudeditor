@@ -16,11 +16,11 @@ export default class SearchMain extends PureComponent {
     model: PropTypes.shape({
       actions: PropTypes.objectOf(PropTypes.func),
       data: PropTypes.shape({
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.object.isRequired
-        })
+        hideSearchForm: PropTypes.bool
       }),
-      uiConfig: PropTypes.object.isRequired
+      uiConfig: PropTypes.shape({
+        headerLevel: PropTypes.number
+      })
     }).isRequired
   }
 
@@ -28,24 +28,16 @@ export default class SearchMain extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handleCreate = (e) => {
-    this.props.model.actions.createInstance();
-  }
-
   render() {
     const { model } = this.props;
 
     const {
       data: {
-        hideSearchForm,
-        permissions: {
-          crudOperations: {
-            create: canCreate
-          }
-        }
+        hideSearchForm
       },
       actions: {
-        toggleSearchForm
+        toggleSearchForm,
+        createInstance
       },
       uiConfig: {
         headerLevel = 1
@@ -74,14 +66,14 @@ export default class SearchMain extends PureComponent {
             <Col xs={4}>
               <div style={{ float: "right" }}>
                 {
-                  canCreate &&
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary"
-                  onClick={this.handleCreate}
-                >
-                  {i18n.getMessage('crudEditor.create.button')}
-                </button>
+                  createInstance &&
+                  <button
+                    type="button"
+                    className="btn btn-sm btn-primary"
+                    onClick={createInstance}
+                  >
+                    {i18n.getMessage('crudEditor.create.button')}
+                  </button>
                 }
               </div>
             </Col>

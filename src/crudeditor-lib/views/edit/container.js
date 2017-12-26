@@ -35,6 +35,9 @@ const mergeProps = (
     adjacentInstancesExist,
     viewState,
     operations,
+    permissions: {
+      crudOperations
+    },
     externalOperations,
     uiConfig
   },
@@ -43,6 +46,9 @@ const mergeProps = (
     editPreviousInstance,
     editNextInstance,
     softRedirectView,
+    deleteInstances,
+    exitView,
+    saveAndNewInstance,
     ...dispatchProps
   },
   ownProps
@@ -53,7 +59,11 @@ const mergeProps = (
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { editPreviousInstance }),
-      ...(adjacentInstancesExist.next && { saveAndNextInstance, editNextInstance })
+      ...(adjacentInstancesExist.next && { saveAndNextInstance, editNextInstance }),
+      ...(crudOperations.delete && { deleteInstances }),
+      ...(crudOperations.view && { exitView }),
+      ...(crudOperations.create && { saveAndNewInstance }
+      )
     },
     operations: {
       internal: viewOperations({
@@ -74,14 +84,15 @@ export default connect(
     adjacentInstancesExist: getAdjacentInstancesInfo(storeState, getTotalCount(storeState)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
+    permissions: modelDefinition.permissions,
     externalOperations,
     uiConfig
   }), {
     changeInstanceField,
     deleteInstances,
     exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
-    saveInstance,
     saveAndNewInstance,
+    saveInstance,
     saveAndNextInstance,
     selectTab,
     validateInstanceField,

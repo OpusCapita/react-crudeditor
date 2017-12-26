@@ -59,7 +59,7 @@ describe('show view: show saga', () => {
       gen.next().value,
       put({
         type: INSTANCE_SHOW_SUCCESS,
-        payload: { instance: undefined },
+        payload: { instance: undefined, offset: undefined },
         meta: { source: {} }
       })
     );

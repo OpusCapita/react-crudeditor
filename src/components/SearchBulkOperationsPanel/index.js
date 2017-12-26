@@ -10,11 +10,6 @@ export default class SearchBulkOperationsPanel extends PureComponent {
     model: PropTypes.shape({
       data: PropTypes.shape({
         selectedInstances: PropTypes.array,
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.shape({
-            delete: PropTypes.bool.isRequired
-          }).isRequired
-        }).isRequired,
         standardOperations: PropTypes.object
       }),
       actions: PropTypes.objectOf(PropTypes.func)
@@ -25,25 +20,26 @@ export default class SearchBulkOperationsPanel extends PureComponent {
     i18n: PropTypes.object
   };
 
-  handleDelete = _ => this.props.model.actions.deleteInstances(this.props.model.data.selectedInstances)
+  handle = (func, data) => _ => func(data);
 
   render() {
     const { i18n } = this.context;
     const {
-      permissions: {
-        crudOperations
+      data: {
+        standardOperations: {
+          delete: deleteConfig = _ => {}
+        } = {},
+        selectedInstances
       },
-      standardOperations: {
-        delete: deleteConfig = _ => {}
-      } = {},
-      selectedInstances
-    } = this.props.model.data;
-    const canDelete = crudOperations.delete;
+      actions: {
+        deleteInstances
+      }
+    } = this.props.model;
 
     return (
       <div className='crud---search-bulk-operations-panel'>
         {
-          canDelete && (<div>
+          deleteInstances && (<div>
             <ConfirmDialog
               message={i18n.getMessage('crudEditor.deleteSelected.confirmation')}
               textConfirm={i18n.getMessage('crudEditor.delete.button')}
@@ -58,7 +54,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
                     , false
                   )
                 }
-                onClick={this.handleDelete}
+                onClick={this.handle(deleteInstances, selectedInstances)}
               >
                 {i18n.getMessage('crudEditor.deleteSelected.button')}
               </Button>

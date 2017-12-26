@@ -15,9 +15,6 @@ class SearchResultListing extends PureComponent {
         resultFields: PropTypes.arrayOf(PropTypes.object),
         sortParams: PropTypes.object,
         isLoading: PropTypes.bool,
-        permissions: PropTypes.shape({
-          crudOperations: PropTypes.object.isRequired
-        }),
         pageParams: PropTypes.shape({
           offset: PropTypes.number.isRequired
         })
@@ -67,24 +64,38 @@ class SearchResultListing extends PureComponent {
     }
   }
 
+  // TBD purpose of this function?
   handleNewInstances = instances => {
+    const {
+      toggleSelected,
+      showInstance,
+      editInstance,
+      deleteInstances
+    } = this.props.model.actions;
+
     this.handleToggleSelected = instance => ({
       target: {
         checked: selected
       }
-    }) => this.props.model.actions.toggleSelected({ selected, instance });
+    }) => toggleSelected({ selected, instance });
 
-    this.handleShow = (instance, index) => _ => this.props.model.actions.showInstance({
-      instance,
-      offset: this.props.model.data.pageParams.offset + index
-    });
+    if (showInstance) {
+      this.handleShow = (instance, index) => _ => showInstance({
+        instance,
+        offset: this.props.model.data.pageParams.offset + index
+      });
+    }
 
-    this.handleEdit = (instance, index) => _ => this.props.model.actions.editInstance({
-      instance,
-      offset: this.props.model.data.pageParams.offset + index
-    });
+    if (editInstance) {
+      this.handleEdit = (instance, index) => _ => editInstance({
+        instance,
+        offset: this.props.model.data.pageParams.offset + index
+      });
+    }
 
-    this.handleDelete = instance => _ => this.props.model.actions.deleteInstances([instance]);
+    if (deleteInstances) {
+      this.handleDelete = instance => _ => this.props.model.actions.deleteInstances([instance]);
+    }
   }
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
@@ -98,9 +109,6 @@ class SearchResultListing extends PureComponent {
         sortParams: {
           field: sortField,
           order: sortOrder
-        },
-        permissions: {
-          crudOperations: permissions
         },
         standardOperations
       },
@@ -117,7 +125,7 @@ class SearchResultListing extends PureComponent {
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
-              { permissions.delete &&
+              { this.handleDelete &&
                 <th>
                   <input
                     type="checkbox"
@@ -161,7 +169,7 @@ class SearchResultListing extends PureComponent {
               instances.map((instance, index) => (
                 <tr key={`tr-${JSON.stringify(instance)}`}>
                   {
-                    permissions.delete && (<td>
+                    this.handleDelete && (<td>
                       <Checkbox
                         checked={selectedInstances.indexOf(instance) > -1}
                         onChange={this.handleToggleSelected(instance)}
@@ -194,15 +202,28 @@ class SearchResultListing extends PureComponent {
                           [opName]: standardOperations[opName](instance)
                         }), {})
                       }
-                      permissions={permissions}
                       internalOperations={internalOperations(instance)}
                       externalOperations={externalOperations.map(({ handler, ...rest }) => ({
                         ...rest,
                         handler: _ => handler(instance)
                       }))}
-                      onShow={this.handleShow(instance, index)}
-                      onEdit={this.handleEdit(instance, index)}
-                      onDelete={this.handleDelete(instance)}
+                      {...{
+                        ...(
+                          this.handleShow && {
+                            onShow: this.handleShow(instance, index)
+                          }
+                        ),
+                        ...(
+                          this.handleEdit && {
+                            onEdit: this.handleEdit(instance, index)
+                          }
+                        ),
+                        ...(
+                          this.handleDelete && {
+                            onDelete: this.handleDelete(instance)
+                          }
+                        )
+                      }}
                       index={index}
                       parentRef={this._myRef}
                     />

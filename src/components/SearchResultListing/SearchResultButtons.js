@@ -12,7 +12,6 @@ import { getModelMessage } from '../lib';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
-    permissions: PropTypes.object.isRequired,
     internalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
     externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
     onShow: PropTypes.func,
@@ -111,7 +110,6 @@ export default class SearchResultButtons extends PureComponent {
       onShow,
       onEdit,
       onDelete,
-      permissions,
       index: uid,
       standardOperations
     } = this.props;
@@ -122,14 +120,14 @@ export default class SearchResultButtons extends PureComponent {
     buttons.push(
       this.operationsButton([
         ...(
-          permissions.edit ?
+          onEdit ?
             [{
               icon: 'edit',
               title: i18n.getMessage('crudEditor.edit.button'),
               handler: onEdit,
               uid: `internal-operation-${uid}`
             }] : (
-              permissions.view ?
+              onShow ?
                 [{
                   icon: 'eye-open',
                   title: i18n.getMessage('crudEditor.show.button'),
@@ -157,7 +155,7 @@ export default class SearchResultButtons extends PureComponent {
       )
     );
 
-    if (permissions.delete) {
+    if (onDelete) {
       buttons.push(
         <ConfirmDialog
           message={i18n.getMessage('crudEditor.delete.confirmation')}

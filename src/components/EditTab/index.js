@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { getModelMessage } from '../lib';
@@ -20,7 +20,7 @@ import {
   Glyphicon
 } from 'react-bootstrap';
 
-export default class EditTab extends React.PureComponent {
+export default class EditTab extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
@@ -85,15 +85,14 @@ export default class EditTab extends React.PureComponent {
       model: {
         actions: {
           exitView,
-          saveAndNextInstance
+          saveAndNextInstance,
+          deleteInstances,
+          saveAndNewInstance,
+          saveInstance
         },
         data: {
-          viewName,
           persistentInstance,
           formInstance,
-          permissions: {
-            crudOperations: permissions
-          },
           standardOperations: {
             delete: deleteConfig = {}
           } = {}
@@ -113,7 +112,7 @@ export default class EditTab extends React.PureComponent {
 
     const buttons = [];
 
-    if (permissions.view) {
+    if (exitView) {
       buttons.push(
         <ConfirmUnsavedChanges key='Cancel' showDialog={this.hasUnsavedChanges}>
           <Button bsStyle='link' onClick={exitView}>
@@ -151,7 +150,7 @@ export default class EditTab extends React.PureComponent {
       ))
     )
 
-    if (viewName === VIEW_EDIT && permissions.delete) {
+    if (deleteInstances) {
       buttons.push(
         <ConfirmDialog
           message={i18n.getMessage('crudEditor.delete.confirmation')}
@@ -169,7 +168,7 @@ export default class EditTab extends React.PureComponent {
       )
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1 && permissions.create) {
+    if (saveAndNewInstance) {
       buttons.push(
         <Button
           onClick={this.handleSaveAndNew}
@@ -180,7 +179,7 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if (viewName === VIEW_EDIT && saveAndNextInstance) {
+    if (saveAndNextInstance) {
       buttons.push(
         <Button
           onClick={this.handleSaveAndNext}
@@ -191,7 +190,7 @@ export default class EditTab extends React.PureComponent {
         </Button>)
     }
 
-    if ([VIEW_CREATE, VIEW_EDIT].indexOf(viewName) > -1) {
+    if (saveInstance) {
       buttons.push(
         <Button
           disabled={disableSave}

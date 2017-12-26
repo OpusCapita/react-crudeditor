@@ -34,43 +34,12 @@ class SearchResultListing extends PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.handleNewInstances(this.props.model.data.resultInstances);
-
-    this.handleResort = fieldName => _ => this.props.model.actions.searchInstances({
-      sort: fieldName,
-      // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
-      order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
-        'desc' :
-        'asc'
-    });
-  }
-
-  componentDidMount() {
-    this._myRef = findDOMNode(this)
-  }
-
-  componentWillReceiveProps({
-    model: {
-      data: {
-        resultInstances: instances
-      }
-    }
-  }) {
-    if (
-      instances.length !== this.props.model.data.resultInstances.length ||
-      this.props.model.data.resultInstances.some(instance => instances.indexOf(instance) === -1)
-    ) {
-      this.handleNewInstances(instances);
-    }
-  }
-
-  // TBD purpose of this function?
-  handleNewInstances = instances => {
     const {
       toggleSelected,
       showInstance,
       editInstance,
-      deleteInstances
+      deleteInstances,
+      searchInstances
     } = this.props.model.actions;
 
     this.handleToggleSelected = instance => ({
@@ -94,8 +63,20 @@ class SearchResultListing extends PureComponent {
     }
 
     if (deleteInstances) {
-      this.handleDelete = instance => _ => this.props.model.actions.deleteInstances([instance]);
+      this.handleDelete = instance => _ => deleteInstances([instance]);
     }
+
+    this.handleResort = fieldName => _ => searchInstances({
+      sort: fieldName,
+      // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+      order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
+        'desc' :
+        'asc'
+    });
+  }
+
+  componentDidMount() {
+    this._myRef = findDOMNode(this)
   }
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)

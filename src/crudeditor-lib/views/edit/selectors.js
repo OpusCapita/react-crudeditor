@@ -46,10 +46,8 @@ export const
       edit: {
         standardOperations = {}
       }
-    },
-    permissions
+    }
   }) => ({
-    permissions,
     spinner,
     standardOperations: Object.keys(standardOperations).reduce((config, opName) => ({
       ...config,

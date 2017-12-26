@@ -71,7 +71,7 @@ const mergeProps = (
 export default connect(
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    adjacentInstancesExist: getAdjacentInstancesInfo(getTotalCount(storeState)),
+    adjacentInstancesExist: getAdjacentInstancesInfo(storeState, getTotalCount(storeState)),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     externalOperations,

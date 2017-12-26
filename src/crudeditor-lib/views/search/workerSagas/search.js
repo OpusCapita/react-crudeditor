@@ -93,7 +93,8 @@ export default function*({
     max = max || currentMax;
 
     // Reset offset to 0 with new sortField, pageMax or filter.
-    offset = sort === currentSort &&
+    offset = meta.spawner !== VIEW_NAME ||
+      sort === currentSort &&
       max === currentMax &&
       isEqual(
         cleanFilter(filter),
@@ -129,6 +130,7 @@ export default function*({
 
     throw err;
   }
+  console.log('API.SEARCH: filter', JSON.stringify(cleanedFilter), '\nOFFSET', offset, '\nSORT', sort, '\nORDER', order, '\nMAX', max, '\nTOTAL COUNT', totalCount, '\nINSTANCES', JSON.stringify(instances));
 
   yield put({
     type: INSTANCES_SEARCH_SUCCESS,

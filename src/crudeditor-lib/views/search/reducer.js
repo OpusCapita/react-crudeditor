@@ -207,7 +207,7 @@ export default (modelDefinition, i18n) => {
 
     } else if (type === VIEW_REDIRECT_SUCCESS) {
       // Do not reset store to initial uninitialized state because
-      // filter, order, sort, etc. must remain after returning from other Views.
+      // totalCount, filter, order, sort, etc. must remain after returning from other Views.
       newStoreStateSlice.formFilter = u.constant(cloneDeep(storeState.resultFilter));
 
       newStoreStateSlice.selectedInstances = [];

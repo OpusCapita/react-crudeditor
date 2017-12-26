@@ -22,12 +22,14 @@ import {
   STATUS_REDIRECTING,
   STATUS_SEARCHING,
   STATUS_UNINITIALIZED,
-  STATUS_EXTRACTING,
+  STATUS_EXTRACTING
+} from '../../common/constants';
 
+import {
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_FAIL,
-  INSTANCES_SEARCH_SUCCES,
-} from '../../common/constants';
+  INSTANCES_SEARCH_SUCCESS
+} from '../search/constants';
 
 import { findFieldLayout, getTab } from '../lib';
 
@@ -94,7 +96,7 @@ export default (modelDefinition, i18n) => (
   } else if (type === INSTANCES_SEARCH_REQUEST) {
     newStoreStateSlice.status = STATUS_SEARCHING;
 
-  } else if ([INSTANCES_SEARCH_FAIL, INSTANCES_SEARCH_SUCCES].indexOf(type) > -1) {
+  } else if ([INSTANCES_SEARCH_FAIL, INSTANCES_SEARCH_SUCCESS].indexOf(type) > -1) {
     newStoreStateSlice.status = STATUS_READY;
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████

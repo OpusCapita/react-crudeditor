@@ -26,12 +26,6 @@ export default connect(
     })
   },
   mergeProps
-)(({
-  viewModel,
-  children,
-  ...props
-}) =>
-  (<Main model={viewModel} {...props}>
-    {children}
-  </Main>)
+)(
+  ({ viewModel }) => <Main model={viewModel} />
 );

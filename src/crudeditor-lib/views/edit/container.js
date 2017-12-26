@@ -52,8 +52,8 @@ const mergeProps = (
     data: viewModelData,
     actions: {
       ...dispatchProps,
-      ...(adjacentInstancesExist.previous && { editPreviousInstance }),
-      ...(adjacentInstancesExist.next && { saveAndNextInstance, editNextInstance })
+      ...(adjacentInstancesExist.previous && { gotoPreviousInstance: editPreviousInstance }),
+      ...(adjacentInstancesExist.next && { gotoNextInstance: editNextInstance, saveAndNextInstance })
     },
     operations: {
       internal: viewOperations({

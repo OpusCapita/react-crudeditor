@@ -137,7 +137,7 @@ export default class EditHeading extends PureComponent {
                   disabled={!!disabled || name === activeTabName}
                   key={index}
                 >
-                  <h4>{getModelMessage(i18n, `model.tab.${name}`, name)}</h4>
+                  <h4>{getModelMessage(i18n, `model.tab.${name}.label`, name)}</h4>
                 </NavItem>)
               )
             }

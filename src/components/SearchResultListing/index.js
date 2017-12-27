@@ -126,7 +126,7 @@ class SearchResultListing extends PureComponent {
                           style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                           onClick={this.handleResort(name)}
                         >
-                          { getModelMessage(i18n, `model.field.${name}`, name) }
+                          { getModelMessage(i18n, `model.field.${name}.label`, name) }
                           {
                             sortField === name &&
                             <Glyphicon
@@ -135,7 +135,7 @@ class SearchResultListing extends PureComponent {
                             />
                           }
                         </a> :
-                        getModelMessage(i18n, `model.field.${name}`, name)
+                        getModelMessage(i18n, `model.field.${name}.label`, name)
                     }
                   </th>
                 ))

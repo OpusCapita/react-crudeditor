@@ -40,7 +40,7 @@ export default class EditSelection extends Component {
               className={`fa fa-angle-${collapsed ? 'down' : 'up'}`}
               style={{ marginRight: "0.2em", textDecoration: 'none' }}
             ></span>
-            {getModelMessage(this.context.i18n, `model.section.${title}`, title)}
+            {getModelMessage(this.context.i18n, `model.section.${title}.label`, title)}
           </a>
         </h4>
         <Collapse in={!collapsed}>

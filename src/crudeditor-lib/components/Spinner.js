@@ -25,9 +25,11 @@ class Spinner {
   }
 
   stop() {
-    this.loadingTasks--;
+    if (this.loadingTasks > 0) {
+      this.loadingTasks--
+    }
 
-    if (this.loadingTasks <= 0 && ReactDOM.findDOMNode(this.container)) {
+    if (this.loadingTasks === 0 && ReactDOM.findDOMNode(this.container)) {
       ReactDOM.unmountComponentAtNode(this.container)
     }
   }

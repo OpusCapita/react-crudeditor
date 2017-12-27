@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
+import spinner from '../../crudeditor-lib/components/Spinner';
 // import './ContractEditorScope.less'
 
 function getParameterByName(name, url) {
@@ -20,7 +21,8 @@ export default
 @showroomScopeDecorator
 class ContractEditorScope extends React.Component {
   static childContextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object,
+    spinner: PropTypes.object
   };
 
   constructor(...args) {
@@ -31,7 +33,10 @@ class ContractEditorScope extends React.Component {
   }
 
   getChildContext() {
-    return { i18n: this.i18n }
+    return {
+      i18n: this.i18n,
+      spinner
+    }
   }
 
   render() {

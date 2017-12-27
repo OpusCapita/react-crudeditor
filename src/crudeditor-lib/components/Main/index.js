@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
-import Spinner from '../Spinner';
+// import Spinner from '../Spinner';
 
 class CrudMain extends PureComponent {
   static propTypes = {
@@ -25,15 +25,15 @@ class CrudMain extends PureComponent {
     });
   }
 
-  componentDidMount() {
-    Spinner.setComponent(_ => (<i className="spinner fa fa-spinner fa-spin fa-3x fa-fw"/>))
-    Spinner.start()
-    setTimeout(_ => Spinner.start(), 1000)
-    setTimeout(_ => Spinner.stop(), 3000)
-    setTimeout(_ => Spinner.stop(), 5000)
-    setTimeout(_ => Spinner.start(), 7000)
-    setTimeout(_ => Spinner.stop(), 8000)
-  }
+  // componentDidMount() {
+  //   Spinner.setComponent(_ => (<i className="spinner fa fa-spinner fa-spin fa-3x fa-fw"/>))
+  //   Spinner.start()
+  //   setTimeout(_ => Spinner.start(), 300)
+  //   setTimeout(_ => Spinner.stop(), 500)
+  //   setTimeout(_ => Spinner.stop(), 1500)
+  //   setTimeout(_ => Spinner.start(), 3000)
+  //   setTimeout(_ => Spinner.stop(), 5000)
+  // }
 
   componentWillReceiveProps({ viewName, viewState }) {
     // Re-initialization (viewState structure is unknown and depends on viewName value):

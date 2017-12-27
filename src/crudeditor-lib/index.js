@@ -115,11 +115,13 @@ export default baseModelDefinition => {
     }
 
     static contextTypes = {
-      i18n: PropTypes.object.isRequired // important
+      i18n: PropTypes.object.isRequired, // important
+      spinner: PropTypes.object.isRequired
     };
 
     static childContextTypes = {
-      i18n: PropTypes.object.isRequired
+      i18n: PropTypes.object.isRequired,
+      spinner: PropTypes.object.isRequired
     }
 
     static defaultProps = {
@@ -162,7 +164,8 @@ export default baseModelDefinition => {
       });
 
       this.adjustedContext = {
-        i18n: adjustedI18n
+        i18n: adjustedI18n,
+        spinner: this.context.spinner
       };
 
       const sagaMiddleware = createSagaMiddleware();

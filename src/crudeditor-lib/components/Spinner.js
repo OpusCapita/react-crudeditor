@@ -27,8 +27,7 @@ class Spinner {
   stop() {
     this.loadingTasks--;
 
-    if (this.loadingTasks <= 0) {
-      // can also just toggle 'display: none | block'
+    if (this.loadingTasks <= 0 && ReactDOM.findDOMNode(this.container)) {
       ReactDOM.unmountComponentAtNode(this.container)
     }
   }

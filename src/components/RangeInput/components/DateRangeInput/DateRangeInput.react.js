@@ -49,6 +49,7 @@ export default class DateRangeInput extends PureComponent {
         onFocus={onFocus}
         onBlur={onBlur}
         disabled={readOnly}
+        {...(readOnly && { tabIndex: -1 })}
       />
     )
   }

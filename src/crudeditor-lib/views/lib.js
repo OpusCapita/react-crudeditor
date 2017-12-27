@@ -205,8 +205,8 @@ export const buildFieldRender = ({
     render.props = {};
   }
 
-  if (!render.hasOwnProperty('valueProp')) {
-    render.valueProp = {};
+  if (!render.hasOwnProperty('value')) {
+    render.value = {};
   }
 
   let Component;
@@ -214,16 +214,16 @@ export const buildFieldRender = ({
   if (typeof render.component === 'string') {
     const { component, uiType, valuePropName } = namedComponentInfo(render);
 
-    if (!render.valueProp.hasOwnProperty('type')) {
-      render.valueProp.type = uiType;
-    } else if (render.valueProp.type !== uiType) {
-      throw new TypeError(`Invalid "${render.valueProp.type}" valueProp.type for "${render.component}" component`);
+    if (!render.value.hasOwnProperty('type')) {
+      render.value.type = uiType;
+    } else if (render.value.type !== uiType) {
+      throw new TypeError(`Invalid "${render.value.type}" value.type for "${render.component}" component`);
     }
 
-    if (!render.valueProp.hasOwnProperty('name')) {
-      render.valueProp.name = valuePropName;
-    } else if (render.valueProp.name !== valuePropName) {
-      throw new TypeError(`Invalid "${render.valueProp.name}" valueProp.name for "${render.component}" component`);
+    if (!render.value.hasOwnProperty('propName')) {
+      render.value.propName = valuePropName;
+    } else if (render.value.propName !== valuePropName) {
+      throw new TypeError(`Invalid "${render.value.propName}" value.propName for "${render.component}" component`);
     }
 
     Component = component;
@@ -231,28 +231,28 @@ export const buildFieldRender = ({
     Component = render.component;
   }
 
-  if (!render.valueProp.hasOwnProperty('name')) {
-    render.valueProp.name = 'value';
+  if (!render.value.hasOwnProperty('propName')) {
+    render.value.propName = 'value';
   }
 
-  if (render.valueProp.hasOwnProperty('type')) {
-    if (!render.valueProp.hasOwnProperty('converter')) {
+  if (render.value.hasOwnProperty('type')) {
+    if (!render.value.hasOwnProperty('converter')) {
       const defaultConverter = converter({
         fieldType,
-        uiType: render.valueProp.type
+        uiType: render.value.type
       });
 
       if (defaultConverter) {
-        render.valueProp.converter = defaultConverter;
+        render.value.converter = defaultConverter;
       }
     }
 
     // Removing "type" because it was only needed to get default converter, if any.
-    // delete render.valueProp.type;
+    // delete render.value.type;
   }
 
-  if (!render.valueProp.hasOwnProperty('converter')) {
-    render.valueProp.converter = {
+  if (!render.value.hasOwnProperty('converter')) {
+    render.value.converter = {
       format: ({ value }) => value,
       parse: ({ value }) => value
     };

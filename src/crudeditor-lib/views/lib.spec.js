@@ -27,8 +27,8 @@ const formLayout = [
       "field": "contractId",
       "readOnly": true,
       "render": {
-        "valueProp": {
-          "name": "value",
+        "value": {
+          "propName": "value",
           "type": "string"
         }
       }
@@ -37,8 +37,8 @@ const formLayout = [
       "field": "description",
       "readOnly": true,
       "render": {
-        "valueProp": {
-          "name": "value",
+        "value": {
+          "propName": "value",
           "type": "string"
         }
       }
@@ -47,9 +47,9 @@ const formLayout = [
       "field": "statusId",
       "readOnly": true,
       "render": {
-        "valueProp": {
+        "value": {
           "type": "number",
-          "name": "value"
+          "propName": "value"
         }
       }
     },
@@ -58,8 +58,8 @@ const formLayout = [
         "field": "createdBy",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -68,8 +68,8 @@ const formLayout = [
         "field": "createdOn",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -78,8 +78,8 @@ const formLayout = [
         "field": "changedOn",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -88,8 +88,8 @@ const formLayout = [
         "field": "changedBy",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -102,8 +102,8 @@ const formLayout = [
         "field": "minOrderValue",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -112,9 +112,9 @@ const formLayout = [
         "field": "minOrderValueRequired",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       },
@@ -122,8 +122,8 @@ const formLayout = [
         "field": "maxOrderValue",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -132,8 +132,8 @@ const formLayout = [
         "field": "freeShippingBoundary",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -142,8 +142,8 @@ const formLayout = [
         "field": "freightSurcharge",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -152,8 +152,8 @@ const formLayout = [
         "field": "smallVolumeSurcharge",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -162,8 +162,8 @@ const formLayout = [
         "field": "totalContractedAmount",
         "readOnly": true,
         "render": {
-          "valueProp": {
-            "name": "value",
+          "value": {
+            "propName": "value",
             "type": "string"
           }
         }
@@ -174,9 +174,9 @@ const formLayout = [
         "field": "isStandard",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       },
@@ -184,9 +184,9 @@ const formLayout = [
         "field": "isPreferred",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       },
@@ -194,9 +194,9 @@ const formLayout = [
         "field": "isFrameContract",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       },
@@ -204,9 +204,9 @@ const formLayout = [
         "field": "isInternal",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       },
@@ -214,9 +214,9 @@ const formLayout = [
         "field": "isOffer",
         "readOnly": true,
         "render": {
-          "valueProp": {
+          "value": {
             "type": "boolean",
-            "name": "value"
+            "propName": "value"
           }
         }
       }
@@ -250,8 +250,8 @@ describe('Crudeditor-lib / views / lib', () => {
           "field": "contractId",
           "readOnly": true,
           "render": {
-            "valueProp": {
-              "name": "value",
+            "value": {
+              "propName": "value",
               "type": "string"
             }
           }

@@ -73,7 +73,7 @@ const buildDefaultFormattedFilter = ({
   (rez, {
     name: fieldName,
     render: {
-      valueProp: {
+      value: {
         converter: {
           format
         }
@@ -101,7 +101,7 @@ const buildFormattedFilter = ({
 
     searchableFields.some(fieldMeta => {
       if (fieldMeta.name === fieldName) {
-        ({ format } = fieldMeta.render.valueProp.converter);
+        ({ format } = fieldMeta.render.value.converter);
         return true;
       }
 
@@ -323,7 +323,7 @@ export default (modelDefinition, i18n) => {
 
       modelDefinition.ui.search.searchableFields.some(fieldMeta => {
         if (fieldMeta.name === fieldName) {
-          ({ converter } = fieldMeta.render.valueProp);
+          ({ converter } = fieldMeta.render.value);
           return true;
         }
 

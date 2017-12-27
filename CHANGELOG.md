@@ -1,18 +1,18 @@
-## [v0.0.35](Wed, 20 Dec 2017 15:14:11 GMT)
+## [0.0.35] - Wed, 20 Dec 2017 15:14:11 GMT
  - Fix #167 (Andrei Mourzenkov <mourzenkov@scand.com>, caf8080)
  - DEFAULT_FIELD_TYPE is added to named export (Andrei Mourzenkov <mourzenkov@scand.com>, 0a0be8f)
  - Fix #166 (Andrei Mourzenkov <mourzenkov@scand.com>, e127254)
 
-## [v0.0.34](Wed, 20 Dec 2017 10:31:35 GMT)
+## [0.0.34] - Wed, 20 Dec 2017 10:31:35 GMT
 
-## [v0.0.33](Wed, 20 Dec 2017 10:22:51 GMT)
+## [0.0.33] - Wed, 20 Dec 2017 10:22:51 GMT
  - Merge pull request #165 from OpusCapita/issue-42-3
    Updated packages; no issues related to React 16.x left. (b468be7 6f97e5e, d642ada)
  - Removed obsolete div. (Egor Stambakio <stambakio@scand.com>, b468be7)
  - Fixed propTypes: activeTab.isRequired failed on direct navigation. (Egor Stambakio <stambakio@scand.com>, 5298f5c)
  - Updated packages; no issues related to React 16.x left. (Egor Stambakio <stambakio@scand.com>, 6f97e5e)
 
-## [v0.0.32](Tue, 19 Dec 2017 11:23:25 GMT)
+## [0.0.32] - Tue, 19 Dec 2017 11:23:25 GMT
 
 ### Added
  1. Standard Operation **delete** can be configured with property **disabled**.

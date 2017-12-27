@@ -116,7 +116,8 @@ const eventsMiddleware = ({ i18n, modelDefinition }) => store => next => action 
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (
-          Array.isArray(action.payload) && (action.payload[0] || {}).message
+          Array.isArray(action.payload) && action.payload.
+            map(({ message }) => message).filter(m => m).join(' | ')
         ) ||
           i18n.getMessage('default.invalid.validator.message')
       });

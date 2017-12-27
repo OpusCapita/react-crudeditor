@@ -32,7 +32,7 @@ const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
                       name: field.field,
                       readOnly: field.readOnly,
                       component: field.render.component,
-                      valuePropName: field.render.valueProp.name
+                      valuePropName: field.render.value.propName
                     }}
                   />
                 ))
@@ -93,9 +93,9 @@ formGrid.propTypes = {
           render: PropTypes.shape({
             component: PropTypes.func,
             props: PropTypes.object,
-            valueProp: PropTypes.shape({
+            value: PropTypes.shape({
               type: PropTypes.string,
-              name: PropTypes.string,
+              propName: PropTypes.string,
               converter: PropTypes.shape({
                 format: PropTypes.func,
                 parse: PropTypes.func

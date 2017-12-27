@@ -108,8 +108,8 @@ export const
       name,
       render: {
         component,
-        valueProp: {
-          name: valuePropName
+        value: {
+          propName: valuePropName
         }
       }
     }) => ({

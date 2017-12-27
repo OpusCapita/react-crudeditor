@@ -137,7 +137,7 @@ export default (modelDefinition, i18n) => (
 
         return fieldLayout ? {
           ...rez,
-          [fieldName]: fieldLayout.render.valueProp.converter.format({ value: formInstance[fieldName], i18n })
+          [fieldName]: fieldLayout.render.value.converter.format({ value: formInstance[fieldName], i18n })
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed.
       },
       {}
@@ -202,7 +202,7 @@ export default (modelDefinition, i18n) => (
     const {
       validate,
       render: {
-        valueProp: {
+        value: {
           converter
         }
       }

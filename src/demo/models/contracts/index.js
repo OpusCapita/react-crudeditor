@@ -291,7 +291,7 @@ const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } }),
+    field({ name: 'statusId', render: { component: StatusField, value: { type: UI_TYPE_INTEGER } } }),
     field({ name: 'parentContract', render: { component: ContractReferenceSearch } }),
     // field({ name: 'currencyId', render: { component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
@@ -366,7 +366,7 @@ export default {
         { name: 'extContractId' },
         { name: 'extContractLineId' },
         { name: 'parentContract', render: { component: ContractReferenceSearch } },
-        { name: 'statusId', render: { component: StatusField, valueProp: { type: UI_TYPE_INTEGER } } },
+        { name: 'statusId', render: { component: StatusField, value: { type: UI_TYPE_INTEGER } } },
         { name: 'maxOrderValue' },
         // THE SAME CAN BE ACHIEVED WITH THE FOLLOWING
         // EXAMPLE OF USING BUILT-IN RANGE INPUT COMPONENT:

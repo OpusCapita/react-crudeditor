@@ -2,6 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { buildFieldRender } from '../lib';
 export { getViewState } from './selectors';
+import { converter } from '../../../data-types-lib';
 
 import {
   FIELD_TYPE_DECIMAL,
@@ -13,7 +14,9 @@ import {
   FIELD_TYPE_STRING_INTEGER,
   FIELD_TYPE_STRING_INTEGER_RANGE,
   FIELD_TYPE_STRING_DECIMAL,
-  FIELD_TYPE_STRING_DECIMAL_RANGE
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
+
+  UI_TYPE_STRING
 } from '../../../data-types-lib/constants';
 
 const rangeFieldType = {
@@ -34,6 +37,19 @@ export const getUi = modelDefinition => {
   if (!searchMeta.resultFields) {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
+
+  searchMeta.resultFields.
+    filter(({ component }) => !component).
+    forEach(field => {
+      if (!fieldsMeta[field.name]) {
+        throw new Error(`Composite field "${field.name}" in resultFields must have "component" property`);
+      }
+
+      field.format = converter({ // eslint-disable-line no-param-reassign
+        fieldType: fieldsMeta[field.name].type,
+        uiType: UI_TYPE_STRING
+      }).format
+    });
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).

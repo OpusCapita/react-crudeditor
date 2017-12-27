@@ -110,7 +110,7 @@
     <i>UI Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>UI Type</i>.  Thus any React Components displaying a field must have embedded <i>empty value</i> concept and be able to deal with <b>null</b>.
     <br/>
     <br/>
-    <i>UI Types</i> are defined in <b>render.valueProp.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
+    <i>UI Types</i> are defined in <b>render.value.type</b> of <b>searchableFields</b> and <b>formLayout</b> (see <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>)
   </dd>
   <dt>Instance</dt>
   <dd>An object CRUD operations are performed upon.  Each instance has three different representations in CRUD Editor:
@@ -513,8 +513,8 @@ Model Definition is an object describing an entity. It has the following structu
            * {
            *   component: <string, id of default FieldInputComponent for displaying the Field Type>,
            *
-           *   valueProp: {
-           *     name: "value",
+           *   value: {
+           *     propName: "value",
            *     type: <string, UI Type peculiar to the default FieldInputComponent>
            *   }
            * }
@@ -528,8 +528,8 @@ Model Definition is an object describing an entity. It has the following structu
             component: <FieldInputComponent|string>,
 
             ?props: <object, the component props to overwrite defaults>,
-            ?valueProp: {
-              ?name: <string, a name of component prop with field value>,
+            ?value: {
+              ?propName: <string, a name of component prop with field value>,
 
               /*
                * Redundant for an embedded FieldInputComponent,
@@ -652,8 +652,8 @@ Model Definition is an object describing an entity. It has the following structu
                 ?render: { // see "searchableFields" above for detailed explanation.
                   component: <FieldInputComponent|string>,
                   ?props: <object, the component props to overwrite defaults>,
-                  ?valueProp: {
-                    ?name: <string, a name of component prop with field value, "value" by default>,
+                  ?value: {
+                    ?propName: <string, a name of component prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                     ?converter: { format, parse }
                   }
@@ -671,8 +671,8 @@ Model Definition is an object describing an entity. It has the following structu
                 ?render: { // see "searchableFields" above for detailed explanation.
                   component: <FieldInputComponent|string>,
                   ?props: <object, the component props to overwrite defaults>,
-                  ?valueProp: {
-                    ?name: <string, a name of Component prop with field value, "value" by default>,
+                  ?value: {
+                    ?propName: <string, a name of Component prop with field value, "value" by default>,
                     ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                     ?converter: { format, parse }
                   },
@@ -692,8 +692,8 @@ Model Definition is an object describing an entity. It has the following structu
               ?render: { // see "searchableFields" above for detailed explanation.
                 component: <FieldInputComponent|string>,
                 ?props: <object, the component props to overwrite defaults>,
-                ?valueProp: {
-                  ?name: <string, a name of Component prop with field value, "value" by default>,
+                ?value: {
+                  ?propName: <string, a name of Component prop with field value, "value" by default>,
                   ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                   ?converter: { format, parse }
                 }
@@ -714,8 +714,8 @@ Model Definition is an object describing an entity. It has the following structu
               ?render: { // see "searchableFields" above for detailed explanation.
                 component: <FieldInputComponent|string>,
                 ?props: <object, the component props to overwrite defaults>,
-                ?valueProp: {
-                  ?name: <string, a name of Component prop with field value, "value" by default>,
+                ?value: {
+                  ?propName: <string, a name of Component prop with field value, "value" by default>,
                   ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                   ?converter: { format, parse }
                 }
@@ -735,8 +735,8 @@ Model Definition is an object describing an entity. It has the following structu
             ?render: { // see "searchableFields" above for detailed explanation.
               component: <FieldInputComponent|string>,
               ?props: <object, the component props to overwrite defaults>,
-              ?valueProp: {
-                ?name: <string, a name of Component prop with field value, "value" by default>,
+              ?value: {
+                ?propName: <string, a name of Component prop with field value, "value" by default>,
                 ?type: <string, embedded UI Type (see corresponding "Terminology" section)>,
                 ?converter: { format, parse }
               }

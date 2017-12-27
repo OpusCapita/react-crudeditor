@@ -39,16 +39,18 @@ export const getUi = modelDefinition => {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
 
-  searchMeta.resultFields.forEach(field => {
-    if (!field.component) {
-      const fieldType = fieldsMeta[field.name].type;
+  searchMeta.resultFields.
+    filter(({ component }) => !component).
+    forEach(field => {
+      if (!fieldsMeta[field.name]) {
+        throw new Error(`Composite field "${field.name}" in resultFields must have "component" property`);
+      }
 
       field.format = converter({ // eslint-disable-line no-param-reassign
-        fieldType,
+        fieldType: fieldsMeta[field.name].type,
         uiType: UI_TYPE_STRING
       }).format
-    }
-  })
+    });
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).

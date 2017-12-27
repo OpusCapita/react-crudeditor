@@ -360,9 +360,10 @@ export default {
       ],
       resultFields: [
         { name: 'contractId', sortable: true },
-        { name: 'description', sortable: true },
+        { name: 'description', sortable: true, sortByDefault: true },
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
+        { name: 'testNumberTypeField', textAlignment: 'right' }
       ],
       standardOperations: {
         'delete': instance => ({

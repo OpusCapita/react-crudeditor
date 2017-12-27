@@ -1,18 +1,18 @@
 export default {
   "model.name": "Контракты",
-  "model.tab.general": "Главное",
-  "model.tab.additional": "Дополнительно",
+  "model.tab.general.label": "Главное",
+  "model.tab.additional.label": "Дополнительно",
 
-  "model.section.order": "Параметры заказа",
-  "model.section.test": "Тестовое поле",
-  "model.section.auditable": "Проверяемые поля",
+  "model.section.order.label": "Параметры заказа",
+  "model.section.test.label": "Тестовое поле",
+  "model.section.auditable.label": "Проверяемые поля",
 
-  "model.field.contractId": "Номер контракта",
-  "model.field.description": "Описание",
-  "model.field.validRange": "Период действия",
-  "model.field.testNumberTypeField": "Тестовое числовое поле",
-  "model.field.createdOn": "Время создания",
-  "model.field.changedOn": "Время изменения",
-  "model.field.changedBy": "Кем изменен",
-  "model.field.createdBy": "Кто создал"
+  "model.field.contractId.label": "Номер контракта",
+  "model.field.description.label": "Описание",
+  "model.field.validRange.label": "Период действия",
+  "model.field.testNumberTypeField.label": "Тестовое числовое поле",
+  "model.field.createdOn.label": "Время создания",
+  "model.field.changedOn.label": "Время изменения",
+  "model.field.changedBy.label": "Кем изменен",
+  "model.field.createdBy.label": "Кто создал"
 }

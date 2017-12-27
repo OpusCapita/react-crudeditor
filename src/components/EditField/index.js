@@ -81,7 +81,7 @@ export default class EditField extends Component {
       <FormGroup controlId={fieldName} validationState={!readOnly && toggledFieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
-            getModelMessage(this.context.i18n, `model.field.${fieldName}`, fieldName) + (required ? '*' : '')
+            getModelMessage(this.context.i18n, `model.field.${fieldName}.label`, fieldName) + (required ? '*' : '')
           }
         </Col>
         <Col sm={12 - labelColumns}>

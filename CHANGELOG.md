@@ -14,12 +14,9 @@
 
 ## [0.0.32] - Tue, 19 Dec 2017 11:23:25 GMT
 
-### Added
- 1. Standard Operation **delete** can be configured with property **disabled**.
-    See **standardOperations** in **README.md** and **src/demo/models/contracts/index.js**.
-
 ### Breaking
  1. **model.ui.operations** is renamed to **model.ui.customOperations**.
+ 1. Field types and UI types are exported from the library. Due to a different naming for some types, it can be breaking. Please use exported constants for future models. Examples: [usage](https://github.com/OpusCapita/react-crudeditor/blob/master/src/demo/models/contracts/index.js#L9), [list of all exports](https://github.com/OpusCapita/react-crudeditor/blob/master/src/crudeditor-lib/index.js#L59).
 
  - standardOperations are updated in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 5d50128)
  - Merge pull request #164 from OpusCapita/issue-150-simple

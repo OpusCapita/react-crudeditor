@@ -23,7 +23,7 @@ ownProps
   viewModel: {
     data: viewModelData,
     actions: {
-      ...(crudOperations.delete && { goHome }),
+      ...(crudOperations.view && { goHome }),
       ...dispatchProps
     },
     uiConfig

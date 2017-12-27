@@ -17,6 +17,8 @@ const ErrorMain = ({
 }) => {
   const H = 'h' + headerLevel;
 
+  console.log(goHome)
+
   return (
     <div>
       {
@@ -25,7 +27,7 @@ const ErrorMain = ({
           errors.map(({ code, payload }, index) => (
             <div key={`error-${index}`}>
               <H>Error {code}</H>
-              { payload ? JSON.stringify(payload) : null }
+              { payload ? payload.message || JSON.stringify(payload) : null }
               <hr />
             </div>
           ))
@@ -43,7 +45,7 @@ const ErrorMain = ({
 ErrorMain.propTypes = {
   model: PropTypes.shape({
     actions: PropTypes.shape({
-      goHome: PropTypes.func.isRequired
+      goHome: PropTypes.func
     }),
     data: PropTypes.shape({
       errors: PropTypes.arrayOf(PropTypes.object).isRequired

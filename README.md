@@ -1007,9 +1007,11 @@ Translation keys convention:
 Translation Object | Translation Key
 ---|---
 Model name (shown in the header) | `model.name`
-Model tab label | `model.tab.<tab name>`
-Model section label | `model.section.<section name>`
-Model field label | `model.field.<field name>`
+Model tab label | `model.tab.<tab name>.label`
+Model section label | `model.section.<section name>.label`
+Model field label | `model.field.<field name>.label`
+Model field hint | `model.field.<field name>.hint` (not implemented)
+Model field tooltip | `model.field.<field name>.tooltip` (not implemented)
 Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
 
 If some translation is not defined, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.

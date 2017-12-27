@@ -9,11 +9,13 @@ class Spinner {
   }
 
   setComponent(component, props) {
-    this.component = React.createElement(component, props)
+    this.component = React.createElement(component, props);
+    return this
   }
 
   setDefaultComponent() {
     this.component = (<i className="spinner fa fa-spinner fa-spin fa-5x fa-fw"/>);
+    return this
   }
 
   start() {

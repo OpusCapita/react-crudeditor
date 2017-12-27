@@ -9,7 +9,6 @@ const withSpinner = WrappedComponent => {
     static propTypes = {
       model: PropTypes.shape({
         data: PropTypes.shape({
-          // spinner: PropTypes.func,
           isLoading: PropTypes.bool
         }).isRequired
       }).isRequired
@@ -24,13 +23,10 @@ const withSpinner = WrappedComponent => {
 
       const { isLoading } = this.props.model.data;
       const { spinner } = this.context;
-      console.log('constructor', {isLoading})
 
       if (isLoading) {
-        console.log('constructor start')
         spinner.start()
       } else {
-        console.log('constructor stop')
         spinner.stop()
       }
     }
@@ -43,15 +39,11 @@ const withSpinner = WrappedComponent => {
 
       if (prevLoading !== nextLoading) {
         if (nextLoading) {
-          console.log('start', {prevLoading, nextLoading})
           spinner.start()
         } else {
-          console.log('stop', {prevLoading, nextLoading})
           spinner.stop()
         }
       }
-
-      console.log({spinner})
     }
 
     render() {
@@ -66,37 +58,6 @@ const withSpinner = WrappedComponent => {
         </WrappedComponent>
       )
     }
-
-    // render() {
-    //   const { children, model, ...props } = this.props;
-
-    //   console.log(this.props)
-
-    //   const CustomSpinner = model.data.spinner;
-
-    //   const defaultSpinner = (<Svg svg={spinnerSVG} style={{ width: '64px', height: '64px' }} />);
-
-    //   const Spinner = model.data.isLoading ?
-    //     (
-    //       <div className="crud--spinner-overlay">
-    //         { CustomSpinner ? <CustomSpinner/> : defaultSpinner }
-    //       </div>
-    //     ) :
-    //     null;
-
-    //   return (
-    //     <div className="ready-for-spinner">
-    //       {Spinner}
-    //       <WrappedComponent
-    //         {...props}
-    //         model={model}
-    //         {...(Spinner ? { overflow: 'hidden' } : null)}
-    //       >
-    //         {children}
-    //       </WrappedComponent>
-    //     </div>
-    //   );
-    // }
   }
 }
 

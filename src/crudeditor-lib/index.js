@@ -11,6 +11,12 @@ import appStateChangeDetect from './middleware/appStateChangeDetect';
 import Main from './components/Main';
 import getReducer from './rootReducer';
 import rootSaga from './rootSaga';
+import spinner from './components/Spinner';
+import {
+  storeState2appState,
+  fillDefaults,
+  getPrefixedTranslations
+} from './lib';
 
 import {
   DEFAULT_FIELD_TYPE,
@@ -20,12 +26,6 @@ import {
   VIEW_SEARCH,
   VIEW_SHOW
 } from './common/constants';
-
-import {
-  storeState2appState,
-  fillDefaults,
-  getPrefixedTranslations
-} from './lib';
 
 import {
   FIELD_TYPE_BOOLEAN,
@@ -116,7 +116,7 @@ export default baseModelDefinition => {
 
     static contextTypes = {
       i18n: PropTypes.object.isRequired, // important
-      spinner: PropTypes.object.isRequired
+      spinner: PropTypes.object
     };
 
     static childContextTypes = {
@@ -165,7 +165,11 @@ export default baseModelDefinition => {
 
       this.adjustedContext = {
         i18n: adjustedI18n,
-        spinner: this.context.spinner
+        spinner: this.context.spinner ?
+          this.context.spinner :
+          modelDefinition.ui.spinner ?
+            spinner.setComponent(modelDefinition.ui.spinner) :
+            spinner.setDefaultComponent()
       };
 
       const sagaMiddleware = createSagaMiddleware();

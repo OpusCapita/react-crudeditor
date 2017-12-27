@@ -35,5 +35,6 @@ export default class FieldBoolean extends React.PureComponent {
       readOnly={!!this.props.readOnly}
       onChange={this.handleChange}
       onBlur={this.handleBlur}
+      {...(this.props.readOnly && { tabIndex: -1 })}
     />)
 }

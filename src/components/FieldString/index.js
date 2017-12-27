@@ -27,6 +27,7 @@ export default class FieldString extends PureComponent {
       onChange={this.handleChange}
       onBlur={this.props.onBlur}
       type='text'
+      {...(this.props.readOnly && { tabIndex: -1 })}
     />)
 }
 

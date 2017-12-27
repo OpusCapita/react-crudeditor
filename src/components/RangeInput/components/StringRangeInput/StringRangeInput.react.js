@@ -92,6 +92,7 @@ export default class StringRangeInput extends PureComponent {
           value={isDef(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
           disabled={readOnly}
+          {...(readOnly && { tabIndex: -1 })}
         />
         <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
@@ -100,6 +101,7 @@ export default class StringRangeInput extends PureComponent {
           value={isDef(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}
           disabled={readOnly}
+          {...(readOnly && { tabIndex: -1 })}
         />
       </InputGroup>
     )

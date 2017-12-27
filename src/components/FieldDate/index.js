@@ -50,5 +50,6 @@ export default class FieldDate extends PureComponent {
       disabled={!!this.props.readOnly}
       showToLeft={false}
       showToTop={true}
+      {...(this.props.readOnly && { tabIndex: -1 })}
     />)
 }

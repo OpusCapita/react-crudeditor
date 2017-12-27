@@ -1,7 +1,7 @@
 export default {
   "model.name": "Kontrakte",
 
-  "model.tab.additional": "Zusätzlich",
+  "model.tab.additional.label": "Zusätzlich",
 
-  "model.section.test": "Meine Teststrecke"
+  "model.section.test.label": "Meine Teststrecke"
 }

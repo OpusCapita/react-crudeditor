@@ -66,18 +66,18 @@ export default class ContractReferenceSearch extends PureComponent {
       searchFields: [
         {
           name: 'contractId',
-          label: getModelMessage(i18n, 'model.field.contractId', 'contractId')
+          label: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
         }
       ],
       resultFields: [
         {
           name: 'contractId',
-          label: getModelMessage(i18n, 'model.field.contractId', 'contractId')
+          label: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
         }
       ],
 
       title: i18n.getMessage('crudEditor.search.header', {
-        payload: getModelMessage(i18n, 'model.field.contractId', 'contractId')
+        payload: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
       }),
       labelProperty: 'contractId',
       valueProperty: 'contractId'

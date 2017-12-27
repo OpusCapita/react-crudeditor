@@ -158,7 +158,7 @@ class SearchResultListing extends PureComponent {
                     </td>)
                   }
                   {
-                    resultFields.map(({ name, component: Component, textAlignment }) => (
+                    resultFields.map(({ name, component: Component, textAlignment, format }) => (
                       <td
                         key={`td-${name}`}
                         className={
@@ -170,7 +170,7 @@ class SearchResultListing extends PureComponent {
                         {
                           Component ?
                             <Component name={name} instance={instance} /> :
-                            instance[name]
+                            format({ value: instance[name], i18n })
                         }
                       </td>
                     ))

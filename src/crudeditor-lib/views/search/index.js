@@ -13,8 +13,12 @@ import {
   FIELD_TYPE_STRING_INTEGER,
   FIELD_TYPE_STRING_INTEGER_RANGE,
   FIELD_TYPE_STRING_DECIMAL,
-  FIELD_TYPE_STRING_DECIMAL_RANGE
+  FIELD_TYPE_STRING_DECIMAL_RANGE,
+
+  UI_TYPE_STRING
 } from '../../../data-types-lib/constants';
+
+import { converter } from '../../../data-types-lib';
 
 const rangeFieldType = {
   [FIELD_TYPE_INTEGER]: FIELD_TYPE_INTEGER_RANGE,
@@ -34,6 +38,17 @@ export const getUi = modelDefinition => {
   if (!searchMeta.resultFields) {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
+
+  searchMeta.resultFields.forEach(field => {
+    if (!field.component) {
+      const fieldType = fieldsMeta[field.name].type;
+
+      field.format = converter({ // eslint-disable-line no-param-reassign
+        fieldType,
+        uiType: UI_TYPE_STRING
+      }).format
+    }
+  })
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { Button, Form, FormGroup, ControlLabel } from 'react-bootstrap';
+
 import { getModelMessage } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';

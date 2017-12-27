@@ -1004,7 +1004,7 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 
 Translation keys convention:
 
-Translation Object | Translation Key
+Translation Target | Translation Key
 ---|---
 Model name (shown in the header) | `model.name`
 Model tab label | `model.tab.<tab name>.label`
@@ -1014,7 +1014,7 @@ Model field hint | `model.field.<field name>.hint` (not implemented)
 Model field tooltip | `model.field.<field name>.tooltip` (not implemented)
 Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
 
-If some translation is not defined, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
+If some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
 
 [React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 
@@ -1218,7 +1218,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
 {
   code: 400,
   id: <string, error id used by translation service>,
-  ?message: <string, default error message in English - in case translations are not defined>,
+  ?message: <string, default error message - in case a translation is not provided>,
   ?payload: <object, optional parameters for i18n service>
 }
 ```

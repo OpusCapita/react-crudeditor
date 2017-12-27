@@ -106,6 +106,7 @@ export default function*({
 
   yield put({
     type: INSTANCES_SEARCH_REQUEST,
+    payload: { filter },
     meta
   });
 

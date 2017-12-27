@@ -186,9 +186,11 @@ export default (modelDefinition, i18n) => {
 
     if (type === VIEW_INITIALIZE_REQUEST) {
       const { hideSearchForm } = payload;
+
       if (typeof hideSearchForm === 'boolean') {
         newStoreStateSlice.hideSearchForm = hideSearchForm;
       }
+
       newStoreStateSlice.status = STATUS_INITIALIZING;
 
     } else if (type === VIEW_INITIALIZE_FAIL) {
@@ -242,8 +244,20 @@ export default (modelDefinition, i18n) => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-    } else if (type === INSTANCES_SEARCH_REQUEST && storeState.status !== STATUS_INITIALIZING) {
-      newStoreStateSlice.status = STATUS_SEARCHING;
+    } else if (type === INSTANCES_SEARCH_REQUEST) {
+      const { filter } = payload;
+
+      if (storeState.status !== STATUS_INITIALIZING) {
+        newStoreStateSlice.status = STATUS_SEARCHING;
+      } else if (!isEqual(filter, storeState.formFilter)) {
+        newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+
+        newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
+          modelDefinition,
+          filter,
+          i18n
+        }));
+      }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
@@ -268,14 +282,11 @@ export default (modelDefinition, i18n) => {
           newStoreStateSlice.totalCount = totalCount;
         }
       } else {
-        newStoreStateSlice.resultFilter = u.constant(cloneDeep(filter));
-        newStoreStateSlice.formFilter = u.constant(cloneDeep(filter));
+        // filter is formFilter so there is no need to reassign formFilter and formattedFilter.
 
-        newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
-          modelDefinition,
-          filter,
-          i18n
-        }));
+        if (!isEqual(storeState.resultFilter, storeState.formFilter)) {
+          newStoreStateSlice.resultFilter = u.constant(cloneDeep(storeState.formFilter));
+        }
 
         newStoreStateSlice.sortParams = {
           field: sort,

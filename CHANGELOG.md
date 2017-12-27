@@ -7,22 +7,27 @@
 
 ## [v0.0.33](Wed, 20 Dec 2017 10:22:51 GMT)
  - Merge pull request #165 from OpusCapita/issue-42-3
-
-    Updated packages; no issues related to React 16.x left. (b468be7 6f97e5e, d642ada)
+   Updated packages; no issues related to React 16.x left. (b468be7 6f97e5e, d642ada)
  - Removed obsolete div. (Egor Stambakio <stambakio@scand.com>, b468be7)
  - Fixed propTypes: activeTab.isRequired failed on direct navigation. (Egor Stambakio <stambakio@scand.com>, 5298f5c)
  - Updated packages; no issues related to React 16.x left. (Egor Stambakio <stambakio@scand.com>, 6f97e5e)
 
 ## [v0.0.32](Tue, 19 Dec 2017 11:23:25 GMT)
+
+### Added
+ 1. Standard Operation **delete** can be configured with property **disabled**.
+    See **standardOperations** in **README.md** and **src/demo/models/contracts/index.js**.
+
+### Breaking
+ 1. **model.ui.operations** is renamed to **model.ui.customOperations**.
+
  - standardOperations are updated in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 5d50128)
  - Merge pull request #164 from OpusCapita/issue-150-simple
-
-    Simple implementation of #150 - configurable disable for Delete button (067c265 2e21df8, 0005e3d)
+   Simple implementation of #150 - configurable disable for Delete button (067c265 2e21df8, 0005e3d)
  - Merged master, resolved conflicts. (122948f 067c265, 2e21df8)
  - Fixed according to reviewer notes. (Egor Stambakio <stambakio@scand.com>, 122948f)
  - Merge pull request #163 from OpusCapita/issue-156
-
-    Improved prop-types coverage (cccbbac a89af06, 067c265)
+   Improved prop-types coverage (cccbbac a89af06, 067c265)
  - Added delete button config to edit view. (Egor Stambakio <stambakio@scand.com>, 23d13f1)
  - Done simple solution for Delete button on search view. (Egor Stambakio <stambakio@scand.com>, ee0ce84)
  - More lint to lint god. (Egor Stambakio <stambakio@scand.com>, a89af06)
@@ -35,8 +40,7 @@
  - Reformatting 'i18n Translations' section in README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4d46d08)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (10c60c1 46aa436, 7588fd4)
  - Merge pull request #160 from OpusCapita/issue-159
-
-    Final shape. (d84e9f9 9d1e2fe, 46aa436)
+   Final shape. (d84e9f9 9d1e2fe, 46aa436)
  - Reformatting 'i18n Translations' section in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 10c60c1)
  - Added core-js to dev dependencies. (Egor Stambakio <stambakio@scand.com>, 9d1e2fe)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, d84e9f9)
@@ -47,19 +51,16 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 88dbcf9)
  - model.translations in README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 2a37543)
  - Merge pull request #157 from OpusCapita/issue-149
-
-    Migrated to babel-preset-env (87c1135 58e8d43, 3405689)
+   Migrated to babel-preset-env (87c1135 58e8d43, 3405689)
  - Explicitly defined supported browser versions. (Egor Stambakio <stambakio@scand.com>, 58e8d43)
  - Merge pull request #158 from OpusCapita/issue-42-2
-
-    Updated packages (0da4bf3 4bfb588, 87c1135)
+   Updated packages (0da4bf3 4bfb588, 87c1135)
  - Updated packages (Egor Stambakio <stambakio@scand.com>, 4bfb588)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 0da4bf3)
  - Fixed #149 (Egor Stambakio <stambakio@scand.com>, de2a347)
  - Minor syntax optimization (Andrei Mourzenkov <mourzenkov@scand.com>, e49054e)
  - Merge pull request #155 from OpusCapita/issue-152
-
-    Need to check for child === activeElement for range inputs (92aafa6 6d2453e, 24949ed)
+   Need to check for child === activeElement for range inputs (92aafa6 6d2453e, 24949ed)
  - Fixed #152 (Egor Stambakio <stambakio@scand.com>, 6d2453e)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 92aafa6)
  - Update README.md (Kirill Volkovich <kvolkovich-sc@users.noreply.github.com>, e1eb8ee)
@@ -74,24 +75,19 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, e9afb33)
  - Bug with inconsistent display of Field Errors is fixed (Andrei Mourzenkov <mourzenkov@scand.com>, 55afb0b)
  - Merge pull request #148 from OpusCapita/issue-147
-
-    Preserve selected tab when navigating between instances on Show view (d9ed72f 5c8969d, be147c4)
+   Preserve selected tab when navigating between instances on Show view (d9ed72f 5c8969d, be147c4)
  - Merge pull request #146 from OpusCapita/issue-144
-
-    Enter key triggers sync with formatted value (e52247d 1e0a159, d9ed72f)
+   Enter key triggers sync with formatted value (e52247d 1e0a159, d9ed72f)
  - Merge pull request #145 from OpusCapita/issue-42
-
-    Updated dependencies to ensure React 16.x compatibility (4d1c2e2 1104b53, e52247d)
+   Updated dependencies to ensure React 16.x compatibility (4d1c2e2 1104b53, e52247d)
  - Docs changes: custom operation modifying internal one (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4d1c2e2)
  - Fixed #147 (Egor Stambakio <stambakio@scand.com>, 5c8969d)
  - Fixed #144 (Egor Stambakio <stambakio@scand.com>, 1e0a159)
  - Merge pull request #143 from OpusCapita/issue-126
-
-    Date range search includes the whole upper boundary day (906acf0 1de5868, e63fa8f)
+   Date range search includes the whole upper boundary day (906acf0 1de5868, e63fa8f)
  - Edited a test. (Egor Stambakio <stambakio@scand.com>, 1104b53)
  - Merge pull request #142 from OpusCapita/issue-141
-
-    Proper errors for invalid numbers in fields (f895fba 817fc19, 906acf0)
+   Proper errors for invalid numbers in fields (f895fba 817fc19, 906acf0)
  - Fixed test. (Egor Stambakio <stambakio@scand.com>, 1de5868)
  - Removed a variable (Egor Stambakio <stambakio@scand.com>, 817fc19)
  - Upgraded package versions to ensure react 16 compatibility. (Egor Stambakio <stambakio@scand.com>, aae72fa)
@@ -99,55 +95,49 @@
  - Fixed #141 (Egor Stambakio <stambakio@scand.com>, 5c7d1dc)
 
 ## [v0.0.30](Wed, 13 Dec 2017 13:13:42 GMT)
- - Merge pull request #139 from OpusCapita/issue-25
 
-    Issue 25 (a7f280c fb1fdc2, ed43399)
+### Breaking
+ 1. There is no longer "number" Field Type. Replace it with either "integer" or "decimal".
+ 2. There is no longer "stringNumber" Field Type. Replace it with either "stringInteger" or "stringDecimal".
+
+ - Merge pull request #139 from OpusCapita/issue-25
+   Issue 25 (a7f280c fb1fdc2, ed43399)
  - Correcting comments in Search Saga (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, fb1fdc2)
  - Merge pull request #131 from OpusCapita/issue-123
-
-    Sort preserves current offset (772f7a4 bf2ce17, da1beee)
+   Sort preserves current offset (772f7a4 bf2ce17, da1beee)
  - Merge pull request #138 from OpusCapita/issue-25
-
-    Issue 25 (eb0db9d 772f7a4, a7f280c)
+   Issue 25 (eb0db9d 772f7a4, a7f280c)
  - Merge pull request #137 from OpusCapita/issue-135
-
-    Fixed issue 135 (451dce1 373ce64, 772f7a4)
+   Fixed issue 135 (451dce1 373ce64, 772f7a4)
  - Merge branch 'issue-25' of https://github.com/OpusCapita/react-crudeditor into issue-25 (71fca05 4c07d18, 451dce1)
  - Fixing internal operation call _before_ button press (Andrei Mourzenkov <mourzenkov@scand.com>, 71fca05)
  - Adjusted prop-types for show view. (Egor Stambakio <stambakio@scand.com>, 373ce64)
  - Fixed #135 (Egor Stambakio <stambakio@scand.com>, 503a028)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4c07d18)
  - Merge pull request #136 from OpusCapita/issue-134
-
-    i18n for custom field validation errors (c1a6762 4aa6610, d9c70c0)
+   i18n for custom field validation errors (c1a6762 4aa6610, d9c70c0)
  - Minor syntax enhancements (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4aa6610)
  - Implemented #134 (Egor Stambakio <stambakio@scand.com>, ede7ace)
  - Merge pull request #133 from OpusCapita/issue-128
-
-    Added missing instanceLabel to Edit view reducer (136813c 952b490, c1a6762)
+   Added missing instanceLabel to Edit view reducer (136813c 952b490, c1a6762)
  - Fixed #128 (Egor Stambakio <stambakio@scand.com>, 952b490)
  - Merge branch 'issue-115-v2' into issue-25 (40d04c1 13d4b0c, 136813c)
  - Merge pull request #132 from OpusCapita/issue-124
-
-    Edited demo server behavior to trim edge whitespaces (42d7ec2 0dbed35, 40d04c1)
+   Edited demo server behavior to trim edge whitespaces (42d7ec2 0dbed35, 40d04c1)
  - WithFieldErrorsHOC keeps filtered errors in state for performance sake (Andrei Mourzenkov <mourzenkov@scand.com>, 13d4b0c)
  - Fixed #124 (Egor Stambakio <stambakio@scand.com>, 0dbed35)
  - Merge pull request #130 from OpusCapita/issue-122
-
-    Adjusted pagination to be consistent with existing editors (205b05c 5ddefcb, 42d7ec2)
+   Adjusted pagination to be consistent with existing editors (205b05c 5ddefcb, 42d7ec2)
  - Merge pull request #129 from OpusCapita/issue-117
-
-    Proper sorting for strings in demo model (678ae0c c684393, 205b05c)
+   Proper sorting for strings in demo model (678ae0c c684393, 205b05c)
  - Merge pull request #120 from OpusCapita/issue-118
-
-    Fixed sort icon direction (4e46ec7 ab77ea0, 678ae0c)
+   Fixed sort icon direction (4e46ec7 ab77ea0, 678ae0c)
  - Indentation (Egor Stambakio <stambakio@scand.com>, bf2ce17)
  - Fixed #123 (Egor Stambakio <stambakio@scand.com>, d747e7a)
  - Fixed #122 (Egor Stambakio <stambakio@scand.com>, 5ddefcb)
  - Fixed #117 (Egor Stambakio <stambakio@scand.com>, c684393)
  - Merge pull request #119 from OpusCapita/issue-115-v2
-
-    Refactored fieldErrors HOC (c6dae4f 32fb8fa, 4e46ec7)
+   Refactored fieldErrors HOC (c6dae4f 32fb8fa, 4e46ec7)
  - Redundant query of model props is removed from WithFieldErrorsHOC.js (Andrei Mourzenkov <mourzenkov@scand.com>, 32fb8fa)
  - Fixed #118 (Egor Stambakio <stambakio@scand.com>, ab77ea0)
  - Implemented better initial fields in errors HOC. (Egor Stambakio <stambakio@scand.com>, 628874a)
@@ -157,24 +147,20 @@
  - Fixed GenericInput showroom issue (Egor Stambakio <stambakio@scand.com>, c6dae4f)
  - Keeping errors in the store after their correction is fixed (Andrei Mourzenkov <mourzenkov@scand.com>, 3f19aab)
  - Merge pull request #116 from OpusCapita/issue-106
-
-    Defer until onBlur (01c3199 490f33d, c5b14c6)
+   Defer until onBlur (01c3199 490f33d, c5b14c6)
  - Fixed tests (estambakio-sc <egor.stambakio@opuscapita.com>, 490f33d)
  - Merged issue-25 (da9c21f 01c3199, 42b07fd)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 01c3199)
  - Monor variable name corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 267cad4)
  - Merge pull request #113 from OpusCapita/issue-112
-
-    Defer redux-component value sync until onBlur (5f5a3aa 99f510a, da9c21f)
+   Defer redux-component value sync until onBlur (5f5a3aa 99f510a, da9c21f)
  - Merge pull request #109 from OpusCapita/issue-106
-
-    Removed number-related components, moved i18n format/parse to converters (5e7ace5 5f5a3aa, b2181db)
+   Removed number-related components, moved i18n format/parse to converters (5e7ace5 5f5a3aa, b2181db)
  - Removed default onChange, onBlur handlers from HOC. (Egor Stambakio <stambakio@scand.com>, 99f510a)
  - Named args for format/parse functions. (Egor Stambakio <stambakio@scand.com>, 5f5a3aa)
  - Component value synchronizes with Redux onBlur (Egor Stambakio <stambakio@scand.com>, d2ff23c)
  - Merge pull request #111 from OpusCapita/issue-109
-
-    Fixed #110 (545a854 2799f86, 5e7ace5)
+   Fixed #110 (545a854 2799f86, 5e7ace5)
  - Unified errors structure in all Views stores (Andrei Mourzenkov <mourzenkov@scand.com>, 545a854)
  - Merged #106 (44b221d 3ae3d9c, a86f3b2)
  - Created a HOC. (Egor Stambakio <stambakio@scand.com>, 44b221d)
@@ -185,13 +171,11 @@
  - Fixed #104 (Egor Stambakio <stambakio@scand.com>, 850b6e1)
  - Fix ##108 and add 'i18n' to all reducers (Andrei Mourzenkov <mourzenkov@scand.com>, ec1da11)
  - Merge pull request #105 from OpusCapita/test-stripped-model
-
-    Tested stripped model, fixed some bugs and implemented #104 (ecc0108 a64025c, 6087dc7)
+   Tested stripped model, fixed some bugs and implemented #104 (ecc0108 a64025c, 6087dc7)
  - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a64025c)
  - Tested stripped model, fixed some bugs and implemented #104 (Egor Stambakio <stambakio@scand.com>, 9e3cb4b)
  - Merge pull request #103 from OpusCapita/issue-102
-
-    Allow whitespaces in string inputs (c18b30b 532f622, ecc0108)
+   Allow whitespaces in string inputs (c18b30b 532f622, ecc0108)
  - Done (Egor Stambakio <stambakio@scand.com>, 532f622)
  - Fixed #102 (Egor Stambakio <stambakio@scand.com>, 43850f2)
  - Merge branch 'issue-25' of https://github.com/OpusCapita/react-crudeditor into issue-25 (fc4f7b2 956973a, c18b30b)
@@ -200,8 +184,7 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 7151b03)
  - Added a test (Egor Stambakio <stambakio@scand.com>, fc4f7b2)
  - Merge pull request #101 from OpusCapita/issue-94
-
-    Added field type to component mapping into Readme, and fixed some bugs (ae4b728 0b02d37, 076c445)
+   Added field type to component mapping into Readme, and fixed some bugs (ae4b728 0b02d37, 076c445)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 0b02d37)
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 135fc36)
  - Minor demo api fix (Egor Stambakio <stambakio@scand.com>, 03a4dde)
@@ -213,23 +196,18 @@
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, d7e9069)
  - Merged issue-25 (3c594cc ae4b728, 1f4a3e3)
  - Update README.md
-
-    Added field types to components mapping. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3c594cc)
+   Added field types to components mapping. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3c594cc)
  - Merge pull request #99 from OpusCapita/issue-95
-
-    Implemented middleware-scoped all_fields_valudate fail notification (44f8d62 9066656, ae4b728)
+   Implemented middleware-scoped all_fields_valudate fail notification (44f8d62 9066656, ae4b728)
  - Fixed according to reeviewer notes. (Egor Stambakio <stambakio@scand.com>, 9066656)
  - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 56ccc09)
  - Update README.md
-
-    Added built-in components description. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, b5db467)
+   Added built-in components description. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, b5db467)
  - Merge pull request #100 from OpusCapita/issue-93
-
-    Renamed Component -> component (f4d5432 4ece7a9, 44f8d62)
+   Renamed Component -> component (f4d5432 4ece7a9, 44f8d62)
  - Fixed a bug, exported default components names for #94. (Egor Stambakio <stambakio@scand.com>, 89dd2c7)
  - Update README.md
-
-    Renamed `Component` -> 'component' props. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4ece7a9)
+   Renamed `Component` -> 'component' props. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4ece7a9)
  - Renamed Component -> component props. (Egor Stambakio <stambakio@scand.com>, 3662c02)
  - Implemented middleware-scoped all_fields_valudate fail notification for #95. (Egor Stambakio <stambakio@scand.com>, d59e89a)
  - Removed debug info. (Egor Stambakio <stambakio@scand.com>, f4d5432)
@@ -245,22 +223,18 @@
  - Merging master (1dc6ec4 eb0db9d, ba5a81c)
  - Testing in progress... (Andrei Mourzenkov <mourzenkov@scand.com>, 1dc6ec4)
  - Merge pull request #92 from OpusCapita/issue-87
-
-    Updated package.json for newer peer react & react-dom dependencies. (09088b9 38ad52c, eb0db9d)
+   Updated package.json for newer peer react & react-dom dependencies. (09088b9 38ad52c, eb0db9d)
  - Update README.md
-
-    Removed 'auditable fields' references. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 09088b9)
+   Removed 'auditable fields' references. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 09088b9)
  - Merge pull request #91 from OpusCapita/issue-79
-
-    Removed auditable fields definition from crud constants (d08e737 e9dd762, e8bf73c)
+   Removed auditable fields definition from crud constants (d08e737 e9dd762, e8bf73c)
  - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, e9dd762)
  - Updated package.json for newer peer react & react-dom dependencies. (Egor Stambakio <stambakio@scand.com>, 38ad52c)
  - Minor fix. (Egor Stambakio <stambakio@scand.com>, 13025f8)
  - Lint (Egor Stambakio <stambakio@scand.com>, d2fe1aa)
  - Removed AUDITABLE_FIELDS altogether. (Egor Stambakio <stambakio@scand.com>, 599ef1e)
  - Merge pull request #89 from OpusCapita/issue-84
-
-    Notification for redirect attempt to forbidden view (9c3dfe9 48e4e89, d08e737)
+   Notification for redirect attempt to forbidden view (9c3dfe9 48e4e89, d08e737)
  - Implemented #84 (Egor Stambakio <stambakio@scand.com>, 48e4e89)
  - Merge branch 'range-input' into issue-25 (0153375 03e1f44, 3e33f37)
  - Ignored event handlers in coverage stats. (Egor Stambakio <stambakio@scand.com>, 03e1f44)
@@ -306,8 +280,7 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 193c92c)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 2204ef3)
  - Merge pull request #85 from OpusCapita/styling-issues
-
-    Fixed dropdown styling issues (7233d96 14dc2cb, 633541b)
+   Fixed dropdown styling issues (7233d96 14dc2cb, 633541b)
  - Renamed a state prop. (Egor Stambakio <stambakio@scand.com>, 14dc2cb)
  - Better comparison in edit reducer. (Egor Stambakio <stambakio@scand.com>, 22f17df)
  - Merge branch 'master' into styling-issues (762ddd0 7233d96, da9fc2a)
@@ -317,14 +290,12 @@
  - Minor changes (Andrei Mourzenkov <mourzenkov@scand.com>, f37c5b3)
  - Merge branch 'master' into styling-issues (47b75ee 2b6b59a, fc67d2c)
  - Merge pull request #76 from OpusCapita/issue-63
-
-    Confirmation for Tabs navigation on Edit view (2b6b59a 26d6a05, 158b160)
+   Confirmation for Tabs navigation on Edit view (2b6b59a 26d6a05, 158b160)
  - Fixed a bug. (Egor Stambakio <stambakio@scand.com>, 26d6a05)
  - Merge branch 'master' into issue-63 (427e7bd 2b6b59a, 874d0d4)
  - 85% fixed table scroll. (Egor Stambakio <stambakio@scand.com>, 47b75ee)
  - Merge pull request #82 from OpusCapita/issue-80
-
-    Replaced multiple navigation-only sagas with a single redirect saga (a081bd7 055cdae, 2b6b59a)
+   Replaced multiple navigation-only sagas with a single redirect saga (a081bd7 055cdae, 2b6b59a)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (d927246 4e78f3a, a081bd7)
  - Modified test data (Andrei Mourzenkov <mourzenkov@scand.com>, d927246)
  - Cleanup. (Egor Stambakio <stambakio@scand.com>, 055cdae)
@@ -333,19 +304,16 @@
  - Fixed reviewer notes for #76. (estambakio-sc <egor.stambakio@opuscapita.com>, 427e7bd)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 4e78f3a)
  - Merge pull request #78 from OpusCapita/issue-77
-
-    Fixed onTransition remaining initial after props change (b750303 8ea94d4, eab8b91)
+   Fixed onTransition remaining initial after props change (b750303 8ea94d4, eab8b91)
  - Removed obsolete line. (Egor Stambakio <stambakio@scand.com>, b750303)
  - Fixed #77 (Egor Stambakio <stambakio@scand.com>, 8ea94d4)
  - Merge pull request #71 from OpusCapita/issue-67
-
-    Confirm outgoing clicks when view has unsaved changes (ec06e48 d856355, 9c9d493)
+   Confirm outgoing clicks when view has unsaved changes (ec06e48 d856355, 9c9d493)
  - Reverted JSX children mapping back to React.cloneElement (Egor Stambakio <stambakio@scand.com>, d856355)
  - Removed an obsolete string. (Egor Stambakio <stambakio@scand.com>, 963089d)
  - Implemented #63 (Egor Stambakio <stambakio@scand.com>, bc1ec97)
  - Merge pull request #75 from OpusCapita/issue-74
-
-    Fixed #74. (c51f402 7b66fc8, ec06e48)
+   Fixed #74. (c51f402 7b66fc8, ec06e48)
  - Merge branch 'master' into issue-63 (3b06cf1 c51f402, de64993)
  - Merge branch 'issue-67' into issue-63 (2bfabf5 90fe95f, 3b06cf1)
  - Better mapping for confirm event handler. (Egor Stambakio <stambakio@scand.com>, 90fe95f)
@@ -365,22 +333,19 @@
 ## [v0.0.28](Tue, 28 Nov 2017 16:28:42 GMT)
  - Fixed #64 (Andrei Mourzenkov <mourzenkov@scand.com>, 76b1f61)
  - Merge pull request #73 from OpusCapita/create-view-ops-consistensy
-
-    Null instance and proper state for create view. (51ac41c 63b5578, b0edd0f)
+   Null instance and proper state for create view. (51ac41c 63b5578, b0edd0f)
  - Implemented reviewer note. (Egor Stambakio <stambakio@scand.com>, 63b5578)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 51ac41c)
  - Null instance and proper(?) state for create view. (Egor Stambakio <stambakio@scand.com>, 5c330e5)
 
 ## [v0.0.27](Tue, 28 Nov 2017 12:38:21 GMT)
  - Merge pull request #70 from OpusCapita/issue-68-default-props
-
-    Added proper default values for custom/external operations. (89c73e0 4ea4af1, 8cd2c20)
+   Added proper default values for custom/external operations. (89c73e0 4ea4af1, 8cd2c20)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 89c73e0)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, f2e11b5)
  - Added proper default values for custom/external operations. (Egor Stambakio <stambakio@scand.com>, 4ea4af1)
  - Merge pull request #69 from OpusCapita/issue-68
-
-    Separated internal and external operations. (facf29b fd72861, c17ea54)
+   Separated internal and external operations. (facf29b fd72861, c17ea54)
  - Separated internal and external operations. (Egor Stambakio <stambakio@scand.com>, fd72861)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, facf29b)
 
@@ -398,8 +363,7 @@
 
 ## [v0.0.22](Mon, 27 Nov 2017 06:16:06 GMT)
  - Merge pull request #45 from OpusCapita/hideable-form/40
-
-    Implemented show/hide search form functionality (b2e2662 bbec6b9, 70d34fb)
+   Implemented show/hide search form functionality (b2e2662 bbec6b9, 70d34fb)
  - Fixed according to reviewer notes. (estambakio-sc <egor.stambakio@opuscapita.com>, bbec6b9)
  - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, b2e2662)
  - Updating README.md [skip ci] (Alexey Sergeev <asergeev-sc@users.noreply.github.com>, f3b9236)
@@ -413,8 +377,7 @@
  - Merged master and added arrow icon. (59f471c 126c10c, 6ec8506)
  - Changed icon. (Egor Stambakio <stambakio@scand.com>, 59f471c)
  - Merge pull request #65 from OpusCapita/proptypes-model-validation/47
-
-    Prop-types model validation (c442a11 bc0d500, 126c10c)
+   Prop-types model validation (c442a11 bc0d500, 126c10c)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c442a11)
  - Fixed eslint errors. (Egor Stambakio <stambakio@scand.com>, bc0d500)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 394ed09)
@@ -422,12 +385,10 @@
  - Done #47 using prop-types. (Egor Stambakio <stambakio@scand.com>, 95fd71b)
  - 95% (Egor Stambakio <stambakio@scand.com>, 0052405)
  - Merge pull request #62 from OpusCapita/remove-tildas-for-readability
-
-    Swapped indefOf ~ to more readable > -1 comparison. (89b8ae6 f7db5c8, f95f5a8)
+   Swapped indefOf ~ to more readable > -1 comparison. (89b8ae6 f7db5c8, f95f5a8)
  - Swapped indefOf ~ to more readable > -1 comparison. (Egor Stambakio <stambakio@scand.com>, f7db5c8)
  - Merge pull request #60 from OpusCapita/forbidden-views-403/57
-
-    403 for forbidden standard views, 500 for unknown views. (fc8ec1a d8f5784, 89b8ae6)
+   403 for forbidden standard views, 500 for unknown views. (fc8ec1a d8f5784, 89b8ae6)
  - Added a new EOL to make eslint happy. (Egor Stambakio <stambakio@scand.com>, d8f5784)
  - 403 for forbidden standard views, 500 for unknown views #57. (Egor Stambakio <stambakio@scand.com>, 798fffb)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (b506ecb 6a7fe29, fc8ec1a)
@@ -447,15 +408,13 @@
 ## [v0.0.21](Thu, 23 Nov 2017 15:23:03 GMT)
  - Remove debug info (Andrei Mourzenkov <mourzenkov@scand.com>, 51c7e26)
  - Merge pull request #59 from OpusCapita/ui-headers/57
-
-    Adjusted UI (037d38d fbd1dca, 3a6301b)
+   Adjusted UI (037d38d fbd1dca, 3a6301b)
  - Remove debugging info (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, fbd1dca)
  - Merge branch 'master' into ui-headers/57 (39192fd 037d38d, 01d6254)
  - Done #57 (Egor Stambakio <stambakio@scand.com>, 39192fd)
  - Edited styles. (Egor Stambakio <stambakio@scand.com>, 4a27d9e)
  - Merge pull request #58 from OpusCapita/validate-unique-field-presense
-
-    Added validation for unique field presense (62bd5dc 0309809, 037d38d)
+   Added validation for unique field presense (62bd5dc 0309809, 037d38d)
  - Added validation for unique field presense. (Egor Stambakio <stambakio@scand.com>, 0309809)
  - Linted. (Egor Stambakio <stambakio@scand.com>, 8bf0c30)
  - Done besides renaming Create button: waiting for texts. (Egor Stambakio <stambakio@scand.com>, 6d59b63)
@@ -465,21 +424,17 @@
  - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 23d37e1)
  - Implemented model validation #47 (Egor Stambakio <stambakio@scand.com>, 493cd62)
  - Merge pull request #50 from OpusCapita/permissions/48
-
-    Implemented basic permissions system for crud's schema (5ade2c6 bb95165, 3318670)
+   Implemented basic permissions system for crud's schema (5ade2c6 bb95165, 3318670)
  - Minor code optimization (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, bb95165)
  - Merge pull request #53 from OpusCapita/pagination/51
-
-    Fixed #51 (hide pagination for a single-page search result) (782874c a881e26, 5ade2c6)
+   Fixed #51 (hide pagination for a single-page search result) (782874c a881e26, 5ade2c6)
  - Merge pull request #56 from OpusCapita/translations-client-bug/55
-
-    Fixed translations bug #55 on demo client with react-router (c27cf8f 69e10e5, 782874c)
+   Fixed translations bug #55 on demo client with react-router (c27cf8f 69e10e5, 782874c)
  - Renamed a variable. (Egor Stambakio <stambakio@scand.com>, f0cb5d4)
  - Fixed according to supervisor notes. (Egor Stambakio <stambakio@scand.com>, 0671b22)
  - Hide only pagination links; totalCount & paging dropdownstay intact. (Egor Stambakio <stambakio@scand.com>, a881e26)
  - Merge pull request #54 from OpusCapita/tabs/52
-
-    Fixed #52 (don't show a single tab) (648a4cb ab8af4e, c27cf8f)
+   Fixed #52 (don't show a single tab) (648a4cb ab8af4e, c27cf8f)
  - Fixed #55 (Egor Stambakio <stambakio@scand.com>, 69e10e5)
  - Fixed #52 (Egor Stambakio <stambakio@scand.com>, ab8af4e)
  - Fixed #51 (Egor Stambakio <stambakio@scand.com>, b064ae0)
@@ -501,8 +456,7 @@
 ## [v0.0.17](Tue, 21 Nov 2017 18:23:26 GMT)
  - Partial resolution of #46 (Andrei Mourzenkov <mourzenkov@scand.com>, 21e313c)
  - Merge pull request #24 from OpusCapita/issue17
-
-    Refactored FieldErrors HOC and made fixes accroding to supervisor notes (4673b2b e3ca823, 7823617)
+   Refactored FieldErrors HOC and made fixes accroding to supervisor notes (4673b2b e3ca823, 7823617)
  - Resolved conflicts. (f7f9d00 4673b2b, e3ca823)
  - Minor changes. (Egor Stambakio <stambakio@scand.com>, f7f9d00)
  - Unified prev/next search to use the single app search point. (Egor Stambakio <stambakio@scand.com>, 2985100)
@@ -512,8 +466,7 @@
 
 ## [v0.0.16](Tue, 21 Nov 2017 06:24:28 GMT)
  - Merge pull request #43 from OpusCapita/buttons-belong-to-forms
-
-    Forms & submit buttons drawn only for form tabs. (e126ec7 c97207f, d4ac68a)
+   Forms & submit buttons drawn only for form tabs. (e126ec7 c97207f, d4ac68a)
  - Forms & submit buttons drawn only for form tabs. (Egor Stambakio <stambakio@scand.com>, c97207f)
  - Update .gitattributes (Andrei Mourzenkov <mourzenkov@scand.com>, e126ec7)
 
@@ -521,8 +474,7 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (c623e60 348e2a8, bf15c01)
  - Remove redundancy from package.json (Andrei Mourzenkov <mourzenkov@scand.com>, c623e60)
  - Merge pull request #41 from OpusCapita/custom-tab-component
-
-    Added custom tab component example (a80e012 a726d98, 348e2a8)
+   Added custom tab component example (a80e012 a726d98, 348e2a8)
  - Unified tabs logic handling in show/edit/create views. (Egor Stambakio <stambakio@scand.com>, a726d98)
  - Lint (Egor Stambakio <stambakio@scand.com>, fb21e5c)
  - Added a custom component example for tabs. (Egor Stambakio <stambakio@scand.com>, 004f489)
@@ -534,13 +486,11 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (2acb86e b7e487a, 1498cbd)
  - Documentation allows isRange for Cusom Components in Search View (Andrei Mourzenkov <mourzenkov@scand.com>, 2acb86e)
  - Merge pull request #38 from OpusCapita/translations/37
-
-    Translations/37 (4e6f513 a7e6133, b7e487a)
+   Translations/37 (4e6f513 a7e6133, b7e487a)
  - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7e6133)
  - Removed getModelText from inner context. (Egor Stambakio <stambakio@scand.com>, a38b865)
  - Merge pull request #39 from OpusCapita/initial-search-spinner/3
-
-    Refactored search view to show spinner on initial load (46c1259 b828d22, 4e6f513)
+   Refactored search view to show spinner on initial load (46c1259 b828d22, 4e6f513)
  - Renamed utils -> lib. (Egor Stambakio <stambakio@scand.com>, 39cecce)
  - Object.create for contextual i18n. (Egor Stambakio <stambakio@scand.com>, 266401b)
  - Base64 encoding for model name in prefix. (Egor Stambakio <stambakio@scand.com>, ab8ca3d)
@@ -560,8 +510,7 @@
 
 ## [v0.0.13](Tue, 14 Nov 2017 05:00:41 GMT)
  - Merge pull request #33 from OpusCapita/Issue/19
-
-    Added reference select usage example. (2397386 5f18105, ff3af61)
+   Added reference select usage example. (2397386 5f18105, ff3af61)
  - react-reference-select is moved to devDependencies (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 5f18105)
  - ReferenceSearch files renaming (Andrei Mourzenkov <mourzenkov@scand.com>, 85f2b14)
  - Change notification timeout constant name (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, f2d5ec2)
@@ -574,8 +523,7 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, cac1729)
  - ... (Egor Stambakio <stambakio@scand.com>, f269b59)
  - Merge pull request #32 from OpusCapita/Issue/26
-
-    Added webpack definePlugin to lib build config. (0d48011 d491f13, bb7e82d)
+   Added webpack definePlugin to lib build config. (0d48011 d491f13, bb7e82d)
  - Removed dev plugin, saved ~10% bundle size. (estambakio-sc <egor.stambakio@opuscapita.com>, d491f13)
  - Added webpack definePlugin to lib build config. (estambakio-sc <egor.stambakio@opuscapita.com>, 5afc63e)
  - Cleanup. (Egor Stambakio <stambakio@scand.com>, 90bf15f)
@@ -599,12 +547,10 @@
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, b467b6f)
  - Add default filter to a model's api.search (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 8756b81)
  - Merge pull request #29 from OpusCapita/Issue/27
-
-    fixed #27 (878db94 b172e0e, fa405de)
+   fixed #27 (878db94 b172e0e, fa405de)
  - fixed (Egor Stambakio <stambakio@scand.com>, b172e0e)
  - Merge pull request #28 from OpusCapita/Issue/25
-
-    Make Date fields use i18n.formatDate (6784678 a7c24b4, 878db94)
+   Make Date fields use i18n.formatDate (6784678 a7c24b4, 878db94)
  - Update index.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, a7c24b4)
  - Unified date field to use i18n.formatDate (Egor Stambakio <stambakio@scand.com>, e7affc5)
  - barely started (Egor Stambakio <stambakio@scand.com>, c974536)
@@ -613,12 +559,10 @@
  - v 0.3 (Egor Stambakio <stambakio@scand.com>, da849a9)
  - Renamed spinner to Spinner. (Egor Stambakio <stambakio@scand.com>, e46ee54)
  - Merge pull request #23 from OpusCapita/Issue/22
-
-    Issue/22: configurable spinner (2f0d174 364d2e0, 5491587)
+   Issue/22: configurable spinner (2f0d174 364d2e0, 5491587)
  - Minor fixes in SR Listing. (Egor Stambakio <stambakio@scand.com>, 364d2e0)
  - Merge pull request #21 from OpusCapita/Issue/20
-
-    Fixed issue #20 (401e382 c168838, 2f0d174)
+   Fixed issue #20 (401e382 c168838, 2f0d174)
  - Added new spinner option into Readme. (Egor Stambakio <stambakio@scand.com>, eb2bcb0)
  - Implemented Spinner HOC. (Egor Stambakio <stambakio@scand.com>, fcc493d)
  - Update lib.js (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c168838)
@@ -649,8 +593,7 @@
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 24f26c9)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (992a8d3 822037a, 3ed6749)
  - Update README.md
-
-    Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
+   Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
  - Fixed issue and added fade-in animation for field errors. (Egor Stambakio <stambakio@scand.com>, 992a8d3)
  - Unified grid for all related views. (Egor Stambakio <stambakio@scand.com>, 5e69aeb)
  - Eslint (Egor Stambakio <stambakio@scand.com>, 538a380)
@@ -741,8 +684,7 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (61db1af 6e6acbb, 40acff3)
  - All instance fields re-validation on CREATE-command (Andrei Mourzenkov <mourzenkov@scand.com>, 61db1af)
  - Merge pull request #7 from OpusCapita/i18n-model-feature-4
-
-    I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
+   I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
  - fixed one translation (Egor Stambakio <stambakio@scand.com>, 5b73cf5)
  - refactored files with translations (Egor Stambakio <stambakio@scand.com>, 413c456)
  - incapsulated statusId translations into component (Egor Stambakio <stambakio@scand.com>, af6b989)
@@ -1038,8 +980,7 @@
  - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 24f26c9)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (992a8d3 822037a, 3ed6749)
  - Update README.md
-
-    Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
+   Added link to model example and pasted buildFormLayout code for reference. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 822037a)
  - Fixed issue and added fade-in animation for field errors. (Egor Stambakio <stambakio@scand.com>, 992a8d3)
  - Unified grid for all related views. (Egor Stambakio <stambakio@scand.com>, 5e69aeb)
  - Eslint (Egor Stambakio <stambakio@scand.com>, 538a380)
@@ -1130,8 +1071,7 @@
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (61db1af 6e6acbb, 40acff3)
  - All instance fields re-validation on CREATE-command (Andrei Mourzenkov <mourzenkov@scand.com>, 61db1af)
  - Merge pull request #7 from OpusCapita/i18n-model-feature-4
-
-    I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
+   I18n for both crud lib and demo model (6713963 5b73cf5, 6e6acbb)
  - fixed one translation (Egor Stambakio <stambakio@scand.com>, 5b73cf5)
  - refactored files with translations (Egor Stambakio <stambakio@scand.com>, 413c456)
  - incapsulated statusId translations into component (Egor Stambakio <stambakio@scand.com>, af6b989)

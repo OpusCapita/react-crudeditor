@@ -45,10 +45,15 @@ export const getUi = modelDefinition => {
         throw new Error(`Composite field "${field.name}" in resultFields must have "component" property`);
       }
 
-      field.format = converter({ // eslint-disable-line no-param-reassign
+      const defaultConverter = converter({
         fieldType: fieldsMeta[field.name].type,
         uiType: UI_TYPE_STRING
-      }).format
+      });
+
+      // eslint-disable-next-line no-param-reassign
+      field.format = defaultConverter ?
+        defaultConverter.format :
+        (({ value }) => value);
     });
 
   if (!searchMeta.searchableFields) {

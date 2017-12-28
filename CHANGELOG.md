@@ -1,4 +1,4 @@
-## [v0.0.36](Thu, 28 Dec 2017 06:14:55 GMT)
+## [v0.0.36] - Thu, 28 Dec 2017 06:14:55 GMT
   
 ### Breaking changes
 - Renamings in "render" of model's "searchableFields" and "formLayout":

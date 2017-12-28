@@ -1,4 +1,16 @@
 ## [v0.0.36](Thu, 28 Dec 2017 06:14:55 GMT)
+  
+### Breaking changes
+- Renamings in "render" of model's "searchableFields" and "formLayout":
+  1. **render.valueProp** --> **render.value**.
+  1. **render.valueProp.name** --> **render.value.propName**.
+  
+- Changed i18n model messages patterns - added `.label` for label-related messages:
+  1. model.field.FIELD_NAME --> model.field.FIELD_NAME.label for field labels,
+  1. model.tab.TAB_NAME --> model.tab.TAB_NAME.label for tab labels,
+  1. model.section.SECTION_NAME --> model.section.SECTION_NAME.label for section labels.
+  
+### All commits
  - Predefined filter is immediately displayed in Search Form on Search View loading (Andrei Mourzenkov <mourzenkov@scand.com>, 4294844)
  - Fix when converter in resultFields is not available (Andrei Mourzenkov <mourzenkov@scand.com>, a55b083)
  - Merge pull request #196 from OpusCapita/issue-194

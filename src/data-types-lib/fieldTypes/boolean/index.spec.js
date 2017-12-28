@@ -24,4 +24,11 @@ describe('fieldTypes :: boolean', () => {
       assert.equal(index.isValid('qweqwewq'), false)
     });
   });
+
+  describe('buildValidator', () => {
+    it('should return an empty object', () => {
+      assert.deepEqual(index.buildValidator(true), {});
+      assert.deepEqual(index.buildValidator(false), {})
+    });
+  });
 });

@@ -23,5 +23,5 @@ export const getDefaultSortField = searchMeta => {
     return false;
   });
 
-  return searchMeta.resultFields[sortByDefaultIndex].name;
+  return searchMeta.resultFields[sortByDefaultIndex].name; // TBD
 };

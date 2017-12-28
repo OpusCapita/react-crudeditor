@@ -47,8 +47,8 @@ const
   ERROR_NOTIFICATION_TIMEOUT = 3000;
 
 // eventsMiddleware is a function which accepts i18n as an argument and
-// returns a standard Redux middleware function
-const eventsMiddleware = ({ i18n, modelDefinition }) => store => next => action => {
+// returns a Redux middleware function
+const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) => store => next => action => {
   switch (action.type) {
     case CREATE_INSTANCE_SAVE_SUCCESS:
       NotificationManager.create({

@@ -3,7 +3,7 @@ import { STATUS_READY } from '../common/constants';
 import { storeState2appState } from '../lib';
 
 // appStateChangeDetect is a function which returns Redux middleware
-export default ({
+export default /* istanbul ignore next */ ({
   lastState,
   getOnTransition,
   modelDefinition

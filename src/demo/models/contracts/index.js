@@ -38,7 +38,7 @@ export const fields = {
     'constraints': {
       'max': 100,
       'required': false,
-      validate(value, instance) {
+      validate: /* istanbul ignore next */ (value, instance) => {
         if ((value || '').toLowerCase().indexOf('booo') !== -1) {
           const err = [{
             code: 400,
@@ -286,7 +286,7 @@ export const fields = {
   }
 };
 
-const buildFormLayout = viewName => ({ tab, section, field }) => instance => [
+const buildFormLayout = /* istanbul ignore next */ viewName => ({ tab, section, field }) => instance => [
   tab({ name: 'general', columns: 2 }, // Best look with N = 2, 3, 4 (default is 1)
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
@@ -335,7 +335,7 @@ export default {
     name: 'Contracts', // unique for each model used in your app; used to distinguish translations
     translations,
     fields,
-    validate(instance) {
+    validate: /* istanbul ignore next */ instance => {
       if (instance.minOrderValueRequired && instance.minOrderValue === null) {
         const err = [{
           code: 400,
@@ -359,7 +359,7 @@ export default {
   },
   api,
   ui: {
-    search: _ => ({
+    search: /* istanbul ignore next */ _ => ({
       searchableFields: [
         { name: 'contractId' },
         { name: 'description' },
@@ -386,9 +386,9 @@ export default {
         })
       }
     }),
-    instanceLabel: instance => instance._objectLabel || instance.contractId || '',
+    instanceLabel: /* istanbul ignore next */ instance => instance._objectLabel || instance.contractId || '',
     create: {
-      defaultNewInstance: ({ filter } = {}) => Object.keys(filter || {}).reduce(
+      defaultNewInstance: /* istanbul ignore next */ ({ filter } = {}) => Object.keys(filter || {}).reduce(
         (rez, fieldName) => {
           const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
 
@@ -406,7 +406,7 @@ export default {
     edit: {
       formLayout: buildFormLayout(VIEW_EDIT),
       standardOperations: {
-        'delete': instance => ({
+        'delete': /* istanbul ignore next */ instance => ({
           disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
         })
       }
@@ -415,7 +415,7 @@ export default {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
     spinner: CustomSpinner,
-    operations: (instance, {
+    operations: /* istanbul ignore next */ (instance, {
       name: viewName,
       state: viewState
     }) => [

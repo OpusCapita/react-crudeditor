@@ -1,6 +1,5 @@
 import {
   ERROR_CODE_PARSING,
-  EMPTY_FIELD_VALUE,
   ERROR_INVALID_DECIMAL
 } from '../../constants';
 
@@ -11,9 +10,7 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: ({ value, i18n }) => value === EMPTY_FIELD_VALUE ?
-    String(value) :
-    i18n.formatDecimalNumber(value),
+  format: ({ value, i18n }) => i18n.formatDecimalNumber(value),
 
   /*
    * █████████████████████████████████████████████████

@@ -33,6 +33,8 @@ const getConverter = ({ EMPTY_UI_VALUE, converter }) => ['format', 'parse'].redu
   {}
 );
 
+export const throwError = error => { throw error; };
+
 export const
   buildRangeFieldType = (baseFieldType, baseUiTypes) => ({
 

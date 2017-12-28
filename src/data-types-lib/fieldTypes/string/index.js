@@ -1,7 +1,7 @@
 import integerUiType from './integerUiType';
 import decimalUiType from './decimalUiType';
 import stringUiType from './stringUiType';
-
+import { throwError } from '../lib';
 import {
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
@@ -17,8 +17,6 @@ import {
   UI_TYPE_DECIMAL,
   UI_TYPE_STRING
 } from '../../constants';
-
-const throwError = error => { throw error; };
 
 export default {
 

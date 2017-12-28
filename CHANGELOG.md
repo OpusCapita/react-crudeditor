@@ -1,3 +1,79 @@
+## [v0.0.36](Thu, 28 Dec 2017 06:14:55 GMT)
+ - Predefined filter is immediately displayed in Search Form on Search View loading (Andrei Mourzenkov <mourzenkov@scand.com>, 4294844)
+ - Fix when converter in resultFields is not available (Andrei Mourzenkov <mourzenkov@scand.com>, a55b083)
+ - Merge pull request #196 from OpusCapita/issue-194
+    
+    Renamed render.valueProp -> render.value.propName (51442a8 be023a3, ef5804c)
+ - Merge pull request #195 from OpusCapita/issue-170
+    
+    Format result fields according to common rules (1ac397f 5f250cb, 51442a8)
+ - Minor syntax corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 5f250cb)
+ - Composite fields must have FieldRenderComponent in resultFields (Andrei Mourzenkov <mourzenkov@scand.com>, d9034d6)
+ - Merge branch 'issue-194' of https://github.com/OpusCapita/react-crudeditor into issue-194 (c460b19 d7ca8ab, be023a3)
+ - Combine all validation error messages instead of showing the first one only. (Egor Stambakio <stambakio@scand.com>, c460b19)
+ - Fixed #194 and instance validation notification message. (Egor Stambakio <stambakio@scand.com>, 20554ef)
+ - Fixed #170 (Egor Stambakio <stambakio@scand.com>, 5b13e97)
+ - Merge branch 'master' into issue-194 (4ecb621 1ac397f, d7ca8ab)
+ - Update README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4ecb621)
+ - Merge pull request #193 from OpusCapita/issue-189
+    
+    Unified model message keys (803d185 fdc516e, 1ac397f)
+ - Error view displays error.message if possible. (Egor Stambakio <stambakio@scand.com>, fdc516e)
+ - Breaking: renamed message keys for model fields, section, tabs - added .label #189 (Egor Stambakio <stambakio@scand.com>, 55ce1e7)
+ - Update README.md
+    
+    Added `.label` to field/tab/section label i18n key. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 803d185)
+ - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 2e59563)
+ - Merge pull request #192 from OpusCapita/issue-191
+    
+    Simplified withAlerts HOC (d9d8a54 5942feb, 98e6f31)
+ - Fixed #191 (Egor Stambakio <stambakio@scand.com>, 5942feb)
+ - Merge pull request #187 from OpusCapita/issue-186
+    
+    Tabindex -1 for readonly fields (0ef26ea 6cbc7de, d9d8a54)
+ - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, 0ef26ea)
+ - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, ebb9d74)
+ - Fixed #186 (Egor Stambakio <stambakio@scand.com>, 6cbc7de)
+ - Merge pull request #185 from OpusCapita/issue-179
+    
+    Fixed react-test-renderer version (fd96382 8574b87, 0e5b038)
+ - Lint howdy (Egor Stambakio <stambakio@scand.com>, 8574b87)
+ - Updated eslint-config-opuscapita to 2.0 (Egor Stambakio <stambakio@scand.com>, 7af9eb8)
+ - Merge branch 'master' into issue-179 (bf552a7 fd96382, 45fe9a1)
+ - Fix #183 (Andrei Mourzenkov <mourzenkov@scand.com>, fd96382)
+ - Fixed react-test-renderer version for #179 (Egor Stambakio <stambakio@scand.com>, bf552a7)
+ - Merge pull request #184 from OpusCapita/issue-180
+    
+    Moved permissions-actions synchronization from UI to redux containers (12af66e 97fdf6c, f59a778)
+ - Fixed deleteSelected handler (Egor Stambakio <stambakio@scand.com>, 97fdf6c)
+ - Removed permissions from selectors. (Egor Stambakio <stambakio@scand.com>, 68e305d)
+ - Merged master (142b114 12af66e, 49a7555)
+ - Fixed #180 (Egor Stambakio <stambakio@scand.com>, 142b114)
+ - Fix #182 (Andrei Mourzenkov <mourzenkov@scand.com>, 12af66e)
+ - Merge pull request #178 from OpusCapita/issue-175
+    
+    Issue 175 (c7093e2 76f3744, f8a6328)
+ - Update package.json (Andrei Mourzenkov <mourzenkov@scand.com>, 76f3744)
+ - Fix #177 (Andrei Mourzenkov <mourzenkov@scand.com>, cabd205)
+ - Bug fixes (Andrei Mourzenkov <mourzenkov@scand.com>, 9b5a933)
+ - Bug fixes (Andrei Mourzenkov <mourzenkov@scand.com>, 8bfc253)
+ - Fix #175 (Andrei Mourzenkov <mourzenkov@scand.com>, d062bdc)
+ - Merge pull request #174 from OpusCapita/issue-172
+    
+    Proper defaultNewInstance for saveAndNew button handler (cd0b973 b935c59, c7093e2)
+ - defaultNewInstance() is called with Search View state as an argument in Edit/Create View (Andrei Mourzenkov <mourzenkov@scand.com>, b935c59)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (68c33d7 38624db, cd0b973)
+ - Fixed #172 (Egor Stambakio <stambakio@scand.com>, bc27f3e)
+ - Merge pull request #171 from OpusCapita/issue-162
+    
+    Fixed #162 and embedded the second editor (0a99b84 c56d648, 38624db)
+ - Lint (Egor Stambakio <stambakio@scand.com>, c56d648)
+ - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 3527ecc)
+ - Better embedded editor, state preserve after embedded crud transition. (Egor Stambakio <stambakio@scand.com>, 69cdeef)
+ - Cleanup. (Egor Stambakio <stambakio@scand.com>, 039809b)
+ - Fixed #162 and embedded the second editor (Egor Stambakio <stambakio@scand.com>, 9882877)
+ - Commenting some code (Andrei Mourzenkov <mourzenkov@scand.com>, 68c33d7)
+
 ## [0.0.35] - Wed, 20 Dec 2017 15:14:11 GMT
  - Fix #167 (Andrei Mourzenkov <mourzenkov@scand.com>, caf8080)
  - DEFAULT_FIELD_TYPE is added to named export (Andrei Mourzenkov <mourzenkov@scand.com>, 0a0be8f)

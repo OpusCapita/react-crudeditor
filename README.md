@@ -54,25 +54,25 @@
   <dd>Field(s) and their value(s) constituting visible unique identifier of an entity instance. It may or may not be DB <i>Primary ID</i>.</dd>
 
   <dt>Operation</dt>
-  <dd>Optional actions to be perfomed with an entity instance. Each operation has a dedicated button (or menu item in Split button dropdown) on UI. There are three kinds of operations:
+  <dd>An actions to be perfomed on a button click (or menu item in Split button dropdown). There are three kinds of operations:
     <ul>
       <li id="standard-operation">
-        <i>Standard</i> - predefined operation. Its handler is defined inside CRUD Editor. Standard operations IDs:
-          <ol>
+        <i>Standard</i> - predefined operation performed on an instance and (optionally) changing view name/state. Its handler is defined inside CRUD Editor. Standard operations IDs:
+          <ul style="list-style-type: circle">
             <li>"delete"</li>
             <li>"edit"</li>
             <li>"save"</li>
             <li>"saveAndNext"</li>
             <li>"saveAndNew"</li>
             <li>"show"</li>
-          </ol>
+          </ul>
       </li>
       <br />
       <li id="custom-operation">
         <i>Custom</i> - an operation for navigation inside CRUD Editor.  Its handler <i>must</i> be a pure function returning either nothing or new view name/state. <i>Custom operations</i> are defined in <a href="#model-definition">Model Definition</a>'s <b>ui.operations</b> property.
         <br />
         <br />
-        <i>Important</i>: Before moving into new view a user is warned about unsaved changes, if any, with confirmation dialog - so the transormation may be cancelled.
+        <i>Important</i>: Before moving into a new view/state a user is warned about unsaved changes (if any) with confirmation dialog - so the transition may be cancelled.
       </li>
       <br />
       <li id="external-operation">
@@ -211,7 +211,7 @@ View State *must* be serializable.
 Name | Default
 ---|---
 filter | `{}`
-sort | Result field marked with `sortByDefault` (first result field if no `sortByDefault` marker is set)
+sort | Result field marked with `sortByDefault` (first `sortable` result field if no `sortByDefault` marker is set, or first result field if there are neither `sortByDefault` no `sortable` fields)
 order | `"asc"`
 max | `30`
 offset | `0`

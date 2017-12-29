@@ -1,4 +1,4 @@
-import { call, cancelled, put, spawn } from 'redux-saga/effects';
+import { put, spawn } from 'redux-saga/effects';
 
 import saveSaga from './workerSagas/save';
 import redirectSaga from '../../common/workerSagas/redirect';
@@ -8,7 +8,6 @@ import scenarioSaga from '../../common/scenario';
 import {
   INSTANCE_SAVE,
   VIEW_INITIALIZE,
-  VIEW_REDIRECT_SUCCESS,
   VIEW_NAME
 } from './constants';
 
@@ -36,20 +35,10 @@ export default function*({
     meta: { source }
   });
 
-  return (yield spawn(function*() {
-    try {
-      yield call(scenarioSaga, {
-        modelDefinition,
-        softRedirectSaga,
-        transitions,
-        viewName: VIEW_NAME
-      });
-    } finally {
-      if (yield cancelled()) {
-        yield put({
-          type: VIEW_REDIRECT_SUCCESS
-        });
-      }
-    }
+  return (yield spawn(scenarioSaga, {
+    modelDefinition,
+    softRedirectSaga,
+    transitions,
+    viewName: VIEW_NAME
   }));
 }

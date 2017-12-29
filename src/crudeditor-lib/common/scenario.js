@@ -1,4 +1,26 @@
-import { take, cancel, call, fork } from 'redux-saga/effects';
+import { take, cancel, call, fork, cancelled, put } from 'redux-saga/effects';
+
+import {
+  VIEW_CREATE,
+  VIEW_EDIT,
+  VIEW_SHOW,
+  VIEW_SEARCH,
+  VIEW_ERROR
+} from './constants';
+
+import { VIEW_REDIRECT_SUCCESS as CREATE_VIEW_REDIRECT_SUCCESS } from '../views/create/constants';
+import { VIEW_REDIRECT_SUCCESS as EDIT_VIEW_REDIRECT_SUCCESS } from '../views/edit/constants';
+import { VIEW_REDIRECT_SUCCESS as SHOW_VIEW_REDIRECT_SUCCESS } from '../views/show/constants';
+import { VIEW_REDIRECT_SUCCESS as SEARCH_VIEW_REDIRECT_SUCCESS } from '../views/search/constants';
+import { VIEW_REDIRECT_SUCCESS as ERROR_VIEW_REDIRECT_SUCCESS } from '../views/error/constants';
+
+const VIEW_REDIRECT_SUCCESS = {
+  [VIEW_CREATE]: CREATE_VIEW_REDIRECT_SUCCESS,
+  [VIEW_EDIT]: EDIT_VIEW_REDIRECT_SUCCESS,
+  [VIEW_SHOW]: SHOW_VIEW_REDIRECT_SUCCESS,
+  [VIEW_SEARCH]: SEARCH_VIEW_REDIRECT_SUCCESS,
+  [VIEW_ERROR]: ERROR_VIEW_REDIRECT_SUCCESS
+}
 
 /*
  * View life cycle scenario saga.
@@ -9,7 +31,7 @@ import { take, cancel, call, fork } from 'redux-saga/effects';
  * or throws error(s) otherwise
  * => softRedirectSaga must be passed to all worker sagas.
  */
-export default function*({ modelDefinition, softRedirectSaga, transitions, viewName }) {
+const scenarioSaga = function*({ modelDefinition, softRedirectSaga, transitions, viewName }) {
   let lastTask;
 
   while (true) {
@@ -62,6 +84,28 @@ export default function*({ modelDefinition, softRedirectSaga, transitions, viewN
             throw err;
           }
         }
+      });
+    }
+  }
+};
+
+export default function*({
+  modelDefinition,
+  softRedirectSaga,
+  transitions,
+  viewName
+}) {
+  try {
+    yield call(scenarioSaga, {
+      modelDefinition,
+      softRedirectSaga,
+      transitions,
+      viewName
+    });
+  } finally {
+    if (yield cancelled()) {
+      yield put({
+        type: VIEW_REDIRECT_SUCCESS[viewName]
       });
     }
   }

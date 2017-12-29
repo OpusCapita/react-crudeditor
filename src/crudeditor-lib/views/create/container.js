@@ -20,7 +20,7 @@ import {
   saveAndNewInstance
 } from './actions';
 
-const mergeProps = (
+const mergeProps = /* istanbul ignore next */ (
   {
     viewModelData,
     viewState,
@@ -59,6 +59,7 @@ const mergeProps = (
 });
 
 export default connect(
+  /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
@@ -67,7 +68,7 @@ export default connect(
     externalOperations,
     uiConfig
   }), {
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
+    exitView: /* istanbul ignore next */ _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,
     selectTab,
     validateInstanceField,
@@ -77,5 +78,6 @@ export default connect(
   },
   mergeProps
 )(
+  /* istanbul ignore next */
   ({ viewModel }) => <Main model={viewModel} />
 );

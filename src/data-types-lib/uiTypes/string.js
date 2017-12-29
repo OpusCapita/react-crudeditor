@@ -1,4 +1,4 @@
-const EMPTY_VALUE = null;
+const EMPTY_VALUE = '';
 
 export default {
   get EMPTY_VALUE() {
@@ -6,6 +6,6 @@ export default {
   },
 
   isValid(value) {
-    return value === EMPTY_VALUE || typeof value === 'string';
+    return typeof value === 'string';
   }
 };

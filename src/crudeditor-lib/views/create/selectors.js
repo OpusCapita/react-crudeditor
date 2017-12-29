@@ -15,7 +15,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({
+  getViewState = wrapper(/* istanbul ignore next */ ({
     predefinedFields
   }) => ({
     predefinedFields
@@ -23,7 +23,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewModelData = wrapper((storeState, {
+  getViewModelData = wrapper(/* istanbul ignore next */ (storeState, {
     model: modelMeta,
     ui: { spinner }
   }) => ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CustomTabComponent = ({ viewName, instance }) => (
+const CustomTabComponent = /* istanbul ignore next */ ({ viewName, instance }) => (
   <div>
     <h1>Custom Tab Component Example</h1>
     <h4><a href="https://github.com/OpusCapita/react-crudeditor#tabformcomponent" target="_blank">Click me for Documentation reference</a></h4>

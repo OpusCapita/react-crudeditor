@@ -53,7 +53,7 @@ import {
 } from '../search/constants';
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
-const synchronizeInstances = ({ instance, formLayout, i18n }) => ({
+const synchronizeInstances = /* istanbul ignore next */ ({ instance, formLayout, i18n }) => ({
   formInstance: u.constant(cloneDeep(instance)),
 
   formattedInstance: u.constant(Object.keys(instance).reduce(
@@ -125,7 +125,8 @@ const defaultStoreStateTemplate = {
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default (modelDefinition, i18n) => (
+
+export default /* istanbul ignore next */ (modelDefinition, i18n) => (
   storeState = cloneDeep(defaultStoreStateTemplate),
   { type, payload, error, meta }
 ) => {

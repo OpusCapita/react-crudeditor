@@ -98,6 +98,7 @@ module.exports = {
     }),
     // new UglifyJsPlugin(),
     // new BundleAnalyzerPlugin(),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de|fi|ru|no|sv/),
     new LodashModuleReplacementPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true

@@ -1,13 +1,20 @@
 // required only by Mocha
 
-// set node evn
+// set node env
 
 const JSDOM = require('jsdom').JSDOM;
 
 process.env.NODE_ENV = 'test';
 
 require('babel-register')({
-  "presets": ["env", "react"],
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "ie >= 11", "not ie <= 10", "safari >= 7", "Firefox ESR"]
+      }
+    }],
+    "react"
+  ],
   "plugins": [
     "istanbul",
     "transform-decorators-legacy",

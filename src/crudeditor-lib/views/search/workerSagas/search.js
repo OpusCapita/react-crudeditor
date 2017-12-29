@@ -62,10 +62,12 @@ export default function*({
     errors
   ]);
 
+  /* istanbul ignore if */
   if (Object.keys(errors.fields).length) {
     throw errors.fields;
   }
 
+  /* istanbul ignore if */
   if (meta.source === 'owner') {
     // Default search values are default values for the arguments in case of external searchInstances() call.
     const {

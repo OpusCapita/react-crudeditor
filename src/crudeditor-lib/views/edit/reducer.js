@@ -53,7 +53,7 @@ import {
 } from '../search/constants';
 
 // Synchronize formInstance and formattedInstance with instance (which is a persistentInstance).
-const synchronizeInstances = ({ instance, formLayout, i18n }) => ({
+const synchronizeInstances = /* istanbul ignore next */ ({ instance, formLayout, i18n }) => ({
   formInstance: u.constant(cloneDeep(instance)),
 
   formattedInstance: u.constant(Object.keys(instance).reduce(

@@ -6,7 +6,7 @@ import {
   deleteMany
 } from './api';
 
-const FAKE_RESPONSE_TIMEOUT = 0; // In milliseconds. 0 for no timeout.
+const FAKE_RESPONSE_TIMEOUT = 300; // In milliseconds. 0 for no timeout.
 
 export default {
   get({ instance }) {

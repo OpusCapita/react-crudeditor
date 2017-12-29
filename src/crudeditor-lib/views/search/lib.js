@@ -12,16 +12,25 @@ export const cleanFilter = filter => Object.keys(filter).reduce(
 );
 
 export const getDefaultSortField = searchMeta => {
-  let sortByDefaultIndex = 0;
+  let fieldName = searchMeta.resultFields[0].name;
 
-  searchMeta.resultFields.some(({ sortByDefault }, index) => {
+  if (searchMeta.resultFields.every(({ name, sortByDefault }) => {
     if (sortByDefault) {
-      sortByDefaultIndex = index;
-      return true;
+      fieldName = name;
+      return false;
     }
 
-    return false;
-  });
+    return true;
+  })) {
+    searchMeta.resultFields.some(({ name, sortable }) => {
+      if (sortable) {
+        fieldName = name;
+        return true;
+      }
 
-  return searchMeta.resultFields[sortByDefaultIndex].name; // TBD
+      return false;
+    })
+  }
+
+  return fieldName;
 };

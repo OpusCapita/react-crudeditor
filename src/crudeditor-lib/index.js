@@ -201,7 +201,7 @@ export default baseModelDefinition => {
       onTransition = nextProps.onTransition;
 
       if (nextProps.uiConfig !== this.props.uiConfig) {
-        // TODO: set correct behaviour.
+        // FIXME: set correct behaviour.
       }
     }
 

@@ -115,7 +115,7 @@ export default class CrudWrapper extends PureComponent {
         }]}
         uiConfig={{
           headerLevel: 3,
-          hideSearchForm: true
+          hideSearchForm: true // FIXME: del after debugging
         }}
       />
     );

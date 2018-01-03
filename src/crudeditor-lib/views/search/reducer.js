@@ -175,7 +175,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
   return (storeState = buildDefaultStoreState(modelDefinition), { type, payload, error, meta }) => {
     if (
       storeState.status === STATUS_UNINITIALIZED &&
-      [VIEW_INITIALIZE_REQUEST, INSTANCES_SEARCH_SUCCESS].indexOf(type) === -1
+      [VIEW_INITIALIZE_REQUEST, INSTANCES_SEARCH_SUCCESS, SEARCH_FORM_TOGGLE].indexOf(type) === -1
     ) {
       return storeState;
     }
@@ -186,12 +186,6 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
     if (type === VIEW_INITIALIZE_REQUEST) {
-      const { hideSearchForm } = payload;
-
-      if (typeof hideSearchForm === 'boolean') {
-        newStoreStateSlice.hideSearchForm = hideSearchForm;
-      }
-
       newStoreStateSlice.status = STATUS_INITIALIZING;
 
     } else if (type === VIEW_INITIALIZE_FAIL) {
@@ -422,7 +416,11 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === SEARCH_FORM_TOGGLE) {
-      newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm
+      const { hideSearchForm } = payload;
+
+      newStoreStateSlice.hideSearchForm = typeof hideSearchForm === 'boolean' ?
+        hideSearchForm :
+        !storeState.hideSearchForm
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     /* eslint-enable padded-blocks */

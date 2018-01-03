@@ -10,7 +10,7 @@ import {
 } from './constants';
 
 export const
-  searchInstances = ({
+  searchInstances = /* istanbul ignore next */ ({
     filter,
     sort,
     order,
@@ -27,7 +27,7 @@ export const
     }
   }),
 
-  updateFormFilter = ({
+  updateFormFilter = /* istanbul ignore next */ ({
     name,
     value
   }) => ({
@@ -42,12 +42,12 @@ export const
     type: FORM_FILTER_RESET
   }),
 
-  toggleSelected = ({ selected, instance }) => ({
+  toggleSelected = /* istanbul ignore next */ ({ selected, instance }) => ({
     type: selected ? INSTANCE_SELECT : INSTANCE_DESELECT,
     payload: { instance }
   }),
 
-  toggleSelectedAll = selected => ({
+  toggleSelectedAll = /* istanbul ignore next */ selected => ({
     type: selected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
   }),
 

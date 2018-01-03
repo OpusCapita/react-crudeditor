@@ -157,7 +157,8 @@ export const buildDefaultStoreState = modelDefinition => ({
  * Only objects and arrays are allowed at branch nodes.
  * Only primitive data types are allowed at leaf nodes.
  */
-export default (modelDefinition, i18n) => {
+
+export default /* istanbul ignore next */ (modelDefinition, i18n) => {
   const buildLogicalKey = getLogicalKeyBuilder(modelDefinition.model.fields);
 
   // Remove benchmarkInstances from sourceInstances by comparing their Logical Keys.

@@ -87,6 +87,7 @@ export const
     return (value, instance) => {
       const errors = [];
 
+      /* istanbul ignore next */
       if (customValidate) {
         try {
           customValidate(value, instance);
@@ -97,7 +98,7 @@ export const
 
       if (value === EMPTY_FIELD_VALUE) {
         // Ignore validation of EMPTY_FIELD_VALUE, except for "required" constraint:
-        // "required" constraint is relevent only with EMPTY_FIELD_VALUE.
+        // "required" constraint is relevant only for EMPTY_FIELD_VALUE.
         if (required) {
           errors.push({
             code: ERROR_CODE_VALIDATION,

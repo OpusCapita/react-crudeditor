@@ -1,6 +1,6 @@
 import dateUiType from './dateUiType';
 import stringUiType from './stringUiType';
-
+import { throwError } from '../lib';
 import {
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
@@ -15,8 +15,6 @@ import {
   UI_TYPE_DATE,
   UI_TYPE_STRING
 } from '../../constants';
-
-const throwError = error => { throw error; };
 
 export default {
 
@@ -50,7 +48,6 @@ export default {
       [CONSTRAINT_MIN]: param => value >= new Date(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MIN_DECEEDED,
-        // message: `Min ${param} is deceeded`
         message: param
       }),
 
@@ -61,7 +58,6 @@ export default {
       [CONSTRAINT_MAX]: param => value <= new Date(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MAX_EXCEEDED,
-        // message: `Max ${param} is exceeded`
         message: param
       })
     };

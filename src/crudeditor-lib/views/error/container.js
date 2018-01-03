@@ -6,7 +6,7 @@ import { getViewModelData } from './selectors';
 import { softRedirectView } from '../../common/actions';
 import { VIEW_SEARCH } from '../../common/constants';
 
-const mergeProps = ({
+const mergeProps = /* istanbul ignore next */ ({
   viewModelData,
   permissions: {
     crudOperations
@@ -29,16 +29,18 @@ ownProps
 });
 
 export default connect(
+  /* istanbul ignore next */
   (storeState, { modelDefinition }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     permissions: modelDefinition.permissions
   }),
   {
-    goHome: _ => softRedirectView({
+    goHome: /* istanbul ignore next */ _ => softRedirectView({
       name: VIEW_SEARCH
     })
   },
   mergeProps
 )(
+  /* istanbul ignore next */
   ({ viewModel }) => <Main model={viewModel} />
 );

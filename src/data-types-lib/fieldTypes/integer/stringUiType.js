@@ -1,6 +1,5 @@
 import {
   ERROR_CODE_PARSING,
-  EMPTY_FIELD_VALUE,
   ERROR_INVALID_INTEGER
 } from '../../constants';
 
@@ -11,9 +10,7 @@ export default {
    * ████  FIELD_TYPE_INTEGER  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: ({ value, i18n }) => value === EMPTY_FIELD_VALUE ?
-    String(value) :
-    i18n.formatNumber(value),
+  format: ({ value, i18n }) => i18n.formatNumber(value),
 
   /*
    * █████████████████████████████████████████████████

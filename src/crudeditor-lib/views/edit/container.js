@@ -29,7 +29,7 @@ import {
   editNextInstance
 } from './actions';
 
-const mergeProps = (
+const mergeProps = /* istanbul ignore next */ (
   {
     viewModelData,
     adjacentInstancesExist,
@@ -77,6 +77,7 @@ const mergeProps = (
 });
 
 export default connect(
+  /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     adjacentInstancesExist: getAdjacentInstancesInfo(
@@ -90,7 +91,7 @@ export default connect(
   }), {
     changeInstanceField,
     deleteInstances,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
+    exitView: /* istanbul ignore next */ _ => softRedirectView({ name: VIEW_SEARCH }),
     saveAndNewInstance,
     saveInstance,
     saveAndNextInstance,
@@ -102,5 +103,6 @@ export default connect(
   },
   mergeProps
 )(
+  /* istanbul ignore next */
   ({ viewModel }) => <Main model={viewModel} />
 );

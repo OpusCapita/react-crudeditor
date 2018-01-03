@@ -10,32 +10,32 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  saveInstance = _ => ({
+  saveInstance = /* istanbul ignore next */ _ => ({
     type: INSTANCE_SAVE
   }),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  selectTab = tabName => ({
+  selectTab = /* istanbul ignore next */ tabName => ({
     type: TAB_SELECT,
     payload: { tabName }
   }),
 
-  validateInstanceField = fieldName => ({
+  validateInstanceField = /* istanbul ignore next */ fieldName => ({
     type: INSTANCE_FIELD_VALIDATE,
     payload: {
       name: fieldName
     }
   }),
 
-  saveAndNewInstance = _ => ({
+  saveAndNewInstance = /* istanbul ignore next */ _ => ({
     type: INSTANCE_SAVE,
     payload: {
       afterAction: AFTER_ACTION_NEW
     }
   }),
 
-  changeInstanceField = ({
+  changeInstanceField = /* istanbul ignore next */ ({
     name: fieldName,
     value: fieldNewValue
   }) => ({

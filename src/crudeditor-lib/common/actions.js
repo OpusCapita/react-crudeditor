@@ -5,7 +5,7 @@ import {
 } from './constants';
 
 export const
-  hardRedirectView = ({
+  hardRedirectView = /* istanbul ignore next */ ({
     viewName,
     viewState
   }) => ({
@@ -19,7 +19,7 @@ export const
     }
   }),
 
-  softRedirectView = ({
+  softRedirectView = /* istanbul ignore next */ ({
     name,
     state = {},
     ...additionalArgs
@@ -34,7 +34,7 @@ export const
     }
   }),
 
-  deleteInstances = instances => ({
+  deleteInstances = /* istanbul ignore next */ instances => ({
     type: INSTANCES_DELETE,
     payload: {
       instances: Array.isArray(instances) ? instances : [instances]

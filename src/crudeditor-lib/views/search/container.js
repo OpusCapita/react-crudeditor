@@ -26,7 +26,7 @@ import {
   toggleSearchForm
 } from './actions';
 
-const mergeProps = (
+const mergeProps = /* istanbul ignore next */ (
   {
     defaultNewInstance,
     viewModelData,
@@ -86,6 +86,7 @@ const mergeProps = (
 });
 
 export default connect(
+  /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
@@ -106,5 +107,6 @@ export default connect(
   },
   mergeProps
 )(
+  /* istanbul ignore next */
   ({ viewModel }) => <Main model={viewModel} />
 );

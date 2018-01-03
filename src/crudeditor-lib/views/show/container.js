@@ -20,7 +20,7 @@ import {
   showNextInstance
 } from './actions';
 
-const mergeProps = (
+const mergeProps = /* istanbul ignore next */ (
   {
     viewModelData,
     adjacentInstancesExist,
@@ -62,11 +62,12 @@ const mergeProps = (
 });
 
 export default connect(
+  /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     adjacentInstancesExist: getAdjacentInstancesInfo(
       storeState,
-      getTotalCount.bind(null, storeState) // binding to prevent the call without "view" crudPermissions.
+      getTotalCount.bind(null, storeState) // binding to prevent a call without "view" crudPermissions.
     ),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
@@ -74,12 +75,13 @@ export default connect(
     externalOperations
   }), {
     selectTab,
-    exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
+    exitView: /* istanbul ignore next */ _ => softRedirectView({ name: VIEW_SEARCH }),
     showPreviousInstance,
     showNextInstance,
     softRedirectView
   },
   mergeProps
 )(
+  /* istanbul ignore next */
   ({ viewModel }) => <Main model={viewModel} />
 );

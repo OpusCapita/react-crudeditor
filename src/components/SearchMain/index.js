@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Button,
   Glyphicon,
   Row,
   Col
 } from 'react-bootstrap';
+
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
@@ -15,11 +17,9 @@ export default class SearchMain extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       actions: PropTypes.objectOf(PropTypes.func),
-      data: PropTypes.shape({
-        hideSearchForm: PropTypes.bool
-      }),
       uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number
+        headerLevel: PropTypes.number,
+        hideSearchForm: PropTypes.bool
       })
     }).isRequired
   }
@@ -32,15 +32,13 @@ export default class SearchMain extends PureComponent {
     const { model } = this.props;
 
     const {
-      data: {
-        hideSearchForm
-      },
       actions: {
         toggleSearchForm,
         createInstance
       },
       uiConfig: {
-        headerLevel = 1
+        headerLevel = 1,
+        hideSearchForm
       }
     } = model;
 

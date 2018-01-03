@@ -28,8 +28,7 @@ const mergeProps = (
     permissions: {
       crudOperations
     },
-    externalOperations,
-    uiConfig
+    externalOperations
   },
   {
     softRedirectView,
@@ -53,19 +52,17 @@ const mergeProps = (
         softRedirectView
       }),
       external: externalOperations
-    },
-    uiConfig
+    }
   }
 });
 
 export default connect(
-  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
+  (storeState, { modelDefinition, externalOperations }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
-    externalOperations,
-    uiConfig
+    externalOperations
   }), {
     exitView: _ => softRedirectView({ name: VIEW_SEARCH }),
     saveInstance,

@@ -114,7 +114,8 @@ export default class CrudWrapper extends PureComponent {
           }
         }]}
         uiConfig={{
-          headerLevel: 3
+          headerLevel: 3,
+          hideSearchForm: true
         }}
       />
     );

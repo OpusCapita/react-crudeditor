@@ -110,7 +110,8 @@ export default baseModelDefinition => {
         handler: PropTypes.func
       })),
       uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number
+        headerLevel: PropTypes.number,
+        hideSearchForm: PropTypes.bool
       })
     }
 
@@ -174,7 +175,9 @@ export default baseModelDefinition => {
           // or else ensure that "redux-saga" is the last middleware in the call chain.
           appStateChangeDetect({
             lastState,
-            getOnTransition: this.getOnTransition,
+            get onTransition() {
+              return onTransition;
+            },
             modelDefinition
           }),
 
@@ -194,8 +197,12 @@ export default baseModelDefinition => {
       return this.adjustedContext;
     }
 
-    componentWillReceiveProps(props) {
-      onTransition = props.onTransition;
+    componentWillReceiveProps(nextProps) {
+      onTransition = nextProps.onTransition;
+
+      if (nextProps.uiConfig !== this.props.uiConfig) {
+        // TODO: set correct behaviour.
+      }
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
@@ -211,8 +218,6 @@ export default baseModelDefinition => {
       this.runningSaga.cancel()
     }
 
-    getOnTransition = _ => onTransition;
-
     render = _ =>
       (<Provider store={this.store}>
         <Main
@@ -220,7 +225,6 @@ export default baseModelDefinition => {
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
           externalOperations={this.props.externalOperations}
-          uiConfig={this.props.uiConfig}
         />
       </Provider>)
   }

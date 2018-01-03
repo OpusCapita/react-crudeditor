@@ -34,7 +34,7 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
 ```js
 <ContractEditor
   view={{name: 'search', state: {
-    hideSearchForm: false
+    max: 10
   } }}
   onTransition={({ name, state }) => { console.log('onTransition called', { name, state })}}
   externalOperations={
@@ -56,7 +56,10 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
         }
       }
     ]
-  }
+  },
+  uiConfig={{
+    hideSearchForm: false
+  }}
 />;
 ```
 

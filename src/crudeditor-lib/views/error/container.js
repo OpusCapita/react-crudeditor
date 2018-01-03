@@ -10,8 +10,7 @@ const mergeProps = ({
   viewModelData,
   permissions: {
     crudOperations
-  },
-  uiConfig
+  }
 },
 {
   goHome,
@@ -25,16 +24,14 @@ ownProps
     actions: {
       ...(crudOperations.view && { goHome }),
       ...dispatchProps
-    },
-    uiConfig
+    }
   },
 });
 
 export default connect(
-  (storeState, { modelDefinition, uiConfig }) => ({
+  (storeState, { modelDefinition }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    permissions: modelDefinition.permissions,
-    uiConfig
+    permissions: modelDefinition.permissions
   }),
   {
     goHome: _ => softRedirectView({

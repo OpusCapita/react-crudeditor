@@ -123,6 +123,5 @@ export const
       order: storeState.sortParams.order
     },
     status: storeState.status,
-    totalCount: _getTotalCount(storeState),
-    hideSearchForm: storeState.hideSearchForm
+    totalCount: _getTotalCount(storeState)
   }));

@@ -1,3 +1,23 @@
+## [v0.0.37](Thu, 04 Jan 2018 08:42:34 GMT)
+ - Edited webpack build config. (Egor Stambakio <stambakio@scand.com>, 1f67df9)
+ - Fixed fake timeout for demo apis. (estambakio-sc <egor.stambakio@opuscapita.com>, 584f821)
+ - Merge pull request #198 from OpusCapita/issue-98
+    
+    Added tests for field/ui types and most sagas (9ce54b3 4bdc059, e324e1e)
+ - Merge pull request #197 from OpusCapita/unified-scenario-saga
+    
+    Moved common scenario try/catch call to common/scenario. (c9ca5b0 867a4e3, 9ce54b3)
+ - Lowered coverage requirements to pass circleci tests. (Egor Stambakio <stambakio@scand.com>, 4bdc059)
+ - Merged master (558d6a5 c9ca5b0, 1ae2967)
+ - Moved common scenario try/catch call to common/scenario. (Egor Stambakio <stambakio@scand.com>, 867a4e3)
+ - Added tests for sagas #98 (Egor Stambakio <stambakio@scand.com>, 558d6a5)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (7df39c6 2a82fce, c9ca5b0)
+ - Default sort field has been redefined (Andrei Mourzenkov <mourzenkov@scand.com>, 7df39c6)
+ - Added tests for data-types-lib fieldTypes #98 (Egor Stambakio <stambakio@scand.com>, 85f9ef1)
+ - Added tests for field types. (Egor Stambakio <stambakio@scand.com>, b13ede4)
+ - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 2a82fce)
+ - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 66376f2)
+
 ## [v0.0.36] - Thu, 28 Dec 2017 06:14:55 GMT
   
 ### Breaking changes

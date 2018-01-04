@@ -101,7 +101,7 @@ export default class EditField extends Component {
             <FormControl.Static className='text-right' style={{ cursor: 'pointer', verticalAlign: 'middle' }}>
               <OverlayTrigger
                 trigger="click"
-                rootClose
+                rootClose={true}
                 placement="top"
                 overlay={
                   <Popover

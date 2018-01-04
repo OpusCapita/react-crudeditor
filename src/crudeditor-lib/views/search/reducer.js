@@ -149,7 +149,8 @@ export const buildDefaultStoreState = modelDefinition => ({
 
   status: STATUS_UNINITIALIZED,
 
-  hideSearchForm: false
+  // Initial value must be undefined to inform SearchContainer that it is not set yet.
+  hideSearchForm: undefined
 });
 
 /*

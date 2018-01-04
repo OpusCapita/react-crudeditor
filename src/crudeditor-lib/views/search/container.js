@@ -32,10 +32,9 @@ const mergeProps = /* istanbul ignore next */ (
     viewModelData,
     viewState,
     operations,
-    permissions: {
-      crudOperations
-    },
-    externalOperations
+    permissions: { crudOperations },
+    externalOperations,
+    uiConfig: { headerLevel }
   },
   {
     softRedirectView,
@@ -46,7 +45,10 @@ const mergeProps = /* istanbul ignore next */ (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(crudOperations.create && {
@@ -87,13 +89,14 @@ const mergeProps = /* istanbul ignore next */ (
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
-    externalOperations
+    externalOperations,
+    uiConfig
   }),
   {
     deleteInstances,

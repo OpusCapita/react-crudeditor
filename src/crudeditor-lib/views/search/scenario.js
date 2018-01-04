@@ -53,9 +53,6 @@ export default function*({
 }) {
   yield put({
     type: VIEW_INITIALIZE_REQUEST,
-    payload: {
-      hideSearchForm: false // FIXME: set correct value
-    },
     meta: { source }
   });
 

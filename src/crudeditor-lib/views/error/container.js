@@ -10,7 +10,8 @@ const mergeProps = /* istanbul ignore next */ ({
   viewModelData,
   permissions: {
     crudOperations
-  }
+  },
+  uiConfig: { headerLevel }
 },
 {
   goHome,
@@ -20,7 +21,10 @@ ownProps
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...(crudOperations.view && { goHome }),
       ...dispatchProps
@@ -30,9 +34,10 @@ ownProps
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition }) => ({
+  (storeState, { modelDefinition, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    permissions: modelDefinition.permissions
+    permissions: modelDefinition.permissions,
+    uiConfig
   }),
   {
     goHome: /* istanbul ignore next */ _ => softRedirectView({

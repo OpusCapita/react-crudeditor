@@ -38,7 +38,8 @@ const mergeProps = /* istanbul ignore next */ (
     permissions: {
       crudOperations
     },
-    externalOperations
+    externalOperations,
+    uiConfig: { headerLevel }
   },
   {
     saveAndNextInstance,
@@ -54,7 +55,10 @@ const mergeProps = /* istanbul ignore next */ (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: editPreviousInstance }),
@@ -78,7 +82,7 @@ const mergeProps = /* istanbul ignore next */ (
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     adjacentInstancesExist: getAdjacentInstancesInfo(
       storeState,
@@ -87,7 +91,8 @@ export default connect(
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
-    externalOperations
+    externalOperations,
+    uiConfig
   }), {
     changeInstanceField,
     deleteInstances,

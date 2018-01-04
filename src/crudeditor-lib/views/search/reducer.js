@@ -416,11 +416,17 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === SEARCH_FORM_TOGGLE) {
-      const { hideSearchForm } = payload;
-
-      newStoreStateSlice.hideSearchForm = typeof hideSearchForm === 'boolean' ?
-        hideSearchForm :
-        !storeState.hideSearchForm
+      /*
+       * toggle "hideSearchForm" when no payload.hideSearchForm
+       * OR
+       * set "hideSearchForm" with payload.hideSearchForm
+       * (payload.hideSearchForm other than boolean is ignored)
+       */
+      if (typeof payload.hideSearchForm === 'boolean') {
+        newStoreStateSlice.hideSearchForm = payload.hideSearchForm;
+      } else if (!payload.hasOwnProperty('hideSearchForm')) {
+        newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm;
+      }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     /* eslint-enable padded-blocks */

@@ -153,7 +153,8 @@ export default class extends React.Component {
         ?onTransition={<function>}
         ?externalOperations={[<object>, ...]}
         ?uiConfig={{
-          ?headerLevel: <integer>
+          ?headerLevel: <integer>,
+          ?hideSearchForm: <boolean>
         }}
       />;
       ...
@@ -204,7 +205,6 @@ View State *must* be serializable.
   ?order: <"asc"|"desc", sort order>,
   ?max: <natural number, search result limit>,
   ?offset: <whole number, search result offset>,
-  ?hideSearchForm: <boolean, search form initial visibility>
 }
 ```
 
@@ -215,7 +215,6 @@ sort | Result field marked with `sortByDefault` (first `sortable` result field i
 order | `"asc"`
 max | `30`
 offset | `0`
-hideSearchForm | false
 
 #### *EditorComponent* props.state for *"create"* View:
 
@@ -319,6 +318,7 @@ An object with optional configurations for UI.
 Name | Type | Default | Description
 ---|---|---|---
 headerLevel | integer from 1 to 6 | 1 | Header text size in all Views. Specially designed for sub-editors.
+hideSearchForm | boolean | false | Search Form initial visibility. Specially designed for sub-editors.
 
 ## Model Definition
 

@@ -199,10 +199,6 @@ export default baseModelDefinition => {
 
     componentWillReceiveProps(nextProps) {
       onTransition = nextProps.onTransition;
-
-      if (nextProps.uiConfig !== this.props.uiConfig) {
-        // FIXME: set correct behaviour.
-      }
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
@@ -225,6 +221,7 @@ export default baseModelDefinition => {
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={modelDefinition}
           externalOperations={this.props.externalOperations}
+          uiConfig={this.props.uiConfig}
         />
       </Provider>)
   }

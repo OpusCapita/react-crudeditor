@@ -17,7 +17,7 @@ export default class SearchMain extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       actions: PropTypes.objectOf(PropTypes.func),
-      uiConfig: PropTypes.shape({
+      data: PropTypes.shape({
         headerLevel: PropTypes.number,
         hideSearchForm: PropTypes.bool
       })
@@ -28,17 +28,18 @@ export default class SearchMain extends PureComponent {
     i18n: PropTypes.object
   };
 
+  handleSearchFormToggle = _ => this.props.model.actions.toggleSearchForm();
+
   render() {
     const { model } = this.props;
 
     const {
-      actions: {
-        toggleSearchForm,
-        createInstance
-      },
-      uiConfig: {
+      data: {
         headerLevel = 1,
         hideSearchForm
+      },
+      actions: {
+        createInstance
       }
     } = model;
 
@@ -55,7 +56,7 @@ export default class SearchMain extends PureComponent {
 
               <Button
                 bsStyle="link"
-                onClick={toggleSearchForm}
+                onClick={this.handleSearchFormToggle}
                 title={i18n.getMessage(`crudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
               >
                 <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>

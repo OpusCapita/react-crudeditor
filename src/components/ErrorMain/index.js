@@ -5,19 +5,15 @@ import PropTypes from 'prop-types';
 const ErrorMain = ({
   model: {
     data: {
-      errors
+      errors,
+      headerLevel = 1
     },
     actions: {
       goHome
-    },
-    uiConfig: {
-      headerLevel = 1
     }
   }
 }) => {
   const H = 'h' + headerLevel;
-
-  console.log(goHome)
 
   return (
     <div>
@@ -48,9 +44,9 @@ ErrorMain.propTypes = {
       goHome: PropTypes.func
     }),
     data: PropTypes.shape({
-      errors: PropTypes.arrayOf(PropTypes.object).isRequired
-    }),
-    uiConfig: PropTypes.object.isRequired
+      errors: PropTypes.arrayOf(PropTypes.object).isRequired,
+      headerLevel: PropTypes.number,
+    })
   }).isRequired
 }
 

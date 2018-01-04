@@ -26,10 +26,9 @@ const mergeProps = /* istanbul ignore next */ (
     adjacentInstancesExist,
     viewState,
     operations,
-    permissions: {
-      crudOperations
-    },
-    externalOperations
+    permissions: { crudOperations },
+    externalOperations,
+    uiConfig: { headerLevel }
   },
   {
     showPreviousInstance,
@@ -42,7 +41,10 @@ const mergeProps = /* istanbul ignore next */ (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: showPreviousInstance }),
@@ -63,7 +65,7 @@ const mergeProps = /* istanbul ignore next */ (
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition, externalOperations }) => ({
+  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     adjacentInstancesExist: getAdjacentInstancesInfo(
       storeState,
@@ -72,7 +74,8 @@ export default connect(
     viewState: getViewState(storeState, modelDefinition),
     operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
-    externalOperations
+    externalOperations,
+    uiConfig
   }), {
     selectTab,
     exitView: /* istanbul ignore next */ _ => softRedirectView({ name: VIEW_SEARCH }),

@@ -90,7 +90,7 @@ const defaultStoreStateTemplate = {
    *   <sting, field name>: <any, field value for cummunication with rendering React Component>,
    * }
    * NOTE: formInstance values and formattedInstance values represent different values in case of parsing error
-   * (i.e. rendered value cannot be parsed into its string representation).
+   * (i.e. rendered value cannot be parsed into its Field Type representation).
    */
   formattedInstance: undefined,
 

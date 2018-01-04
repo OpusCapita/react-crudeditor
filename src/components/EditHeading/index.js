@@ -25,10 +25,10 @@ export default class EditHeading extends PureComponent {
         tabs: PropTypes.array,
         viewName: PropTypes.string.isRequired,
         formInstance: PropTypes.object,
-        persistentInstance: PropTypes.object
+        persistentInstance: PropTypes.object,
+        headerLevel: PropTypes.number
       }),
-      actions: PropTypes.objectOf(PropTypes.func),
-      uiConfig: PropTypes.object.isRequired
+      actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
   }
 
@@ -54,16 +54,14 @@ export default class EditHeading extends PureComponent {
           } = {},
           instanceLabel,
           tabs,
-          viewName
+          viewName,
+          headerLevel = 1
         },
         actions: {
           selectTab,
           exitView,
           gotoPreviousInstance,
           gotoNextInstance
-        },
-        uiConfig: {
-          headerLevel = 1
         }
       }
     } = this.props;

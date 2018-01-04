@@ -4,6 +4,8 @@ const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
+const NODE_ENV = process.env.NODE_ENV;
+
 module.exports = {
   context: resolve(__dirname, '../src'),
   entry: [
@@ -94,14 +96,13 @@ module.exports = {
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': `"${NODE_ENV}"`
     }),
     // new UglifyJsPlugin(),
     // new BundleAnalyzerPlugin(),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de|fi|ru|no|sv/),
     new LodashModuleReplacementPlugin(),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
+    // new webpack.LoaderOptionsPlugin({
+    //   minimize: true
+    // })
   ]
 };

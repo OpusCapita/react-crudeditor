@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroup, Col, ControlLabel } from 'react-bootstrap';
+import {
+  FormGroup,
+  Col,
+  ControlLabel,
+  Glyphicon,
+  FormControl,
+  OverlayTrigger,
+  Popover
+} from 'react-bootstrap';
 import { getModelMessage } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 
@@ -77,16 +85,44 @@ export default class EditField extends Component {
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
+    const fieldLabelMessage = getModelMessage(this.context.i18n, `model.field.${fieldName}.label`, fieldName);
+
+    // TODO decide between top/bottom popover position according to screen boundaries
+
     return (
       <FormGroup controlId={fieldName} validationState={!readOnly && toggledFieldErrors[fieldName] ? 'error' : null}>
         <Col componentClass={ControlLabel} sm={labelColumns}>
           {
-            getModelMessage(this.context.i18n, `model.field.${fieldName}.label`, fieldName) + (required ? '*' : '')
+            fieldLabelMessage + (required ? '*' : '')
           }
         </Col>
         <Col sm={12 - labelColumns}>
-          <FieldInput {...fieldInputProps} />
-          <FieldErrorLabel errors={!readOnly && toggledFieldErrors[fieldName] || []} fieldName={fieldName}/>
+          <Col sm={1}>
+            <FormControl.Static className='text-right' style={{ cursor: 'pointer', verticalAlign: 'middle' }}>
+              <OverlayTrigger
+                trigger="click"
+                rootClose
+                placement="top"
+                overlay={
+                  <Popover
+                    id={`${fieldName}-tooltip`}
+                    title={<label>{fieldLabelMessage}</label>}
+                  >
+                    <small class="text-muted">
+                      Internal human readable name for this Supplier. E.g. 'Bosch Frankfurt HQ'.
+                      ID could be composed of some cryptic alphanumeric characters. e.g. <i>BO13456</i>.
+                    </small>
+                  </Popover>
+                }
+              >
+                <Glyphicon glyph="info-sign" className='text-muted'/>
+              </OverlayTrigger>
+            </FormControl.Static>
+          </Col>
+          <Col sm={11}>
+            <FieldInput {...fieldInputProps} />
+            <FieldErrorLabel errors={!readOnly && toggledFieldErrors[fieldName] || []} fieldName={fieldName}/>
+          </Col>
         </Col>
       </FormGroup>
     );

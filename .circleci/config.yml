@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node8
+      - image: node:8
     steps:
       - checkout
       - restore_cache:

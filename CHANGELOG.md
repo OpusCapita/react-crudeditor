@@ -1,3 +1,6 @@
+## [v0.0.38](Fri, 05 Jan 2018 13:06:01 GMT)
+ - Removed NODE_ENV definition from webpack config #199 (Egor Stambakio <stambakio@scand.com>, 6c38f43)
+
 ## [v0.0.37](Thu, 04 Jan 2018 08:42:34 GMT)
  - Edited webpack build config. (Egor Stambakio <stambakio@scand.com>, 1f67df9)
  - Fixed fake timeout for demo apis. (estambakio-sc <egor.stambakio@opuscapita.com>, 584f821)

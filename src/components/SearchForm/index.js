@@ -62,8 +62,6 @@ class SearchForm extends React.Component {
       }
     } = this.props;
 
-    console.log('search form', this.props.model.data)
-
     const { i18n } = this.context;
 
     return (

@@ -8,7 +8,7 @@ import {
   MenuItem
 } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
-import { getModelMessage } from '../lib';
+import { getModelMessage } from '../../crudeditor-lib/lib';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {

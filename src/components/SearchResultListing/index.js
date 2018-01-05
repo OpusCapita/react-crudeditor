@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
-import { getModelMessage } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
 import './SearchResultListing.less';
 
@@ -117,7 +116,7 @@ class SearchResultListing extends PureComponent {
               }
 
               {
-                resultFields.map(({ name, sortable }) => (
+                resultFields.map(({ name, sortable, label }) => (
                   <th key={`th-${name}`}>
                     {
                       sortable ?
@@ -126,7 +125,7 @@ class SearchResultListing extends PureComponent {
                           style={{ cursor: "pointer", whiteSpace: "nowrap" }}
                           onClick={this.handleResort(name)}
                         >
-                          { getModelMessage(i18n, `model.field.${name}.label`, name) }
+                          {`${label}`}
                           {
                             sortField === name &&
                             <Glyphicon
@@ -135,7 +134,7 @@ class SearchResultListing extends PureComponent {
                             />
                           }
                         </a> :
-                        getModelMessage(i18n, `model.field.${name}.label`, name)
+                        label
                     }
                   </th>
                 ))

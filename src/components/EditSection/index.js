@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
-import { getModelMessage } from '../lib';
+import { getModelMessage } from '../../crudeditor-lib/lib';
 import './styles.less';
 
 export default class EditSelection extends Component {

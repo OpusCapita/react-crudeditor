@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import { getModelMessage } from '../lib';
+import { getModelMessage } from '../../crudeditor-lib/lib';
 import ConfirmDialog from '../ConfirmDialog';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 import FormGrid from '../FormGrid';

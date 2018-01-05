@@ -212,3 +212,31 @@ export function fillDefaults(baseModelDefinition) {
 
   return modelDefinition;
 }
+
+export const titleCase = str => str.charAt(0).toUpperCase() + str.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0');
+
+export const getModelMessage = (i18n, key, defaultKey) => {
+  const message = i18n.getMessage(key);
+
+  // if @opuscapita/i18n doesn't find a message by key, it returns the key itself
+  return message.slice(-key.length) === key && defaultKey ?
+    titleCase(defaultKey) :
+    message;
+}
+
+const maybeGetModelMessage = (i18n, key) => {
+  const message = i18n.getMessage(key);
+  return message.slice(-key.length) === key ? null : message
+}
+
+export const addMessagesToFields = ({ i18n, fields }) => Object.keys(fields).reduce(
+  (acc, fieldName) => ({
+    ...acc,
+    [fieldName]: {
+      ...fields[fieldName],
+      label: getModelMessage(i18n, `model.field.${fieldName}.label`, fieldName),
+      ...((tooltip => tooltip && { tooltip })(maybeGetModelMessage(i18n, `model.field.${fieldName}.tooltip`))),
+      ...((hint => hint && { hint })(maybeGetModelMessage(i18n, `model.field.${fieldName}.hint`)))
+    }
+  }), {}
+)

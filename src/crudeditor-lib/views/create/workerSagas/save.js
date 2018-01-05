@@ -124,6 +124,8 @@ export default function*({
 
   const savedInstance = yield call(saveSaga, modelDefinition, meta);
 
+  console.log(savedInstance)
+
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance
     yield put({

@@ -15,7 +15,7 @@ import {
   VIEW_ERROR
 } from './common/constants';
 
-export default (modelDefinition, i18n) => {
+export default /* istanbul ignore next */ (modelDefinition, i18n) => {
   const permissions = modelDefinition.permissions.crudOperations;
 
   const viewReducers = {

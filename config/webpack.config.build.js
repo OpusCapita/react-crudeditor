@@ -4,8 +4,6 @@ const webpack = require('webpack');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-const NODE_ENV = process.env.NODE_ENV;
-
 module.exports = {
   context: resolve(__dirname, '../src'),
   entry: [

@@ -95,14 +95,8 @@ module.exports = {
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': `"${NODE_ENV}"`
-    }),
     // new UglifyJsPlugin(),
     // new BundleAnalyzerPlugin(),
-    new LodashModuleReplacementPlugin(),
-    // new webpack.LoaderOptionsPlugin({
-    //   minimize: true
-    // })
+    new LodashModuleReplacementPlugin()
   ]
 };

@@ -115,10 +115,10 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         id: NOTIFICATION_VALIDATION_ERROR,
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: (
-          Array.isArray(action.payload) && action.payload.
-            map(({ message }) => message).filter(m => m).join(' | ')
-        ) ||
+        message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
+          filter(err => err && typeof err === 'object' && err.message).
+          map(({ message }) => message).
+          join(' | ') ||
           i18n.getMessage('default.invalid.validator.message')
       });
       break;
@@ -135,7 +135,10 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         id: NOTIFICATION_ERROR,
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: action.payload.message
+        message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
+          filter(err => err && typeof err === 'object' && err.message).
+          map(({ message }) => message).
+          join(' | ') // TODO: provide default message, just like for CREATE_INSTANCE_VALIDATE_FAIL
       });
       break;
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:

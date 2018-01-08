@@ -9,8 +9,10 @@ export default {
   "model.field.contractBoilerplates.label": "Contract Boilerplates",
   "model.field.hierarchyCode.label": "Hierarchy Code",
   "model.field.termsOfPaymentId.label": "Terms Of Payment Id",
-  "model.field.description.label": "Description",
 
+  "model.field.description.label": "Description",
+  "model.field.description.tooltip": "Can be any arbitrary text of your choice.",
+  "model.field.description.hint": "A good description should be descriptive.",
   "model.field.description.error.forbiddenWord": "Description may not contain `{forbiddenWord}`",
 
   "model.field.termsOfDeliveryId.label": "Terms Of Delivery Id",
@@ -25,6 +27,9 @@ export default {
   "model.field.changedBy.label": "Changed By",
   "model.field.usages.label": "usages",
   "model.field.currencyId.label": "currencyId",
+
+  "model.field.contractId.tooltip": "Unique contract identifier.",
+  "model.field.contractId.hint": "Unique contract identifier.",
 
   "model.label.createChild": "Create child"
 }

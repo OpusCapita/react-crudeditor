@@ -9,7 +9,7 @@ import {
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
 import ReferenceSearchService from './ReferenceSearchService';
-import { getModelMessage } from '../../../../../components/lib';
+import { getModelMessage } from '../../../../../crudeditor-lib/lib';
 import './styles.less';
 
 const SERVICE_NAME = 'ContractReferenceSearch';

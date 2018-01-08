@@ -101,7 +101,11 @@ export const
       max: storeState.pageParams.max,
       offset: storeState.pageParams.offset
     },
-    resultFields,
+    resultFields: resultFields.map(({ name, ...rest }) => ({
+      name,
+      ...rest,
+      label: modelMeta.fields[name].label
+    })),
     resultFilter: storeState.resultFilter,
     resultInstances: storeState.resultInstances,
     searchableFields: searchableFields.map(({
@@ -115,7 +119,8 @@ export const
     }) => ({
       name,
       component,
-      valuePropName
+      valuePropName,
+      label: modelMeta.fields[name].label
     })),
     selectedInstances: storeState.selectedInstances,
     sortParams: {

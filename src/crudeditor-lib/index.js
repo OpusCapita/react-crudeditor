@@ -24,7 +24,8 @@ import {
 import {
   storeState2appState,
   fillDefaults,
-  getPrefixedTranslations
+  getPrefixedTranslations,
+  addMessagesToFields
 } from './lib';
 
 import {
@@ -165,6 +166,11 @@ export default baseModelDefinition => {
       this.adjustedContext = {
         i18n: adjustedI18n
       };
+
+      modelDefinition.model.fields = addMessagesToFields({
+        i18n: adjustedI18n,
+        fields: modelDefinition.model.fields
+      });
 
       const sagaMiddleware = createSagaMiddleware();
 

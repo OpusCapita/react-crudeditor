@@ -16,7 +16,7 @@ export default class FieldErrorLabel extends PureComponent {
     errors: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string,
       code: PropTypes.number,
-      message: PropTypes.string,
+      message: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       payload: PropTypes.string
     })),
     fieldName: PropTypes.string.isRequired
@@ -55,15 +55,15 @@ export default class FieldErrorLabel extends PureComponent {
   render() {
     const { errors } = this.props;
 
+    const hasErrors = !!errors.length;
+
     return (
-      <div style={{ display: "block" }}>
-        <div style={{ opacity: errors.length ? '1' : '0' }}>
-          <Fade in={!!errors.length}>
-            <Label bsStyle="danger">
-              {errors.length ? this.getErrorMessage(errors[0]) : ' '}
-            </Label>
-          </Fade>
-        </div>
+      <div style={{ display: "block", opacity: hasErrors ? '1' : '0' }}>
+        <Fade in={hasErrors}>
+          <Label bsStyle="danger">
+            {hasErrors ? this.getErrorMessage(errors[0]) : ' '}
+          </Label>
+        </Fade>
       </div>
     )
   }

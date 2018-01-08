@@ -14,7 +14,7 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
         fieldErrors: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
           id: PropTypes.string,
           code: PropTypes.number,
-          message: PropTypes.string
+          message: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         })))
       })
     }).isRequired

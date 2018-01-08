@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
-import { getModelMessage } from '../lib';
+import { getModelMessage } from '../../crudeditor-lib/lib';
 import './SearchMain.less';
 
 export default class SearchMain extends PureComponent {

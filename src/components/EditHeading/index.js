@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import { getModelMessage } from '../lib';
+import { getModelMessage } from '../../crudeditor-lib/lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 

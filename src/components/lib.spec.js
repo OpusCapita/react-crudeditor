@@ -25,6 +25,11 @@ describe("components lib.js", _ => {
       const message = getModelMessage(i18n, "model.field.status", "status");
       expect(message).to.equal("Status"); // eslint-disable-line no-unused-expressions
     });
+
+    it("should return null for unknown key and null as third parameter", () => {
+      const message = getModelMessage(i18n, "model.field.something_&%5v^^@_random", null);
+      expect(message).to.equal(null); // eslint-disable-line no-unused-expressions
+    });
   });
 
   describe("isDef", _ => {

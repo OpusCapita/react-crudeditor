@@ -99,6 +99,10 @@ export const
    * ███████████████████████████████████████████
    */
 
+  CONSTRAINT_EMAIL = 'email',
+  CONSTRAINT_MATCHES = 'matches',
+  CONSTRAINT_URL = 'url',
+
   CONSTRAINT_MIN = 'min',
   CONSTRAINT_MAX = 'max',
 
@@ -126,4 +130,7 @@ export const
   ERROR_MIN_DECEEDED = 'minDeceededError',
   ERROR_MAX_EXCEEDED = 'maxExceededError',
   ERROR_REQUIRED_MISSING = 'requiredMissingError',
+  ERROR_INVALID_EMAIL = 'invalidEmailError',
+  ERROR_INVALID_URL = 'invalidUrlError',
+  ERROR_REGEX_DOESNT_MATCH = 'regexDoesntMatch',
   ERROR_UNKNOWN_CONSTRAINT = 'unknownConstraintError';

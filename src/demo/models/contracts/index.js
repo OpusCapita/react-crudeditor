@@ -71,6 +71,24 @@ export const fields = {
       'max': Number.MAX_SAFE_INTEGER
     }
   },
+  'email': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      email: true
+    }
+  },
+  'url': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      url: true
+    }
+  },
+  'testRegexp': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      matches: /^hello/i
+    }
+  },
   'contractBoilerplates': {
     'type': 'collection',
     'constraints': {
@@ -308,7 +326,10 @@ const buildFormLayout = /* istanbul ignore next */ viewName => ({ tab, section, 
   tab({ name: 'groups' }),
   tab({ name: 'additional', disabled: viewName === VIEW_CREATE },
     section({ name: 'test' },
-      field({ name: 'testNumberTypeField' })
+      field({ name: 'testNumberTypeField' }),
+      field({ name: 'email' }),
+      field({ name: 'url' }),
+      field({ name: 'testRegexp' }),
     ),
     section({ name: 'order', columns: 3 },
       field({ name: 'minOrderValue' }),

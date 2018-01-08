@@ -1,5 +1,5 @@
 export default {
-  "default.doesnt.match.message": "Value does not match the required pattern ''{3}''",
+  "default.doesnt.match.message": "Value does not match the required pattern ''{payload}''",
   "default.invalid.url.message": "Not a valid URL format",
   "default.invalid.creditCard.message": "Not a valid credit card number format",
   "default.invalid.email.message": "Not a valid e-mail address format",

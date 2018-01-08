@@ -1,5 +1,5 @@
 export default {
-  "default.doesnt.match.message": "Värdet matchar inte det obligatoriska mönstret \"{3}\"",
+  "default.doesnt.match.message": "Värdet matchar inte det obligatoriska mönstret \"{payload}\"",
   "default.invalid.url.message": "Inte ett giltigt URL-format",
   "default.invalid.creditCard.message": "Inte ett giltigt kreditkortsnummerformat",
   "default.invalid.email.message": "Inte ett giltigt e-postadressformat",

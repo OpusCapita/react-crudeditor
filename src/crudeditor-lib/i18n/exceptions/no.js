@@ -1,5 +1,5 @@
 export default {
-  "default.doesnt.match.message": "Verdien stemmer ikke med det påkrevde mønsteret ''{3}''",
+  "default.doesnt.match.message": "Verdien stemmer ikke med det påkrevde mønsteret ''{payload}''",
   "default.invalid.url.message": "Ugyldig URL-format",
   "default.invalid.creditCard.message": "Formatet til kredittkortnummeret er ugyldig",
   "default.invalid.email.message": "Formatet til e-postadressen er ugyldig",

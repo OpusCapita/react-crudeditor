@@ -1,6 +1,6 @@
 export default {
   "default.blank.message": "Данное поле не может быть пустым",
-  "default.doesnt.match.message": "Значение не соответствует требуемому шаблону ''{3}''.",
+  "default.doesnt.match.message": "Значение не соответствует требуемому шаблону ''{payload}''.",
   "default.invalid.creditCard.message": "Недействительный формат номера кредитной карты.",
   "default.invalid.email.message": "Недействительный формат email.",
   "default.invalid.max.message": "Значение превышает максимальное (''{payload}'').",

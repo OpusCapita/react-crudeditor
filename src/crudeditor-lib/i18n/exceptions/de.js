@@ -1,5 +1,5 @@
 export default {
-  "default.doesnt.match.message": "Der Wert entspricht nicht dem vorgegebenen Muster ''{3}''",
+  "default.doesnt.match.message": "Der Wert entspricht nicht dem vorgegebenen Muster ''{payload}''",
   "default.invalid.url.message": "Dies ist keine gültige URL",
   "default.invalid.creditCard.message": "Dies ist keine gültige Kreditkartennummer",
   "default.invalid.email.message": "Dies ist keine gültige E-Mail Adresse",

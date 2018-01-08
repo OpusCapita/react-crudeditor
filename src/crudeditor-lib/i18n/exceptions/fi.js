@@ -1,5 +1,5 @@
 export default {
-  "default.doesnt.match.message": "Arvo ei vastaa vaadittua kuviota {3}",
+  "default.doesnt.match.message": "Arvo ei vastaa vaadittua kuviota {payload}",
   "default.invalid.url.message": "URL-muoto ei ole kelvollinen",
   "default.invalid.creditCard.message": "Luottokortin numeron muoto ei ole kelvollinen",
   "default.invalid.email.message": "Sähköpostiosoitteen muoto ei ole kelvollinen",

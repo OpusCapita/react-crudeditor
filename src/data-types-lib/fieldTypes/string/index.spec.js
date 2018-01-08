@@ -5,9 +5,15 @@ import index from './index';
 import {
   CONSTRAINT_MIN,
   CONSTRAINT_MAX,
+  CONSTRAINT_EMAIL,
+  CONSTRAINT_URL,
+  CONSTRAINT_MATCHES,
   ERROR_CODE_VALIDATION,
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
+  ERROR_INVALID_EMAIL,
+  ERROR_INVALID_URL,
+  ERROR_REGEX_DOESNT_MATCH
 } from '../../constants';
 
 const validateConstraints = (validator, constraints) => Object.keys(validator).
@@ -40,8 +46,10 @@ describe('fieldTypes :: string', () => {
       [CONSTRAINT_MIN]: 3,
       [CONSTRAINT_MAX]: 6
     }
+
     const word = 'Hello'
-    it('should properly validate a value', () => {
+
+    it('should properly validate min/max length', () => {
       const value = word; // 5
       const validator = index.buildValidator(value);
 
@@ -81,6 +89,99 @@ describe('fieldTypes :: string', () => {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MAX_EXCEEDED,
             message: constraints[CONSTRAINT_MAX]
+          }
+        )
+      }
+    });
+
+    it('should properly validate email', () => {
+      const value = 'valid@email.com';
+      const validator = index.buildValidator(value);
+
+      const result = validateConstraints(validator, {
+        [CONSTRAINT_EMAIL]: true
+      });
+
+      assert.equal(result, true)
+    });
+
+    it('should throw for not-email', () => {
+      const value = 'valid@email,com';
+      const validator = index.buildValidator(value);
+
+      try {
+        validateConstraints(validator, {
+          [CONSTRAINT_EMAIL]: true
+        });
+        assert(false);
+      } catch (e) {
+        assert.deepEqual(
+          e, {
+            code: ERROR_CODE_VALIDATION,
+            id: ERROR_INVALID_EMAIL
+          }
+        )
+      }
+    });
+
+    it('should properly validate URL', () => {
+      const value = 'https://some.domain.com/whatever?q=args';
+      const validator = index.buildValidator(value);
+
+      const result = validateConstraints(validator, {
+        [CONSTRAINT_URL]: true
+      });
+
+      assert.equal(result, true)
+    });
+
+    it('should throw for not-URL', () => {
+      const value = 'htp://google.com';
+      const validator = index.buildValidator(value);
+
+      try {
+        validateConstraints(validator, {
+          [CONSTRAINT_URL]: true
+        });
+        assert(false);
+      } catch (e) {
+        assert.deepEqual(
+          e, {
+            code: ERROR_CODE_VALIDATION,
+            id: ERROR_INVALID_URL
+          }
+        )
+      }
+    });
+
+    it('should properly validate according to RegExp', () => {
+      const value = 'Hello there!';
+      const re = /^hello/i;
+      const validator = index.buildValidator(value);
+
+      const result = validateConstraints(validator, {
+        [CONSTRAINT_MATCHES]: re
+      });
+
+      assert.equal(result, true)
+    });
+
+    it('should throw for non-matched RegExp', () => {
+      const value = 'Good bye!';
+      const re = /^hello/i;
+      const validator = index.buildValidator(value);
+
+      try {
+        validateConstraints(validator, {
+          [CONSTRAINT_MATCHES]: re
+        });
+        assert(false);
+      } catch (e) {
+        assert.deepEqual(
+          e, {
+            code: ERROR_CODE_VALIDATION,
+            id: ERROR_REGEX_DOESNT_MATCH,
+            message: re.toString()
           }
         )
       }

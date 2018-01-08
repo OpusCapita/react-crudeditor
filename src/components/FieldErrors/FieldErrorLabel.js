@@ -8,7 +8,10 @@ import {
   ERROR_INVALID_DECIMAL,
   ERROR_MIN_DECEEDED,
   ERROR_MAX_EXCEEDED,
-  ERROR_REQUIRED_MISSING
+  ERROR_REQUIRED_MISSING,
+  ERROR_INVALID_EMAIL,
+  ERROR_INVALID_URL,
+  ERROR_REGEX_DOESNT_MATCH
 } from '../../data-types-lib/constants';
 
 export default class FieldErrorLabel extends PureComponent {
@@ -36,7 +39,10 @@ export default class FieldErrorLabel extends PureComponent {
       [ERROR_REQUIRED_MISSING]: { key: "default.blank.message" },
       [ERROR_INVALID_INTEGER]: { key: "typeMismatch.java.math.BigInteger" },
       [ERROR_INVALID_DECIMAL]: { key: "typeMismatch.java.math.BigDecimal" },
-      [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" }
+      [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" },
+      [ERROR_INVALID_EMAIL]: { key: "default.invalid.email.message" },
+      [ERROR_INVALID_URL]: { key: "default.invalid.url.message" },
+      [ERROR_REGEX_DOESNT_MATCH]: { key: "default.doesnt.match.message", payload: message }
     }
 
     if (errorMessages[id]) {

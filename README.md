@@ -1012,8 +1012,8 @@ Model section label | `model.section.<section name>.label`
 Model field label | `model.field.<field name>.label`
 Model field hint | `model.field.<field name>.hint`
 Model field tooltip | `model.field.<field name>.tooltip`
-Instance validation error | `model.error.<error id>`
 Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
+Instance validation error | `model.error.<error id>`
 
 If some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`. Exception: instance validation errors don't follow titleCase transformation.
 

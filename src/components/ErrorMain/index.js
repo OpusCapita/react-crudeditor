@@ -17,8 +17,6 @@ const ErrorMain = ({
 }) => {
   const H = 'h' + headerLevel;
 
-  console.log(goHome)
-
   return (
     <div>
       {

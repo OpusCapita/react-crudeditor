@@ -23,5 +23,7 @@ export default {
   "typeMismatch.java.lang.Long": "Värdet måste vara ett giltigt tal",
   "typeMismatch.java.lang.Short": "Värdet måste vara ett giltigt tal",
   "typeMismatch.java.math.BigDecimal": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.math.BigInteger": "Värdet måste vara ett giltigt tal"
+  "typeMismatch.java.math.BigInteger": "Värdet måste vara ett giltigt tal",
+
+  "exceptionHandling.errorOccurred.message": "Fel har uppst\u00e5tt"
 }

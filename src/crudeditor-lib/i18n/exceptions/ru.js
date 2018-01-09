@@ -23,5 +23,7 @@ export default {
   "typeMismatch.java.math.BigInteger": "Значение должно быть действительным числом.",
   "typeMismatch.java.net.URI": "Значение должно быть действительным URI.",
   "typeMismatch.java.net.URL": "Значение должно быть действительным URL.",
-  "typeMismatch.java.util.Date": "Значение должно быть действительной датой."
+  "typeMismatch.java.util.Date": "Значение должно быть действительной датой.",
+
+  "exceptionHandling.errorOccurred.message": "Произошла ошибка"
 }

@@ -23,5 +23,7 @@ export default {
   "typeMismatch.java.lang.Long": "Verdien må være et gyldig tall",
   "typeMismatch.java.lang.Short": "Verdien må være et gyldig tall",
   "typeMismatch.java.math.BigDecimal": "Verdien må være et gyldig tall",
-  "typeMismatch.java.math.BigInteger": "Verdien må være et gyldig tall"
+  "typeMismatch.java.math.BigInteger": "Verdien må være et gyldig tall",
+
+  "exceptionHandling.errorOccurred.message": "Det oppsto en feil"
 }

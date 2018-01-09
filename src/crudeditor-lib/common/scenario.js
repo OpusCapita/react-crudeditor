@@ -31,7 +31,12 @@ const VIEW_REDIRECT_SUCCESS = {
  * or throws error(s) otherwise
  * => softRedirectSaga must be passed to all worker sagas.
  */
-const scenarioSaga = function*({ modelDefinition, softRedirectSaga, transitions, viewName }) {
+const scenarioSaga = /* istanbul ignore next */ function*({
+  modelDefinition,
+  softRedirectSaga,
+  transitions,
+  viewName
+}) {
   let lastTask;
 
   while (true) {

@@ -32,5 +32,7 @@ export default {
   "model.field.usages.label": "usages",
   "model.field.currencyId.label": "currencyId",
 
-  "model.label.createChild": "Create child"
+  "model.label.createChild": "Create child",
+
+  "model.error.requiredFieldMissing": "I'm a happy instance validation error!"
 }

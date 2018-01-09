@@ -95,7 +95,7 @@
   <dd>
     Field classification, "string" by default. There are <a href="#default-fieldinput-components">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields *requires* specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
@@ -1222,6 +1222,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   ?payload: <object, optional parameters for i18n service>
 }
 ```
+To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.
 
 ### Internal Error
 
@@ -1232,6 +1233,8 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   message: <string, default error message in English>
 }
 ```
+
+All internal errors are plain objects, not instances of **Error**, **InternalError**, **TypeError**, etc.
 
 ## *model* Property
 

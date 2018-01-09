@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
-
+import { checkFormLayout } from '../../lib/object-validation';
 import {
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_REQUEST,
@@ -123,6 +123,8 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
     const formLayout = modelDefinition.ui.show.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
+
+    checkFormLayout(formLayout);
 
     let hasTabs;
     let hasSectionsOrFields;

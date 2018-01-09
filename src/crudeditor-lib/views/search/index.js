@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { buildFieldRender } from '../lib';
-export { getViewState } from './selectors';
 import { converter } from '../../../data-types-lib';
+import { checkSearchUi } from '../../lib/object-validation';
 
 import {
   FIELD_TYPE_DECIMAL,
@@ -19,6 +19,8 @@ import {
   UI_TYPE_STRING
 } from '../../../data-types-lib/constants';
 
+export { getViewState } from './selectors';
+
 const rangeFieldType = {
   [FIELD_TYPE_INTEGER]: FIELD_TYPE_INTEGER_RANGE,
   [FIELD_TYPE_DECIMAL]: FIELD_TYPE_DECIMAL_RANGE,
@@ -33,6 +35,8 @@ export const getUi = modelDefinition => {
   const searchMeta = modelDefinition.ui.search ?
     cloneDeep(modelDefinition.ui.search()) :
     {};
+
+  checkSearchUi(searchMeta);
 
   if (!searchMeta.resultFields) {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));

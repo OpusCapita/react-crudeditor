@@ -4,6 +4,7 @@ import u from 'updeep';
 
 import { findFieldLayout, getTab } from '../lib';
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
+import { checkFormLayout } from '../../lib/object-validation';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
@@ -195,6 +196,8 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
+
+    checkFormLayout(formLayout);
 
     let hasTabs;
     let hasSectionsOrFields;

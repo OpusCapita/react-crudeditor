@@ -1015,7 +1015,7 @@ Model field tooltip | `model.field.<field name>.tooltip`
 Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
 Instance validation error | `model.error.<error id>`
 
-If some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`. Exception: instance validation errors don't follow titleCase transformation.
+If some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`. Exception: instance validation errors don't follow titlecase transformation.
 
 [React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 

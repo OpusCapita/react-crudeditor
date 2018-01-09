@@ -170,7 +170,7 @@ class SearchResultListing extends PureComponent {
                         {
                           Component ?
                             <Component name={name} instance={instance} /> :
-                            format({ value: instance[name], i18n })
+                            (instance.hasOwnProperty(name) ? format({ value: instance[name], i18n }) : '')
                         }
                       </td>
                     ))

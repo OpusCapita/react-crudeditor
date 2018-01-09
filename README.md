@@ -1006,7 +1006,7 @@ Translation keys convention:
 
 Translation Target | Translation Key | Default translation
 ---|---|---
-Model name (shown in the header) | `model.name` | titleCase
+Model name (shown in the header) | `model.name` | `model.name`
 Model tab label | `model.tab.<tab name>.label` | titleCase
 Model section label | `model.section.<section name>.label` | titleCase
 Model field label | `model.field.<field name>.label` | titleCase

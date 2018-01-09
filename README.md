@@ -1006,16 +1006,16 @@ Translation keys convention:
 
 Translation Target | Translation Key | Default translation
 ---|---|---
-Model name (shown in the header) | `model.name` | `model.name`
-Model tab label | `model.tab.<tab name>.label` | titleCase
-Model section label | `model.section.<section name>.label` | titleCase
-Model field label | `model.field.<field name>.label` | titleCase
-Model field hint | `model.field.<field name>.hint` | null
-Model field tooltip | `model.field.<field name>.tooltip` | null
-Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>` | error.message or error.id
-Instance validation error | `model.error.<error id>` | error.message
+Model name (shown in the header) | `"model.name"` | `"model.name"`
+Model tab label | `"model.tab.<tab name>.label"` | `titleCase("<tab name>")`
+Model section label | `"model.section.<section name>.label"` | `titleCase("<section name>")`
+Model field label | `"model.field.<field name>.label"` | `titleCase("<field name>")`
+Model field hint | `"model.field.<field name>.hint"` | -
+Model field tooltip | `"model.field.<field name>.tooltip"` | -
+Custom [Field Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.field.<field name>.error.<error id>"` | `error.message \|\| error.id`
+[Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.error.<error id>"` | `error.message`
 
-Default **titleCase** transformation: if some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
+**titleCase()** converts its arugment from camelcase to titlecase, ex. `titleCase("maxOrderValue") === "Max Order Value"`.
 
 [React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 

@@ -23,5 +23,7 @@ export default {
   "typeMismatch.java.lang.Long": "Value must be a valid number",
   "typeMismatch.java.lang.Short": "Value must be a valid number",
   "typeMismatch.java.math.BigDecimal": "Value must be a valid number",
-  "typeMismatch.java.math.BigInteger": "Value must be a valid number"
+  "typeMismatch.java.math.BigInteger": "Value must be a valid number",
+
+  "exceptionHandling.errorOccurred.message": "Error occurred"
 }

@@ -23,5 +23,7 @@ export default {
   "typeMismatch.java.lang.Long": "Arvon tulee olla kelvollinen numero",
   "typeMismatch.java.lang.Short": "Arvon tulee olla kelvollinen numero",
   "typeMismatch.java.math.BigDecimal": "Arvon tulee olla kelvollinen numero",
-  "typeMismatch.java.math.BigInteger": "Arvon tulee olla kelvollinen numero"
+  "typeMismatch.java.math.BigInteger": "Arvon tulee olla kelvollinen numero",
+
+  "exceptionHandling.errorOccurred.message": "Virhetila"
 }

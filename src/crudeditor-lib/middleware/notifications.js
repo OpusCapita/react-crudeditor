@@ -138,7 +138,8 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
           filter(err => err && typeof err === 'object' && err.message).
           map(({ message }) => message).
-          join(' | ') // TODO: provide default message, just like for CREATE_INSTANCE_VALIDATE_FAIL
+          join(' | ') ||
+          i18n.getMessage('exceptionHandling.errorOccurred.message')
       });
       break;
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:

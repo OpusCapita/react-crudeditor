@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { Button, Form, FormGroup, ControlLabel } from 'react-bootstrap';
 
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import './SearchForm.less';
@@ -77,7 +77,7 @@ class SearchForm extends React.Component {
                 validationState={this.fieldErrors(name).length ? 'error' : null}
                 className="crud--search-form__form-group"
               >
-                <ControlLabel>{getModelMessage(i18n, `model.field.${name}.label`, name)}</ControlLabel>
+                <ControlLabel>{getModelMessage(i18n, `model.field.${name}.label`, titleCase(name))}</ControlLabel>
                 <Component
                   {...{ [valuePropName]: formattedFilter[name] }}
                   onChange={this.handleFormFilterUpdate(name)}

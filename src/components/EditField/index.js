@@ -10,7 +10,7 @@ import {
   Popover,
   Label
 } from 'react-bootstrap';
-import { getModelMessage } from '../lib'
+import { getModelMessage, titleCase } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import './styles.less';
 
@@ -89,7 +89,7 @@ export default class EditField extends Component {
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
-    const fieldLabel = getModelMessage(i18n, `model.field.${fieldName}.label`, fieldName);
+    const fieldLabel = getModelMessage(i18n, `model.field.${fieldName}.label`, titleCase(fieldName));
     const fieldHint = getModelMessage(i18n, `model.field.${fieldName}.hint`, null);
     const fieldTooltip = getModelMessage(i18n, `model.field.${fieldName}.tooltip`, null);
 

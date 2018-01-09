@@ -118,7 +118,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
           filter(err => err && typeof err === 'object').
-          map(({ id, message }) => (id && getModelMessage(i18n, `model.error.${id}`, null)) || message).
+          map(({ id, message }) => getModelMessage(i18n, `model.error.${id}`, message)).
           join(' | ') ||
         i18n.getMessage('default.invalid.validator.message')
       });

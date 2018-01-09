@@ -1,6 +1,6 @@
 import { I18nManager } from '@opuscapita/i18n';
 import { expect } from 'chai';
-import { getModelMessage, isDef } from './lib';
+import { getModelMessage, isDef, titleCase } from './lib';
 
 const i18n = new I18nManager();
 
@@ -22,7 +22,7 @@ describe("components lib.js", _ => {
     });
 
     it("should return translation for prefixed key", () => {
-      const message = getModelMessage(i18n, "model.field.status", "status");
+      const message = getModelMessage(i18n, "model.field.status", titleCase("status"));
       expect(message).to.equal("Status"); // eslint-disable-line no-unused-expressions
     });
 

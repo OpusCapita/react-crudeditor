@@ -9,7 +9,7 @@ import {
 } from '@opuscapita/react-reference-select';
 import translations from './i18n';
 import ReferenceSearchService from './ReferenceSearchService';
-import { getModelMessage } from '../../../../../components/lib';
+import { getModelMessage, titleCase } from '../../../../../components/lib';
 import './styles.less';
 
 const SERVICE_NAME = 'ContractReferenceSearch';
@@ -50,6 +50,9 @@ export default class ContractReferenceSearch extends PureComponent {
 
     const { i18n } = this.context;
 
+    const fieldName = 'contractId';
+    const fieldLabel = getModelMessage(i18n, `model.field.${fieldName}.label`, titleCase(fieldName));
+
     const referenceSearchProps = {
       contractId,
       onBlur,
@@ -65,19 +68,19 @@ export default class ContractReferenceSearch extends PureComponent {
       },
       searchFields: [
         {
-          name: 'contractId',
-          label: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
+          name: fieldName,
+          label: fieldLabel
         }
       ],
       resultFields: [
         {
-          name: 'contractId',
-          label: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
+          name: fieldName,
+          label: fieldLabel
         }
       ],
 
       title: i18n.getMessage('crudEditor.search.header', {
-        payload: getModelMessage(i18n, 'model.field.contractId.label', 'contractId')
+        payload: fieldLabel
       }),
       labelProperty: 'contractId',
       valueProperty: 'contractId'

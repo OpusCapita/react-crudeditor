@@ -8,7 +8,7 @@ import {
   MenuItem
 } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
@@ -140,7 +140,7 @@ export default class SearchResultButtons extends PureComponent {
         ...this.props.internalOperations.
           map(({ name, ...rest }) => ({
             ...rest,
-            title: getModelMessage(i18n, `model.label.${name}`, name),
+            title: getModelMessage(i18n, `model.label.${name}`, titleCase(name)),
             uid: `custom-operation-${uid}`
           }))
       ])

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
@@ -137,7 +137,7 @@ export default class EditHeading extends PureComponent {
                   disabled={!!disabled || name === activeTabName}
                   key={index}
                 >
-                  <h4>{getModelMessage(i18n, `model.tab.${name}.label`, name)}</h4>
+                  <h4>{getModelMessage(i18n, `model.tab.${name}.label`, titleCase(name))}</h4>
                 </NavItem>)
               )
             }

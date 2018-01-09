@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
-import { checkFormLayout } from '../../lib/object-validation';
+import { checkFormLayout } from '../../lib';
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
 

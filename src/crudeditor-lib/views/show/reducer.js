@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
-import { checkFormLayout } from '../../lib/object-validation';
+import { checkFormLayout } from '../../lib';
 import {
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_REQUEST,

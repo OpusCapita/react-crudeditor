@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 import { buildFieldRender } from '../lib';
 import { converter } from '../../../data-types-lib';
-import { checkSearchUi } from '../../lib/object-validation';
+import { checkSearchUi } from '../../lib';
 
 import {
   FIELD_TYPE_DECIMAL,

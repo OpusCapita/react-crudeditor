@@ -4,7 +4,7 @@
 
 const JSDOM = require('jsdom').JSDOM;
 
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'test';
 
 require('babel-register')({
   "presets": [

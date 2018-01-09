@@ -362,7 +362,7 @@ Model Definition is an object describing an entity. It has the following structu
 
           /*
            * Custom field-validator returning boolean true in case of successful validation,
-           * or throwing an array of errors if validation failed.
+           * or throwing an array of errors (or single error object) if validation failed.
            */
           ?validate(<serializable, field value>, <object, entity instance>) {
             ...
@@ -380,7 +380,7 @@ Model Definition is an object describing an entity. It has the following structu
      * but before sending the instance to the server for save/modify.
      * Field-validation is done upon all fields just before calling the instance-validator.
      * The function returns boolean true in case of successful validation,
-     * or throws an object with errors if validation failed.
+     * or throws an array of error (or single error object) if validation failed.
      * The function may also be asyncronous and return a resolved/rejected promise.
      */
     ?validate(<object, entity instance>) {

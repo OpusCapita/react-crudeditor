@@ -215,6 +215,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         newStoreStateSlice.formInstance = {
@@ -258,6 +262,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
           [fieldName]: newFormValue
         });
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
@@ -290,6 +298,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
         try {
           findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
+          if (err instanceof Error) {
+            console.warn(err);
+          }
+
           const errors = Array.isArray(err) ? err : [err];
 
           if (!isEqual(errors, storeState.errors.fields[fieldName])) {
@@ -334,6 +346,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {

@@ -32,7 +32,7 @@ export default {
     try {
       new Big(value); // eslint-disable-line no-new
       return true;
-    } catch (error) {
+    } catch (_) {
       return false;
     }
   },

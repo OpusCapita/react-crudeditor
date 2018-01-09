@@ -59,9 +59,9 @@ const scenarioSaga = function*({ modelDefinition, softRedirectSaga, transitions,
           }
         });
       } catch (err) {
-        // Swallow custom errors.
+        // Swallow all errors; do not console auxiliary CRUD Editor errors.
         if (err instanceof Error) {
-          throw err;
+          console.warn(err);
         }
       }
     } else if (Object.keys(transitions.nonBlocking).indexOf(action.type) > -1) {
@@ -79,9 +79,9 @@ const scenarioSaga = function*({ modelDefinition, softRedirectSaga, transitions,
             }
           });
         } catch (err) {
-          // Swallow custom errors.
+          // Swallow all errors; do not console auxiliary CRUD Editor errors.
           if (err instanceof Error) {
-            throw err;
+            console.warn(err);
           }
         }
       });

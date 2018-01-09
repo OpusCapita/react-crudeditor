@@ -348,6 +348,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
         try {
           newFormValue = converter.parse({ value: fieldValue, i18n });
         } catch (err) {
+          if (err instanceof Error) {
+            console.warn(err);
+          }
+
           const errors = Array.isArray(err) ? err : [err];
 
           newStoreStateSlice.formFilter = {

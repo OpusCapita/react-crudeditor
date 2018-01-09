@@ -30,7 +30,8 @@ export default {
           message: 'Invalid integer'
         }
       }
-      throw err
+
+      throw err;
     }
 
     if (isNaN(n)) {

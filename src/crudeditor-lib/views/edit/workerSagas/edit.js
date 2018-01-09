@@ -39,6 +39,7 @@ export default function*({
       error: true,
       meta
     });
+
     throw err;
   }
 

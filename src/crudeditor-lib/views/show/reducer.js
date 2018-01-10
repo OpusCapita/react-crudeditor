@@ -1,6 +1,6 @@
 import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
-import { checkFormLayout } from '../../lib';
+
 import {
   INSTANCE_SHOW_SUCCESS,
   INSTANCE_SHOW_REQUEST,
@@ -31,6 +31,7 @@ import {
   INSTANCES_SEARCH_SUCCESS
 } from '../search/constants';
 
+import { checkFormLayout } from '../../check-model';
 import { findFieldLayout, getTab } from '../lib';
 
 const defaultStoreStateTemplate = {

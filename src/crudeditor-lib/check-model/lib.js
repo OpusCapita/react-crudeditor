@@ -1,10 +1,11 @@
+import * as dataTypes from '../../data-types-lib/constants';
+
 import {
   PERMISSION_CREATE,
   PERMISSION_DELETE,
   PERMISSION_EDIT,
   PERMISSION_VIEW
-} from '../../common/constants';
-import * as dataTypes from '../../../data-types-lib/constants';
+} from '../common/constants';
 
 export const allowedAny = /* istanbul ignore next */ (
   actions = [],

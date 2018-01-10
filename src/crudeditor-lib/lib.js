@@ -1,5 +1,13 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { checkModelDefinition } from './object-validation';
+
+import { checkModelDefinition } from './check-model';
+
+import { getViewState as getSearchViewState, getUi as getSearchUi } from './views/search';
+import { getViewState as getCreateViewState, getUi as getCreateUi } from './views/create';
+import { getViewState as getEditViewState, getUi as getEditUi } from './views/edit';
+import { getViewState as getShowViewState, getUi as getShowUi } from './views/show';
+import { getViewState as getErrorViewState } from './views/error';
+
 import {
   DEFAULT_FIELD_TYPE,
   VIEW_SEARCH,
@@ -12,13 +20,7 @@ import {
   PERMISSION_DELETE,
   PERMISSION_EDIT,
   PERMISSION_VIEW
-} from '../common/constants';
-
-import { getViewState as getSearchViewState, getUi as getSearchUi } from '../views/search';
-import { getViewState as getCreateViewState, getUi as getCreateUi } from '../views/create';
-import { getViewState as getEditViewState, getUi as getEditUi } from '../views/edit';
-import { getViewState as getShowViewState, getUi as getShowUi } from '../views/show';
-import { getViewState as getErrorViewState } from '../views/error';
+} from './common/constants';
 
 const getViewState = {
   [VIEW_SEARCH]: getSearchViewState,

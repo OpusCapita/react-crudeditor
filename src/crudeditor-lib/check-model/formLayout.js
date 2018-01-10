@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { uiTypes } from '../lib';
+import { uiTypes } from './lib';
 
 const fieldPropTypes = PropTypes.shape({
   field: PropTypes.string.isRequired,
@@ -18,7 +18,7 @@ const fieldPropTypes = PropTypes.shape({
   })
 })
 
-export default {
+const formLayoutPropTypes = {
   formLayout: PropTypes.arrayOf(PropTypes.arrayOf(
     PropTypes.oneOfType([
       fieldPropTypes,
@@ -31,3 +31,10 @@ export default {
     ])
   ))
 }
+
+export default formLayout => PropTypes.checkPropTypes(
+  formLayoutPropTypes,
+  { formLayout },
+  'property',
+  'React-CrudEditor Form Layout'
+)

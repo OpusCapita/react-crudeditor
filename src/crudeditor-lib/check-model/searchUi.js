@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
-import { uiTypes } from '../lib';
+import { uiTypes } from './lib';
 
-export default {
+const searchUiPropTypes = {
   searchableFields: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     render: PropTypes.shape({
@@ -26,3 +26,10 @@ export default {
   })),
   standardOperations: PropTypes.objectOf(PropTypes.func)
 }
+
+export default searchUi => PropTypes.checkPropTypes(
+  searchUiPropTypes,
+  searchUi,
+  'property',
+  'React-CrudEditor Search UI'
+)

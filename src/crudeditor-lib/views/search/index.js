@@ -1,8 +1,9 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 import { buildFieldRender } from '../lib';
+export { getViewState } from './selectors';
 import { converter } from '../../../data-types-lib';
-import { checkSearchUi } from '../../lib';
+import { checkSearchUi } from '../../check-model';
 
 import {
   FIELD_TYPE_DECIMAL,
@@ -19,7 +20,6 @@ import {
   UI_TYPE_STRING
 } from '../../../data-types-lib/constants';
 
-export { getViewState } from './selectors';
 
 const rangeFieldType = {
   [FIELD_TYPE_INTEGER]: FIELD_TYPE_INTEGER_RANGE,

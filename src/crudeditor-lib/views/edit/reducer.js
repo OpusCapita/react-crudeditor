@@ -4,7 +4,7 @@ import u from 'updeep';
 
 import { findFieldLayout, getTab } from '../lib';
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
-import { checkFormLayout } from '../../lib';
+import { checkFormLayout } from '../../check-model';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,

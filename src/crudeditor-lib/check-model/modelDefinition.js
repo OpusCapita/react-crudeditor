@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
-import { allowedAny, allPropTypes } from '../lib';
+import { allowedAny, allPropTypes } from './lib';
+
 import {
   PERMISSION_CREATE,
   PERMISSION_DELETE,
   PERMISSION_EDIT,
   PERMISSION_VIEW
-} from '../../../common/constants';
+} from '../common/constants';
 
-export default /* istanbul ignore next */ modelDefinition => ({
+const modelPropTypes = modelDefinition => ({
   model: PropTypes.shape({
     name: PropTypes.string.isRequired,
     fields: allPropTypes(
@@ -85,3 +86,10 @@ export default /* istanbul ignore next */ modelDefinition => ({
     operations: PropTypes.func
   })
 })
+
+export default modelDefinition => PropTypes.checkPropTypes(
+  modelPropTypes(modelDefinition),
+  modelDefinition,
+  'property',
+  'React-CrudEditor Model'
+)

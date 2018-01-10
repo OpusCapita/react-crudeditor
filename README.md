@@ -1220,7 +1220,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   code: 400,
   id: <string, error id used by translation service>,
   ?message: <string, default error message - in case a translation is not provided>,
-  ?payload: <object, optional parameters for i18n service>
+  ?args: <object, optional parameters for i18n service>
 }
 ```
 To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.

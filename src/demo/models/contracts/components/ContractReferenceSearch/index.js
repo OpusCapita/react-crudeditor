@@ -51,7 +51,11 @@ export default class ContractReferenceSearch extends PureComponent {
     const { i18n } = this.context;
 
     const fieldName = 'contractId';
-    const fieldLabel = getModelMessage(i18n, `model.field.${fieldName}.label`, titleCase(fieldName));
+    const fieldLabel = getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.label`,
+      defaultMessage: titleCase(fieldName)
+    });
 
     const referenceSearchProps = {
       contractId,

@@ -131,7 +131,7 @@ export default class EditTab extends PureComponent {
           <Button onClick={handler}>
             {icon && <Glyphicon glyph={icon} />}
             {icon && ' '}
-            {getModelMessage(i18n, `model.label.${name}`, titleCase(name))}
+            {getModelMessage({ i18n, key: `model.label.${name}`, defaultMessage: titleCase(name) })}
           </Button>
         </ConfirmUnsavedChanges>
       ))

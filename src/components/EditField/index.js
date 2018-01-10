@@ -89,9 +89,23 @@ export default class EditField extends Component {
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
-    const fieldLabel = getModelMessage(i18n, `model.field.${fieldName}.label`, titleCase(fieldName));
-    const fieldHint = getModelMessage(i18n, `model.field.${fieldName}.hint`, null);
-    const fieldTooltip = getModelMessage(i18n, `model.field.${fieldName}.tooltip`, null);
+    const fieldLabel = getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.label`,
+      defaultMessage: titleCase(fieldName)
+    });
+
+    const fieldHint = getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.hint`,
+      defaultMessage: null
+    });
+
+    const fieldTooltip = getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.tooltip`,
+      defaultMessage: null
+    });
 
     return (
       <FormGroup controlId={fieldName} validationState={!readOnly && toggledFieldErrors[fieldName] ? 'error' : null}>

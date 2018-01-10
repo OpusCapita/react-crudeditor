@@ -140,7 +140,7 @@ export default class SearchResultButtons extends PureComponent {
         ...this.props.internalOperations.
           map(({ name, ...rest }) => ({
             ...rest,
-            title: getModelMessage(i18n, `model.label.${name}`, titleCase(name)),
+            title: getModelMessage({ i18n, key: `model.label.${name}`, defaultMessage: titleCase(name) }),
             uid: `custom-operation-${uid}`
           }))
       ])

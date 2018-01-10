@@ -52,7 +52,7 @@ export const fields = {
             // here you can define props which you use in i18n messages
             // example: for i18n message `Hello {name}! This field cannot exceed {maxValue}`
             // define `name` and `maxValue` props
-            payload: {
+            args: {
               forbiddenWord: 'BOOO'
             }
           }];
@@ -361,7 +361,10 @@ export default {
         const err = [{
           code: 400,
           id: 'requiredFieldMissing',
-          message: 'minOrderValue must be set when minOrderValueRequired is true'
+          message: 'minOrderValue must be set when minOrderValueRequired is true',
+          args: {
+            contractId: instance.contractId
+          }
         }];
 
         throw err;

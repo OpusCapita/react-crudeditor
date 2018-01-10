@@ -77,7 +77,15 @@ class SearchForm extends React.Component {
                 validationState={this.fieldErrors(name).length ? 'error' : null}
                 className="crud--search-form__form-group"
               >
-                <ControlLabel>{getModelMessage(i18n, `model.field.${name}.label`, titleCase(name))}</ControlLabel>
+                <ControlLabel>
+                  {
+                    getModelMessage({
+                      i18n,
+                      key: `model.field.${name}.label`,
+                      defaultMessage: titleCase(name)
+                    })
+                  }
+                </ControlLabel>
                 <Component
                   {...{ [valuePropName]: formattedFilter[name] }}
                   onChange={this.handleFormFilterUpdate(name)}

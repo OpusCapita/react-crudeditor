@@ -45,7 +45,9 @@ export default {
     [CONSTRAINT_MIN]: param => value.length >= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MIN_DECEEDED,
-      message: param
+      args: {
+        payload: param
+      }
     }),
 
     /*
@@ -55,7 +57,9 @@ export default {
     [CONSTRAINT_MAX]: param => value.length <= param || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_MAX_EXCEEDED,
-      message: param
+      args: {
+        payload: param
+      }
     }),
 
     [CONSTRAINT_EMAIL]: param => param && (
@@ -79,7 +83,9 @@ export default {
     [CONSTRAINT_MATCHES]: param => param.test(value) || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_REGEX_DOESNT_MATCH,
-      message: param.toString()
+      args: {
+        payload: param.toString()
+      }
     })
   })
 };

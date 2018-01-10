@@ -29,29 +29,29 @@ export default class FieldErrorLabel extends PureComponent {
     i18n: PropTypes.object.isRequired
   };
 
-  getErrorMessage = ({ id, message, payload }) => {
+  getErrorMessage = ({ id, message, args }) => {
     const { getMessage } = this.context.i18n;
     const { fieldName } = this.props;
 
     const errorMessages = {
-      [ERROR_MIN_DECEEDED]: { key: "default.invalid.min.message", payload: message },
-      [ERROR_MAX_EXCEEDED]: { key: "default.invalid.max.message", payload: message },
-      [ERROR_REQUIRED_MISSING]: { key: "default.blank.message" },
-      [ERROR_INVALID_INTEGER]: { key: "typeMismatch.java.math.BigInteger" },
-      [ERROR_INVALID_DECIMAL]: { key: "typeMismatch.java.math.BigDecimal" },
-      [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" },
-      [ERROR_INVALID_EMAIL]: { key: "default.invalid.email.message" },
-      [ERROR_INVALID_URL]: { key: "default.invalid.url.message" },
-      [ERROR_REGEX_DOESNT_MATCH]: { key: "default.doesnt.match.message", payload: message }
+      [ERROR_MIN_DECEEDED]: "default.invalid.min.message",
+      [ERROR_MAX_EXCEEDED]: "default.invalid.max.message",
+      [ERROR_REQUIRED_MISSING]: "default.blank.message",
+      [ERROR_INVALID_INTEGER]: "typeMismatch.java.math.BigInteger",
+      [ERROR_INVALID_DECIMAL]: "typeMismatch.java.math.BigDecimal",
+      [ERROR_INVALID_DATE]: "typeMismatch.java.util.Date",
+      [ERROR_INVALID_EMAIL]: "default.invalid.email.message",
+      [ERROR_INVALID_URL]: "default.invalid.url.message",
+      [ERROR_REGEX_DOESNT_MATCH]: "default.doesnt.match.message"
     }
 
     if (errorMessages[id]) {
-      return getMessage(errorMessages[id].key, { payload: errorMessages[id].payload })
+      return getMessage(errorMessages[id], args)
     }
 
     // Try to find a translation defined by model.
     const key = `model.field.${fieldName}.error.${id}`;
-    const text = getMessage(key, payload);
+    const text = getMessage(key, args);
 
     return text === key ?
       message || id : // Translation is not found.

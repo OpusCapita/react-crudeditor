@@ -327,7 +327,10 @@ export default {
         const err = [{
           code: 400,
           id: 'requiredFieldMissing',
-          message: 'minOrderValue must be set when minOrderValueRequired is true'
+          message: 'minOrderValue must be set when minOrderValueRequired is true',
+          args: {
+            contractId: instance.contractId
+          }
         }];
         throw err;
       }

@@ -70,7 +70,9 @@ describe('fieldTypes :: string', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MIN_DECEEDED,
-            message: constraints[CONSTRAINT_MIN]
+            args: {
+              payload: constraints[CONSTRAINT_MIN]
+            }
           }
         )
       }
@@ -88,7 +90,9 @@ describe('fieldTypes :: string', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MAX_EXCEEDED,
-            message: constraints[CONSTRAINT_MAX]
+            args: {
+              payload: constraints[CONSTRAINT_MAX]
+            }
           }
         )
       }
@@ -181,7 +185,9 @@ describe('fieldTypes :: string', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_REGEX_DOESNT_MATCH,
-            message: re.toString()
+            args: {
+              payload: re.toString()
+            }
           }
         )
       }

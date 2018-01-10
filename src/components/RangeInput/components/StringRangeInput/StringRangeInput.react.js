@@ -6,7 +6,7 @@ import {
   FormControl
 } from 'react-bootstrap';
 import './StringRangeInput.less';
-import { isDef, noop } from '../../../lib';
+import { exists, noop } from '../../../lib';
 
 export default class StringRangeInput extends PureComponent {
   static propTypes = {
@@ -89,7 +89,7 @@ export default class StringRangeInput extends PureComponent {
         <FormControl
           type='text'
           placeholder={i18n.getMessage('crudEditor.range.from')}
-          value={isDef(value.from) ? value.from : ''}
+          value={exists(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
           disabled={readOnly}
           {...(readOnly && { tabIndex: -1 })}
@@ -98,7 +98,7 @@ export default class StringRangeInput extends PureComponent {
         <FormControl
           type='text'
           placeholder={i18n.getMessage('crudEditor.range.to')}
-          value={isDef(value.to) ? value.to : ''}
+          value={exists(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}
           disabled={readOnly}
           {...(readOnly && { tabIndex: -1 })}

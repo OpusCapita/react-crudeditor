@@ -149,7 +149,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           filter(err => err && typeof err === 'object' && err.message).
           map(({ message }) => message).
           join(' | ') ||
-          i18n.getMessage('exceptionHandling.errorOccurred.message')
+          i18n.getMessage('default.errorOccurred.message')
       });
       break;
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:

@@ -11,7 +11,9 @@ import {
   ERROR_REQUIRED_MISSING,
   ERROR_INVALID_EMAIL,
   ERROR_INVALID_URL,
-  ERROR_REGEX_DOESNT_MATCH
+  ERROR_REGEX_DOESNT_MATCH,
+  ERROR_MIN_SIZE_DECEEDED,
+  ERROR_MAX_SIZE_EXCEEDED
 } from '../../data-types-lib/constants';
 
 export default class FieldErrorLabel extends PureComponent {
@@ -36,10 +38,12 @@ export default class FieldErrorLabel extends PureComponent {
     const errorMessages = {
       [ERROR_MIN_DECEEDED]: "default.invalid.min.message",
       [ERROR_MAX_EXCEEDED]: "default.invalid.max.message",
+      [ERROR_MIN_SIZE_DECEEDED]: "default.invalid.min.size.message",
+      [ERROR_MAX_SIZE_EXCEEDED]: "default.invalid.max.size.message",
       [ERROR_REQUIRED_MISSING]: "default.blank.message",
-      [ERROR_INVALID_INTEGER]: "typeMismatch.java.math.BigInteger",
-      [ERROR_INVALID_DECIMAL]: "typeMismatch.java.math.BigDecimal",
-      [ERROR_INVALID_DATE]: "typeMismatch.java.util.Date",
+      [ERROR_INVALID_INTEGER]: "default.invalid.integer.message",
+      [ERROR_INVALID_DECIMAL]: "default.invalid.decimal.message",
+      [ERROR_INVALID_DATE]: "default.invalid.date.message",
       [ERROR_INVALID_EMAIL]: "default.invalid.email.message",
       [ERROR_INVALID_URL]: "default.invalid.url.message",
       [ERROR_REGEX_DOESNT_MATCH]: "default.doesnt.match.message"

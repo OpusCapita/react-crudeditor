@@ -6,7 +6,7 @@ export function getModelMessage(request) {
   const { i18n, key, args, defaultMessage } = request;
 
   // If i18n doesn't find a message by key, it returns the key itself.
-  // Optinal third argument defines default message for such a case.
+  // Optinal 'defaultMessage' defines default message for such a case.
   const message = i18n.getMessage(key, args);
 
   return message.slice(-key.length) === key && request.hasOwnProperty('defaultMessage') ?

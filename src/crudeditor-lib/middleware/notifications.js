@@ -1,5 +1,5 @@
 import { NotificationManager } from 'react-notifications';
-import { getModelMessage, exists } from '../../components/lib';
+import { getModelMessage } from '../../components/lib';
 
 import {
   INSTANCES_DELETE_FAIL,
@@ -118,7 +118,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
           filter(err => err && typeof err === 'object').
-          map(({ id, message, args }) => exists(id) ?
+          map(({ id, message, args }) => id ?
             getModelMessage({
               i18n,
               key: `model.error.${id}`,

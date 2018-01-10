@@ -154,9 +154,9 @@ export default baseModelDefinition => {
         // it queries for prefixed model messages to allow multi-model/multi-crud apps
         getMessage: {
           get() {
-            return (key, payload) => originalI18n.getMessage(
+            return (key, args) => originalI18n.getMessage(
               modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
-              payload
+              args
             );
           }
         }

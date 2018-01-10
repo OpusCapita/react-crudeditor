@@ -1013,7 +1013,7 @@ Model field label | `"model.field.<field name>.label"` | `titleCase("<field name
 Model field hint | `"model.field.<field name>.hint"` | -
 Model field tooltip | `"model.field.<field name>.tooltip"` | -
 Custom [Field Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.field.<field name>.error.<error id>"` | `error.message \|\| error.id`
-[Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.error.<error id>"` | `error.message`
+[Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.error.<error id>"` | `error.message \|\| built-in error message`
 
 **titleCase()** converts its arugment from camelcase to titlecase, ex. `titleCase("maxOrderValue") === "Max Order Value"`.
 
@@ -1220,7 +1220,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   code: 400,
   id: <string, error id used by translation service>,
   ?message: <string, default error message - in case a translation is not provided>,
-  ?payload: <object, optional parameters for i18n service>
+  ?args: <object, optional parameters for i18n service>
 }
 ```
 To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.

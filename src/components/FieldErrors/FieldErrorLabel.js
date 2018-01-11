@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Fade } from 'react-bootstrap';
+import { getModelMessage } from '../lib';
 
 import {
   ERROR_INVALID_DATE,
@@ -30,7 +31,7 @@ export default class FieldErrorLabel extends PureComponent {
   };
 
   getErrorMessage = ({ id, message, args }) => {
-    const { getMessage } = this.context.i18n;
+    const { i18n } = this.context;
     const { fieldName } = this.props;
 
     const errorMessages = {
@@ -45,17 +46,18 @@ export default class FieldErrorLabel extends PureComponent {
       [ERROR_REGEX_DOESNT_MATCH]: "default.doesnt.match.message"
     }
 
+    // crud internal translations for errors
     if (errorMessages[id]) {
-      return getMessage(errorMessages[id], args)
+      return i18n.getMessage(errorMessages[id], args)
     }
 
-    // Try to find a translation defined by model.
-    const key = `model.field.${fieldName}.error.${id}`;
-    const text = getMessage(key, args);
-
-    return text === key ?
-      message || id : // Translation is not found.
-      text;
+    // try to find a translation defined by model
+    return getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.error.${id}`,
+      args,
+      defaultMessage: message || id
+    })
   }
 
   render() {

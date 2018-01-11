@@ -1,11 +1,18 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
+const common = require('./webpack.config.common');
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
-module.exports = {
-  context: resolve(__dirname, '../src'),
+module.exports = merge(common, {
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new LodashModuleReplacementPlugin(),
+    // new UglifyJsPlugin(),
+    // new BundleAnalyzerPlugin()
+  ],
   entry: [
     '../src/index.js'
   ],
@@ -28,76 +35,5 @@ module.exports = {
       commonjs: 'react-dom',
       amd: 'react-dom'
     }
-  },
-  module: {
-    rules: [
-      {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        options: {
-          babelrc: false,
-          presets: [
-            ["env",
-              {
-                "modules": false,
-                "targets": {
-                  "browsers": ["last 2 versions", "ie >= 11", "not ie <= 10", "safari >= 7", "Firefox ESR"]
-                }
-              }
-            ],
-            "react"
-          ],
-          plugins: [
-            "transform-decorators-legacy",
-            "transform-class-properties",
-            "transform-export-extensions",
-            [
-              "transform-runtime", { "polyfill": false } // Fix for https://github.com/babel/babel/issues/2877
-            ],
-            "transform-object-rest-spread"
-          ]
-        },
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.(png|jpg|jpeg|gif|ttf|eot|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.(svg)(\?[a-z0-9=&.]+)?$/,
-        use: ['raw-loader']
-      },
-      {
-        test: /\.(css|less)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'less-loader', options: { sourceMap: true } },
-          {
-            loader: 'postcss-loader', options: {
-              plugins: (loader) => [
-                require('precss')(),
-                require('autoprefixer')()
-              ]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(scss)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'sass-loader', options: { sourceMap: true } }
-        ]
-      }
-    ]
-  },
-  plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    // new UglifyJsPlugin(),
-    // new BundleAnalyzerPlugin(),
-    new LodashModuleReplacementPlugin()
-  ]
-};
+  }
+});

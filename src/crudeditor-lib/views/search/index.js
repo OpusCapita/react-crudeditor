@@ -3,6 +3,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { buildFieldRender } from '../lib';
 export { getViewState } from './selectors';
 import { converter } from '../../../data-types-lib';
+import { checkSearchUi } from '../../check-model';
 
 import {
   FIELD_TYPE_DECIMAL,
@@ -18,6 +19,7 @@ import {
 
   UI_TYPE_STRING
 } from '../../../data-types-lib/constants';
+
 
 const rangeFieldType = {
   [FIELD_TYPE_INTEGER]: FIELD_TYPE_INTEGER_RANGE,
@@ -38,13 +40,15 @@ export const getUi = modelDefinition => {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
 
+  if (!searchMeta.searchableFields) {
+    searchMeta.searchableFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  }
+
+  checkSearchUi({ searchMeta, fieldsMeta });
+
   searchMeta.resultFields.
     filter(({ component }) => !component).
     forEach(field => {
-      if (!fieldsMeta[field.name]) {
-        throw new Error(`Composite field "${field.name}" in resultFields must have "component" property`);
-      }
-
       const defaultConverter = converter({
         fieldType: fieldsMeta[field.name].type,
         uiType: UI_TYPE_STRING
@@ -56,16 +60,7 @@ export const getUi = modelDefinition => {
         (({ value }) => value);
     });
 
-  if (!searchMeta.searchableFields) {
-    searchMeta.searchableFields = Object.keys(fieldsMeta).
-      map(name => ({ name }));
-  }
-
   searchMeta.searchableFields.forEach(field => {
-    if (field.render && !field.render.component) {
-      throw new Error(`searchableField "${field.name}" must have render.component since custom render is specified`);
-    }
-
     const fieldType = fieldsMeta[field.name].type;
 
     field.render = buildFieldRender({ // eslint-disable-line no-param-reassign

@@ -39,7 +39,10 @@ module.exports = {
           plugins: [
             "transform-decorators-legacy",
             "transform-class-properties",
-            "transform-runtime",
+            "transform-export-extensions",
+            [
+              "transform-runtime", { "polyfill": false } // Fix for https://github.com/babel/babel/issues/2877
+            ],
             "transform-object-rest-spread"
           ]
         },

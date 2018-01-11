@@ -89,12 +89,12 @@ export const fields = {
       matches: /^hello/i
     }
   },
-  'contractBoilerplates': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractBoilerplates': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'hierarchyCode': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -136,24 +136,24 @@ export const fields = {
       'required': true
     }
   },
-  'contractedCatalogs': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractedCatalogs': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'minOrderValueRequired': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
-  'contractedClassificationGroups': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractedClassificationGroups': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'extContractId': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -161,30 +161,30 @@ export const fields = {
       'required': false
     }
   },
-  'children': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'children': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'changedBy': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
       'required': true
     }
   },
-  'translations': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
-  'usages': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'translations': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
+  // 'usages': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'currencyId': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -214,12 +214,12 @@ export const fields = {
       'required': false
     }
   },
-  'provisionings': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'provisionings': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'isOffer': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
@@ -234,12 +234,12 @@ export const fields = {
       'required': false
     }
   },
-  'validRange': {
-    'type': 'com.jcatalog.core.DateRange',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'validRange': {
+  //   'type': 'com.jcatalog.core.DateRange',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'isPreferred': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
@@ -252,12 +252,12 @@ export const fields = {
       'required': false
     }
   },
-  'contractCategory': {
-    'type': 'com.jcatalog.contract.ContractCategory',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractCategory': {
+  //   'type': 'com.jcatalog.contract.ContractCategory',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'freightSurcharge': {
     'type': FIELD_TYPE_DECIMAL,
     'constraints': {

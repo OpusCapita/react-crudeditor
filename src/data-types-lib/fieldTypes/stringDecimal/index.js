@@ -56,7 +56,7 @@ export default {
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MIN_DECEEDED,
         args: {
-          payload: param
+          min: param
         }
       }),
 
@@ -68,7 +68,7 @@ export default {
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MAX_EXCEEDED,
         args: {
-          payload: param
+          max: param
         }
       })
     };

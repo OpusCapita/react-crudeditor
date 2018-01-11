@@ -63,7 +63,7 @@ describe('fieldTypes :: stringDecimal', () => {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MIN_DECEEDED,
             args: {
-              payload: constraints[CONSTRAINT_MIN]
+              min: constraints[CONSTRAINT_MIN]
             }
           }
         )
@@ -83,7 +83,7 @@ describe('fieldTypes :: stringDecimal', () => {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MAX_EXCEEDED,
             args: {
-              payload: constraints[CONSTRAINT_MAX]
+              max: constraints[CONSTRAINT_MAX]
             }
           }
         )

@@ -187,7 +187,7 @@ describe('data-types-lib', () => {
           code: ERROR_CODE_VALIDATION,
           id: ERROR_MAX_EXCEEDED,
           args: {
-            payload: constraints[CONSTRAINT_MAX]
+            max: constraints[CONSTRAINT_MAX]
           }
         }])
       }

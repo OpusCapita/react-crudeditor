@@ -36,19 +36,19 @@ export const getUi = modelDefinition => {
     cloneDeep(modelDefinition.ui.search()) :
     {};
 
-  checkSearchUi(searchMeta);
-
   if (!searchMeta.resultFields) {
     searchMeta.resultFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
 
+  if (!searchMeta.searchableFields) {
+    searchMeta.searchableFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  }
+
+  checkSearchUi({ searchMeta, fieldsMeta });
+
   searchMeta.resultFields.
     filter(({ component }) => !component).
     forEach(field => {
-      if (!fieldsMeta[field.name]) {
-        throw new Error(`Composite field "${field.name}" in resultFields must have "component" property`);
-      }
-
       const defaultConverter = converter({
         fieldType: fieldsMeta[field.name].type,
         uiType: UI_TYPE_STRING
@@ -60,16 +60,7 @@ export const getUi = modelDefinition => {
         (({ value }) => value);
     });
 
-  if (!searchMeta.searchableFields) {
-    searchMeta.searchableFields = Object.keys(fieldsMeta).
-      map(name => ({ name }));
-  }
-
   searchMeta.searchableFields.forEach(field => {
-    if (field.render && !field.render.component) {
-      throw new Error(`searchableField "${field.name}" must have render.component since custom render is specified`);
-    }
-
     const fieldType = fieldsMeta[field.name].type;
 
     field.render = buildFieldRender({ // eslint-disable-line no-param-reassign

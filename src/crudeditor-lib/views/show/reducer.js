@@ -31,6 +31,7 @@ import {
   INSTANCES_SEARCH_SUCCESS
 } from '../search/constants';
 
+import { checkFormLayout } from '../../check-model';
 import { findFieldLayout, getTab } from '../lib';
 
 const defaultStoreStateTemplate = {
@@ -123,6 +124,8 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
     const formLayout = modelDefinition.ui.show.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
+
+    checkFormLayout(formLayout);
 
     let hasTabs;
     let hasSectionsOrFields;

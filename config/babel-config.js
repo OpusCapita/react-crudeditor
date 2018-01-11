@@ -10,8 +10,9 @@ const getBabelConfig = _ => {
   const plugins = [
     "transform-decorators-legacy",
     "transform-class-properties",
-    "transform-runtime",
-    "transform-object-rest-spread"
+    ["transform-runtime", { "polyfill": false }],
+    "transform-object-rest-spread",
+    "transform-export-extensions"
   ]
 
   if (mode !== 'test') {

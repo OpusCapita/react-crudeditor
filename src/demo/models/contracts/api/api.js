@@ -1,7 +1,7 @@
 // import cloneDeep from 'lodash/cloneDeep';
 import find from 'lodash/find';
 import Big from 'big.js';
-import { isDef } from '../../../../components/lib';
+import { exists } from '../../../../components/lib';
 import initialData from './data';
 import { DEFAULT_FIELD_TYPE } from '../../../../crudeditor-lib/common/constants.js';
 
@@ -191,11 +191,11 @@ export const
                     return false;
                 }
 
-                if (isDef(fieldValue.from)) {
+                if (exists(fieldValue.from)) {
                   match = match && gte(itemValue, String(fieldValue.from).trim())
                 }
 
-                if (isDef(fieldValue.to)) {
+                if (exists(fieldValue.to)) {
                   match = match && lte(itemValue, String(fieldValue.to).trim())
                 }
               } else {

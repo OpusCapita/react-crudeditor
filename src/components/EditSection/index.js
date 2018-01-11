@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 import './styles.less';
 
 export default class EditSelection extends Component {
@@ -40,7 +40,11 @@ export default class EditSelection extends Component {
               className={`fa fa-angle-${collapsed ? 'down' : 'up'}`}
               style={{ marginRight: "0.2em", textDecoration: 'none' }}
             ></span>
-            {getModelMessage(this.context.i18n, `model.section.${title}.label`, title)}
+            {getModelMessage({
+              i18n: this.context.i18n,
+              key: `model.section.${title}.label`,
+              defaultMessage: titleCase(title)
+            })}
           </a>
         </h4>
         <Collapse in={!collapsed}>

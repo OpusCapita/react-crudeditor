@@ -14,8 +14,8 @@ import {
 
   ERROR_CODE_VALIDATION,
 
-  ERROR_MIN_DECEEDED,
-  ERROR_MAX_EXCEEDED,
+  ERROR_MIN_SIZE_DECEEDED,
+  ERROR_MAX_SIZE_EXCEEDED,
 
   ERROR_INVALID_EMAIL,
   ERROR_INVALID_URL,
@@ -44,8 +44,10 @@ export default {
      */
     [CONSTRAINT_MIN]: param => value.length >= param || throwError({
       code: ERROR_CODE_VALIDATION,
-      id: ERROR_MIN_DECEEDED,
-      message: param
+      id: ERROR_MIN_SIZE_DECEEDED,
+      args: {
+        min: param
+      }
     }),
 
     /*
@@ -54,8 +56,10 @@ export default {
      */
     [CONSTRAINT_MAX]: param => value.length <= param || throwError({
       code: ERROR_CODE_VALIDATION,
-      id: ERROR_MAX_EXCEEDED,
-      message: param
+      id: ERROR_MAX_SIZE_EXCEEDED,
+      args: {
+        max: param
+      }
     }),
 
     [CONSTRAINT_EMAIL]: param => param && (
@@ -79,7 +83,9 @@ export default {
     [CONSTRAINT_MATCHES]: param => param.test(value) || throwError({
       code: ERROR_CODE_VALIDATION,
       id: ERROR_REGEX_DOESNT_MATCH,
-      message: param.toString()
+      args: {
+        pattern: param.toString()
+      }
     })
   })
 };

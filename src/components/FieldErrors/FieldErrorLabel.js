@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Fade } from 'react-bootstrap';
+import { getModelMessage } from '../lib';
 
 import {
   ERROR_INVALID_DATE,
@@ -11,7 +12,9 @@ import {
   ERROR_REQUIRED_MISSING,
   ERROR_INVALID_EMAIL,
   ERROR_INVALID_URL,
-  ERROR_REGEX_DOESNT_MATCH
+  ERROR_REGEX_DOESNT_MATCH,
+  ERROR_MIN_SIZE_DECEEDED,
+  ERROR_MAX_SIZE_EXCEEDED
 } from '../../data-types-lib/constants';
 
 export default class FieldErrorLabel extends PureComponent {
@@ -29,33 +32,36 @@ export default class FieldErrorLabel extends PureComponent {
     i18n: PropTypes.object.isRequired
   };
 
-  getErrorMessage = ({ id, message, payload }) => {
-    const { getMessage } = this.context.i18n;
+  getErrorMessage = ({ id, message, args }) => {
+    const { i18n } = this.context;
     const { fieldName } = this.props;
 
     const errorMessages = {
-      [ERROR_MIN_DECEEDED]: { key: "default.invalid.min.message", payload: message },
-      [ERROR_MAX_EXCEEDED]: { key: "default.invalid.max.message", payload: message },
-      [ERROR_REQUIRED_MISSING]: { key: "default.blank.message" },
-      [ERROR_INVALID_INTEGER]: { key: "typeMismatch.java.math.BigInteger" },
-      [ERROR_INVALID_DECIMAL]: { key: "typeMismatch.java.math.BigDecimal" },
-      [ERROR_INVALID_DATE]: { key: "typeMismatch.java.util.Date" },
-      [ERROR_INVALID_EMAIL]: { key: "default.invalid.email.message" },
-      [ERROR_INVALID_URL]: { key: "default.invalid.url.message" },
-      [ERROR_REGEX_DOESNT_MATCH]: { key: "default.doesnt.match.message", payload: message }
+      [ERROR_MIN_DECEEDED]: "default.invalid.min.message",
+      [ERROR_MAX_EXCEEDED]: "default.invalid.max.message",
+      [ERROR_MIN_SIZE_DECEEDED]: "default.invalid.min.size.message",
+      [ERROR_MAX_SIZE_EXCEEDED]: "default.invalid.max.size.message",
+      [ERROR_REQUIRED_MISSING]: "default.blank.message",
+      [ERROR_INVALID_INTEGER]: "default.invalid.integer.message",
+      [ERROR_INVALID_DECIMAL]: "default.invalid.decimal.message",
+      [ERROR_INVALID_DATE]: "default.invalid.date.message",
+      [ERROR_INVALID_EMAIL]: "default.invalid.email.message",
+      [ERROR_INVALID_URL]: "default.invalid.url.message",
+      [ERROR_REGEX_DOESNT_MATCH]: "default.doesnt.match.message"
     }
 
+    // crud internal translations for errors
     if (errorMessages[id]) {
-      return getMessage(errorMessages[id].key, { payload: errorMessages[id].payload })
+      return i18n.getMessage(errorMessages[id], args)
     }
 
-    // Try to find a translation defined by model.
-    const key = `model.field.${fieldName}.error.${id}`;
-    const text = getMessage(key, payload);
-
-    return text === key ?
-      message || id : // Translation is not found.
-      text;
+    // try to find a translation defined by model
+    return getModelMessage({
+      i18n,
+      key: `model.field.${fieldName}.error.${id}`,
+      args,
+      defaultMessage: message || id
+    })
   }
 
   render() {

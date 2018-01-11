@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
@@ -70,15 +70,17 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
+    const modelName = getModelMessage({ i18n, key: 'model.name' });
+
     const title = exitView ?
       (
         <ConfirmUnsavedChanges showDialog={this.showConfirmDialog}>
           <a style={{ cursor: 'pointer' }} onClick={exitView}>
-            {getModelMessage(i18n, 'model.name')}
+            {modelName}
           </a>
         </ConfirmUnsavedChanges>
       ) :
-      getModelMessage(i18n, 'model.name');
+      modelName;
 
     const arrows = [
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
@@ -137,7 +139,15 @@ export default class EditHeading extends PureComponent {
                   disabled={!!disabled || name === activeTabName}
                   key={index}
                 >
-                  <h4>{getModelMessage(i18n, `model.tab.${name}.label`, name)}</h4>
+                  <h4>
+                    {
+                      getModelMessage({
+                        i18n,
+                        key: `model.tab.${name}.label`,
+                        defaultMessage: titleCase(name)
+                      })
+                    }
+                  </h4>
                 </NavItem>)
               )
             }

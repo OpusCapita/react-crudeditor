@@ -37,6 +37,7 @@ describe("Models / Contracts", _ => {
 
     it("should throw if a required minOrderValue is absent", () => {
       const instance = {
+        contractId: 'myCoolId',
         minOrderValueRequired: true,
         minOrderValue: null
       };
@@ -49,7 +50,10 @@ describe("Models / Contracts", _ => {
           [{
             code: 400,
             id: 'requiredFieldMissing',
-            message: 'minOrderValue must be set when minOrderValueRequired is true'
+            message: 'minOrderValue must be set when minOrderValueRequired is true',
+            args: {
+              contractId: instance.contractId
+            }
           }]
         )
       }

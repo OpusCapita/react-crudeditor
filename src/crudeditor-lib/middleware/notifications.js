@@ -1,4 +1,5 @@
 import { NotificationManager } from 'react-notifications';
+import { getModelMessage } from '../../components/lib';
 
 import {
   INSTANCES_DELETE_FAIL,
@@ -116,10 +117,19 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
-          filter(err => err && typeof err === 'object' && err.message).
-          map(({ message }) => message).
+          filter(err => err && typeof err === 'object').
+          map(({ id, message, args }) => id ?
+            getModelMessage({
+              i18n,
+              key: `model.error.${id}`,
+              args,
+              defaultMessage: message
+            }) :
+            message
+          ).
+          filter(Boolean).
           join(' | ') ||
-          i18n.getMessage('default.invalid.validator.message')
+        i18n.getMessage('default.invalid.validator.message')
       });
       break;
     case CREATE_INSTANCE_VALIDATE_SUCCESS:
@@ -139,7 +149,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           filter(err => err && typeof err === 'object' && err.message).
           map(({ message }) => message).
           join(' | ') ||
-          i18n.getMessage('exceptionHandling.errorOccurred.message')
+          i18n.getMessage('default.errorOccurred.message')
       });
       break;
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:

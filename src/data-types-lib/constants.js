@@ -129,6 +129,8 @@ export const
   ERROR_INVALID_DECIMAL = 'invalidDecimalError',
   ERROR_MIN_DECEEDED = 'minDeceededError',
   ERROR_MAX_EXCEEDED = 'maxExceededError',
+  ERROR_MIN_SIZE_DECEEDED = 'minSizeDeceededError',
+  ERROR_MAX_SIZE_EXCEEDED = 'maxSizeExceededError',
   ERROR_REQUIRED_MISSING = 'requiredMissingError',
   ERROR_INVALID_EMAIL = 'invalidEmailError',
   ERROR_INVALID_URL = 'invalidUrlError',

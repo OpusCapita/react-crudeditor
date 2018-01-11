@@ -9,8 +9,8 @@ import {
   CONSTRAINT_URL,
   CONSTRAINT_MATCHES,
   ERROR_CODE_VALIDATION,
-  ERROR_MIN_DECEEDED,
-  ERROR_MAX_EXCEEDED,
+  ERROR_MIN_SIZE_DECEEDED,
+  ERROR_MAX_SIZE_EXCEEDED,
   ERROR_INVALID_EMAIL,
   ERROR_INVALID_URL,
   ERROR_REGEX_DOESNT_MATCH
@@ -69,8 +69,10 @@ describe('fieldTypes :: string', () => {
         assert.deepEqual(
           e, {
             code: ERROR_CODE_VALIDATION,
-            id: ERROR_MIN_DECEEDED,
-            message: constraints[CONSTRAINT_MIN]
+            id: ERROR_MIN_SIZE_DECEEDED,
+            args: {
+              min: constraints[CONSTRAINT_MIN]
+            }
           }
         )
       }
@@ -87,8 +89,10 @@ describe('fieldTypes :: string', () => {
         assert.deepEqual(
           e, {
             code: ERROR_CODE_VALIDATION,
-            id: ERROR_MAX_EXCEEDED,
-            message: constraints[CONSTRAINT_MAX]
+            id: ERROR_MAX_SIZE_EXCEEDED,
+            args: {
+              max: constraints[CONSTRAINT_MAX]
+            }
           }
         )
       }
@@ -181,7 +185,9 @@ describe('fieldTypes :: string', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_REGEX_DOESNT_MATCH,
-            message: re.toString()
+            args: {
+              pattern: re.toString()
+            }
           }
         )
       }

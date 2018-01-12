@@ -116,7 +116,7 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   action: {
-    payload: { afterAction } = {},
+    payload: /* istanbul ignore next */ { afterAction } = {},
     meta
   }
 }) {
@@ -143,7 +143,9 @@ export default function*({
         action: {
           payload: {
             view: {
-              name: modelDefinition.permissions.crudOperations.edit ? VIEW_EDIT : VIEW_SHOW,
+              name: /* istanbul ignore next */ modelDefinition.permissions.crudOperations.edit ?
+                VIEW_EDIT :
+                VIEW_SHOW,
               state: {
                 instance: savedInstance,
                 tab: tab && tab.tab
@@ -154,6 +156,7 @@ export default function*({
         }
       })
     } catch (err) {
+      /* istanbul ignore next */
       yield call(softRedirectSaga, {
         viewName: VIEW_ERROR,
         viewState: err

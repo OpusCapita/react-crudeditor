@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { uiTypes, allPropTypes } from './lib';
 
-const searchUiPropTypes = fieldsMeta => ({
+const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
   searchableFields: allPropTypes(
     PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -49,7 +49,7 @@ const searchUiPropTypes = fieldsMeta => ({
   standardOperations: PropTypes.objectOf(PropTypes.func)
 })
 
-export default ({ searchMeta, fieldsMeta }) => PropTypes.checkPropTypes(
+export default /* istanbul ignore next */ ({ searchMeta, fieldsMeta }) => PropTypes.checkPropTypes(
   searchUiPropTypes(fieldsMeta),
   searchMeta,
   'property',

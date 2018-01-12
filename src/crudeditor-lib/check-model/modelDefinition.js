@@ -8,7 +8,7 @@ import {
   PERMISSION_VIEW
 } from '../common/constants';
 
-const modelPropTypes = modelDefinition => ({
+const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
   model: PropTypes.shape({
     name: PropTypes.string.isRequired,
     fields: allPropTypes(
@@ -87,7 +87,7 @@ const modelPropTypes = modelDefinition => ({
   })
 })
 
-export default modelDefinition => PropTypes.checkPropTypes(
+export default /* istanbul ignore next */ modelDefinition => PropTypes.checkPropTypes(
   modelPropTypes(modelDefinition),
   modelDefinition,
   'property',

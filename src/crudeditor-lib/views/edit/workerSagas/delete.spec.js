@@ -3,7 +3,11 @@ import { runSaga } from 'redux-saga';
 import { call } from 'redux-saga/effects';
 import sinon from 'sinon';
 import deleteSaga from './delete';
-import { INSTANCES_DELETE_REQUEST, INSTANCES_DELETE_SUCCESS, INSTANCES_DELETE_FAIL } from '../../../common/constants';
+import {
+  INSTANCES_DELETE_REQUEST,
+  INSTANCES_DELETE_SUCCESS,
+  INSTANCES_DELETE_FAIL
+} from '../../../common/constants';
 import { VIEW_REDIRECT_REQUEST } from '../constants';
 
 import {

@@ -2,112 +2,15 @@ import { call, put, select } from 'redux-saga/effects';
 
 import {
   AFTER_ACTION_NEW,
-
-  ALL_INSTANCE_FIELDS_VALIDATE,
-
-  INSTANCE_SAVE_REQUEST,
-  INSTANCE_SAVE_FAIL,
-  INSTANCE_SAVE_SUCCESS,
-
-  INSTANCE_VALIDATE_REQUEST,
-  INSTANCE_VALIDATE_FAIL,
-  INSTANCE_VALIDATE_SUCCESS,
-
   VIEW_INITIALIZE,
   VIEW_NAME
 } from '../constants';
 
 import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW } from '../../../common/constants';
 import redirectSaga from '../../../common/workerSagas/redirect';
+import validateSaga from '../../../common/workerSagas/validate';
+import saveSaga from '../../../common/workerSagas/save';
 import { getDefaultNewInstance } from '../../search/selectors';
-
-/*
- * Instance validation
- */
-function* validateSaga(modelDefinition, meta) {
-  yield put({
-    type: ALL_INSTANCE_FIELDS_VALIDATE,
-    meta
-  });
-
-  const [
-    instance,
-    fieldErrors
-  ] = yield select(({
-    views: {
-      [VIEW_NAME]: {
-        formInstance,
-        errors: {
-          fields: fieldErrors
-        }
-      }
-    }
-  }) => [
-    formInstance,
-    fieldErrors
-  ]);
-
-  if (Object.keys(fieldErrors).length) {
-    throw fieldErrors;
-  }
-
-  yield put({
-    type: INSTANCE_VALIDATE_REQUEST,
-    meta
-  });
-
-  try {
-    yield call(modelDefinition.model.validate, instance);
-  } catch (err) {
-    yield put({
-      type: INSTANCE_VALIDATE_FAIL,
-      payload: err,
-      error: true,
-      meta
-    });
-
-    throw err;
-  }
-
-  yield put({
-    type: INSTANCE_VALIDATE_SUCCESS,
-    meta
-  });
-}
-
-function* saveSaga(modelDefinition, meta) {
-  const instance = yield select(storeState => storeState.views[VIEW_NAME].formInstance);
-
-  yield put({
-    type: INSTANCE_SAVE_REQUEST,
-    meta
-  });
-
-  let savedInstance;
-
-  try {
-    savedInstance = yield call(modelDefinition.api.create, { instance });
-  } catch (err) {
-    yield put({
-      type: INSTANCE_SAVE_FAIL,
-      payload: err,
-      error: true,
-      meta
-    });
-
-    throw err;
-  }
-
-  yield put({
-    type: INSTANCE_SAVE_SUCCESS,
-    payload: {
-      instance: savedInstance
-    },
-    meta
-  });
-
-  return savedInstance
-}
 
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).
@@ -120,9 +23,10 @@ export default function*({
     meta
   }
 }) {
-  yield call(validateSaga, modelDefinition, meta); // Forwarding thrown error(s) to the parent saga.
+  // Forwarding thrown error(s) to the parent saga.
+  yield call(validateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
 
-  const savedInstance = yield call(saveSaga, modelDefinition, meta);
+  const savedInstance = yield call(saveSaga, { modelDefinition, meta, viewName: VIEW_NAME });
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance

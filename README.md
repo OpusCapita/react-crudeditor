@@ -93,7 +93,7 @@
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. There are <a href="#default-fieldinputcomponents">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#default-fieldinputcomponents">standard types</a> as well as custom.  A custom type can be <i>any</i> string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
     There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields <i>requires</i> specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />

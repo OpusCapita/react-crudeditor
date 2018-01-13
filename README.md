@@ -93,9 +93,9 @@
   <dd>CRUD Editor state which may be saved and later restored by e.g. an application. It is a subset of <a href="#store-state">Store State</a> and contains information about active View <a href="#editorcomponent-propsviewname">Name</a>/<a href="#editorcomponent-propsviewstate">State</a>. See <a href="#editorcomponent-propsontransition"><i>EditorComponent</i> props.onTransition</a> for <i>Editor State</i> structure.</dd>
   <dt id="field-type">Field Type</dt>
   <dd>
-    Field classification, "string" by default. There are <a href="#default-fieldinput-components">standard types</a> as well as custom.  Custom type can be any string, ex. "collection", "com.jcatalog.core.DateRange", etc.
+    Field classification, "string" by default. There are <a href="#default-fieldinputcomponents">standard types</a> as well as custom.  A custom type can be <i>any</i> string, ex. "collection", "com.jcatalog.core.DateRange", etc.
     <br /><br />
-    There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields requires specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
+    There are <a href="#embedded-fieldinputcomponents">default React Components</a> for displaying fields of standard types.  Rendering of custom types fields <i>requires</i> specifying custom React Components (see <a href="#fieldinputcomponent">FieldInputComponent</a> and <a href="#fieldrendercomponent">FieldRenderComponent</a>) in <a href="#model-definition">Model Definition</a>'s <b>ui.search</b>, <b>ui.create</b>, <b>ui.edit</b> and <b>ui.show</b>.
     <br /><br />
     <i>Field Type</i> has nothing to do with JavaScript types and defines a structure of any serializable data. By convention, <b>null</b> is considered to be <i>empty value</i> for any <i>Field Type</i>.
     <br />
@@ -362,7 +362,7 @@ Model Definition is an object describing an entity. It has the following structu
 
           /*
            * Custom field-validator returning boolean true in case of successful validation,
-           * or throwing an array of errors if validation failed.
+           * or throwing an array of errors (or single error object) if validation failed.
            */
           ?validate(<serializable, field value>, <object, entity instance>) {
             ...
@@ -380,7 +380,7 @@ Model Definition is an object describing an entity. It has the following structu
      * but before sending the instance to the server for save/modify.
      * Field-validation is done upon all fields just before calling the instance-validator.
      * The function returns boolean true in case of successful validation,
-     * or throws an object with errors if validation failed.
+     * or throws an array of error (or single error object) if validation failed.
      * The function may also be asyncronous and return a resolved/rejected promise.
      */
     ?validate(<object, entity instance>) {
@@ -1004,17 +1004,18 @@ If View State is sliced, not given or `{}`, all not-mentioned properties retain 
 
 Translation keys convention:
 
-Translation Target | Translation Key
----|---
-Model name (shown in the header) | `model.name`
-Model tab label | `model.tab.<tab name>.label`
-Model section label | `model.section.<section name>.label`
-Model field label | `model.field.<field name>.label`
-Model field hint | `model.field.<field name>.hint` (not implemented)
-Model field tooltip | `model.field.<field name>.tooltip` (not implemented)
-Custom [Field/Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) message | `model.field.<field name>.error.<error id>`
+Translation Target | Translation Key | Default translation
+---|---|---
+Model name (shown in the header) | `"model.name"` | `"model.name"`
+Model tab label | `"model.tab.<tab name>.label"` | `titleCase("<tab name>")`
+Model section label | `"model.section.<section name>.label"` | `titleCase("<section name>")`
+Model field label | `"model.field.<field name>.label"` | `titleCase("<field name>")`
+Model field hint | `"model.field.<field name>.hint"` | -
+Model field tooltip | `"model.field.<field name>.tooltip"` | -
+Custom [Field Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.field.<field name>.error.<error id>"` | `error.message \|\| error.id`
+[Instance Validation Error](#parsing-error-and-fieldinstance-validation-error) | `"model.error.<error id>"` | `error.message \|\| <built-in error message>`
 
-If some translation is not provided, the corresponding label/message text is obtained by converting camelcase id/name to titlecase. For example, `maxOrderValue` is displayed as `Max Order Value`.
+**titleCase()** converts its arugment from camelcase to titlecase, ex. `titleCase("maxOrderValue") === "Max Order Value"`.
 
 [React context](https://reactjs.org/docs/context.html) *must* have `i18n` property with [I18nManager](https://github.com/OpusCapita/i18n) as its value.
 
@@ -1219,9 +1220,10 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   code: 400,
   id: <string, error id used by translation service>,
   ?message: <string, default error message - in case a translation is not provided>,
-  ?payload: <object, optional parameters for i18n service>
+  ?args: <object, optional parameters for i18n service>
 }
 ```
+To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.
 
 ### Internal Error
 
@@ -1232,6 +1234,8 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   message: <string, default error message in English>
 }
 ```
+
+All internal errors are plain objects, not instances of **Error**, **InternalError**, **TypeError**, etc.
 
 ## *model* Property
 

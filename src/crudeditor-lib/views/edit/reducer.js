@@ -4,6 +4,7 @@ import u from 'updeep';
 
 import { findFieldLayout, getTab } from '../lib';
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
+import { checkFormLayout } from '../../check-model';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
@@ -196,6 +197,8 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
     const formLayout = modelDefinition.ui.edit.formLayout(instance).
       filter(entry => !!entry); // Removing empty tabs/sections and null tabs/sections/fields.
 
+    checkFormLayout(formLayout);
+
     let hasTabs;
     let hasSectionsOrFields;
 
@@ -254,6 +257,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         newStoreStateSlice.formInstance = {
@@ -303,6 +310,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
           [fieldName]: newFormValue
         });
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
@@ -335,6 +346,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
         try {
           findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
+          if (err instanceof Error) {
+            console.warn(err);
+          }
+
           const errors = Array.isArray(err) ? err : [err];
 
           if (!isEqual(errors, storeState.errors.fields[fieldName])) {
@@ -379,6 +394,10 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
+        if (err instanceof Error) {
+          console.warn(err);
+        }
+
         const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {

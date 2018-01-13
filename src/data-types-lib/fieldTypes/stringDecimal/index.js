@@ -32,7 +32,7 @@ export default {
     try {
       new Big(value); // eslint-disable-line no-new
       return true;
-    } catch (error) {
+    } catch (_) {
       return false;
     }
   },
@@ -55,7 +55,9 @@ export default {
       [CONSTRAINT_MIN]: param => value.gte(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MIN_DECEEDED,
-        message: param
+        args: {
+          min: param
+        }
       }),
 
       /*
@@ -65,7 +67,9 @@ export default {
       [CONSTRAINT_MAX]: param => value.lte(param) || throwError({
         code: ERROR_CODE_VALIDATION,
         id: ERROR_MAX_EXCEEDED,
-        message: param
+        args: {
+          max: param
+        }
       })
     };
   }

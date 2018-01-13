@@ -1,48 +1,20 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getBabelConfig = require('./babel-config');
+
+const babelConfig = getBabelConfig();
 
 module.exports = {
   context: resolve(__dirname, '../src'),
-  entry: [
-    './demo/client/index.js'
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin()
   ],
-  devtool: 'inline-source-map',
-  output: {
-    path: resolve(__dirname, '../public'),
-    filename: 'bundle.js',
-    publicPath: '/'
-  },
-  devServer: {
-    contentBase: './public',
-    historyApiFallback: true,
-    inline: false
-  },
   module: {
     rules: [
       {
         test: /.jsx?$/,
         loader: 'babel-loader',
-        options: {
-          babelrc: false,
-          presets: [
-            ["env",
-              {
-                "modules": false,
-                "targets": {
-                  "browsers": ["last 2 versions", "ie >= 11", "safari >= 7", "Firefox ESR"]
-                }
-              }
-            ],
-            "react"
-          ],
-          plugins: [
-            "transform-decorators-legacy",
-            "transform-class-properties",
-            "transform-runtime",
-            "transform-object-rest-spread"
-          ]
-        },
+        options: babelConfig,
         exclude: /node_modules/,
       },
       {
@@ -94,16 +66,7 @@ module.exports = {
         use: [
           'file-loader?name=[name].[ext]',
         ]
-      },
+      }
     ]
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './demo/client/index.html',
-      inject: "body"
-    }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
-  ]
+  }
 };

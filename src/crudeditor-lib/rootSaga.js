@@ -51,6 +51,7 @@ export default function*(modelDefinition) {
       if (isStandardView(viewName)) {
         throw ERROR_FORBIDDEN_VIEW(viewName);
       }
+
       throw ERROR_UNKNOWN_VIEW(viewName);
     }
 

@@ -1,27 +1,18 @@
 export default {
-  "default.doesnt.match.message": "Värdet matchar inte det obligatoriska mönstret \"{3}\"",
-  "default.invalid.url.message": "Inte ett giltigt URL-format",
-  "default.invalid.creditCard.message": "Inte ett giltigt kreditkortsnummerformat",
+  "default.doesnt.match.message": "Värdet matchar inte det obligatoriska mönstret \"{pattern}\"",
   "default.invalid.email.message": "Inte ett giltigt e-postadressformat",
-  "default.invalid.range.message": "Värdet är inte inom det giltiga intervallet på \"{3}\" till \"{4}\"",
-  "default.invalid.size.message": "Värdet är inte inom det giltiga storleksintervallet på \"{3}\" till \"{4}\"",
-  "default.invalid.max.message": "Värdet överskrider högsta värdet \"{payload}\"",
-  "default.invalid.min.message": "Värdet underskrider lägsta värdet \"{payload}\"",
-  "default.invalid.max.size.message": "Värdet överskrider den största storleken på \"{3}\"",
-  "default.invalid.min.size.message": "Värdet underskrider den minsta storleken på \"{3}\"",
+  "default.invalid.max.message": "Värdet överskrider högsta värdet \"{max}\"",
+  "default.invalid.min.message": "Värdet underskrider lägsta värdet \"{min}\"",
+  "default.invalid.max.size.message": "Värdet överskrider den största storleken på \"{max}\"",
+  "default.invalid.min.size.message": "Värdet underskrider den minsta storleken på \"{min}\"",
   "default.invalid.validator.message": "Värdet godkänns inte vid anpassad validering",
-  "default.not.inlist.message": "Värdet finns inte i listan \"{3}\"",
   "default.blank.message": "Fältet får inte vara tomt",
-  "default.not.equal.message": "Värdet får inte vara lika med \"{3}\"",
   "default.null.message": "Egenskapen kan inte vara null",
   "default.not.unique.message": "Värdet måste vara unikt",
-  "typeMismatch.java.net.URL": "Värdet måste vara en giltig URL",
-  "typeMismatch.java.net.URI": "Värdet måste vara en giltig URI",
-  "typeMismatch.java.util.Date": "Värdet måste vara ett giltigt datum",
-  "typeMismatch.java.lang.Double": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.lang.Integer": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.lang.Long": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.lang.Short": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.math.BigDecimal": "Värdet måste vara ett giltigt tal",
-  "typeMismatch.java.math.BigInteger": "Värdet måste vara ett giltigt tal"
+  "default.invalid.url.message": "Värdet måste vara en giltig URL",
+  "default.invalid.date.message": "Värdet måste vara ett giltigt datum",
+
+  "default.invalid.integer.message": "Värdet måste vara ett giltigt tal",
+
+  "default.errorOccurred.message": "Fel har uppst\u00e5tt"
 }

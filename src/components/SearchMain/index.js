@@ -52,7 +52,7 @@ export default class SearchMain extends PureComponent {
           <Row>
             <Col xs={8}>
 
-              {getModelMessage(i18n, 'model.name')}
+              {getModelMessage({ i18n, key: 'model.name' })}
 
               <Button
                 bsStyle="link"

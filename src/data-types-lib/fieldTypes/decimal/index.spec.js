@@ -68,7 +68,9 @@ describe('fieldTypes :: decimal', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MIN_DECEEDED,
-            message: constraints[CONSTRAINT_MIN]
+            args: {
+              min: constraints[CONSTRAINT_MIN]
+            }
           }
         )
       }
@@ -86,7 +88,9 @@ describe('fieldTypes :: decimal', () => {
           e, {
             code: ERROR_CODE_VALIDATION,
             id: ERROR_MAX_EXCEEDED,
-            message: constraints[CONSTRAINT_MAX]
+            args: {
+              max: constraints[CONSTRAINT_MAX]
+            }
           }
         )
       }

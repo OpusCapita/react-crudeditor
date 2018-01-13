@@ -1,27 +1,18 @@
 export default {
   "default.blank.message": "Данное поле не может быть пустым",
-  "default.doesnt.match.message": "Значение не соответствует требуемому шаблону ''{3}''.",
-  "default.invalid.creditCard.message": "Недействительный формат номера кредитной карты.",
+  "default.doesnt.match.message": "Значение не соответствует требуемому шаблону ''{pattern}''.",
   "default.invalid.email.message": "Недействительный формат email.",
-  "default.invalid.max.message": "Значение превышает максимальное (''{payload}'').",
-  "default.invalid.max.size.message": "Значение превышает максимальный размер (''{3}'').",
-  "default.invalid.min.message": "Значение меньше минимально допустимого (''{payload}'').",
-  "default.invalid.min.size.message": "Значение меньше минимального допустимого размера (''{3}'').",
-  "default.invalid.range.message": "Значение находится вне периода валидности (''{3}'' - ''{4}'').",
-  "default.invalid.size.message": "Значение находится вне допустимого диапазона размеров (''{3}'' - ''{4}'').",
-  "default.invalid.url.message": "Недействительный формат URL.",
+  "default.invalid.max.message": "Значение превышает максимальное (''{max}'').",
+  "default.invalid.max.size.message": "Значение превышает максимальный размер (''{max}'').",
+  "default.invalid.min.message": "Значение меньше минимально допустимого (''{min}'').",
+  "default.invalid.min.size.message": "Значение меньше минимального допустимого размера (''{min}'').",
   "default.invalid.validator.message": "Значение не проходит выборочную валидацию.",
-  "default.not.equal.message": "Значение не может равняться ''{3}''.",
-  "default.not.inlist.message": "Значение отсутствует в списке ''{3}''.",
   "default.not.unique.message": "Значение должно быть уникальным.",
   "default.null.message": "Свойство не может быть нулевым",
-  "typeMismatch.java.lang.Double": "Значение должно быть действительным числом.",
-  "typeMismatch.java.lang.Integer": "Значение должно быть действительным числом.",
-  "typeMismatch.java.lang.Long": "Значение должно быть действительным числом.",
-  "typeMismatch.java.lang.Short": "Значение должно быть действительным числом.",
-  "typeMismatch.java.math.BigDecimal": "Значение должно быть действительным числом.",
-  "typeMismatch.java.math.BigInteger": "Значение должно быть действительным числом.",
-  "typeMismatch.java.net.URI": "Значение должно быть действительным URI.",
-  "typeMismatch.java.net.URL": "Значение должно быть действительным URL.",
-  "typeMismatch.java.util.Date": "Значение должно быть действительной датой."
+
+  "default.invalid.integer.message": "Значение должно быть действительным числом.",
+  "default.invalid.url.message": "Значение должно быть действительным URL.",
+  "default.invalid.date.message": "Значение должно быть действительной датой.",
+
+  "default.errorOccurred.message": "Произошла ошибка"
 }

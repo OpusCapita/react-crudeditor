@@ -30,7 +30,8 @@ export default {
           message: 'Invalid decimal number'
         }
       }
-      throw err
+
+      throw err;
     }
 
     if (isNaN(n)) {

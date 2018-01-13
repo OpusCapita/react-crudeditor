@@ -1,7 +1,25 @@
 import { expect } from 'chai';
-import { put } from 'redux-saga/effects';
+import { put, spawn } from 'redux-saga/effects';
 import scenario from './scenario';
-import { VIEW_INITIALIZE } from './constants';
+import commonScenario from '../../common/scenario';
+import saveSaga from './workerSagas/save';
+import redirectSaga from '../../common/workerSagas/redirect';
+import { VIEW_SOFT_REDIRECT } from '../../common/constants';
+
+import {
+  INSTANCE_SAVE,
+  VIEW_INITIALIZE,
+  VIEW_NAME
+} from './constants';
+
+const transitions = {
+  blocking: {
+    [INSTANCE_SAVE]: saveSaga
+  },
+  nonBlocking: {
+    [VIEW_SOFT_REDIRECT]: redirectSaga
+  }
+}
 
 const arg = {
   modelDefinition: {},
@@ -24,7 +42,12 @@ describe('create view / scenario', () => {
 
   it('should fork scenario saga', () => {
     const { value, done } = gen.next();
-    expect(value).to.have.ownProperty('FORK');
+    expect(value).to.deep.equal(spawn(commonScenario, {
+      viewName: VIEW_NAME,
+      modelDefinition: arg.modelDefinition,
+      softRedirectSaga: arg.softRedirectSaga,
+      transitions
+    }))
     expect(done).to.be.false; // eslint-disable-line no-unused-expressions
   })
 

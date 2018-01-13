@@ -1,23 +1,66 @@
+## [v0.0.39](Mon, 08 Jan 2018 13:54:44 GMT)
+ - Merge pull request #211 from OpusCapita/issue-209
+   Added email, url and matches constraints for fields of type string (7e6a4ac 79c1ba2, 48f7ca2)
+ - Fixed according to reviewer notes. (Egor Stambakio <stambakio@scand.com>, 79c1ba2)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 7e6a4ac)
+ - Fixed #209 (Egor Stambakio <stambakio@scand.com>, 042b83f)
+ - Test corrections (Andrei Mourzenkov <mourzenkov@scand.com>, b107e14)
+ - Adding explanatory comments (Andrei Mourzenkov <mourzenkov@scand.com>, a0bce17)
+ - Merge pull request #210 from OpusCapita/issue-202-minimal
+   Implemented hint & tooltip without moving i18n messages out of components. (56ff6de 1f67bcc, 13b979a)
+ - Implemented #202 without moving i18n messages out of components. (Egor Stambakio <stambakio@scand.com>, 1f67bcc)
+ - model.api handlers can throw either array of or single error (Andrei Mourzenkov <mourzenkov@scand.com>, 56ff6de)
+ - Merge pull request #208 from OpusCapita/issue-98
+   More tests (95f6e07 aa29b1a, a1ee821)
+ - Merge pull request #205 from OpusCapita/object-hash-for-prefix
+   Object-hash for model prefix (e32d993 4886281, 95f6e07)
+ - Cleanup (Egor Stambakio <stambakio@scand.com>, aa29b1a)
+ - Cleanup (Egor Stambakio <stambakio@scand.com>, c3940c5)
+ - Added tests for create/save saga. (Egor Stambakio <stambakio@scand.com>, 659bed6)
+ - Adding more tests (Egor Stambakio <stambakio@scand.com>, ddf6e28)
+ - Fixed (Egor Stambakio <stambakio@scand.com>, 4886281)
+
+## [v0.0.38](Fri, 05 Jan 2018 13:06:01 GMT)
+ - Removed NODE_ENV definition from webpack config #199 (Egor Stambakio <stambakio@scand.com>, 6c38f43)
+
+## [v0.0.37](Thu, 04 Jan 2018 08:42:34 GMT)
+ - Edited webpack build config. (Egor Stambakio <stambakio@scand.com>, 1f67df9)
+ - Fixed fake timeout for demo apis. (estambakio-sc <egor.stambakio@opuscapita.com>, 584f821)
+ - Merge pull request #198 from OpusCapita/issue-98
+   Added tests for field/ui types and most sagas (9ce54b3 4bdc059, e324e1e)
+ - Merge pull request #197 from OpusCapita/unified-scenario-saga
+   Moved common scenario try/catch call to common/scenario. (c9ca5b0 867a4e3, 9ce54b3)
+ - Lowered coverage requirements to pass circleci tests. (Egor Stambakio <stambakio@scand.com>, 4bdc059)
+ - Merged master (558d6a5 c9ca5b0, 1ae2967)
+ - Moved common scenario try/catch call to common/scenario. (Egor Stambakio <stambakio@scand.com>, 867a4e3)
+ - Added tests for sagas #98 (Egor Stambakio <stambakio@scand.com>, 558d6a5)
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (7df39c6 2a82fce, c9ca5b0)
+ - Default sort field has been redefined (Andrei Mourzenkov <mourzenkov@scand.com>, 7df39c6)
+ - Added tests for data-types-lib fieldTypes #98 (Egor Stambakio <stambakio@scand.com>, 85f9ef1)
+ - Added tests for field types. (Egor Stambakio <stambakio@scand.com>, b13ede4)
+ - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 2a82fce)
+ - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 66376f2)
+
 ## [v0.0.36] - Thu, 28 Dec 2017 06:14:55 GMT
-  
+
 ### Breaking changes
 - Renamings in "render" of model's "searchableFields" and "formLayout":
   1. **render.valueProp** --> **render.value**.
   1. **render.valueProp.name** --> **render.value.propName**.
-  
+
 - Changed i18n model messages patterns - added `.label` for label-related messages:
   1. model.field.FIELD_NAME --> model.field.FIELD_NAME.label for field labels,
   1. model.tab.TAB_NAME --> model.tab.TAB_NAME.label for tab labels,
   1. model.section.SECTION_NAME --> model.section.SECTION_NAME.label for section labels.
-  
+
 ### All commits
  - Predefined filter is immediately displayed in Search Form on Search View loading (Andrei Mourzenkov <mourzenkov@scand.com>, 4294844)
  - Fix when converter in resultFields is not available (Andrei Mourzenkov <mourzenkov@scand.com>, a55b083)
  - Merge pull request #196 from OpusCapita/issue-194
-    
+
     Renamed render.valueProp -> render.value.propName (51442a8 be023a3, ef5804c)
  - Merge pull request #195 from OpusCapita/issue-170
-    
+
     Format result fields according to common rules (1ac397f 5f250cb, 51442a8)
  - Minor syntax corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 5f250cb)
  - Composite fields must have FieldRenderComponent in resultFields (Andrei Mourzenkov <mourzenkov@scand.com>, d9034d6)
@@ -28,26 +71,26 @@
  - Merge branch 'master' into issue-194 (4ecb621 1ac397f, d7ca8ab)
  - Update README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4ecb621)
  - Merge pull request #193 from OpusCapita/issue-189
-    
+
     Unified model message keys (803d185 fdc516e, 1ac397f)
  - Error view displays error.message if possible. (Egor Stambakio <stambakio@scand.com>, fdc516e)
  - Breaking: renamed message keys for model fields, section, tabs - added .label #189 (Egor Stambakio <stambakio@scand.com>, 55ce1e7)
  - Update README.md
-    
+
     Added `.label` to field/tab/section label i18n key. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 803d185)
  - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 2e59563)
  - Merge pull request #192 from OpusCapita/issue-191
-    
+
     Simplified withAlerts HOC (d9d8a54 5942feb, 98e6f31)
  - Fixed #191 (Egor Stambakio <stambakio@scand.com>, 5942feb)
  - Merge pull request #187 from OpusCapita/issue-186
-    
+
     Tabindex -1 for readonly fields (0ef26ea 6cbc7de, d9d8a54)
  - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, 0ef26ea)
  - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, ebb9d74)
  - Fixed #186 (Egor Stambakio <stambakio@scand.com>, 6cbc7de)
  - Merge pull request #185 from OpusCapita/issue-179
-    
+
     Fixed react-test-renderer version (fd96382 8574b87, 0e5b038)
  - Lint howdy (Egor Stambakio <stambakio@scand.com>, 8574b87)
  - Updated eslint-config-opuscapita to 2.0 (Egor Stambakio <stambakio@scand.com>, 7af9eb8)
@@ -55,7 +98,7 @@
  - Fix #183 (Andrei Mourzenkov <mourzenkov@scand.com>, fd96382)
  - Fixed react-test-renderer version for #179 (Egor Stambakio <stambakio@scand.com>, bf552a7)
  - Merge pull request #184 from OpusCapita/issue-180
-    
+
     Moved permissions-actions synchronization from UI to redux containers (12af66e 97fdf6c, f59a778)
  - Fixed deleteSelected handler (Egor Stambakio <stambakio@scand.com>, 97fdf6c)
  - Removed permissions from selectors. (Egor Stambakio <stambakio@scand.com>, 68e305d)
@@ -63,7 +106,7 @@
  - Fixed #180 (Egor Stambakio <stambakio@scand.com>, 142b114)
  - Fix #182 (Andrei Mourzenkov <mourzenkov@scand.com>, 12af66e)
  - Merge pull request #178 from OpusCapita/issue-175
-    
+
     Issue 175 (c7093e2 76f3744, f8a6328)
  - Update package.json (Andrei Mourzenkov <mourzenkov@scand.com>, 76f3744)
  - Fix #177 (Andrei Mourzenkov <mourzenkov@scand.com>, cabd205)
@@ -71,13 +114,13 @@
  - Bug fixes (Andrei Mourzenkov <mourzenkov@scand.com>, 8bfc253)
  - Fix #175 (Andrei Mourzenkov <mourzenkov@scand.com>, d062bdc)
  - Merge pull request #174 from OpusCapita/issue-172
-    
+
     Proper defaultNewInstance for saveAndNew button handler (cd0b973 b935c59, c7093e2)
  - defaultNewInstance() is called with Search View state as an argument in Edit/Create View (Andrei Mourzenkov <mourzenkov@scand.com>, b935c59)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (68c33d7 38624db, cd0b973)
  - Fixed #172 (Egor Stambakio <stambakio@scand.com>, bc27f3e)
  - Merge pull request #171 from OpusCapita/issue-162
-    
+
     Fixed #162 and embedded the second editor (0a99b84 c56d648, 38624db)
  - Lint (Egor Stambakio <stambakio@scand.com>, c56d648)
  - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 3527ecc)

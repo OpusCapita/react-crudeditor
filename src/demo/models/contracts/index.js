@@ -52,7 +52,7 @@ export const fields = {
             // here you can define props which you use in i18n messages
             // example: for i18n message `Hello {name}! This field cannot exceed {maxValue}`
             // define `name` and `maxValue` props
-            payload: {
+            args: {
               forbiddenWord: 'BOOO'
             }
           }];
@@ -71,12 +71,30 @@ export const fields = {
       'max': Number.MAX_SAFE_INTEGER
     }
   },
-  'contractBoilerplates': {
-    'type': 'collection',
+  'email': {
+    'type': FIELD_TYPE_STRING,
     'constraints': {
-      'required': false
+      email: true
     }
   },
+  'url': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      url: true
+    }
+  },
+  'testRegexp': {
+    'type': FIELD_TYPE_STRING,
+    'constraints': {
+      matches: /^hello/i
+    }
+  },
+  // 'contractBoilerplates': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'hierarchyCode': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -118,24 +136,24 @@ export const fields = {
       'required': true
     }
   },
-  'contractedCatalogs': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractedCatalogs': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'minOrderValueRequired': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
       'required': false
     }
   },
-  'contractedClassificationGroups': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractedClassificationGroups': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'extContractId': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -143,30 +161,30 @@ export const fields = {
       'required': false
     }
   },
-  'children': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'children': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'changedBy': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
       'required': true
     }
   },
-  'translations': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
-  'usages': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'translations': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
+  // 'usages': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'currencyId': {
     'type': FIELD_TYPE_STRING,
     'constraints': {
@@ -196,12 +214,12 @@ export const fields = {
       'required': false
     }
   },
-  'provisionings': {
-    'type': 'collection',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'provisionings': {
+  //   'type': 'collection',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'isOffer': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
@@ -216,12 +234,12 @@ export const fields = {
       'required': false
     }
   },
-  'validRange': {
-    'type': 'com.jcatalog.core.DateRange',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'validRange': {
+  //   'type': 'com.jcatalog.core.DateRange',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'isPreferred': {
     'type': FIELD_TYPE_BOOLEAN,
     'constraints': {
@@ -234,12 +252,12 @@ export const fields = {
       'required': false
     }
   },
-  'contractCategory': {
-    'type': 'com.jcatalog.contract.ContractCategory',
-    'constraints': {
-      'required': false
-    }
-  },
+  // 'contractCategory': {
+  //   'type': 'com.jcatalog.contract.ContractCategory',
+  //   'constraints': {
+  //     'required': false
+  //   }
+  // },
   'freightSurcharge': {
     'type': FIELD_TYPE_DECIMAL,
     'constraints': {
@@ -308,7 +326,10 @@ const buildFormLayout = /* istanbul ignore next */ viewName => ({ tab, section, 
   tab({ name: 'groups' }),
   tab({ name: 'additional', disabled: viewName === VIEW_CREATE },
     section({ name: 'test' },
-      field({ name: 'testNumberTypeField' })
+      field({ name: 'testNumberTypeField' }),
+      field({ name: 'email' }),
+      field({ name: 'url' }),
+      field({ name: 'testRegexp' }),
     ),
     section({ name: 'order', columns: 3 },
       field({ name: 'minOrderValue' }),
@@ -340,7 +361,10 @@ export default {
         const err = [{
           code: 400,
           id: 'requiredFieldMissing',
-          message: 'minOrderValue must be set when minOrderValueRequired is true'
+          message: 'minOrderValue must be set when minOrderValueRequired is true',
+          args: {
+            contractId: instance.contractId
+          }
         }];
 
         throw err;

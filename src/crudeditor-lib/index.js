@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import base64 from 'base-64';
+import hash from 'object-hash';
 import crudTranslations from './i18n';
 import notificationsMiddleware from './middleware/notifications';
 import appStateChangeDetect from './middleware/appStateChangeDetect';
@@ -93,7 +93,8 @@ const appName = 'crudEditor';
 
 export default baseModelDefinition => {
   const modelDefinition = fillDefaults(baseModelDefinition);
-  const prefix = `${appName}.${base64.encode(modelDefinition.model.name)}`;
+  const prefix = `${appName}.${hash(modelDefinition)}`;
+
   let onTransition = null;
   let lastState = {};
 
@@ -154,9 +155,9 @@ export default baseModelDefinition => {
         // it queries for prefixed model messages to allow multi-model/multi-crud apps
         getMessage: {
           get() {
-            return (key, payload) => originalI18n.getMessage(
+            return (key, args) => originalI18n.getMessage(
               modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
-              payload
+              args
             );
           }
         }

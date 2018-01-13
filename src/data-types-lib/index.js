@@ -91,8 +91,8 @@ export const
       if (customValidate) {
         try {
           customValidate(value, instance);
-        } catch (error) {
-          errors.push(...(Array.isArray(error) ? error : [error]));
+        } catch (err) {
+          errors.push(...(Array.isArray(err) ? err : [err]));
         }
       }
 
@@ -113,8 +113,8 @@ export const
           if (validator.hasOwnProperty(name)) {
             try {
               validator[name](constraints[name]);
-            } catch (error) {
-              errors.push(...(Array.isArray(error) ? error : [error]));
+            } catch (err) {
+              errors.push(...(Array.isArray(err) ? err : [err]));
             }
           } else {
             errors.push({

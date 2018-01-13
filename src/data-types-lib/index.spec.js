@@ -186,7 +186,9 @@ describe('data-types-lib', () => {
         assert.deepEqual(e, [{
           code: ERROR_CODE_VALIDATION,
           id: ERROR_MAX_EXCEEDED,
-          message: constraints[CONSTRAINT_MAX]
+          args: {
+            max: constraints[CONSTRAINT_MAX]
+          }
         }])
       }
     });

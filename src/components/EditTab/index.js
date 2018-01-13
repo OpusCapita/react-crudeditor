@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import { getModelMessage } from '../lib';
+import { getModelMessage, titleCase } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 import FormGrid from '../FormGrid';
@@ -132,7 +132,7 @@ export default class EditTab extends PureComponent {
             <Button onClick={handler}>
               {icon && <Glyphicon glyph={icon} />}
               {icon && ' '}
-              {getModelMessage(i18n, `model.label.${name}`, name)}
+              {getModelMessage({ i18n, key: `model.label.${name}`, defaultMessage: titleCase(name) })}
             </Button>
           </ConfirmUnsavedChanges>
         ))

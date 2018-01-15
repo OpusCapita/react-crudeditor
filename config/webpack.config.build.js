@@ -5,6 +5,7 @@ const common = require('./webpack.config.common');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = merge(common, {
   plugins: [
@@ -22,18 +23,24 @@ module.exports = merge(common, {
     library: `ReactCrudEditor`,
     libraryTarget: 'umd'
   },
-  externals: {
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
+  externals: [
+    {
+      react: {
+        root: 'React',
+        commonjs2: 'react',
+        commonjs: 'react',
+        amd: 'react'
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        commonjs2: 'react-dom',
+        commonjs: 'react-dom',
+        amd: 'react-dom'
+      }
     },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    }
-  }
+    nodeExternals({
+      modulesFromFile: true,
+      whitelist: ['react', 'react-dom']
+    }),
+  ]
 });

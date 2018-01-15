@@ -383,7 +383,13 @@ Model Definition is an object describing an entity. It has the following structu
      * or throws an array of error (or single error object) if validation failed.
      * The function may also be asyncronous and return a resolved/rejected promise.
      */
-    ?validate(<object, entity instance>) {
+    ?validate({
+      instnace: <object, entity instance>,
+      view: {
+        name: <string, View name>,  // See EditorComponent props.view.name
+        state: <object, Full View State>  // See EditorComponent props.view.state
+      }
+    }) {
       ...
       throw [<Instance Validation Error>, ...];
       ...

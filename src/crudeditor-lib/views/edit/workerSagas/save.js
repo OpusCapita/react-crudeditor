@@ -1,6 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import editAdjacentSaga from './editAdjacent';
+import { getViewState } from '../selectors';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import { VIEW_CREATE } from '../../../common/constants';
 import { getDefaultNewInstance } from '../../search/selectors';
@@ -58,7 +59,13 @@ function* validateSaga(modelDefinition, meta) {
   });
 
   try {
-    yield call(modelDefinition.model.validate, instance);
+    yield call(modelDefinition.model.validate, {
+      instance,
+      view: {
+        name: VIEW_NAME,
+        state: yield select(storeState => getViewState(storeState, modelDefinition))
+      }
+    });
   } catch (err) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL,

@@ -17,6 +17,7 @@ import {
   VIEW_NAME
 } from '../constants';
 
+import { getViewState } from '../selectors';
 import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW } from '../../../common/constants';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import { getDefaultNewInstance } from '../../search/selectors';
@@ -57,7 +58,13 @@ function* validateSaga(modelDefinition, meta) {
   });
 
   try {
-    yield call(modelDefinition.model.validate, instance);
+    yield call(modelDefinition.model.validate, {
+      instance,
+      view: {
+        name: VIEW_NAME,
+        state: yield select(storeState => getViewState(storeState, modelDefinition))
+      }
+    });
   } catch (err) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL,

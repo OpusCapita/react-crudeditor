@@ -74,7 +74,7 @@ describe('search view reducer', () => {
             fields: {}
           },
           status: 'uninitialized',
-          hideSearchForm: false,
+          hideSearchForm: undefined,
           resultInstances: undefined,
           totalCount: undefined
         }

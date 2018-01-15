@@ -149,7 +149,8 @@ export const buildDefaultStoreState = modelDefinition => ({
 
   status: STATUS_UNINITIALIZED,
 
-  hideSearchForm: false
+  // Initial value must be undefined to inform SearchContainer that it is not set yet.
+  hideSearchForm: undefined
 });
 
 /*
@@ -175,7 +176,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
   return (storeState = buildDefaultStoreState(modelDefinition), { type, payload, error, meta }) => {
     if (
       storeState.status === STATUS_UNINITIALIZED &&
-      [VIEW_INITIALIZE_REQUEST, INSTANCES_SEARCH_SUCCESS].indexOf(type) === -1
+      [VIEW_INITIALIZE_REQUEST, INSTANCES_SEARCH_SUCCESS, SEARCH_FORM_TOGGLE].indexOf(type) === -1
     ) {
       return storeState;
     }
@@ -186,12 +187,6 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
     if (type === VIEW_INITIALIZE_REQUEST) {
-      const { hideSearchForm } = payload;
-
-      if (typeof hideSearchForm === 'boolean') {
-        newStoreStateSlice.hideSearchForm = hideSearchForm;
-      }
-
       newStoreStateSlice.status = STATUS_INITIALIZING;
 
     } else if (type === VIEW_INITIALIZE_FAIL) {
@@ -426,7 +421,17 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === SEARCH_FORM_TOGGLE) {
-      newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm
+      /*
+       * toggle "hideSearchForm" when no payload.hideSearchForm
+       * OR
+       * set "hideSearchForm" with payload.hideSearchForm
+       * (payload.hideSearchForm other than boolean is ignored)
+       */
+      if (typeof payload.hideSearchForm === 'boolean') {
+        newStoreStateSlice.hideSearchForm = payload.hideSearchForm;
+      } else if (!payload.hasOwnProperty('hideSearchForm')) {
+        newStoreStateSlice.hideSearchForm = !storeState.hideSearchForm;
+      }
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     /* eslint-enable padded-blocks */

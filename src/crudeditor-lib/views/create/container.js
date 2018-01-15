@@ -25,11 +25,9 @@ const mergeProps = /* istanbul ignore next */ (
     viewModelData,
     viewState,
     operations,
-    permissions: {
-      crudOperations
-    },
+    permissions: { crudOperations },
     externalOperations,
-    uiConfig
+    uiConfig: { headerLevel }
   },
   {
     softRedirectView,
@@ -40,7 +38,10 @@ const mergeProps = /* istanbul ignore next */ (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(crudOperations.view && { exitView })
@@ -53,8 +54,7 @@ const mergeProps = /* istanbul ignore next */ (
         softRedirectView
       }),
       external: externalOperations
-    },
-    uiConfig
+    }
   }
 });
 

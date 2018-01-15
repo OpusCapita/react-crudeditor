@@ -11,7 +11,7 @@ const mergeProps = /* istanbul ignore next */ ({
   permissions: {
     crudOperations
   },
-  uiConfig
+  uiConfig: { headerLevel }
 },
 {
   goHome,
@@ -21,12 +21,14 @@ ownProps
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...(crudOperations.view && { goHome }),
       ...dispatchProps
-    },
-    uiConfig
+    }
   },
 });
 

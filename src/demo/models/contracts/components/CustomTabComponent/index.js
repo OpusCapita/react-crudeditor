@@ -27,12 +27,12 @@ export default class CustomTabComponent extends PureComponent {
         view={this._lastState || {
           name: 'search',
           state: {
-            hideSearchForm: true,
             max: 10
           }
         }}
 
         uiConfig={{
+          hideSearchForm: true,
           headerLevel: 3
         }}
 

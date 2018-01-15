@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Main from '../../../components/SearchMain';
@@ -26,15 +27,51 @@ import {
   toggleSearchForm
 } from './actions';
 
+class SearchContainer extends PureComponent {
+  static propTypes = {
+    model: PropTypes.shape({
+      actions: PropTypes.objectOf(PropTypes.func).isRequired,
+      data: PropTypes.object.isRequired
+    }).isRequired,
+    uiConfig: PropTypes.object.isRequired
+  }
+
+  constructor(...args) {
+    super(...args);
+
+    const {
+      model: {
+        data: { hideSearchForm },
+        actions: { toggleSearchForm }
+      },
+      uiConfig
+    } = this.props;
+
+    if (typeof hideSearchForm !== 'boolean') {
+      toggleSearchForm(uiConfig.hideSearchForm);
+    }
+  }
+
+  componentWillReceiveProps({
+    uiConfig: { hideSearchForm }
+  }) {
+    if (hideSearchForm !== this.props.uiConfig.hideSearchForm) {
+      this.props.model.actions.toggleSearchForm(hideSearchForm);
+    }
+  }
+
+  render() {
+    return <Main model={this.props.model} />;
+  }
+}
+
 const mergeProps = /* istanbul ignore next */ (
   {
     defaultNewInstance,
     viewModelData,
     viewState,
     operations,
-    permissions: {
-      crudOperations
-    },
+    permissions: { crudOperations },
     externalOperations,
     uiConfig
   },
@@ -46,8 +83,11 @@ const mergeProps = /* istanbul ignore next */ (
   ownProps
 ) => ({
   ...ownProps,
-  viewModel: {
-    data: viewModelData,
+  model: {
+    data: {
+      ...viewModelData,
+      headerLevel: uiConfig.headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(crudOperations.create && {
@@ -82,9 +122,9 @@ const mergeProps = /* istanbul ignore next */ (
         softRedirectView
       }),
       external: externalOperations
-    },
-    uiConfig
-  }
+    }
+  },
+  uiConfig
 });
 
 export default connect(
@@ -109,7 +149,4 @@ export default connect(
     toggleSearchForm
   },
   mergeProps
-)(
-  /* istanbul ignore next */
-  ({ viewModel }) => <Main model={viewModel} />
-);
+)(SearchContainer);

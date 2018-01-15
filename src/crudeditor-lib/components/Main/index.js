@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import ViewSwitcher from '../ViewSwitcher';
 import { hardRedirectView } from '../../common/actions';
 
@@ -24,9 +25,11 @@ class CrudMain extends PureComponent {
     });
   }
 
-  componentWillReceiveProps({ viewName, viewState }) {
-    // Re-initialization (viewState structure is unknown and depends on viewName value):
-    this.props.hardRedirectView({ viewName, viewState });
+  componentWillReceiveProps({ viewName, viewState, uiConfig }) {
+    if (viewName !== this.props.viewName || viewState !== this.props.viewState) {
+      // Re-initialization (viewState structure is unknown and depends on viewName value):
+      this.props.hardRedirectView({ viewName, viewState });
+    }
   }
 
   render = _ => (

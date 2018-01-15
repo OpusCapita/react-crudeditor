@@ -51,6 +51,11 @@ export const
     type: selected ? ALL_INSTANCES_SELECT : ALL_INSTANCES_DESELECT
   }),
 
-  toggleSearchForm = _ => ({
-    type: SEARCH_FORM_TOGGLE
+  toggleSearchForm = (...args) => ({
+    type: SEARCH_FORM_TOGGLE,
+    payload: args.length ?
+      {
+        hideSearchForm: args[0]
+      } :
+      {}
   });

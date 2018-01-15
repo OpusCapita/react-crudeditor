@@ -39,7 +39,7 @@ const mergeProps = /* istanbul ignore next */ (
       crudOperations
     },
     externalOperations,
-    uiConfig
+    uiConfig: { headerLevel }
   },
   {
     saveAndNextInstance,
@@ -55,7 +55,10 @@ const mergeProps = /* istanbul ignore next */ (
 ) => ({
   ...ownProps,
   viewModel: {
-    data: viewModelData,
+    data: {
+      ...viewModelData,
+      headerLevel
+    },
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: editPreviousInstance }),
@@ -73,8 +76,7 @@ const mergeProps = /* istanbul ignore next */ (
         softRedirectView
       }),
       external: externalOperations
-    },
-    uiConfig
+    }
   }
 });
 

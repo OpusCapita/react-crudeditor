@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Button,
   Glyphicon,
   Row,
   Col
 } from 'react-bootstrap';
+
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
@@ -16,10 +18,8 @@ export default class SearchMain extends PureComponent {
     model: PropTypes.shape({
       actions: PropTypes.objectOf(PropTypes.func),
       data: PropTypes.shape({
+        headerLevel: PropTypes.number,
         hideSearchForm: PropTypes.bool
-      }),
-      uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number
       })
     }).isRequired
   }
@@ -28,19 +28,18 @@ export default class SearchMain extends PureComponent {
     i18n: PropTypes.object
   };
 
+  handleSearchFormToggle = _ => this.props.model.actions.toggleSearchForm();
+
   render() {
     const { model } = this.props;
 
     const {
       data: {
+        headerLevel = 1,
         hideSearchForm
       },
       actions: {
-        toggleSearchForm,
         createInstance
-      },
-      uiConfig: {
-        headerLevel = 1
       }
     } = model;
 
@@ -57,7 +56,7 @@ export default class SearchMain extends PureComponent {
 
               <Button
                 bsStyle="link"
-                onClick={toggleSearchForm}
+                onClick={this.handleSearchFormToggle}
                 title={i18n.getMessage(`crudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
               >
                 <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>

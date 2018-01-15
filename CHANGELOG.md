@@ -1,3 +1,75 @@
+## [v0.0.40](Mon, 15 Jan 2018 10:10:30 GMT)
+ - Merge pull request #229 from OpusCapita/issue-35/externalize-node-modules
+    
+    Node_modules made external (a0b7f6f cc2ac9a, 4c0c8c5)
+ - Node_modules made external (Egor Stambakio <stambakio@scand.com>, cc2ac9a)
+ - Merge pull request #227 from OpusCapita/issue-#225-fix-deal-links
+    
+    Fix deal links in docs (3078a02 625636e, a0b7f6f)
+ - Merging from master (165b1f1 3078a02, 625636e)
+ - Minor corrections in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 3078a02)
+ - Fix standard Field Types link
+    
+    Standard types link in **Field Type** terminology section points to
+    *Default Field Input Components*. (Andrei Mourzenkov <mourzenkov@scand.com>, 165b1f1)
+ - Merge pull request #224 from OpusCapita/issue-220
+    
+    Common webpack config (deca523 a1fd22e, 88be826)
+ - Resolved conflicts master<->#220 (6b68c74 deca523, a1fd22e)
+ - Merge pull request #216 from OpusCapita/issue-212
+    
+    Refactored prop-types model check and added checks for formLayout and Search UI (258c9ee 1c6a18e, deca523)
+ - Merge pull request #218 from OpusCapita/issue-217
+    
+    I18n for custom instance validation errors (f29beb5 2a408c7, 258c9ee)
+ - Merge pull request #223 from OpusCapita/issue-222
+    
+    Deleted obsolete message keys, renamed message payloads (217f053 c29c93d, 2a408c7)
+ - Merge pull request #221 from OpusCapita/issue-219
+    
+    Refactored field errors label component for #219 (32e6929 ac5d1f0, 217f053)
+ - Centralized search UI validity checks. (Egor Stambakio <stambakio@scand.com>, 1c6a18e)
+ - Package.json cleanup (Egor Stambakio <stambakio@scand.com>, 6b68c74)
+ - Fixed #220 (Egor Stambakio <stambakio@scand.com>, 1645530)
+ - Minor package.json convenience adjustment. (Egor Stambakio <stambakio@scand.com>, 32e6929)
+ - Fixed according to reviewer notes. (Egor Stambakio <stambakio@scand.com>, a145c54)
+ - Fixed tests (Egor Stambakio <stambakio@scand.com>, c29c93d)
+ - Cleaned exception messages #222 (Egor Stambakio <stambakio@scand.com>, c52c506)
+ - Refactored field errors label component for #219 (Egor Stambakio <stambakio@scand.com>, ac5d1f0)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 3fbeb8d)
+ - Merge branch 'issue-212' of https://github.com/OpusCapita/react-crudeditor into issue-212 (6791626 e6a2fb7, 32646c9)
+ - Fixed package version (Egor Stambakio <stambakio@scand.com>, 6791626)
+ - Tests are corrected (Andrei Mourzenkov <mourzenkov@scand.com>, e6a2fb7)
+ - Renamed a variable for naming consistency. (Egor Stambakio <stambakio@scand.com>, 9f5e5f4)
+ - Merge branch 'issue-217' of https://github.com/OpusCapita/react-crudeditor into issue-217 (264491a 1f6fd34, 04e6f5d)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 1f6fd34)
+ - Added support for i18n message args in custom errors. (Egor Stambakio <stambakio@scand.com>, 264491a)
+ - Files Location restructuring (Andrei Mourzenkov <mourzenkov@scand.com>, f6da370)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 4b96fc8)
+ - Search Result Listing allows undefined (Andrei Mourzenkov <mourzenkov@scand.com>, f29beb5)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, c951acd)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, fcd87dd)
+ - Merge branch 'issue-217' of https://github.com/OpusCapita/react-crudeditor into issue-217 (0e0f032 944ede9, b59b6e5)
+ - Explicit defaults for model i18n messages. (Egor Stambakio <stambakio@scand.com>, 0e0f032)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 944ede9)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 3b53ef9)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, e737653)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 82a5ff0)
+ - Update README.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, e34315c)
+ - Implemented #217 (Egor Stambakio <stambakio@scand.com>, c605163)
+ - Cleanup (Egor Stambakio <stambakio@scand.com>, 0444f46)
+ - Set up prop-types validation for model objects. (Egor Stambakio <stambakio@scand.com>, c2a0be7)
+ - Merge pull request #215 from OpusCapita/issue-213
+    
+    Default error message for view redirect failure (03b00cc 73d3989, 8ec9306)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 03b00cc)
+ - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 259cf74)
+ - Fixed #213 (Egor Stambakio <stambakio@scand.com>, 73d3989)
+ - Merge pull request #214 from OpusCapita/issue-207
+    
+    Allow throwing "new Error()" from model.api handlers (9b2d320 3123b44, 2df6237)
+ - Fix #207 (Andrei Mourzenkov <mourzenkov@scand.com>, 3123b44)
+
 ## [v0.0.39](Mon, 08 Jan 2018 13:54:44 GMT)
  - Merge pull request #211 from OpusCapita/issue-209
    Added email, url and matches constraints for fields of type string (7e6a4ac 79c1ba2, 48f7ca2)

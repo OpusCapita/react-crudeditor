@@ -72,7 +72,7 @@ export default function* validateSaga({ modelDefinition, meta, viewName }) {
   });
 
   try {
-    yield call(modelDefinition.model.validate, instance);
+    yield call(modelDefinition.model.validate, ({ instance, viewName }));
   } catch (err) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL[viewName],

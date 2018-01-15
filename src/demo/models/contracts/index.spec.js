@@ -25,7 +25,7 @@ describe("Models / Contracts", _ => {
     });
   });
 
-  describe("model.validate", _ => {
+  describe.skip("model.validate", _ => {
     it("should check for a required minOrderValue", () => {
       const instance = {
         minOrderValueRequired: true,

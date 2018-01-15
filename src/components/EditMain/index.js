@@ -23,7 +23,7 @@ EditMain.propTypes = {
     data: PropTypes.shape({
       activeTab: PropTypes.array,
       viewName: PropTypes.oneOf([VIEW_NAME]).isRequired,
-      persistentInstance: PropTypes.object.isRequired
+      persistentInstance: PropTypes.object
     }).isRequired
   }).isRequired,
   toggledFieldErrors: PropTypes.object.isRequired,

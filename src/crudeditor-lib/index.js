@@ -175,7 +175,9 @@ export default baseModelDefinition => {
           // or else ensure that "redux-saga" is the last middleware in the call chain.
           appStateChangeDetect({
             lastState,
-            getOnTransition: this.getOnTransition,
+            get onTransition() {
+              return onTransition;
+            },
             modelDefinition
           }),
 
@@ -195,8 +197,8 @@ export default baseModelDefinition => {
       return this.adjustedContext;
     }
 
-    componentWillReceiveProps(props) {
-      onTransition = props.onTransition;
+    componentWillReceiveProps(nextProps) {
+      onTransition = nextProps.onTransition;
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
@@ -211,8 +213,6 @@ export default baseModelDefinition => {
     componentWillUnmount() {
       this.runningSaga.cancel()
     }
-
-    getOnTransition = _ => onTransition;
 
     render = _ =>
       (<Provider store={this.store}>

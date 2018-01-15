@@ -1,33 +1,35 @@
+## [v0.0.41](Mon, 15 Jan 2018 14:55:32 GMT)
+
+### Breaking changes
+- `model.validate()` arguments have been changed from `(instance)` to `({ instance, view: {name, state} })`
+
+### All commits
+ - Merge pull request #232 from OpusCapita/issue-231/view-in-instance-validation
+   Implement #231 except for mocha tests adjustments (c89c99d 37495a1, 7dc3982)
+ - Implement #231 except for mocha tests adjastments (Andrei Mourzenkov <mourzenkov@scand.com>, 37495a1)
+
 ## [v0.0.40](Mon, 15 Jan 2018 10:10:30 GMT)
  - Merge pull request #229 from OpusCapita/issue-35/externalize-node-modules
-    
-    Node_modules made external (a0b7f6f cc2ac9a, 4c0c8c5)
+   Node_modules made external (a0b7f6f cc2ac9a, 4c0c8c5)
  - Node_modules made external (Egor Stambakio <stambakio@scand.com>, cc2ac9a)
  - Merge pull request #227 from OpusCapita/issue-#225-fix-deal-links
-    
-    Fix deal links in docs (3078a02 625636e, a0b7f6f)
+   Fix deal links in docs (3078a02 625636e, a0b7f6f)
  - Merging from master (165b1f1 3078a02, 625636e)
  - Minor corrections in docs (Andrei Mourzenkov <mourzenkov@scand.com>, 3078a02)
  - Fix standard Field Types link
-    
-    Standard types link in **Field Type** terminology section points to
-    *Default Field Input Components*. (Andrei Mourzenkov <mourzenkov@scand.com>, 165b1f1)
+   Standard types link in **Field Type** terminology section points to
+   *Default Field Input Components*. (Andrei Mourzenkov <mourzenkov@scand.com>, 165b1f1)
  - Merge pull request #224 from OpusCapita/issue-220
-    
-    Common webpack config (deca523 a1fd22e, 88be826)
+   Common webpack config (deca523 a1fd22e, 88be826)
  - Resolved conflicts master<->#220 (6b68c74 deca523, a1fd22e)
  - Merge pull request #216 from OpusCapita/issue-212
-    
-    Refactored prop-types model check and added checks for formLayout and Search UI (258c9ee 1c6a18e, deca523)
+   Refactored prop-types model check and added checks for formLayout and Search UI (258c9ee 1c6a18e, deca523)
  - Merge pull request #218 from OpusCapita/issue-217
-    
-    I18n for custom instance validation errors (f29beb5 2a408c7, 258c9ee)
+   I18n for custom instance validation errors (f29beb5 2a408c7, 258c9ee)
  - Merge pull request #223 from OpusCapita/issue-222
-    
-    Deleted obsolete message keys, renamed message payloads (217f053 c29c93d, 2a408c7)
+   Deleted obsolete message keys, renamed message payloads (217f053 c29c93d, 2a408c7)
  - Merge pull request #221 from OpusCapita/issue-219
-    
-    Refactored field errors label component for #219 (32e6929 ac5d1f0, 217f053)
+   Refactored field errors label component for #219 (32e6929 ac5d1f0, 217f053)
  - Centralized search UI validity checks. (Egor Stambakio <stambakio@scand.com>, 1c6a18e)
  - Package.json cleanup (Egor Stambakio <stambakio@scand.com>, 6b68c74)
  - Fixed #220 (Egor Stambakio <stambakio@scand.com>, 1645530)
@@ -60,14 +62,12 @@
  - Cleanup (Egor Stambakio <stambakio@scand.com>, 0444f46)
  - Set up prop-types validation for model objects. (Egor Stambakio <stambakio@scand.com>, c2a0be7)
  - Merge pull request #215 from OpusCapita/issue-213
-    
-    Default error message for view redirect failure (03b00cc 73d3989, 8ec9306)
+   Default error message for view redirect failure (03b00cc 73d3989, 8ec9306)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 03b00cc)
  - Update README.md (Andrei Mourzenkov <amourzenkov-sc@users.noreply.github.com>, 259cf74)
  - Fixed #213 (Egor Stambakio <stambakio@scand.com>, 73d3989)
  - Merge pull request #214 from OpusCapita/issue-207
-    
-    Allow throwing "new Error()" from model.api handlers (9b2d320 3123b44, 2df6237)
+   Allow throwing "new Error()" from model.api handlers (9b2d320 3123b44, 2df6237)
  - Fix #207 (Andrei Mourzenkov <mourzenkov@scand.com>, 3123b44)
 
 ## [v0.0.39](Mon, 08 Jan 2018 13:54:44 GMT)
@@ -118,22 +118,20 @@
 ### Breaking changes
 - Renamings in "render" of model's "searchableFields" and "formLayout":
   1. **render.valueProp** --> **render.value**.
-  1. **render.valueProp.name** --> **render.value.propName**.
+  2. **render.valueProp.name** --> **render.value.propName**.
 
 - Changed i18n model messages patterns - added `.label` for label-related messages:
   1. model.field.FIELD_NAME --> model.field.FIELD_NAME.label for field labels,
-  1. model.tab.TAB_NAME --> model.tab.TAB_NAME.label for tab labels,
-  1. model.section.SECTION_NAME --> model.section.SECTION_NAME.label for section labels.
+  2. model.tab.TAB_NAME --> model.tab.TAB_NAME.label for tab labels,
+  3. model.section.SECTION_NAME --> model.section.SECTION_NAME.label for section labels.
 
 ### All commits
  - Predefined filter is immediately displayed in Search Form on Search View loading (Andrei Mourzenkov <mourzenkov@scand.com>, 4294844)
  - Fix when converter in resultFields is not available (Andrei Mourzenkov <mourzenkov@scand.com>, a55b083)
  - Merge pull request #196 from OpusCapita/issue-194
-
-    Renamed render.valueProp -> render.value.propName (51442a8 be023a3, ef5804c)
+   Renamed render.valueProp -> render.value.propName (51442a8 be023a3, ef5804c)
  - Merge pull request #195 from OpusCapita/issue-170
-
-    Format result fields according to common rules (1ac397f 5f250cb, 51442a8)
+   Format result fields according to common rules (1ac397f 5f250cb, 51442a8)
  - Minor syntax corrections (Andrei Mourzenkov <mourzenkov@scand.com>, 5f250cb)
  - Composite fields must have FieldRenderComponent in resultFields (Andrei Mourzenkov <mourzenkov@scand.com>, d9034d6)
  - Merge branch 'issue-194' of https://github.com/OpusCapita/react-crudeditor into issue-194 (c460b19 d7ca8ab, be023a3)
@@ -143,57 +141,48 @@
  - Merge branch 'master' into issue-194 (4ecb621 1ac397f, d7ca8ab)
  - Update README.md (Andrei Mourzenkov <mourzenkov@scand.com>, 4ecb621)
  - Merge pull request #193 from OpusCapita/issue-189
-
-    Unified model message keys (803d185 fdc516e, 1ac397f)
+   Unified model message keys (803d185 fdc516e, 1ac397f)
  - Error view displays error.message if possible. (Egor Stambakio <stambakio@scand.com>, fdc516e)
  - Breaking: renamed message keys for model fields, section, tabs - added .label #189 (Egor Stambakio <stambakio@scand.com>, 55ce1e7)
  - Update README.md
-
-    Added `.label` to field/tab/section label i18n key. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 803d185)
+   Added `.label` to field/tab/section label i18n key. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 803d185)
  - Update CHANGELOG.md (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 2e59563)
  - Merge pull request #192 from OpusCapita/issue-191
-
-    Simplified withAlerts HOC (d9d8a54 5942feb, 98e6f31)
+   Simplified withAlerts HOC (d9d8a54 5942feb, 98e6f31)
  - Fixed #191 (Egor Stambakio <stambakio@scand.com>, 5942feb)
  - Merge pull request #187 from OpusCapita/issue-186
-
-    Tabindex -1 for readonly fields (0ef26ea 6cbc7de, d9d8a54)
+   Tabindex -1 for readonly fields (0ef26ea 6cbc7de, d9d8a54)
  - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, 0ef26ea)
  - Update CHANGELOG (Andrei Mourzenkov <mourzenkov@scand.com>, ebb9d74)
  - Fixed #186 (Egor Stambakio <stambakio@scand.com>, 6cbc7de)
  - Merge pull request #185 from OpusCapita/issue-179
-
-    Fixed react-test-renderer version (fd96382 8574b87, 0e5b038)
+   Fixed react-test-renderer version (fd96382 8574b87, 0e5b038)
  - Lint howdy (Egor Stambakio <stambakio@scand.com>, 8574b87)
  - Updated eslint-config-opuscapita to 2.0 (Egor Stambakio <stambakio@scand.com>, 7af9eb8)
  - Merge branch 'master' into issue-179 (bf552a7 fd96382, 45fe9a1)
  - Fix #183 (Andrei Mourzenkov <mourzenkov@scand.com>, fd96382)
  - Fixed react-test-renderer version for #179 (Egor Stambakio <stambakio@scand.com>, bf552a7)
  - Merge pull request #184 from OpusCapita/issue-180
-
-    Moved permissions-actions synchronization from UI to redux containers (12af66e 97fdf6c, f59a778)
+   Moved permissions-actions synchronization from UI to redux containers (12af66e 97fdf6c, f59a778)
  - Fixed deleteSelected handler (Egor Stambakio <stambakio@scand.com>, 97fdf6c)
  - Removed permissions from selectors. (Egor Stambakio <stambakio@scand.com>, 68e305d)
  - Merged master (142b114 12af66e, 49a7555)
  - Fixed #180 (Egor Stambakio <stambakio@scand.com>, 142b114)
  - Fix #182 (Andrei Mourzenkov <mourzenkov@scand.com>, 12af66e)
  - Merge pull request #178 from OpusCapita/issue-175
-
-    Issue 175 (c7093e2 76f3744, f8a6328)
+   Issue 175 (c7093e2 76f3744, f8a6328)
  - Update package.json (Andrei Mourzenkov <mourzenkov@scand.com>, 76f3744)
  - Fix #177 (Andrei Mourzenkov <mourzenkov@scand.com>, cabd205)
  - Bug fixes (Andrei Mourzenkov <mourzenkov@scand.com>, 9b5a933)
  - Bug fixes (Andrei Mourzenkov <mourzenkov@scand.com>, 8bfc253)
  - Fix #175 (Andrei Mourzenkov <mourzenkov@scand.com>, d062bdc)
  - Merge pull request #174 from OpusCapita/issue-172
-
-    Proper defaultNewInstance for saveAndNew button handler (cd0b973 b935c59, c7093e2)
+   Proper defaultNewInstance for saveAndNew button handler (cd0b973 b935c59, c7093e2)
  - defaultNewInstance() is called with Search View state as an argument in Edit/Create View (Andrei Mourzenkov <mourzenkov@scand.com>, b935c59)
  - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (68c33d7 38624db, cd0b973)
  - Fixed #172 (Egor Stambakio <stambakio@scand.com>, bc27f3e)
  - Merge pull request #171 from OpusCapita/issue-162
-
-    Fixed #162 and embedded the second editor (0a99b84 c56d648, 38624db)
+   Fixed #162 and embedded the second editor (0a99b84 c56d648, 38624db)
  - Lint (Egor Stambakio <stambakio@scand.com>, c56d648)
  - Minor fixes. (Egor Stambakio <stambakio@scand.com>, 3527ecc)
  - Better embedded editor, state preserve after embedded crud transition. (Egor Stambakio <stambakio@scand.com>, 69cdeef)

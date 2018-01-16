@@ -35,6 +35,7 @@ class Spinner {
   }
 
   render() {
+    /* istanbul ignore next */
     if (!this.container) {
       this.container = document.createElement('div');
       document.body.appendChild(this.container);

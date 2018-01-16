@@ -65,19 +65,19 @@ export default class ConditionalConfirm extends PureComponent {
     return (
       <Modal show={this.state.show} onHide={this.handleClose}>
         <Modal.Header closeButton={true}>
-          <h4>{message}</h4>
+          <p>{message}</p>
           <div className="text-right">
-            <Button
-              onClick={this.handleClose}
-              bsStyle="link"
-            >
-              {textCancel}
-            </Button>
             <Button
               onClick={this.handleConfirm}
               bsStyle="primary"
             >
               {textConfirm}
+            </Button>
+            <Button
+              onClick={this.handleClose}
+              bsStyle="link"
+            >
+              {textCancel}
             </Button>
           </div>
         </Modal.Header>

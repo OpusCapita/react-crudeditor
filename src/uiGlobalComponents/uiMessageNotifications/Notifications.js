@@ -7,7 +7,7 @@ import {
 import 'react-notifications/lib/notifications.css';
 import './styles.css';
 
-const isDef = param => param !== undefined && param !== null;
+const isDef = /* istanbul ignore next */ param => param !== undefined && param !== null;
 
 const types = {
   ERROR: 'error',
@@ -18,6 +18,7 @@ const types = {
 
 const defaultTimeout = 3000;
 
+/* istanbul ignore next */
 class Notifications {
   constructor() {
     this.renderContainer()

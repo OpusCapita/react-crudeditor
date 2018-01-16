@@ -42,10 +42,6 @@ export const
   NOTIFICATION_SUCCESS = 'crudEditorNotificationSuccess',
   NOTIFICATION_VALIDATION_ERROR = 'crudEditorInstanceValidationError';
 
-const
-  SUCCESS_NOTIFICATION_TIMEOUT = 3000,
-  ERROR_NOTIFICATION_TIMEOUT = 3000;
-
 // eventsMiddleware is a function which accepts i18n as an argument and
 // returns a Redux middleware function
 const eventsMiddleware = /* istanbul ignore next */ ({

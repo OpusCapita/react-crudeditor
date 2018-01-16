@@ -56,6 +56,8 @@ import {
   COMPONENT_NAME_RANGE_INPUT as BUILTIN_RANGE_INPUT
 } from './views/lib';
 
+import { uiSpinner } from '../uiClobalComponents';
+
 export {
   VIEW_CREATE,
   VIEW_EDIT,
@@ -163,7 +165,13 @@ export default baseModelDefinition => {
       });
 
       this.adjustedContext = {
-        i18n: adjustedI18n
+        i18n: adjustedI18n,
+        uiGlobalComponents: {
+          spinner: this.context.uiGlobalComponents.spinner || // take spinner from context
+            modelDefinition.ui.spinner ? // or create own spinner
+              uiSpinner.setComponent(modelDefinition.ui.spinner) : // with a custom component
+              uiSpinner // or the default one
+        }
       };
 
       const sagaMiddleware = createSagaMiddleware();

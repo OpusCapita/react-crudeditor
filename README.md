@@ -151,7 +151,7 @@ export default class extends React.Component {
       <ContractEditor
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
-        ?externalOperations={[<object>, ...]}
+        ?externalOperations={<function>}
         ?uiConfig={{
           ?headerLevel: <integer>
         }}
@@ -170,7 +170,7 @@ Name | Default | Description
 ---|---|---
 view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[externalOperations](#editorcomponent-propsexternaloperations) | - | Set of [External Operation](#external-operation) handlers
+[externalOperations](#editorcomponent-propsexternaloperations) | - | Function returning a set of [External Operations](#external-operation) handlers
 
 ### *EditorComponent* props.view.name
 
@@ -282,9 +282,48 @@ function ({
 
 ### *EditorComponent* props.externalOperations
 
-An array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
+A function returning an array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
 
 ```javascript
+function(<object, entity persistent instance> ) {
+  ...
+  return [{
+    handler() {
+      ...
+      return; // Return value is ignored.
+    },
+    ?ui({
+      name: <string, View name>,  // See EditorComponent props.view.name
+      state: <object, Full View State>  // See EditorComponent props.view.state
+    }) {
+      return {
+        title() {
+          ...
+          return <string, external operation translated title>,
+        },
+
+        ?show: <boolean, true by default>,
+        ?disabled: <boolean, false by default>,
+
+        /*
+         * whether the operation has own dedicated button (false)
+         * or it is to be placed in a dropdown of a previous button (true).
+         * A previous button is either previous external operation with "dropdown" set to false
+         * OR previous custom operation with "dropdown" set to false if there is no such custom operation
+         * OR "Edit" button if there is no such external/custom operation.
+         */
+        ?dropdown: <boolean, true by default>,
+
+        /*
+         * name of an icon to be displayed inside a button, ex. "trash", "edit";
+         * see full list at
+         * http://getbootstrap.com/components/#glyphicons
+         */
+        ?icon: <string>
+      };
+    }
+  }, ...]
+}
 [
   {
     title: <string, external operation translated name>,
@@ -821,30 +860,44 @@ Model Definition is an object describing an entity. It has the following structu
      * Custom operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
      */
-    ?operations: function(<object, entity persistent instance>, {
-      name: <string, View name>,  // See EditorComponent props.view.name
-      state: <object, Full View State>  // See EditorComponent props.view.state
-    }) {
+    ?customOperations: function(<object, entity persistent instance> ) {
       ...
       return [{
-        name: <string, operation ID>,
-
-        /*
-         * name of an icon to be displayed inside a button, ex. "trash", "edit";
-         * see full list at
-         * http://getbootstrap.com/components/#glyphicons
-         */
-        ?icon: <string>,
-
-        /*
-         * The operation button is not displayed if there is no hanlder.
-         */
-        ?handler() {
+        handler() {
           ...
           // return value is either undefined or view name/state.
           return {
             name: <string, View Name>,
             ?state: <object, View State, empty object by default>
+          };
+        },
+        ?ui({
+          name: <string, View name>,  // See EditorComponent props.view.name
+          state: <object, Full View State>  // See EditorComponent props.view.state
+        }) {
+          return {
+            title() {
+              ...
+              return <string, custom operation translated title>,
+            },
+
+            ?show: <boolean, true by default>,
+            ?disabled: <boolean, false by default>,
+
+            /*
+             * whether the operation has own dedicated button (false)
+             * or it is to be placed in a dropdown of a previous button (true).
+             * A previous button is either previous custom operation with "dropdown" set to false
+             * OR "Edit" button if there is no such custom operation.
+             */
+            ?dropdown: <boolean, true by default>,
+
+            /*
+             * name of an icon to be displayed inside a button, ex. "trash", "edit";
+             * see full list at
+             * http://getbootstrap.com/components/#glyphicons
+             */
+            ?icon: <string>
           };
         }
       }, ...]

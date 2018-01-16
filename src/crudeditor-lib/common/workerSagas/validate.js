@@ -16,14 +16,6 @@ import {
   INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS
 } from '../../views/edit/constants';
 
-import { getViewState as getCreateViewState } from '../../views/create/selectors';
-import { getViewState as getEditViewState } from '../../views/edit/selectors';
-
-const getViewState = {
-  [CREATE_VIEW]: getCreateViewState,
-  [EDIT_VIEW]: getEditViewState
-}
-
 const ALL_INSTANCE_FIELDS_VALIDATE = {
   [CREATE_VIEW]: CREATE_ALL_INSTANCE_FIELDS_VALIDATE,
   [EDIT_VIEW]: EDIT_ALL_INSTANCE_FIELDS_VALIDATE
@@ -54,11 +46,13 @@ export default function* validateSaga({ modelDefinition, meta, viewName }) {
   });
 
   const [
-    instance,
+    persistentInstance,
+    formInstance,
     fieldErrors
   ] = yield select(({
     views: {
       [viewName]: {
+        persistentInstance,
         formInstance,
         errors: {
           fields: fieldErrors
@@ -66,6 +60,7 @@ export default function* validateSaga({ modelDefinition, meta, viewName }) {
       }
     }
   }) => [
+    persistentInstance || null, // Create View does not have a persistent instance, only Edit View does.
     formInstance,
     fieldErrors
   ]);
@@ -80,14 +75,10 @@ export default function* validateSaga({ modelDefinition, meta, viewName }) {
   });
 
   try {
-    const state = yield select(storeState => getViewState[viewName](storeState, modelDefinition));
-
     yield call(modelDefinition.model.validate, ({
-      instance,
-      view: {
-        name: viewName,
-        state
-      }
+      persistentInstance,
+      formInstance,
+      viewName
     }));
   } catch (err) {
     yield put({

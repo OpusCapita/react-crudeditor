@@ -322,7 +322,7 @@ export default {
     name: 'Contracts', // unique for each model used in your app; used to distinguish translations
     translations,
     fields,
-    validate: /* istanbul ignore next */ instance => {
+    validate: /* istanbul ignore next */ ({ instance }) => {
       if (instance.minOrderValueRequired && instance.minOrderValue === null) {
         const err = [{
           code: 400,

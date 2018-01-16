@@ -25,8 +25,10 @@ class CrudMain extends PureComponent {
   }
 
   componentWillReceiveProps({ viewName, viewState }) {
-    // Re-initialization (viewState structure is unknown and depends on viewName value):
-    this.props.hardRedirectView({ viewName, viewState });
+    if (viewName !== this.props.viewName || viewState !== this.props.viewState) {
+      // Re-initialization (viewState structure is unknown and depends on viewName value):
+      this.props.hardRedirectView({ viewName, viewState });
+    }
   }
 
   render = _ => (

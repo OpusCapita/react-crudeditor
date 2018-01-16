@@ -16,6 +16,14 @@ import {
   INSTANCE_VALIDATE_SUCCESS as EDIT_INSTANCE_VALIDATE_SUCCESS
 } from '../../views/edit/constants';
 
+import { getViewState as getCreateViewState } from '../../views/create/selectors';
+import { getViewState as getEditViewState } from '../../views/edit/selectors';
+
+const getViewState = {
+  [CREATE_VIEW]: getCreateViewState,
+  [EDIT_VIEW]: getEditViewState
+}
+
 const ALL_INSTANCE_FIELDS_VALIDATE = {
   [CREATE_VIEW]: CREATE_ALL_INSTANCE_FIELDS_VALIDATE,
   [EDIT_VIEW]: EDIT_ALL_INSTANCE_FIELDS_VALIDATE
@@ -72,7 +80,15 @@ export default function* validateSaga({ modelDefinition, meta, viewName }) {
   });
 
   try {
-    yield call(modelDefinition.model.validate, ({ instance, viewName }));
+    const state = yield select(storeState => getViewState[viewName](storeState, modelDefinition));
+
+    yield call(modelDefinition.model.validate, ({
+      instance,
+      view: {
+        name: viewName,
+        state
+      }
+    }));
   } catch (err) {
     yield put({
       type: INSTANCE_VALIDATE_FAIL[viewName],

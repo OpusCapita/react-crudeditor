@@ -122,20 +122,22 @@ export default class EditTab extends PureComponent {
       )
     }
 
-    buttons.push(
-      ...internalOperations(persistentInstance).map(({ name, icon, handler, type }, index) => (
-        <ConfirmUnsavedChanges
-          key={`internal-operation-${index}`}
-          showDialog={this.showConfirmDialog}
-        >
-          <Button onClick={handler}>
-            {icon && <Glyphicon glyph={icon} />}
-            {icon && ' '}
-            {getModelMessage({ i18n, key: `model.label.${name}`, defaultMessage: titleCase(name) })}
-          </Button>
-        </ConfirmUnsavedChanges>
-      ))
-    );
+    if (persistentInstance) {
+      buttons.push(
+        ...internalOperations(persistentInstance).map(({ name, icon, handler, type }, index) => (
+          <ConfirmUnsavedChanges
+            key={`internal-operation-${index}`}
+            showDialog={this.showConfirmDialog}
+          >
+            <Button onClick={handler}>
+              {icon && <Glyphicon glyph={icon} />}
+              {icon && ' '}
+              {getModelMessage({ i18n, key: `model.label.${name}`, defaultMessage: titleCase(name) })}
+            </Button>
+          </ConfirmUnsavedChanges>
+        ))
+      );
+    }
 
     buttons.push(
       externalOperations.map(({ title, icon, handler }, index) => (

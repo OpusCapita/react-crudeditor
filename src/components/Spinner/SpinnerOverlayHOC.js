@@ -1,47 +1,62 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { SVG as Svg } from '@opuscapita/react-svg';
-import spinnerSVG from './spinner2.svg';
-import './SpinnerOverlay.less';
+// import { SVG as Svg } from '@opuscapita/react-svg';
+// import spinnerSVG from './spinner2.svg';
+// import './SpinnerOverlay.less';
 
 const withSpinner = WrappedComponent => {
   return class WithSpinner extends PureComponent {
     static propTypes = {
       model: PropTypes.shape({
         data: PropTypes.shape({
-          spinner: PropTypes.func,
           isLoading: PropTypes.bool
         }).isRequired
       }).isRequired
     }
 
+    static contextTypes = {
+      uiSpinner: PropTypes.object.isRequired
+    }
+
+    constructor(...args) {
+      super(...args);
+
+      const { isLoading } = this.props.model.data;
+      const { uiSpinner: spinner } = this.context;
+
+      if (isLoading) {
+        spinner.start()
+      } else {
+        spinner.stop()
+      }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      const { uiSpinner: spinner } = this.context;
+
+      const prevLoading = this.props.model.data.isLoading;
+      const nextLoading = nextProps.model.data.isLoading;
+
+      if (prevLoading !== nextLoading) {
+        if (nextLoading) {
+          spinner.start()
+        } else {
+          spinner.stop()
+        }
+      }
+    }
+
     render() {
-      const { children, model, ...props } = this.props;
-
-      const CustomSpinner = model.data.spinner;
-
-      const defaultSpinner = (<Svg svg={spinnerSVG} style={{ width: '64px', height: '64px' }} />);
-
-      const Spinner = model.data.isLoading ?
-        (
-          <div className="crud--spinner-overlay">
-            { CustomSpinner ? <CustomSpinner/> : defaultSpinner }
-          </div>
-        ) :
-        null;
+      const {
+        children,
+        ...props
+      } = this.props;
 
       return (
-        <div className="ready-for-spinner">
-          {Spinner}
-          <WrappedComponent
-            {...props}
-            model={model}
-            {...(Spinner ? { overflow: 'hidden' } : null)}
-          >
-            {children}
-          </WrappedComponent>
-        </div>
-      );
+        <WrappedComponent {...props}>
+          {children}
+        </WrappedComponent>
+      )
     }
   }
 }

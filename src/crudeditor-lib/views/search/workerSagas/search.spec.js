@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { runSaga } from 'redux-saga';
+import { call } from 'redux-saga/effects';
 import searchSaga from './search';
 
 import {
@@ -62,11 +63,19 @@ describe('search view / worker sagas / search', () => {
   })
 
   describe('bad case', () => {
-    it('should put INSTANCES_SEARCH_REQUEST and INSTANCES_SEARCH_FAIL', () => {
+    it('should throw if search api fails', () => {
       const dispatched = [];
 
       const err = {
         code: 232
+      }
+
+      const wrapper = function*(...args) {
+        try {
+          yield call(searchSaga, ...args)
+        } catch (e) {
+          expect(e).deep.equal(err)
+        }
       }
 
       const badSearch = _ => {
@@ -76,7 +85,7 @@ describe('search view / worker sagas / search', () => {
       runSaga({
         dispatch: (action) => dispatched.push(action),
         getState
-      }, searchSaga, {
+      }, wrapper, {
         ...arg,
         modelDefinition: {
           api: {

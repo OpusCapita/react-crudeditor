@@ -4,6 +4,7 @@
 *.out
 *.iml
 *.lock
+package-lock.json
 
 public
 .gh-pages-tmp

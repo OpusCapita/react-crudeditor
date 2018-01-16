@@ -85,12 +85,20 @@ describe('show view: show saga', () => {
       code: 345
     }
 
+    const wrapper = function*(...args) {
+      try {
+        yield call(showSaga, ...args)
+      } catch (e) {
+        expect(e).deep.equal(err)
+      }
+    }
+
     const badApi = sinon.stub().throws(err)
 
-    it('should put VIEW_REDIRECT_FAIL', () => {
+    it('should throw if get api fails', () => {
       runSaga({
         dispatch: (action) => dispatched.push(action)
-      }, showSaga, {
+      }, wrapper, {
         ...arg,
         modelDefinition: {
           ...arg.modelDefinition,
@@ -99,6 +107,11 @@ describe('show view: show saga', () => {
           }
         }
       });
+
+      expect(dispatched.map(({ type }) => type)).deep.equal([
+        INSTANCE_SHOW_REQUEST,
+        INSTANCE_SHOW_FAIL
+      ])
 
       expect(dispatched.find(({ type }) => type === INSTANCE_SHOW_FAIL).payload).to.deep.equal(err);
     });

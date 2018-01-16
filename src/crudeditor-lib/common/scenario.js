@@ -94,7 +94,7 @@ const scenarioSaga = /* istanbul ignore next */ function*({
   }
 };
 
-export default function*({
+export default /* istanbul ignore next */ function*({
   modelDefinition,
   softRedirectSaga,
   transitions,

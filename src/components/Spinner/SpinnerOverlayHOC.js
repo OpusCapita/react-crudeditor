@@ -22,9 +22,9 @@ const withSpinner = WrappedComponent => {
       const { uiSpinner: spinner } = this.context;
 
       if (isLoading) {
-        spinner.start()
+        spinner.show()
       } else {
-        spinner.stop()
+        spinner.hide()
       }
     }
 
@@ -36,9 +36,9 @@ const withSpinner = WrappedComponent => {
 
       if (prevLoading !== nextLoading) {
         if (nextLoading) {
-          spinner.start()
+          spinner.show()
         } else {
-          spinner.stop()
+          spinner.hide()
         }
       }
     }

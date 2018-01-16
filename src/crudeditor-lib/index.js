@@ -121,12 +121,14 @@ export default baseModelDefinition => {
 
     static contextTypes = {
       i18n: PropTypes.object.isRequired, // important
-      uiSpinner: PropTypes.object
+      uiSpinner: PropTypes.object,
+      uiMessageNotifications: PropTypes.object.isRequired
     };
 
     static childContextTypes = {
       i18n: PropTypes.object.isRequired,
-      uiSpinner: PropTypes.object.isRequired
+      uiSpinner: PropTypes.object.isRequired,
+      uiMessageNotifications: PropTypes.object.isRequired
     }
 
     static defaultProps = {
@@ -168,13 +170,16 @@ export default baseModelDefinition => {
         }
       });
 
+      const { uiMessageNotifications } = this.context;
+
       this.adjustedContext = {
         i18n: adjustedI18n,
         uiSpinner: this.context.uiSpinner ?
           this.context.uiSpinner : // take spinner from context
           modelDefinition.ui.spinner ? // or create own spinner
           uiSpinner.setComponent(modelDefinition.ui.spinner) : // with a custom component
-            uiSpinner // or the default one
+            uiSpinner, // or the default one
+        uiMessageNotifications
       };
 
       const sagaMiddleware = createSagaMiddleware();
@@ -194,6 +199,7 @@ export default baseModelDefinition => {
 
           notificationsMiddleware({
             i18n: adjustedI18n,
+            uiMessageNotifications,
             modelDefinition
           }),
 

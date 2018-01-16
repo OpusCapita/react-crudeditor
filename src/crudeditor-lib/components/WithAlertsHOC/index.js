@@ -1,10 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  NotificationContainer,
-  NotificationManager
-} from 'react-notifications';
-import 'react-notifications/lib/notifications.css';
-import './styles.css';
+import PropTypes from 'prop-types';
 
 import {
   NOTIFICATION_SUCCESS,
@@ -14,24 +9,27 @@ import {
 
 const withAlerts = WrappedComponent => {
   return class WithAlerts extends PureComponent {
+    static contextTypes = {
+      uiMessageNotifications: PropTypes.object.isRequired
+    }
+
     componentWillUnmount() {
+      const { uiMessageNotifications: notification } = this.context;
+
       [
         NOTIFICATION_SUCCESS,
         NOTIFICATION_ERROR,
         NOTIFICATION_VALIDATION_ERROR
-      ].forEach(id => NotificationManager.remove({ id }));
+      ].forEach(id => notification.remove({ id }));
     }
 
     render() {
       const { children, ...props } = this.props;
 
       return (
-        <div>
-          <WrappedComponent {...props}>
-            {children}
-          </WrappedComponent>
-          <NotificationContainer/>
-        </div>
+        <WrappedComponent {...props}>
+          {children}
+        </WrappedComponent>
       );
     }
   }

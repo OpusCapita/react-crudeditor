@@ -1,4 +1,3 @@
-import { NotificationManager } from 'react-notifications';
 import { getModelMessage } from '../../components/lib';
 
 import {
@@ -39,9 +38,9 @@ import {
 } from '../views/error/constants';
 
 export const
-  NOTIFICATION_ERROR = 'error',
-  NOTIFICATION_SUCCESS = 'success',
-  NOTIFICATION_VALIDATION_ERROR = 'instanceValidationError';
+  NOTIFICATION_ERROR = 'crudEditorNotificationError',
+  NOTIFICATION_SUCCESS = 'crudEditorNotificationSuccess',
+  NOTIFICATION_VALIDATION_ERROR = 'crudEditorInstanceValidationError';
 
 const
   SUCCESS_NOTIFICATION_TIMEOUT = 3000,
@@ -49,50 +48,42 @@ const
 
 // eventsMiddleware is a function which accepts i18n as an argument and
 // returns a Redux middleware function
-const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) => store => next => action => {
+const eventsMiddleware = /* istanbul ignore next */ ({
+  i18n,
+  modelDefinition,
+  uiMessageNotifications: notification
+}) => store => next => action => {
   switch (action.type) {
     case CREATE_INSTANCE_SAVE_SUCCESS:
-      NotificationManager.create({
+      notification.success({
         id: NOTIFICATION_SUCCESS,
-        type: 'success',
-        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: i18n.getMessage('crudEditor.objectSaved.message')
       });
       break;
     case EDIT_INSTANCE_SAVE_SUCCESS:
-      NotificationManager.create({
+      notification.success({
         id: NOTIFICATION_SUCCESS,
-        type: 'success',
-        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: i18n.getMessage('crudEditor.objectUpdated.message')
       });
       break;
     case CREATE_INSTANCE_SAVE_FAIL:
     case EDIT_INSTANCE_SAVE_FAIL:
-      NotificationManager.create({
+      notification.error({
         id: NOTIFICATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: i18n.getMessage('crudEditor.objectSaveFailed.message')
       });
       break;
     case INSTANCES_DELETE_FAIL:
-      NotificationManager.create({
+      notification.error({
         id: NOTIFICATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: action.payload === 1 ?
           i18n.getMessage('crudEditor.objectDeleteFailed.message') :
-          i18n.getMessage('crudEditor.objectsDeleteFailed.message', {
-            count: action.payload
-          })
+          i18n.getMessage('crudEditor.objectsDeleteFailed.message', { count: action.payload })
       });
       break;
     case INSTANCES_DELETE_SUCCESS:
-      NotificationManager.create({
+      notification.success({
         id: NOTIFICATION_SUCCESS,
-        type: 'success',
-        timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: action.payload.instances.length === 1 ?
           i18n.getMessage('crudEditor.objectDeleted.message') :
           i18n.getMessage('crudEditor.objectsDeleted.message', {
@@ -102,20 +93,16 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
       break;
     case ADJACENT_INSTANCE_EDIT_FAIL:
     case ADJACENT_INSTANCE_SHOW_FAIL:
-      NotificationManager.create({
+      notification.error({
         id: NOTIFICATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: i18n.getMessage('crudEditor.found.items.message', { count: 0 })
       });
       break;
     case CREATE_INSTANCE_VALIDATE_FAIL:
     case EDIT_INSTANCE_VALIDATE_FAIL:
       // in case 'model.validate' fails
-      NotificationManager.create({
+      notification.error({
         id: NOTIFICATION_VALIDATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
           filter(err => err && typeof err === 'object').
           map(({ id, message, args }) => id ?
@@ -134,22 +121,20 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
       break;
     case CREATE_INSTANCE_VALIDATE_SUCCESS:
     case EDIT_INSTANCE_VALIDATE_SUCCESS:
-      NotificationManager.remove({ id: NOTIFICATION_VALIDATION_ERROR });
+      notification.remove({ id: NOTIFICATION_VALIDATION_ERROR });
       break;
     case SEARCH_VIEW_REDIRECT_FAIL:
     case CREATE_VIEW_REDIRECT_FAIL:
     case EDIT_VIEW_REDIRECT_FAIL:
     case SHOW_VIEW_REDIRECT_FAIL:
     case ERROR_VIEW_REDIRECT_FAIL:
-      NotificationManager.create({
+      notification.error({
         id: NOTIFICATION_ERROR,
-        type: 'error',
-        timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: (Array.isArray(action.payload) ? action.payload : [action.payload]).
           filter(err => err && typeof err === 'object' && err.message).
           map(({ message }) => message).
           join(' | ') ||
-          i18n.getMessage('default.errorOccurred.message')
+        i18n.getMessage('default.errorOccurred.message')
       });
       break;
     case CREATE_ALL_INSTANCE_FIELDS_VALIDATE:
@@ -160,12 +145,10 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
       const fieldErrors = storeState.views[currentView].errors.fields;
 
       if (Object.keys(fieldErrors).length > 0) {
-        NotificationManager.create({
+        notification.error({
           id: NOTIFICATION_ERROR,
-          type: 'error',
-          timeOut: ERROR_NOTIFICATION_TIMEOUT,
           message: i18n.getMessage('crudEditor.objectSaveFailed.message')
-        });
+        })
       }
 
       return result;

@@ -34,5 +34,5 @@ export default {
 
   "model.label.createChild": "Create child",
 
-  "model.error.requiredFieldMissing": "Instance validation error for [ {contractId} ] in your language!"
+  "model.error.requiredFieldMissing": "Custom localized instance validation error."
 }

@@ -16,15 +16,15 @@ class Spinner {
 
   setDefaultComponent = _ => this.setComponent(DefaultSpinner)
 
-  start = _ => {
-    this.loadingTasks++;
-
-    if (this.loadingTasks === 1) {
+  show = _ => {
+    if (this.loadingTasks === 0) {
       this.render()
     }
+
+    this.loadingTasks++;
   }
 
-  stop = _ => {
+  hide = _ => {
     if (this.loadingTasks > 0) {
       this.loadingTasks--
     }

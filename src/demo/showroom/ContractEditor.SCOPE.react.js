@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n'
 // import './ContractEditorScope.less'
+import { uiMessageNotifications } from '../../uiGlobalComponents';
 
 function getParameterByName(name, url) {
   if (!url) {url = window.location.href;} // eslint-disable-line no-param-reassign
@@ -20,7 +21,8 @@ export default
 @showroomScopeDecorator
 class ContractEditorScope extends React.Component {
   static childContextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired,
+    uiMessageNotifications: PropTypes.object.isRequired,
   };
 
   constructor(...args) {
@@ -31,7 +33,10 @@ class ContractEditorScope extends React.Component {
   }
 
   getChildContext() {
-    return { i18n: this.i18n }
+    return {
+      i18n: this.i18n,
+      uiMessageNotifications
+    }
   }
 
   render() {

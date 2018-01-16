@@ -28,6 +28,10 @@ import {
 } from './lib';
 
 import {
+  uiSpinner
+} from '../uiGlobalComponents';
+
+import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_DECIMAL,
   FIELD_TYPE_INTEGER,
@@ -55,10 +59,6 @@ import {
   COMPONENT_NAME_INPUT as BUILTIN_INPUT,
   COMPONENT_NAME_RANGE_INPUT as BUILTIN_RANGE_INPUT
 } from './views/lib';
-
-import {
-  uiSpinner
-} from '../uiGlobalComponents';
 
 export {
   VIEW_CREATE,
@@ -170,9 +170,10 @@ export default baseModelDefinition => {
 
       this.adjustedContext = {
         i18n: adjustedI18n,
-        uiSpinner: this.context.uiSpinner || // take spinner from context
+        uiSpinner: this.context.uiSpinner ?
+          this.context.uiSpinner : // take spinner from context
           modelDefinition.ui.spinner ? // or create own spinner
-            uiSpinner.setComponent(modelDefinition.ui.spinner) : // with a custom component
+          uiSpinner.setComponent(modelDefinition.ui.spinner) : // with a custom component
             uiSpinner // or the default one
       };
 

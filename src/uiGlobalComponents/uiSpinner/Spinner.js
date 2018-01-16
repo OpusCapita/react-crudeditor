@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import DefaultSpinner from './DefaultSpinner';
+import './Spinner.less';
 
 class Spinner {
   constructor() {
@@ -8,17 +9,14 @@ class Spinner {
     this.setDefaultComponent();
   }
 
-  setComponent(component, props) {
-    this.component = React.createElement(component, props);
+  setComponent = (Component, props) => {
+    this.component = (<span className="spinner"><Component {...props}/></span>);
     return this
   }
 
-  setDefaultComponent() {
-    this.component = React.createElement(DefaultSpinner);
-    return this
-  }
+  setDefaultComponent = _ => this.setComponent(DefaultSpinner)
 
-  start() {
+  start = _ => {
     this.loadingTasks++;
 
     if (this.loadingTasks === 1) {
@@ -26,7 +24,7 @@ class Spinner {
     }
   }
 
-  stop() {
+  stop = _ => {
     if (this.loadingTasks > 0) {
       this.loadingTasks--
     }

@@ -9,6 +9,11 @@ export default class CustomTabComponent extends PureComponent {
     instance: PropTypes.object.isRequired
   }
 
+  static contextTypes = {
+    i18n: PropTypes.object,
+    uiSpinner: PropTypes.object
+  }
+
   constructor(...args) {
     super(...args);
 
@@ -27,8 +32,8 @@ export default class CustomTabComponent extends PureComponent {
         view={this._lastState || {
           name: 'search',
           state: {
-            hideSearchForm: true,
-            max: 10
+            max: 10,
+            hideSearchForm: true
           }
         }}
 

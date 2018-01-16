@@ -23,6 +23,7 @@ module.exports = merge(common, {
     historyApiFallback: true,
     inline: false
   },
+  devtool: 'eval',
   module: {
     rules: [
       {

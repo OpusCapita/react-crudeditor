@@ -10,7 +10,7 @@ import {
 
 export const
 
-  changeInstanceField = ({
+  changeInstanceField = /* istanbul ignore next */ ({
     name: fieldName,
     value: fieldNewValue
   }) => ({
@@ -21,44 +21,44 @@ export const
     }
   }),
 
-  validateInstanceField = fieldName => ({
+  validateInstanceField = /* istanbul ignore next */ fieldName => ({
     type: INSTANCE_FIELD_VALIDATE,
     payload: {
       name: fieldName
     }
   }),
 
-  saveInstance = _ => ({
+  saveInstance = /* istanbul ignore next */ _ => ({
     type: INSTANCE_SAVE
   }),
 
-  saveAndNewInstance = _ => ({
+  saveAndNewInstance = /* istanbul ignore next */ _ => ({
     type: INSTANCE_SAVE,
     payload: {
       afterAction: AFTER_ACTION_NEW
     }
   }),
 
-  saveAndNextInstance = _ => ({
+  saveAndNextInstance = /* istanbul ignore next */ _ => ({
     type: INSTANCE_SAVE,
     payload: {
       afterAction: AFTER_ACTION_NEXT
     }
   }),
 
-  selectTab = tabName => ({
+  selectTab = /* istanbul ignore next */ tabName => ({
     type: TAB_SELECT,
     payload: { tabName }
   }),
 
-  editPreviousInstance = _ => ({
+  editPreviousInstance = /* istanbul ignore next */ _ => ({
     type: ADJACENT_INSTANCE_EDIT,
     payload: {
       step: -1
     }
   }),
 
-  editNextInstance = _ => ({
+  editNextInstance = /* istanbul ignore next */ _ => ({
     type: ADJACENT_INSTANCE_EDIT,
     payload: {
       step: 1

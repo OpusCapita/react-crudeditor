@@ -32,7 +32,7 @@ const formLayoutPropTypes = {
   ))
 }
 
-export default formLayout => PropTypes.checkPropTypes(
+export default /* istanbul ignore next */ formLayout => PropTypes.checkPropTypes(
   formLayoutPropTypes,
   { formLayout },
   'property',

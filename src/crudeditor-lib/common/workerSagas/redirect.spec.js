@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { runSaga } from 'redux-saga';
+import { call } from 'redux-saga/effects';
 import sinon from 'sinon';
 import redirectSaga from './redirect';
 import { VIEW_SEARCH, VIEW_EDIT } from '../constants';
@@ -63,19 +64,28 @@ describe('common / workerSagas / redirect saga', () => {
       code: 345
     }
 
+    const wrapper = function*(...args) {
+      try {
+        yield call(redirectSaga, ...args)
+      } catch (e) {
+        expect(e).deep.equal(err)
+      }
+    }
+
     const badRedirect = sinon.stub().throws(err)
 
     it('should put VIEW_REDIRECT_FAIL', () => {
       runSaga({
         dispatch: (action) => dispatched.push(action)
-      }, redirectSaga, {
+      }, wrapper, {
         ...arg,
         softRedirectSaga: badRedirect
       });
 
-      expect([SEARCH_VIEW_REDIRECT_REQUEST, SEARCH_VIEW_REDIRECT_FAIL]. // eslint-disable-line no-unused-expressions
-        reduce((acc, cur) => acc && !!dispatched.find(el => el.type === cur), true)).
-        to.be.true;
+      expect(dispatched.map(({ type }) => type)).deep.equal([
+        SEARCH_VIEW_REDIRECT_REQUEST,
+        SEARCH_VIEW_REDIRECT_FAIL
+      ])
 
       expect(dispatched.find(({ type }) => type === SEARCH_VIEW_REDIRECT_FAIL).payload).to.be.deep.equal(err);
     });

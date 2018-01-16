@@ -74,7 +74,7 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewModelData = wrapper((storeState, {
+  getViewModelData = wrapper(/* istanbul ignore next */ (storeState, {
     model: modelMeta,
     ui: {
       spinner,

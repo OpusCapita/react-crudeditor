@@ -42,14 +42,6 @@ module.exports = {
         ]
       },
       {
-        test: /\.(scss)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'sass-loader', options: { sourceMap: true } }
-        ]
-      },
-      {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           'url-loader?limit=100&mimetype=application/font-woff&name=[name].[ext]',

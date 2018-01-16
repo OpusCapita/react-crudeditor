@@ -25,13 +25,13 @@ describe("Models / Contracts", _ => {
     });
   });
 
-  describe.skip("model.validate", _ => {
+  describe("model.validate", _ => {
     it("should check for a required minOrderValue", () => {
       const instance = {
         minOrderValueRequired: true,
         minOrderValue: 100
       };
-      const result = contracts.model.validate(instance);
+      const result = contracts.model.validate({ instance });
       expect(result).to.be.true; // eslint-disable-line no-unused-expressions
     });
 
@@ -42,7 +42,7 @@ describe("Models / Contracts", _ => {
         minOrderValue: null
       };
       try {
-        const result = contracts.model.validate(instance);
+        const result = contracts.model.validate({ instance });
         assert.fail(result)
       } catch (e) {
         assert.deepEqual(

@@ -35,7 +35,7 @@ export const
     undefined // view is not initialized yet.
   ),
 
-  getViewModelData = wrapper((storeState, {
+  getViewModelData = wrapper(/* istanbul ignore next */ (storeState, {
     model: modelMeta,
     ui: { spinner }
   }) => ({

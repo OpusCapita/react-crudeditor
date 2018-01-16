@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { runSaga } from 'redux-saga';
+import { call } from 'redux-saga/effects';
 import sinon from 'sinon';
 import deleteSaga from './delete';
 import {
@@ -52,10 +53,18 @@ describe('common / workerSagas / delete saga', () => {
 
     const badFunc = sinon.stub().throws(err)
 
+    const wrapper = function*(...args) {
+      try {
+        yield call(deleteSaga, ...args)
+      } catch (e) {
+        expect(e).deep.equal(err)
+      }
+    }
+
     it('should put INSTANCES_DELETE_FAIL', () => {
       runSaga({
         dispatch: (action) => dispatched.push(action)
-      }, deleteSaga, {
+      }, wrapper, {
         ...arg,
         modelDefinition: {
           ...arg.modelDefinition,

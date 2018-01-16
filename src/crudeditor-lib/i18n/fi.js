@@ -18,7 +18,7 @@ const common = {
   "crudEditor.message.ajax.loading": "Ole hyvä ja odota…",
   "crudEditor.noAssociationEntriesFound.message": "Syötteet puuttuvat. Voit {1} uuden syötteen.",
   "crudEditor.noItemsSelected.alert": "Rivejä ei ole valittu!",
-  "crudEditor.objectDeleteFailed.message": "Objektin tuhoaminen epäonnistui, se voi olla jo käytössä.",
+  "crudEditor.objectDeleteFailed.message": "Objektin poistaminen epäonnistui, se voi olla jo käytössä.",
   "crudEditor.objectDeleted.message": "Objekti poistettu.",
   "crudEditor.objectDuplicated.message": "Objekti kopioitu.",
   "crudEditor.objectSaveFailed.message": "Objektin tallentaminen epäonnistui.",

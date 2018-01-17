@@ -17,14 +17,6 @@ import {
 
 import { fields } from '../'
 
-const internal2api = contract => Object.entries(contract).reduce(
-  (rez, [fieldName, fieldValue]) => ({
-    ...rez,
-    [fieldName]: fieldValue
-  }),
-  {}
-);
-
 export const testNumberFieldType = "testNumberTypeField";
 
 const data = { // remove doubles
@@ -90,7 +82,7 @@ export const
     });
 
     if (item) {
-      return internal2api(item)
+      return item
     }
 
     throw new Error("404")
@@ -284,7 +276,7 @@ export const
 
     return {
       totalCount,
-      instances: result.map(internal2api)
+      instances: result
     }
   }
 

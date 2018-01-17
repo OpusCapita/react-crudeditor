@@ -381,14 +381,12 @@ Model Definition is an object describing an entity. It has the following structu
      * Field-validation is done upon all fields just before calling the instance-validator.
      * The function returns boolean true in case of successful validation,
      * or throws an array of error (or single error object) if validation failed.
-     * The function may also be asyncronous and return a resolved/rejected promise.
+     * The function may also be asyncronous and return a promise.
      */
     ?validate({
-      instnace: <object, entity instance>,
-      view: {
-        name: <string, View name>,  // See EditorComponent props.view.name
-        state: <object, Full View State>  // See EditorComponent props.view.state
-      }
+      persistentInstnace: <object, entity instance as saved on server, null for Create View>,
+      formInstnace: <object, entity instance as displayed in the View>,
+      viewName: <string, View name>,  // See EditorComponent props.view.name
     }) {
       ...
       throw [<Instance Validation Error>, ...];
@@ -823,7 +821,7 @@ Model Definition is an object describing an entity. It has the following structu
      * Custom operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
      */
-    ?customOperations: function(<object, entity persistent instance>, {
+    ?operations: function(<object, entity persistent instance>, {
       name: <string, View name>,  // See EditorComponent props.view.name
       state: <object, Full View State>  // See EditorComponent props.view.state
     }) {

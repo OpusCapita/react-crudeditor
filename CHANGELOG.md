@@ -1,3 +1,28 @@
+## [v0.0.42](Tue, 16 Jan 2018 14:39:56 GMT)
+
+### Breaking changes
+- `model.validate()` arguments have been changed from `({ instance, view: {name, state} })` to `({ persistentInstance, formInstance, viewName })`
+
+### All commits
+ - Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (2503796 7cfa931, 538b1c6)
+ - Fixing #231 with both persistent and form instance in model.validate() (Andrei Mourzenkov <mourzenkov@scand.com>, 2503796)
+ - Merge pull request #235 from OpusCapita/Bugfix/228
+   Some Finnish language UI text corrections (f231c69 37aba6f, 7cfa931)
+ - One more correction to Finnish UI texts (OCNET\saloaap1 <aappo.salo@opuscapita.com>, 37aba6f)
+ - Some Finnish language UI text corrections (OCNET\saloaap1 <aappo.salo@opuscapita.com>, e4f6cd4)
+ - Merge pull request #230 from OpusCapita/issue-98
+   More tests & moved save/validate sagas into own files (1912ef2 0964ea2, f231c69)
+ - Deleted irrelevant file (Egor Stambakio <stambakio@scand.com>, 0964ea2)
+ - Merged master (9f00a47 1912ef2, b566f2b)
+ - Fix #233 by removing isRequired for some PropTypes (Andrei Mourzenkov <mourzenkov@scand.com>, 1912ef2)
+ - Updated react-dates package version. (Egor Stambakio <stambakio@scand.com>, 9f00a47)
+ - ...[ci skip] (Egor Stambakio <stambakio@scand.com>, 8dd6a93)
+ - Cleaned webpack config & merged master. (Egor Stambakio <stambakio@scand.com>, e8bfecf)
+ - Merge branch 'master' into issue-98 (073ecd0 c89c99d, 45046b6)
+ - Removed obsolete dependency (Egor Stambakio <stambakio@scand.com>, 073ecd0)
+ - More tests and moved validate and save sagas to common dir. (Egor Stambakio <stambakio@scand.com>, e78c92c)
+ - Added tests for sagas #98 (Egor Stambakio <stambakio@scand.com>, c75ed71)
+
 ## [v0.0.41](Mon, 15 Jan 2018 14:55:32 GMT)
 
 ### Breaking changes

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import find from 'lodash/find';
 import { uiTypes, allPropTypes } from './lib';
 
 const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
@@ -19,7 +20,7 @@ const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
       })
     })).isRequired,
     (props, propName, componentName) => { // eslint-disable-line consistent-return
-      const brokenField = props[propName].find(field => field.render && !field.render.component);
+      const brokenField = find(props[propName], field => field.render && !field.render.component);
 
       if (brokenField) {
         return new Error(`${componentName}:
@@ -37,7 +38,7 @@ const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
       component: PropTypes.func
     })).isRequired,
     (props, propName, componentName) => { // eslint-disable-line consistent-return
-      const brokenField = props[propName].find(({ name, component }) => !component && !fieldsMeta[name]);
+      const brokenField = find(props[propName], ({ name, component }) => !component && !fieldsMeta[name])
 
       if (brokenField) {
         return new Error(`${componentName}:

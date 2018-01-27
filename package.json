@@ -120,7 +120,8 @@
     "exclude": [
       "src/external_modules",
       "node_modules",
-      "src/**/*.spec.js"
+      "src/**/*.spec.js",
+      "src/crudeditor-lib/i18n"
     ],
     "check-coverage": true,
     "reporter": [

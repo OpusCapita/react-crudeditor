@@ -42,7 +42,7 @@ const transitions = {
 export default function*({
   modelDefinition,
   softRedirectSaga,
-  viewState: {
+  viewState: /* istanbul ignore next */ {
     filter,
     sort,
     order,

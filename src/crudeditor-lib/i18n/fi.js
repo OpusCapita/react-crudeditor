@@ -39,13 +39,16 @@ const common = {
   "crudEditor.search.result.label": "Hakutulos",
   "crudEditor.search.resultsPerPage": "Tuloksia sivulla",
   "crudEditor.select.button": "Valitse",
-  "crudEditor.unsaved.confirmation": "Olet tehnyt muutoksia. Sivulta lähteminen johtaa muutosten menettämiseen.",
+  "crudEditor.unsaved.confirmation": "Olet tehnyt muutoksia. Jos poistut sivulta, menetät muutokset.",
   "crudEditor.show.button": "Katso",
   "crudEditor.show.header": "Katso {modelName}",
   "crudEditor.export.button": "Vie",
   "crudEditor.found.items.message": "{count} hakutulosta l\u00F6ytyi",
   "crudEditor.range.from": "l\u00E4htien",
   "crudEditor.range.to": "asti"
+  "crudEditor.confirm.action": "Vahvista",
+  "crudEditor.search.showSearchForm": "Näytä hakukaavake",
+  "crudEditor.search.hideSearchForm": "Piilota hakukaavake"
 }
 /* eslint-enable max-len */
 

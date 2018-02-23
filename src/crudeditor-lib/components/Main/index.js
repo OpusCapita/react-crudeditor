@@ -10,7 +10,7 @@ class CrudMain extends PureComponent {
     viewState: PropTypes.object,
     modelDefinition: PropTypes.object.isRequired,
     hardRedirectView: PropTypes.func.isRequired,
-    externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
+    externalOperations: PropTypes.func.isRequired,
     uiConfig: PropTypes.object.isRequired
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -18,37 +18,49 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiConfig }) => {
-  if (!activeViewName) {
-    return null;
+class ViewSwitcher extends PureComponent {
+  static propTypes = {
+    activeViewName: PropTypes.string,
+    modelDefinition: PropTypes.object.isRequired,
+    externalOperations: PropTypes.func.isRequired,
+    uiConfig: PropTypes.object.isRequired
   }
 
-  const ViewContainer = ({
-    [VIEW_SEARCH]: SearchView,
-    [VIEW_CREATE]: CreateView,
-    [VIEW_EDIT]: EditView,
-    [VIEW_SHOW]: ShowView,
-    [VIEW_ERROR]: ErrorView
-  })[activeViewName];
+  static contextTypes = {
+    i18n: PropTypes.object
+  }
 
-  return (<div>
-    {
-      ViewContainer ?
-        <ViewContainer
-          modelDefinition={modelDefinition}
-          externalOperations={externalOperations}
-          uiConfig={uiConfig}
-        /> :
-        <div>Unknown view <i>{activeViewName}</i></div>
+  render() {
+    const { activeViewName, modelDefinition, externalOperations, uiConfig } = this.props;
+    const { i18n } = this.context;
+
+    if (!activeViewName) {
+      return null;
     }
-  </div>);
-};
 
-ViewSwitcher.propTypes = {
-  activeViewName: PropTypes.string,
-  modelDefinition: PropTypes.object.isRequired,
-  externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
-  uiConfig: PropTypes.object.isRequired
+    const ViewContainer = ({
+      [VIEW_SEARCH]: SearchView,
+      [VIEW_CREATE]: CreateView,
+      [VIEW_EDIT]: EditView,
+      [VIEW_SHOW]: ShowView,
+      [VIEW_ERROR]: ErrorView
+    })[activeViewName];
+
+    return (
+      <div>
+        {
+          ViewContainer ?
+            <ViewContainer
+              modelDefinition={modelDefinition}
+              externalOperations={externalOperations}
+              uiConfig={uiConfig}
+              i18n={i18n}
+            /> :
+            <div>Unknown view <i>{activeViewName}</i></div>
+        }
+      </div>
+    );
+  }
 }
 
 export default connect(

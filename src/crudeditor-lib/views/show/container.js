@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Main from '../../../components/ShowMain';
-import { viewOperations } from '../lib';
+import { expandOperation } from '../lib';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
@@ -22,13 +22,14 @@ import {
 
 const mergeProps = /* istanbul ignore next */ (
   {
-    viewModelData,
+    viewModelData: {
+      persistentInstance: instance,
+      ...restData
+    },
     adjacentInstancesExist,
     viewState,
-    operations,
-    permissions: {
-      crudOperations
-    },
+    permissions: { crudOperations },
+    customOperations,
     externalOperations,
     uiConfig
   },
@@ -38,29 +39,37 @@ const mergeProps = /* istanbul ignore next */ (
     softRedirectView,
     exitView,
     ...dispatchProps
-  },
-  ownProps
+  }
 ) => ({
-  ...ownProps,
   viewModel: {
-    data: viewModelData,
+    uiConfig,
+
+    data: {
+      persistentInstance: instance,
+      ...restData
+    },
+
     actions: {
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: showPreviousInstance }),
       ...(adjacentInstancesExist.next && { gotoNextInstance: showNextInstance }),
       ...(crudOperations.view && { exitView })
     },
-    operations: {
-      internal: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView
-      }),
-      external: externalOperations
-    },
-    uiConfig
-  },
+
+    /*
+     * "show" property is removed from each custom/external operation
+     * since operations with "show" set to "false" are not included in the result array.
+     */
+    operations: viewState ?
+      [...customOperations(instance), ...externalOperations(instance)].
+        map(expandOperation({
+          viewName: VIEW_NAME,
+          viewState,
+          softRedirectView
+        })).
+        filter(operation => operation) :
+      [] // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
+  }
 });
 
 export default connect(
@@ -72,8 +81,8 @@ export default connect(
       getTotalCount.bind(null, storeState) // binding to prevent a call without "view" crudPermissions.
     ),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
+    customOperations: modelDefinition.ui.customOperations,
     externalOperations,
     uiConfig
   }), {

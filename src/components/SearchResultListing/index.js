@@ -19,11 +19,11 @@ class SearchResultListing extends PureComponent {
           offset: PropTypes.number.isRequired
         })
       }),
+      permissions: PropTypes.shape({
+        delete: PropTypes.func.isRequired
+      }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
-      operations: PropTypes.shape({
-        internal: PropTypes.func.isRequired,
-        external: PropTypes.arrayOf(PropTypes.object).isRequired
-      })
+      instanceOperations: PropTypes.func.isRequired
     }).isRequired
   }
 
@@ -31,53 +31,23 @@ class SearchResultListing extends PureComponent {
     i18n: PropTypes.object
   };
 
-  constructor(...args) {
-    super(...args);
-
-    const {
-      toggleSelected,
-      showInstance,
-      editInstance,
-      deleteInstances,
-      searchInstances
-    } = this.props.model.actions;
-
-    this.handleToggleSelected = instance => ({
-      target: {
-        checked: selected
-      }
-    }) => toggleSelected({ selected, instance });
-
-    if (showInstance) {
-      this.handleShow = (instance, index) => _ => showInstance({
-        instance,
-        offset: this.props.model.data.pageParams.offset + index
-      });
-    }
-
-    if (editInstance) {
-      this.handleEdit = (instance, index) => _ => editInstance({
-        instance,
-        offset: this.props.model.data.pageParams.offset + index
-      });
-    }
-
-    if (deleteInstances) {
-      this.handleDelete = instance => _ => deleteInstances([instance]);
-    }
-
-    this.handleResort = fieldName => _ => searchInstances({
-      sort: fieldName,
-      // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
-      order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
-        'desc' :
-        'asc'
-    });
-  }
-
   componentDidMount() {
-    this._myRef = findDOMNode(this)
+    this._myRef = findDOMNode(this);
   }
+
+  handleResort = fieldName => _ => this.props.model.actions.searchInstances({
+    sort: fieldName,
+    // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+    order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
+      'desc' :
+      'asc'
+  })
+
+  handleToggleSelected = instance => ({
+    target: {
+      checked: selected
+    }
+  }) => this.props.model.actions.toggleSelected({ selected, instance })
 
   handleToggleSelectedAll = ({ target: { checked } }) => this.props.model.actions.toggleSelectedAll(checked)
 
@@ -87,16 +57,16 @@ class SearchResultListing extends PureComponent {
         selectedInstances,
         resultInstances: instances,
         resultFields,
+        pageParams: { offset },
         sortParams: {
           field: sortField,
           order: sortOrder
-        },
-        standardOperations
+        }
       },
-      operations: {
-        internal: internalOperations,
-        external: externalOperations
-      }
+      permissions: {
+        delete: canDelete
+      },
+      instanceOperations
     } = this.props.model;
 
     const { i18n } = this.context;
@@ -106,11 +76,12 @@ class SearchResultListing extends PureComponent {
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
-              { this.handleDelete &&
+              {
+                canDelete() &&
                 <th>
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={selectedInstances.length === instances.length && instances.length !== 0}
+                    disabled={instances.length === 0 || !canDelete(instances)}
                     onChange={this.handleToggleSelectedAll}
                   />
                 </th>
@@ -160,12 +131,14 @@ class SearchResultListing extends PureComponent {
               instances.map((instance, index) => (
                 <tr key={`tr-${JSON.stringify(instance)}`}>
                   {
-                    this.handleDelete && (<td>
+                    canDelete() &&
+                    <td>
                       <Checkbox
                         checked={selectedInstances.indexOf(instance) > -1}
+                        disabled={!canDelete(instance)}
                         onChange={this.handleToggleSelected(instance)}
                       />
-                    </td>)
+                    </td>
                   }
                   {
                     resultFields.map(({ name, component: Component, textAlignment, format }) => (
@@ -187,35 +160,10 @@ class SearchResultListing extends PureComponent {
                   }
                   <td className="text-right">
                     <SearchResultButtons
-                      standardOperations={
-                        Object.keys(standardOperations || {}).reduce((ops, opName) => ({
-                          ...ops,
-                          [opName]: standardOperations[opName](instance)
-                        }), {})
-                      }
-                      internalOperations={internalOperations(instance)}
-                      externalOperations={externalOperations.map(({ handler, ...rest }) => ({
-                        ...rest,
-                        handler: _ => handler(instance)
-                      }))}
-                      {...{
-                        ...(
-                          this.handleShow && {
-                            onShow: this.handleShow(instance, index)
-                          }
-                        ),
-                        ...(
-                          this.handleEdit && {
-                            onEdit: this.handleEdit(instance, index)
-                          }
-                        ),
-                        ...(
-                          this.handleDelete && {
-                            onDelete: this.handleDelete(instance)
-                          }
-                        )
-                      }}
-                      index={index}
+                      operations={instanceOperations({
+                        instance,
+                        offset: offset + index
+                      })}
                       parentRef={this._myRef}
                     />
                   </td>
@@ -228,6 +176,5 @@ class SearchResultListing extends PureComponent {
     );
   }
 }
-
 
 export default SearchResultListing;

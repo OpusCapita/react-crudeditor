@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Main from '../../../components/SearchMain';
 import { VIEW_NAME } from './constants';
 import { VIEW_EDIT, VIEW_SHOW, VIEW_CREATE } from '../../common/constants';
-import { viewOperations } from '../lib';
+import { expandOperation } from '../lib';
 
 import {
   deleteInstances,
@@ -29,12 +29,14 @@ import {
 const mergeProps = /* istanbul ignore next */ (
   {
     defaultNewInstance,
-    viewModelData,
-    viewState,
-    operations,
-    permissions: {
-      crudOperations
+    viewModelData: {
+      selectedInstances,
+      ...restData
     },
+    viewState,
+    permissions: { crudOperations },
+    standardOperations,
+    customOperations,
     externalOperations,
     uiConfig
   },
@@ -43,11 +45,16 @@ const mergeProps = /* istanbul ignore next */ (
     deleteInstances,
     ...dispatchProps
   },
-  ownProps
+  { i18n }
 ) => ({
-  ...ownProps,
   viewModel: {
-    data: viewModelData,
+    uiConfig,
+
+    data: {
+      selectedInstances,
+      ...restData
+    },
+
     actions: {
       ...dispatchProps,
       ...(crudOperations.create && {
@@ -57,33 +64,80 @@ const mergeProps = /* istanbul ignore next */ (
             predefinedFields: defaultNewInstance
           }
         })
-      }),
-      ...(crudOperations.edit ? {
-        editInstance: ({ instance, tab, offset }) => softRedirectView({
-          name: VIEW_EDIT,
-          state: { instance, tab },
-          offset
-        })
-      } : {
-        showInstance: ({ instance, tab, offset }) => softRedirectView({
-          name: VIEW_SHOW,
-          state: { instance, tab },
-          offset
-        })
-      }),
-      ...(crudOperations.delete && { deleteInstances }
+      })
+    },
+
+    permissions: {
+
+      /*
+       * no args - return the user's global CRUD permission to delete.
+       * array of instances - return the user's permission to delete all the instances.
+       * instance(s) - the same as an array of the instances.
+       */
+      delete: (...instances) => crudOperations.delete && (
+        instances.length === 0 ||
+        ![].concat(...instances).some(
+          instance => standardOperations.delete && standardOperations.delete(instance).disabled
+        )
       )
     },
-    operations: {
-      internal: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView
-      }),
-      external: externalOperations
-    },
-    uiConfig
+
+    /*
+     * Operations requiering confirmation
+     * are supplied with "confirm" property containing an object with translation texts for Confirm Dialog.
+     *
+     * "show" property is removed from each custom/external operation
+     * since operations with "show" set to "false" are not included in the result array.
+     */
+    instanceOperations: ({ instance, offset }) => viewState ? [
+      {
+        title: i18n.getMessage(`crudEditor.${ crudOperations.edit ? 'edit' : 'show' }.button`),
+        icon: crudOperations.edit ? 'edit' : 'eye-open',
+        disabled: false,
+        dropdown: false,
+        handler: _ => softRedirectView({
+          name: crudOperations.edit ? VIEW_EDIT : VIEW_SHOW,
+          state: { instance },
+          offset
+        })
+      },
+      ...[...customOperations(instance), ...externalOperations(instance)].
+        map(expandOperation({
+          viewName: VIEW_NAME,
+          viewState,
+          softRedirectView
+        })).
+        filter(operation => operation),
+      ...(crudOperations.delete && [{
+        title: i18n.getMessage('crudEditor.delete.button'),
+        icon: 'trash',
+        disabled: standardOperations.delete && standardOperations.delete(instance).disabled,
+        dropdown: false,
+        handler: _ => deleteInstances(instance),
+        confirm: {
+          message: i18n.getMessage('crudEditor.delete.confirmation'),
+          textConfirm: i18n.getMessage('crudEditor.delete.button'),
+          textCancel: i18n.getMessage('crudEditor.cancel.button')
+        }
+      }])
+    ] :
+      [], // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
+
+    bulkOperations: viewState ? {
+      delete: crudOperations.delete && {
+        title: i18n.getMessage('crudEditor.deleteSelected.button'),
+        disabled: selectedInstances.length === 0 || selectedInstances.some(
+          instance => standardOperations.delete && standardOperations.delete(instance).disabled
+        ),
+        handler: _ => deleteInstances(selectedInstances),
+        confirm: {
+          message: i18n.getMessage('crudEditor.deleteSelected.confirmation'),
+          textConfirm: i18n.getMessage('crudEditor.delete.button'),
+          textCancel: i18n.getMessage('crudEditor.cancel.button')
+        }
+      }
+    } :
+      {} // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
   }
 });
 
@@ -93,8 +147,9 @@ export default connect(
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
+    standardOperations: modelDefinition.ui.search.standardOperations,
+    customOperations: modelDefinition.ui.customOperations,
     externalOperations,
     uiConfig
   }),

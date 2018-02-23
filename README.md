@@ -284,6 +284,10 @@ function ({
 
 A function returning an array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
 
+No arguments are passed to the function in Create View since it does not have persistent instance.
+
+In case of unsaved changes, Confirmation Dialog is called after dedicated button press and before **handler()** call => each external operation *must* have side effects, or set **disabled** to true, or set **show** to false - othersise calling Confirmation Dialog is in vain.
+
 ```javascript
 function(<object, entity persistent instance> ) {
   ...
@@ -292,7 +296,7 @@ function(<object, entity persistent instance> ) {
       ...
       return; // Return value is ignored.
     },
-    ?ui({
+    ui({
       name: <string, View name>,  // See EditorComponent props.view.name
       state: <object, Full View State>  // See EditorComponent props.view.state
     }) {
@@ -309,7 +313,7 @@ function(<object, entity persistent instance> ) {
          * whether the operation has own dedicated button (false)
          * or it is to be placed in a dropdown of a previous button (true).
          * A previous button is either previous external operation with "dropdown" set to false
-         * OR previous custom operation with "dropdown" set to false if there is no such custom operation
+         * OR previous custom operation with "dropdown" set to false if there is no such external operation
          * OR "Edit" button if there is no such external/custom operation.
          */
         ?dropdown: <boolean, true by default>,
@@ -324,25 +328,6 @@ function(<object, entity persistent instance> ) {
     }
   }, ...]
 }
-[
-  {
-    title: <string, external operation translated name>,
-
-    /*
-     * name of an icon to be displayed inside a button, ex. "trash", "edit";
-     * see full list at
-     * http://getbootstrap.com/components/#glyphicons
-     */
-    ?icon: <string>,
-
-    handler(instance) {
-      ...
-      return;  // Return value is ignored.
-    },
-    ...
-  },
-  ...
-]
 ```
 
 Every handler has the same set of arguments:
@@ -859,6 +844,15 @@ Model Definition is an object describing an entity. It has the following structu
     /*
      * Custom operations available in CRUD Editor.
      * An operation handler is called by pressing a dedicated button.
+	 * No arguments are passed to the method in Create View
+	 * since it does not have persistent instance.
+	 *
+	 * In case of unsaved changes, Confirmation Dialog is called
+	 * after dedicated button press and before handler() call
+	 * => each external operation must return new view name/state,
+	 *    or set disabled to true,
+	 *    or set show to false
+	 * - othersise calling Confirmation Dialog is in vain.
      */
     ?customOperations: function(<object, entity persistent instance> ) {
       ...
@@ -871,7 +865,7 @@ Model Definition is an object describing an entity. It has the following structu
             ?state: <object, View State, empty object by default>
           };
         },
-        ?ui({
+        ui({
           name: <string, View name>,  // See EditorComponent props.view.name
           state: <object, Full View State>  // See EditorComponent props.view.state
         }) {
@@ -1280,7 +1274,8 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   ?args: <object, optional parameters for i18n service>
 }
 ```
-To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.
+
+Both plain objects and instances of **Error** may be used. The error *must not* be an instance of system error constructor, like RangeError, SyntaxError, TypeError, etc.
 
 ### Internal Error
 

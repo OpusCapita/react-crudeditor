@@ -6,6 +6,10 @@ export { getViewState } from './selectors';
 export const getUi = modelDefinition => {
   const showMeta = modelDefinition.ui.show || {};
 
+  if (!showMeta.standardOperations) {
+    showMeta.standardOperations = {};
+  }
+
   showMeta.formLayout = buildFormLayout({
     customBuilder: showMeta.formLayout,
     viewName: VIEW_NAME,

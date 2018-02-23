@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
-import { viewOperations } from '../lib';
+import { expandOperation } from '../lib';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
 
@@ -22,12 +22,13 @@ import {
 
 const mergeProps = /* istanbul ignore next */ (
   {
-    viewModelData,
-    viewState,
-    operations,
-    permissions: {
-      crudOperations
+    viewModelData: {
+      unsavedChanges,
+      ...restData
     },
+    viewState,
+    permissions: { crudOperations },
+    customOperations,
     externalOperations,
     uiConfig
   },
@@ -36,25 +37,48 @@ const mergeProps = /* istanbul ignore next */ (
     exitView,
     ...dispatchProps
   },
-  ownProps
+  { i18n }
 ) => ({
-  ...ownProps,
   viewModel: {
-    data: viewModelData,
+    uiConfig,
+
+    data: {
+      unsavedChanges,
+      ...restData
+    },
+
     actions: {
       ...dispatchProps,
       ...(crudOperations.view && { exitView })
     },
-    operations: {
-      internal: viewOperations({
-        viewName: VIEW_NAME,
-        viewState,
-        operations,
-        softRedirectView
-      }),
-      external: externalOperations
-    },
-    uiConfig
+
+    /*
+     * Operations requiering confirmation in case of unsaved changes
+     * are supplied with "confirm" property containing an object with translation texts for Confirm Dialog.
+     *
+     * "show" property is removed from each custom/external operation
+     * since operations with "show" set to "false" are not included in the result array.
+     */
+    operations: viewState ?
+      [...customOperations(), ...externalOperations()].
+        map(expandOperation({
+          viewName: VIEW_NAME,
+          viewState,
+          softRedirectView
+        })).
+        filter(operation => operation).
+        map(operation => unsavedChanges ?
+          ({
+            ...operation,
+            confirm: {
+              message: i18n.getMessage('crudEditor.unsaved.confirmation'),
+              textConfirm: i18n.getMessage('crudEditor.confirm.action'),
+              textCancel: i18n.getMessage('crudEditor.cancel.button')
+            }
+          }) :
+          operation
+        ) :
+      [] // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
   }
 });
 
@@ -63,8 +87,8 @@ export default connect(
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
-    operations: modelDefinition.ui.operations,
     permissions: modelDefinition.permissions,
+    customOperations: modelDefinition.ui.customOperations,
     externalOperations,
     uiConfig
   }), {

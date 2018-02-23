@@ -406,36 +406,31 @@ export const getTab = (formLayout, tabName) => {
   return rezTab;
 }
 
-// viewOperations creates custom/external operations handler for particular view
-export const viewOperations = ({
-  viewName,
-  viewState,
-  operations,
-  softRedirectView
-}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
-  instance,
-  {
-    name: viewName,
-    state: viewState
+// The function unfolds custom/external operation by calling "ui()" method
+// and connecting "handler()" with softRedirectView.
+export const expandOperation = ({ viewName, viewState, softRedirectView }) => ({ handler, ui }) => {
+  const { title, ...operation } = {
+    show: true, // default value, possibly overwritten by ui() call below.
+    disabled: false, // default value, possibly overwritten by ui() call below.
+    dropdown: true, // default value, possibly overwritten by ui() call below.
+    ...ui({ name: viewName, state: viewState })
+  };
+
+  if (!operation.show) {
+    return null;
   }
-)) || []).reduce(
-  (rez, { handler, ...rest }) => [
-    ...rez,
-    ...(handler ?
-      [{
-        ...rest,
-        handler: _ => {
-          const view = handler();
 
-          if (view && view.name) {
-            softRedirectView(view);
-          }
+  delete operation.show;
 
-          return view;
-        }
-      }] :
-      []
-    )
-  ],
-  []
-);
+  return {
+    ...operation,
+    title: title(),
+    handler() {
+      const view = handler();
+
+      if (typeof view === 'object' && view && view.name) {
+        softRedirectView(view);
+      }
+    }
+  }
+};

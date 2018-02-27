@@ -534,10 +534,10 @@ Model Definition is an object describing an entity. It has the following structu
           name: <string, persistent field name>,
 
           /*
-           * There is no default "render" property for a fild of custom Field Type
+           * There is no default "render" property for a field of custom Field Type
            * => "render" property must be explicitly defined in such a case.
            *
-           * Default "render" property for a fild of standard Field Type:
+           * Default "render" property for a field of standard Field Type:
            * {
            *   component: <string, id of default FieldInputComponent for displaying the Field Type>,
            *

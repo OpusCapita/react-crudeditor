@@ -1,3 +1,5 @@
+## [v0.0.44](Fri, 02 Mar 2018 10:06:31 GMT)
+
 ## [v0.0.43](Fri, 02 Mar 2018 09:44:13 GMT)
  - Update redux-saga version
    For compatibility with SIM according to https://github.com/OpusCapita/minsk-core-externals/issues/40 (Andrei Mourzenkov <mourzenkov@scand.com>, 37faae0)

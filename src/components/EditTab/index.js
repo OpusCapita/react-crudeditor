@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash-es';
 import { getModelMessage, titleCase } from '../lib';
 import ConfirmDialog from '../ConfirmDialog';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';

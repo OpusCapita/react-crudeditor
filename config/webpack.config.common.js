@@ -1,19 +1,15 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const getBabelConfig = require('./babel-config');
-
-const babelConfig = getBabelConfig();
+const babelConfig = require('./babel-config')();
 
 module.exports = {
+  mode: process.env.NODE_ENV || 'production',
   context: resolve(__dirname, '../src'),
-  plugins: [
-    new webpack.NoEmitOnErrorsPlugin()
-  ],
   module: {
     rules: [
       {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
+        test: /\.(js|jsx|mjs)$/,
+        use: ['babel-loader'],
         options: babelConfig,
         exclude: /node_modules/,
       },
@@ -28,36 +24,38 @@ module.exports = {
       {
         test: /\.(css|less)$/,
         use: [
-          { loader: 'style-loader' },
+          'style-loader',
           { loader: 'css-loader', options: { importLoaders: 1 } },
           { loader: 'less-loader', options: { sourceMap: true } },
-          {
-            loader: 'postcss-loader', options: {
-              plugins: (loader) => [
-                require('precss')(),
-                require('autoprefixer')()
-              ]
-            }
-          }
+          { loader: 'postcss-loader', options: {
+            plugins: (loader) => [
+              require('precss')(),
+              require('autoprefixer')()
+            ]
+          }}
         ]
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'url-loader?limit=100&mimetype=application/font-woff&name=[name].[ext]',
-        ]
+        use: [{ loader: 'url-loader', options: {
+          limit: 100,
+          mimetype: 'application/font-woff',
+          name: '[name].[ext]'
+        }}]
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'url-loader?limit=100&mimetype=application/octet-stream&name=[name].[ext]',
-        ]
+        use: [{ loader: 'url-loader', options: {
+          limit: 100,
+          mimetype: 'application/octet-stream',
+          name: '[name].[ext]'
+        }}]
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'file-loader?name=[name].[ext]',
-        ]
+        use: [{ loader: 'file-loader', options: {
+          name: '[name].[ext]'
+        }}]
       }
     ]
   }

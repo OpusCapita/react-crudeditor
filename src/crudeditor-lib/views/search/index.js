@@ -1,4 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash-es';
 
 import { buildFieldRender } from '../lib';
 export { getViewState } from './selectors';

@@ -9,12 +9,9 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: './demo/client/index.html',
       inject: "body"
-    }),
-    new webpack.NamedModulesPlugin()
+    })
   ],
-  entry: [
-    './demo/client/index.js'
-  ],
+  entry: './demo/client/index.js',
   devtool: 'inline-source-map',
   output: {
     path: resolve(__dirname, '../public'),

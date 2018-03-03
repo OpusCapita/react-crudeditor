@@ -1,39 +1,39 @@
-const getBabelConfig = _ => {
+module.exports = _ => {
   const mode = process.env.NODE_ENV;
 
   const envPresetConfig = {
-    "targets": {
-      "browsers": ["last 2 versions", "ie >= 11", "safari >= 7", "Firefox ESR"]
+    targets: {
+      browsers: [
+        'chrome >= 64',
+        'firefox ESR',
+        'ie >= 11',
+        'safari >= 11'
+      ]
     }
-  }
-
-  const plugins = [
-    "transform-decorators-legacy",
-    "transform-class-properties",
-    ["transform-runtime", { "polyfill": false }],
-    "transform-object-rest-spread",
-    "transform-export-extensions"
-  ]
+  };
 
   if (mode !== 'test') {
-    envPresetConfig.modules = false
+    envPresetConfig.modules = false;
   }
 
-  const config = {
+  return {
     babelrc: false,
     presets: [
-      ["env", envPresetConfig],
-      "react"
+      ['env', envPresetConfig],
+      'stage-3',
+      'react'
     ],
-    plugins,
+    plugins: [
+      // make sure that 'transform-decorators' comes before 'transform-class-properties'
+      'transform-decorators',
+      'transform-class-properties',
+      ['transform-runtime', { 'polyfill': false }],
+      'transform-export-extensions'
+    ],
     env: {
       test: {
-        plugins: ["istanbul"]
+        plugins: ['istanbul']
       }
-    },
-  }
-
-  return config
+    }
+  };
 }
-
-module.exports = getBabelConfig;

@@ -8,6 +8,9 @@ jobs:
   build:
     <<: *defaults
     steps:
+      - run:
+          name: Environment inject
+          command: /bin/env_inject.sh
       - checkout
       - restore_cache:
           keys:
@@ -46,6 +49,9 @@ jobs:
   update-gh-pages:
     <<: *defaults
     steps:
+      - run:
+          name: Environment inject
+          command: /bin/env_inject.sh
       - checkout
       - restore_cache:
           keys:

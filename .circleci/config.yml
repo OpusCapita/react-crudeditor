@@ -13,7 +13,7 @@ jobs:
 
       - run:
           name: install-dependencies
-          command: yarn install
+          command: npm install
 
       - save_cache:
           paths:
@@ -22,12 +22,12 @@ jobs:
 
       - run:
           name: lint
-          command: yarn lint
+          command: npm run lint
 
       - run:
           name: test
           command: |
-            yarn test -- --reporter mocha-junit-reporter
+            npm run test -- --reporter mocha-junit-reporter
           environment:
             MOCHA_FILE: ./junit/test-results.xml
 
@@ -53,7 +53,7 @@ jobs:
 
       - run:
           name: install-dependencies
-          command: yarn install
+          command: npm install
 
       - save_cache:
           paths:

@@ -1,3 +1,18 @@
+## [v0.0.44](Fri, 02 Mar 2018 10:06:31 GMT)
+
+## [v0.0.43](Fri, 02 Mar 2018 09:44:13 GMT)
+ - Update redux-saga version
+   For compatibility with SIM according to https://github.com/OpusCapita/minsk-core-externals/issues/40 (Andrei Mourzenkov <mourzenkov@scand.com>, 37faae0)
+ - One small fix to Finnish language UI texts (#243) (Aappo <aappo.salo@opuscapita.com>, 8cd36f5)
+ - Added three strings to the Finnish resource file, made some fixes too. (#239)
+    * Added three strings to the Finnish resource file, made some fixes too.
+    * Fixed a typo, added some more UI string fixes. (Aappo <aappo.salo@opuscapita.com>, 6ee6226)
+ - Update package.json (Kirill Volkovich <kvolkovich-sc@users.noreply.github.com>, dd196a7)
+ - #98 tests for view scenarios (#237)
+    * Added tests for view scenarios #98
+    * Fixed api timeout. (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, ba0ce5d)
+ - Removed Array.find as not supported by IE11 (issue #13) (PR #236) (Egor Stambakio <31243790+estambakio-sc@users.noreply.github.com>, 1d1da8e)
+
 ## [v0.0.42](Tue, 16 Jan 2018 14:39:56 GMT)
 
 ### Breaking changes

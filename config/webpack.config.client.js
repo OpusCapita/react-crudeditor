@@ -10,8 +10,7 @@ module.exports = merge(common, {
       template: './demo/client/index.html',
       inject: "body"
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin()
+    new webpack.NamedModulesPlugin()
   ],
   entry: [
     './demo/client/index.js'

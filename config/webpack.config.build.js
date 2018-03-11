@@ -9,7 +9,6 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = merge(common, {
   plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new LodashModuleReplacementPlugin(),
     // new UglifyJsPlugin(),
     // new BundleAnalyzerPlugin()

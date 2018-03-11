@@ -8,11 +8,11 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewState = wrapper(({ errors }) => errors),
+  getViewState = wrapper(/* istanbul ignore next */ ({ errors }) => errors),
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getViewModelData = wrapper(storeState => ({
+  getViewModelData = wrapper(/* istanbul ignore next */ storeState => ({
     errors: storeState.errors,
     isLoading: storeState.status === STATUS_REDIRECTING
   }));

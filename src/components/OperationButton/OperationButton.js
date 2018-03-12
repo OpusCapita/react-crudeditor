@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Glyphicon, Button, MenuItem } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 
-import {
-  Glyphicon,
-  Button,
-  MenuItem
-} from 'react-bootstrap';
-
-const Operation = ({ icon, handler, title, disabled, confirm, dropdown, bsSize }) => {
+const Operation = ({ icon, handler, title, disabled, dropdown, bsSize, confirm }) => {
   let element = dropdown ? (
     <MenuItem onClick={handler} disabled={disabled}>
       <span className="btn-sm text-left">
@@ -47,6 +42,7 @@ Operation.propTypes = {
   title: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   dropdown: PropTypes.bool,
+  bsSize: PropTypes.string,
   confirm: PropTypes.shape({
     message: PropTypes.string.isRequired,
     textConfirm: PropTypes.string.isRequired,

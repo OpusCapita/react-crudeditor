@@ -1,18 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
-import {
-  Button,
-  Form,
-  FormGroup,
-  Col,
-  ButtonToolbar
-} from 'react-bootstrap';
+import { Button, Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
 
 import getOperationButtons from '../OperationButton';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 import FormGrid from '../FormGrid';
-import './EditTab.less';
+import './styles.less';
 
 export default class EditTab extends PureComponent {
   static propTypes = {
@@ -64,7 +57,7 @@ export default class EditTab extends PureComponent {
     const { i18n } = this.context;
 
     const buttons = [
-      ...(exitView && [
+      ...(!!exitView && [
         <ConfirmUnsavedChanges key='Cancel' showDialog={_ => unsavedChanges}>
           <Button bsStyle='link' onClick={exitView}>
             {i18n.getMessage('crudEditor.cancel.button')}
@@ -72,7 +65,7 @@ export default class EditTab extends PureComponent {
         </ConfirmUnsavedChanges>
       ]),
       ...getOperationButtons({ operations }),
-      ...(saveInstance && [
+      ...(!!saveInstance && [
         <Button disabled={!unsavedChanges} bsStyle='primary' type='submit' key='Save'>
           {i18n.getMessage('crudEditor.save.button')}
         </Button>

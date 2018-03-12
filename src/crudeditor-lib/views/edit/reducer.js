@@ -4,9 +4,9 @@ import u from 'updeep';
 
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
 import { checkFormLayout } from '../../check-model';
+import { isSystemError } from '../../lib';
 
 import {
-  isSystemError,
   findFieldLayout,
   getTab
 } from '../lib';

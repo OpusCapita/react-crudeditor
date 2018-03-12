@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
 import { getModelMessage, titleCase } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
-import './SearchResultListing.less';
+import './styles.less';
 
 class SearchResultListing extends PureComponent {
   static propTypes = {

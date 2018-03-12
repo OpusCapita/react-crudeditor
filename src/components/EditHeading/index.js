@@ -1,20 +1,11 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import { Nav, NavItem, Col, Row, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
 import { getModelMessage, titleCase } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
-
-import {
-  Nav,
-  NavItem,
-  Col,
-  Row,
-  ButtonGroup,
-  Button,
-  Glyphicon
-} from 'react-bootstrap';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {

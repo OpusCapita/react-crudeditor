@@ -2,17 +2,19 @@ import React from 'react';
 import Operation from './OperationButton';
 import { Dropdown } from 'react-bootstrap';
 
-export default function getOperationButtons({ operations, handleToggleDropdown }) {
-  if (operations.length === 0) {
+export default function getOperationButtons({
+  operations: [mainOperation, ...restOperations],
+  handleToggleDropdown
+}) {
+  if (!mainOperation) {
     return [];
   }
 
-  const mainOperation = operations.shift();
   let element = <Operation {...mainOperation} dropdown={false} />;
   const dropdownOperations = [];
 
-  while (operations.length && operations[0].dropdown) {
-    dropdownOperations.push(operations.shift());
+  while (restOperations.length && restOperations[0].dropdown) {
+    dropdownOperations.push(restOperations.shift());
   }
 
   if (dropdownOperations.length) {
@@ -36,6 +38,9 @@ export default function getOperationButtons({ operations, handleToggleDropdown }
 
   return [
     React.cloneElement(element, { bsSize: 'sm', key: mainOperation.title }),
-    ...getOperationButtons({ operations, handleToggleDropdown })
+    ...getOperationButtons({
+      operations: restOperations,
+      handleToggleDropdown
+    })
   ];
 }

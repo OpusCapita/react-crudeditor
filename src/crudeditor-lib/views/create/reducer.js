@@ -3,6 +3,12 @@ import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import { checkFormLayout } from '../../check-model';
+import { isSystemError } from '../../lib';
+
+import {
+  findFieldLayout,
+  getTab
+} from '../lib';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
@@ -31,12 +37,6 @@ import {
   STATUS_REDIRECTING,
   UNPARSABLE_FIELD_VALUE
 } from '../../common/constants';
-
-import {
-  isSystemError,
-  findFieldLayout,
-  getTab
-} from '../lib';
 
 const defaultStoreStateTemplate = {
 

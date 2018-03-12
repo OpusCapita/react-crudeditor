@@ -314,7 +314,7 @@ function(<object, entity persistent instance> ) {
          * or it is to be placed in a dropdown of a previous button (true).
          * A previous button is either previous external operation with "dropdown" set to false
          * OR previous custom operation with "dropdown" set to false if there is no such external operation
-         * OR "Edit" button if there is no such external/custom operation.
+         * OR (for Search View) "Edit" button if there is no such external/custom operation.
          */
         ?dropdown: <boolean, true by default>,
 
@@ -329,12 +329,6 @@ function(<object, entity persistent instance> ) {
   }, ...]
 }
 ```
-
-Every handler has the same set of arguments:
-
-Argument | Type | Description
----|---|---
-instance | object | An entity persistent instance which [External Operation](#external-operation) was called upon
 
 ### *EditorComponent* props.uiConfig
 
@@ -882,7 +876,7 @@ Model Definition is an object describing an entity. It has the following structu
              * whether the operation has own dedicated button (false)
              * or it is to be placed in a dropdown of a previous button (true).
              * A previous button is either previous custom operation with "dropdown" set to false
-             * OR "Edit" button if there is no such custom operation.
+             * OR (for Search View) "Edit" button if there is no such custom operation.
              */
             ?dropdown: <boolean, true by default>,
 

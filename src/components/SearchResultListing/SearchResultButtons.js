@@ -45,10 +45,11 @@ export default class SearchResultButtons extends PureComponent {
       handleToggleDropdown: this.handleToggleDropdown
     });
 
-    return buttons.length && (
+    return buttons.length ? (
       <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
         {buttons}
       </ButtonGroup>
-    );
+    ) :
+      null;
   }
 }

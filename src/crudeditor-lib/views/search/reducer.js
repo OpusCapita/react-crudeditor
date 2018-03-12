@@ -2,10 +2,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
-import {
-  isSystemError,
-  getLogicalKeyBuilder
-} from '../lib';
+import { getLogicalKeyBuilder } from '../lib';
+import { isSystemError } from '../../lib';
 
 import {
   getDefaultSortField,

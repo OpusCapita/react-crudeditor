@@ -11,8 +11,8 @@
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.client.js",
     "start-showroom": "cross-env NODE_ENV=development showroom-scan ./src && webpack-dev-server --config config/webpack.config.showroom.js",
     "npm-build": "rimraf lib && webpack --config ./config/webpack.config.build.js",
-    "npm-publish": "update-changelog -- --all && npm run npm-build && npm-publish",
-    "publish-release": "npm run npm-publish -- --release"
+    "npm-publish": "npm run npm-build && npm publish",
+    "publish-release": "npm run npm-publish"
   },
   "keywords": [
     "react",

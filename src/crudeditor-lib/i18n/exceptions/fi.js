@@ -1,6 +1,6 @@
 export default {
   "default.doesnt.match.message": "Arvo ei vastaa vaadittua kuviota {pattern}",
-  "default.invalid.email.message": "Sähköpostiosoitteen muoto ei ole kelvollinen",
+  "default.invalid.email.message": "Sähköpostiosoite on väärän muotoinen",
   "default.invalid.max.message": "Arvo ylittää enimmäisarvon {max}",
   "default.invalid.min.message": "Arvo alittaa vähimmäisarvon {min}",
   "default.invalid.max.size.message": "Arvo ylittää enimmäiskoon {max}",
@@ -9,10 +9,11 @@ export default {
   "default.blank.message": "Kenttä ei voi olla tyhjä",
   "default.null.message": "Ominaisuus ei voi olla tyhjä",
   "default.not.unique.message": "Arvon on oltava yksilöivä",
-  "default.invalid.url.message": "Arvon tulee olla kelvollinen URL",
-  "default.invalid.date.message": "Arvon tulee olla kelvollinen päivämäärä",
+  "default.invalid.url.message": "URL on väärän muotoinen",
+  "default.invalid.date.message": "Päivämäärä on väärän muotoinen",
 
-  "default.invalid.integer.message": "Arvon tulee olla kelvollinen numero",
+  "default.invalid.decimal.message": "Numero on väärän muotoinen",
+  "default.invalid.integer.message": "Numero on väärän muotoinen",
 
   "default.errorOccurred.message": "Virhetila"
 }

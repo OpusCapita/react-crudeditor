@@ -52,6 +52,7 @@ const mergeProps = /* istanbul ignore next */ (
     deleteInstances,
     exitView,
     saveAndNewInstance,
+    saveInstance,
     ...dispatchProps
   },
   { i18n }
@@ -80,6 +81,20 @@ const mergeProps = /* istanbul ignore next */ (
      * since operations with "show" set to "false" are not included in the result array.
      */
     operations: viewState ? [
+      ...(!!crudOperations.view && [{
+        title: i18n.getMessage('crudEditor.cancel.button'),
+        disabled: false,
+        dropdown: false,
+        handler: exitView,
+        style: 'link',
+        ...(!!unsavedChanges && {
+          confirm: {
+            message: i18n.getMessage('crudEditor.unsaved.confirmation'),
+            textConfirm: i18n.getMessage('crudEditor.confirm.action'),
+            textCancel: i18n.getMessage('crudEditor.cancel.button')
+          }
+        })
+      }]),
       ...[...customOperations(instance), ...externalOperations(instance)].
         map(expandOperation({
           viewName: VIEW_NAME,
@@ -98,7 +113,7 @@ const mergeProps = /* istanbul ignore next */ (
           }) :
           operation
         ),
-      ...(crudOperations.delete && [{
+      ...(!!crudOperations.delete && [{
         title: i18n.getMessage('crudEditor.delete.button'),
         icon: 'trash',
         disabled: standardOperations.delete && standardOperations.delete(instance).disabled,
@@ -110,18 +125,25 @@ const mergeProps = /* istanbul ignore next */ (
           textCancel: i18n.getMessage('crudEditor.cancel.button')
         }
       }]),
-      ...(crudOperations.create && [{
+      ...(!!crudOperations.create && [{
         title: i18n.getMessage('crudEditor.saveAndNew.button'),
         disabled: !unsavedChanges,
         dropdown: false,
         handler: saveAndNewInstance
       }]),
-      ...(adjacentInstancesExist.next && [{
+      ...(!!adjacentInstancesExist.next && [{
         title: i18n.getMessage('crudEditor.saveAndNext.button'),
         disabled: !unsavedChanges,
         dropdown: false,
         handler: saveAndNextInstance
-      }])
+      }]),
+      {
+        title: i18n.getMessage('crudEditor.save.button'),
+        disabled: !unsavedChanges,
+        dropdown: false,
+        handler: saveInstance,
+        style: 'primary'
+      }
     ] :
       [] // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
   }

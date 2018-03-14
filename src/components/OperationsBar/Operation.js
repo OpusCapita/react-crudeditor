@@ -4,7 +4,16 @@ import { Glyphicon, Button, MenuItem } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 
-const Operation = ({ icon, handler, title, disabled, dropdown, bsSize, confirm }) => {
+const Operation = ({ icon, handler, title, disabled, dropdown, style, bsSize, confirm }) => {
+  // XXX: a primary button does not have onClick handler
+  // because it is delegated to onSubmit handler of surrounding Form element.
+  // See also ./index.js
+  const isPrimary = style === 'primary';
+
+  if (isPrimary && dropdown) {
+    throw TypeError(`"${title}" primary operation must not be a dropdown menu item`);
+  }
+
   let element = dropdown ? (
     <MenuItem onClick={handler} disabled={disabled}>
       <span className="btn-sm text-left">
@@ -14,7 +23,13 @@ const Operation = ({ icon, handler, title, disabled, dropdown, bsSize, confirm }
       </span>
     </MenuItem>
   ) : (
-    <Button onClick={handler} disabled={disabled} {...(bsSize && { bsSize })}>
+    <Button
+      disabled={disabled}
+      onClick={handler}
+      {...(bsSize && { bsSize })}
+      {...(style && { bsStyle: style })}
+      {...(isPrimary && { type: 'submit' })}
+    >
       {icon && <Glyphicon glyph={icon} />}
       {icon && ' '}
       {title}
@@ -40,10 +55,11 @@ Operation.propTypes = {
   icon: PropTypes.string,
   handler: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-  dropdown: PropTypes.bool,
-  bsSize: PropTypes.string,
-  confirm: PropTypes.shape({
+  disabled: PropTypes.bool.isRequired,
+  dropdown: PropTypes.bool.isRequired,
+  bsSize: PropTypes.oneOf(['lg', 'large', 'sm', 'small', 'xs', 'xsmall']),
+  style: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link']),
+  confirm: PropTypes.exact({
     message: PropTypes.string.isRequired,
     textConfirm: PropTypes.string.isRequired,
     textCancel: PropTypes.string.isRequired

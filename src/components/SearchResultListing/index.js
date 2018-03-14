@@ -81,7 +81,7 @@ class SearchResultListing extends PureComponent {
                 <th>
                   <Checkbox
                     checked={selectedInstances.length === instances.length && instances.length !== 0}
-                    disabled={instances.length === 0 || !canDelete(instances)}
+                    disabled={instances.length === 0 || !canDelete(...instances)}
                     onChange={this.handleToggleSelectedAll}
                   />
                 </th>

@@ -7,6 +7,7 @@ import { hash2obj, buildURL } from './lib';
 import { I18nManager } from '@opuscapita/i18n';
 
 const VIEW_EDIT = 'edit';
+const VIEW_CREATE = 'create';
 
 const url2view = ({ hash }) => hash2obj(hash);
 
@@ -107,7 +108,7 @@ export default class CrudWrapper extends PureComponent {
             return {
               title: () => 'Test link',
               icon: 'link',
-              dropdown: true
+              dropdown: viewName !== VIEW_CREATE
             };
           }
         }, {

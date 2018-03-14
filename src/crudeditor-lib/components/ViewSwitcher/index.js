@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -18,50 +18,45 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-class ViewSwitcher extends PureComponent {
-  static propTypes = {
-    activeViewName: PropTypes.string,
-    modelDefinition: PropTypes.object.isRequired,
-    externalOperations: PropTypes.func.isRequired,
-    uiConfig: PropTypes.object.isRequired
+const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiConfig }, { i18n }) => {
+  if (!activeViewName) {
+    return null;
   }
 
-  static contextTypes = {
-    i18n: PropTypes.object
-  }
+  const ViewContainer = ({
+    [VIEW_SEARCH]: SearchView,
+    [VIEW_CREATE]: CreateView,
+    [VIEW_EDIT]: EditView,
+    [VIEW_SHOW]: ShowView,
+    [VIEW_ERROR]: ErrorView
+  })[activeViewName];
 
-  render() {
-    const { activeViewName, modelDefinition, externalOperations, uiConfig } = this.props;
-    const { i18n } = this.context;
-
-    if (!activeViewName) {
-      return null;
-    }
-
-    const ViewContainer = ({
-      [VIEW_SEARCH]: SearchView,
-      [VIEW_CREATE]: CreateView,
-      [VIEW_EDIT]: EditView,
-      [VIEW_SHOW]: ShowView,
-      [VIEW_ERROR]: ErrorView
-    })[activeViewName];
-
-    return (
-      <div>
-        {
-          ViewContainer ?
-            <ViewContainer
-              modelDefinition={modelDefinition}
-              externalOperations={externalOperations}
-              uiConfig={uiConfig}
-              i18n={i18n}
-            /> :
-            <div>Unknown view <i>{activeViewName}</i></div>
-        }
-      </div>
-    );
-  }
+  return (
+    <div>
+      {
+        ViewContainer ?
+          <ViewContainer
+            modelDefinition={modelDefinition}
+            externalOperations={externalOperations}
+            uiConfig={uiConfig}
+            i18n={i18n}
+          /> :
+          <div>Unknown view <i>{activeViewName}</i></div>
+      }
+    </div>
+  );
 }
+
+ViewSwitcher.propTypes = {
+  activeViewName: PropTypes.string,
+  modelDefinition: PropTypes.object.isRequired,
+  externalOperations: PropTypes.func.isRequired,
+  uiConfig: PropTypes.object.isRequired
+};
+
+ViewSwitcher.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default connect(
   storeState => ({ activeViewName: storeState.common.activeViewName })

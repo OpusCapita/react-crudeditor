@@ -21,7 +21,8 @@ import {
 
   VIEW_CREATE,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+  VIEW_SEARCH
 } from '../../../crudeditor-lib';
 
 export const fields = {
@@ -454,7 +455,7 @@ export default {
       }) => ({
         title: _ => 'createChild',
         show: viewName !== VIEW_CREATE,
-        dropdown: true
+        dropdown: viewName === VIEW_SEARCH
       })
     }, {
       handler: _ => ({

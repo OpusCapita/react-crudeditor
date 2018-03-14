@@ -39,7 +39,8 @@ const mergeProps = /* istanbul ignore next */ (
     softRedirectView,
     exitView,
     ...dispatchProps
-  }
+  },
+  { i18n }
 ) => ({
   viewModel: {
     uiConfig,
@@ -60,14 +61,22 @@ const mergeProps = /* istanbul ignore next */ (
      * "show" property is removed from each custom/external operation
      * since operations with "show" set to "false" are not included in the result array.
      */
-    operations: viewState ?
-      [...customOperations(instance), ...externalOperations(instance)].
+    operations: viewState ? [
+      ...(!!crudOperations.view && [{
+        title: i18n.getMessage('crudEditor.cancel.button'),
+        disabled: false,
+        dropdown: false,
+        handler: exitView,
+        style: 'link'
+      }]),
+      ...[...customOperations(instance), ...externalOperations(instance)].
         map(expandOperation({
           viewName: VIEW_NAME,
           viewState,
           softRedirectView
         })).
-        filter(operation => operation) :
+        filter(operation => operation)
+    ] :
       [] // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
   }
 });

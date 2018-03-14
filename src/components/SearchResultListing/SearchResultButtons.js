@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ButtonGroup } from 'react-bootstrap';
 
-import getOperationButtons from '../OperationButton';
+import OperationsBar from '../OperationsBar';
 
 export default class SearchResultButtons extends PureComponent {
   static propTypes = {
     parentRef: PropTypes.object,
-    operations: PropTypes.arrayOf(PropTypes.object).isRequired
+    operations: PropTypes.any
   }
 
   state = {
@@ -40,16 +40,17 @@ export default class SearchResultButtons extends PureComponent {
   render() {
     const { operations } = this.props;
 
-    const buttons = getOperationButtons({
-      operations,
-      handleToggleDropdown: this.handleToggleDropdown
-    });
-
-    return buttons.length ? (
-      <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
-        {buttons}
-      </ButtonGroup>
-    ) :
-      null;
+    return (
+      <OperationsBar operations={operations} onToggleDropdown={this.handleToggleDropdown} bsSize="sm">
+        {
+          buttons => buttons.length ? (
+            <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
+              {buttons}
+            </ButtonGroup>
+          ) :
+            null
+        }
+      </OperationsBar>
+    );
   }
 }

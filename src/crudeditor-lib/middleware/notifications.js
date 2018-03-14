@@ -89,6 +89,20 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
       });
       break;
     case INSTANCES_DELETE_SUCCESS:
+      let labels = [];
+
+      action.payload.instances.some(instance => {
+        const label = modelDefinition.ui.instanceLabel(instance);
+
+        if (label) {
+          labels.push(label);
+          return false;
+        } else {
+          labels = [];
+          return true;
+        }
+      });
+
       NotificationManager.create({
         id: NOTIFICATION_SUCCESS,
         type: 'success',
@@ -96,7 +110,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         message: action.payload.instances.length === 1 ?
           i18n.getMessage('crudEditor.objectDeleted.message') :
           i18n.getMessage('crudEditor.objectsDeleted.message', {
-            labels: action.payload.instances.map(modelDefinition.ui.instanceLabel).join(', ')
+            labels: labels.join(', ') // Empty string if there is an empty label for at least one deleted isntance.
           })
       });
       break;

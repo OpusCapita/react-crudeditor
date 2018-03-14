@@ -1,3 +1,14 @@
+
+Release 0.0.45 Mon Mar 12 2018 09:50:20 GMT+0000 (UTC)
+=======================================================
+
+- Updated build config. (Dmitry Shienok dshienok@scand.com, 2018-03-12 12:42:12 +0300)
+- One new translation ([#245](https://github.com/OpusCapita/react-crudeditor/issues/245)) (Egor Stambakio aappo.salo@opuscapita.com, 2018-03-07 12:28:08 +0200)
+- Updated circleci config (Egor Stambakio stambakio@scand.com, 2018-03-07 12:24:59 +0300)
+- Updated base docker image used for build. (Egor Stambakio stambakio@scand.com, 2018-03-07 12:10:03 +0300)
+- Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (Egor Stambakio stambakio@scand.com, 2018-03-07 12:03:07 +0300)
+- Minor changes in circleci config (Egor Stambakio stambakio@scand.com, 2018-03-07 12:02:51 +0300)
+- Updating to a version to  0.0.45 (Andrei Mourzenkov mourzenkov@scand.com, 2018-03-02 13:07:26 +0300)
 ## [v0.0.44](Fri, 02 Mar 2018 10:06:31 GMT)
 
 ## [v0.0.43](Fri, 02 Mar 2018 09:44:13 GMT)

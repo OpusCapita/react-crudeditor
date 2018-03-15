@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
-import { expandOperation } from '../lib';
+import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
 
@@ -73,12 +73,17 @@ const mergeProps = /* istanbul ignore next */ (
           }
         })
       }]),
-      ...[...customOperations(), ...externalOperations()].
-        map(expandOperation({
+      ...[
+        ...customOperations().map(expandCustomOperation({
           viewName: VIEW_NAME,
           viewState,
           softRedirectView
-        })).
+        })),
+        ...externalOperations().map(expandExternalOperation({
+          viewName: VIEW_NAME,
+          viewState
+        }))
+      ].
         filter(operation => operation).
         map(operation => unsavedChanges ?
           ({

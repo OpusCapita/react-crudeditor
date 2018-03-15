@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
-import { expandOperation } from '../lib';
+import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { getTotalCount } from '../search/selectors';
 
 import {
@@ -93,12 +93,17 @@ const mergeProps = /* istanbul ignore next */ (
           }
         })
       }]),
-      ...[...customOperations(instance), ...externalOperations(instance)].
-        map(expandOperation({
+      ...[
+        ...customOperations(instance).map(expandCustomOperation({
           viewName: VIEW_NAME,
           viewState,
           softRedirectView
-        })).
+        })),
+        ...externalOperations(instance).map(expandExternalOperation({
+          viewName: VIEW_NAME,
+          viewState
+        }))
+      ].
         filter(operation => operation).
         map(operation => unsavedChanges ?
           ({

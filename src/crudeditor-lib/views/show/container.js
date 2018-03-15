@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Main from '../../../components/ShowMain';
-import { expandOperation } from '../lib';
+import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { VIEW_NAME } from './constants';
 import { VIEW_SEARCH } from '../../common/constants';
 import { softRedirectView } from '../../common/actions';
@@ -67,12 +67,17 @@ const mergeProps = /* istanbul ignore next */ (
         handler: exitView,
         style: 'link'
       }]),
-      ...[...customOperations(instance), ...externalOperations(instance)].
-        map(expandOperation({
+      ...[
+        ...customOperations(instance).map(expandCustomOperation({
           viewName: VIEW_NAME,
           viewState,
           softRedirectView
-        })).
+        })),
+        ...externalOperations(instance).map(expandExternalOperation({
+          viewName: VIEW_NAME,
+          viewState
+        }))
+      ].
         filter(operation => operation)
     ] :
       [] // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).

@@ -5,21 +5,25 @@ import { Glyphicon, Button, MenuItem } from 'react-bootstrap';
 import ConfirmDialog from '../ConfirmDialog';
 
 const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm }) => {
-  // XXX: a primary button does not have onClick handler
-  // because it is delegated to onSubmit handler of surrounding Form element.
-  // See also ./index.js
   const isPrimary = style === 'primary';
 
   if (isPrimary && dropdown) {
     throw TypeError(`"${title}" primary operation must not be a dropdown menu item`);
   }
 
+  const label = icon ? [
+    typeof icon === 'string' ?
+      <Glyphicon glyph={icon} key="icon" /> :
+      icon,
+    '\u00A0\u00A0',
+    title
+  ] :
+    title;
+
   let element = dropdown ? (
     <MenuItem onClick={handler} disabled={disabled}>
       <span className="btn-sm text-left">
-        {icon && (typeof icon === 'string' ? <Glyphicon glyph={icon}/> : icon)}
-        {icon && '\u00A0\u00A0'}
-        {title}
+        {label}
       </span>
     </MenuItem>
   ) : (
@@ -30,9 +34,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
       {...(style !== 'default' && { bsStyle: style })}
       {...(isPrimary && { type: 'submit' })}
     >
-      {icon && <Glyphicon glyph={icon} />}
-      {icon && ' '}
-      {title}
+      {label}
     </Button>
   );
 

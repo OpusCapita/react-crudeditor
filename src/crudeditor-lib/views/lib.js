@@ -406,9 +406,7 @@ export const getTab = (formLayout, tabName) => {
   return rezTab;
 }
 
-// The function unfolds custom/external operation by calling "ui()" method
-// and connecting "handler()" with softRedirectView.
-export const expandOperation = ({ viewName, viewState, softRedirectView }) => ({ handler, ui }) => {
+const expandOperationUi = ({ viewName, viewState, ui }) => {
   const { title, show, disabled, dropdown, icon, ...rest } = {
     show: true, // default value, possibly overwritten by ui() call below.
     disabled: false, // default value, possibly overwritten by ui() call below.
@@ -429,12 +427,43 @@ export const expandOperation = ({ viewName, viewState, softRedirectView }) => ({
     disabled,
     dropdown,
     ...(!!icon && { icon }),
-    handler() {
-      const view = handler();
+  };
+};
 
-      if (typeof view === 'object' && view && view.name) {
-        softRedirectView(view);
-      }
+// The function unfolds custom operation by calling "ui()" method
+// and connecting "handler()" with softRedirectView.
+export const expandCustomOperation = ({ viewName, viewState, softRedirectView }) => ({ handler, ui }) => {
+  const operation = expandOperationUi({ viewName, viewState, ui });
+
+  if (!operation) {
+    return null;
+  }
+
+  if (!operation.disabled) {
+    // handler is a pure function => calling it is harmless.
+    // Since handler() may return undefined, the operation button must be disabled to prevent its click.
+    const view = handler();
+
+    if (typeof view === 'object' && view && view.name) {
+      operation.handler = _ => softRedirectView(view);
+    } else {
+      operation.disabled = true;
     }
   }
-};
+
+  return {
+    ...operation,
+    ...(operation.disabled && { handler: _ => {} })
+  };
+}
+
+// The function unfolds external operation by calling "ui()" method.
+export const expandExternalOperation = ({ viewName, viewState }) => ({ handler, ui }) => {
+  const operationUi = expandOperationUi({ viewName, viewState, ui });
+
+  return operationUi ? {
+    ...operationUi,
+    handler
+  } :
+    null;
+}

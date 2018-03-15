@@ -319,11 +319,11 @@ function(<object, entity persistent instance> ) {
         ?dropdown: <boolean, true by default>,
 
         /*
-         * name of an icon to be displayed inside a button, ex. "trash", "edit";
+		 * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
          * see full list at
          * http://getbootstrap.com/components/#glyphicons
          */
-        ?icon: <string>
+        ?icon: <string|element>
       };
     }
   }, ...]
@@ -881,11 +881,11 @@ Model Definition is an object describing an entity. It has the following structu
             ?dropdown: <boolean, true by default>,
 
             /*
-             * name of an icon to be displayed inside a button, ex. "trash", "edit";
+             * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
              * see full list at
              * http://getbootstrap.com/components/#glyphicons
              */
-            ?icon: <string>
+            ?icon: <string|element>
           };
         }
       }, ...]

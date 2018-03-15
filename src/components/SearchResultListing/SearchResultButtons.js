@@ -41,7 +41,7 @@ export default class SearchResultButtons extends PureComponent {
     const { operations } = this.props;
 
     return (
-      <OperationsBar operations={operations} onToggleDropdown={this.handleToggleDropdown} bsSize="sm">
+      <OperationsBar operations={operations} onToggleDropdown={this.handleToggleDropdown} size="small">
         {
           buttons => buttons.length ? (
             <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">

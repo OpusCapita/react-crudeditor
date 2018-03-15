@@ -4,7 +4,7 @@ import { Glyphicon, Button, MenuItem } from 'react-bootstrap';
 
 import ConfirmDialog from '../ConfirmDialog';
 
-const Operation = ({ icon, handler, title, disabled, dropdown, style, bsSize, confirm }) => {
+const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm }) => {
   // XXX: a primary button does not have onClick handler
   // because it is delegated to onSubmit handler of surrounding Form element.
   // See also ./index.js
@@ -17,7 +17,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, bsSize, co
   let element = dropdown ? (
     <MenuItem onClick={handler} disabled={disabled}>
       <span className="btn-sm text-left">
-        {icon && <Glyphicon glyph={icon}/>}
+        {icon && (typeof icon === 'string' ? <Glyphicon glyph={icon}/> : icon)}
         {icon && '\u00A0\u00A0'}
         {title}
       </span>
@@ -26,8 +26,8 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, bsSize, co
     <Button
       disabled={disabled}
       onClick={handler}
-      {...(bsSize && { bsSize })}
-      {...(style && { bsStyle: style })}
+      {...(size !== 'medium' && { bsSize: size })}
+      {...(style !== 'default' && { bsStyle: style })}
       {...(isPrimary && { type: 'submit' })}
     >
       {icon && <Glyphicon glyph={icon} />}
@@ -52,18 +52,25 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, bsSize, co
 }
 
 Operation.propTypes = {
-  icon: PropTypes.string,
+  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
   handler: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  dropdown: PropTypes.bool.isRequired,
-  bsSize: PropTypes.oneOf(['lg', 'large', 'sm', 'small', 'xs', 'xsmall']),
-  style: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link']),
+  disabled: PropTypes.bool,
+  dropdown: PropTypes.bool,
+  size: PropTypes.oneOf(['small', 'medium']),
+  style: PropTypes.oneOf(['primary', 'default', 'link']),
   confirm: PropTypes.exact({
     message: PropTypes.string.isRequired,
     textConfirm: PropTypes.string.isRequired,
     textCancel: PropTypes.string.isRequired
   })
 };
+
+Operation.defaultProps = {
+  disabled: false,
+  dropdown: false,
+  size: 'medium',
+  style: 'default'
+}
 
 export default Operation;

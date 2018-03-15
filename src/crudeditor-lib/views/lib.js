@@ -409,22 +409,26 @@ export const getTab = (formLayout, tabName) => {
 // The function unfolds custom/external operation by calling "ui()" method
 // and connecting "handler()" with softRedirectView.
 export const expandOperation = ({ viewName, viewState, softRedirectView }) => ({ handler, ui }) => {
-  const { title, ...operation } = {
+  const { title, show, disabled, dropdown, icon, ...rest } = {
     show: true, // default value, possibly overwritten by ui() call below.
     disabled: false, // default value, possibly overwritten by ui() call below.
     dropdown: true, // default value, possibly overwritten by ui() call below.
     ...ui({ name: viewName, state: viewState })
   };
 
-  if (!operation.show) {
+  if (Object.keys(rest).length) {
+    throw new TypeError('Forbidden custom/external operation properties:', Object.keys(rest).join(', '));
+  }
+
+  if (!show) {
     return null;
   }
 
-  delete operation.show;
-
   return {
-    ...operation,
     title: title(),
+    disabled,
+    dropdown,
+    ...(!!icon && { icon }),
     handler() {
       const view = handler();
 

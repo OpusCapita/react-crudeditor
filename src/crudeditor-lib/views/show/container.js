@@ -64,8 +64,6 @@ const mergeProps = /* istanbul ignore next */ (
     operations: viewState ? [
       ...(!!crudOperations.view && [{
         title: i18n.getMessage('crudEditor.cancel.button'),
-        disabled: false,
-        dropdown: false,
         handler: exitView,
         style: 'link'
       }]),

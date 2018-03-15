@@ -83,8 +83,6 @@ const mergeProps = /* istanbul ignore next */ (
     operations: viewState ? [
       ...(!!crudOperations.view && [{
         title: i18n.getMessage('crudEditor.cancel.button'),
-        disabled: false,
-        dropdown: false,
         handler: exitView,
         style: 'link',
         ...(!!unsavedChanges && {
@@ -117,7 +115,6 @@ const mergeProps = /* istanbul ignore next */ (
         title: i18n.getMessage('crudEditor.delete.button'),
         icon: 'trash',
         disabled: standardOperations.delete && standardOperations.delete(instance).disabled,
-        dropdown: false,
         handler: _ => deleteInstances(instance),
         confirm: {
           message: i18n.getMessage('crudEditor.delete.confirmation'),
@@ -128,19 +125,16 @@ const mergeProps = /* istanbul ignore next */ (
       ...(!!crudOperations.create && [{
         title: i18n.getMessage('crudEditor.saveAndNew.button'),
         disabled: !unsavedChanges,
-        dropdown: false,
         handler: saveAndNewInstance
       }]),
       ...(!!adjacentInstancesExist.next && [{
         title: i18n.getMessage('crudEditor.saveAndNext.button'),
         disabled: !unsavedChanges,
-        dropdown: false,
         handler: saveAndNextInstance
       }]),
       {
         title: i18n.getMessage('crudEditor.save.button'),
         disabled: !unsavedChanges,
-        dropdown: false,
         handler: saveInstance,
         style: 'primary'
       }

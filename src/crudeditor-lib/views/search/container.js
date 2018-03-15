@@ -87,8 +87,6 @@ const mergeProps = /* istanbul ignore next */ (
       {
         title: i18n.getMessage(`crudEditor.${ crudOperations.edit ? 'edit' : 'show' }.button`),
         icon: crudOperations.edit ? 'edit' : 'eye-open',
-        disabled: false,
-        dropdown: false,
         handler: _ => softRedirectView({
           name: crudOperations.edit ? VIEW_EDIT : VIEW_SHOW,
           state: { instance },
@@ -106,7 +104,6 @@ const mergeProps = /* istanbul ignore next */ (
         title: i18n.getMessage('crudEditor.delete.button'),
         icon: 'trash',
         disabled: standardOperations.delete && standardOperations.delete(instance).disabled,
-        dropdown: false,
         handler: _ => deleteInstances(instance),
         confirm: {
           message: i18n.getMessage('crudEditor.delete.confirmation'),

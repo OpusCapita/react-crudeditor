@@ -7,12 +7,12 @@ import Operation from './Operation';
 export default class OperationsBar extends PureComponent {
   static propTypes = {
     operations: PropTypes.arrayOf(PropTypes.shape({
-      style: PropTypes.oneOf(['primary', 'success', 'info', 'warning', 'danger', 'link']),
+      style: PropTypes.oneOf(['primary', 'default', 'link']),
       title: PropTypes.string.isRequired,
-      dropdown: PropTypes.bool.isRequired
+      dropdown: PropTypes.bool // false by default
     })).isRequired,
     onToggleDropdown: PropTypes.func,
-    bsSize: PropTypes.oneOf(['lg', 'large', 'sm', 'small', 'xs', 'xsmall']),
+    size: PropTypes.oneOf(['small', 'medium']),
     children: PropTypes.func.isRequired
   }
 
@@ -22,7 +22,7 @@ export default class OperationsBar extends PureComponent {
     }
 
     const {
-      bsSize,
+      size,
       onToggleDropdown: onToggle
     } = this.props;
 
@@ -55,7 +55,7 @@ export default class OperationsBar extends PureComponent {
     return [
       React.cloneElement(element, {
         key: mainOperation.title,
-        ...(!!bsSize && { bsSize })
+        ...(!!size && size !== 'medium' && { bsSize: size })
       }),
       ...this.getOperationButtons(restOperations)
     ];

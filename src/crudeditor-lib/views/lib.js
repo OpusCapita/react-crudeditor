@@ -407,12 +407,14 @@ export const getTab = (formLayout, tabName) => {
 }
 
 const expandOperationUi = ({ viewName, viewState, ui }) => {
-  const { title, show, disabled, dropdown, icon, ...rest } = {
-    show: true, // default value, possibly overwritten by ui() call below.
-    disabled: false, // default value, possibly overwritten by ui() call below.
-    dropdown: true, // default value, possibly overwritten by ui() call below.
-    ...ui({ name: viewName, state: viewState })
-  };
+  const {
+    title,
+    icon,
+    show = true,
+    disabled = false,
+    dropdown = true,
+    ...rest
+  } = ui({ name: viewName, state: viewState });
 
   if (Object.keys(rest).length) {
     throw new TypeError('Forbidden custom/external operation properties:', Object.keys(rest).join(', '));
@@ -451,19 +453,23 @@ export const expandCustomOperation = ({ viewName, viewState, softRedirectView })
     }
   }
 
-  return {
-    ...operation,
-    ...(operation.disabled && { handler: _ => {} })
-  };
+  return operation;
 }
 
 // The function unfolds external operation by calling "ui()" method.
 export const expandExternalOperation = ({ viewName, viewState }) => ({ handler, ui }) => {
   const operationUi = expandOperationUi({ viewName, viewState, ui });
 
-  return operationUi ? {
+  if (!operationUi) {
+    return null;
+  }
+
+  if (!operationUi.disabled && typeof handler !== 'function') {
+    throw new TypeError(`External operation "${operationUi.title}" must have a handler`);
+  }
+
+  return {
     ...operationUi,
     handler
-  } :
-    null;
+  };
 }

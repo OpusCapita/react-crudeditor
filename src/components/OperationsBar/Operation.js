@@ -55,7 +55,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
 
 Operation.propTypes = {
   icon: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-  handler: PropTypes.func.isRequired,
+  handler: PropTypes.func,
   title: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   dropdown: PropTypes.bool,

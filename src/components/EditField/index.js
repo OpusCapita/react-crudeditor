@@ -5,7 +5,6 @@ import {
   Col,
   ControlLabel,
   Glyphicon,
-  FormControl,
   OverlayTrigger,
   Popover,
   Label

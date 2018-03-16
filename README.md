@@ -319,7 +319,7 @@ function(<object, entity persistent instance> ) {
         ?dropdown: <boolean, true by default>,
 
         /*
-		 * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
+         * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
          * see full list at
          * http://getbootstrap.com/components/#glyphicons
          */
@@ -837,20 +837,23 @@ Model Definition is an object describing an entity. It has the following structu
 
     /*
      * Custom operations available in CRUD Editor.
-     * An operation handler is called by pressing a dedicated button.
-	 * No arguments are passed to the method in Create View
-	 * since it does not have persistent instance.
-	 *
-	 * In case of unsaved changes, Confirmation Dialog is called
-	 * after dedicated button press and before handler() call
-	 * => each external operation must return new view name/state,
-	 *    or set disabled to true,
-	 *    or set show to false
-	 * - othersise calling Confirmation Dialog is in vain.
+     * No arguments are passed to the method in Create View
+     * since it does not have persistent instance.
      */
     ?customOperations: function(<object, entity persistent instance> ) {
       ...
       return [{
+
+        /*
+         * handler() is called at operation button render, not after button press
+         * => handler() must be a pure function.
+         * If handler() returns undefined, the button is displayed as disabled;
+         * otherwise view's name/state are saved and get redirected to only after the button press.
+         * When the button gets pressed and there are unsaved changes, Confirmation Dialog is called.
+         *
+         * Disabling the button by appropriate ui() return value
+         * prevents handler from been called at operation button render.
+         */
         handler() {
           ...
           // return value is either undefined or view name/state.

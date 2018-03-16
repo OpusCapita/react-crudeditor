@@ -23,16 +23,25 @@
   width: 0;
   min-width: 0;
   opacity: 0;
+  height: 0;
   transition: all .3s ease-in-out;
+
+  .crud--search-form {
+    display: none;
+  }
 }
 
 .crud--search-main__search-container.form-open {
   margin: 0;
   border-right: 1px solid #ddd;
   height: 100%;
-  min-width: 280px;
+  min-width: 290px;
   opacity: 1;
   transition: all .3s ease-in-out;
+
+  .crud--search-form {
+    display: block;
+  }
 }
 
 .crud--search-main__results-container {
@@ -41,10 +50,6 @@
 }
 
 .crud--search-main__results-container.form-open {
-  width: ~"calc(100% - 280px)";
   position: relative;
-  left: 0;
-  right: 0;
-  height: 100%;
   transition: width .3s ease-in-out;
 }

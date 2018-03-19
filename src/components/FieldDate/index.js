@@ -46,6 +46,7 @@ export default class FieldDate extends PureComponent {
     (<DateInput
       value={this.props.value || null}
       dateFormat={this.context.i18n.dateFormat}
+      locale={this.context.i18n.locale}
       onChange={this.handleChange}
       disabled={!!this.props.readOnly}
       showToLeft={false}

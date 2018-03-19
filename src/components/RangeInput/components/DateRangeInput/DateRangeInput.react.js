@@ -44,6 +44,7 @@ export default class DateRangeInput extends PureComponent {
     return (
       <OCDateRangeInput
         dateFormat={i18n.dateFormat}
+        locale={i18n.locale}
         value={range2array(value)}
         onChange={this.handleChange}
         onFocus={onFocus}

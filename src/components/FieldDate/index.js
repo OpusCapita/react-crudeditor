@@ -22,7 +22,6 @@ export default class FieldDate extends PureComponent {
 
   constructor(...args) {
     super(...args);
-
     this.handleChange = !this.props.readOnly ?
       value => {
         // see description in render() function

@@ -12,7 +12,7 @@ const CreateMain = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   return (<div>
     <Heading model={model} />
     {ActiveTabComponent ?
-      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.formInstance} /> :
+      <ActiveTabComponent viewName={model.data.viewName} instance={model.data.persistentInstance} /> :
       <Tab model={model} toggledFieldErrors={toggledFieldErrors} toggleFieldErrors={toggleFieldErrors}/>
     }
   </div>)
@@ -22,7 +22,7 @@ CreateMain.propTypes = {
   model: PropTypes.shape({
     data: PropTypes.shape({
       viewName: PropTypes.oneOf([VIEW_NAME]).isRequired,
-      formInstance: PropTypes.object.isRequired,
+      persistentInstance: PropTypes.object,
       activeTab: PropTypes.array
     }).isRequired
   }).isRequired,

@@ -28,8 +28,19 @@ export default WrappedComponent => class WithFieldErrors extends PureComponent {
     super(...args);
 
     this.state = {
-      defaultShow: false, // Either true (show all field fields by default) or false (hide all field errors by default).
-      exceptions: [] // An array of exceptions from default (empty when no exceptions).
+
+      /*
+       * Boolean
+       * true -- show all field errors by default,
+       * false -- hide all field errors by default.
+       */
+      defaultShow: false,
+
+      /*
+       * An array of exceptions from default
+       * (empty when no exceptions).
+       */
+      exceptions: []
     };
 
     this.state.errors = this.filterErrors({

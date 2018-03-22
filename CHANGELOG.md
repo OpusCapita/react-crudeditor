@@ -1,4 +1,12 @@
 
+Release 0.0.46 Thu Mar 22 2018 11:12:09 GMT+0000 (UTC)
+=======================================================
+
+- (Issue [#150](https://github.com/OpusCapita/react-crudeditor/issues/150)) Sortable operations ([#246](https://github.com/OpusCapita/react-crudeditor/issues/246)) (Egor Stambakio amourzenkov-sc@users.noreply.github.com, 2018-03-22 13:57:06 +0300)
+- Fixed missing locale prop in Date inputs (Egor Stambakio stambakio@scand.com, 2018-03-19 09:05:25 +0300)
+- Added a missing Finnish error message, edited others to be clearer ([#248](https://github.com/OpusCapita/react-crudeditor/issues/248)) (GitHub aappo.salo@opuscapita.com, 2018-03-13 15:48:39 +0200)
+- Abstract bulk delete notification for labelless instances (Andrei Mourzenkov mourzenkov@scand.com, 2018-03-13 15:30:02 +0300)
+
 Release 0.0.45 Mon Mar 12 2018 09:50:20 GMT+0000 (UTC)
 =======================================================
 

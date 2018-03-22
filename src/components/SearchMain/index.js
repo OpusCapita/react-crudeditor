@@ -1,11 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  Glyphicon,
-  Row,
-  Col
-} from 'react-bootstrap';
+import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
+
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
@@ -26,7 +22,7 @@ export default class SearchMain extends PureComponent {
 
   static contextTypes = {
     i18n: PropTypes.object
-  };
+  }
 
   render() {
     const { model } = this.props;

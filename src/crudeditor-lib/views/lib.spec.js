@@ -9,7 +9,7 @@ import {
   getLogicalKeyBuilder,
   findFieldLayout,
   getTab,
-  viewOperations
+  expandOperation
 } from './lib'
 
 import /* models , */ { fields } from '../../demo/models/contracts'
@@ -353,7 +353,7 @@ describe('Crudeditor-lib / views / lib', () => {
     });
   });
 
-  describe('viewOperations', () => {
+  describe.skip('expandOperation', () => {
     it('should return an array with operation objects', () => {
       const softRedirectView = sinon.spy();
       const operations = _ => [{
@@ -362,7 +362,7 @@ describe('Crudeditor-lib / views / lib', () => {
           name: 'viewName1'
         })
       }];
-      const ops = viewOperations({
+      const ops = expandOperation({
         viewName: 'aaa',
         viewState: {},
         operations,
@@ -386,7 +386,7 @@ describe('Crudeditor-lib / views / lib', () => {
           name: 'viewName1'
         })
       }];
-      const ops = viewOperations({
+      const ops = expandOperation({
         viewName: 'aaa',
         viewState: null,
         operations,

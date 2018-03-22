@@ -151,7 +151,7 @@ export default class extends React.Component {
       <ContractEditor
         ?view={?name: <string>, ?state: <object>}
         ?onTransition={<function>}
-        ?externalOperations={[<object>, ...]}
+        ?externalOperations={<function>}
         ?uiConfig={{
           ?headerLevel: <integer>
         }}
@@ -170,7 +170,7 @@ Name | Default | Description
 ---|---|---
 view | {<br />&nbsp;&nbsp;name: "search",<br />&nbsp;&nbsp;state: {}<br />}| [View Name](#editorcomponent-propsviewname) and full/sliced [View State](#editorcomponent-propsviewstate)
 [onTransition](#editorcomponent-propsontransition) | - | [Editor State](#editor-state) transition handler
-[externalOperations](#editorcomponent-propsexternaloperations) | - | Set of [External Operation](#external-operation) handlers
+[externalOperations](#editorcomponent-propsexternaloperations) | - | Function returning a set of [External Operations](#external-operation) handlers
 
 ### *EditorComponent* props.view.name
 
@@ -282,35 +282,53 @@ function ({
 
 ### *EditorComponent* props.externalOperations
 
-An array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
+A function returning an array of [External Operations](#external-operation).  Each has a handler which is called when a corresponding [External Operation](#external-operation) is triggered by CRUD Editor.
+
+No arguments are passed to the function in Create View since it does not have persistent instance.
+
+In case of unsaved changes, Confirmation Dialog is called after dedicated button press and before **handler()** call => each external operation *must* have side effects, or set **disabled** to true, or set **show** to false - othersise calling Confirmation Dialog is in vain.
 
 ```javascript
-[
-  {
-    title: <string, external operation translated name>,
-
-    /*
-     * name of an icon to be displayed inside a button, ex. "trash", "edit";
-     * see full list at
-     * http://getbootstrap.com/components/#glyphicons
-     */
-    ?icon: <string>,
-
-    handler(instance) {
-      ...
-      return;  // Return value is ignored.
-    },
-    ...
-  },
+function(<object, entity persistent instance> ) {
   ...
-]
+  return [{
+    handler() {
+      ...
+      return; // Return value is ignored.
+    },
+    ui({
+      name: <string, View name>,  // See EditorComponent props.view.name
+      state: <object, Full View State>  // See EditorComponent props.view.state
+    }) {
+      return {
+        title() {
+          ...
+          return <string, external operation translated title>,
+        },
+
+        ?show: <boolean, true by default>,
+        ?disabled: <boolean, false by default>,
+
+        /*
+         * whether the operation has own dedicated button (false)
+         * or it is to be placed in a dropdown of a previous button (true).
+         * A previous button is either previous external operation with "dropdown" set to false
+         * OR previous custom operation with "dropdown" set to false if there is no such external operation
+         * OR (for Search View) "Edit" button if there is no such external/custom operation.
+         */
+        ?dropdown: <boolean, true by default>,
+
+        /*
+         * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
+         * see full list at
+         * http://getbootstrap.com/components/#glyphicons
+         */
+        ?icon: <string|element>
+      };
+    }
+  }, ...]
+}
 ```
-
-Every handler has the same set of arguments:
-
-Argument | Type | Description
----|---|---
-instance | object | An entity persistent instance which [External Operation](#external-operation) was called upon
 
 ### *EditorComponent* props.uiConfig
 
@@ -510,10 +528,10 @@ Model Definition is an object describing an entity. It has the following structu
           name: <string, persistent field name>,
 
           /*
-           * There is no default "render" property for a fild of custom Field Type
+           * There is no default "render" property for a field of custom Field Type
            * => "render" property must be explicitly defined in such a case.
            *
-           * Default "render" property for a fild of standard Field Type:
+           * Default "render" property for a field of standard Field Type:
            * {
            *   component: <string, id of default FieldInputComponent for displaying the Field Type>,
            *
@@ -819,32 +837,58 @@ Model Definition is an object describing an entity. It has the following structu
 
     /*
      * Custom operations available in CRUD Editor.
-     * An operation handler is called by pressing a dedicated button.
+     * No arguments are passed to the method in Create View
+     * since it does not have persistent instance.
      */
-    ?operations: function(<object, entity persistent instance>, {
-      name: <string, View name>,  // See EditorComponent props.view.name
-      state: <object, Full View State>  // See EditorComponent props.view.state
-    }) {
+    ?customOperations: function(<object, entity persistent instance> ) {
       ...
       return [{
-        name: <string, operation ID>,
 
         /*
-         * name of an icon to be displayed inside a button, ex. "trash", "edit";
-         * see full list at
-         * http://getbootstrap.com/components/#glyphicons
+         * handler() is called at operation button render, not after button press
+         * => handler() must be a pure function.
+         * If handler() returns undefined, the button is displayed as disabled;
+         * otherwise view's name/state are saved and get redirected to only after the button press.
+         * When the button gets pressed and there are unsaved changes, Confirmation Dialog is called.
+         *
+         * Disabling the button by appropriate ui() return value
+         * prevents handler from been called at operation button render.
          */
-        ?icon: <string>,
-
-        /*
-         * The operation button is not displayed if there is no hanlder.
-         */
-        ?handler() {
+        handler() {
           ...
           // return value is either undefined or view name/state.
           return {
             name: <string, View Name>,
             ?state: <object, View State, empty object by default>
+          };
+        },
+        ui({
+          name: <string, View name>,  // See EditorComponent props.view.name
+          state: <object, Full View State>  // See EditorComponent props.view.state
+        }) {
+          return {
+            title() {
+              ...
+              return <string, custom operation translated title>,
+            },
+
+            ?show: <boolean, true by default>,
+            ?disabled: <boolean, false by default>,
+
+            /*
+             * whether the operation has own dedicated button (false)
+             * or it is to be placed in a dropdown of a previous button (true).
+             * A previous button is either previous custom operation with "dropdown" set to false
+             * OR (for Search View) "Edit" button if there is no such custom operation.
+             */
+            ?dropdown: <boolean, true by default>,
+
+            /*
+             * React Element or string name of an icon to be displayed inside a button, ex. "trash", "edit";
+             * see full list at
+             * http://getbootstrap.com/components/#glyphicons
+             */
+            ?icon: <string|element>
           };
         }
       }, ...]
@@ -1227,7 +1271,8 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
   ?args: <object, optional parameters for i18n service>
 }
 ```
-To prevent thrown errors to be displayed in browser's console as warnings, use plain objects instead of instances of **Error**, **TypeError**, **RangeError**, etc.
+
+Both plain objects and instances of **Error** may be used. The error *must not* be an instance of system error constructor, like RangeError, SyntaxError, TypeError, etc.
 
 ### Internal Error
 

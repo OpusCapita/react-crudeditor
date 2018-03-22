@@ -10,6 +10,10 @@ export const getUi = modelDefinition => {
     createMeta.defaultNewInstance = _ => ({});
   }
 
+  if (!createMeta.standardOperations) {
+    createMeta.standardOperations = {};
+  }
+
   createMeta.formLayout = buildFormLayout({
     customBuilder: createMeta.formLayout,
     viewName: VIEW_NAME,

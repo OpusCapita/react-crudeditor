@@ -9,6 +9,9 @@ module.exports = {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin()
   ],
+  entry: [
+    'core-js/fn/object/assign' // required for IE11 and react-notifications module
+  ],
   module: {
     rules: [
       {

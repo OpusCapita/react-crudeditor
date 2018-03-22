@@ -1,5 +1,4 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.common');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');

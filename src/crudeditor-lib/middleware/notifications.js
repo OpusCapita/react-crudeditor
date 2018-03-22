@@ -41,6 +41,7 @@ import {
 // this polyfill is required for IE11 because
 // react-notifications module uses Object.assign
 // source: mdn:Object/assign
+/* eslint-disable */
 if (typeof Object.assign != 'function') {
   // Must be writable: true, enumerable: false, configurable: true
   Object.defineProperty(Object, "assign", {
@@ -70,6 +71,7 @@ if (typeof Object.assign != 'function') {
     configurable: true
   });
 }
+/* eslint-enable */
 // polyfill end
 
 export const

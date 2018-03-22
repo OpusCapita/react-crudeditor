@@ -68,15 +68,13 @@ export default class FieldErrorLabel extends PureComponent {
     const { errors } = this.props;
 
     return (
-      <div style={{ display: "block" }}>
-        <div style={{ opacity: errors.length ? '1' : '0' }}>
-          <Fade in={!!errors.length}>
-            <Label bsStyle="danger">
-              {errors.length ? this.getErrorMessage(errors[0]) : ' '}
-            </Label>
-          </Fade>
-        </div>
+      <div style={{ opacity: errors.length ? '1' : '0' }}>
+        <Fade in={!!errors.length}>
+          <Label bsStyle="danger">
+            {errors.length ? this.getErrorMessage(errors[0]) : ' '}
+          </Label>
+        </Fade>
       </div>
-    )
+    );
   }
 }

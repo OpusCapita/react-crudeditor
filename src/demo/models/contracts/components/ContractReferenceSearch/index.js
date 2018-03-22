@@ -10,7 +10,6 @@ import {
 import translations from './i18n';
 import ReferenceSearchService from './ReferenceSearchService';
 import { getModelMessage, titleCase } from '../../../../../components/lib';
-import './styles.less';
 
 const SERVICE_NAME = 'ContractReferenceSearch';
 const SERVICE_URL = 'http://some-host:some-port/';

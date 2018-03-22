@@ -83,7 +83,7 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
       formLayout: PropTypes.func
     }),
     customViews: PropTypes.objectOf(PropTypes.func),
-    operations: PropTypes.func
+    customOperations: PropTypes.func
   })
 })
 

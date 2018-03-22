@@ -7,6 +7,7 @@ import { hash2obj, buildURL } from './lib';
 import { I18nManager } from '@opuscapita/i18n';
 
 const VIEW_EDIT = 'edit';
+const VIEW_CREATE = 'create';
 
 const url2view = ({ hash }) => hash2obj(hash);
 
@@ -99,18 +100,28 @@ export default class CrudWrapper extends PureComponent {
       <Crud
         view={view}
         onTransition={handleTransition[baseURL]}
-        externalOperations={[{
-          title: 'Test link',
-          icon: 'link',
-          handler(instance) {
+        externalOperations={instance => [{
+          handler() {
             window.location = 'http://opuscapita.com';
+          },
+          ui({ name: viewName, state: viewState }) {
+            return {
+              title: () => 'Test link',
+              icon: 'link',
+              dropdown: viewName !== VIEW_CREATE
+            };
           }
         }, {
-          title: 'Another link',
-          icon: 'send',
-          handler(instance) {
+          handler() {
             console.log('another link handler');
             console.log(instance)
+          },
+          ui({ name: viewName, state: viewState }) {
+            return {
+              title: () => 'Another link',
+              icon: 'send',
+              dropdown: true
+            };
           }
         }]}
         uiConfig={{

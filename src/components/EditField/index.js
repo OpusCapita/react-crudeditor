@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormGroup,
-  Col,
-  ControlLabel,
-  Glyphicon,
-  FormControl,
-  OverlayTrigger,
-  Popover,
-  Label
-} from 'react-bootstrap';
+import { FormGroup, Col, ControlLabel, Glyphicon, FormControl, OverlayTrigger, Popover, Label } from 'react-bootstrap';
 import { getModelMessage, titleCase } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import './styles.less';

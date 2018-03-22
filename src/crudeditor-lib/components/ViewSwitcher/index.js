@@ -18,7 +18,7 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiConfig }) => {
+const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiConfig }, { i18n }) => {
   if (!activeViewName) {
     return null;
   }
@@ -31,25 +31,32 @@ const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiC
     [VIEW_ERROR]: ErrorView
   })[activeViewName];
 
-  return (<div>
-    {
-      ViewContainer ?
-        <ViewContainer
-          modelDefinition={modelDefinition}
-          externalOperations={externalOperations}
-          uiConfig={uiConfig}
-        /> :
-        <div>Unknown view <i>{activeViewName}</i></div>
-    }
-  </div>);
-};
+  return (
+    <div>
+      {
+        ViewContainer ?
+          <ViewContainer
+            modelDefinition={modelDefinition}
+            externalOperations={externalOperations}
+            uiConfig={uiConfig}
+            i18n={i18n}
+          /> :
+          <div>Unknown view <i>{activeViewName}</i></div>
+      }
+    </div>
+  );
+}
 
 ViewSwitcher.propTypes = {
   activeViewName: PropTypes.string,
   modelDefinition: PropTypes.object.isRequired,
-  externalOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
+  externalOperations: PropTypes.func.isRequired,
   uiConfig: PropTypes.object.isRequired
-}
+};
+
+ViewSwitcher.contextTypes = {
+  i18n: PropTypes.object
+};
 
 export default connect(
   storeState => ({ activeViewName: storeState.common.activeViewName })

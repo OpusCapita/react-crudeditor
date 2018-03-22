@@ -30,6 +30,16 @@ const getViewState = {
   [VIEW_ERROR]: getErrorViewState
 };
 
+// see npm "bounce" module for details: https://github.com/hapijs/bounce
+export const isSystemError = err => [
+  EvalError,
+  RangeError,
+  ReferenceError,
+  SyntaxError,
+  TypeError,
+  URIError
+].some(systemErrorConstructor => err instanceof systemErrorConstructor);
+
 export const storeState2appState = (storeState, modelDefinition) => storeState.common.activeViewName ?
   {
     name: storeState.common.activeViewName,
@@ -93,8 +103,8 @@ export function fillDefaults(baseModelDefinition) {
     }
   });
 
-  if (!modelDefinition.ui.operations) {
-    modelDefinition.ui.operations = _ => [];
+  if (!modelDefinition.ui.customOperations) {
+    modelDefinition.ui.customOperations = _ => [];
   }
 
   const getUi = {

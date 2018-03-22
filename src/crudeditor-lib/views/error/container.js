@@ -6,28 +6,27 @@ import { getViewModelData } from './selectors';
 import { softRedirectView } from '../../common/actions';
 import { VIEW_SEARCH } from '../../common/constants';
 
-const mergeProps = /* istanbul ignore next */ ({
-  viewModelData,
-  permissions: {
-    crudOperations
+const mergeProps = /* istanbul ignore next */ (
+  {
+    viewModelData,
+    permissions: {
+      crudOperations
+    },
+    uiConfig
   },
-  uiConfig
-},
-{
-  goHome,
-  ...dispatchProps
-},
-ownProps
+  {
+    goHome,
+    ...dispatchProps
+  }
 ) => ({
-  ...ownProps,
   viewModel: {
+    uiConfig,
     data: viewModelData,
     actions: {
       ...(crudOperations.view && { goHome }),
       ...dispatchProps
-    },
-    uiConfig
-  },
+    }
+  }
 });
 
 export default connect(

@@ -36,7 +36,7 @@ const withSpinner = WrappedComponent => {
           <WrappedComponent
             {...props}
             model={model}
-            {...(Spinner ? { overflow: 'hidden' } : null)}
+            {...(Spinner && { overflow: 'hidden' })}
           >
             {children}
           </WrappedComponent>

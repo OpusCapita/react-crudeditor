@@ -56,8 +56,8 @@ export default WrappedComponent => class DeferValueSyncHOC extends PureComponent
       ) ?
         this.state.value :
         this.props.value,
-      ...(onChange ? { onChange: this.handleChange } : null),
-      ...(onBlur ? { onBlur: this.handleBlur } : null)
+      ...(onChange && { onChange: this.handleChange }),
+      ...(onBlur && { onBlur: this.handleBlur })
     }
 
     return (

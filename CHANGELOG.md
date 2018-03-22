@@ -1,4 +1,9 @@
 
+Release 0.0.47 Thu Mar 22 2018 13:36:18 GMT+0000 (UTC)
+=======================================================
+
+- [#13](https://github.com/OpusCapita/react-crudeditor/issues/13) Fixed IE11 UI bugs. ([#249](https://github.com/OpusCapita/react-crudeditor/issues/249)) (Egor Stambakio stamkov-sc@users.noreply.github.com, 2018-03-22 16:16:55 +0300)
+
 Release 0.0.46 Thu Mar 22 2018 11:12:09 GMT+0000 (UTC)
 =======================================================
 

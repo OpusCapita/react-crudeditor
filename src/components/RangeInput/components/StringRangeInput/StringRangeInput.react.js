@@ -70,12 +70,12 @@ export default class StringRangeInput extends PureComponent {
     this.setState(
       { isFocused: true },
       _ => this.props.onFocus(event)
-    )
+    );
 
   handleChange = field => ({ target: { value } }) => this.props.onChange({
     ...this.props.value,
-    [field]: value || null
-  })
+    [field]: value || ''
+  });
 
   render() {
     const { value, readOnly } = this.props;

@@ -1,4 +1,9 @@
 
+Release 1.0.1 Fri Mar 23 2018 09:19:23 GMT+0000 (UTC)
+=======================================================
+
+- Fix [#251](https://github.com/OpusCapita/react-crudeditor/issues/251) (Egor Stambakio stambakio@scand.com, 2018-03-23 12:11:51 +0300)
+
 Release 1.0.0 Fri Mar 23 2018 07:17:36 GMT+0000 (UTC)
 =======================================================
 

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import isEqual from 'lodash/isEqual';
 import { Nav, NavItem, Col, Row, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
 import { getModelMessage, titleCase } from '../lib';

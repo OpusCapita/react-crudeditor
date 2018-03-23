@@ -69,23 +69,25 @@ export default class ConditionalConfirm extends PureComponent {
     const eventId = 'on' + upperFirst(trigger);
 
     return React.cloneElement(elem, {
-      [eventId]: event => {
+      [eventId]: event => { // eslint-disable-line consistent-return
         if (!showDialog()) {
           return elem.props[eventId](event);
         }
 
-        // currentTarget changes as the event bubbles up
-        // => if you want to access currentTarget in async way, you need to cache it in a variable.
-        const currentTarget = event.currentTarget;
+        if (event.persist) { // React synthetic event?
+          event.persist();
 
-        event.persist();
+          event = { // eslint-disable-line no-param-reassign
+            ...event,
 
-        this.confirmHandler = _ => elem.props[eventId]({
-          ...event,
-          currentTarget
-        });
+            // currentTarget changes as the event bubbles up
+            // => accessing currentTarget in async way requires caching it in a variable.
+            currentTarget: event.currentTarget
+          };
+        }
 
-        this.setState({ show: true }); // eslint-disable-line consistent-return
+        this.confirmHandler = _ => elem.props[eventId](event);
+        this.setState({ show: true });
       }
     });
   }

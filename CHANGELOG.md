@@ -1,4 +1,10 @@
 
+Release 1.0.0 Fri Mar 23 2018 07:17:36 GMT+0000 (UTC)
+=======================================================
+
+- Updating version in package.json (Egor Stambakio stambakio@scand.com, 2018-03-23 08:49:03 +0300)
+- Issue 250/object assign polyfill ([#253](https://github.com/OpusCapita/react-crudeditor/issues/253)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-03-23 08:37:29 +0300)
+
 Release 0.0.47 Thu Mar 22 2018 13:36:18 GMT+0000 (UTC)
 =======================================================
 

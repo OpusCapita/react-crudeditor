@@ -19,10 +19,7 @@ export default class ConditionalConfirm extends PureComponent {
     showDialog: _ => true
   }
 
-  state = {
-    show: false,
-    confirmHandler: null
-  }
+  state = { show: false }
 
   componentDidMount = _ => {
     this._mountNode = document.createElement('div');
@@ -40,43 +37,25 @@ export default class ConditionalConfirm extends PureComponent {
     this._mountNode = null;
   };
 
-  handleClose = _ => this.setState({
-    show: false,
-    confirmHandler: null
-  })
+  handleClose = _ => this.setState({ show: false })
 
-  handleOpenDialog = childHandler => event => this.setState({
-    show: true,
-    confirmHandler: _ => childHandler(event)
-  })
-
-  handleConfirm = event => {
-    this.state.confirmHandler(event)
+  handleConfirm = _ => {
+    this.confirmHandler();
     this.handleClose();
   }
 
   createDialog = _ => {
-    const {
-      message,
-      textConfirm,
-      textCancel
-    } = this.props;
+    const { message, textConfirm, textCancel } = this.props;
 
     return (
       <Modal show={this.state.show} onHide={this.handleClose}>
         <Modal.Header closeButton={true}>
           <h4>{message}</h4>
           <div className="text-right">
-            <Button
-              onClick={this.handleClose}
-              bsStyle="link"
-            >
+            <Button onClick={this.handleClose} bsStyle="link">
               {textCancel}
             </Button>
-            <Button
-              onClick={this.handleConfirm}
-              bsStyle="primary"
-            >
+            <Button onClick={this.handleConfirm} bsStyle="primary">
               {textConfirm}
             </Button>
           </div>
@@ -85,37 +64,46 @@ export default class ConditionalConfirm extends PureComponent {
     )
   }
 
+  confirmableElement = elem => {
+    const { trigger, showDialog } = this.props;
+    const eventId = 'on' + upperFirst(trigger);
+
+    return React.cloneElement(elem, {
+      [eventId]: event => { // eslint-disable-line consistent-return
+        if (!showDialog()) {
+          return elem.props[eventId](event);
+        }
+
+        if (event.persist) { // React synthetic event?
+          event.persist();
+
+          event = { // eslint-disable-line no-param-reassign
+            ...event,
+
+            // currentTarget changes as the event bubbles up
+            // => accessing currentTarget in async way requires caching it in a variable.
+            currentTarget: event.currentTarget
+          };
+        }
+
+        this.confirmHandler = _ => elem.props[eventId](event);
+        this.setState({ show: true });
+      }
+    });
+  }
+
   renderDialog = _ => {
     ReactDOM.render(this.createDialog(), this._mountNode);
   }
 
   render() {
-    const {
-      children,
-      trigger,
-      showDialog
-    } = this.props;
-
-    const eventId = 'on' + upperFirst(trigger);
+    const { children } = this.props;
 
     return (Children.count(children) === 1) ?
-      (
-        child => React.cloneElement(child, {
-          [eventId]: showDialog() ?
-            this.handleOpenDialog(child.props[eventId]) :
-            child.props[eventId]
-        })
-      )(Children.toArray(children)[0]) :
+      this.confirmableElement(Children.toArray(children)[0]) :
       (
         <span className="confirm-dialog-span">
-          {
-            Children.map(children, child => React.cloneElement(child, {
-              [eventId]: showDialog() ?
-                this.handleOpenDialog(child.props[eventId]) :
-                child.props[eventId]
-            })
-            )
-          }
+          { Children.map(children, this.confirmableElement) }
         </span>
       )
   }

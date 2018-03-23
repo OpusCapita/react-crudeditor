@@ -69,7 +69,7 @@ export const fields = {
     'type': FIELD_TYPE_DECIMAL,
     'constraints': {
       'required': false,
-      'max': Number.MAX_SAFE_INTEGER
+      'max': 9999999
     }
   },
   'email': {

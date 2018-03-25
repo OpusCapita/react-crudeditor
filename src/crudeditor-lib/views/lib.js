@@ -406,36 +406,70 @@ export const getTab = (formLayout, tabName) => {
   return rezTab;
 }
 
-// viewOperations creates custom/external operations handler for particular view
-export const viewOperations = ({
-  viewName,
-  viewState,
-  operations,
-  softRedirectView
-}) => instance => ((viewState && operations( // viewState is undefined when view is not initialized yet.
-  instance,
-  {
-    name: viewName,
-    state: viewState
+const expandOperationUi = ({ viewName, viewState, ui }) => {
+  const {
+    title,
+    icon,
+    show = true,
+    disabled = false,
+    dropdown = true,
+    ...rest
+  } = ui({ name: viewName, state: viewState });
+
+  if (Object.keys(rest).length) {
+    throw new TypeError('Forbidden custom/external operation properties:', Object.keys(rest).join(', '));
   }
-)) || []).reduce(
-  (rez, { handler, ...rest }) => [
-    ...rez,
-    ...(handler ?
-      [{
-        ...rest,
-        handler: _ => {
-          const view = handler();
 
-          if (view && view.name) {
-            softRedirectView(view);
-          }
+  if (!show) {
+    return null;
+  }
 
-          return view;
-        }
-      }] :
-      []
-    )
-  ],
-  []
-);
+  return {
+    title: title(),
+    disabled,
+    dropdown,
+    ...(!!icon && { icon }),
+  };
+};
+
+// The function unfolds custom operation by calling "ui()" method
+// and connecting "handler()" with softRedirectView.
+export const expandCustomOperation = ({ viewName, viewState, softRedirectView }) => ({ handler, ui }) => {
+  const operation = expandOperationUi({ viewName, viewState, ui });
+
+  if (!operation) {
+    return null;
+  }
+
+  if (!operation.disabled) {
+    // handler is a pure function => calling it is harmless.
+    // Since handler() may return undefined, the operation button must be disabled to prevent its click.
+    const view = handler();
+
+    if (typeof view === 'object' && view && view.name) {
+      operation.handler = _ => softRedirectView(view);
+    } else {
+      operation.disabled = true;
+    }
+  }
+
+  return operation;
+}
+
+// The function unfolds external operation by calling "ui()" method.
+export const expandExternalOperation = ({ viewName, viewState }) => ({ handler, ui }) => {
+  const operationUi = expandOperationUi({ viewName, viewState, ui });
+
+  if (!operationUi) {
+    return null;
+  }
+
+  if (!operationUi.disabled && typeof handler !== 'function') {
+    throw new TypeError(`External operation "${operationUi.title}" must have a handler`);
+  }
+
+  return {
+    ...operationUi,
+    handler
+  };
+}

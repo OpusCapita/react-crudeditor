@@ -1,9 +1,14 @@
 import { cloneDeep, isEqual } from 'lodash-es';
 import u from 'updeep';
 
-import { findFieldLayout, getTab } from '../lib';
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';
 import { checkFormLayout } from '../../check-model';
+import { isSystemError } from '../../lib';
+
+import {
+  findFieldLayout,
+  getTab
+} from '../lib';
 
 import {
   ALL_INSTANCE_FIELDS_VALIDATE,
@@ -206,7 +211,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
 
       if (hasTabs && hasSectionsOrFields) {
-        throw new Error('formLayout must not have tabs together with sections/fields at top level');
+        throw new TypeError('formLayout must not have tabs together with sections/fields at top level');
       }
     });
 
@@ -256,8 +261,9 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         newFormValue = converter.parse({ value: fieldValue, i18n });
       } catch (err) {
-        if (err instanceof Error) {
-          console.warn(err);
+        // Rethrow system errors.
+        if (isSystemError(err)) {
+          throw err;
         }
 
         const errors = Array.isArray(err) ? err : [err];
@@ -309,8 +315,9 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
           [fieldName]: newFormValue
         });
       } catch (err) {
-        if (err instanceof Error) {
-          console.warn(err);
+        // Rethrow system errors.
+        if (isSystemError(err)) {
+          throw err;
         }
 
         const errors = Array.isArray(err) ? err : [err];
@@ -345,8 +352,9 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
         try {
           findFieldLayout(fieldName)(storeState.formLayout).validate(fieldValue, storeState.formInstance);
         } catch (err) {
-          if (err instanceof Error) {
-            console.warn(err);
+          // Rethrow system errors.
+          if (isSystemError(err)) {
+            throw err;
           }
 
           const errors = Array.isArray(err) ? err : [err];
@@ -393,8 +401,9 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       try {
         fieldLayout.validate(fieldValue, storeState.formInstance);
       } catch (err) {
-        if (err instanceof Error) {
-          console.warn(err);
+        // Rethrow system errors.
+        if (isSystemError(err)) {
+          throw err;
         }
 
         const errors = Array.isArray(err) ? err : [err];

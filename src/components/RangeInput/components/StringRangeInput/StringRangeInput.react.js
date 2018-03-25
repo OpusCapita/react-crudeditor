@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import {
-  InputGroup,
-  FormControl
-} from 'react-bootstrap';
+import { InputGroup, FormControl } from 'react-bootstrap';
+
 import './StringRangeInput.less';
 import { exists, noop } from '../../../lib';
 
@@ -72,12 +70,12 @@ export default class StringRangeInput extends PureComponent {
     this.setState(
       { isFocused: true },
       _ => this.props.onFocus(event)
-    )
+    );
 
   handleChange = field => ({ target: { value } }) => this.props.onChange({
     ...this.props.value,
-    [field]: value || null
-  })
+    [field]: value || ''
+  });
 
   render() {
     const { value, readOnly } = this.props;

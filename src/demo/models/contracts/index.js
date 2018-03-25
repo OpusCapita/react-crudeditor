@@ -21,7 +21,8 @@ import {
 
   VIEW_CREATE,
   VIEW_EDIT,
-  VIEW_SHOW
+  VIEW_SHOW,
+  VIEW_SEARCH
 } from '../../../crudeditor-lib';
 
 export const fields = {
@@ -68,7 +69,7 @@ export const fields = {
     'type': FIELD_TYPE_DECIMAL,
     'constraints': {
       'required': false,
-      'max': Number.MAX_SAFE_INTEGER
+      'max': 9999999
     }
   },
   'email': {
@@ -439,44 +440,46 @@ export default {
       formLayout: buildFormLayout(VIEW_SHOW)
     },
     spinner: CustomSpinner,
-    operations: /* istanbul ignore next */ (instance, {
-      name: viewName,
-      state: viewState
-    }) => [
-      ...(
-        viewName === VIEW_CREATE ?
-          [] :
-          [
-            {
-              name: 'createChild',
-              handler: _ => ({
-                name: VIEW_CREATE,
-                state: {
-                  predefinedFields: {
-                    parentContract: instance.contractId
-                  }
-                }
-              })
-            },
-            {
-              name: 'duplicate',
-              handler: _ => ({
-                name: VIEW_CREATE,
-                state: {
-                  predefinedFields: Object.keys(instance).
-                    filter(key => [
-                      'contractId',
-                      'createdBy',
-                      'createdOn',
-                      'changedBy',
-                      'changedOn'
-                    ].indexOf(key) === -1).
-                    reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
-                }
-              })
-            }
-          ]
-      )
-    ]
+    customOperations: /* istanbul ignore next */ instance => [{
+      handler: _ => ({
+        name: VIEW_CREATE,
+        state: {
+          predefinedFields: {
+            parentContract: instance.contractId
+          }
+        }
+      }),
+      ui: ({
+        name: viewName,
+        state: viewState
+      }) => ({
+        title: _ => 'createChild',
+        show: viewName !== VIEW_CREATE,
+        dropdown: viewName === VIEW_SEARCH
+      })
+    }, {
+      handler: _ => ({
+        name: VIEW_CREATE,
+        state: {
+          predefinedFields: Object.keys(instance).
+            filter(key => [
+              'contractId',
+              'createdBy',
+              'createdOn',
+              'changedBy',
+              'changedOn'
+            ].indexOf(key) === -1).
+            reduce((obj, key) => ({ ...obj, [key]: instance[key] }), {})
+        }
+      }),
+      ui: ({
+        name: viewName,
+        state: viewState
+      }) => ({
+        title: _ => 'duplicate',
+        show: viewName !== VIEW_CREATE,
+        dropdown: true
+      })
+    }]
   }
 };

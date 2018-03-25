@@ -79,14 +79,12 @@ export const
     ui: {
       spinner,
       search: {
-        standardOperations,
         resultFields,
         searchableFields
       }
     }
   }) => ({
     spinner,
-    standardOperations,
     entityName: modelMeta.name,
     fieldErrors: storeState.errors.fields,
     formFilter: storeState.formFilter,

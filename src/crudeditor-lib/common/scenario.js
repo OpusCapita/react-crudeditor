@@ -1,5 +1,7 @@
 import { take, cancel, call, fork, cancelled, put } from 'redux-saga/effects';
 
+import { isSystemError } from '../lib';
+
 import {
   VIEW_CREATE,
   VIEW_EDIT,
@@ -64,9 +66,9 @@ const scenarioSaga = /* istanbul ignore next */ function*({
           }
         });
       } catch (err) {
-        // Swallow all errors; do not console auxiliary CRUD Editor errors.
-        if (err instanceof Error) {
-          console.warn(err);
+        // Swallow custom errors.
+        if (isSystemError(err)) {
+          throw err;
         }
       }
     } else if (Object.keys(transitions.nonBlocking).indexOf(action.type) > -1) {
@@ -84,9 +86,9 @@ const scenarioSaga = /* istanbul ignore next */ function*({
             }
           });
         } catch (err) {
-          // Swallow all errors; do not console auxiliary CRUD Editor errors.
-          if (err instanceof Error) {
-            console.warn(err);
+          // Swallow custom errors.
+          if (isSystemError(err)) {
+            throw err;
           }
         }
       });

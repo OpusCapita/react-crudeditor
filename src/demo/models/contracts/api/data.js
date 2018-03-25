@@ -1456,6 +1456,7 @@ export default {
     "freightSurcharge": 34477
   },
   {
+    "_objectLabel": "2ndry exent",
     "contractId": "2ndry exent cavity graft",
     "extContractId": "Supplement Oculomotor Nrv with Autol Sub, Perc Endo Approach",
     "description": null,
@@ -10108,6 +10109,7 @@ export default {
     "freightSurcharge": 19266
   },
   {
+    "_objectLabel": "2ndry ocular",
     "contractId": "2ndry ocular imp insert",
     "extContractId": "Stereotactic Other Photon Radiosurgery of Diaphragm",
     "description": null,

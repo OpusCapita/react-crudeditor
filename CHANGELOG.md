@@ -1,3 +1,44 @@
+
+Release 1.0.2 Fri Mar 23 2018 13:38:09 GMT+0000 (UTC)
+=======================================================
+
+- Fixing a bug [#256](https://github.com/OpusCapita/react-crudeditor/issues/256) ([#257](https://github.com/OpusCapita/react-crudeditor/issues/257)) (Andrei Mourzenkov 31243790+estambakio-sc@users.noreply.github.com, 2018-03-23 16:30:27 +0300)
+- Fixing a bug ([#255](https://github.com/OpusCapita/react-crudeditor/issues/255)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-03-23 13:58:25 +0300)
+
+Release 1.0.1 Fri Mar 23 2018 09:19:23 GMT+0000 (UTC)
+=======================================================
+
+- Fix [#251](https://github.com/OpusCapita/react-crudeditor/issues/251) (Egor Stambakio stambakio@scand.com, 2018-03-23 12:11:51 +0300)
+
+Release 1.0.0 Fri Mar 23 2018 07:17:36 GMT+0000 (UTC)
+=======================================================
+
+- Updating version in package.json (Egor Stambakio stambakio@scand.com, 2018-03-23 08:49:03 +0300)
+- Issue 250/object assign polyfill ([#253](https://github.com/OpusCapita/react-crudeditor/issues/253)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-03-23 08:37:29 +0300)
+
+Release 0.0.47 Thu Mar 22 2018 13:36:18 GMT+0000 (UTC)
+=======================================================
+
+- [#13](https://github.com/OpusCapita/react-crudeditor/issues/13) Fixed IE11 UI bugs. ([#249](https://github.com/OpusCapita/react-crudeditor/issues/249)) (Egor Stambakio stamkov-sc@users.noreply.github.com, 2018-03-22 16:16:55 +0300)
+
+Release 0.0.46 Thu Mar 22 2018 11:12:09 GMT+0000 (UTC)
+=======================================================
+
+- (Issue [#150](https://github.com/OpusCapita/react-crudeditor/issues/150)) Sortable operations ([#246](https://github.com/OpusCapita/react-crudeditor/issues/246)) (Egor Stambakio amourzenkov-sc@users.noreply.github.com, 2018-03-22 13:57:06 +0300)
+- Fixed missing locale prop in Date inputs (Egor Stambakio stambakio@scand.com, 2018-03-19 09:05:25 +0300)
+- Added a missing Finnish error message, edited others to be clearer ([#248](https://github.com/OpusCapita/react-crudeditor/issues/248)) (GitHub aappo.salo@opuscapita.com, 2018-03-13 15:48:39 +0200)
+- Abstract bulk delete notification for labelless instances (Andrei Mourzenkov mourzenkov@scand.com, 2018-03-13 15:30:02 +0300)
+
+Release 0.0.45 Mon Mar 12 2018 09:50:20 GMT+0000 (UTC)
+=======================================================
+
+- Updated build config. (Dmitry Shienok dshienok@scand.com, 2018-03-12 12:42:12 +0300)
+- One new translation ([#245](https://github.com/OpusCapita/react-crudeditor/issues/245)) (Egor Stambakio aappo.salo@opuscapita.com, 2018-03-07 12:28:08 +0200)
+- Updated circleci config (Egor Stambakio stambakio@scand.com, 2018-03-07 12:24:59 +0300)
+- Updated base docker image used for build. (Egor Stambakio stambakio@scand.com, 2018-03-07 12:10:03 +0300)
+- Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (Egor Stambakio stambakio@scand.com, 2018-03-07 12:03:07 +0300)
+- Minor changes in circleci config (Egor Stambakio stambakio@scand.com, 2018-03-07 12:02:51 +0300)
+- Updating to a version to  0.0.45 (Andrei Mourzenkov mourzenkov@scand.com, 2018-03-02 13:07:26 +0300)
 ## [v0.0.44](Fri, 02 Mar 2018 10:06:31 GMT)
 
 ## [v0.0.43](Fri, 02 Mar 2018 09:44:13 GMT)

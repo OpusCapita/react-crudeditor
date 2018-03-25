@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash-es';
+
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { getLogicalKeyBuilder } from '../lib';
 import { VIEW_NAME } from './constants';
@@ -41,23 +43,13 @@ export const
 
   getViewModelData = wrapper(/* istanbul ignore next */ (storeState, {
     model: modelMeta,
-    ui: {
-      spinner,
-      edit: {
-        standardOperations = {}
-      }
-    }
+    ui: { spinner }
   }) => ({
     spinner,
-    standardOperations: Object.keys(standardOperations).reduce((config, opName) => ({
-      ...config,
-      [opName]: standardOperations[opName](storeState.persistentInstance)
-    }), {}),
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
     formattedInstance: storeState.formattedInstance,
-    formInstance: storeState.formInstance,
     fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
     instanceLabel: storeState.instanceLabel,
@@ -72,6 +64,7 @@ export const
     persistentInstance: storeState.persistentInstance,
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
+    unsavedChanges: storeState.formInstance && !isEqual(storeState.persistentInstance, storeState.formInstance),
     viewName: VIEW_NAME
   })
   );

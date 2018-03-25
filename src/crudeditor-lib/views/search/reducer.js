@@ -2,6 +2,7 @@ import { cloneDeep, isEqual } from 'lodash-es';
 import u from 'updeep';
 
 import { getLogicalKeyBuilder } from '../lib';
+import { isSystemError } from '../../lib';
 
 import {
   getDefaultSortField,
@@ -347,8 +348,9 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
         try {
           newFormValue = converter.parse({ value: fieldValue, i18n });
         } catch (err) {
-          if (err instanceof Error) {
-            console.warn(err);
+          // Rethrow system errors.
+          if (isSystemError(err)) {
+            throw err;
           }
 
           const errors = Array.isArray(err) ? err : [err];

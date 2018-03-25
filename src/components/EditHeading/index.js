@@ -1,20 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { isEqual } from 'lodash-es';
+import { Nav, NavItem, Col, Row, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
 import { getModelMessage, titleCase } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
-
-import {
-  Nav,
-  NavItem,
-  Col,
-  Row,
-  ButtonGroup,
-  Button,
-  Glyphicon
-} from 'react-bootstrap';
 
 export default class EditHeading extends PureComponent {
   static propTypes = {
@@ -24,8 +14,8 @@ export default class EditHeading extends PureComponent {
         instanceLabel: PropTypes.string,
         tabs: PropTypes.array,
         viewName: PropTypes.string.isRequired,
-        formInstance: PropTypes.object,
-        persistentInstance: PropTypes.object
+        persistentInstance: PropTypes.object,
+        unsavedChanges: PropTypes.bool
       }),
       actions: PropTypes.objectOf(PropTypes.func),
       uiConfig: PropTypes.object.isRequired
@@ -36,14 +26,7 @@ export default class EditHeading extends PureComponent {
     i18n: PropTypes.object.isRequired
   };
 
-  showConfirmDialog = _ => {
-    const {
-      formInstance,
-      persistentInstance
-    } = this.props.model.data;
-    // compare persistent and form instances to decide weither to show confirm box or not
-    return formInstance && !isEqual(formInstance, persistentInstance);
-  }
+  showConfirmDialog = _ => this.props.model.data.unsavedChanges;
 
   render() {
     const {

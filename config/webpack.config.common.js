@@ -5,13 +5,17 @@ const babelConfig = require('./babel-config')();
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   context: resolve(__dirname, '../src'),
+  entry: [
+    'core-js/fn/object/assign' // required for IE11 and react-notifications module
+  ],
   module: {
     rules: [
       {
         test: /\.(js|jsx|mjs)$/,
-        use: ['babel-loader'],
-        options: babelConfig,
         exclude: /node_modules/,
+        use: [
+          { loader: 'babel-loader', options: babelConfig }
+        ]
       },
       {
         test: /\.(png|jpg|jpeg|gif|ttf|eot)(\?[a-z0-9=&.]+)?$/,

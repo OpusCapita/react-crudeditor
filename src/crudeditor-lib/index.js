@@ -105,11 +105,7 @@ export default baseModelDefinition => {
         state: PropTypes.object
       }),
       onTransition: PropTypes.func,
-      externalOperations: PropTypes.arrayOf(PropTypes.shape({
-        title: PropTypes.string,
-        icon: PropTypes.string,
-        handler: PropTypes.func
-      })),
+      externalOperations: PropTypes.func,
       uiConfig: PropTypes.shape({
         headerLevel: PropTypes.number
       })
@@ -124,7 +120,7 @@ export default baseModelDefinition => {
     }
 
     static defaultProps = {
-      externalOperations: [],
+      externalOperations: _ => [],
       uiConfig: {}
     };
 

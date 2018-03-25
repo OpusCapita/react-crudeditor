@@ -135,7 +135,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       hasSectionsOrFields = hasSectionsOrFields || entry.section || entry.field;
 
       if (hasTabs && hasSectionsOrFields) {
-        throw new Error('formLayout must not have tabs together with sections/fields at top level');
+        throw new TypeError('formLayout must not have tabs together with sections/fields at top level');
       }
     });
 

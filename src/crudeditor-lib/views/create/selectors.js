@@ -31,7 +31,6 @@ export const
     activeEntries: storeState.activeTab || storeState.formLayout,
     activeTab: storeState.activeTab,
     entityName: modelMeta.name,
-    formInstance: storeState.formInstance,
     fieldErrors: storeState.errors.fields,
     fieldsMeta: modelMeta.fields,
     formattedInstance: storeState.formattedInstance,
@@ -39,5 +38,7 @@ export const
     isLoading: ([STATUS_REDIRECTING, STATUS_CREATING].indexOf(storeState.status) > -1),
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
+    unsavedChanges: storeState.formInstance &&
+      Object.keys(storeState.formInstance).some(key => storeState.formInstance[key] !== null),
     viewName: VIEW_NAME
   }));

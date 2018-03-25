@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  FormGroup,
-  Col,
-  ControlLabel,
-  Glyphicon,
-  FormControl,
-  OverlayTrigger,
-  Popover,
-  Label
-} from 'react-bootstrap';
+import { FormGroup, Col, ControlLabel, Glyphicon, OverlayTrigger, Popover, Label } from 'react-bootstrap';
 import { getModelMessage, titleCase } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import './styles.less';
@@ -114,46 +105,42 @@ export default class EditField extends Component {
             fieldLabel + (required ? '*' : '')
           }
         </Col>
-        <Col sm={12 - labelColumns} style={{ display: 'flex' }}>
-          <Col sm={1}>
-            {
-              fieldTooltip && (
-                <FormControl.Static className='text-right' style={{ cursor: 'pointer', verticalAlign: 'middle' }}>
-                  <OverlayTrigger
-                    trigger="click"
-                    rootClose={true}
-                    placement="top"
-                    overlay={
-                      <Popover
-                        id={`${fieldName}-tooltip`}
-                        title={<label>{fieldLabel}</label>}
-                      >
-                        <small className="text-muted">
-                          { fieldTooltip }
-                        </small>
-                      </Popover>
-                    }
-                  >
-                    <Glyphicon glyph="info-sign" className='text-muted'/>
-                  </OverlayTrigger>
-                </FormControl.Static>
+        <Col sm={12 - labelColumns}>
+          {
+            fieldTooltip && (
+              <span className="field-tooltip">
+                <OverlayTrigger
+                  trigger="click"
+                  rootClose={true}
+                  placement="top"
+                  overlay={
+                    <Popover
+                      id={`${fieldName}-tooltip`}
+                      title={<label>{fieldLabel}</label>}
+                    >
+                      <small className="text-muted">
+                        {fieldTooltip}
+                      </small>
+                    </Popover>
+                  }
+                >
+                  <Glyphicon glyph="info-sign" className='text-muted'/>
+                </OverlayTrigger>
+              </span>
+            )
+          }
+          <FieldInput {...fieldInputProps} />
+          {
+            !readOnly && toggledFieldErrors[fieldName] ?
+              (
+                <FieldErrorLabel errors={toggledFieldErrors[fieldName]} fieldName={fieldName}/>
+              ) :
+              (
+                <Label className="hint">
+                  <small className="text-muted">{fieldHint || '\u00A0'}</small>
+                </Label>
               )
-            }
-          </Col>
-          <Col sm={11}>
-            <FieldInput {...fieldInputProps} />
-            {
-              !readOnly && toggledFieldErrors[fieldName] ?
-                (
-                  <FieldErrorLabel errors={toggledFieldErrors[fieldName]} fieldName={fieldName}/>
-                ) :
-                (
-                  <Label className="hint">
-                    <small className="text-muted">{ fieldHint || '\u00A0' }</small>
-                  </Label>
-                )
-            }
-          </Col>
+          }
         </Col>
       </FormGroup>
     );

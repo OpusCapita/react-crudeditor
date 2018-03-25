@@ -2,6 +2,7 @@ import exceptions from './exceptions/fi';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "Uusi",
   "crudEditor.actions.tableHeader": "Toimenpiteitä",
   "crudEditor.cancel.button": "Peru",
   "crudEditor.close.button": "Sulje",

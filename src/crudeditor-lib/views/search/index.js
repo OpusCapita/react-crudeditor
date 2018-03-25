@@ -44,6 +44,10 @@ export const getUi = modelDefinition => {
     searchMeta.searchableFields = Object.keys(fieldsMeta).map(name => ({ name }));
   }
 
+  if (!searchMeta.standardOperations) {
+    searchMeta.standardOperations = {};
+  }
+
   checkSearchUi({ searchMeta, fieldsMeta });
 
   searchMeta.resultFields.

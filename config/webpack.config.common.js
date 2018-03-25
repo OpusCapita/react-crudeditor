@@ -1,6 +1,6 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
-const babelConfig = require('./babel-config')();
+const babelConfig = require('./babel-config');
 
 module.exports = {
   mode: process.env.NODE_ENV || 'production',

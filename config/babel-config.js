@@ -1,4 +1,4 @@
-module.exports = _ => ({
+module.exports = {
   babelrc: false,
   ignore: /node_modules\/(?!lodash-es)/,
   presets: [
@@ -35,4 +35,4 @@ module.exports = _ => ({
       plugins: ['istanbul']
     }
   }
-});
+};

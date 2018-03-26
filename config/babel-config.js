@@ -2,24 +2,17 @@ module.exports = {
   babelrc: false,
   ignore: /node_modules\/(?!lodash-es)/,
   presets: [
-    [
-      'env',
-      process.env.NODE_ENV === 'test' ? {
-        targets: {
-          node: 'current'
-        }
-      } : {
-        targets: {
-          browsers: [
-            'chrome >= 64',
-            'firefox ESR',
-            'ie >= 11',
-            'safari >= 11'
-          ]
-        },
-        modules: false
-      }
-    ],
+    ['env', {
+      targets: {
+        browsers: [
+          'chrome >= 64',
+          'firefox ESR',
+          'ie >= 11',
+          'safari >= 11'
+        ]
+      },
+      modules: process.env.NODE_ENV === 'test' ? 'commonjs' : false
+    }],
     'stage-3',
     'react'
   ],

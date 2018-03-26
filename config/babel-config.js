@@ -25,7 +25,7 @@ module.exports = {
   ],
   plugins: [
     // make sure that 'transform-decorators' comes before 'transform-class-properties'
-    'transform-decorators',
+    'transform-decorators-legacy',
     'transform-class-properties',
     ['transform-runtime', { 'polyfill': false }],
     'transform-export-extensions'

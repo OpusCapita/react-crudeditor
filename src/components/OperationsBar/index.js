@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'react-bootstrap';
 
 import Operation from './Operation';
 
-export default class OperationsBar extends PureComponent {
+export default class OperationsBar extends Component {
   static propTypes = {
     operations: PropTypes.arrayOf(PropTypes.shape({
       style: PropTypes.oneOf(['primary', 'default', 'link']),

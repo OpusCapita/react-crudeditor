@@ -49,7 +49,8 @@ const common = {
   "crudEditor.range.to": "asti",
   "crudEditor.confirm.action": "Vahvista",
   "crudEditor.search.showSearchForm": "Näytä hakukentät",
-  "crudEditor.search.hideSearchForm": "Piilota hakukentät"
+  "crudEditor.search.hideSearchForm": "Piilota hakukentät",
+  "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */
 

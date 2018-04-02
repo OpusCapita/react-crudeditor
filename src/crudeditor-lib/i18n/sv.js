@@ -45,7 +45,8 @@ const common = {
   "crudEditor.export.button": "Exportera",
   "crudEditor.found.items.message": "{count} artikel/artiklar hittades",
   "crudEditor.range.from": "fr\u00e5n",
-  "crudEditor.range.to": "till"
+  "crudEditor.range.to": "till",
+  "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */
 

@@ -2,56 +2,40 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Pagination, FormControl, Button } from 'react-bootstrap';
 
-const NEXT_BUTTON = (<span className="glyphicon glyphicon-forward"/>);
-const PREV_BUTTON = (<span className="glyphicon glyphicon-backward"/>);
-
 export default class PaginationPanel extends PureComponent {
   static propTypes = {
     max: PropTypes.number.isRequired,
     totalCount: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
-    onPaginate: PropTypes.func.isRequired
+    onPaginate: PropTypes.func.isRequired,
+    gotoPage: PropTypes.string.isRequired,
+    onGotoPageChange: PropTypes.func.isRequired
   };
 
   static contextTypes = {
     i18n: PropTypes.object.isRequired
   };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      pageNumber: ''
-    };
-  }
+  handleGoToPage = _ => {
+    const { totalCount, max, onPaginate, gotoPage, onGotoPageChange } = this.props;
+    let page = parseInt(gotoPage, 10); // 10 is a radix.
 
-  onSelect = (eventKey) => {
-    const radix = 10;
-    let currentPage = Number.parseInt(eventKey, radix);
-    if (!isNaN(currentPage) && currentPage >= 1) {
-      const { totalCount, max } = this.props;
-      let maxPage = Math.round(Math.ceil(totalCount / max));
-      if (currentPage > maxPage) {
-        currentPage = maxPage
-      }
-      this.props.onPaginate(currentPage);
+    if (!page || page < 0) {
+      onGotoPageChange('');
+      return;
     }
-    this.setState({ pageNumber: '' })
-  };
 
-  handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      this.onSelect(this.state.pageNumber);
+    let maxPage = Math.ceil(totalCount / max);
+
+    if (page > maxPage) {
+      page = maxPage;
     }
+
+    onPaginate(page);
   };
 
   render() {
-    const {
-      totalCount,
-      max,
-      offset,
-      onPaginate
-    } = this.props;
+    const { totalCount, max, offset, onPaginate, gotoPage, onGotoPageChange } = this.props;
 
     return (
       <div>
@@ -60,8 +44,8 @@ export default class PaginationPanel extends PureComponent {
             activePage={offset / max + 1}
             onSelect={onPaginate}
             items={Math.ceil(totalCount / max)}
-            prev={PREV_BUTTON}
-            next={NEXT_BUTTON}
+            prev={<span className="glyphicon glyphicon-backward" />}
+            next={<span className="glyphicon glyphicon-forward" />}
             className="crud--search-pagination-panel__pagination"
             maxButtons={5}
             boundaryLinks={true}
@@ -70,15 +54,14 @@ export default class PaginationPanel extends PureComponent {
         <div className="pull-left" style={{ marginRight: '1em' }}>
           <FormControl
             type="text"
-            className="form-control"
             style={{ width: '50px', textAlign: 'center' }}
-            onChange={(e) => { this.setState({ pageNumber: e.target.value }) }}
-            onKeyPress={this.handleKeyPress}
-            value={this.state.pageNumber}
+            onChange={({ target }) => onGotoPageChange(target.value)}
+            onKeyPress={({ key }) => key === 'Enter' && this.handleGoToPage()}
+            value={gotoPage}
           />
         </div>
         <div className="pull-left">
-          <Button className="btn btn-default" onClick={() => { this.onSelect(this.state.pageNumber) }}>
+          <Button onClick={this.handleGoToPage}>
             {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
           </Button>
         </div>

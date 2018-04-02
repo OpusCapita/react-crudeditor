@@ -122,5 +122,6 @@ export const
     },
     status: storeState.status,
     totalCount: _getTotalCount(storeState),
-    hideSearchForm: storeState.hideSearchForm
+    hideSearchForm: storeState.hideSearchForm,
+    gotoPage: storeState.gotoPage
   }));

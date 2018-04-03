@@ -15,16 +15,7 @@ export default class PaginationPanel extends PureComponent {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (this.activePage() !== this.activePage(nextProps)) {
-      this.form.elements['gotoPage'].value = '';
-    }
-  }
-
-  activePage = (props = this.props) => props.offset / props.max + 1;
-
-  handleSelect = page => {
     this.form.elements['gotoPage'].value = '';
-    this.props.onPaginate(page);
   }
 
   handleGoToPage = event => {
@@ -53,14 +44,14 @@ export default class PaginationPanel extends PureComponent {
   formRef = el => this.form = el; // eslint-disable-line no-return-assign
 
   render() {
-    const { totalCount, max } = this.props;
+    const { totalCount, max, offset, onPaginate } = this.props;
 
     return (
       <div>
         <div className="pull-left" style={{ marginRight: '1em' }}>
           <Pagination
-            activePage={this.activePage()}
-            onSelect={this.handleSelect}
+            activePage={offset / max + 1}
+            onSelect={onPaginate}
             items={Math.ceil(totalCount / max)}
             prev={<span className="glyphicon glyphicon-backward" />}
             next={<span className="glyphicon glyphicon-forward" />}

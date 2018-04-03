@@ -23,6 +23,7 @@ import {
   toggleSelected,
   toggleSelectedAll,
   updateFormFilter,
+  updateGotoPage,
   toggleSearchForm
 } from './actions';
 
@@ -156,6 +157,7 @@ export default connect(
     toggleSelected,
     toggleSelectedAll,
     updateFormFilter,
+    updateGotoPage,
     softRedirectView,
     toggleSearchForm
   },

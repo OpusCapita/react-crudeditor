@@ -16,7 +16,13 @@ export default class PaginationPanel extends PureComponent {
     i18n: PropTypes.object.isRequired
   };
 
-  handleGoToPage = _ => {
+  handleGotoPageChange = ({
+    target: { value }
+  }) => this.props.onGotoPageChange(value);
+
+  handleGotoPageKeyPress = ({ key }) => key === 'Enter' && this.handleGotoPageClick();
+
+  handleGotoPageClick = _ => {
     const { totalCount, max, onPaginate, gotoPage, onGotoPageChange } = this.props;
     let page = parseInt(gotoPage, 10); // 10 is a radix.
 
@@ -35,7 +41,7 @@ export default class PaginationPanel extends PureComponent {
   };
 
   render() {
-    const { totalCount, max, offset, onPaginate, gotoPage, onGotoPageChange } = this.props;
+    const { totalCount, max, offset, onPaginate, gotoPage } = this.props;
 
     return (
       <div>
@@ -55,13 +61,13 @@ export default class PaginationPanel extends PureComponent {
           <FormControl
             type="text"
             style={{ width: '50px', textAlign: 'center' }}
-            onChange={({ target }) => onGotoPageChange(target.value)}
-            onKeyPress={({ key }) => key === 'Enter' && this.handleGoToPage()}
+            onChange={this.handleGotoPageChange}
+            onKeyPress={this.handleGotoPageKeyPress}
             value={gotoPage}
           />
         </div>
         <div className="pull-left">
-          <Button onClick={this.handleGoToPage}>
+          <Button onClick={this.handleGotoPageClick}>
             {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
           </Button>
         </div>

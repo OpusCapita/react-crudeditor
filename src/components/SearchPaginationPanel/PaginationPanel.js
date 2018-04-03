@@ -20,13 +20,13 @@ export default class PaginationPanel extends PureComponent {
     target: { value }
   }) => this.props.onGotoPageChange(value);
 
-  handleGotoPageKeyPress = ({ key }) => key === 'Enter' && this.handleGotoPageClick();
-
-  handleGotoPageClick = _ => {
+  handleGoToPage = event => {
+    event.preventDefault(); // prevent reload on submit
+    event.stopPropagation(); // in case we use component in outer 'form' element
     const { totalCount, max, onPaginate, gotoPage, onGotoPageChange } = this.props;
     let page = parseInt(gotoPage, 10); // 10 is a radix.
 
-    if (!page || page < 0) {
+    if (!page || page < 0 || page !== Number(gotoPage)) {
       onGotoPageChange('');
       return;
     }
@@ -57,20 +57,25 @@ export default class PaginationPanel extends PureComponent {
             boundaryLinks={true}
           />
         </div>
-        <div className="pull-left" style={{ marginRight: '1em' }}>
-          <FormControl
-            type="text"
-            style={{ width: '50px', textAlign: 'center' }}
-            onChange={this.handleGotoPageChange}
-            onKeyPress={this.handleGotoPageKeyPress}
-            value={gotoPage}
-          />
-        </div>
-        <div className="pull-left">
-          <Button onClick={this.handleGotoPageClick}>
-            {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
-          </Button>
-        </div>
+        <form
+          className="pull-left"
+          onSubmit={this.handleGoToPage}
+        >
+          <div className="pull-left" style={{ marginRight: '1em' }}>
+            <input
+              className='form-control'
+              name='gotoPage'
+              style={{ width: '50px', textAlign: 'center' }}
+              onChange={this.handleGotoPageChange}
+              value={gotoPage}
+            />
+          </div>
+          <div className="pull-left">
+            <button className='btn btn-default' type='submit'>
+              {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
+            </button>
+          </div>
+        </form>
       </div>
     );
   }

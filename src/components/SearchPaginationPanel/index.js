@@ -11,8 +11,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
         pageParams: PropTypes.shape({
           max: PropTypes.number
         }),
-        totalCount: PropTypes.number,
-        gotoPage: PropTypes.string
+        totalCount: PropTypes.number
       }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
@@ -31,14 +30,12 @@ export default class SearchResultPaginationPanel extends PureComponent {
   render() {
     const {
       data: {
-        gotoPage,
         totalCount,
         pageParams: {
           max,
           offset
         }
-      },
-      actions: { updateGotoPage }
+      }
     } = this.props.model;
 
     const { i18n } = this.context;
@@ -76,8 +73,6 @@ export default class SearchResultPaginationPanel extends PureComponent {
               max={max}
               offset={offset}
               onPaginate={this.handlePaginate}
-              gotoPage={gotoPage}
-              onGotoPageChange={updateGotoPage}
             />
           </div>
         }

@@ -1,7 +1,6 @@
 import {
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
-  GOTO_PAGE_UPDATE,
   INSTANCES_SEARCH,
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
@@ -37,11 +36,6 @@ export const
       name,
       value
     }
-  }),
-
-  updateGotoPage = /* istanbul ignore next */ page => ({
-    type: GOTO_PAGE_UPDATE,
-    payload: { page }
   }),
 
   resetFormFilter = _ => ({

@@ -48,7 +48,7 @@ const common = {
   "crudEditor.range.from": "von",
   "crudEditor.range.to": "bis",
   "crudEditor.confirm.action": "Bestätigen",
-  "crudEditor.pagination.goToPage": "Gehe zu Seite"
+  "crudEditor.pagination.goToPage": "Öffnen"
 }
 /* eslint-enable max-len */
 

@@ -48,7 +48,7 @@ const common = {
   "crudEditor.range.to": "\u043F\u043E",
   "crudEditor.search.showSearchForm": "Показать форму поиска",
   "crudEditor.search.hideSearchForm": "Скрыть форму поиска",
-  "crudEditor.pagination.goToPage": "Go"
+  "crudEditor.pagination.goToPage": "Перейти"
 }
 /* eslint-enable max-len */
 

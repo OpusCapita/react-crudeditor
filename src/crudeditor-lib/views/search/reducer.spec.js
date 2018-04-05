@@ -76,7 +76,8 @@ describe('search view reducer', () => {
           status: 'uninitialized',
           hideSearchForm: false,
           resultInstances: undefined,
-          totalCount: undefined
+          totalCount: undefined,
+          gotoPage: ''
         }
       )
     });

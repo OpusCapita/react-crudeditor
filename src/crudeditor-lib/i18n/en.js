@@ -49,7 +49,8 @@ const common = {
   "crudEditor.range.to": "to",
   "crudEditor.confirm.action": "Confirm",
   "crudEditor.search.showSearchForm": "Show search form",
-  "crudEditor.search.hideSearchForm": "Hide search form"
+  "crudEditor.search.hideSearchForm": "Hide search form",
+  "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */
 

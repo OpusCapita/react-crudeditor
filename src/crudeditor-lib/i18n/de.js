@@ -47,7 +47,8 @@ const common = {
   "crudEditor.found.items.message": "{count} Datens\u00E4tze gefunden",
   "crudEditor.range.from": "von",
   "crudEditor.range.to": "bis",
-  "crudEditor.confirm.action": "Bestätigen"
+  "crudEditor.confirm.action": "Bestätigen",
+  "crudEditor.pagination.goToPage": "Öffnen"
 }
 /* eslint-enable max-len */
 

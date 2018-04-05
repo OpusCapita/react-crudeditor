@@ -11,7 +11,8 @@ export default class SearchResultPaginationPanel extends PureComponent {
         pageParams: PropTypes.shape({
           max: PropTypes.number
         }),
-        totalCount: PropTypes.number
+        totalCount: PropTypes.number,
+        gotoPage: PropTypes.string
       }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func)
     }).isRequired
@@ -29,12 +30,16 @@ export default class SearchResultPaginationPanel extends PureComponent {
 
   render() {
     const {
-      totalCount,
-      pageParams: {
-        max,
-        offset
-      }
-    } = this.props.model.data;
+      data: {
+        gotoPage,
+        totalCount,
+        pageParams: {
+          max,
+          offset
+        }
+      },
+      actions: { updateGotoPage }
+    } = this.props.model;
 
     const { i18n } = this.context;
 
@@ -50,7 +55,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
             <Dropdown.Toggle>
               {i18n.getMessage('crudEditor.search.resultsPerPage')}
               {':\u0020'}
-              <b>{max !== -1 ? max : i18n.getMessage('crudEditor.search.all')}</b>
+              <b>{max === -1 ? i18n.getMessage('crudEditor.search.all') : max}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <MenuItem eventKey={-1} active={max === -1}>All</MenuItem>
@@ -71,6 +76,8 @@ export default class SearchResultPaginationPanel extends PureComponent {
               max={max}
               offset={offset}
               onPaginate={this.handlePaginate}
+              gotoPage={gotoPage}
+              onGotoPageChange={updateGotoPage}
             />
           </div>
         }

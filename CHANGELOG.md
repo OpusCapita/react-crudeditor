@@ -1,4 +1,13 @@
 
+Release 1.0.3 Thu Apr 05 2018 08:24:16 GMT+0000 (UTC)
+=======================================================
+
+- Fixed [#264](https://github.com/OpusCapita/react-crudeditor/issues/264) ([#265](https://github.com/OpusCapita/react-crudeditor/issues/265)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-04-05 11:02:07 +0300)
+- Extending page navigation bar with manual page input. [#262](https://github.com/OpusCapita/react-crudeditor/issues/262) ([#263](https://github.com/OpusCapita/react-crudeditor/issues/263)) (GitHub dsanko-sc@users.noreply.github.com, 2018-04-05 09:57:58 +0300)
+- Fixing GH credentials discovery in gh-pages deploy script. (Egor Stambakio stambakio@scand.com, 2018-04-04 09:48:09 +0300)
+- A render-prop component should not be PureComponent (Andrei Mourzenkov mourzenkov@scand.com, 2018-03-29 08:29:24 +0300)
+- A couple of small changes to Finnish and English UI texts. Issue [#260](https://github.com/OpusCapita/react-crudeditor/issues/260) ([#261](https://github.com/OpusCapita/react-crudeditor/issues/261)) (GitHub aappo.salo@opuscapita.com, 2018-03-27 10:04:44 +0300)
+
 Release 1.0.2 Fri Mar 23 2018 13:38:09 GMT+0000 (UTC)
 =======================================================
 

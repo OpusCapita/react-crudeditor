@@ -32,7 +32,8 @@ module.exports = {
           { loader: 'css-loader', options: { importLoaders: 1 } },
           { loader: 'less-loader', options: { sourceMap: true } },
           { loader: 'postcss-loader', options: {
-            plugins: (loader) => [
+            ident: 'postcss',
+            plugins: loader => [
               require('precss')(),
               require('autoprefixer')()
             ]

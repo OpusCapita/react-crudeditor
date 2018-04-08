@@ -19,6 +19,7 @@ import {
 
   FORM_FILTER_RESET,
   FORM_FILTER_UPDATE,
+  GOTO_PAGE_UPDATE,
 
   INSTANCES_SEARCH_FAIL,
   INSTANCES_SEARCH_REQUEST,
@@ -135,6 +136,7 @@ export const buildDefaultStoreState = modelDefinition => ({
     max: DEFAULT_MAX,
     offset: DEFAULT_OFFSET
   },
+  gotoPage: '',
   resultInstances: undefined, // XXX: must be undefined until first extraction.
   selectedInstances: [], // XXX: must be a sub-array of refs from resultInstances.
   totalCount: undefined,
@@ -213,6 +215,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
       // totalCount, filter, order, sort, etc. must remain after returning from other Views.
       newStoreStateSlice.formFilter = u.constant(cloneDeep(storeState.resultFilter));
 
+      newStoreStateSlice.gotoPage = '';
       newStoreStateSlice.selectedInstances = [];
 
       newStoreStateSlice.formattedFilter = u.constant(buildFormattedFilter({
@@ -234,6 +237,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
 
     } else if (type === INSTANCES_DELETE_SUCCESS) {
       const { instances } = payload;
+      newStoreStateSlice.gotoPage = '';
       newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
       newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
       newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
@@ -285,6 +289,8 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
       } else {
         // filter is formFilter so there is no need to reassign formFilter and formattedFilter.
 
+        newStoreStateSlice.gotoPage = '';
+
         if (!isEqual(storeState.resultFilter, storeState.formFilter)) {
           newStoreStateSlice.resultFilter = u.constant(cloneDeep(storeState.formFilter));
         }
@@ -322,6 +328,12 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     } else if (type === FORM_FILTER_RESET) {
       newStoreStateSlice.formattedFilter = u.constant(buildDefaultFormattedFilter(modelDefinition));
       newStoreStateSlice.formFilter = u.constant(buildDefaultParsedFilter(modelDefinition.ui.search.searchableFields));
+
+    // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+
+    } else if (type === GOTO_PAGE_UPDATE) {
+      const { page } = payload;
+      newStoreStateSlice.gotoPage = page;
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 

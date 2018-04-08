@@ -9,8 +9,8 @@ const common = {
   "crudEditor.duplicate.header": "Duplicate {modelName}",
   "crudEditor.cancel.button": "Cancel",
   "crudEditor.save.button": "Save",
-  "crudEditor.saveAndNew.button": "Save and New",
-  "crudEditor.saveAndNext.button": "Save and Next",
+  "crudEditor.saveAndNew.button": "Save and create new",
+  "crudEditor.saveAndNext.button": "Save and move to next",
   "crudEditor.search.header": "Search {payload}",
   "crudEditor.search.button": "Search",
   "crudEditor.reset.button": "Reset",
@@ -49,7 +49,8 @@ const common = {
   "crudEditor.range.to": "to",
   "crudEditor.confirm.action": "Confirm",
   "crudEditor.search.showSearchForm": "Show search form",
-  "crudEditor.search.hideSearchForm": "Hide search form"
+  "crudEditor.search.hideSearchForm": "Hide search form",
+  "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */
 

@@ -4,7 +4,7 @@ import exceptions from './exceptions/fi';
 const common = {
   "crudEditor.new.title": "Uusi",
   "crudEditor.actions.tableHeader": "Toimenpiteitä",
-  "crudEditor.cancel.button": "Peru",
+  "crudEditor.cancel.button": "Peruuta",
   "crudEditor.close.button": "Sulje",
   "crudEditor.create.button": "Luo",
   "crudEditor.create.header": "Luo {modelName}",
@@ -49,7 +49,8 @@ const common = {
   "crudEditor.range.to": "asti",
   "crudEditor.confirm.action": "Vahvista",
   "crudEditor.search.showSearchForm": "Näytä hakukentät",
-  "crudEditor.search.hideSearchForm": "Piilota hakukentät"
+  "crudEditor.search.hideSearchForm": "Piilota hakukentät",
+  "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */
 

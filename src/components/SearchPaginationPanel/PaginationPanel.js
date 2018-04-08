@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Pagination } from 'react-bootstrap';
 
@@ -8,41 +7,76 @@ export default class PaginationPanel extends PureComponent {
     max: PropTypes.number.isRequired,
     totalCount: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
-    onPaginate: PropTypes.func.isRequired
-  }
+    onPaginate: PropTypes.func.isRequired,
+    gotoPage: PropTypes.string.isRequired,
+    onGotoPageChange: PropTypes.func.isRequired
+  };
 
-  componentDidMount() {
-    // set proper icons for edge arrows
-    const p = findDOMNode(this);
+  static contextTypes = {
+    i18n: PropTypes.object.isRequired
+  };
 
-    const backward = p.firstChild.firstChild.firstChild;
-    backward.className = 'glyphicon glyphicon-backward';
-    backward.innerHTML = '';
+  handleGotoPageChange = ({
+    target: { value }
+  }) => this.props.onGotoPageChange(value);
 
-    const forward = p.lastChild.firstChild.firstChild;
-    forward.className = 'glyphicon glyphicon-forward';
-    forward.innerHTML = '';
-  }
+  handleGoToPage = event => {
+    event.preventDefault(); // prevent reload on submit
+    event.stopPropagation(); // in case we use component in outer 'form' element
+    const { totalCount, max, onPaginate, gotoPage, onGotoPageChange } = this.props;
+    let page = parseInt(gotoPage, 10); // 10 is a radix.
+
+    if (!page || page < 0 || page !== Number(gotoPage)) {
+      onGotoPageChange('');
+      return;
+    }
+
+    let maxPage = Math.ceil(totalCount / max);
+
+    if (page > maxPage) {
+      page = maxPage;
+    }
+
+    onPaginate(page);
+  };
 
   render() {
-    const {
-      totalCount,
-      max,
-      offset,
-      onPaginate
-    } = this.props;
+    const { totalCount, max, offset, onPaginate, gotoPage } = this.props;
 
     return (
-      <Pagination
-        activePage={offset / max + 1}
-        onSelect={onPaginate}
-        items={Math.ceil(totalCount / max)}
-        className="crud--search-pagination-panel__pagination"
-        maxButtons={5}
-        boundaryLinks={true}
-        prev={true}
-        next={true}
-      />
+      <div>
+        <div className="pull-left" style={{ marginRight: '1em' }}>
+          <Pagination
+            activePage={offset / max + 1}
+            onSelect={onPaginate}
+            items={Math.ceil(totalCount / max)}
+            prev={<span className="glyphicon glyphicon-backward" />}
+            next={<span className="glyphicon glyphicon-forward" />}
+            className="crud--search-pagination-panel__pagination"
+            maxButtons={5}
+            boundaryLinks={true}
+          />
+        </div>
+        <form
+          className="pull-left"
+          onSubmit={this.handleGoToPage}
+        >
+          <div className="pull-left" style={{ marginRight: '1em' }}>
+            <input
+              className='form-control'
+              name='gotoPage'
+              style={{ width: '50px', textAlign: 'center' }}
+              onChange={this.handleGotoPageChange}
+              value={gotoPage}
+            />
+          </div>
+          <div className="pull-left">
+            <button className='btn btn-default' type='submit'>
+              {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

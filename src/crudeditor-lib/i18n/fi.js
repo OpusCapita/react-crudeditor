@@ -26,7 +26,7 @@ const common = {
   "crudEditor.objectSaved.message": "Rivi luotu.",
   "crudEditor.objectUpdated.message": "Rivi päivitetty.",
   "crudEditor.objectsDeleteFailed.message": "Rivien {0} poistaminen epäonnistui, koska ne ovat jo käytössä.",
-  "crudEditor.objectsDeleteIsNoAllowed.message": "Et voi poistaa joitakin rivejä turvallisuusrajoitteista johtuen.",
+  "crudEditor.objectsDeleteIsNoAllowed.message": "Joitakin rivejä ei voi poistaa turvallisuusrajoitteista johtuen.",
   "crudEditor.objectsDeleted.message": "Rivit {labels} poistettu.",
   "crudEditor.refresh.button": "Päivitä",
   "crudEditor.reset.button": "Tyhjennä",
@@ -50,7 +50,7 @@ const common = {
   "crudEditor.confirm.action": "Vahvista",
   "crudEditor.search.showSearchForm": "Näytä hakukentät",
   "crudEditor.search.hideSearchForm": "Piilota hakukentät",
-  "crudEditor.pagination.goToPage": "Go"
+  "crudEditor.pagination.goToPage": "Siirry"
 }
 /* eslint-enable max-len */
 

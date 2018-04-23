@@ -14,6 +14,6 @@ module.exports = merge(common, {
   externals: [
     nodeExternals({
       modulesFromFile: true
-    }),
+    })
   ]
 });

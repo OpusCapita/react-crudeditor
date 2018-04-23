@@ -2,8 +2,11 @@ const { resolve } = require('path');
 const webpack = require('webpack');
 const babelConfig = require('./babel-config');
 
+const mode = process.env.NODE_ENV || 'production';
+const devMode = mode === 'development';
+
 module.exports = {
-  mode: process.env.NODE_ENV || 'production',
+  mode: mode,
   context: resolve(__dirname, '../src'),
   entry: [
     'core-js/fn/object/assign' // required for IE11 and react-notifications module
@@ -11,7 +14,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|mjs)$/,
+        test: /\.(jsx?|mjs)$/,
         exclude: /node_modules/,
         use: [
           { loader: 'babel-loader', options: babelConfig }
@@ -28,15 +31,25 @@ module.exports = {
       {
         test: /\.(css|less)$/,
         use: [
-          'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'less-loader', options: { sourceMap: true } },
+          { loader: 'style-loader', options: {
+            sourceMap: devMode,
+            convertToAbsoluteUrls: devMode,
+            hmr: devMode
+          }},
+          { loader: 'css-loader', options: {
+            sourceMap: devMode,
+            importLoaders: 1
+          }},
           { loader: 'postcss-loader', options: {
             ident: 'postcss',
-            plugins: loader => [
+            sourceMap: devMode && 'inline',
+            plugins: [
               require('precss')(),
               require('autoprefixer')()
             ]
+          }},
+          { loader: 'less-loader', options: {
+            sourceMap: devMode
           }}
         ]
       },

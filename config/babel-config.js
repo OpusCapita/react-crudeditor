@@ -3,6 +3,10 @@ module.exports = {
   ignore: /node_modules\/(?!lodash-es)/,
   presets: [
     ['env', {
+      // TODO: remove "targets" key after babel 7.0 is out
+      // because external config in package.json or browserslist will be supported in 7.0
+      // For more details see
+      // https://github.com/browserslist/browserslist
       targets: {
         browsers: [
           'chrome >= 64',

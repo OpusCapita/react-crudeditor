@@ -32,6 +32,7 @@ module.exports = {
         test: /\.(css|less)$/,
         use: [
           { loader: 'style-loader', options: {
+            singleton: false, // As a recomendation in "style-loader" GitHub repo's issue #312.
             sourceMap: devMode,
             convertToAbsoluteUrls: devMode,
             hmr: devMode

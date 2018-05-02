@@ -61,7 +61,7 @@ Operation.propTypes = {
   dropdown: PropTypes.bool,
   size: PropTypes.oneOf(['small', 'medium']),
   style: PropTypes.oneOf(['primary', 'default', 'link']),
-  confirm: PropTypes.exact({
+  confirm: PropTypes.shape({
     message: PropTypes.string.isRequired,
     textConfirm: PropTypes.string.isRequired,
     textCancel: PropTypes.string.isRequired

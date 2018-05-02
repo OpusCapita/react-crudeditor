@@ -17,8 +17,8 @@ describe("DateRangeCellRender", _ => {
       name: "dateRange",
       instance: {
         dateRange: {
-          from: '2008-09-01',
-          to: '2010-09-19'
+          from: new Date('2008-09-01'),
+          to: new Date('2010-09-19')
         }
       }
     };
@@ -66,7 +66,7 @@ describe("DateRangeCellRender", _ => {
       name: "dateRange",
       instance: {
         dateRange: {
-          from: '2008-09-01'
+          from: new Date('2008-09-01')
         }
       }
     };
@@ -82,7 +82,7 @@ describe("DateRangeCellRender", _ => {
       name: "dateRange",
       instance: {
         dateRange: {
-          to: '2008-09-01'
+          to: new Date('2008-09-01')
         }
       }
     };

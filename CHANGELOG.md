@@ -1,4 +1,12 @@
 
+Release 1.1.1 Wed May 02 2018 11:59:13 GMT+0000 (UTC)
+=======================================================
+
+- Replace some of React's PropTypes for compatibility with React 15.4 (Andrei Mourzenkov mourzenkov@scand.com, 2018-05-02 12:57:48 +0300)
+- Adding an issue template file [ci skip] (Egor Stambakio egor.stambakio@opuscapita.com, 2018-05-02 12:19:06 +0300)
+- New Finnish translation ([#267](https://github.com/OpusCapita/react-crudeditor/issues/267)) (GitHub aappo.salo@opuscapita.com, 2018-04-09 10:54:41 +0300)
+- Update index.js (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-04-09 10:47:35 +0300)
+
 Release 1.1.0 Thu Apr 05 2018 08:29:30 GMT+0000 (UTC)
 =======================================================
 

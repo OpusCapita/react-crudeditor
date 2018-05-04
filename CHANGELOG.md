@@ -1,4 +1,9 @@
 
+Release 1.1.2 Fri May 04 2018 12:41:22 GMT+0300 (MSK)
+=======================================================
+
+- (issue [#244](https://github.com/OpusCapita/react-crudeditor/issues/244)) Migrate to Webpack 4 ([#259](https://github.com/OpusCapita/react-crudeditor/issues/259)) (GitHub amourzenkov-sc@users.noreply.github.com, 2018-05-04 10:20:47 +0300)
+
 Release 1.1.1 Wed May 02 2018 11:59:13 GMT+0000 (UTC)
 =======================================================
 

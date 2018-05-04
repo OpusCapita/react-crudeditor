@@ -4,7 +4,9 @@ const common = require('./webpack.config.common');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = merge(common, {
-  entry: './crudeditor-lib/index.js',
+  entry: [
+    './crudeditor-lib/index.js'
+  ],
   output: {
     path: resolve(__dirname, '../lib'),
     filename: 'index.js',

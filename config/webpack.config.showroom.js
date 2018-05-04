@@ -1,5 +1,4 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.common');
@@ -10,7 +9,9 @@ module.exports = merge(common, {
       template: '../www/index.html',
     })
   ],
-  entry: '../www/index-page.js',
+  entry: [
+    '../www/index-page.js'
+  ],
   output: {
     path: resolve(__dirname, '../.gh-pages-tmp'),
     filename: 'bundle.js'

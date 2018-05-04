@@ -1,5 +1,4 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.common');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -11,7 +10,9 @@ module.exports = merge(common, {
       inject: "body"
     })
   ],
-  entry: './demo/client/index.js',
+  entry: [
+    './demo/client/index.js'
+  ],
   devtool: 'inline-source-map',
   output: {
     path: resolve(__dirname, '../public'),

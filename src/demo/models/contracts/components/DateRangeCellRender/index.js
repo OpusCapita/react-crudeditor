@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const date2str = (date, i18n) => i18n.formatDate(typeof date === 'string' ?
-  new Date(Date.parse(date)) :
+  new Date(date) :
   date
 );
 

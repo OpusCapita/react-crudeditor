@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash-es';
 
 export const buildRangeUiType = /* istanbul ignore next */ baseUiType => ({
   get EMPTY_VALUE() {

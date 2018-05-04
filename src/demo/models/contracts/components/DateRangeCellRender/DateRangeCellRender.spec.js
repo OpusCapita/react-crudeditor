@@ -27,7 +27,9 @@ describe("DateRangeCellRender", _ => {
     });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
     expect(wrapper.find('span').text()).to.equal(
-      i18n.formatDate(props.instance.dateRange.from) + ' - ' + i18n.formatDate(props.instance.dateRange.to)
+      i18n.formatDate(new Date(props.instance.dateRange.from)) +
+      ' - ' +
+      i18n.formatDate(new Date(props.instance.dateRange.to))
     );
   });
 
@@ -36,8 +38,8 @@ describe("DateRangeCellRender", _ => {
       name: "dateRange",
       instance: {
         dateRange: {
-          from: new Date(Date.parse('2008-09-01')),
-          to: new Date(Date.parse('2010-09-19'))
+          from: new Date('2008-09-01'),
+          to: new Date('2010-09-19')
         }
       }
     };
@@ -74,7 +76,7 @@ describe("DateRangeCellRender", _ => {
       context
     });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal(i18n.formatDate(props.instance.dateRange.from) + ' - ...');
+    expect(wrapper.find('span').text()).to.equal(i18n.formatDate(new Date(props.instance.dateRange.from)) + ' - ...');
   });
 
   it("should render 'to' if 'from' is missing", () => {
@@ -90,6 +92,6 @@ describe("DateRangeCellRender", _ => {
       context
     });
     expect(wrapper.exists()).to.be.true; // eslint-disable-line no-unused-expressions
-    expect(wrapper.find('span').text()).to.equal('... - ' + i18n.formatDate(props.instance.dateRange.to));
+    expect(wrapper.find('span').text()).to.equal('... - ' + i18n.formatDate(new Date(props.instance.dateRange.to)));
   });
 });

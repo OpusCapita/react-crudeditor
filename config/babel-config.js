@@ -1,39 +1,35 @@
-const getBabelConfig = _ => {
-  const mode = process.env.NODE_ENV;
-
-  const envPresetConfig = {
-    "targets": {
-      "browsers": ["last 2 versions", "ie >= 11", "safari >= 7", "Firefox ESR"]
+module.exports = {
+  babelrc: false,
+  ignore: /node_modules\/(?!lodash-es)/,
+  presets: [
+    ['env', {
+      // TODO: remove "targets" key after babel 7.0 is out
+      // because external config in package.json or browserslist will be supported in 7.0
+      // For more details see
+      // https://github.com/browserslist/browserslist
+      targets: {
+        browsers: [
+          'chrome >= 64',
+          'firefox ESR',
+          'ie >= 11',
+          'safari >= 11'
+        ]
+      },
+      modules: process.env.NODE_ENV === 'test' ? 'commonjs' : false
+    }],
+    'stage-3',
+    'react'
+  ],
+  plugins: [
+    // make sure that 'transform-decorators' comes before 'transform-class-properties'
+    'transform-decorators-legacy',
+    'transform-class-properties',
+    ['transform-runtime', { 'polyfill': false }],
+    'transform-export-extensions'
+  ],
+  env: {
+    test: {
+      plugins: ['istanbul']
     }
   }
-
-  const plugins = [
-    "transform-decorators-legacy",
-    "transform-class-properties",
-    ["transform-runtime", { "polyfill": false }],
-    "transform-object-rest-spread",
-    "transform-export-extensions"
-  ]
-
-  if (mode !== 'test') {
-    envPresetConfig.modules = false
-  }
-
-  const config = {
-    babelrc: false,
-    presets: [
-      ["env", envPresetConfig],
-      "react"
-    ],
-    plugins,
-    env: {
-      test: {
-        plugins: ["istanbul"]
-      }
-    },
-  }
-
-  return config
-}
-
-module.exports = getBabelConfig;
+};

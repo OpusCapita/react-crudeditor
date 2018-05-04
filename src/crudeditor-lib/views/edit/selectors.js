@@ -1,4 +1,4 @@
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash-es';
 
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 import { getLogicalKeyBuilder } from '../lib';

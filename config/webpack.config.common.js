@@ -1,24 +1,23 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
-const getBabelConfig = require('./babel-config');
+const babelConfig = require('./babel-config');
 
-const babelConfig = getBabelConfig();
+const mode = process.env.NODE_ENV || 'production';
+const devMode = mode === 'development';
 
 module.exports = {
+  mode: mode,
   context: resolve(__dirname, '../src'),
-  plugins: [
-    new webpack.NoEmitOnErrorsPlugin()
-  ],
   entry: [
     'core-js/fn/object/assign' // required for IE11 and react-notifications module
   ],
   module: {
     rules: [
       {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        options: babelConfig,
+        test: /\.(jsx?|mjs)$/,
         exclude: /node_modules/,
+        use: [
+          { loader: 'babel-loader', options: babelConfig }
+        ]
       },
       {
         test: /\.(png|jpg|jpeg|gif|ttf|eot)(\?[a-z0-9=&.]+)?$/,
@@ -31,36 +30,64 @@ module.exports = {
       {
         test: /\.(css|less)$/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          { loader: 'less-loader', options: { sourceMap: true } },
+          {
+            loader: 'style-loader', options: {
+              singleton: false, // As a recomendation in "style-loader" GitHub repo's issue #312.
+              sourceMap: devMode,
+              convertToAbsoluteUrls: devMode,
+              hmr: devMode
+            }
+          },
+          {
+            loader: 'css-loader', options: {
+              sourceMap: devMode,
+              importLoaders: 1
+            }
+          },
           {
             loader: 'postcss-loader', options: {
-              plugins: (loader) => [
+              ident: 'postcss',
+              sourceMap: devMode && 'inline',
+              plugins: [
                 require('precss')(),
                 require('autoprefixer')()
               ]
+            }
+          },
+          {
+            loader: 'less-loader', options: {
+              sourceMap: devMode
             }
           }
         ]
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'url-loader?limit=100&mimetype=application/font-woff&name=[name].[ext]',
-        ]
+        use: [{
+          loader: 'url-loader', options: {
+            limit: 100,
+            mimetype: 'application/font-woff',
+            name: '[name].[ext]'
+          }
+        }]
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'url-loader?limit=100&mimetype=application/octet-stream&name=[name].[ext]',
-        ]
+        use: [{
+          loader: 'url-loader', options: {
+            limit: 100,
+            mimetype: 'application/octet-stream',
+            name: '[name].[ext]'
+          }
+        }]
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          'file-loader?name=[name].[ext]',
-        ]
+        use: [{
+          loader: 'file-loader', options: {
+            name: '[name].[ext]'
+          }
+        }]
       }
     ]
   }

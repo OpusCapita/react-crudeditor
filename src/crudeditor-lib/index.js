@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'lodash-es';
 import hash from 'object-hash';
 import crudTranslations from './i18n';
 import notificationsMiddleware from './middleware/notifications';

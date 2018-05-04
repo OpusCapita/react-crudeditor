@@ -1,13 +1,7 @@
-// required only by Mocha
-
-// set node env
+const babelConfig = require('./babel-config');
+require('babel-register')(babelConfig);
 
 const JSDOM = require('jsdom').JSDOM;
-
-process.env.NODE_ENV = 'test';
-
-require('babel-register')(require('./babel-config')())
-
 global.document = new JSDOM('<!doctype html><html><body></body></html>');
 global.window = global.document.window;
 global.document = window.document;

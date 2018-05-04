@@ -1,5 +1,4 @@
-import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
+import { cloneDeep, isEqual } from 'lodash-es';
 import u from 'updeep';
 
 import { FIELD_TYPE_BOOLEAN } from '../../../data-types-lib/constants';

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash-es';
 import buildModel from '../../../models';
 import createCrud from '../../../../crudeditor-lib';
 import { hash2obj, buildURL } from './lib';

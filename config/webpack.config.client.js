@@ -1,5 +1,4 @@
 const { resolve } = require('path');
-const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.common');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -9,8 +8,7 @@ module.exports = merge(common, {
     new HtmlWebpackPlugin({
       template: './demo/client/index.html',
       inject: "body"
-    }),
-    new webpack.NamedModulesPlugin()
+    })
   ],
   entry: [
     './demo/client/index.js'

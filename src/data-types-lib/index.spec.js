@@ -1,5 +1,5 @@
 import { expect, assert } from 'chai';
-import omit from 'lodash/omit';
+import { omit } from 'lodash-es';
 import { I18nManager } from '@opuscapita/i18n';
 import { converter, validate } from './';
 import {

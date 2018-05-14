@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 

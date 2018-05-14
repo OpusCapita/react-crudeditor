@@ -1,5 +1,5 @@
 import React from 'react';
-import { cloneDeep } from 'lodash-es';
+import cloneDeep from 'lodash/cloneDeep';
 
 import GenericInput from '../../components/GenericInput';
 import RangeInput from '../../components/RangeInput';

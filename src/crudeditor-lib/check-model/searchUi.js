@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { find } from 'lodash-es';
+import find from 'lodash/find';
 import { uiTypes, allPropTypes } from './lib';
 
 const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({

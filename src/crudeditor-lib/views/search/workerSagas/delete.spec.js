@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { omit } from 'lodash-es';
+import omit from 'lodash/omit';
 
 import deleteSaga from './delete';
 import searchSaga from './search';

@@ -1,4 +1,5 @@
-import { isEqual, merge } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
+import merge from 'lodash/merge';
 import { call, put, select } from 'redux-saga/effects';
 
 import { buildDefaultStoreState } from '../reducer';

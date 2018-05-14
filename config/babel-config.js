@@ -1,6 +1,5 @@
 module.exports = {
   babelrc: false,
-  ignore: /node_modules\/(?!lodash-es)/,
   presets: [
     ['env', {
       // TODO: remove "targets" key after babel 7.0 is out

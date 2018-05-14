@@ -1,5 +1,4 @@
-
-import { cloneDeep } from 'lodash-es';
+import cloneDeep from 'lodash/cloneDeep';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
 
 import {

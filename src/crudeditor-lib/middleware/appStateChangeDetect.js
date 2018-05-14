@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
 import { STATUS_READY } from '../common/constants';
 import { storeState2appState } from '../lib';
 

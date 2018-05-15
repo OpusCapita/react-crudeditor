@@ -1,4 +1,4 @@
-import { find } from 'lodash-es';
+import find from 'lodash/find';
 import Big from 'big.js';
 import { exists } from '../../../../components/lib';
 import initialData from './data';

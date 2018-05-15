@@ -1,4 +1,5 @@
-import { cloneDeep, isEqual } from 'lodash-es';
+import cloneDeep from 'lodash/cloneDeep';
+import isEqual from 'lodash/isEqual';
 import u from 'updeep';
 
 import { getLogicalKeyBuilder } from '../lib';

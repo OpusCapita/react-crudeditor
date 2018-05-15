@@ -1,4 +1,9 @@
 
+Release 1.1.3 Mon May 14 2018 12:00:29 GMT+0300 (MSK)
+=======================================================
+
+- Direct imports for lodash functions ([#271](https://github.com/OpusCapita/react-crudeditor/issues/271)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-05-14 11:45:21 +0300)
+
 Release 1.1.2 Fri May 04 2018 12:41:22 GMT+0300 (MSK)
 =======================================================
 

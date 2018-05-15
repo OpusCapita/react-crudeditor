@@ -2,7 +2,7 @@ import React, { PureComponent, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
-import { upperFirst } from 'lodash-es';
+import upperFirst from 'lodash/upperFirst';
 import './styles.less';
 
 export default class ConditionalConfirm extends PureComponent {

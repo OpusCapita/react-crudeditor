@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash-es';
+import cloneDeep from 'lodash/cloneDeep';
 import u from 'updeep';
 
 import { ACTIVE_VIEW_CHANGE } from './constants';

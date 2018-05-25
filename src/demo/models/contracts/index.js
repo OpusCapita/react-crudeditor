@@ -299,7 +299,7 @@ export const fields = {
     'type': FIELD_TYPE_INTEGER,
     'constraints': {
       'min': 0,
-      'max': 999999999,
+      'max': 99,
       'required': false
     }
   }

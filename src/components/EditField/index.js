@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroup, Col, ControlLabel, Glyphicon, OverlayTrigger, Popover, Label } from 'react-bootstrap';
-import { getModelMessage, titleCase } from '../lib'
+import { getModelMessage, getFieldLabel } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import './styles.less';
 
@@ -80,11 +80,7 @@ export default class EditField extends Component {
 
     const labelColumns = columns <= 4 ? 2 * columns : 6;
 
-    const fieldLabel = getModelMessage({
-      i18n,
-      key: `model.field.${fieldName}.label`,
-      defaultMessage: titleCase(fieldName)
-    });
+    const fieldLabel = getFieldLabel({ i18n, name: fieldName });
 
     const fieldHint = getModelMessage({
       i18n,

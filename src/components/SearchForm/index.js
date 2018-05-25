@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import { Button, Form, FormGroup, ControlLabel } from 'react-bootstrap';
 
-import { getModelMessage, titleCase } from '../lib';
+import { getFieldLabel } from '../lib';
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import './SearchForm.less';
@@ -79,11 +79,7 @@ class SearchForm extends React.Component {
               >
                 <ControlLabel>
                   {
-                    getModelMessage({
-                      i18n,
-                      key: `model.field.${name}.label`,
-                      defaultMessage: titleCase(name)
-                    })
+                    getFieldLabel({ i18n, name })
                   }
                 </ControlLabel>
                 <Component

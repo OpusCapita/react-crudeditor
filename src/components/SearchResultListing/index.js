@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
-import { getModelMessage, titleCase } from '../lib';
+import { getFieldLabel } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
 import './styles.less';
 
@@ -98,11 +98,7 @@ class SearchResultListing extends PureComponent {
                           onClick={this.handleResort(name)}
                         >
                           {
-                            getModelMessage({
-                              i18n,
-                              key: `model.field.${name}.label`,
-                              defaultMessage: titleCase(name)
-                            })
+                            getFieldLabel({ i18n, name })
                           }
                           {
                             sortField === name &&
@@ -112,11 +108,7 @@ class SearchResultListing extends PureComponent {
                             />
                           }
                         </a> :
-                        getModelMessage({
-                          i18n,
-                          key: `model.field.${name}.label`,
-                          defaultMessage: titleCase(name)
-                        })
+                        getFieldLabel({ i18n, name })
                     }
                   </th>
                 ))

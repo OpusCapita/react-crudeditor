@@ -21,6 +21,8 @@
   },
   "keywords": [
     "react",
+    "crud",
+    "editor",
     "webpack"
   ],
   "publishConfig": {

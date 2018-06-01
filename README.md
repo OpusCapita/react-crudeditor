@@ -9,6 +9,15 @@
 
 ### [Demo](https://opuscapita.github.io/react-crudeditor/branches/master/?currentComponentName=ContractEditor&maxContainerWidth=100%25&showSidebar=false)
 
+- [Getting started](#getting-started)
+- API Reference:
+  - [Terminology](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology)
+  - [Editor component](https://github.com/OpusCapita/react-crudeditor/wiki/Editor-Component)
+  - [Model Definition](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition)
+  - [props.model](https://github.com/OpusCapita/react-crudeditor/wiki/props.model)
+  - [Redux store](https://github.com/OpusCapita/react-crudeditor/wiki/Redux-Store)
+
+
 ### Getting started
 
 Installation:

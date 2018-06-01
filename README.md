@@ -7,6 +7,69 @@
 [![NPM Downloads](https://img.shields.io/npm/dm/@opuscapita/react-crudeditor.svg)](https://npmjs.org/package/@opuscapita/react-crudeditor)
 ![badge-license](https://img.shields.io/github/license/OpusCapita/react-crudeditor.svg)
 
+### Getting started
+
+Installation:
+```
+npm i @opuscapita/react-crudeditor
+```
+
+Minimal setup:
+```
+import createEditor from '@opuscapita/react-crudeditor'
+import modelDefinition from './modelDefinition'
+
+const ContractEditor = createEditor(<Model Definition>)
+
+// ...use it later
+// <ContractEditor/>
+```
+
+Model definition is a single object:
+```
+// modelDefinition.js
+import { FIELD_TYPE_STRING } from '@opuscapita/react-crudeditor'
+
+export default {
+  model: {
+    name: 'Contract',
+    
+    fields: {
+      contractId: {
+        unique: true,
+        type: FIELD_TYPE_STRING,
+        constraints: {
+          required: true
+        }
+      },
+      description: {
+        type: FIELD_TYPE_STRING
+      }
+    },
+    
+    validate: () => true
+  },
+  
+  permissions: {
+    crudOperations: {
+      create: true,
+      edit: true,
+      delete: true,
+      view: true
+    }
+  },
+  
+  api: { get, search, delete, create, update }, // API functions
+  
+  ui: {
+    create: { formLayout },
+    edit: { formLayout },
+    show: { formLayout }
+  }
+}
+```
+
+
 ### [Demo](https://opuscapita.github.io/react-crudeditor/branches/master/?currentComponentName=ContractEditor&maxContainerWidth=100%25&showSidebar=false)
 
 **Table of Content**

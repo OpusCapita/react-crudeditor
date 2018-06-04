@@ -20,6 +20,7 @@
   - [Custom component for a field](#custom-component-for-a-field)
   - [Custom validation for a field](#custom-validation-for-a-field)
   - [Custom component for a tab](#custom-component-for-a-tab)
+  - [Pre-save instance validation](#pre-save-instance-validation)
 - [Code-Conventions](https://github.com/OpusCapita/react-crudeditor/wiki/Code-Conventions)
 - [Diagrams](https://github.com/OpusCapita/react-crudeditor/wiki/Diagrams)
 
@@ -171,6 +172,32 @@ tab({ name: 'custom', component: CustomTabComponent, disabled: viewName === VIEW
 - `name` is used for translating a label ([reference](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition#i18n-translations))
 - `component` is your custom component for tab
 - `disabled` is a boolean which defines if tab is disabled or not
+
+### Pre-save instance validation
+
+When a user hits `Save`, instance validation function runs. If it fails (e.g. instance is not valid) than `Save` is not executed and a notification is shown. Example: 
+
+```
+modelDefinition.model.validate = ({ formInstance }) => {
+  if (condition) {
+    const err = [...same as for custom field validation, see above];
+    throw err;
+  }
+  // if it doesn't throw it means successful instance validation
+}
+```
+Instance validation function can also be **async**:
+```
+modelDefinition.model.validate = ({ formInstance }) => {
+  return new Promise((resolve, reject) => {
+    if (condition) {
+      const err = [...];
+      reject(err); // reject if validation failed
+    }
+    resolve(); // resolve if validation succeeded
+  })
+}
+```
 
 ## TODO
 

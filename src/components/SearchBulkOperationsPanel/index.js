@@ -9,16 +9,19 @@ export default class SearchBulkOperationsPanel extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
       bulkOperations: PropTypes.shape({
-        delete: PropTypes.shape({
-          title: PropTypes.string.isRequired,
-          disabled: PropTypes.bool,
-          handler: PropTypes.func.isRequired,
-          confirm: PropTypes.shape({
-            message: PropTypes.string.isRequired,
-            textConfirm: PropTypes.string.isRequired,
-            textCancel: PropTypes.string.isRequired
-          }).isRequired
-        })
+        delete: PropTypes.oneOfType([
+          PropTypes.shape({
+            title: PropTypes.string.isRequired,
+            disabled: PropTypes.bool,
+            handler: PropTypes.func.isRequired,
+            confirm: PropTypes.shape({
+              message: PropTypes.string.isRequired,
+              textConfirm: PropTypes.string.isRequired,
+              textCancel: PropTypes.string.isRequired
+            }).isRequired
+          }),
+          PropTypes.bool
+        ])
       }).isRequired
     }).isRequired
   }

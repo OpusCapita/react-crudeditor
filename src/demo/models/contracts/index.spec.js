@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import contracts from "./";
 
 describe("Models / Contracts", _ => {
-  describe("ui.create.defaultNewInstance", _ => {
+  describe.skip("ui.create.defaultNewInstance", _ => {
     it("should return instance with predefined fields from the passed filter", () => {
       const filter = {
         contractId: "YYYYYYYYYYY"

@@ -376,9 +376,9 @@ export default {
   },
   permissions: {
     crudOperations: {
-      create: true,
-      edit: true,
-      delete: true,
+      // create: true,
+      // edit: true,
+      // delete: true,
       view: true
     }
   },
@@ -412,22 +412,22 @@ export default {
       }
     }),
     instanceLabel: /* istanbul ignore next */ instance => instance._objectLabel || instance.contractId || '',
-    create: {
-      defaultNewInstance: /* istanbul ignore next */ ({ filter } = {}) => Object.keys(filter || {}).reduce(
-        (rez, fieldName) => {
-          const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
+    // create: {
+    //   defaultNewInstance: /* istanbul ignore next */ ({ filter } = {}) => Object.keys(filter || {}).reduce(
+    //     (rez, fieldName) => {
+    //       const isRange = ['maxOrderValue', 'createdOn'].indexOf(fieldName) !== -1;
 
-          return isRange || filter[fieldName] === null ?
-            rez :
-            {
-              ...rez,
-              [fieldName]: filter[fieldName]
-            };
-        },
-        {}
-      ),
-      formLayout: buildFormLayout(VIEW_CREATE)
-    },
+    //       return isRange || filter[fieldName] === null ?
+    //         rez :
+    //         {
+    //           ...rez,
+    //           [fieldName]: filter[fieldName]
+    //         };
+    //     },
+    //     {}
+    //   ),
+    //   formLayout: buildFormLayout(VIEW_CREATE)
+    // },
     edit: {
       formLayout: buildFormLayout(VIEW_EDIT),
       standardOperations: {

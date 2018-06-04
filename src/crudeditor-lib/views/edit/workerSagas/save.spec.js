@@ -33,6 +33,11 @@ const arg = {
       search: {
         resultFields: [{ name: 'a' }]
       }
+    },
+    permissions: {
+      crudOperations: {
+        create: true
+      }
     }
   },
   softRedirectSaga,

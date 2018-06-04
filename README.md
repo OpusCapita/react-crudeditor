@@ -18,6 +18,7 @@
   - [Redux store](https://github.com/OpusCapita/react-crudeditor/wiki/Redux-Store)
 - [Examples](#examples)
   - [Custom component for a field](#custom-component-for-a-field)
+  - [Custom validation for a field](#custom-validation-for-a-field)
   - [Custom component for a tab](#custom-component-for-a-tab)
 - [Code-Conventions](https://github.com/OpusCapita/react-crudeditor/wiki/Code-Conventions)
 - [Diagrams](https://github.com/OpusCapita/react-crudeditor/wiki/Diagrams)
@@ -94,7 +95,7 @@ export default {
 
 ```
 modelDefinition.model.fields[myCustomField] = {
-  'type': FIELD_TYPE_STRING_INTEGER
+  type: FIELD_TYPE_STRING_INTEGER
 }
 ```
 In [buildFormLayout](https://github.com/OpusCapita/react-crudeditor/blob/master/src/demo/models/contracts/index.js#L308) function: 
@@ -102,7 +103,8 @@ In [buildFormLayout](https://github.com/OpusCapita/react-crudeditor/blob/master/
 field({
   name: 'myCustomField',
   render: {
-    component: myCustomComponent
+    component: myCustomComponent,
+    type: UI_TYPE_INTEGER
   }
 }),
 ```
@@ -122,6 +124,41 @@ render: PropTypes.shape({
 })
 ```
 Reference: [Field type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#field-type), [UI type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#ui-type).
+
+### Custom validation for a field
+
+You can add a custom validation for a field via `constraints` object:
+
+```
+modelDefinition.model.fields[myCustomField] = {
+  type: FIELD_TYPE_STRING,
+  constraints: {
+    validate: (value, instance) => {
+      if (value.indexOf('booo') !== -1) {
+        const err = [{
+          code: 400,
+          // `id` is used to find translations for this particular error
+          // define translations with the following key structure:
+          // model.field.FIELD_NAME.error.ERROR_ID, where ERROR_ID is `id` defined below
+          // if translation exists, than `message` is not needed
+          id: 'forbiddenWord',
+          // `message` is a default message in case translation is not found
+          message: 'Description cannot contain `booo`!',
+          // optional `payload` for error translations
+          // here you can define props which you use in i18n messages
+          // example: for i18n message `Hello {name}! This field cannot exceed {maxValue}`
+          // define `name` and `maxValue` props
+          args: {
+            forbiddenWord: 'booo'
+          }
+        }];
+        throw err; // validation failed!
+      }
+      // if `validate` doesn't throw it means success
+    }
+  }
+}
+```
 
 ### Custom component for a tab
 

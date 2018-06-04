@@ -85,6 +85,41 @@ export default {
 ```
 ### [Documentation for Model Definition](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition)
 
+## Use cases / Examples
+
+### Custom component for a field
+
+```
+modelDefinition.model.fields[myCustomField] = {
+  'type': FIELD_TYPE_STRING_INTEGER
+}
+```
+In [buildFormLayout](https://github.com/OpusCapita/react-crudeditor/blob/master/src/demo/models/contracts/index.js#L308) function: 
+```
+field({
+  name: 'myCustomField',
+  render: {
+    component: myCustomComponent
+  }
+}),
+```
+Full API of `render` option: 
+```
+render: PropTypes.shape({
+  component: PropTypes.func.isRequired,
+  props: PropTypes.object, // additional props for this component
+  value: PropTypes.shape({
+    converter: PropTypes.shape({ // optional converter fieldType <=> uiType
+      format: PropTypes.func,    // value<UI type> => value<Field type>
+      parse: PropTypes.func      // value<Field type> => value<UI type>
+    }),
+    propName: PropTypes.string, // name of prop which is treated as 'value' for component. Default: 'value'
+    type: PropTypes.oneOf(uiTypes) // UI type. Not needed if 'converter' is defined.
+  })
+})
+```
+Reference: [Field type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#field-type), [UI type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#ui-type).
+
 ## TODO
 
 Not implemented:

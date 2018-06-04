@@ -63,11 +63,11 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
+  getDefaultNewInstance = wrapper((storeState, modelDefinition) => modelDefinition.permissions.crudOperations.create ?
     cloneDeep(modelDefinition.ui.create.defaultNewInstance({
       filter: {}, // Setting filter to empty object if it is not specified in view state.
       ..._getViewState(storeState, modelDefinition)
-    })) ||
+    })) || {} :
     {}
   ),
 

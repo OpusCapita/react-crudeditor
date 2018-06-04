@@ -121,18 +121,20 @@ const mergeProps = /* istanbul ignore next */ (
       [], // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
 
     bulkOperations: viewState ? {
-      delete: crudOperations.delete && {
-        title: i18n.getMessage('crudEditor.deleteSelected.button'),
-        disabled: selectedInstances.length === 0 || selectedInstances.some(
-          instance => standardOperations.delete && standardOperations.delete(instance).disabled
-        ),
-        handler: _ => deleteInstances(selectedInstances),
-        confirm: {
-          message: i18n.getMessage('crudEditor.deleteSelected.confirmation'),
-          textConfirm: i18n.getMessage('crudEditor.delete.button'),
-          textCancel: i18n.getMessage('crudEditor.cancel.button')
+      ...(crudOperations.delete && {
+        delete: {
+          title: i18n.getMessage('crudEditor.deleteSelected.button'),
+          disabled: selectedInstances.length === 0 || selectedInstances.some(
+            instance => standardOperations.delete && standardOperations.delete(instance).disabled
+          ),
+          handler: _ => deleteInstances(selectedInstances),
+          confirm: {
+            message: i18n.getMessage('crudEditor.deleteSelected.confirmation'),
+            textConfirm: i18n.getMessage('crudEditor.delete.button'),
+            textCancel: i18n.getMessage('crudEditor.cancel.button')
+          }
         }
-      }
+      })
     } :
       {} // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
   }

@@ -60,8 +60,6 @@ export const fields = {
 
           throw err;
         }
-
-        return true;
       }
     }
   },
@@ -370,8 +368,6 @@ export default {
 
         throw err;
       }
-
-      return true;
     }
   },
   permissions: {

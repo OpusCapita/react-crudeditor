@@ -1,4 +1,11 @@
 
+Release 1.1.4 Mon Jun 04 2018 12:45:44 GMT+0300 (MSK)
+=======================================================
+
+- Allow readonly crud ([#275](https://github.com/OpusCapita/react-crudeditor/issues/275)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-04 12:41:54 +0300)
+- Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (Andrei Mourzenkov mourzenkov@scand.com, 2018-05-15 14:08:13 +0300)
+- Remove obsolete 'styles' dir (Andrei Mourzenkov mourzenkov@scand.com, 2018-05-15 14:08:02 +0300)
+
 Release 1.1.3 Mon May 14 2018 12:00:29 GMT+0300 (MSK)
 =======================================================
 

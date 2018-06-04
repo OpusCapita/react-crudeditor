@@ -16,6 +16,9 @@
   - [Model Definition](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition)
   - [props.model](https://github.com/OpusCapita/react-crudeditor/wiki/props.model)
   - [Redux store](https://github.com/OpusCapita/react-crudeditor/wiki/Redux-Store)
+- [Examples](#examples)
+  - [Custom component for a field](#custom-component-for-a-field)
+  - [Custom component for a tab](#custom-component-for-a-tab)
 - [Code-Conventions](https://github.com/OpusCapita/react-crudeditor/wiki/Code-Conventions)
 - [Diagrams](https://github.com/OpusCapita/react-crudeditor/wiki/Diagrams)
 
@@ -85,7 +88,7 @@ export default {
 ```
 ### [Documentation for Model Definition](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition)
 
-## Use cases / Examples
+## Examples
 
 ### Custom component for a field
 
@@ -119,6 +122,18 @@ render: PropTypes.shape({
 })
 ```
 Reference: [Field type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#field-type), [UI type](https://github.com/OpusCapita/react-crudeditor/wiki/Terminology#ui-type).
+
+### Custom component for a tab
+
+In [buildFormLayout](https://github.com/OpusCapita/react-crudeditor/blob/master/src/demo/models/contracts/index.js#L308) function:
+
+```
+tab({ name: 'custom', component: CustomTabComponent, disabled: viewName === VIEW_CREATE })
+```
+
+- `name` is used for translating a label ([reference](https://github.com/OpusCapita/react-crudeditor/wiki/Model-Definition#i18n-translations))
+- `component` is your custom component for tab
+- `disabled` is a boolean which defines if tab is disabled or not
 
 ## TODO
 

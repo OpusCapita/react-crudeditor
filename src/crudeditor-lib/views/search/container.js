@@ -142,8 +142,7 @@ export default connect(
   /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
-    defaultNewInstance: modelDefinition.permissions.crudOperations.create &&
-      getDefaultNewInstance(storeState, modelDefinition),
+    defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     permissions: modelDefinition.permissions,
     standardOperations: modelDefinition.ui.search.standardOperations,

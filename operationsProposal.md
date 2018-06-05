@@ -48,11 +48,11 @@
   
   ## Not implemented use cases
   
-  - provide possibility to disable any button based on some condition (current instance, or current user permissions in application)
-  - provide possibility to change order of buttons
+  - provide possibility to **disable and/or hide any button based on some condition** (current instance, or current user permissions in application)
+  - provide possibility to **change order of buttons**
   - provide possibility to call `Confirmation dialog` upon some condition in order to confirm an action
   
-  #273: @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. This is not possible with current editor.
+  [#273](https://github.com/OpusCapita/react-crudeditor/issues/273): @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. He wants to show `View` button **instead of** `Edit` based on instance fields. This is not possible with current editor.
   
   Currently we have `permissions` in `model`: 
   

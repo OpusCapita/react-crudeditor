@@ -85,6 +85,7 @@ model.operations = ({
   view: { name, state }, // current view data
   instance, // if applicable
   onSave, // standard handler called when you try to update instance 
+  ...other standard buttons handlers
   requestViewChange, // a function used to navigate to { view, state }, to support customOperations use cases
   showConfirmDialog, // a function which renders confirm dialog if needed
   Button, // standard button component for current view with proper styles and usable interface - so that developer doesn't need to implement a button from scratch

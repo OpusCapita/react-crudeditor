@@ -68,15 +68,36 @@
   ```
   
   If `edit === true` we show `Edit` button. Otherwise we show `View` button **instead of** `Edit` (opinionated restriction). 
-  It is impossible to show both `View` and `Edit`.
+  It is impossible to show both `View` and `Edit`, or to show different button based on instance: permissions are editor-wide.
   
   IMO it should be decided by application - what to show based on its permissions and business logic.
   
+## Proposal
   
-  
-  
-  
-  
-  
-  
-  
+We can **remove** `permissions` and **combine** `customOperations`, `externalOperations`, `standardOperations` into a single point of configuration, and provide a possibility for developers to extend editor the way they want to.
+
+Say, in a `model` we define a function: 
+
+```
+model.operations = ({
+  view: { name, state }, // current view data
+  instance, // if applicable
+  onSave, // standard handler called when you try to update instance 
+  requestViewChange, // a function used to navigate to { view, state }, to support customOperations use cases
+  showConfirmDialog, // a function which renders confirm dialog if needed
+  Button, // standard button component for current view with proper styles and usable interface - so that developer doesn't need to implement a button from scratch
+  defaultViewButtons: [component, component...] - standard buttons for this view. You can return it as is for no changes, or change order, or delete one of buttons, etc.
+  store, // may be pass current Redux store entirely? 
+  ...list of params can grow
+}) => ({
+  instanceOperations: [
+    component, // array of buttons to render in place of instance operations
+    component,
+    component
+  ],
+  // if `bulkOperations` not returned -> render default ones
+  // if you want to delete `bulkOperations` -> pass `null` to render empty thing
+})
+```
+
+As a result developer can decide how Editor should behave based on his application's logic, permissions, business details etc.

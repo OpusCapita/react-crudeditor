@@ -1,3 +1,5 @@
+[#273](https://github.com/OpusCapita/react-crudeditor/issues/273): @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. He wants to show `View` button **instead of** `Edit` based on instance fields. This is not possible with current editor.
+
 ## Subject: buttons!
 
 `Search` view: 
@@ -52,25 +54,25 @@
   - provide possibility to **change order of buttons**
   - provide possibility to call `Confirmation dialog` upon some condition in order to confirm an action
   
-  [#273](https://github.com/OpusCapita/react-crudeditor/issues/273): @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. He wants to show `View` button **instead of** `Edit` based on instance fields. This is not possible with current editor.
+Back to issue [#273](https://github.com/OpusCapita/react-crudeditor/issues/273): @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. He wants to show `View` button **instead of** `Edit` based on instance fields. This is not possible with current editor.
   
-  Currently we have `permissions` in `model`: 
+Currently we have `permissions` in `model`: 
   
-  ```
-  permissions: {
-    crudOperations: {
-      create: true,
-      edit: true,
-      delete: true,
-      view: true
-    }
+```
+permissions: {
+  crudOperations: {
+    create: true,
+    edit: true,
+    delete: true,
+    view: true
   }
-  ```
-  
-  If `edit === true` we show `Edit` button. Otherwise we show `View` button **instead of** `Edit` (opinionated restriction). 
-  It is impossible to show both `View` and `Edit`, or to show different button based on instance: permissions are editor-wide.
-  
-  IMO it should be decided by application - what to show based on its permissions and business logic.
+}
+```
+
+If `edit === true` we show `Edit` button. Otherwise we show `View` button **instead of** `Edit` (opinionated restriction). 
+It is impossible to show both `View` and `Edit`, or to show different button based on instance: permissions are editor-wide.
+
+IMO it should be decided by application - what to show based on its permissions and business logic.
   
 ## Proposal
   

@@ -1,0 +1,82 @@
+## Subject: buttons!
+
+`Search` view: 
+- instance operations:
+  - `View`, `Edit`, `Delete`
+  - `custom operations` - a button to navigate to some `view` with some `state`
+  - `external operations` - a button to invoke random function
+- bulk operations:
+  - `Delete all`
+- toolbar:
+  - `Create`
+  
+`Show`, `Edit`, `Create` views:
+- instance operations at the bottom
+- toolbar: `go to previous`, `go to next` buttons
+
+## History of use cases 
+
+- need **custom operations** - buttons which allow to navigate to a `view` with certain `state`. 
+  
+  Examples: `Duplicate` (create view with predefined fields), `Create Child` (create with predefined parent contract).
+  
+  Solution: **add feature** `customOperations` - **defined in model**
+
+- need **external operations** - buttons which allow to invoke random functions. 
+  
+  Examples: external link to any URL.
+  
+  Solution: **add feature** `externalOperations` - **defined in props**
+  
+- need to **disable Delete button based on instance object** - provide a function like `(instance) => ({ delete: { disabled: <boolean> } })
+  to disable `Delete` button. 
+  
+  Examples: some instances cannot be deleted.
+  
+  Solution: **add feature** `standardOperations` - **defined in model**. **IMO application scope permissions, but we do it inside crud**.
+  
+  ```
+  model.ui.VIEW_NAME.standardOperations: {
+    'delete': instance => ({
+      disabled: true/false
+    })
+  }
+  ```
+  
+  A note about `standardOperations`: here we try to create **per-instance permissions** (we decide if user can delete or not). 
+  This is not a UI concern; `disabled` here means `forbidden`, we don't hide a button entirely only because we don't want to make uneven layout.
+  
+  ## Not implemented use cases
+  
+  - provide possibility to disable any button based on some condition (current instance, or current user permissions in application)
+  - provide possibility to change order of buttons
+  - provide possibility to call `Confirmation dialog` upon some condition in order to confirm an action
+  
+  #273: @nkovalenko-sc creates a CRUD, where some instances are editable, and some are not. This is not possible with current editor.
+  
+  Currently we have `permissions` in `model`: 
+  
+  ```
+  permissions: {
+    crudOperations: {
+      create: true,
+      edit: true,
+      delete: true,
+      view: true
+    }
+  }
+  ```
+  
+  If `edit === true` we show `Edit` button. Otherwise we show `View` button **instead of** `Edit` (opinionated restriction). 
+  It is impossible to show both `View` and `Edit`.
+  
+  IMO it should be decided by application - what to show based on its permissions and business logic.
+  
+  
+  
+  
+  
+  
+  
+  
+  

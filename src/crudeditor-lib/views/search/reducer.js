@@ -83,7 +83,7 @@ const buildDefaultFormattedFilter = ({
     }
   }) => ({
     ...rez,
-    [fieldName]: format({ value: EMPTY_FIELD_VALUE })
+    [fieldName]: format(EMPTY_FIELD_VALUE)
   }),
   {}
 );
@@ -112,7 +112,7 @@ const buildFormattedFilter = ({
 
     return {
       ...rez,
-      [fieldName]: format({ value: filter[fieldName], i18n })
+      [fieldName]: format(filter[fieldName], i18n)
     };
   },
   {}
@@ -359,7 +359,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
         let newFormValue;
 
         try {
-          newFormValue = converter.parse({ value: fieldValue, i18n });
+          newFormValue = converter.parse(fieldValue, i18n);
         } catch (err) {
           // Rethrow system errors.
           if (isSystemError(err)) {
@@ -395,7 +395,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
           };
         }
 
-        const newFormattedValue = converter.format({ value: newFormValue, i18n });
+        const newFormattedValue = converter.format(newFormValue, i18n);
 
         if (!isEqual(newFormattedValue, storeState.formattedFilter[fieldName])) {
           newStoreStateSlice.formattedFilter = {

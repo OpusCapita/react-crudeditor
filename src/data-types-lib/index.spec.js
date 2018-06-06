@@ -32,8 +32,8 @@ describe('data-types-lib', () => {
       expect(isConv).to.have.ownProperty('format');
       expect(isConv).to.have.ownProperty('parse');
 
-      expect(isConv.format({ value: 102, i18n })).to.equal('102');
-      expect(isConv.parse({ value: '102', i18n })).to.equal(102);
+      expect(isConv.format(102, i18n)).to.equal('102');
+      expect(isConv.parse('102', i18n)).to.equal(102);
     });
 
     it('should return undefined for unknown type(s)', () => {
@@ -61,7 +61,7 @@ describe('data-types-lib', () => {
       it('should throw for bad input', () => {
         const value = '102';
         try {
-          isConv.format({ value, i18n });
+          isConv.format(value, i18n);
           assert(false)
         } catch (e) {
           assert.deepEqual(
@@ -76,7 +76,7 @@ describe('data-types-lib', () => {
 
       it('should return empty UI value for empty field value input', () => {
         const value = EMPTY_FIELD_VALUE;
-        expect(isConv.format({ value })).to.equal(uiTypeString.EMPTY_VALUE)
+        expect(isConv.format(value)).to.equal(uiTypeString.EMPTY_VALUE)
       });
     });
 
@@ -84,7 +84,7 @@ describe('data-types-lib', () => {
       it('should throw for bad input', () => {
         const value = 102;
         try {
-          isConv.parse({ value, i18n });
+          isConv.parse(value, i18n);
           assert(false)
         } catch (e) {
           assert.deepEqual(
@@ -99,7 +99,7 @@ describe('data-types-lib', () => {
 
       it('should return empty field value given empty ui value input', () => {
         const value = uiTypeString.EMPTY_VALUE;
-        expect(isConv.parse({ value })).to.equal(EMPTY_FIELD_VALUE)
+        expect(isConv.parse(value)).to.equal(EMPTY_FIELD_VALUE)
       });
     });
   });

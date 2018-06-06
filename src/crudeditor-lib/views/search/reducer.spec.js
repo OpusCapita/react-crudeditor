@@ -19,7 +19,7 @@ describe('search view reducer', () => {
       field.render = { // eslint-disable-line no-param-reassign
         value: {
           converter: {
-            format: ({ value }) => value
+            format: value => value
           }
         }
       }

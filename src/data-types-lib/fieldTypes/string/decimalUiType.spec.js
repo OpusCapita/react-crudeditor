@@ -10,7 +10,7 @@ import converter from './decimalUiType';
 describe('fieldTypes :: string <-> decimal', () => {
   it('should convert stringified decimal to decimal', () => {
     const value = '213.21';
-    const result = converter.format({ value });
+    const result = converter.format(value);
 
     expect(result).to.equal(213.21)
   });
@@ -19,7 +19,7 @@ describe('fieldTypes :: string <-> decimal', () => {
     const value = '23Hello';
 
     try {
-      converter.format({ value });
+      converter.format(value);
       assert(false)
     } catch (e) {
       assert.deepEqual(
@@ -35,6 +35,6 @@ describe('fieldTypes :: string <-> decimal', () => {
   it('should stringify decimal', () => {
     const value = 23432.323;
 
-    expect(converter.parse({ value })).to.equal(String(value));
+    expect(converter.parse(value)).to.equal(String(value));
   });
 });

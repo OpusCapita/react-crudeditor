@@ -11,14 +11,14 @@ export default {
    * ████  FIELD_TYPE_BOOLEAN  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: ({ value }) => value ? '+' : '-',
+  format: value => value ? '+' : '-',
 
   /*
    * █████████████████████████████████████████████████
    * ████  FIELD_TYPE_BOOLEAN  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  parse: ({ value }) => {
+  parse: value => {
     const optimized = value.trim().toLowerCase();
 
     if (!optimized) {

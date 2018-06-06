@@ -5,12 +5,12 @@ export default {
    * ████  FIELD_TYPE_BOOLEAN  ►  UI_TYPE_INTEGER  ████
    * ██████████████████████████████████████████████████
    */
-  format: ({ value }) => value ? 1 : 0,
+  format: value => value ? 1 : 0,
 
   /*
    * ██████████████████████████████████████████████████
    * ████  FIELD_TYPE_BOOLEAN  ◄  UI_TYPE_INTEGER  ████
    * ██████████████████████████████████████████████████
    */
-  parse: ({ value }) => !!value
+  parse: value => !!value
 };

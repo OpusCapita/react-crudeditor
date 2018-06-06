@@ -61,7 +61,7 @@ export const getUi = modelDefinition => {
       // eslint-disable-next-line no-param-reassign
       field.format = defaultConverter ?
         defaultConverter.format :
-        (({ value }) => value);
+        (value => value);
     });
 
   searchMeta.searchableFields.forEach(field => {

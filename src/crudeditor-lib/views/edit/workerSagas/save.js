@@ -1,6 +1,6 @@
 import { call, select } from 'redux-saga/effects';
 
-import editAdjacentSaga from './editAdjacent';
+import adjacentSaga from '../../../common/workerSagas/adjacent';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import validateSaga from '../../../common/workerSagas/validate';
 import updateSaga from '../../../common/workerSagas/save';
@@ -46,8 +46,9 @@ export default function*({
       }
     });
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    yield call(editAdjacentSaga, {
+    yield call(adjacentSaga(VIEW_NAME), {
       modelDefinition,
+      softRedirectSaga,
       action: {
         payload: {
           step: 1

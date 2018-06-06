@@ -65,5 +65,4 @@ export const
     status: storeState.status,
     unsavedChanges: storeState.formInstance && !isEqual(storeState.persistentInstance, storeState.formInstance),
     viewName: VIEW_NAME
-  })
-  );
+  }));

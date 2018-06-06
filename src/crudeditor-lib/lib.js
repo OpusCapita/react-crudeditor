@@ -17,7 +17,6 @@ import {
   VIEW_ERROR,
 
   PERMISSION_CREATE,
-  PERMISSION_DELETE,
   PERMISSION_EDIT,
   PERMISSION_VIEW
 } from './common/constants';
@@ -66,7 +65,7 @@ export function getPrefixedTranslations(translations, prefix) {
  * @param {undefined|object} data - arg for permissions function, e.g. { instance } for per-instance permissions
  * @returns {boolean}
  */
-export const isAllowed = (permissions, operation, data) => {
+export const isAllowed = (permissions, operation, data) => { // eslint-disable-line consistent-return
   if (!permissions.hasOwnProperty(operation)) {
     return false
   }

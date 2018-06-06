@@ -1,7 +1,7 @@
 import { call, put, spawn } from 'redux-saga/effects';
 
 import showSaga from './workerSagas/show';
-import showAdjacentSaga from './workerSagas/showAdjacent';
+import adjacentSaga from '../../common/workerSagas/adjacent';
 import redirectSaga from '../../common/workerSagas/redirect';
 import scenarioSaga from '../../common/scenario';
 import { VIEW_SOFT_REDIRECT } from '../../common/constants';
@@ -18,7 +18,7 @@ import {
 const transitions = {
   blocking: {},
   nonBlocking: {
-    [ADJACENT_INSTANCE_SHOW]: showAdjacentSaga,
+    [ADJACENT_INSTANCE_SHOW]: adjacentSaga(VIEW_NAME),
     [VIEW_SOFT_REDIRECT]: redirectSaga
   }
 };

@@ -1,4 +1,5 @@
 import * as dataTypes from '../../data-types-lib/constants';
+import { isAllowed } from '../lib';
 
 import {
   PERMISSION_CREATE,
@@ -18,16 +19,16 @@ export const allowedAny = /* istanbul ignore next */ (
   PERMISSION_DELETE,
   PERMISSION_VIEW
 ].filter(action => actions.indexOf(action) > -1).
-  reduce((result, action) => result || !!crudOperations[action], false);
+  some(action => isAllowed(crudOperations, action));
 
 // https://stackoverflow.com/a/31169012
 export const allPropTypes = /* istanbul ignore next */ (...types) => (...args) => {
-  const errors = types.map((type) => type(...args)).filter(Boolean);
+  const errors = types.map(type => type(...args)).filter(Boolean);
   if (errors.length === 0) {
     return
   }
   // eslint-disable-next-line consistent-return
-  return new Error(errors.map((e) => e.message).join('\n'));
+  return new Error(errors.map(e => e.message).join('\n'));
 };
 
 export const uiTypes = Object.keys(dataTypes).

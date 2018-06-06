@@ -50,10 +50,10 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
   }).isRequired,
   permissions: PropTypes.shape({
     crudOperations: PropTypes.shape({
-      [PERMISSION_CREATE]: PropTypes.bool,
-      [PERMISSION_EDIT]: PropTypes.bool,
-      [PERMISSION_DELETE]: PropTypes.bool,
-      [PERMISSION_VIEW]: PropTypes.bool
+      [PERMISSION_CREATE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+      [PERMISSION_EDIT]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+      [PERMISSION_DELETE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+      [PERMISSION_VIEW]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
     }).isRequired
   }).isRequired,
   api: PropTypes.shape({
@@ -74,10 +74,7 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
       formLayout: PropTypes.func
     }),
     edit: PropTypes.shape({
-      formLayout: PropTypes.func,
-      standardOperations: PropTypes.shape({
-        delete: PropTypes.func
-      })
+      formLayout: PropTypes.func
     }),
     show: PropTypes.shape({
       formLayout: PropTypes.func

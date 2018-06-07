@@ -26,13 +26,18 @@ describe("Models / Contracts", _ => {
   });
 
   describe("model.validate", _ => {
-    it("should check for a required minOrderValue", () => {
+    it("should not throw for valid instance", () => {
       const instance = {
         minOrderValueRequired: true,
         minOrderValue: 100
       };
-      const result = contracts.model.validate({ formInstance: instance });
-      expect(result).to.be.true; // eslint-disable-line no-unused-expressions
+
+      try {
+        contracts.model.validate({ formInstance: instance });
+        assert(true);
+      } catch (err) {
+        assert.fail(err);
+      }
     });
 
     it("should throw if a required minOrderValue is absent", () => {

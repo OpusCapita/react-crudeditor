@@ -417,7 +417,43 @@ Model Definition is an object describing an entity. It has the following structu
 
   permissions: {
     crudOperations: {
-      // at least one field must be set to 'true' or defined as a function
+      /**
+      * At least one field must be set to 'true' or defined as a function.
+      *
+      * Permissions can be defined as booleas or functions.
+      *
+      * Example for booleans:
+      * {
+      *   create: true,
+      *   edit: true,
+      *   delete: false,
+      *   view: true
+      * }
+      *
+      * If a permission is defined as function there is a convention to be aware of.
+      *
+      * There are two types of permissions defined by functions:
+      * - 'global': is it allowed to do something editor-wise; same as boolean permissions
+      * - 'per-instance': is it allowed for specific instance
+      *
+      * Therefore permission functions must support 2 modes of execution:
+      * - edit() - return value is treated as global permission for 'edit'
+      * - edit({ instance }) - return value is treated as 'edit' permission for this particular instance
+      *
+      * Global permission is checked before instance-specific,
+      * therefore if global premission is 'false' then per-instance permission doesn't matter!
+      *
+      * Per-instance permissions can be defined for 'edit' and 'delete' operations.
+      *
+      * 'create' and 'view' are global permissions only.
+      *
+      * {
+      *   create: () => <boolean>,
+      *   edit: ({ instance }) => <boolean>,
+      *   delete: ({ instance }) => <boolean>,
+      *   view: () => <boolean>
+      * }
+      */
       ?create: <boolean|function>, // false by default
       ?edit: <boolean|function>, // false by default
       ?delete: <boolean|function>, // false by default

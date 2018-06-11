@@ -49,12 +49,27 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
     validate: PropTypes.func
   }).isRequired,
   permissions: PropTypes.shape({
-    crudOperations: PropTypes.shape({
-      [PERMISSION_CREATE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-      [PERMISSION_EDIT]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-      [PERMISSION_DELETE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-      [PERMISSION_VIEW]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
-    }).isRequired
+    crudOperations: allPropTypes(
+      PropTypes.shape({
+        [PERMISSION_CREATE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_EDIT]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_DELETE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_VIEW]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
+      }).isRequired,
+      (props, propName, componentName) => {
+        if (!props || !props[propName]) {
+          return; // don't duplicate an Error because it'll be returned by 'isRequired' above
+        }
+        if (
+          !Object.keys(props[propName]).some(
+            p => props[propName][p] === true || props[propName][p] instanceof Function
+          )
+        ) {
+          // eslint-disable-next-line consistent-return,max-len
+          return new Error(`${componentName}: At least one field in permissions.crudOperations must be defined as boolean 'true' OR function, otherwise all operations are forbidden`);
+        }
+      }
+    )
   }).isRequired,
   api: PropTypes.shape({
     get: allowedSome([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?

@@ -12,8 +12,8 @@ export const allowedSome = /* istanbul ignore next */ (
   actions = [],
   {
     permissions: {
-      crudOperations
-    }
+      crudOperations = {}
+    } = {}
   }
 ) => [
   PERMISSION_CREATE,

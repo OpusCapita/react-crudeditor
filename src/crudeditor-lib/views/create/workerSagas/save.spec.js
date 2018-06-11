@@ -45,7 +45,9 @@ describe('create / workerSagas / save', () => {
     softRedirectSaga: _ => null,
     action: {
       payload: {},
-      meta: {}
+      meta: {
+        spawner: VIEW_NAME
+      }
     }
   }
 

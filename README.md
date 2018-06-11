@@ -417,10 +417,11 @@ Model Definition is an object describing an entity. It has the following structu
 
   permissions: {
     crudOperations: {
-      ?create: <boolean, false by default>,
-      ?edit: <boolean, false by default>,
-      ?delete: <boolean, false by default>,
-      ?view: <boolean, false by default>
+      // at least one field must be set to 'true' or defined as a function
+      ?create: <boolean|function>, // false by default
+      ?edit: <boolean|function>, // false by default
+      ?delete: <boolean|function>, // false by default
+      ?view: <boolean|function>, // false by default
     }
   },
 
@@ -608,21 +609,7 @@ Model Definition is an object describing an entity. It has the following structu
           ?sortByDefault: <boolean, false by default>,
           ?textAlignment: <"left"|"center"|"right">,
           ?component: <FieldRenderComponent>  // see "FieldRenderComponent" subheading.
-        }, ...],
-
-        /*
-         * Configuration for Standard Operations (see corresponding Terminology section).
-         * NOTE: only "delete" can be configured now.
-         */
-        ?standardOperations: {
-          <name, stadard operation ID>: <object, entity instance> => {
-            ...
-            return {
-              ?disabled: <boolean, false by default>
-            };
-          },
-          ...
-        }
+        }, ...]
       };
     },
 
@@ -772,57 +759,15 @@ Model Definition is an object describing an entity. It has the following structu
           }),
           ...
         ]
-      },
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: nothing can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
       }
     },
 
     ?edit: {
       ?formLayout: <function>  // see ui.create.formLayout for details
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: only "delete" can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
-      }
     },
 
     ?show: {
       ?formLayout: <function>  // see ui.create.formLayout for details
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: nothing can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
-      }
     },
 
 

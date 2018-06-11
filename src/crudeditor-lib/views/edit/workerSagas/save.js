@@ -26,8 +26,8 @@ export default function*({
 }) {
   // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
-  yield call(validateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
-  yield call(updateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
+  yield call(validateSaga, { modelDefinition, meta });
+  yield call(updateSaga, { modelDefinition, meta });
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield call(redirectSaga, {
@@ -46,7 +46,7 @@ export default function*({
       }
     });
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    yield call(adjacentSaga(VIEW_NAME), {
+    yield call(adjacentSaga, {
       modelDefinition,
       softRedirectSaga,
       action: {

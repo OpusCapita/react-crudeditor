@@ -75,8 +75,9 @@ const mergeProps = /* istanbul ignore next */ (
     },
 
     permissions: {
+      // return the user's permission to delete ALL instances passed as arguments.
       delete: (...instances) => isAllowed(crudOperations, PERMISSION_DELETE) && (
-        instances.length === 0 || // return the user's global CRUD permission to delete.
+        instances.length === 0 ||
         instances.every(instance => isAllowed(crudOperations, PERMISSION_DELETE, { instance }))
       )
     },

@@ -34,7 +34,9 @@ const viewSaveApi = {
   [EDIT_VIEW]: 'update'
 }
 
-export default function* saveSaga({ modelDefinition, meta, viewName }) {
+export default function* saveSaga({ modelDefinition, meta }) {
+  const viewName = meta.spawner;
+
   yield put({
     type: INSTANCE_SAVE_REQUEST[viewName],
     meta

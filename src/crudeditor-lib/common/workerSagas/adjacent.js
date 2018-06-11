@@ -8,7 +8,12 @@ import { ADJACENT_INSTANCE_SHOW_FAIL } from '../../views/show/constants';
 import { PERMISSION_EDIT, VIEW_EDIT, VIEW_SHOW } from '../constants';
 import { isAllowed } from '../../lib';
 
-export default viewName => function*({
+const ADJACENT_INSTANCE_FAIL = {
+  [VIEW_SHOW]: ADJACENT_INSTANCE_SHOW_FAIL,
+  [VIEW_EDIT]: ADJACENT_INSTANCE_EDIT_FAIL
+}
+
+export default function*({
   modelDefinition,
   softRedirectSaga,
   action: {
@@ -18,9 +23,9 @@ export default viewName => function*({
 }) {
   // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
-  const previousOffset = yield select(storeState => storeState.views[viewName].offset);
-
-  const offset = previousOffset + step;
+  const viewName = meta.spawner;
+  const currentOffset = yield select(storeState => storeState.views[viewName].offset);
+  const offset = currentOffset + step;
 
   const [instance] = yield call(searchSaga, {
     modelDefinition,
@@ -33,45 +38,47 @@ export default viewName => function*({
     }
   });
 
-  if (instance) {
-    const { crudOperations } = modelDefinition.permissions;
-    const canEdit = isAllowed(crudOperations, PERMISSION_EDIT, { instance });
-
-    if ((canEdit && viewName === VIEW_EDIT) || (!canEdit && viewName === VIEW_SHOW)) {
-      // stay on current view
-      yield call(canEdit ? editSaga : showSaga, {
-        modelDefinition,
-        action: {
-          payload: {
-            instance,
-            offset
-          },
-          meta
-        }
-      });
-    } else {
-      // if 'edit' permission contradicts current view than redirect to appropriate view
-      yield call(redirectSaga, {
-        modelDefinition,
-        softRedirectSaga,
-        action: {
-          payload: {
-            view: {
-              name: canEdit ? VIEW_EDIT : VIEW_SHOW,
-              state: {
-                instance
-              }
-            },
-            offset
-          },
-          meta
-        }
-      });
-    }
-  } else {
+  if (!instance) {
     yield put({
-      type: viewName === VIEW_EDIT ? ADJACENT_INSTANCE_EDIT_FAIL : ADJACENT_INSTANCE_SHOW_FAIL,
+      type: ADJACENT_INSTANCE_FAIL[viewName],
       meta
+    });
+
+    return;
+  }
+
+  const { crudOperations } = modelDefinition.permissions;
+  const canEdit = isAllowed(crudOperations, PERMISSION_EDIT, { instance });
+
+  if ((canEdit && viewName === VIEW_EDIT) || (!canEdit && viewName === VIEW_SHOW)) {
+    // stay on current view
+    yield call(canEdit ? editSaga : showSaga, {
+      modelDefinition,
+      action: {
+        payload: {
+          instance,
+          offset
+        },
+        meta
+      }
+    });
+  } else {
+    // if 'edit' permission contradicts current view than redirect to appropriate view
+    yield call(redirectSaga, {
+      modelDefinition,
+      softRedirectSaga,
+      action: {
+        payload: {
+          view: {
+            name: canEdit ? VIEW_EDIT : VIEW_SHOW,
+            state: {
+              instance
+            }
+          },
+          offset
+        },
+        meta
+      }
     });
   }
 }

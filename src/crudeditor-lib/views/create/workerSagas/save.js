@@ -19,9 +19,8 @@ export default function*({
   }
 }) {
   // Forwarding thrown error(s) to the parent saga.
-  yield call(validateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
-
-  const savedInstance = yield call(saveSaga, { modelDefinition, meta, viewName: VIEW_NAME });
+  yield call(validateSaga, { modelDefinition, meta });
+  const savedInstance = yield call(saveSaga, { modelDefinition, meta });
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance

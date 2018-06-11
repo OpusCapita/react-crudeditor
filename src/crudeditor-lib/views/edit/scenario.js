@@ -29,7 +29,7 @@ const transitions = {
   },
   nonBlocking: {
     [INSTANCE_SAVE]: saveSaga,
-    [ADJACENT_INSTANCE_EDIT]: adjacentSaga(VIEW_NAME),
+    [ADJACENT_INSTANCE_EDIT]: adjacentSaga,
     [VIEW_SOFT_REDIRECT]: redirectSaga
   }
 };

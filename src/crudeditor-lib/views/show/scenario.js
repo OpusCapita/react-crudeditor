@@ -18,7 +18,7 @@ import {
 const transitions = {
   blocking: {},
   nonBlocking: {
-    [ADJACENT_INSTANCE_SHOW]: adjacentSaga(VIEW_NAME),
+    [ADJACENT_INSTANCE_SHOW]: adjacentSaga,
     [VIEW_SOFT_REDIRECT]: redirectSaga
   }
 };

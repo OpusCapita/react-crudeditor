@@ -65,11 +65,11 @@ export const
   getDefaultNewInstance = wrapper((storeState, modelDefinition) => isAllowed(
     modelDefinition.permissions.crudOperations,
     PERMISSION_CREATE
-  ) ?
+  ) &&
     cloneDeep(modelDefinition.ui.create.defaultNewInstance({
       filter: {}, // Setting filter to empty object if it is not specified in view state.
       ..._getViewState(storeState, modelDefinition)
-    })) || {} :
+    })) ||
     {}
   ),
 

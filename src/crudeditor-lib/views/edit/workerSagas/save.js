@@ -9,8 +9,7 @@ import { getDefaultNewInstance } from '../../search/selectors';
 
 import {
   AFTER_ACTION_NEXT,
-  AFTER_ACTION_NEW,
-  VIEW_NAME
+  AFTER_ACTION_NEW
 } from '../constants';
 
 /*

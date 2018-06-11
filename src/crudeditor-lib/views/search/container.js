@@ -135,7 +135,8 @@ const mergeProps = /* istanbul ignore next */ (
       ...(isAllowed(crudOperations, PERMISSION_DELETE) && {
         delete: {
           title: i18n.getMessage('crudEditor.deleteSelected.button'),
-          disabled: selectedInstances.length === 0,
+          disabled: selectedInstances.length === 0 ||
+            selectedInstances.some(instance => !isAllowed(crudOperations, PERMISSION_DELETE, { instance })),
           handler: _ => deleteInstances(selectedInstances),
           confirm: {
             message: i18n.getMessage('crudEditor.deleteSelected.confirmation'),

@@ -23,7 +23,8 @@ class SearchResultListing extends PureComponent {
         delete: PropTypes.func.isRequired
       }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
-      instanceOperations: PropTypes.func.isRequired
+      instanceOperations: PropTypes.func.isRequired,
+      bulkOperations: PropTypes.object.isRequired
     }).isRequired
   }
 
@@ -63,13 +64,13 @@ class SearchResultListing extends PureComponent {
           order: sortOrder
         }
       },
-      permissions: {
-        delete: canDelete
-      },
-      instanceOperations
+      instanceOperations,
+      bulkOperations
     } = this.props.model;
 
     const { i18n } = this.context;
+
+    const bulkOperationsExist = Object.keys(bulkOperations).length > 0;
 
     return (
       <div className="crud--search-result-listing__table-container">
@@ -77,11 +78,11 @@ class SearchResultListing extends PureComponent {
           <thead>
             <tr>
               {
-                canDelete() &&
+                bulkOperationsExist &&
                 <th>
                   <Checkbox
                     checked={selectedInstances.length === instances.length && instances.length !== 0}
-                    disabled={instances.length === 0 || !canDelete(...instances)}
+                    disabled={instances.length === 0}
                     onChange={this.handleToggleSelectedAll}
                   />
                 </th>
@@ -131,11 +132,10 @@ class SearchResultListing extends PureComponent {
               instances.map((instance, index) => (
                 <tr key={`tr-${JSON.stringify(instance)}`}>
                   {
-                    canDelete() &&
+                    bulkOperationsExist &&
                     <td>
                       <Checkbox
                         checked={selectedInstances.indexOf(instance) > -1}
-                        disabled={!canDelete(instance)}
                         onChange={this.handleToggleSelected(instance)}
                       />
                     </td>

@@ -187,6 +187,8 @@ export default baseModelDefinition => {
       );
 
       this.runningSaga = sagaMiddleware.run(rootSaga, modelDefinition);
+
+      console.log({ modelDefinition });
     }
 
     getChildContext() {

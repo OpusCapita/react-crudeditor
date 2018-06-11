@@ -8,10 +8,12 @@ import {
   PERMISSION_VIEW
 } from '../common/constants';
 
-export const allowedAny = /* istanbul ignore next */ (
+export const allowedSome = /* istanbul ignore next */ (
   actions = [],
   {
-    permissions: { crudOperations = {} } = {}
+    permissions: {
+      crudOperations
+    }
   }
 ) => [
   PERMISSION_CREATE,

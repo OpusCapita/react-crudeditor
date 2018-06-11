@@ -18,7 +18,8 @@ import {
 
   PERMISSION_CREATE,
   PERMISSION_EDIT,
-  PERMISSION_VIEW
+  PERMISSION_VIEW,
+  PERMISSION_DELETE
 } from './common/constants';
 
 const getViewState = {
@@ -65,19 +66,14 @@ export function getPrefixedTranslations(translations, prefix) {
  * @param {undefined|object} data - arg for permissions function, e.g. { instance } for per-instance permissions
  * @returns {boolean}
  */
-export const isAllowed = (permissions, operation, data) => { // eslint-disable-line consistent-return
-  if (!permissions.hasOwnProperty(operation)) {
-    return false
-  }
-  if (typeof permissions[operation] === 'boolean') {
-    return permissions[operation]
-  }
+export function isAllowed(permissions, operation, data) { // eslint-disable-line consistent-return
   if (permissions[operation] instanceof Function) {
-    return data ?
+    return arguments.length === 3 ?
       // global permission is enforced before checking data
       permissions[operation]() && permissions[operation](data) :
       permissions[operation]()
   }
+  return permissions[operation]
 }
 
 // Filling modelDefinition with default values where necessary.
@@ -116,6 +112,13 @@ export function fillDefaults(baseModelDefinition) {
   }
 
   const { crudOperations } = modelDefinition.permissions;
+
+  [PERMISSION_CREATE, PERMISSION_EDIT, PERMISSION_VIEW, PERMISSION_DELETE].
+    filter(p => !crudOperations.hasOwnProperty(p)).
+    forEach(p => {
+      crudOperations[p] = false
+    });
+
 
   const getUi = {
     ...(isAllowed(crudOperations, PERMISSION_VIEW) ? { [VIEW_SEARCH]: getSearchUi } : null),

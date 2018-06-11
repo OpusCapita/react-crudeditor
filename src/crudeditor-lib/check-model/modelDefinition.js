@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { allowedAny, allPropTypes } from './lib';
+import { allowedSome, allPropTypes } from './lib';
 
 import {
   PERMISSION_CREATE,
@@ -57,13 +57,13 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
     }).isRequired
   }).isRequired,
   api: PropTypes.shape({
-    get: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+    get: allowedSome([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
       PropTypes.func.isRequired : PropTypes.func,
-    search: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+    search: allowedSome([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
       PropTypes.func.isRequired : PropTypes.func,
-    delete: allowedAny([PERMISSION_DELETE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
-    create: allowedAny([PERMISSION_CREATE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
-    update: allowedAny([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    delete: allowedSome([PERMISSION_DELETE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    create: allowedSome([PERMISSION_CREATE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    update: allowedSome([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
   }),
   ui: PropTypes.shape({
     spinner: PropTypes.func,

@@ -131,7 +131,7 @@ const mergeProps = /* istanbul ignore next */ (
         disabled: !unsavedChanges,
         handler: saveAndNewInstance
       }]),
-      ...(!!adjacentInstancesExist.next && [{ // TODO check permissions somewhere
+      ...(!!adjacentInstancesExist.next && [{
         title: i18n.getMessage('crudEditor.saveAndNext.button'),
         disabled: !unsavedChanges,
         handler: saveAndNextInstance

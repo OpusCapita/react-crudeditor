@@ -72,7 +72,8 @@ export default function*({
           view: {
             name: canEdit ? VIEW_EDIT : VIEW_SHOW,
             state: {
-              instance
+              instance,
+              tab: yield select(storeState => storeState.views[viewName].activeTab.tab)
             }
           },
           offset

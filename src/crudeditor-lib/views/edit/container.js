@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 
 import Main from '../../../components/EditMain';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
+import { VIEW_SEARCH, PERMISSION_VIEW, PERMISSION_CREATE, PERMISSION_DELETE } from '../../common/constants';
 import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { getTotalCount } from '../search/selectors';
+import { isAllowed } from '../../lib';
 
 import {
   getViewModelData,
@@ -39,7 +40,6 @@ const mergeProps = /* istanbul ignore next */ (
     adjacentInstancesExist,
     viewState,
     permissions: { crudOperations },
-    standardOperations,
     customOperations,
     externalOperations,
     uiConfig
@@ -70,7 +70,7 @@ const mergeProps = /* istanbul ignore next */ (
       ...dispatchProps,
       ...(adjacentInstancesExist.previous && { gotoPreviousInstance: editPreviousInstance }),
       ...(adjacentInstancesExist.next && { gotoNextInstance: editNextInstance }),
-      ...(crudOperations.view && { exitView })
+      ...(isAllowed(crudOperations, PERMISSION_VIEW) && { exitView })
     },
 
     /*
@@ -81,7 +81,7 @@ const mergeProps = /* istanbul ignore next */ (
      * since operations with "show" set to "false" are not included in the result array.
      */
     operations: viewState ? [
-      ...(!!crudOperations.view && [{
+      ...(isAllowed(crudOperations, PERMISSION_VIEW) && [{
         title: i18n.getMessage('crudEditor.cancel.button'),
         handler: exitView,
         style: 'link',
@@ -116,10 +116,9 @@ const mergeProps = /* istanbul ignore next */ (
           }) :
           operation
         ),
-      ...(!!crudOperations.delete && [{
+      ...(isAllowed(crudOperations, PERMISSION_DELETE, { instance }) && [{
         title: i18n.getMessage('crudEditor.delete.button'),
         icon: 'trash',
-        disabled: standardOperations.delete && standardOperations.delete(instance).disabled,
         handler: _ => deleteInstances(instance),
         confirm: {
           message: i18n.getMessage('crudEditor.delete.confirmation'),
@@ -127,7 +126,7 @@ const mergeProps = /* istanbul ignore next */ (
           textCancel: i18n.getMessage('crudEditor.cancel.button')
         }
       }]),
-      ...(!!crudOperations.create && [{
+      ...(isAllowed(crudOperations, PERMISSION_CREATE) && [{
         title: i18n.getMessage('crudEditor.saveAndNew.button'),
         disabled: !unsavedChanges,
         handler: saveAndNewInstance
@@ -158,7 +157,6 @@ export default connect(
     ),
     viewState: getViewState(storeState, modelDefinition),
     permissions: modelDefinition.permissions,
-    standardOperations: modelDefinition.ui.edit.standardOperations,
     customOperations: modelDefinition.ui.customOperations,
     externalOperations,
     uiConfig

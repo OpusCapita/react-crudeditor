@@ -20,7 +20,7 @@ export default function*({
   modelDefinition,
   action: {
     payload,
-    meta = {}
+    meta
   }
 }) {
   let {

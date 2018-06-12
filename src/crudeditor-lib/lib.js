@@ -17,9 +17,9 @@ import {
   VIEW_ERROR,
 
   PERMISSION_CREATE,
-  PERMISSION_DELETE,
   PERMISSION_EDIT,
-  PERMISSION_VIEW
+  PERMISSION_VIEW,
+  PERMISSION_DELETE
 } from './common/constants';
 
 const getViewState = {
@@ -59,6 +59,23 @@ export function getPrefixedTranslations(translations, prefix) {
     }), {})
 }
 
+/**
+ * Function 'isAllowed' returns permission for certain operation
+ * @param {{ view: <bool|func>, create: <bool|func>, delete: <bool|func>, edit: <bool|func> }} permissions
+ * @param {string} operation - one of 'view', 'create', `edit`, 'delete'
+ * @param {undefined|object} data - arg for permissions function, e.g. { instance } for per-instance permissions
+ * @returns {boolean}
+ */
+export function isAllowed(permissions, operation, data) { // eslint-disable-line consistent-return
+  if (permissions[operation] instanceof Function) {
+    return arguments.length === 3 ?
+      // global permission is enforced before checking data
+      permissions[operation]() && permissions[operation](data) :
+      permissions[operation]()
+  }
+  return permissions[operation]
+}
+
 // Filling modelDefinition with default values where necessary.
 export function fillDefaults(baseModelDefinition) {
   const modelDefinition = cloneDeep(baseModelDefinition);
@@ -90,28 +107,24 @@ export function fillDefaults(baseModelDefinition) {
     modelDefinition.ui.instanceLabel = ({ _objectLabel }) => _objectLabel;
   }
 
-  const { crudOperations } = modelDefinition.permissions;
-
-  [
-    PERMISSION_CREATE,
-    PERMISSION_EDIT,
-    PERMISSION_DELETE,
-    PERMISSION_VIEW
-  ].forEach(operationPermission => {
-    if (!crudOperations.hasOwnProperty(operationPermission)) {
-      crudOperations[operationPermission] = false
-    }
-  });
-
   if (!modelDefinition.ui.customOperations) {
     modelDefinition.ui.customOperations = _ => [];
   }
 
+  const { crudOperations } = modelDefinition.permissions;
+
+  [PERMISSION_CREATE, PERMISSION_EDIT, PERMISSION_VIEW, PERMISSION_DELETE].
+    filter(p => !crudOperations.hasOwnProperty(p)).
+    forEach(p => {
+      crudOperations[p] = false
+    });
+
+
   const getUi = {
-    ...(crudOperations.view ? { [VIEW_SEARCH]: getSearchUi } : null),
-    ...(crudOperations.create ? { [VIEW_CREATE]: getCreateUi } : null),
-    ...(crudOperations.edit ? { [VIEW_EDIT]: getEditUi } : null),
-    ...(crudOperations.view ? { [VIEW_SHOW]: getShowUi } : null)
+    ...(isAllowed(crudOperations, PERMISSION_VIEW) ? { [VIEW_SEARCH]: getSearchUi } : null),
+    ...(isAllowed(crudOperations, PERMISSION_CREATE) ? { [VIEW_CREATE]: getCreateUi } : null),
+    ...(isAllowed(crudOperations, PERMISSION_EDIT) ? { [VIEW_EDIT]: getEditUi } : null),
+    ...(isAllowed(crudOperations, PERMISSION_VIEW) ? { [VIEW_SHOW]: getShowUi } : null)
   };
 
   Object.keys(getUi).forEach(viewName => {

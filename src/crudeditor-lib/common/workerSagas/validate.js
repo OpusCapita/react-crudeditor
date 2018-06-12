@@ -39,7 +39,9 @@ const INSTANCE_VALIDATE_SUCCESS = {
 /*
  * Instance validation. Used in 'create' and 'edit' views before saving/updating instance
  */
-export default function* validateSaga({ modelDefinition, meta, viewName }) {
+export default function* validateSaga({ modelDefinition, meta }) {
+  const viewName = meta.spawner;
+
   yield put({
     type: ALL_INSTANCE_FIELDS_VALIDATE[viewName],
     meta

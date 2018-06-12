@@ -1,17 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import Main from '../../../components/CreateMain';
 import { softRedirectView } from '../../common/actions';
 import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { VIEW_NAME } from './constants';
-import { VIEW_SEARCH } from '../../common/constants';
-
+import { VIEW_SEARCH, PERMISSION_VIEW } from '../../common/constants';
+import { isAllowed } from '../../lib';
 import {
   getViewModelData,
   getViewState
 } from './selectors';
-
 import {
   saveInstance,
   selectTab,
@@ -50,7 +48,7 @@ const mergeProps = /* istanbul ignore next */ (
 
     actions: {
       ...dispatchProps,
-      ...(crudOperations.view && { exitView })
+      ...(isAllowed(crudOperations, PERMISSION_VIEW) && { exitView })
     },
 
     /*
@@ -61,7 +59,7 @@ const mergeProps = /* istanbul ignore next */ (
      * since operations with "show" set to "false" are not included in the result array.
      */
     operations: viewState ? [
-      ...(!!crudOperations.view && [{
+      ...(isAllowed(crudOperations, PERMISSION_VIEW) && [{
         title: i18n.getMessage('crudEditor.cancel.button'),
         handler: exitView,
         style: 'link',

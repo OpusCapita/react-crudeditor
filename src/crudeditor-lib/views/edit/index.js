@@ -6,10 +6,6 @@ export { getViewState } from './selectors';
 export const getUi = modelDefinition => {
   const editMeta = modelDefinition.ui.edit || {};
 
-  if (!editMeta.standardOperations) {
-    editMeta.standardOperations = {};
-  }
-
   editMeta.formLayout = buildFormLayout({
     customBuilder: editMeta.formLayout,
     viewName: VIEW_NAME,

@@ -1,11 +1,10 @@
 import { call, put, cancel, takeLatest } from 'redux-saga/effects';
-
 import searchViewScenario from './views/search/scenario';
 import createViewScenario from './views/create/scenario';
 import editViewScenario from './views/edit/scenario';
 import showViewScenario from './views/show/scenario';
 import errorViewScenario from './views/error/scenario';
-
+import { isAllowed } from './lib';
 import {
   ACTIVE_VIEW_CHANGE,
   DEFAULT_VIEW,
@@ -18,19 +17,23 @@ import {
   VIEW_CREATE,
   VIEW_EDIT,
   VIEW_SHOW,
-  VIEW_ERROR
+  VIEW_ERROR,
+
+  PERMISSION_CREATE,
+  PERMISSION_EDIT,
+  PERMISSION_VIEW
 } from './common/constants';
 
 const isStandardView = viewName => [VIEW_CREATE, VIEW_EDIT, VIEW_SHOW, VIEW_SEARCH].indexOf(viewName) > -1;
 
 export default function*(modelDefinition) {
-  const permissions = modelDefinition.permissions.crudOperations;
+  const { crudOperations } = modelDefinition.permissions;
 
   const initializeViewSagas = {
-    ...(permissions.view ? { [VIEW_SEARCH]: searchViewScenario } : null),
-    ...(permissions.create ? { [VIEW_CREATE]: createViewScenario } : null),
-    ...(permissions.edit ? { [VIEW_EDIT]: editViewScenario } : null),
-    ...(permissions.view ? { [VIEW_SHOW]: showViewScenario } : null),
+    ...(isAllowed(crudOperations, PERMISSION_VIEW) ? { [VIEW_SEARCH]: searchViewScenario } : null),
+    ...(isAllowed(crudOperations, PERMISSION_CREATE) ? { [VIEW_CREATE]: createViewScenario } : null),
+    ...(isAllowed(crudOperations, PERMISSION_EDIT) ? { [VIEW_EDIT]: editViewScenario } : null),
+    ...(isAllowed(crudOperations, PERMISSION_VIEW) ? { [VIEW_SHOW]: showViewScenario } : null),
     [VIEW_ERROR]: errorViewScenario
   };
 

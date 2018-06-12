@@ -58,28 +58,30 @@ export default function*({
   action: {
     payload: {
       view: {
-        name: viewName,
-        state: viewState
+        name: redirectViewName,
+        state: redirectViewState
       },
       ...additionalArgs
     },
     meta
   }
 }) {
+  const currentViewName = meta.spawner;
+
   yield put({
-    type: VIEW_REDIRECT_REQUEST[meta.spawner],
+    type: VIEW_REDIRECT_REQUEST[currentViewName],
     meta
   });
 
   try {
     yield call(softRedirectSaga, {
-      viewName,
-      viewState,
+      viewName: redirectViewName,
+      viewState: redirectViewState,
       ...additionalArgs
     });
   } catch (err) {
     yield put({
-      type: VIEW_REDIRECT_FAIL[meta.spawner],
+      type: VIEW_REDIRECT_FAIL[currentViewName],
       payload: err,
       error: true,
       meta

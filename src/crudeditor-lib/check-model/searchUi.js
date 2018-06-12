@@ -46,8 +46,7 @@ const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
         `);
       }
     }
-  ),
-  standardOperations: PropTypes.objectOf(PropTypes.func)
+  )
 })
 
 export default /* istanbul ignore next */ ({ searchMeta, fieldsMeta }) => PropTypes.checkPropTypes(

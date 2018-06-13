@@ -34,6 +34,7 @@ const mergeProps = /* istanbul ignore next */ (
     softRedirectView,
     exitView,
     saveInstance,
+    saveAndNewInstance,
     ...dispatchProps
   },
   { i18n }
@@ -94,6 +95,11 @@ const mergeProps = /* istanbul ignore next */ (
           }) :
           operation
         ),
+      {
+        title: i18n.getMessage('crudEditor.saveAndNew.button'),
+        disabled: !unsavedChanges,
+        handler: saveAndNewInstance
+      },
       {
         title: i18n.getMessage('crudEditor.save.button'),
         disabled: !unsavedChanges,

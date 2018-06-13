@@ -1,4 +1,9 @@
 
+[Release 1.3.0](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.0) Wed Jun 13 2018 15:37:25 GMT+0300 (MSK)
+=======================================================
+
+- Added saveAndNew button for create view [#280](https://github.com/OpusCapita/react-crudeditor/issues/280) ([#281](https://github.com/OpusCapita/react-crudeditor/issues/281)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-13 15:33:12 +0300)
+
 [Release 1.2.0](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.2.0) Tue Jun 12 2018 14:54:43 GMT+0300 (MSK)
 =======================================================
 

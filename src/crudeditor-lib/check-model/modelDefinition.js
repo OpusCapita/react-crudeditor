@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { allowedAny, allPropTypes } from './lib';
+import { allowedSome, allPropTypes } from './lib';
 
 import {
   PERMISSION_CREATE,
@@ -49,21 +49,36 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
     validate: PropTypes.func
   }).isRequired,
   permissions: PropTypes.shape({
-    crudOperations: PropTypes.shape({
-      [PERMISSION_CREATE]: PropTypes.bool,
-      [PERMISSION_EDIT]: PropTypes.bool,
-      [PERMISSION_DELETE]: PropTypes.bool,
-      [PERMISSION_VIEW]: PropTypes.bool
-    }).isRequired
+    crudOperations: allPropTypes(
+      PropTypes.shape({
+        [PERMISSION_CREATE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_EDIT]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_DELETE]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+        [PERMISSION_VIEW]: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
+      }).isRequired,
+      (props, propName, componentName) => {
+        if (!props || !props[propName]) {
+          return; // don't duplicate an Error because it'll be returned by 'isRequired' above
+        }
+        if (
+          !Object.keys(props[propName]).some(
+            p => props[propName][p] === true || props[propName][p] instanceof Function
+          )
+        ) {
+          // eslint-disable-next-line consistent-return,max-len
+          return new Error(`${componentName}: At least one field in permissions.crudOperations must be defined as boolean 'true' OR function, otherwise all operations are forbidden`);
+        }
+      }
+    )
   }).isRequired,
   api: PropTypes.shape({
-    get: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+    get: allowedSome([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
       PropTypes.func.isRequired : PropTypes.func,
-    search: allowedAny([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
+    search: allowedSome([PERMISSION_VIEW, PERMISSION_EDIT], modelDefinition) ?
       PropTypes.func.isRequired : PropTypes.func,
-    delete: allowedAny([PERMISSION_DELETE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
-    create: allowedAny([PERMISSION_CREATE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
-    update: allowedAny([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    delete: allowedSome([PERMISSION_DELETE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    create: allowedSome([PERMISSION_CREATE], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
+    update: allowedSome([PERMISSION_EDIT], modelDefinition) ? PropTypes.func.isRequired : PropTypes.func,
   }),
   ui: PropTypes.shape({
     spinner: PropTypes.func,
@@ -74,10 +89,7 @@ const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
       formLayout: PropTypes.func
     }),
     edit: PropTypes.shape({
-      formLayout: PropTypes.func,
-      standardOperations: PropTypes.shape({
-        delete: PropTypes.func
-      })
+      formLayout: PropTypes.func
     }),
     show: PropTypes.shape({
       formLayout: PropTypes.func

@@ -366,12 +366,7 @@ export default {
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
         { name: 'testNumberTypeField', textAlignment: 'right' }
-      ],
-      standardOperations: {
-        'delete': instance => ({
-          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
-        })
-      }
+      ]
     }),
     instanceLabel: /* istanbul ignore next */ instance => instance._objectLabel || instance.contractId || '',
     create: {
@@ -391,12 +386,7 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT),
-      standardOperations: {
-        'delete': /* istanbul ignore next */ instance => ({
-          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
-        })
-      }
+      formLayout: buildFormLayout(VIEW_EDIT)
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)

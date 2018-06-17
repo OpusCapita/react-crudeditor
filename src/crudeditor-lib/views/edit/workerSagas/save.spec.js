@@ -43,7 +43,9 @@ const arg = {
   softRedirectSaga,
   action: {
     payload: {},
-    meta: {}
+    meta: {
+      spawner: VIEW_NAME
+    }
   }
 }
 

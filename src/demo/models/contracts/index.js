@@ -376,9 +376,19 @@ export default {
   },
   permissions: {
     crudOperations: {
-      create: true,
-      edit: true,
-      delete: true,
+      create: _ => true,
+      edit: ({ instance } = {}) => {
+        if (instance) {
+          return (instance.description || '').indexOf('of') > -1;
+        }
+        return true;
+      },
+      delete: ({ instance } = {}) => {
+        if (instance) {
+          return (instance.contractId || '').toLowerCase().indexOf('abd') > -1;
+        }
+        return true;
+      },
       view: true
     }
   },
@@ -404,12 +414,7 @@ export default {
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
         { name: 'validRange', component: DateRangeCellRender }
-      ],
-      standardOperations: {
-        'delete': instance => ({
-          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
-        })
-      }
+      ]
     }),
     instanceLabel: /* istanbul ignore next */ instance => instance._objectLabel || instance.contractId || '',
     create: {
@@ -429,12 +434,7 @@ export default {
       formLayout: buildFormLayout(VIEW_CREATE)
     },
     edit: {
-      formLayout: buildFormLayout(VIEW_EDIT),
-      standardOperations: {
-        'delete': /* istanbul ignore next */ instance => ({
-          disabled: ((instance || {}).contractId || '').indexOf('Abd ') > -1
-        })
-      }
+      formLayout: buildFormLayout(VIEW_EDIT)
     },
     show: {
       formLayout: buildFormLayout(VIEW_SHOW)

@@ -3,7 +3,7 @@ import { call, put, spawn } from 'redux-saga/effects';
 import deleteSaga from './workerSagas/delete';
 import editSaga from './workerSagas/edit';
 import saveSaga from './workerSagas/save';
-import editAdjacentSaga from './workerSagas/editAdjacent';
+import adjacentSaga from '../../common/workerSagas/adjacent';
 import redirectSaga from '../../common/workerSagas/redirect';
 import scenarioSaga from '../../common/scenario';
 
@@ -29,7 +29,7 @@ const transitions = {
   },
   nonBlocking: {
     [INSTANCE_SAVE]: saveSaga,
-    [ADJACENT_INSTANCE_EDIT]: editAdjacentSaga,
+    [ADJACENT_INSTANCE_EDIT]: adjacentSaga,
     [VIEW_SOFT_REDIRECT]: redirectSaga
   }
 };

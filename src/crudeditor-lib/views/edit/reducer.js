@@ -12,7 +12,7 @@ import {
 } from '../lib';
 
 import {
-  ALL_INSTANCE_FIELDS_VALIDATE,
+  ALL_INSTANCE_FIELDS_VALIDATE_REQUEST,
 
   INSTANCE_EDIT_REQUEST,
   INSTANCE_EDIT_SUCCESS,
@@ -100,7 +100,32 @@ const defaultStoreStateTemplate = {
    */
   formattedInstance: undefined,
 
-  // Must always be an array, may be empty.
+  /*
+   * Must always be an array, may be empty.
+   *
+   * Either an array of arrays (representing tabs) -- for tabbed layout,
+   * or an array of arrays (representing sections) and objects (representing fields) -- otherwise.
+   *
+   * A tab is represented by an array which elements are
+   *   - arrays (representing sections)
+   *   and/or
+   *   - objects (representing fields).
+   *
+   * XXX: an array representing a tab has props (since in JavaScript an array is also an object):
+   *   - "tab", string with tab name,
+   *   - "disabled", boolean.
+   *   - "component", React Component.
+   *
+   * A section is represented by an array which elements are objects (representing fields).
+   *
+   * XXX: an array representing a section has props (since in JavaScript an array is also an object):
+   *   - "section", string with section name.
+   *
+   * A field is represented by an object with props:
+   *   - "field", string with tab name,
+   *   - "readOnly", boolean.
+   *   - "component", React Component.
+   */
   formLayout: [],
 
   // A ref to one of tabs element => it is undefined when and only when formLayout does not consist of tabs.
@@ -382,7 +407,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
+  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE_REQUEST) {
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
       const fieldValue = storeState.formInstance[fieldName];
       const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);

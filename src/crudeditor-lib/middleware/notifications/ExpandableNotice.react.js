@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
-import './BetterMessage.less';
+import './ExpandableNotice.less';
 
-export default class BetterMessage extends PureComponent {
+export default class ExpandableNotice extends PureComponent {
   static propTypes = {
     message: PropTypes.node.isRequired,
     details: PropTypes.node,
@@ -11,22 +11,22 @@ export default class BetterMessage extends PureComponent {
   }
 
   static defaultProps = {
-    detailsHeader: 'Error'
+    detailsHeader: 'Error(s) details'
   }
 
   state = {
     collapsed: true
   }
 
-  handleCollapse = e => {
-    e.stopPropagation();
+  handleCollapse = event => {
+    event.stopPropagation();
     this.setState(prevState => ({ collapsed: !prevState.collapsed }));
   }
 
-  handleCopyToClipboard = e => {
-    e.stopPropagation();
+  handleCopyToClipboard = event => {
+    event.stopPropagation();
     document.getSelection().selectAllChildren(this.details);
-    document.execCommand("copy");
+    document.execCommand('copy');
     document.getSelection().collapse(this.details, 0);
   }
 

@@ -32,10 +32,38 @@ export default {
     })
   },
 
-  delete({ instances }) {
-    return new Promise((resolve, reject) => {
-      setTimeout(_ => resolve(deleteMany({ instances })), FAKE_RESPONSE_TIMEOUT)
-    })
+  // Bulk deletion.
+  // errors array length does not correspond to number of instances failed to be deleted.
+  async delete({ instances }) {
+    const errors = {};
+
+    const deletionInstances = instances.filter(instance => {
+      if (instance.contractId.toLowerCase().indexOf('seminal') !== -1) {
+        errors.seminalDeletionAttempt = 'Contracts with IDs containing "seminal" must not be deleted';
+        return false;
+      }
+
+      if (instance.contractId.toLowerCase().indexOf('emphysema') !== -1) {
+        errors.emphysemaDeletionAttempt = 'Contracts with IDs containing "emphysema" must not be deleted';
+        return false;
+      }
+
+      return true;
+    });
+
+    await new Promise((resolve, reject) => setTimeout(
+      _ => resolve(deleteMany({ instances: deletionInstances })),
+      FAKE_RESPONSE_TIMEOUT
+    ));
+
+    return {
+      count: deletionInstances.length,
+      ...(Object.keys(errors).length && { errors: Object.keys(errors).map(id => ({
+        code: 400,
+        id,
+        message: errors[id]
+      })) })
+    };
   },
 
   create({ instance }) {

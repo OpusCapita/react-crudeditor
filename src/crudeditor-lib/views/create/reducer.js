@@ -11,7 +11,7 @@ import {
 } from '../lib';
 
 import {
-  ALL_INSTANCE_FIELDS_VALIDATE,
+  ALL_INSTANCE_FIELDS_VALIDATE_REQUEST,
 
   INSTANCE_FIELD_CHANGE,
   INSTANCE_FIELD_VALIDATE,
@@ -337,7 +337,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE) {
+  } else if (type === ALL_INSTANCE_FIELDS_VALIDATE_REQUEST) {
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
       const fieldValue = storeState.formInstance[fieldName];
       const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);

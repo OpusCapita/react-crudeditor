@@ -470,13 +470,20 @@ Model Definition is an object describing an entity. It has the following structu
     },
 
     /*
-     * delete entity instances transactionally by their Logical Keys.
+     * Delete entity instances by their Logical Keys.
+	 * In case of a failure deleting one or more instances,
+	 * an optional "errors" property may be specified with an array of error objects.
+	 * If error object format corresponds to Instance Validation Error, appropriately
+	 * translated messages are displayed as Notifications.
+	 * Errors array length may be different from the number of instances failed to be deleted.
      */
     async delete: function({
       instances: <array[object], entity instances with at least Logical Key fields>
     }) {
+      ...
       return {
-        count: <whole number, how many entity instances where actually deleted>
+        count: <whole number, how many entity instances where actually deleted>,
+		?errors: [<object>, ...]
       };
     },
 
@@ -1267,7 +1274,7 @@ Every view *must* have "ready" status defined in its *constants.js* file for [on
 {
   code: 400,
   id: <string, error id used by translation service>,
-  ?message: <string, default error message - in case a translation is not provided>,
+  ?message: <string, default error message, usually in English - in case a translation is not provided>,
   ?args: <object, optional parameters for i18n service>
 }
 ```
@@ -1280,7 +1287,8 @@ Both plain objects and instances of **Error** may be used. The error *must not* 
 {
   code: 500,
   id: <string, error id used by translation service>,
-  message: <string, default error message in English>
+  message: <string, default error message in English - in case a translation is not provided>,
+  ?args: <object, optional parameters for i18n service>
 }
 ```
 

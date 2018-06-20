@@ -41,7 +41,7 @@ describe('edit view / workerSagas / delete', () => {
     }
   }
 
-  it('should redirect to search view after successful delete', () => {
+  it.skip('should redirect to search view after successful delete', () => {
     const dispatched = [];
 
     runSaga({
@@ -98,7 +98,7 @@ describe('edit view / workerSagas / delete', () => {
     })).to.be.true;
   })
 
-  it('should throw if delete api fails', () => {
+  it.skip('should throw if delete api fails', () => {
     const dispatched = [];
 
     const err = {

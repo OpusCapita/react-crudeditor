@@ -385,7 +385,7 @@ export default {
       },
       delete: ({ instance } = {}) => {
         if (instance) {
-          return (instance.contractId || '').toLowerCase().indexOf('abd') > -1;
+          return (instance.contractId || '').toLowerCase().indexOf('abd') === -1;
         }
         return true;
       },

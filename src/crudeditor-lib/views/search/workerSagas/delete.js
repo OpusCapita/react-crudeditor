@@ -29,7 +29,8 @@ export default function*({
     modelDefinition,
     softRedirectSaga,
     action: {
-      payload: {}
+      payload: {},
+      meta
     }
   });
 }

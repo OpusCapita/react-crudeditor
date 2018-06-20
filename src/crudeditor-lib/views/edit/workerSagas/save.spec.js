@@ -33,12 +33,19 @@ const arg = {
       search: {
         resultFields: [{ name: 'a' }]
       }
+    },
+    permissions: {
+      crudOperations: {
+        create: true
+      }
     }
   },
   softRedirectSaga,
   action: {
     payload: {},
-    meta: {}
+    meta: {
+      spawner: VIEW_NAME
+    }
   }
 }
 

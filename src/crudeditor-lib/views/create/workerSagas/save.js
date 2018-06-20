@@ -1,16 +1,11 @@
 import { call, put, select } from 'redux-saga/effects';
-
-import {
-  AFTER_ACTION_NEW,
-  VIEW_INITIALIZE,
-  VIEW_NAME
-} from '../constants';
-
-import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW } from '../../../common/constants';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import validateSaga from '../../../common/workerSagas/validate';
 import saveSaga from '../../../common/workerSagas/save';
 import { getDefaultNewInstance } from '../../search/selectors';
+import { isAllowed } from '../../../lib';
+import { VIEW_ERROR, VIEW_EDIT, VIEW_SHOW, PERMISSION_EDIT } from '../../../common/constants';
+import { AFTER_ACTION_NEW, VIEW_INITIALIZE, VIEW_NAME } from '../constants';
 
 /*
  * XXX: in case of failure, a worker saga must dispatch an appropriate action and exit by throwing error(s).
@@ -24,9 +19,8 @@ export default function*({
   }
 }) {
   // Forwarding thrown error(s) to the parent saga.
-  yield call(validateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
-
-  const savedInstance = yield call(saveSaga, { modelDefinition, meta, viewName: VIEW_NAME });
+  yield call(validateSaga, { modelDefinition, meta });
+  const savedInstance = yield call(saveSaga, { modelDefinition, meta });
 
   if (afterAction === AFTER_ACTION_NEW) {
     // create another instance
@@ -47,7 +41,11 @@ export default function*({
         action: {
           payload: {
             view: {
-              name: /* istanbul ignore next */ modelDefinition.permissions.crudOperations.edit ?
+              name: /* istanbul ignore next */ isAllowed(
+                modelDefinition.permissions.crudOperations,
+                PERMISSION_EDIT,
+                { instance: savedInstance }
+              ) ?
                 VIEW_EDIT :
                 VIEW_SHOW,
               state: {

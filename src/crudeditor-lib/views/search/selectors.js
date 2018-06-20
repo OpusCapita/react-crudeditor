@@ -1,11 +1,9 @@
 import cloneDeep from 'lodash/cloneDeep';
 import { buildViewSelectorWrapper } from '../../selectorWrapper';
-
 import {
   cleanFilter,
   getDefaultSortField
 } from './lib';
-
 import {
   DEFAULT_MAX,
   DEFAULT_OFFSET,
@@ -13,13 +11,14 @@ import {
 
   VIEW_NAME
 } from './constants';
-
 import {
   STATUS_DELETING,
   STATUS_INITIALIZING,
   STATUS_REDIRECTING,
   STATUS_SEARCHING,
+  PERMISSION_CREATE
 } from '../../common/constants';
+import { isAllowed } from '../../lib';
 
 const wrapper = buildViewSelectorWrapper(VIEW_NAME);
 
@@ -63,7 +62,10 @@ export const
 
   // █████████████████████████████████████████████████████████████████████████████████████████████████████████
 
-  getDefaultNewInstance = wrapper((storeState, modelDefinition) =>
+  getDefaultNewInstance = wrapper((storeState, modelDefinition) => isAllowed(
+    modelDefinition.permissions.crudOperations,
+    PERMISSION_CREATE
+  ) &&
     cloneDeep(modelDefinition.ui.create.defaultNewInstance({
       filter: {}, // Setting filter to empty object if it is not specified in view state.
       ..._getViewState(storeState, modelDefinition)

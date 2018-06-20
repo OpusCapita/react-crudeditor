@@ -1,4 +1,26 @@
 
+[Release 1.3.0](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.0) Wed Jun 13 2018 15:37:25 GMT+0300 (MSK)
+=======================================================
+
+- Added saveAndNew button for create view [#280](https://github.com/OpusCapita/react-crudeditor/issues/280) ([#281](https://github.com/OpusCapita/react-crudeditor/issues/281)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-13 15:33:12 +0300)
+
+[Release 1.2.0](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.2.0) Tue Jun 12 2018 14:54:43 GMT+0300 (MSK)
+=======================================================
+
+- Allow permissions to be functions ([#278](https://github.com/OpusCapita/react-crudeditor/issues/278)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-12 14:12:25 +0300)
+- [ci skip] (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-05 16:20:44 +0300)
+- [ci skip] (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-05 16:18:52 +0300)
+- [ci skip] (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-05 16:16:57 +0300)
+- [ci skip] (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-05 16:13:40 +0300)
+- Analyzing issue [#273](https://github.com/OpusCapita/react-crudeditor/issues/273) [ci skip] (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-05 15:56:38 +0300)
+
+Release 1.1.4 Mon Jun 04 2018 12:45:44 GMT+0300 (MSK)
+=======================================================
+
+- Allow readonly crud ([#275](https://github.com/OpusCapita/react-crudeditor/issues/275)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-06-04 12:41:54 +0300)
+- Merge branch 'master' of https://github.com/OpusCapita/react-crudeditor (Andrei Mourzenkov mourzenkov@scand.com, 2018-05-15 14:08:13 +0300)
+- Remove obsolete 'styles' dir (Andrei Mourzenkov mourzenkov@scand.com, 2018-05-15 14:08:02 +0300)
+
 Release 1.1.3 Mon May 14 2018 12:00:29 GMT+0300 (MSK)
 =======================================================
 

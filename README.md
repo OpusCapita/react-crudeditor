@@ -417,10 +417,62 @@ Model Definition is an object describing an entity. It has the following structu
 
   permissions: {
     crudOperations: {
-      ?create: <boolean, false by default>,
-      ?edit: <boolean, false by default>,
-      ?delete: <boolean, false by default>,
-      ?view: <boolean, false by default>
+      /*
+       * At least one field must be set to 'true' or defined as a function.
+       *
+       * Each permission can be defined as either a boolean or a function.
+       *
+       * If defined as a boolean, a permission sets editor-wise user permission
+       * for a specific operation.
+       *
+       * An example for booleans:
+       * {
+       *   create: true,
+       *   delete: false,
+       *   ...
+       * }
+       *
+       * If defined as a function, a permission operates in two modes,
+       * depending on a number of function arguments:
+       *   - "global" mode - (no arguments) function's return value
+       *     sets editor-wise user permission for a specific operation.
+       *   - "per-instance" mode - (<object, entity instance> as the only argument)
+       *     function's return value sets instance-wise user permission for
+       *     a specific operation.
+       *
+       * Editor-wise permission is checked before instance-wise one, therefore if
+       * "global" premission is 'false' then "per-instance" permission is ignored.
+       *
+       * If specified, 'edit' and 'delete' permission defined as a function
+       * _must_ operate in both "global" and "per-instance" mode.
+       *
+       * If specified, 'create' and 'view' permission defined as a function
+       * _must_ operate in "global" only mode.
+       *
+       * An example for functions:
+       * {
+       *   create: () => {
+       *     ...
+       *     return <boolean>; // editor-wise permission.
+       *   },
+       *   delete: ({ instance } = {}) => {
+       *     if (instance) {
+       *       // The function is called in "per-instance" mode.
+       *       ...
+       *       return <boolean>; // instance-wise permission.
+       *     } else {
+       *       // The function is called in "global" mode.
+       *       ...
+       *       return <boolean>; // editor-wise permission.
+       *     }
+       *  },
+       *  ...
+       * }
+       */
+      ?create: <boolean|function>, // false by default
+      ?edit: <boolean|function>, // false by default
+      ?delete: <boolean|function>, // false by default
+      ?view: <boolean|function>, // false by default
     }
   },
 
@@ -615,21 +667,7 @@ Model Definition is an object describing an entity. It has the following structu
           ?sortByDefault: <boolean, false by default>,
           ?textAlignment: <"left"|"center"|"right">,
           ?component: <FieldRenderComponent>  // see "FieldRenderComponent" subheading.
-        }, ...],
-
-        /*
-         * Configuration for Standard Operations (see corresponding Terminology section).
-         * NOTE: only "delete" can be configured now.
-         */
-        ?standardOperations: {
-          <name, stadard operation ID>: <object, entity instance> => {
-            ...
-            return {
-              ?disabled: <boolean, false by default>
-            };
-          },
-          ...
-        }
+        }, ...]
       };
     },
 
@@ -779,57 +817,15 @@ Model Definition is an object describing an entity. It has the following structu
           }),
           ...
         ]
-      },
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: nothing can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
       }
     },
 
     ?edit: {
       ?formLayout: <function>  // see ui.create.formLayout for details
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: only "delete" can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
-      }
     },
 
     ?show: {
       ?formLayout: <function>  // see ui.create.formLayout for details
-
-      /*
-       * Configuration for Standard Operations (see corresponding Terminology section).
-       * NOTE: nothing can be configured now.
-       */
-      ?standardOperations: {
-        <name, stadard operation ID>: <object, entity instance> => {
-          ...
-          return {
-            ?disabled: <boolean, false by default>
-          };
-        },
-        ...
-      }
     },
 
 

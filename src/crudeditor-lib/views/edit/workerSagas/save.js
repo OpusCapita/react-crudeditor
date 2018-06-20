@@ -1,6 +1,6 @@
 import { call, select } from 'redux-saga/effects';
 
-import editAdjacentSaga from './editAdjacent';
+import adjacentSaga from '../../../common/workerSagas/adjacent';
 import redirectSaga from '../../../common/workerSagas/redirect';
 import validateSaga from '../../../common/workerSagas/validate';
 import updateSaga from '../../../common/workerSagas/save';
@@ -9,8 +9,7 @@ import { getDefaultNewInstance } from '../../search/selectors';
 
 import {
   AFTER_ACTION_NEXT,
-  AFTER_ACTION_NEW,
-  VIEW_NAME
+  AFTER_ACTION_NEW
 } from '../constants';
 
 /*
@@ -26,8 +25,8 @@ export default function*({
 }) {
   // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
-  yield call(validateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
-  yield call(updateSaga, { modelDefinition, meta, viewName: VIEW_NAME });
+  yield call(validateSaga, { modelDefinition, meta });
+  yield call(updateSaga, { modelDefinition, meta });
 
   if (afterAction === AFTER_ACTION_NEW) {
     yield call(redirectSaga, {
@@ -46,8 +45,9 @@ export default function*({
       }
     });
   } else if (afterAction === AFTER_ACTION_NEXT) {
-    yield call(editAdjacentSaga, {
+    yield call(adjacentSaga, {
       modelDefinition,
+      softRedirectSaga,
       action: {
         payload: {
           step: 1

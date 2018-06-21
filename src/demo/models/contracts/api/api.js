@@ -124,6 +124,23 @@ export const
     }
   )(data, instances),
 
+  deleteOne = ({ instance }) => (
+    (data, instance) => {
+      let deleteIndex;
+
+      if (data.contracts.some(({ contractId }, index) => { // eslint-disable-line consistent-return
+        if (instance.contractId === contractId) {
+          deleteIndex = index;
+          return true;
+        }
+      })) {
+        data.contracts.splice(deleteIndex, 1);
+      }
+
+      return 1;
+    }
+  )(data, instance),
+
   search = ({ filter, sort, order, offset, max }) => {
     const searchableData = data.contracts;
 

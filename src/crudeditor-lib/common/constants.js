@@ -3,10 +3,6 @@ const namespace = 'common';
 import { FIELD_TYPE_STRING } from '../../data-types-lib/constants';
 
 export const
-  ROLE_FIELD = 'field',
-  ROLE_SECTION = 'section',
-  ROLE_TAB = 'tab',
-
   VIEW_SEARCH = 'search',
   VIEW_CREATE = 'create',
   VIEW_EDIT = 'edit',

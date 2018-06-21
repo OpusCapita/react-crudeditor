@@ -237,11 +237,16 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
       newStoreStateSlice.status = STATUS_DELETING;
 
     } else if (type === INSTANCES_DELETE_SUCCESS) {
-      const { instances } = payload;
+      const { instances, count } = payload;
       newStoreStateSlice.gotoPage = '';
-      newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
-      newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
-      newStoreStateSlice.totalCount = storeState.totalCount - instances.length;
+      newStoreStateSlice.totalCount = storeState.totalCount - count;
+
+      if (instances) { // Actually deleted instances are known.
+        newStoreStateSlice.selectedInstances = removeInstances(storeState.selectedInstances, instances);
+        newStoreStateSlice.resultInstances = removeInstances(storeState.resultInstances, instances);
+      } else {
+        newStoreStateSlice.selectedInstances = [];
+      }
 
       newStoreStateSlice.status = STATUS_READY;
 

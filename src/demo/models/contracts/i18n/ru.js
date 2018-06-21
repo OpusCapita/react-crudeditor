@@ -14,5 +14,6 @@ export default {
   "model.field.createdOn.label": "Время создания",
   "model.field.changedOn.label": "Время изменения",
   "model.field.changedBy.label": "Кем изменен",
-  "model.field.createdBy.label": "Кто создал"
+  "model.field.createdBy.label": "Кто создал",
+  "model.error.seminalDeletionAttempt": "Запрещено удалять seminal-конткракты"
 }

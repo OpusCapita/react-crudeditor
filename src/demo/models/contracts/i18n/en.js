@@ -34,5 +34,6 @@ export default {
 
   "model.label.createChild": "Create child",
 
-  "model.error.requiredFieldMissing": "Instance validation error for [ {contractId} ] in your language!"
+  "model.error.requiredFieldMissing": "Instance validation error for [ {contractId} ] in your language!",
+  "model.error.seminalDeletionAttempt": "Seminal-contracts must not be deleted"
 }

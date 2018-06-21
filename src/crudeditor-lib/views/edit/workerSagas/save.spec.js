@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import saveSaga from './save';
 import {
   VIEW_NAME,
-  ALL_INSTANCE_FIELDS_VALIDATE,
+  ALL_INSTANCE_FIELDS_VALIDATE_REQUEST,
   INSTANCE_VALIDATE_REQUEST,
   INSTANCE_VALIDATE_SUCCESS,
   INSTANCE_SAVE_REQUEST,
@@ -77,7 +77,7 @@ describe('edit view / workerSagas / save', () => {
     }, saveSaga, arg);
 
     expect(dispatched.map(({ type }) => type)).deep.equal([
-      ALL_INSTANCE_FIELDS_VALIDATE,
+      ALL_INSTANCE_FIELDS_VALIDATE_REQUEST,
       INSTANCE_VALIDATE_REQUEST,
       INSTANCE_VALIDATE_SUCCESS,
       INSTANCE_SAVE_REQUEST,

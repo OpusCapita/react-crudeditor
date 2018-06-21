@@ -23,25 +23,45 @@ export default function*({
   });
 
   const logicalKeyBuilder = getLogicalKeyBuilder(modelDefinition.model.fields);
+  let count;
 
   try {
-    yield call(modelDefinition.api.delete, {
+    let errors;
+
+    ({ count, errors } = yield call(modelDefinition.api.delete, {
       instances: instances.map(logicalKeyBuilder)
-    });
-  } catch (err) {
+    }));
+
+    if (count < instances.length) {
+      // "errors" is optional for modelDefinition.api.delete() return object, even in case of partial/full failure.
+      throw errors || [];
+    }
+  } catch (err) { // At least some of the requested instances have not been deleted.
     yield put({
       type: INSTANCES_DELETE_FAIL,
-      payload: err,
+      payload: {
+        count: instances.length - count, // Number of requested instances failed to be deleted.
+        errors: Array.isArray(err) ? err : [err]
+      },
       error: true,
       meta
     });
 
-    throw err;
+    if (count === 0) { // None of the requested instances have been deleted.
+      throw err;
+    }
   }
+
+  // At least some of the requested instances have been deleted.
 
   yield put({
     type: INSTANCES_DELETE_SUCCESS,
-    payload: { instances },
+    payload: {
+      count,
+
+      // Actually deleted instances are known only when all instances requested for deletion where deleted.
+      ...(count === instances.length && { instances })
+    },
     meta
   });
 }

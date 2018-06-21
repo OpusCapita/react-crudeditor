@@ -625,7 +625,7 @@ describe('Async (converted to a promise with fake timeout) api', _ => {
 
       asyncApi.delete({ instances: itemsToDelete }).
         then(
-          numDeleted => {
+          ({ count: numDeleted }) => {
             const after = getNumberOfInstances();
             assert.equal(
               numDeleted,

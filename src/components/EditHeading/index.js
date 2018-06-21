@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Nav, NavItem, Col, Row, ButtonGroup, Button, Glyphicon } from 'react-bootstrap';
 
-import { getModelMessage, titleCase } from '../lib';
+import { getModelMessage, getTabLabel } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
@@ -124,11 +124,7 @@ export default class EditHeading extends PureComponent {
                 >
                   <h4>
                     {
-                      getModelMessage({
-                        i18n,
-                        key: `model.tab.${name}.label`,
-                        defaultMessage: titleCase(name)
-                      })
+                      getTabLabel({ i18n, name })
                     }
                   </h4>
                 </NavItem>)

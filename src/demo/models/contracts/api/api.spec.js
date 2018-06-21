@@ -29,7 +29,7 @@ const realInstance = {
   "contractId": "Excision of mouth NEC",
   "extContractId": "Dilation of R Fem Art with 4+ Intralum Dev, Perc Approach",
   "description": "Person outside 3-whl mv inj in clsn w hv veh in traf, subs",
-  "statusId": "105",
+  "statusId": "69",
   "currencyId": "PEN",
   "minOrderValueRequired": null,
   "minOrderValue": null,
@@ -223,7 +223,7 @@ describe('Sync api functions:', () => {
     it('should find by stringNumber (statusId)', () => {
       const before = getNumberOfInstances();
       const filter = {
-        statusId: "105"
+        statusId: "69"
       }
       const { instances, totalCount } = search({ filter })
       const after = getNumberOfInstances();

@@ -219,9 +219,9 @@ export const
             } else if (fieldType === FIELD_TYPE_STRING_DATE) {
               const match = new Date(String(fieldValue).trim()).valueOf() === new Date(itemValue).valueOf();
               return rez && match
+            } else {
+              return rez && [null, undefined, ''].indexOf(itemValue) === -1 && itemValue === fieldValue;
             }
-
-            return false
           }, true
         )
       );

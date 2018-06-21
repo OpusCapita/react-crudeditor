@@ -274,7 +274,7 @@ export const fields = {
     }
   },
   'statusId': {
-    'type': FIELD_TYPE_STRING_INTEGER,
+    'type': 'com.opuscapita.hexadecimal',
     'constraints': {
       'min': 0,
       'max': "800",
@@ -310,7 +310,10 @@ const buildFormLayout = /* istanbul ignore next */ viewName => ({ tab, section, 
     field({ name: 'contractId', readOnly: viewName !== VIEW_CREATE }),
     field({ name: 'description' }),
     // field({ name: 'translations', render: { component: TranslatableTextEditor }}),
-    field({ name: 'statusId', render: { component: StatusField, value: { type: UI_TYPE_INTEGER } } }),
+    field({ name: 'statusId', render: { component: StatusField, value: { converter: {
+      format: value => value || value === 0 ? parseInt(value, 16) : null,
+      parse: value => value || value === 0 ? value.toString(16) : null
+    } } } }),
     field({ name: 'parentContract', render: { component: ContractReferenceSearch } }),
     // field({ name: 'currencyId', render: { component: CurrencyField }}),
     viewName !== VIEW_CREATE && section({ name: 'auditable', columns: 2 },
@@ -401,7 +404,10 @@ export default {
         { name: 'extContractId' },
         { name: 'extContractLineId' },
         { name: 'parentContract', render: { component: ContractReferenceSearch } },
-        { name: 'statusId', render: { component: StatusField, value: { type: UI_TYPE_INTEGER } } },
+        { name: 'statusId', render: { component: StatusField, value: { converter: {
+          format: value => value || value === 0 ? parseInt(value, 16) : null,
+          parse: value => value || value === 0 ? value.toString(16) : null
+        } } } },
         { name: 'maxOrderValue' },
         // THE SAME CAN BE ACHIEVED WITH THE FOLLOWING
         // EXAMPLE OF USING BUILT-IN RANGE INPUT COMPONENT:

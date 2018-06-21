@@ -1,4 +1,10 @@
 
+[Release 1.3.1](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.1) Thu Jun 21 2018 16:13:46 GMT+0300 (MSK)
+=======================================================
+
+- Conform converter's format/parse arguments to docs (Andrei Mourzenkov mourzenkov@scand.com, 2018-06-21 13:03:04 +0300)
+- Add verbose notifications and non-transactional bulk delete (Andrei Mourzenkov mourzenkov@scand.com, 2018-06-21 10:10:25 +0300)
+
 [Release 1.3.0](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.0) Wed Jun 13 2018 15:37:25 GMT+0300 (MSK)
 =======================================================
 

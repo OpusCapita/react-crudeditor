@@ -5,12 +5,12 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_DECMIAL  ████
    * ██████████████████████████████████████████████████
    */
-  format: ({ value }) => value,
+  format: value => value,
 
   /*
    * ██████████████████████████████████████████████████
    * ████  FIELD_TYPE_DECIMAL  ◄  UI_TYPE_DECMIAL  ████
    * ██████████████████████████████████████████████████
    */
-  parse: ({ value }) => value
+  parse: value => value
 };

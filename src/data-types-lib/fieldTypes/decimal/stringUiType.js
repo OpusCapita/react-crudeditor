@@ -10,14 +10,14 @@ export default {
    * ████  FIELD_TYPE_DECIMAL  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  format: ({ value, i18n }) => i18n.formatDecimalNumber(value),
+  format: (value, i18n) => i18n.formatDecimalNumber(value),
 
   /*
    * █████████████████████████████████████████████████
    * ████  FIELD_TYPE_DECIMAL  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████
    */
-  parse: ({ value, i18n }) => {
+  parse: (value, i18n) => {
     let n;
 
     try {

@@ -13,7 +13,7 @@ describe('fieldTypes :: decimal <-> string', () => {
 
   it('should convert decimal to string', () => {
     const value = 10.12;
-    const result = converter.format({ value, i18n });
+    const result = converter.format(value, i18n);
 
     assert.strictEqual(
       result,
@@ -23,7 +23,7 @@ describe('fieldTypes :: decimal <-> string', () => {
 
   it('should convert stringified decimal to decimal', () => {
     const value = '132.125';
-    const result = converter.parse({ value, i18n });
+    const result = converter.parse(value, i18n);
 
     assert.strictEqual(
       result,
@@ -35,7 +35,7 @@ describe('fieldTypes :: decimal <-> string', () => {
     const value = 'sdfsdfdsf';
 
     try {
-      converter.parse({ value, i18n })
+      converter.parse(value, i18n)
       assert(false)
     } catch (e) {
       assert.deepEqual(

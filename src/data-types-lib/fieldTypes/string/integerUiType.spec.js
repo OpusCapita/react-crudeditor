@@ -10,7 +10,7 @@ import converter from './integerUiType';
 describe('fieldTypes :: string <-> integer', () => {
   it('should convert stringified integer to integer', () => {
     const value = '21321';
-    const result = converter.format({ value });
+    const result = converter.format(value);
 
     expect(result).to.equal(21321)
   });
@@ -19,7 +19,7 @@ describe('fieldTypes :: string <-> integer', () => {
     const value = '132.125';
 
     try {
-      converter.format({ value });
+      converter.format(value);
       assert(false)
     } catch (e) {
       assert.deepEqual(
@@ -36,7 +36,7 @@ describe('fieldTypes :: string <-> integer', () => {
     const value = '23Hello';
 
     try {
-      converter.format({ value });
+      converter.format(value);
       assert(false)
     } catch (e) {
       assert.deepEqual(
@@ -52,6 +52,6 @@ describe('fieldTypes :: string <-> integer', () => {
   it('should stringify integer', () => {
     const value = 2342423423;
 
-    expect(converter.parse({ value })).to.equal(String(value));
+    expect(converter.parse(value)).to.equal(String(value));
   });
 });

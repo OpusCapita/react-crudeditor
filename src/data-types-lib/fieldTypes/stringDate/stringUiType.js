@@ -11,14 +11,14 @@ export default {
    * ████  FIELD_TYPE_STRING_DATE  ►  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████████
    */
-  format: ({ value }) => new Date(value).toString(),
+  format: value => new Date(value).toString(),
 
   /*
    * █████████████████████████████████████████████████████
    * ████  FIELD_TYPE_STRING_DATE  ◄  UI_TYPE_STRING  ████
    * █████████████████████████████████████████████████████
    */
-  parse: ({ value }) => {
+  parse: value => {
     if (!value.trim()) {
       return EMPTY_FIELD_VALUE; // Considering whitespaces-only strings to be empty value.
     }

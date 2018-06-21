@@ -146,7 +146,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
 
         return fieldLayout ? {
           ...rez,
-          [fieldName]: fieldLayout.render.value.converter.format({ value: formInstance[fieldName], i18n })
+          [fieldName]: fieldLayout.render.value.converter.format(formInstance[fieldName], i18n)
         } : rez; // Field from the modelDefinition.model.fields is not in formLayout => it isn't displayed.
       },
       {}
@@ -221,7 +221,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       let newFormValue;
 
       try {
-        newFormValue = converter.parse({ value: fieldValue, i18n });
+        newFormValue = converter.parse(fieldValue, i18n);
       } catch (err) {
         // Rethrow system errors.
         if (isSystemError(err)) {
@@ -257,7 +257,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
         };
       }
 
-      const newFormattedValue = converter.format({ value: newFormValue, i18n });
+      const newFormattedValue = converter.format(newFormValue, i18n);
 
       if (!isEqual(newFormattedValue, storeState.formattedInstance[fieldName])) {
         newStoreStateSlice.formattedInstance = {

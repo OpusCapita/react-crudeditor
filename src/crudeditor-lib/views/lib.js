@@ -253,8 +253,8 @@ export const buildFieldRender = ({
 
   if (!render.value.hasOwnProperty('converter')) {
     render.value.converter = {
-      format: ({ value }) => value,
-      parse: ({ value }) => value
+      format: value => value,
+      parse: value => value
     };
   }
 

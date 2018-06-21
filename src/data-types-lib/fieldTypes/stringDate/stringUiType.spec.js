@@ -11,7 +11,7 @@ describe('fieldTypes :: stringDate <-> string', () => {
   describe('format', () => {
     it('should convert stringified date to string', () => {
       const value = new Date().toISOString();
-      const result = converter.format({ value });
+      const result = converter.format(value);
 
       expect(result).to.equal(new Date(value).toString())
     });
@@ -20,14 +20,14 @@ describe('fieldTypes :: stringDate <-> string', () => {
   describe('parse', () => {
     it('should convert empty string into null', () => {
       const value = '';
-      const result = converter.parse({ value });
+      const result = converter.parse(value);
 
       expect(result).to.equal(EMPTY_FIELD_VALUE)
     });
 
     it('should convert stringified date into stringDate', () => {
       const value = new Date().toString();
-      const result = converter.parse({ value });
+      const result = converter.parse(value);
 
       expect(result).to.equal(new Date(value).toISOString())
     });
@@ -36,7 +36,7 @@ describe('fieldTypes :: stringDate <-> string', () => {
       const value = 'ewqrwerew';
 
       try {
-        converter.parse({ value });
+        converter.parse(value);
         assert(false)
       } catch (e) {
         assert.deepEqual(

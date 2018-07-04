@@ -523,11 +523,11 @@ Model Definition is an object describing an entity. It has the following structu
 
     /*
      * Delete entity instances by their Logical Keys.
-	 * In case of a failure deleting one or more instances,
-	 * an optional "errors" property may be specified with an array of error objects.
-	 * If error object format corresponds to Instance Validation Error, appropriately
-	 * translated messages are displayed as Notifications.
-	 * Errors array length may be different from the number of instances failed to be deleted.
+     * In case of a failure deleting one or more instances,
+     * an optional "errors" property may be specified with an array of error objects.
+     * If error object format corresponds to Instance Validation Error, appropriately
+     * translated messages are displayed as Notifications.
+     * Errors array length may be different from the number of instances failed to be deleted.
      */
     async delete: function({
       instances: <array[object], entity instances with at least Logical Key fields>
@@ -535,7 +535,7 @@ Model Definition is an object describing an entity. It has the following structu
       ...
       return {
         count: <whole number, how many entity instances where actually deleted>,
-		?errors: [<object>, ...]
+        ?errors: [<object>, ...]
       };
     },
 

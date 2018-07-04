@@ -34,7 +34,7 @@ const common = {
   "crudEditor.objectsDeleted.message": "Objekter {labels} slettet.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Noen av objektene kan ikke slettes på grunn av sikkerhetsbegrensninger.",
   "crudEditor.objectDeleteFailed.message": "Kunne ikke slette objektet. Kanskje det er i bruk allerede.",
-  "crudEditor.objectsDeleteFailed.message": "Kunne ikke slette objektene {0}. Kanskje de er i bruk allerede.",
+  "crudEditor.objectsDeleteFailed.message": "Kunne ikke slette objektene {count}. Kanskje de er i bruk allerede.",
   "crudEditor.objectDuplicated.message": "Objektet er kopiert.",
   "crudEditor.noAssociationEntriesFound.message": "Fant ingen poster. Du kan {1} en ny post.",
   "crudEditor.message.ajax.loading": "Vent litt ...",

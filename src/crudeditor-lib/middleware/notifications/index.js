@@ -202,7 +202,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
 
     case INSTANCES_DELETE_FAIL: {
       const { count, errors } = action.payload;
-      const mainMessage = count === 1 ?
+      const mainMessage = isNaN(count) || count === 1 ?
         i18n.getMessage('crudEditor.objectDeleteFailed.message') :
         i18n.getMessage('crudEditor.objectsDeleteFailed.message', { count });
       const detailMessages = getErrorMessages(errors);

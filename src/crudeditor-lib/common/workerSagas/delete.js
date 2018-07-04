@@ -40,8 +40,10 @@ export default function*({
     yield put({
       type: INSTANCES_DELETE_FAIL,
       payload: {
-        count: instances.length - count, // Number of requested instances failed to be deleted.
-        errors: Array.isArray(err) ? err : [err]
+        errors: Array.isArray(err) ? err : [err],
+        ...(count !== undefined && {
+          count: instances.length - count, // Number of requested instances failed to be deleted.
+        })
       },
       error: true,
       meta

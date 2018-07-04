@@ -25,7 +25,7 @@ const common = {
   "crudEditor.objectSaveFailed.message": "Rivin tallentaminen epäonnistui.",
   "crudEditor.objectSaved.message": "Rivi luotu.",
   "crudEditor.objectUpdated.message": "Rivi päivitetty.",
-  "crudEditor.objectsDeleteFailed.message": "Rivien {0} poistaminen epäonnistui, koska ne ovat jo käytössä.",
+  "crudEditor.objectsDeleteFailed.message": "Rivien {count} poistaminen epäonnistui, koska ne ovat jo käytössä.",
   "crudEditor.objectsDeleteIsNoAllowed.message": "Joitakin rivejä ei voi poistaa turvallisuusrajoitteista johtuen.",
   "crudEditor.objectsDeleted.message": "Rivit {labels} poistettu.",
   "crudEditor.refresh.button": "Päivitä",

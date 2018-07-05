@@ -2,12 +2,17 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
 import './ExpandableNotice.less';
+import { NotificationManager } from 'react-notifications';
+
+// save `remove` for descendants
+const _removeNotification = NotificationManager.remove.bind(NotificationManager);
 
 export default class ExpandableNotice extends PureComponent {
   static propTypes = {
     message: PropTypes.node.isRequired,
     details: PropTypes.node,
-    detailsHeader: PropTypes.string
+    detailsHeader: PropTypes.string,
+    id: PropTypes.string.isRequired
   }
 
   static defaultProps = {
@@ -16,6 +21,45 @@ export default class ExpandableNotice extends PureComponent {
 
   state = {
     collapsed: true
+  }
+
+  componentDidMount() {
+    const { id } = this.props;
+    const el = this.notificationRef;
+
+    // this is used to carry notification object from original `remove` to deferred one
+    let notification;
+
+    function handleMouseLeave() {
+      NotificationManager.remove = _removeNotification;
+    }
+
+    function handleMouseLeaveAfterTrigger() {
+      _removeNotification(notification)
+    }
+
+    function deferredRemove() {
+      if (arguments.length === 1 && (arguments[0] || {}).id === id) {
+        notification = arguments[0];
+        el.addEventListener('mouseleave', handleMouseLeaveAfterTrigger);
+      } else {
+        // in case if signature of NotificationManager.remove ever changes -> fall back to original function
+        _removeNotification(notification)
+      }
+    }
+
+    function handleMouseOver() {
+      if (NotificationManager.remove !== deferredRemove) {
+        NotificationManager.remove = deferredRemove;
+      }
+      el.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    el.addEventListener('mouseover', handleMouseOver);
+  }
+
+  componentWillUnmount() {
+    NotificationManager.remove = _removeNotification;
   }
 
   handleCollapse = event => {
@@ -30,12 +74,14 @@ export default class ExpandableNotice extends PureComponent {
     document.getSelection().collapse(this.details, 0);
   }
 
+  saveRef = el => (this.notificationRef = el);
+
   render() {
     const { message, details, detailsHeader } = this.props;
     const { collapsed } = this.state;
 
     return (
-      <div>
+      <div ref={this.saveRef}>
         <div>
           {message}
           <span

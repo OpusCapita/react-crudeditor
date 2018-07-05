@@ -35,7 +35,7 @@ export default class ExpandableNotice extends PureComponent {
     }
 
     function handleMouseLeaveAfterTrigger() {
-      _removeNotification(notification)
+      setTimeout(_ => _removeNotification(notification), 1000);
     }
 
     function deferredRemove() {
@@ -44,6 +44,7 @@ export default class ExpandableNotice extends PureComponent {
         el.addEventListener('mouseleave', handleMouseLeaveAfterTrigger);
       } else {
         // in case if signature of NotificationManager.remove ever changes -> fall back to original function
+        console.warn('Unexpected arguments for NotificationManager.remove: `react-notifications` API has changed!');
         _removeNotification(notification)
       }
     }

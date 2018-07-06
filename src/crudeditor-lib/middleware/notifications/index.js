@@ -185,6 +185,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         message: detailMessages.length ?
           (
             <ExpandableNotice
+              id={NOTIFICATION_ERROR}
               message={i18n.getMessage('crudEditor.objectSaveFailed.message')}
               details={
                 detailMessages.map(message => (
@@ -213,6 +214,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         message: detailMessages.length ?
           (
             <ExpandableNotice
+              id={NOTIFICATION_ERROR}
               message={mainMessage}
               details={
                 detailMessages.map(message => (
@@ -282,6 +284,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           detailMessages.length === 0 && i18n.getMessage('default.invalid.validator.message') ||
           (
             <ExpandableNotice
+              id={NOTIFICATION_VALIDATION_ERROR}
               message={i18n.getMessage('default.invalid.validator.message')}
               details={
                 detailMessages.map(message => (
@@ -316,6 +319,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           detailMessages.length === 0 && i18n.getMessage('default.errorOccurred.message') ||
           (
             <ExpandableNotice
+              id={NOTIFICATION_ERROR}
               message={i18n.getMessage('default.errorOccurred.message')}
               details={
                 detailMessages.map(message => (
@@ -346,6 +350,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         message: detailMessages.length ?
           (
             <ExpandableNotice
+              id={NOTIFICATION_ERROR}
               message={i18n.getMessage('crudEditor.objectSaveFailed.message')}
               detailsHeader='Errors in fields'
               details={

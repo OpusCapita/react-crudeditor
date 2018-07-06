@@ -1,4 +1,11 @@
 
+[Release 1.3.2](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.2) Fri Jul 06 2018 08:51:31 GMT+0300 (MSK)
+=======================================================
+
+- Added deferrable removal for notifications ([#282](https://github.com/OpusCapita/react-crudeditor/issues/282)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-07-06 08:47:15 +0300)
+- Fix documentation indentation (Andrei Mourzenkov mourzenkov@scand.com, 2018-07-04 12:31:26 +0300)
+- Fix wrong message after instance(s) delete fail (Andrei Mourzenkov mourzenkov@scand.com, 2018-07-04 12:24:33 +0300)
+
 [Release 1.3.1](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.1) Thu Jun 21 2018 16:13:46 GMT+0300 (MSK)
 =======================================================
 

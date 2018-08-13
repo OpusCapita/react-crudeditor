@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Glyphicon, Row, Col } from 'react-bootstrap';
-
+import Button from 'react-bootstrap/lib/Button';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';

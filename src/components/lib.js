@@ -17,7 +17,7 @@ export const exists = v => v !== null && v !== undefined;
 export const noop = _ => {};
 
 export const titleCase = str => typeof str === 'string' ?
-  str.charAt(0).toUpperCase() + str.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$&\u00A0') :
+  str.charAt(0).toUpperCase() + str.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$& ') :
   str;
 
 export const getModelMessage = request => {

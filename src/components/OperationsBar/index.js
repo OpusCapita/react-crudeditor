@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/lib/Dropdown';
 
 import Operation from './Operation';
 

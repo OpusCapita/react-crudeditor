@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Pagination } from 'react-bootstrap';
+import Pagination from 'react-bootstrap/lib/Pagination';
 
 export default class PaginationPanel extends PureComponent {
   static propTypes = {

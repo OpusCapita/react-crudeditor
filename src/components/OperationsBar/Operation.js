@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Glyphicon, Button, MenuItem } from 'react-bootstrap';
-
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Button from 'react-bootstrap/lib/Button';
+import MenuItem from 'react-bootstrap/lib/MenuItem';
 import ConfirmDialog from '../ConfirmDialog';
 
 const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm }) => {

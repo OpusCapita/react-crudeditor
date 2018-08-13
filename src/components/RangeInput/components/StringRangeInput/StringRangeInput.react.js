@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import { InputGroup, FormControl } from 'react-bootstrap';
-
+import InputGroup from 'react-bootstrap/lib/InputGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
 import './StringRangeInput.less';
 import { exists, noop } from '../../../lib';
 

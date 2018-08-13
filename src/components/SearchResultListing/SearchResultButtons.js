@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ButtonGroup } from 'react-bootstrap';
-
+import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import OperationsBar from '../OperationsBar';
 
 export default class SearchResultButtons extends PureComponent {

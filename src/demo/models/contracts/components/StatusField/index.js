@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormControl } from 'react-bootstrap';
+import FormControl from 'react-bootstrap/lib/FormControl';
 
 const messages = {
   en: {

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Collapse } from 'react-bootstrap';
+import Collapse from 'react-bootstrap/lib/Collapse';
 import './ExpandableNotice.less';
 import { NotificationManager } from 'react-notifications';
 

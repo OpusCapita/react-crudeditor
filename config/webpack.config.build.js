@@ -13,9 +13,9 @@ module.exports = merge(common, {
     library: `ReactCrudEditor`,
     libraryTarget: 'umd'
   },
-  // externals: [
-  //   nodeExternals({
-  //     modulesFromFile: true
-  //   })
-  // ]
+  externals: [
+    nodeExternals({
+      modulesFromFile: true
+    })
+  ]
 });

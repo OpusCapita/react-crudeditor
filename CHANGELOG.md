@@ -1,4 +1,9 @@
 
+[Release 1.3.3](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.3) Mon Aug 13 2018 09:37:59 GMT+0300 (MSK)
+=======================================================
+
+- Swap &nbsp; to regular space in titleCase function ([#284](https://github.com/OpusCapita/react-crudeditor/issues/284)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-08-13 09:31:38 +0300)
+
 [Release 1.3.2](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.2) Fri Jul 06 2018 08:51:31 GMT+0300 (MSK)
 =======================================================
 

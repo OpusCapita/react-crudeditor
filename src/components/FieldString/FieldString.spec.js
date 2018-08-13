@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-15';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FieldString from "./";
-import { FormControl } from 'react-bootstrap';
+import FormControl from 'react-bootstrap/lib/FormControl';
 
 Enzyme.configure({ adapter: new Adapter() });
 

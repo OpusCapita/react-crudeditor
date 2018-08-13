@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-15';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import FieldBoolean from "./";
-import { Checkbox } from 'react-bootstrap';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 
 Enzyme.configure({ adapter: new Adapter() });
 

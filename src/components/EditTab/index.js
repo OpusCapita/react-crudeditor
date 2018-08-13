@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Form, FormGroup, Col, ButtonToolbar } from 'react-bootstrap';
-
+import Form from 'react-bootstrap/lib/Form';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Col from 'react-bootstrap/lib/Col';
+import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import OperationsBar from '../OperationsBar';
 import FormGrid from '../FormGrid';
 import './styles.less';

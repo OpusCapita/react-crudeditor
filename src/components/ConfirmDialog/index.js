@@ -1,7 +1,8 @@
 import React, { PureComponent, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { Modal, Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/lib/Modal';
+import Button from 'react-bootstrap/lib/Button';
 import upperFirst from 'lodash/upperFirst';
 import './styles.less';
 

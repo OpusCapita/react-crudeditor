@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FormControl } from 'react-bootstrap';
+import FormControl from 'react-bootstrap/lib/FormControl';
 import { noop } from '../lib';
 
 export default class FieldString extends PureComponent {

@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import { Table, Glyphicon, Checkbox } from 'react-bootstrap';
+import Table from 'react-bootstrap/lib/Table';
+import Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 import { getFieldLabel } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
 import './styles.less';

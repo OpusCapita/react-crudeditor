@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox } from 'react-bootstrap';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 import { noop } from '../lib';
 
 export default class FieldBoolean extends React.PureComponent {

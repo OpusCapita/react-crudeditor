@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Label, Fade } from 'react-bootstrap';
+import Label from 'react-bootstrap/lib/Label';
+import Fade from 'react-bootstrap/lib/Fade';
 import { getFieldErrorMessage } from '../lib';
 
 export default class FieldErrorLabel extends PureComponent {

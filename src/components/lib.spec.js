@@ -17,7 +17,7 @@ describe("components lib.js", _ => {
   describe("titleCase", _ => {
     it("should transform camelCase to Title Case", () => {
       const message = 'maxOrderValue';
-      expect(titleCase(message)).to.equal('Max\u00A0Order\u00A0Value');
+      expect(titleCase(message)).to.equal('Max Order Value');
     });
 
     it("should return arg if it's not a string", () => {

@@ -18,9 +18,9 @@ const SERVICE_URL = 'http://some-host:some-port/';
  * Parses Content-range header and returns response count
  */
 function getTotalCount(response) {
-  let range = response.headers['content-range'];
-  let index = range.indexOf('/');
-  let totalCount = range.substring(index + 1);
+  const range = response.headers['content-range'];
+  const index = range.indexOf('/');
+  const totalCount = range.substring(index + 1);
   return parseInt(totalCount, 10);
 }
 

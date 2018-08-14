@@ -8,7 +8,7 @@ import { I18nManager } from '@opuscapita/i18n'
 function getParameterByName(name, url) {
   if (!url) {url = window.location.href;} // eslint-disable-line no-param-reassign
   name = name.replace(/[\[\]]/g, "\\$&"); // eslint-disable-line no-param-reassign
-  let regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+  const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
     results = regex.exec(url);
   if (!results) {return null;}
   if (!results[2]) {return '';}

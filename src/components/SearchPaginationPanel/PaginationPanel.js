@@ -31,7 +31,7 @@ export default class PaginationPanel extends PureComponent {
       return;
     }
 
-    let maxPage = Math.ceil(totalCount / max);
+    const maxPage = Math.ceil(totalCount / max);
 
     if (page > maxPage) {
       page = maxPage;

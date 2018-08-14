@@ -429,7 +429,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_SELECT) {
-      let { instance } = payload;
+      const { instance } = payload;
 
       newStoreStateSlice.selectedInstances = [
         ...storeState.selectedInstances,
@@ -439,7 +439,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
 
     } else if (type === INSTANCE_DESELECT) {
-      let { instance } = payload;
+      const { instance } = payload;
       newStoreStateSlice.selectedInstances = storeState.selectedInstances.filter(ins => ins !== instance);
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████

@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
 import { getModelMessage } from '../lib';
@@ -48,20 +44,21 @@ export default class SearchMain extends PureComponent {
     return (
       <div className="crud--search-main">
         <H>
-          <Row>
-            <Col xs={8}>
+          <div className="row">
+            <div className="col-xs-8">
 
               {getModelMessage({ i18n, key: 'model.name' })}
 
-              <Button
-                bsStyle="link"
+              <button
+                type="button"
+                className="btn btn-link"
                 onClick={toggleSearchForm}
                 title={i18n.getMessage(`crudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
               >
-                <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>
-              </Button>
-            </Col>
-            <Col xs={4}>
+                <span className={`small glyphicon glyphicon-chevron-${hideSearchForm ? 'right' : 'left'}`}></span>
+              </button>
+            </div>
+            <div className="col-xs-4">
               <div style={{ float: "right" }}>
                 {
                   createInstance &&
@@ -74,8 +71,8 @@ export default class SearchMain extends PureComponent {
                   </button>
                 }
               </div>
-            </Col>
-          </Row>
+            </div>
+          </div>
         </H>
 
         <div className="crud--search-main__container">

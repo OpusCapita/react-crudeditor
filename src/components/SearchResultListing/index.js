@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Table from 'react-bootstrap/lib/Table';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import { getFieldLabel } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
@@ -104,11 +103,15 @@ class SearchResultListing extends PureComponent {
                             getFieldLabel({ i18n, name })
                           }
                           {
-                            sortField === name &&
-                            <Glyphicon
-                              className="crud--search-result-listing__sort-icon"
-                              glyph={`arrow-${sortOrder === 'asc' ? 'up' : 'down'}`}
-                            />
+                            sortField === name && (
+                              <span
+                                className={[
+                                  'glyphicon',
+                                  `glyphicon-arrow-${sortOrder === 'asc' ? 'up' : 'down'}`,
+                                  'crud--search-result-listing__sort-icon'
+                                ].join(' ')}
+                              ></span>
+                            )
                           }
                         </a> :
                         getFieldLabel({ i18n, name })

@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
 import './StringRangeInput.less';
 import { exists, noop } from '../../../lib';
 
@@ -83,25 +81,27 @@ export default class StringRangeInput extends PureComponent {
     const { i18n } = this.context;
 
     return (
-      <InputGroup className="crud--range-input">
-        <FormControl
+      <span className="input-group crud--range-input">
+        <input
           type='text'
+          className="form-control"
           placeholder={i18n.getMessage('crudEditor.range.from')}
           value={exists(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
           disabled={readOnly}
           {...(readOnly && { tabIndex: -1 })}
         />
-        <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
-        <FormControl
+        <span className="input-group-addon unselectable">{`\u2013`}</span>
+        <input
           type='text'
+          className="form-control"
           placeholder={i18n.getMessage('crudEditor.range.to')}
           value={exists(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}
           disabled={readOnly}
           {...(readOnly && { tabIndex: -1 })}
         />
-      </InputGroup>
+      </span>
     )
   }
 }

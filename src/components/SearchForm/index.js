@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
-import Button from 'react-bootstrap/lib/Button';
-import Form from 'react-bootstrap/lib/Form';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import { getFieldLabel } from '../lib';
@@ -10,7 +8,7 @@ import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import WithFieldErrors from '../FieldErrors/WithFieldErrorsHOC';
 import './SearchForm.less';
 
-class SearchForm extends React.Component {
+class SearchForm extends Component {
   static propTypes = {
     model: PropTypes.shape({
       data: PropTypes.shape({
@@ -69,7 +67,10 @@ class SearchForm extends React.Component {
     const { i18n } = this.context;
 
     return (
-      <Form horizontal={true} onSubmit={this.handleSubmit} className="clearfix crud--search-form">
+      <form
+        className="form-horizontal clearfix crud--search-form"
+        onSubmit={this.handleSubmit}
+      >
         <div className="crud--search-form__controls">
           {
             searchableFields.map(({ name, component: Component, valuePropName }) => (
@@ -95,22 +96,23 @@ class SearchForm extends React.Component {
           }
         </div>
         <div className="crud--search-form__submit-group">
-          <Button
-            bsStyle='link'
+          <button
+            type="button"
+            className="btn btn-link"
             onClick={resetFormFilter}
           >
             {i18n.getMessage('crudEditor.reset.button')}
-          </Button>
-          <Button
-            bsStyle="primary"
+          </button>
+          <button
             type="submit"
+            className="btn btn-primary"
             ref={ref => (this.submitBtn = ref)}
             disabled={isEqual(formFilter, resultFilter) || this.fieldErrors()}
           >
             {i18n.getMessage('crudEditor.search.button')}
-          </Button>
+          </button>
         </div>
-      </Form>
+      </form>
     );
   }
 }

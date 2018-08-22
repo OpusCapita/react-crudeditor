@@ -1,4 +1,8 @@
 
+[Release 1.3.4](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.4) Wed Aug 22 2018 13:31:21 GMT+0300 (MSK)
+=======================================================
+
+
 [Release 1.3.3](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.3) Mon Aug 13 2018 09:37:59 GMT+0300 (MSK)
 =======================================================
 

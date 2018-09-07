@@ -400,7 +400,6 @@ export default {
         { name: 'description' },
         { name: 'extContractId' },
         { name: 'extContractLineId' },
-        { name: 'parentContract', render: { component: ContractReferenceSearch } },
         { name: 'statusId', render: { component: StatusField, value: { converter: {
           format: value => value || value === 0 ? parseInt(value, 16) : null,
           parse: value => value || value === 0 ? value.toString(16) : null
@@ -409,7 +408,8 @@ export default {
         // THE SAME CAN BE ACHIEVED WITH THE FOLLOWING
         // EXAMPLE OF USING BUILT-IN RANGE INPUT COMPONENT:
         // { name: 'maxOrderValue', render: { component: BUILTIN_RANGE_INPUT, props: { type: 'integer' } } },
-        { name: 'createdOn' }
+        { name: 'createdOn' },
+        { name: 'parentContract', render: { component: ContractReferenceSearch } }
       ],
       resultFields: [
         { name: 'contractId', sortable: true },

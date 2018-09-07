@@ -1,4 +1,10 @@
 
+[Release 1.3.5](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.5) Fri Sep 07 2018 16:05:39 GMT+0300 (MSK)
+=======================================================
+
+- Fix issue [#287](https://github.com/OpusCapita/react-crudeditor/issues/287) (Andrei Mourzenkov mourzenkov@scand.com, 2018-09-07 15:52:11 +0300)
+- Using docker image opuscapita/minsk-core-ci tag grails-2.4.4-jdk-8u131-nodejs-6.9.4-maven-3.3.9 [ci skip] (Alexey Sergeev alexey.sergeev@opuscapita.com, 2018-09-07 09:08:44 +0300)
+
 [Release 1.3.4](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.4) Wed Aug 22 2018 13:31:21 GMT+0300 (MSK)
 =======================================================
 

@@ -2,7 +2,6 @@ import React, { PureComponent, Children } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/lib/Modal';
-import Button from 'react-bootstrap/lib/Button';
 import upperFirst from 'lodash/upperFirst';
 import './styles.less';
 
@@ -53,12 +52,20 @@ export default class ConditionalConfirm extends PureComponent {
         <Modal.Header closeButton={true}>
           <h4>{message}</h4>
           <div className="text-right">
-            <Button onClick={this.handleClose} bsStyle="link">
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={this.handleClose}
+            >
               {textCancel}
-            </Button>
-            <Button onClick={this.handleConfirm} bsStyle="primary">
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.handleConfirm}
+            >
               {textConfirm}
-            </Button>
+            </button>
           </div>
         </Modal.Header>
       </Modal>

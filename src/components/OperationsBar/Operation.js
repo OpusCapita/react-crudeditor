@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import Button from 'react-bootstrap/lib/Button';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import ConfirmDialog from '../ConfirmDialog';
 
@@ -14,7 +12,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
 
   const label = icon ? [
     typeof icon === 'string' ?
-      <Glyphicon glyph={icon} key="icon" /> :
+      <span className={`glyphicon glyphicon-${icon}`} key="icon"></span> :
       icon,
     '\u00A0\u00A0',
     title
@@ -28,15 +26,14 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
       </span>
     </MenuItem>
   ) : (
-    <Button
+    <button
+      type={isPrimary ? 'submit' : 'button'}
+      className={`btn btn-${style || 'default'}${size !== 'medium' ? ` btn-${size}` : ''}`}
       disabled={disabled}
       onClick={handler}
-      {...(size !== 'medium' && { bsSize: size })}
-      {...(style !== 'default' && { bsStyle: style })}
-      {...(isPrimary && { type: 'submit' })}
     >
       {label}
-    </Button>
+    </button>
   );
 
   if (!disabled && confirm) {

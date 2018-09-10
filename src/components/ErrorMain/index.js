@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 
 const ErrorMain = ({
@@ -32,9 +31,14 @@ const ErrorMain = ({
       }
       {
         goHome &&
-        <Button bsStyle='link' onClick={goHome} key="Cancel">
+        <button
+          type="button"
+          className="btn btn-link"
+          onClick={goHome}
+          key="Cancel"
+        >
           Home
-        </Button>
+        </button>
       }
     </div>
   );

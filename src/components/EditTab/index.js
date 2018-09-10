@@ -1,9 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/lib/Form';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Col from 'react-bootstrap/lib/Col';
-import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import OperationsBar from '../OperationsBar';
 import FormGrid from '../FormGrid';
 import './styles.less';
@@ -32,24 +28,24 @@ export default class EditTab extends PureComponent {
     return (
       <OperationsBar operations={operations}>
         {buttons => (
-          <Form horizontal={true} onSubmit={this.handleSubmit}>
-            <Col sm={12}>
+          <form className="form-horizontal" onSubmit={this.handleSubmit}>
+            <div className="col-sm-12">
               <FormGrid
                 model={this.props.model}
                 toggledFieldErrors={toggledFieldErrors}
                 toggleFieldErrors={toggleFieldErrors}
               />
-            </Col>
-            <FormGroup>
-              <Col sm={12}>
+            </div>
+            <div className="form-group">
+              <div className="col-sm-12">
                 <div className="form-submit text-right">
-                  <ButtonToolbar className="crud--search-result-listing__action-buttons">
+                  <div role="toolbar" className="btn-toolbar crud--search-result-listing__action-buttons">
                     { buttons }
-                  </ButtonToolbar>
+                  </div>
                 </div>
-              </Col>
-            </FormGroup>
-          </Form>
+              </div>
+            </div>
+          </form>
         )}
       </OperationsBar>
     );

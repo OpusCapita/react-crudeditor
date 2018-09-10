@@ -11,7 +11,7 @@ export
 
 // ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 
-let buildURL = ({ base, query, hash }) => {
+const buildURL = ({ base, query, hash }) => {
     // base  - string,
     // query - object or false - evaluated value (null, undefined, empty string, etc.).
     // hash  - object or false - evaluated value (null, undefined, empty string, etc.).
@@ -60,7 +60,7 @@ let buildURL = ({ base, query, hash }) => {
 
   suffix2arr = suffix => {
     // Input string, ouput array.
-    let suffixArr = suffix.replace(/^\/|\/$/g, '');
+    const suffixArr = suffix.replace(/^\/|\/$/g, '');
     return suffixArr ? suffixArr.split('/') : [];
   },
 

@@ -4,7 +4,7 @@ export default class ReferenceSearchService {
   getData({ contractId, max = 10, offset = 0 }) {
     const contractIds = getContracts().map(({ contractId }) => contractId).sort();
 
-    let result = contractId ?
+    const result = contractId ?
       contractIds.filter(cid => cid.toLowerCase().includes(contractId.toLowerCase())) :
       contractIds;
 

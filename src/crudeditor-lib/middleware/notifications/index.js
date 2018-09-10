@@ -115,7 +115,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
   const getFieldErrorMessages = ({ errors, formLayout, activeTab }) => {
     const tabNames = [];
 
-    let rez = (Array.isArray(errors) ? errors : [errors]).
+    const rez = (Array.isArray(errors) ? errors : [errors]).
       filter(err => err && typeof err === 'object').
       map(({ field, ...err }) => {
         const tabName = (findLayoutByField(formLayout, field) || {}).tab;

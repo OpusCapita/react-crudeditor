@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/lib/Button';
-
 import ConfirmDialog from '../ConfirmDialog';
 import './SearchBulkOperationsPanel.less';
 
@@ -36,15 +34,14 @@ export default class SearchBulkOperationsPanel extends PureComponent {
           bulkDelete && (
             <div>
               <ConfirmDialog {...bulkDelete.confirm}>
-                <Button
-                  bsSize='sm'
+                <button
+                  type="button"
+                  className="btn btn-sm btn-default"
                   disabled={bulkDelete.disabled}
-                  /* eslint-disable react/jsx-handler-names */
-                  onClick={bulkDelete.handler}
-                  /* eslint-enable react/jsx-handler-names */
+                  onClick={bulkDelete.handler} // eslint-disable-line react/jsx-handler-names
                 >
                   {bulkDelete.title}
-                </Button>
+                </button>
               </ConfirmDialog>
             </div>
           )

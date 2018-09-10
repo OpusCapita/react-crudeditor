@@ -96,7 +96,7 @@ export default baseModelDefinition => {
   const prefix = `${appName}.${hash(modelDefinition)}`;
 
   let onTransition = null;
-  let lastState = {};
+  const lastState = {};
 
   class CrudWrapper extends Component {
     static propTypes = {

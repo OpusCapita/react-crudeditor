@@ -21,14 +21,14 @@ function requireAll(requireContext) {
   }));
 }
 
-let icons = requireAll(require.context('@opuscapita/svg-icons/lib', true, /.*\.svg$/));
+const icons = requireAll(require.context('@opuscapita/svg-icons/lib', true, /.*\.svg$/));
 
-let getIcon = (name) => {
+const getIcon = (name) => {
   return icons.filter(icon => icon.name === name)[0].svg;
 }
 
 
-let NavigationElement = (
+const NavigationElement = (
   <Menu
     appName="Supplier Information Manager"
     activeItem={0}

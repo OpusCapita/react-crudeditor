@@ -28,7 +28,7 @@ export default function*({
   try {
     let errors;
 
-    ({ count, errors } = yield call(modelDefinition.api.delete, {
+    ({ count, errors } = yield call(modelDefinition.api.delete, { // eslint-disable-line prefer-const
       instances: instances.map(logicalKeyBuilder)
     }));
 

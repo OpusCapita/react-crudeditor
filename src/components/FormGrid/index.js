@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 import Section from '../EditSection';
 import Field from '../EditField';
 
@@ -11,12 +9,12 @@ const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   let uniqueKey = 1;
 
   const buildRow = (fields, columnsCnt) => (
-    <Row key={'row-' + ++uniqueKey}>
+    <div className="row" key={'row-' + ++uniqueKey}>
       {
         // Iterating over array [0..(columnsCnt - 1)]
         [...Array(columnsCnt).keys()].map(columnIndex => (
-          <Col
-            sm={Math.floor(12 / columnsCnt)}
+          <div
+            className={`col-sm-${Math.floor(12 / columnsCnt)}`}
             key={'column-' + uniqueKey + '-' + columnIndex}
           >
             {
@@ -38,10 +36,10 @@ const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
                   />
                 ))
             }
-          </Col>
+          </div>
         ))
       }
-    </Row>
+    </div>
   );
 
   const buildGrid = (entries, tabColumns) => {

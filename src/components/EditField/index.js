@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
-import Label from 'react-bootstrap/lib/Label';
 import { getModelMessage, getFieldLabel } from '../lib'
 import FieldErrorLabel from '../FieldErrors/FieldErrorLabel';
 import './styles.less';
@@ -102,12 +98,15 @@ export default class EditField extends Component {
 
     return (
       <FormGroup controlId={fieldName} validationState={!readOnly && toggledFieldErrors[fieldName] ? 'error' : null}>
-        <Col componentClass={ControlLabel} sm={labelColumns}>
+        <label
+          htmlFor={fieldName}
+          className={`col-sm-${labelColumns} control-label`}
+        >
           {
             fieldLabel + (required ? '*' : '')
           }
-        </Col>
-        <Col sm={12 - labelColumns}>
+        </label>
+        <div className={`col-sm-${12 - labelColumns}`}>
           {
             fieldTooltip && (
               <span className="field-tooltip">
@@ -126,7 +125,7 @@ export default class EditField extends Component {
                     </Popover>
                   }
                 >
-                  <Glyphicon glyph="info-sign" className='text-muted'/>
+                  <span className="glyphicon glyphicon-info-sign text-muted"></span>
                 </OverlayTrigger>
               </span>
             )
@@ -138,12 +137,12 @@ export default class EditField extends Component {
                 <FieldErrorLabel errors={toggledFieldErrors[fieldName]} fieldName={fieldName}/>
               ) :
               (
-                <Label className="hint">
+                <span className="hint label label-default">
                   <small className="text-muted">{fieldHint || '\u00A0'}</small>
-                </Label>
+                </span>
               )
           }
-        </Col>
+        </div>
       </FormGroup>
     );
   }

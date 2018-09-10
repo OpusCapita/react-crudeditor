@@ -2,11 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Button from 'react-bootstrap/lib/Button';
-import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { getModelMessage, getTabLabel } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
@@ -72,20 +67,24 @@ export default class EditHeading extends PureComponent {
 
     const arrows = [
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-left'>
-        <Button
+        <button
+          type="button"
+          className="btn btn-default"
           disabled={!gotoPreviousInstance}
           onClick={gotoPreviousInstance}
         >
-          <Glyphicon glyph="arrow-left"/>
-        </Button>
+          <span className="glyphicon glyphicon-arrow-left"></span>
+        </button>
       </ConfirmUnsavedChanges>,
       <ConfirmUnsavedChanges showDialog={this.showConfirmDialog} key='arrow-right'>
-        <Button
+        <button
+          type="button"
+          className="btn btn-default"
           disabled={!gotoNextInstance}
           onClick={gotoNextInstance}
         >
-          <Glyphicon glyph="arrow-right"/>
-        </Button>
+          <span className="glyphicon glyphicon-arrow-right"></span>
+        </button>
       </ConfirmUnsavedChanges>
     ]
 
@@ -93,8 +92,8 @@ export default class EditHeading extends PureComponent {
 
     return (<div style={{ marginBottom: '10px' }}>
       <H>
-        <Row>
-          <Col xs={8}>
+        <div className="row">
+          <div className="col-xs-8">
             {title}
             {
               (instanceLabel || viewName === VIEW_CREATE) &&
@@ -102,15 +101,15 @@ export default class EditHeading extends PureComponent {
                 {' / ' + (viewName === VIEW_CREATE ? i18n.getMessage('crudEditor.new.title') : instanceLabel)}
               </small>
             }
-          </Col>
-          <Col xs={4}>
+          </div>
+          <div className="col-xs-4">
             <div style={{ float: "right" }}>
-              <ButtonGroup>
+              <div className="btn-group">
                 {arrows}
-              </ButtonGroup>
+              </div>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </H>
 
       {

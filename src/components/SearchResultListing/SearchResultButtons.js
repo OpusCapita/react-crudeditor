@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import OperationsBar from '../OperationsBar';
 
 export default class SearchResultButtons extends PureComponent {
@@ -43,9 +42,9 @@ export default class SearchResultButtons extends PureComponent {
       <OperationsBar operations={operations} onToggleDropdown={this.handleToggleDropdown} size="small">
         {
           buttons => buttons.length ? (
-            <ButtonGroup bsSize="sm" className="crud--search-result-listing__action-buttons">
+            <div className="btn-group btn-group-sm crud--search-result-listing__action-buttons">
               {buttons}
-            </ButtonGroup>
+            </div>
           ) :
             null
         }

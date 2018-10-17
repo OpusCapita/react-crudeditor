@@ -5,6 +5,16 @@ import Button from 'react-bootstrap/lib/Button';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
 import ConfirmDialog from '../ConfirmDialog';
 
+const getIconElement = icon => {
+  if (typeof icon !== 'string') {
+    return icon
+  }
+  if (icon === 'edit') {
+    return <i className='fa fa-pencil' key='edit'></i>
+  }
+  return <Glyphicon glyph={icon} key={icon} />
+}
+
 const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm }) => {
   const isPrimary = style === 'primary';
 
@@ -13,9 +23,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
   }
 
   const label = icon ? [
-    typeof icon === 'string' ?
-      <Glyphicon glyph={icon} key="icon" /> :
-      icon,
+    getIconElement(icon),
     '\u00A0\u00A0',
     title
   ] :

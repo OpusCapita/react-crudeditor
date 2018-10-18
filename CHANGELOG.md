@@ -1,4 +1,9 @@
 
+[Release 1.3.6](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.6) Thu Oct 18 2018 09:41:09 GMT+0300 (MSK)
+=======================================================
+
+- Change Edit icon ([#290](https://github.com/OpusCapita/react-crudeditor/issues/290)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2018-10-18 09:14:05 +0300)
+
 [Release 1.3.5](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.5) Fri Sep 07 2018 16:05:39 GMT+0300 (MSK)
 =======================================================
 

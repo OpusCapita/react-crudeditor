@@ -15,6 +15,7 @@ jobs:
           username: $DOCKER_USER
           password: $DOCKER_PASS
     steps:
+      - checkout
       - run:
           name: Executing release script
           command: release.sh node

@@ -1,4 +1,9 @@
 
+[Release 1.3.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.7) Mon Apr 22 2019 12:02:16 GMT+0300 (MSK)
+=======================================================
+
+- Allow async functions in Model Definition (Andrei Mourzenkov mourzenkov@fortyseven47.com, 2019-04-22 11:37:52 +0300)
+
 [Release 0.0.0-test-release](https://github.com/OpusCapita/react-crudeditor/releases/tag/v0.0.0-test-release) Tue Jan 29 2019 11:07:51 GMT+0300 (MSK)
 =======================================================
 

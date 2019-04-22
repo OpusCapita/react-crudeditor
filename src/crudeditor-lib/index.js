@@ -93,7 +93,11 @@ const appName = 'crudEditor';
 
 export default baseModelDefinition => {
   const modelDefinition = fillDefaults(baseModelDefinition);
-  const prefix = `${appName}.${hash(modelDefinition)}`;
+
+  // Since "object-hash" package does not support async functions, remove them from modelDefinition.
+  // For more details see
+  // https://github.com/puleos/object-hash/issues/67
+  const prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
 
   let onTransition = null;
   let lastState = {};

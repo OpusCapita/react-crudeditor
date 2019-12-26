@@ -2,6 +2,7 @@ import exceptions from './exceptions/sv';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "Ny",
   "crudEditor.create.header": "Skapa {modelName}",
   "crudEditor.edit.header": "Redigera {modelName}",
   "crudEditor.show.header": "Visa {modelName0}",
@@ -46,6 +47,7 @@ const common = {
   "crudEditor.found.items.message": "{count} artikel/artiklar hittades",
   "crudEditor.range.from": "fr\u00e5n",
   "crudEditor.range.to": "till",
+  "crudEditor.confirm.action": "Bekräfta",
   "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */

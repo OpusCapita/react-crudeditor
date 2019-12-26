@@ -2,6 +2,7 @@ import exceptions from './exceptions/no';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "Ny",
   "crudEditor.create.header": "Opprett {modelName}",
   "crudEditor.edit.header": "Rediger {modelName}",
   "crudEditor.show.header": "Vis {modelName}",
@@ -46,6 +47,7 @@ const common = {
   "crudEditor.found.items.message": "{count} elementer funnet",
   "crudEditor.range.from": "fra",
   "crudEditor.range.to": "til",
+  "crudEditor.confirm.action": "Bekreft",
   "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */

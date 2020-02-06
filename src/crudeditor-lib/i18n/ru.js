@@ -2,6 +2,7 @@ import exceptions from './exceptions/ru';
 
 /* eslint-disable max-len */
 const common = {
+  "crudEditor.new.title": "Новый",
   "crudEditor.actions.tableHeader": "Действия",
   "crudEditor.cancel.button": "Отменить",
   "crudEditor.close.button": "Закрыть",
@@ -48,6 +49,7 @@ const common = {
   "crudEditor.range.to": "\u043F\u043E",
   "crudEditor.search.showSearchForm": "Показать форму поиска",
   "crudEditor.search.hideSearchForm": "Скрыть форму поиска",
+  "crudEditor.confirm.action": "Подтвердить",
   "crudEditor.pagination.goToPage": "Перейти"
 }
 /* eslint-enable max-len */

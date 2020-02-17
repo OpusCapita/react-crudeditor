@@ -48,6 +48,8 @@ const common = {
   "crudEditor.range.from": "von",
   "crudEditor.range.to": "bis",
   "crudEditor.confirm.action": "Bestätigen",
+  "crudEditor.search.showSearchForm": "Suchmaske einblenden",
+  "crudEditor.search.hideSearchForm": "Suchmaske ausblenden",
   "crudEditor.pagination.goToPage": "Öffnen"
 }
 /* eslint-enable max-len */

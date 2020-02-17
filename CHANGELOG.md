@@ -1,4 +1,10 @@
 
+[Release 1.3.8](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.8) Mon Feb 17 2020 11:53:49 GMT+0300 (MSK)
+=======================================================
+
+- [#294](https://github.com/OpusCapita/react-crudeditor/issues/294) Added missing translations. ([#295](https://github.com/OpusCapita/react-crudeditor/issues/295)) (GitHub 39185158+azhurauski-sc@users.noreply.github.com, 2020-02-17 11:41:03 +0300)
+- [#292](https://github.com/OpusCapita/react-crudeditor/issues/292) Add missing translations. ([#293](https://github.com/OpusCapita/react-crudeditor/issues/293)) (GitHub 39185158+azhurauski-sc@users.noreply.github.com, 2020-02-06 16:55:08 +0300)
+
 [Release 1.3.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.7) Mon Apr 22 2019 12:02:16 GMT+0300 (MSK)
 =======================================================
 

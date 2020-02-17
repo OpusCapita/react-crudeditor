@@ -48,6 +48,8 @@ const common = {
   "crudEditor.range.from": "fra",
   "crudEditor.range.to": "til",
   "crudEditor.confirm.action": "Bekreft",
+  "crudEditor.search.showSearchForm": "Vis søkeskjema",
+  "crudEditor.search.hideSearchForm": "Skjul søkeskjema",
   "crudEditor.pagination.goToPage": "Go"
 }
 /* eslint-enable max-len */

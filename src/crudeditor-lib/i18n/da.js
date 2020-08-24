@@ -1,0 +1,60 @@
+import exceptions from './exceptions/en';
+
+/* eslint-disable max-len */
+const common = {
+  "crudEditor.new.title": "Ny",
+  "crudEditor.create.header": "Opret {modelName}",
+  "crudEditor.edit.header": "Rediger {modelName}",
+  "crudEditor.show.header": "Vis {modelName}",
+  "crudEditor.duplicate.header": "Dupliker {modelName}",
+  "crudEditor.cancel.button": "Annuller",
+  "crudEditor.save.button": "Gem",
+  "crudEditor.saveAndNew.button": "Gem og Ny",
+  "crudEditor.saveAndNext.button": "Gem og Næste",
+  "crudEditor.search.header": "Søg {payload}",
+  "crudEditor.search.button": "Søg",
+  "crudEditor.reset.button": "Nulstil",
+  "crudEditor.create.button": "Opret",
+  "crudEditor.select.button": "Vælg",
+  "crudEditor.export.button": "Eksporter",
+  "crudEditor.close.button": "Luk",
+  "crudEditor.actions.tableHeader": "Handlinger",
+  "crudEditor.show.button": "Vis",
+  "crudEditor.edit.button": "Rediger",
+  "crudEditor.delete.button": "Slet",
+  "crudEditor.deleteSelected.button": "Slet valgt",
+  "crudEditor.duplicate.button": "Dupliker",
+  "crudEditor.refresh.button": "Opdater",
+  "crudEditor.revisions.button": "Revisioner",
+  "crudEditor.delete.confirmation": "Vil du virkelig slette denne post?",
+  "crudEditor.deleteSelected.confirmation": "Vil du virkelig slette de valgte poster?",
+  "crudEditor.noItemsSelected.alert": "Ingen poster valgt!",
+  "crudEditor.objectSaved.message": "Objekt oprettet.",
+  "crudEditor.objectUpdated.message": "Objekt opdateret.",
+  "crudEditor.objectSaveFailed.message": "Objekt kunne ikke gemmes.",
+  "crudEditor.objectDeleted.message": "Objekt slettet.",
+  "crudEditor.objectsDeleted.message": "Objekter {labels} slettet.",
+  "crudEditor.objectsDeleteIsNoAllowed.message": "Du kan ikke slette nogle objekter på grund af sikkerhedsbegrænsninger.",
+  "crudEditor.objectDeleteFailed.message": "Objektet kunne ikke slettes. Det er måske allerede i brug.",
+  "crudEditor.objectsDeleteFailed.message": "{count} objekter kunne ikke slettes. De er måske allerede i brug.",
+  "crudEditor.objectDuplicated.message": "Objekt kopieret.",
+  "crudEditor.noAssociationEntriesFound.message": "Der blev ikke fundet nogen poster. Du kan {1} en ny post.",
+  "crudEditor.message.ajax.loading": "Vent venligst...",
+  "crudEditor.search.result.label": "Søgeresultater",
+  "crudEditor.unsaved.confirmation": "Du har foretaget ændringer. Hvis du forlader denne side, kasseres disse ændringer.",
+  "crudEditor.search.resultsPerPage": "Resultater pr. side",
+  "crudEditor.search.all": "Alle",
+  "crudEditor.found.items.message": "{count} element(er) blev fundet",
+  "crudEditor.range.from": "fra",
+  "crudEditor.range.to": "til",
+  "crudEditor.confirm.action": "Bekræft",
+  "crudEditor.search.showSearchForm": "Vis søgning fra",
+  "crudEditor.search.hideSearchForm": "Skjul søgning fra",
+  "crudEditor.pagination.goToPage": "Gå"
+}
+/* eslint-enable max-len */
+
+export default {
+  ...common,
+  ...exceptions
+}

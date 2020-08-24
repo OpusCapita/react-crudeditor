@@ -1,4 +1,10 @@
 
+[Release 1.3.9](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.9) Mon Aug 24 2020 16:09:42 GMT+0300 (MSK)
+=======================================================
+
+- Add Danish translations ([#297](https://github.com/OpusCapita/react-crudeditor/issues/297)) (GitHub 61777811+laurarautava@users.noreply.github.com, 2020-08-24 15:43:36 +0300)
+- Update CI image to opuscapita/minsk-core-ci:grails-2.4.4-jdk-8u192-nodejs-8.17.0-maven-3.3.9 [ci skip] (Egor Stambakio egor.stambakio@opuscapita.com, 2020-05-07 11:53:46 +0300)
+
 [Release 1.3.8](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.8) Mon Feb 17 2020 11:53:49 GMT+0300 (MSK)
 =======================================================
 

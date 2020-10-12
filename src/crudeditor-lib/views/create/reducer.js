@@ -378,7 +378,7 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
       }
 
       if (storeState.errors.fields[fieldName]) {
-          // u.omit() argument must be an array, since lodash v. 4.17.4 no longer supports a string.
+        // u.omit() argument must be an array, since lodash v. 4.17.4 no longer supports a string.
         newStoreStateSlice.errors.fields = u.omit([fieldName]);
       }
     });

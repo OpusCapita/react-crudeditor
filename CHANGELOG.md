@@ -1,4 +1,10 @@
 
+[Release 1.3.10](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.10) Mon Oct 12 2020 13:25:46 GMT+0300 (MSK)
+=======================================================
+
+- Fix some ui bugs ([#300](https://github.com/OpusCapita/react-crudeditor/issues/300)) (GitHub 51231445+dkuzmianok-sc@users.noreply.github.com, 2020-10-12 12:32:05 +0300)
+- Apply temporary changes for testing issue 299 (Dzmitry Kuzmianok kuzmianok@scand.com, 2020-10-12 09:54:18 +0300)
+
 [Release 1.3.9](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.9) Mon Aug 24 2020 16:09:42 GMT+0300 (MSK)
 =======================================================
 

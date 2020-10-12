@@ -338,6 +338,12 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
   // ███████████████████████████████████████████████████████████████████████████████████████████████████████████
 
   } else if (type === ALL_INSTANCE_FIELDS_VALIDATE_REQUEST) {
+    newStoreStateSlice.errors = {
+      fields: {
+
+      }
+    };
+
     Object.keys(modelDefinition.model.fields).forEach(fieldName => {
       const fieldValue = storeState.formInstance[fieldName];
       const fieldLayout = findFieldLayout(fieldName)(storeState.formLayout);
@@ -365,21 +371,15 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => (
         const errors = Array.isArray(err) ? err : [err];
 
         if (!isEqual(errors, storeState.errors.fields[fieldName])) {
-          newStoreStateSlice.errors = {
-            fields: {
-              [fieldName]: errors
-            }
-          };
+          newStoreStateSlice.errors.fields[fieldName] = errors;
         }
 
         return;
       }
 
       if (storeState.errors.fields[fieldName]) {
-        newStoreStateSlice.errors = {
           // u.omit() argument must be an array, since lodash v. 4.17.4 no longer supports a string.
-          fields: u.omit([fieldName])
-        };
+        newStoreStateSlice.errors.fields = u.omit([fieldName]);
       }
     });
 

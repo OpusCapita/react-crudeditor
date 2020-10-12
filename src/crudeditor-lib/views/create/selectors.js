@@ -39,6 +39,6 @@ export const
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
     unsavedChanges: storeState.formInstance &&
-      Object.keys(storeState.formInstance).some(key => storeState.formInstance[key] !== null),
+      Object.keys(storeState.formInstance).some(key => storeState.formInstance[key] !== null && storeState.formInstance[key] !== storeState.predefinedFields[key]),
     viewName: VIEW_NAME
   }));

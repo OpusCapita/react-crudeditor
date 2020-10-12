@@ -35,7 +35,7 @@ export const fields = {
     'type': FIELD_TYPE_STRING,
     'constraints': {
       'max': 100,
-      'required': false,
+      'required': true,
       validate: /* istanbul ignore next */ (value, instance) => {
         if ((value || '').toLowerCase().indexOf('booo') !== -1) {
           const err = [{

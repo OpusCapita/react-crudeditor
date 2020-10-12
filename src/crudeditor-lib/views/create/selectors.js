@@ -38,7 +38,11 @@ export const
     isLoading: ([STATUS_REDIRECTING, STATUS_CREATING].indexOf(storeState.status) > -1),
     tabs: storeState.formLayout.filter(({ tab }) => tab),
     status: storeState.status,
-    unsavedChanges: storeState.formInstance &&
-      Object.keys(storeState.formInstance).some(key => storeState.formInstance[key] !== null),
+    unsavedChanges:
+      storeState.formInstance &&
+      Object.keys(storeState.formInstance).some(
+        key => storeState.formInstance[key] !== null &&
+        storeState.formInstance[key] !== storeState.predefinedFields[key]
+      ),
     viewName: VIEW_NAME
   }));

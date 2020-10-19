@@ -1,4 +1,9 @@
 
+[Release 1.3.11](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.11) Mon Oct 19 2020 14:52:22 GMT+0300 (MSK)
+=======================================================
+
+- Add ability to define pagination options on Search view ([#302](https://github.com/OpusCapita/react-crudeditor/issues/302)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2020-10-19 14:33:54 +0300)
+
 [Release 1.3.10](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.10) Mon Oct 12 2020 13:25:46 GMT+0300 (MSK)
 =======================================================
 

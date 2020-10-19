@@ -31,7 +31,10 @@ const arg = {
         defaultNewInstance
       },
       search: {
-        resultFields: [{ name: 'a' }]
+        resultFields: [{ name: 'a' }],
+        pagination: {
+          defaultMax: 30
+        }
       }
     },
     permissions: {
@@ -62,7 +65,7 @@ const getState = _ => ({
     [VIEW_SEARCH]: {
       pageParams: {},
       sortParams: {},
-      resultFilter: {}
+      resultFilter: {},
     }
   }
 })

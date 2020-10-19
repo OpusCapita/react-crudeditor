@@ -3,7 +3,7 @@ import { buildFormLayout } from '../lib';
 
 export { getViewState } from './selectors';
 
-export const getUi = modelDefinition => {
+export const getUi = ({ modelDefinition }) => {
   const editMeta = modelDefinition.ui.edit || {};
 
   editMeta.formLayout = buildFormLayout({

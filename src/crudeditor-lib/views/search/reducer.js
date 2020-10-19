@@ -11,7 +11,6 @@ import {
 } from './lib';
 
 import {
-  DEFAULT_MAX,
   DEFAULT_OFFSET,
   DEFAULT_ORDER,
 
@@ -134,7 +133,7 @@ export const buildDefaultStoreState = modelDefinition => ({
     order: DEFAULT_ORDER
   },
   pageParams: {
-    max: DEFAULT_MAX,
+    max: modelDefinition.ui.search.pagination.defaultMax,
     offset: DEFAULT_OFFSET
   },
   gotoPage: '',

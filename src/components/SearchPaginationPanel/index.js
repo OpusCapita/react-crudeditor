@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Dropdown from 'react-bootstrap/lib/Dropdown';
 import MenuItem from 'react-bootstrap/lib/MenuItem';
+import find from 'lodash/find';
 import PaginationPanel from './PaginationPanel';
 import './SearchPaginationPanel.less';
 
@@ -10,7 +11,8 @@ export default class SearchResultPaginationPanel extends PureComponent {
     model: PropTypes.shape({
       data: PropTypes.shape({
         pageParams: PropTypes.shape({
-          max: PropTypes.number
+          max: PropTypes.number,
+          offset: PropTypes.number
         }),
         totalCount: PropTypes.number,
         gotoPage: PropTypes.string
@@ -20,7 +22,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
   }
 
   static contextTypes = {
-    i18n: PropTypes.object
+    i18n: PropTypes.object.isRequired
   };
 
   handlePaginate = activePage => this.props.model.actions.searchInstances({
@@ -37,7 +39,8 @@ export default class SearchResultPaginationPanel extends PureComponent {
         pageParams: {
           max,
           offset
-        }
+        },
+        paginationOptions
       },
       actions: { updateGotoPage }
     } = this.props.model;
@@ -56,15 +59,14 @@ export default class SearchResultPaginationPanel extends PureComponent {
             <Dropdown.Toggle>
               {i18n.getMessage('crudEditor.search.resultsPerPage')}
               {':\u0020'}
-              <b>{max === -1 ? i18n.getMessage('crudEditor.search.all') : max}</b>
+              <b>{find(paginationOptions, opt => opt.max === max).label}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <MenuItem eventKey={-1} active={max === -1}>All</MenuItem>
-              <MenuItem eventKey={1000} active={max === 1000}>1000</MenuItem>
-              <MenuItem eventKey={100} active={max === 100}>100</MenuItem>
-              <MenuItem eventKey={50} active={max === 50}>50</MenuItem>
-              <MenuItem eventKey={30} active={max === 30}>30</MenuItem>
-              <MenuItem eventKey={10} active={max === 10}>10</MenuItem>
+              {
+                paginationOptions.map(({ max: value, label }) => (
+                  <MenuItem key={value} eventKey={value} active={max === value}>{label}</MenuItem>
+                ))
+              }
             </Dropdown.Menu>
           </Dropdown>
         </div>

@@ -46,6 +46,24 @@ const searchUiPropTypes = /* istanbul ignore next */ fieldsMeta => ({
         `);
       }
     }
+  ),
+  pagination: allPropTypes(
+    PropTypes.shape({
+      defaultMax: PropTypes.number,
+      options: PropTypes.arrayOf(PropTypes.shape({
+        max: PropTypes.number,
+        label: PropTypes.string
+      }))
+    }),
+    (props, propName, componentName) => { // eslint-disable-line consistent-return
+      const pagination = props[propName];
+
+      if (pagination && pagination.options.findIndex(({ max }) => max === pagination.defaultMax) === -1) {
+        return new Error(`${componentName}:
+          pagination.defaultMax "${props[propName].defaultMax}" should be equal to one of "max" in pagination.options
+        `);
+      }
+    }
   )
 })
 

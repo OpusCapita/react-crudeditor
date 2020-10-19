@@ -65,7 +65,7 @@ const getState = _ => ({
     [VIEW_SEARCH]: {
       pageParams: {},
       sortParams: {},
-      resultFilter: {},
+      resultFilter: {}
     }
   }
 })

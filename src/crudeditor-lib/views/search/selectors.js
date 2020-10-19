@@ -81,9 +81,7 @@ export const
       search: {
         resultFields,
         searchableFields,
-        pagination: {
-          options: paginationOptions
-        }
+        pagination
       }
     }
   }) => ({
@@ -127,5 +125,5 @@ export const
     totalCount: _getTotalCount(storeState),
     hideSearchForm: storeState.hideSearchForm,
     gotoPage: storeState.gotoPage,
-    paginationOptions
+    pagination
   }));

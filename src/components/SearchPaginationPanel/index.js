@@ -40,7 +40,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
           max,
           offset
         },
-        paginationOptions
+        pagination
       },
       actions: { updateGotoPage }
     } = this.props.model;
@@ -59,11 +59,11 @@ export default class SearchResultPaginationPanel extends PureComponent {
             <Dropdown.Toggle>
               {i18n.getMessage('crudEditor.search.resultsPerPage')}
               {':\u0020'}
-              <b>{find(paginationOptions, opt => opt.max === max).label}</b>
+              <b>{find(pagination.options, opt => opt.max === max).label}</b>
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
-                paginationOptions.map(({ max: value, label }) => (
+                pagination.options.map(({ max: value, label }) => (
                   <MenuItem key={value} eventKey={value} active={max === value}>{label}</MenuItem>
                 ))
               }

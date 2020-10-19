@@ -366,7 +366,20 @@ export default {
         { name: 'extContractId', sortable: true },
         { name: 'extContractLineId', sortable: true },
         { name: 'testNumberTypeField', textAlignment: 'right' }
-      ]
+      ],
+      /**
+       * custom pagination settings can be defined like this.
+       * 'pagination' should be either missing or fully defined
+       * (no partial definitions are allowed, e.g. only 'defaultMax' gonna break)
+       */
+      pagination: {
+        defaultMax: 10,
+        options: [
+          { max: 10, label: '10' },
+          { max: 20, label: '20' },
+          { max: 30, label: '30' },
+        ]
+      }
     }),
     instanceLabel: /* istanbul ignore next */ instance => instance._objectLabel || instance.contractId || '',
     create: {

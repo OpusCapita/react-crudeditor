@@ -17,7 +17,7 @@ describe('show view / index / getUi', () => {
   }
 
   it('should generate proper ui', () => {
-    const result = getUi(modelDefinition)
+    const result = getUi({ modelDefinition })
     expect(result).to.have.ownProperty('formLayout');
     expect(result.formLayout).to.be.instanceof(Function);
   })

@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import { buildDefaultStoreState } from './reducer';
 import {
-  DEFAULT_MAX,
   DEFAULT_OFFSET,
   DEFAULT_ORDER
 } from './constants';
@@ -33,7 +32,10 @@ describe('search view reducer', () => {
           ],
           resultFields: [
             ...fields
-          ]
+          ],
+          pagination: {
+            defaultMax: 30
+          }
         }
       }
     }
@@ -66,7 +68,7 @@ describe('search view reducer', () => {
             order: DEFAULT_ORDER
           },
           pageParams: {
-            max: DEFAULT_MAX,
+            max: modelDefinition.ui.search.pagination.defaultMax,
             offset: DEFAULT_OFFSET
           },
           selectedInstances: [],

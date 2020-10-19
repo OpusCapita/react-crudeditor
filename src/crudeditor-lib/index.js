@@ -92,13 +92,6 @@ export {
 const appName = 'crudEditor';
 
 export default baseModelDefinition => {
-  const modelDefinition = fillDefaults(baseModelDefinition);
-
-  // Since "object-hash" package does not support async functions, remove them from modelDefinition.
-  // For more details see
-  // https://github.com/puleos/object-hash/issues/67
-  const prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
-
   let onTransition = null;
   let lastState = {};
 
@@ -134,6 +127,16 @@ export default baseModelDefinition => {
 
       // core crud translations
       this.context.i18n.register(appName, crudTranslations);
+
+      const modelDefinition = fillDefaults({ baseModelDefinition, i18n: this.context.i18n });
+
+      // modelDefinition also needs to be accessed outside of constructor scope, therefore pin it to 'this'
+      this.modelDefinition = modelDefinition;
+
+      // Since "object-hash" package does not support async functions, remove them from modelDefinition.
+      // For more details see
+      // https://github.com/puleos/object-hash/issues/67
+      const prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
 
       // model translations
       const prefixedTranslations = getPrefixedTranslations(modelDefinition.model.translations, prefix);
@@ -208,7 +211,7 @@ export default baseModelDefinition => {
         name = DEFAULT_VIEW,
         state = {}
       } = {}
-    }) => !isEqual(storeState2appState(this.store.getState(), modelDefinition), { name, state })
+    }) => !isEqual(storeState2appState(this.store.getState(), this.modelDefinition), { name, state })
 
     componentWillUnmount() {
       this.runningSaga.cancel()
@@ -219,7 +222,7 @@ export default baseModelDefinition => {
         <Main
           viewName={this.props.view ? this.props.view.name : undefined}
           viewState={this.props.view ? this.props.view.state : undefined}
-          modelDefinition={modelDefinition}
+          modelDefinition={this.modelDefinition}
           externalOperations={this.props.externalOperations}
           uiConfig={this.props.uiConfig}
         />

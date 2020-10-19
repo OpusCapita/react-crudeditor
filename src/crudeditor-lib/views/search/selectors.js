@@ -5,7 +5,6 @@ import {
   getDefaultSortField
 } from './lib';
 import {
-  DEFAULT_MAX,
   DEFAULT_OFFSET,
   DEFAULT_ORDER,
 
@@ -45,7 +44,7 @@ const _getViewState = ({
     ...(filter ? { filter } : {}),
     ...(sort === getDefaultSortField(searchMeta) ? {} : { sort }),
     ...(order === DEFAULT_ORDER ? {} : { order }),
-    ...(max === DEFAULT_MAX ? {} : { max }),
+    ...(max === searchMeta.pagination.defaultMax ? {} : { max }),
     ...(offset === DEFAULT_OFFSET ? {} : { offset })
   };
 };
@@ -81,7 +80,8 @@ export const
       spinner,
       search: {
         resultFields,
-        searchableFields
+        searchableFields,
+        pagination
       }
     }
   }) => ({
@@ -124,5 +124,6 @@ export const
     status: storeState.status,
     totalCount: _getTotalCount(storeState),
     hideSearchForm: storeState.hideSearchForm,
-    gotoPage: storeState.gotoPage
+    gotoPage: storeState.gotoPage,
+    pagination
   }));

@@ -5,7 +5,6 @@ const namespace = VIEW_SEARCH;
 export const
   VIEW_NAME = VIEW_SEARCH,
 
-  DEFAULT_MAX = 30,
   DEFAULT_OFFSET = 0,
   DEFAULT_ORDER = 'asc',
 

@@ -29,7 +29,7 @@ const rangeFieldType = {
   [FIELD_TYPE_STRING_DECIMAL]: FIELD_TYPE_STRING_DECIMAL_RANGE
 };
 
-export const getUi = modelDefinition => {
+export const getUi = ({ modelDefinition, i18n }) => {
   const fieldsMeta = modelDefinition.model.fields;
 
   const searchMeta = modelDefinition.ui.search ?
@@ -42,6 +42,20 @@ export const getUi = modelDefinition => {
 
   if (!searchMeta.searchableFields) {
     searchMeta.searchableFields = Object.keys(fieldsMeta).map(name => ({ name }));
+  }
+
+  if (!searchMeta.pagination) {
+    searchMeta.pagination = {
+      defaultMax: 30,
+      options: [
+        { max: -1, label: i18n.getMessage('crudEditor.search.all') },
+        { max: 1000, label: '1000' },
+        { max: 100, label: '100' },
+        { max: 50, label: '50' },
+        { max: 30, label: '30' },
+        { max: 10, label: '10' }
+      ]
+    }
   }
 
   checkSearchUi({ searchMeta, fieldsMeta });

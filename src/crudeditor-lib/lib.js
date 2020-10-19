@@ -77,7 +77,7 @@ export function isAllowed(permissions, operation, data) { // eslint-disable-line
 }
 
 // Filling modelDefinition with default values where necessary.
-export function fillDefaults(baseModelDefinition) {
+export function fillDefaults({ baseModelDefinition, i18n }) {
   const modelDefinition = cloneDeep(baseModelDefinition);
 
   // validate modelDefinition using 'prop-types'
@@ -129,7 +129,7 @@ export function fillDefaults(baseModelDefinition) {
 
   Object.keys(getUi).forEach(viewName => {
     if (getUi[viewName]) {
-      modelDefinition.ui[viewName] = getUi[viewName](modelDefinition);
+      modelDefinition.ui[viewName] = getUi[viewName]({ modelDefinition, i18n });
     }
   });
 

@@ -1,4 +1,9 @@
 
+[Release 1.3.15](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.15) Tue Oct 27 2020 16:26:23 GMT+0300 (MSK)
+=======================================================
+
+- Add FIELD_TYPE_STRING_DATE_ONLY ([#304](https://github.com/OpusCapita/react-crudeditor/issues/304)) (GitHub 31243790+estambakio-sc@users.noreply.github.com, 2020-10-27 16:24:07 +0300)
+
 [Release 1.3.13](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.13) Tue Oct 27 2020 15:42:40 GMT+0300 (MSK)
 =======================================================
 

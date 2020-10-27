@@ -28,7 +28,9 @@ export const
    */
   FIELD_TYPE_STRING_DECIMAL = 'stringDecimal',
 
-  FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with date.
+  FIELD_TYPE_STRING_DATE = 'stringDate', // JavaScript type "string" with ISO date, e.g '2020-10-27T09:00:00.000Z'.
+
+  FIELD_TYPE_STRING_DATE_ONLY = 'stringDateOnly', // JavaScript type "string" with date in format 'YYY-MM-DD'.
 
   /*
    * JavaScript type "string" with decimal number of any size,

@@ -22,6 +22,7 @@ import {
   FIELD_TYPE_DECIMAL,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_DATE_ONLY,
   FIELD_TYPE_STRING_INTEGER,
   FIELD_TYPE_STRING_DECIMAL,
 
@@ -135,6 +136,12 @@ const defaultFieldRenders = {
     }
   },
   [FIELD_TYPE_STRING_DATE]: {
+    component: 'input',
+    props: {
+      type: 'date'
+    }
+  },
+  [FIELD_TYPE_STRING_DATE_ONLY]: {
     component: 'input',
     props: {
       type: 'date'

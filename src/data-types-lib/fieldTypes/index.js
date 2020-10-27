@@ -1,6 +1,7 @@
 import booleanType from './boolean';
 import stringType from './string';
 import stringDateType from './stringDate';
+import stringDateOnlyType from './stringDateOnly';
 import stringDecimalType from './stringDecimal';
 import stringIntegerType from './stringInteger';
 import integerType from './integer';
@@ -16,6 +17,7 @@ import {
   FIELD_TYPE_BOOLEAN,
   FIELD_TYPE_STRING,
   FIELD_TYPE_STRING_DATE,
+  FIELD_TYPE_STRING_DATE_ONLY,
   FIELD_TYPE_STRING_DECIMAL,
   FIELD_TYPE_STRING_INTEGER,
   FIELD_TYPE_INTEGER,
@@ -55,6 +57,7 @@ export default {
   [FIELD_TYPE_BOOLEAN]: booleanType,
   [FIELD_TYPE_STRING]: stringType,
   [FIELD_TYPE_STRING_DATE]: stringDateType,
+  [FIELD_TYPE_STRING_DATE_ONLY]: stringDateOnlyType,
   [FIELD_TYPE_STRING_DECIMAL]: stringDecimalType,
   [FIELD_TYPE_STRING_INTEGER]: stringIntegerType,
   [FIELD_TYPE_INTEGER]: integerType,

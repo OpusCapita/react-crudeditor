@@ -1,4 +1,10 @@
 
+[Release 1.3.13](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.13) Tue Oct 27 2020 15:42:40 GMT+0300 (MSK)
+=======================================================
+
+- Merge branch 'issue-303' of github.com:OpusCapita/react-crudeditor into issue-303 (Egor Stambakio egor.stambakio@opuscapita.com, 2020-10-27 15:11:51 +0300)
+- Add default render for FIELD_TYPE_STRING_DATE_ONLY [ci skip] (Egor Stambakio egor.stambakio@opuscapita.com, 2020-10-27 15:11:41 +0300)
+
 [Release 1.3.12](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.12) Tue Oct 27 2020 14:48:20 GMT+0300 (MSK)
 =======================================================
 

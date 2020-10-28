@@ -10,39 +10,54 @@ const DEFAULT_COLUMNS_COUNT = 1;
 const formGrid = ({ model, toggledFieldErrors, toggleFieldErrors }) => {
   let uniqueKey = 1;
 
-  const buildRow = (fields, columnsCnt) => (
-    <Row key={'row-' + ++uniqueKey}>
-      {
-        // Iterating over array [0..(columnsCnt - 1)]
-        [...Array(columnsCnt).keys()].map(columnIndex => (
-          <Col
-            sm={Math.floor(12 / columnsCnt)}
-            key={'column-' + uniqueKey + '-' + columnIndex}
-          >
-            {
-              fields.
-                filter((_, fieldIndex) => fieldIndex % columnsCnt === columnIndex).
-                map((field, fieldIndex) => (
-                  <Field
-                    model={model}
-                    toggledFieldErrors={toggledFieldErrors}
-                    toggleFieldErrors={toggleFieldErrors}
-                    columns={columnsCnt}
-                    key={'field-' + uniqueKey + '-' + columnIndex + '-' + fieldIndex}
-                    entry={{
-                      name: field.field,
-                      readOnly: field.readOnly,
-                      component: field.render.component,
-                      valuePropName: field.render.value.propName
-                    }}
-                  />
-                ))
-            }
-          </Col>
-        ))
-      }
-    </Row>
-  );
+  const buildRow = (fields, columnsCnt) => {
+    const rowsCnt = Math.ceil(fields.length / columnsCnt);
+    const colSize = Math.floor(12 / columnsCnt);
+
+    // list element id in matrix with 'columnsCnt' columns
+    // indexes start from 0
+    const elIdx = ({ rowIdx, columnIdx }) => columnsCnt * rowIdx + columnIdx;
+
+    ++uniqueKey;
+
+    return [...Array(rowsCnt).keys()].map(rowIdx => (
+      <Row key={'row-' + uniqueKey + '-' + rowIdx}>
+        {
+          [...Array(columnsCnt).keys()].map(columnIdx => {
+            const fieldIdx = elIdx({ rowIdx, columnIdx });
+
+            // if fieldIdx exceeds fields length then field gonna be undefined
+            const field = fields[fieldIdx];
+
+            return (
+              <Col
+                sm={colSize}
+                key={'column-' + uniqueKey + '-' + rowIdx + '-' + columnIdx}
+              >
+                {
+                  field ? (
+                    <Field
+                      model={model}
+                      toggledFieldErrors={toggledFieldErrors}
+                      toggleFieldErrors={toggleFieldErrors}
+                      columns={columnsCnt}
+                      entry={{
+                        name: field.field,
+                        readOnly: field.readOnly,
+                        component: field.render.component,
+                        valuePropName: field.render.value.propName
+                      }}
+                    />
+                  ) : null // grid may have empty elements in the end if fields.length < rowCnt * columnsCnt
+                }
+
+              </Col>
+            )
+          })
+        }
+      </Row>
+    ))
+  };
 
   const buildGrid = (entries, tabColumns) => {
     if (!entries.length) {

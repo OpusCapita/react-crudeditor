@@ -176,5 +176,5 @@ workflows:
               ignore: /.*/
           requires:
             - init
-         post-steps:
+          post-steps:
             - jira/notify

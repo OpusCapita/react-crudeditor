@@ -1,4 +1,12 @@
 
+[Release 1.3.17](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.17) Wed Apr 07 2021 18:45:28 GMT+0300 (MSK)
+=======================================================
+
+- Disable test (Dmitry Divin divin@scand.com, 2021-04-07 18:40:04 +0300)
+- Skip disable search button (Dmitry Divin divin@scand.com, 2021-04-07 18:23:03 +0300)
+- (EPROC-20383) Used jdk zulu (GitHub ashestak-sc@users.noreply.github.com, 2021-04-06 17:22:09 +0300)
+- (EPROC-20252) Added circleci builds jira integration ([#307](https://github.com/OpusCapita/react-crudeditor/issues/307)) (GitHub ashestak-sc@users.noreply.github.com, 2021-03-24 13:45:50 +0300)
+
 [Release 1.3.16](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.16) Wed Oct 28 2020 17:51:59 GMT+0300 (MSK)
 =======================================================
 

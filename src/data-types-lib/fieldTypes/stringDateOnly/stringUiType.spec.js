@@ -24,13 +24,12 @@ describe('fieldTypes :: stringDateOnly <-> string', () => {
       expect(result).to.equal(EMPTY_FIELD_VALUE)
     });
 
-    // it('should convert stringified date into stringDateOnly', () => {
-    //   const date = new Date();
-    //   const value = date.toString();
-    //   const result = converter.parse(value);
-    //
-    //   expect(result).to.equal(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`)
-    // });
+    it('should convert stringified date into stringDateOnly', () => {
+      const date = new Date('1995-02-17T03:24:00')
+      const value = date.toString();
+      const result = converter.parse(value);
+      expect(result).to.equal('1995-02-17')
+    });
 
     it('should throw for not date-like string', () => {
       const value = 'ewqrwerew';

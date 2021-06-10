@@ -72,7 +72,7 @@ export default class PaginationPanel extends PureComponent {
           </div>
           <div className="pull-left">
             <button className='btn btn-default' type='submit'>
-              {this.context.i18n.getMessage('crudEditor.pagination.goToPage')}
+              {this.context.i18n.getMessage('common.CrudEditor.pagination.goToPage')}
             </button>
           </div>
         </form>

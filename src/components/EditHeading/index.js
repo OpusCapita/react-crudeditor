@@ -99,7 +99,7 @@ export default class EditHeading extends PureComponent {
             {
               (instanceLabel || viewName === VIEW_CREATE) &&
               <small>
-                {' / ' + (viewName === VIEW_CREATE ? i18n.getMessage('crudEditor.new.title') : instanceLabel)}
+                {' / ' + (viewName === VIEW_CREATE ? i18n.getMessage('common.CrudEditor.new.title') : instanceLabel)}
               </small>
             }
           </Col>

@@ -70,7 +70,7 @@ export default class SearchMain extends PureComponent {
                     className="btn btn-sm btn-default"
                     onClick={createInstance}
                   >
-                    {i18n.getMessage('crudEditor.create.button')}
+                    {i18n.getMessage('common.CrudEditor.create.button')}
                   </button>
                 }
               </div>

@@ -86,7 +86,7 @@ export default class StringRangeInput extends PureComponent {
       <InputGroup className="crud--range-input">
         <FormControl
           type='text'
-          placeholder={i18n.getMessage('crudEditor.range.from')}
+          placeholder={i18n.getMessage('common.CrudEditor.range.from')}
           value={exists(value.from) ? value.from : ''}
           onChange={this.handleChange('from')}
           disabled={readOnly}
@@ -95,7 +95,7 @@ export default class StringRangeInput extends PureComponent {
         <InputGroup.Addon className="unselectable">{`\u2013`}</InputGroup.Addon>
         <FormControl
           type='text'
-          placeholder={i18n.getMessage('crudEditor.range.to')}
+          placeholder={i18n.getMessage('common.CrudEditor.range.to')}
           value={exists(value.to) ? value.to : ''}
           onChange={this.handleChange('to')}
           disabled={readOnly}

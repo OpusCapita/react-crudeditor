@@ -119,13 +119,13 @@ const mergeProps = /* istanbul ignore next */ (
         ].
           filter(operation => operation),
         ...(isAllowed(crudOperations, PERMISSION_DELETE, { instance }) && [{
-          title: i18n.getMessage('crudEditor.delete.button'),
+          title: i18n.getMessage('common.CrudEditor.delete.button'),
           icon: 'trash',
           handler: _ => deleteInstances(instance),
           confirm: {
-            message: i18n.getMessage('crudEditor.delete.confirmation'),
-            textConfirm: i18n.getMessage('crudEditor.delete.button'),
-            textCancel: i18n.getMessage('crudEditor.cancel.button')
+            message: i18n.getMessage('common.CrudEditor.delete.confirmation'),
+            textConfirm: i18n.getMessage('common.CrudEditor.delete.button'),
+            textCancel: i18n.getMessage('common.CrudEditor.cancel.button')
           }
         }])
       ]
@@ -134,14 +134,14 @@ const mergeProps = /* istanbul ignore next */ (
     bulkOperations: viewState ? {
       ...(isAllowed(crudOperations, PERMISSION_DELETE) && {
         delete: {
-          title: i18n.getMessage('crudEditor.deleteSelected.button'),
+          title: i18n.getMessage('common.CrudEditor.deleteSelected.button'),
           disabled: selectedInstances.length === 0 ||
             selectedInstances.some(instance => !isAllowed(crudOperations, PERMISSION_DELETE, { instance })),
           handler: _ => deleteInstances(selectedInstances),
           confirm: {
-            message: i18n.getMessage('crudEditor.deleteSelected.confirmation'),
-            textConfirm: i18n.getMessage('crudEditor.delete.button'),
-            textCancel: i18n.getMessage('crudEditor.cancel.button')
+            message: i18n.getMessage('common.CrudEditor.deleteSelected.confirmation'),
+            textConfirm: i18n.getMessage('common.CrudEditor.delete.button'),
+            textCancel: i18n.getMessage('common.CrudEditor.cancel.button')
           }
         }
       })

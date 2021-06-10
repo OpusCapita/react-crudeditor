@@ -50,7 +50,7 @@ export const getUi = ({ modelDefinition, i18n }) => {
     searchMeta.pagination = {
       defaultMax: 30,
       options: [
-        { max: -1, label: i18n.getMessage('crudEditor.search.all') },
+        { max: -1, label: i18n.getMessage('common.CrudEditor.search.all') },
         { max: 1000, label: '1000' },
         { max: 100, label: '100' },
         { max: 50, label: '50' },

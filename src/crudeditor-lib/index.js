@@ -135,14 +135,21 @@ export default baseModelDefinition => {
       // modelDefinition also needs to be accessed outside of constructor scope, therefore pin it to 'this'
       this.modelDefinition = modelDefinition;
 
-      // Since "object-hash" package does not support async functions, remove them from modelDefinition.
-      // For more details see
-      // https://github.com/puleos/object-hash/issues/67
-      const prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
+      let prefix = modelDefinition.model.translationsKeyPrefix
+      let translations = modelDefinition.model.translations
 
-      // model translations
-      const prefixedTranslations = getPrefixedTranslations(modelDefinition.model.translations, prefix);
-      this.context.i18n.register(prefix, prefixedTranslations);
+      if (!prefix) {
+        // Since "object-hash" package does not support async functions, remove them from modelDefinition.
+        // For more details see
+        // https://github.com/puleos/object-hash/issues/67
+        prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
+
+        // model translations
+        const prefixedTranslations = getPrefixedTranslations(translations, prefix);
+        this.context.i18n.register(prefix, prefixedTranslations);
+      } else {
+        this.context.i18n.register(prefix, translations);
+      }
 
       const modelMessageKeys = Object.keys(modelDefinition.model.translations).reduce(
         (acc, lang) => [
@@ -160,7 +167,8 @@ export default baseModelDefinition => {
         getMessage: {
           get() {
             return (key, args) => originalI18n.getMessage(
-              modelMessageKeys.indexOf(key) > -1 ? `${prefix}.${key}` : key,
+              modelMessageKeys.indexOf(key) > -1 && !modelDefinition.model.translationsKeyPrefix ?
+                `${prefix}.${key}` : key,
               args
             );
           }

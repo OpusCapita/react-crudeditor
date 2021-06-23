@@ -98,7 +98,7 @@ const mergeProps = /* istanbul ignore next */ (
 
       return [
         {
-          title: i18n.getMessage(`crudEditor.${ canEdit ? 'edit' : 'show' }.button`),
+          title: i18n.getMessage(`common.CrudEditor.${ canEdit ? 'edit' : 'show' }.button`),
           icon: canEdit ? 'edit' : 'eye-open',
           handler: _ => softRedirectView({
             name: canEdit ? VIEW_EDIT : VIEW_SHOW,

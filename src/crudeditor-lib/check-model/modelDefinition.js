@@ -11,6 +11,7 @@ import {
 const modelPropTypes = /* istanbul ignore next */ modelDefinition => ({
   model: PropTypes.shape({
     name: PropTypes.string.isRequired,
+    translationsKeyPrefix: PropTypes.string,
     fields: allPropTypes(
       PropTypes.objectOf(PropTypes.shape({
         unique: PropTypes.bool,

@@ -77,7 +77,7 @@ export default class ContractReferenceSearch extends PureComponent {
           label: fieldLabel
         }
       ],
-      title: i18n.getMessage('crudEditor.search.header', { payload: fieldLabel }),
+      title: i18n.getMessage('common.CrudEditor.search.header', { payload: fieldLabel }),
       labelProperty: 'contractId',
       valueProperty: 'contractId'
     }

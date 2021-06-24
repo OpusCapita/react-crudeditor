@@ -61,7 +61,7 @@ const mergeProps = /* istanbul ignore next */ (
      */
     operations: viewState ? [
       ...(isAllowed(crudOperations, PERMISSION_VIEW) && [{
-        title: i18n.getMessage('crudEditor.cancel.button'),
+        title: i18n.getMessage('common.CrudEditor.cancel.button'),
         handler: exitView,
         style: 'link'
       }]),

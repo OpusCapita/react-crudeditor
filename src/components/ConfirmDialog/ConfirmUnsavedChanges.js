@@ -18,9 +18,9 @@ export default class ConfirmUnsavedChanges extends PureComponent {
 
     return (
       <ConfirmDialog
-        message={i18n.getMessage('crudEditor.unsaved.confirmation')}
-        textConfirm={i18n.getMessage('crudEditor.confirm.action')}
-        textCancel={i18n.getMessage('crudEditor.cancel.button')}
+        message={i18n.getMessage('common.CrudEditor.unsaved.confirmation')}
+        textConfirm={i18n.getMessage('common.CrudEditor.confirm.action')}
+        textCancel={i18n.getMessage('common.CrudEditor.cancel.button')}
         {...rest}
       >
         {children}

@@ -56,7 +56,7 @@ export default class SearchMain extends PureComponent {
               <Button
                 bsStyle="link"
                 onClick={toggleSearchForm}
-                title={i18n.getMessage(`crudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
+                title={i18n.getMessage(`common.CrudEditor.search.${hideSearchForm ? 'show' : 'hide'}SearchForm`)}
               >
                 <Glyphicon glyph={`chevron-${hideSearchForm ? 'right' : 'left'}`} className="small"/>
               </Button>
@@ -70,7 +70,7 @@ export default class SearchMain extends PureComponent {
                     className="btn btn-sm btn-default"
                     onClick={createInstance}
                   >
-                    {i18n.getMessage('crudEditor.create.button')}
+                    {i18n.getMessage('common.CrudEditor.create.button')}
                   </button>
                 }
               </div>

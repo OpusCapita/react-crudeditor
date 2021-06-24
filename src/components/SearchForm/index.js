@@ -99,7 +99,7 @@ class SearchForm extends React.Component {
             bsStyle='link'
             onClick={resetFormFilter}
           >
-            {i18n.getMessage('crudEditor.reset.button')}
+            {i18n.getMessage('common.CrudEditor.reset.button')}
           </Button>
           <Button
             bsStyle="primary"
@@ -107,7 +107,7 @@ class SearchForm extends React.Component {
             ref={ref => (this.submitBtn = ref)}
             disabled={this.fieldErrors()}
           >
-            {i18n.getMessage('crudEditor.search.button')}
+            {i18n.getMessage('common.CrudEditor.search.button')}
           </Button>
         </div>
       </Form>

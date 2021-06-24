@@ -350,6 +350,7 @@ Model Definition is an object describing an entity. It has the following structu
 {
   model: {
     name: <string, usually singular entity name>,
+    translationsKeyPrefix: <string>,
 
     /*
      * Persistent fields CRUD Editor is interested in.

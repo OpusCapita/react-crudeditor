@@ -160,7 +160,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         id: NOTIFICATION_SUCCESS,
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
-        message: i18n.getMessage('crudEditor.objectSaved.message')
+        message: i18n.getMessage('common.CrudEditor.objectSaved.message')
       });
       break;
     }
@@ -170,7 +170,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         id: NOTIFICATION_SUCCESS,
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
-        message: i18n.getMessage('crudEditor.objectUpdated.message')
+        message: i18n.getMessage('common.CrudEditor.objectUpdated.message')
       });
       break;
     }
@@ -186,7 +186,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           (
             <ExpandableNotice
               id={NOTIFICATION_ERROR}
-              message={i18n.getMessage('crudEditor.objectSaveFailed.message')}
+              message={i18n.getMessage('common.CrudEditor.objectSaveFailed.message')}
               details={
                 detailMessages.map(message => (
                   <div key={message} style={{ margin: '3px' }}>
@@ -196,7 +196,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
               }
             />
           ) :
-          i18n.getMessage('crudEditor.objectSaveFailed.message')
+          i18n.getMessage('common.CrudEditor.objectSaveFailed.message')
       });
       break;
     }
@@ -204,8 +204,8 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
     case INSTANCES_DELETE_FAIL: {
       const { count, errors } = action.payload;
       const mainMessage = isNaN(count) || count === 1 ?
-        i18n.getMessage('crudEditor.objectDeleteFailed.message') :
-        i18n.getMessage('crudEditor.objectsDeleteFailed.message', { count });
+        i18n.getMessage('common.CrudEditor.objectDeleteFailed.message') :
+        i18n.getMessage('common.CrudEditor.objectsDeleteFailed.message', { count });
       const detailMessages = getErrorMessages(errors);
       NotificationManager.create({
         id: NOTIFICATION_ERROR,
@@ -253,8 +253,8 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         type: 'success',
         timeOut: SUCCESS_NOTIFICATION_TIMEOUT,
         message: count === 1 ?
-          i18n.getMessage('crudEditor.objectDeleted.message') :
-          i18n.getMessage('crudEditor.objectsDeleted.message', {
+          i18n.getMessage('common.CrudEditor.objectDeleted.message') :
+          i18n.getMessage('common.CrudEditor.objectsDeleted.message', {
             labels: labels.join(', ') // Empty string if there is an empty label for at least one deleted isntance.
           })
       });
@@ -267,7 +267,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         id: NOTIFICATION_ERROR,
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
-        message: i18n.getMessage('crudEditor.found.items.message', { count: 0 })
+        message: i18n.getMessage('common.CrudEditor.found.items.message', { count: 0 })
       });
       break;
     }
@@ -281,11 +281,11 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: detailMessages.length === 1 && detailMessages[0] ||
-          detailMessages.length === 0 && i18n.getMessage('default.invalid.validator.message') ||
+          detailMessages.length === 0 && i18n.getMessage('common.CrudEditor.default.invalid.validator.message') ||
           (
             <ExpandableNotice
               id={NOTIFICATION_VALIDATION_ERROR}
-              message={i18n.getMessage('default.invalid.validator.message')}
+              message={i18n.getMessage('common.CrudEditor.default.invalid.validator.message')}
               details={
                 detailMessages.map(message => (
                   <div key={message} style={{ margin: '3px' }}>
@@ -316,11 +316,11 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
         type: 'error',
         timeOut: ERROR_NOTIFICATION_TIMEOUT,
         message: detailMessages.length === 1 && detailMessages[0] ||
-          detailMessages.length === 0 && i18n.getMessage('default.errorOccurred.message') ||
+          detailMessages.length === 0 && i18n.getMessage('common.CrudEditor.default.errorOccurred.message') ||
           (
             <ExpandableNotice
               id={NOTIFICATION_ERROR}
-              message={i18n.getMessage('default.errorOccurred.message')}
+              message={i18n.getMessage('common.CrudEditor.default.errorOccurred.message')}
               details={
                 detailMessages.map(message => (
                   <div key={message} style={{ margin: '3px' }}>
@@ -351,7 +351,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
           (
             <ExpandableNotice
               id={NOTIFICATION_ERROR}
-              message={i18n.getMessage('crudEditor.objectSaveFailed.message')}
+              message={i18n.getMessage('common.CrudEditor.objectSaveFailed.message')}
               detailsHeader='Errors in fields'
               details={
                 detailMessages.map(({ tab, field, message }) => (
@@ -368,7 +368,7 @@ const eventsMiddleware = /* istanbul ignore next */ ({ i18n, modelDefinition }) 
               }
             />
           ) :
-          i18n.getMessage('crudEditor.objectSaveFailed.message')
+          i18n.getMessage('common.CrudEditor.objectSaveFailed.message')
       });
       break;
     }

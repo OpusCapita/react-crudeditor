@@ -36,17 +36,17 @@ export const getFieldErrorMessage = ({ error, i18n, fieldName }) => {
   const { id, message, args } = error;
 
   const errorMessages = {
-    [ERROR_MIN_DECEEDED]: "default.invalid.min.message",
-    [ERROR_MAX_EXCEEDED]: "default.invalid.max.message",
-    [ERROR_MIN_SIZE_DECEEDED]: "default.invalid.min.size.message",
-    [ERROR_MAX_SIZE_EXCEEDED]: "default.invalid.max.size.message",
-    [ERROR_REQUIRED_MISSING]: "default.blank.message",
-    [ERROR_INVALID_INTEGER]: "default.invalid.integer.message",
-    [ERROR_INVALID_DECIMAL]: "default.invalid.decimal.message",
-    [ERROR_INVALID_DATE]: "default.invalid.date.message",
-    [ERROR_INVALID_EMAIL]: "default.invalid.email.message",
-    [ERROR_INVALID_URL]: "default.invalid.url.message",
-    [ERROR_REGEX_DOESNT_MATCH]: "default.doesnt.match.message"
+    [ERROR_MIN_DECEEDED]: "common.CrudEditor.default.invalid.min.message",
+    [ERROR_MAX_EXCEEDED]: "common.CrudEditor.default.invalid.max.message",
+    [ERROR_MIN_SIZE_DECEEDED]: "common.CrudEditor.default.invalid.min.size.message",
+    [ERROR_MAX_SIZE_EXCEEDED]: "common.CrudEditor.default.invalid.max.size.message",
+    [ERROR_REQUIRED_MISSING]: "common.CrudEditor.default.blank.message",
+    [ERROR_INVALID_INTEGER]: "common.CrudEditor.default.invalid.integer.message",
+    [ERROR_INVALID_DECIMAL]: "common.CrudEditor.default.invalid.decimal.message",
+    [ERROR_INVALID_DATE]: "common.CrudEditor.default.invalid.date.message",
+    [ERROR_INVALID_EMAIL]: "common.CrudEditor.default.invalid.email.message",
+    [ERROR_INVALID_URL]: "common.CrudEditor.default.invalid.url.message",
+    [ERROR_REGEX_DOESNT_MATCH]: "common.CrudEditor.default.doesnt.match.message"
   }
 
   // crud internal translations for errors

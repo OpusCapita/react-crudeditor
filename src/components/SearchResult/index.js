@@ -35,7 +35,7 @@ class SearchResult extends PureComponent {
       </div>
     ) : (
       <div className="crud--search-result__no-items-found">
-        <span>{i18n.getMessage('crudEditor.found.items.message', { count: 0 })}</span>
+        <span>{i18n.getMessage('common.CrudEditor.found.items.message', { count: 0 })}</span>
       </div>
     );
   }

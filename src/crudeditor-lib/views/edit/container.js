@@ -82,14 +82,14 @@ const mergeProps = /* istanbul ignore next */ (
      */
     operations: viewState ? [
       ...(isAllowed(crudOperations, PERMISSION_VIEW) && [{
-        title: i18n.getMessage('crudEditor.cancel.button'),
+        title: i18n.getMessage('common.CrudEditor.cancel.button'),
         handler: exitView,
         style: 'link',
         ...(!!unsavedChanges && {
           confirm: {
-            message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-            textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-            textCancel: i18n.getMessage('crudEditor.cancel.button')
+            message: i18n.getMessage('common.CrudEditor.unsaved.confirmation'),
+            textConfirm: i18n.getMessage('common.CrudEditor.confirm.action'),
+            textCancel: i18n.getMessage('common.CrudEditor.cancel.button')
           }
         })
       }]),
@@ -109,35 +109,35 @@ const mergeProps = /* istanbul ignore next */ (
           ({
             ...operation,
             confirm: {
-              message: i18n.getMessage('crudEditor.unsaved.confirmation'),
-              textConfirm: i18n.getMessage('crudEditor.confirm.action'),
-              textCancel: i18n.getMessage('crudEditor.cancel.button')
+              message: i18n.getMessage('common.CrudEditor.unsaved.confirmation'),
+              textConfirm: i18n.getMessage('common.CrudEditor.confirm.action'),
+              textCancel: i18n.getMessage('common.CrudEditor.cancel.button')
             }
           }) :
           operation
         ),
       ...(isAllowed(crudOperations, PERMISSION_DELETE, { instance }) && [{
-        title: i18n.getMessage('crudEditor.delete.button'),
+        title: i18n.getMessage('common.CrudEditor.delete.button'),
         icon: 'trash',
         handler: _ => deleteInstances(instance),
         confirm: {
-          message: i18n.getMessage('crudEditor.delete.confirmation'),
-          textConfirm: i18n.getMessage('crudEditor.delete.button'),
-          textCancel: i18n.getMessage('crudEditor.cancel.button')
+          message: i18n.getMessage('common.CrudEditor.delete.confirmation'),
+          textConfirm: i18n.getMessage('common.CrudEditor.delete.button'),
+          textCancel: i18n.getMessage('common.CrudEditor.cancel.button')
         }
       }]),
       ...(isAllowed(crudOperations, PERMISSION_CREATE) && [{
-        title: i18n.getMessage('crudEditor.saveAndNew.button'),
+        title: i18n.getMessage('common.CrudEditor.saveAndNew.button'),
         disabled: !unsavedChanges,
         handler: saveAndNewInstance
       }]),
       ...(!!adjacentInstancesExist.next && [{
-        title: i18n.getMessage('crudEditor.saveAndNext.button'),
+        title: i18n.getMessage('common.CrudEditor.saveAndNext.button'),
         disabled: !unsavedChanges,
         handler: saveAndNextInstance
       }]),
       {
-        title: i18n.getMessage('crudEditor.save.button'),
+        title: i18n.getMessage('common.CrudEditor.save.button'),
         disabled: !unsavedChanges,
         handler: saveInstance,
         style: 'primary'

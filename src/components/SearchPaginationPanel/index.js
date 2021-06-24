@@ -57,7 +57,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
             className="crud--search-pagination-panel__per-page-dropdown"
           >
             <Dropdown.Toggle>
-              {i18n.getMessage('crudEditor.search.resultsPerPage')}
+              {i18n.getMessage('common.CrudEditor.search.resultsPerPage')}
               {':\u0020'}
               <b>{find(pagination.options, opt => opt.max === max).label}</b>
             </Dropdown.Toggle>
@@ -86,7 +86,7 @@ export default class SearchResultPaginationPanel extends PureComponent {
         }
 
         <div>
-          <span>{this.context.i18n.getMessage('crudEditor.found.items.message', { count: totalCount })}</span>
+          <span>{this.context.i18n.getMessage('common.CrudEditor.found.items.message', { count: totalCount })}</span>
         </div>
       </div>
     );

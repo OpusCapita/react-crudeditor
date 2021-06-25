@@ -1,4 +1,10 @@
 
+[Release 1.3.18](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.18) Fri Jun 25 2021 12:46:54 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-20549) Make translation keys unique ([#309](https://github.com/OpusCapita/react-crudeditor/issues/309)) (GitHub dsanko-sc@users.noreply.github.com, 2021-06-24 15:10:17 +0300)
+- Fix test for stringUiType.parse (Egor Stambakio egor.stambakio@opuscapita.com, 2021-04-08 09:31:20 +0300)
+
 [Release 1.3.17](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.17) Wed Apr 07 2021 18:45:28 GMT+0300 (MSK)
 =======================================================
 

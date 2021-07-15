@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 import Table from 'react-bootstrap/lib/Table';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
@@ -34,8 +33,9 @@ class SearchResultListing extends PureComponent {
     i18n: PropTypes.object
   };
 
-  componentDidMount() {
-    this._myRef = findDOMNode(this);
+  constructor(props) {
+    super(props);
+    this._tableContainerRef = React.createRef();
   }
 
   handleResort = fieldName => _ => this.props.model.actions.searchInstances({
@@ -75,7 +75,7 @@ class SearchResultListing extends PureComponent {
     const bulkOperationsExist = Object.keys(bulkOperations).length > 0;
 
     return (
-      <div className="crud--search-result-listing__table-container">
+      <div className="crud--search-result-listing__table-container" ref={this._tableContainerRef}>
         <Table condensed={true} className="crud--search-result-listing__table">
           <thead>
             <tr>
@@ -158,7 +158,7 @@ class SearchResultListing extends PureComponent {
                         instance,
                         offset: offset + index
                       })}
-                      parentRef={this._myRef}
+                      parentRef={this._tableContainerRef}
                     />
                   </td>
                 </tr>

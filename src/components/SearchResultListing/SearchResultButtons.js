@@ -17,12 +17,13 @@ export default class SearchResultButtons extends PureComponent {
   // details: https://stackoverflow.com/a/6433475
   handleToggleDropdown = (dropdownOpened, event, { source }) => {
     const { parentRef } = this.props;
-    const parentWidth = parentRef.clientWidth;
-    const tableWidth = parentRef.firstChild.scrollWidth
+
+    const parentWidth = parentRef.current.clientWidth;
+    const tableWidth = parentRef.current.firstChild.scrollWidth
 
     // table is wider than visible div -> show scroll
     if (parentWidth < tableWidth) {
-      parentRef.style.overflow = 'auto';
+      parentRef.current.style.overflow = 'auto';
       return;
     }
 
@@ -32,7 +33,7 @@ export default class SearchResultButtons extends PureComponent {
       return;
     }
 
-    parentRef.style.overflow = dropdownOpened ? 'visible' : 'auto';
+    parentRef.current.style.overflow = dropdownOpened ? 'visible' : 'auto';
     this.setState({ previousSource: source });
   }
 

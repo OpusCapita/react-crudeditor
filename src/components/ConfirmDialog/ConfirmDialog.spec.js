@@ -1,6 +1,6 @@
 import React from "react";
 import Enzyme from "enzyme";
-import Adapter from 'enzyme-adapter-react-15';
+import Adapter from 'enzyme-adapter-react-16';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import ConfirmDialog from './';

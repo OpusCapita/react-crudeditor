@@ -1,4 +1,9 @@
 
+[Release 1.3.19](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.19) Mon Sep 13 2021 14:59:03 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-20652) Fixed table container ref. ([#310](https://github.com/OpusCapita/react-crudeditor/issues/310)) (GitHub 52312752+nlogich-sc@users.noreply.github.com, 2021-09-13 14:43:56 +0300)
+
 [Release 1.3.18](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.18) Fri Jun 25 2021 12:46:54 GMT+0300 (MSK)
 =======================================================
 

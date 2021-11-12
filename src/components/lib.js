@@ -20,6 +20,9 @@ export const titleCase = str => typeof str === 'string' ?
   str.charAt(0).toUpperCase() + str.slice(1).replace(/[^A-Z](?=[A-Z])/g, '$& ') :
   str;
 
+export const getKeyWithPrefix = (i18n, key) =>
+  i18n.hasOwnProperty('getKeyWithPrefix') ? i18n.getKeyWithPrefix(key) : key;
+
 export const getModelMessage = request => {
   const { i18n, key, args, defaultMessage } = request;
 
@@ -74,5 +77,3 @@ export const getFieldLabel = ({ i18n, name }) => getModelMessage({
   key: getKeyWithPrefix(i18n, `model.field.${name}.label`),
   defaultMessage: titleCase(name)
 })
-
-export const getKeyWithPrefix = (i18n, key) => i18n.hasOwnProperty('getKeyWithPrefix') ? i18n.getKeyWithPrefix(key) : key;

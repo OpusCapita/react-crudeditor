@@ -24,7 +24,7 @@ export const getModelMessage = request => {
   const { i18n, key, args, defaultMessage } = request;
 
   // If i18n doesn't find a message by key, it returns the key itself.
-  // Optinal 'defaultMessage' defines default message for such a case.
+  // Optional 'defaultMessage' defines default message for such a case.
   const message = i18n.getMessage(key, args);
 
   return message.slice(-key.length) === key && request.hasOwnProperty('defaultMessage') ?
@@ -57,7 +57,7 @@ export const getFieldErrorMessage = ({ error, i18n, fieldName }) => {
   // try to find a translation defined by model
   return getModelMessage({
     i18n,
-    key: `model.field.${fieldName}.error.${id}`,
+    key: getKeyWithPrefix(i18n, `model.field.${fieldName}.error.${id}`),
     args,
     defaultMessage: message || id
   })
@@ -65,12 +65,14 @@ export const getFieldErrorMessage = ({ error, i18n, fieldName }) => {
 
 export const getTabLabel = ({ i18n, name }) => getModelMessage({
   i18n,
-  key: `model.tab.${name}.label`,
+  key: getKeyWithPrefix(i18n, `model.tab.${name}.label`),
   defaultMessage: titleCase(name)
 });
 
 export const getFieldLabel = ({ i18n, name }) => getModelMessage({
   i18n,
-  key: `model.field.${name}.label`,
+  key: getKeyWithPrefix(i18n, `model.field.${name}.label`),
   defaultMessage: titleCase(name)
 })
+
+export const getKeyWithPrefix = (i18n, key) => i18n.hasOwnProperty('getKeyWithPrefix') ? i18n.getKeyWithPrefix(key) : key;

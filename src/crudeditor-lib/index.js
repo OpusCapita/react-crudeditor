@@ -143,13 +143,9 @@ export default baseModelDefinition => {
         // For more details see
         // https://github.com/puleos/object-hash/issues/67
         prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
-
-        // model translations
-        const prefixedTranslations = getPrefixedTranslations(translations, prefix);
-        this.context.i18n.register(prefix, prefixedTranslations);
-      } else {
-        this.context.i18n.register(prefix, translations);
       }
+      const prefixedTranslations = getPrefixedTranslations(translations, prefix);
+      this.context.i18n.register(prefix, prefixedTranslations);
 
       const modelMessageKeys = Object.keys(modelDefinition.model.translations).reduce(
         (acc, lang) => [

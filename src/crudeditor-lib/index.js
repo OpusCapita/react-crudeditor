@@ -135,19 +135,22 @@ export default baseModelDefinition => {
       // modelDefinition also needs to be accessed outside of constructor scope, therefore pin it to 'this'
       this.modelDefinition = modelDefinition;
 
-      let prefix = modelDefinition.model.translationsKeyPrefix
-      let translations = modelDefinition.model.translations
+      const configuredPrefix = modelDefinition.model.translationsKeyPrefix;
+      let translations = modelDefinition.model.translations;
+      let prefix = null;
 
-      if (!prefix) {
+      if (!configuredPrefix) {
         // Since "object-hash" package does not support async functions, remove them from modelDefinition.
         // For more details see
         // https://github.com/puleos/object-hash/issues/67
         prefix = `${appName}.${hash(JSON.parse(JSON.stringify(modelDefinition)))}`;
 
         // model translations
+        // add generated prefix manually to translations
         const prefixedTranslations = getPrefixedTranslations(translations, prefix);
         this.context.i18n.register(prefix, prefixedTranslations);
       } else {
+        prefix = configuredPrefix;
         this.context.i18n.register(prefix, translations);
       }
 
@@ -172,7 +175,20 @@ export default baseModelDefinition => {
               args
             );
           }
+        },
+
+        getKeyWithPrefix: {
+          get() {
+            return (key) => {
+              if (configuredPrefix) {
+                return `${configuredPrefix}.${key}`;
+              } else {
+                return key;
+              }
+            }
+          }
         }
+
       });
 
       this.adjustedContext = {

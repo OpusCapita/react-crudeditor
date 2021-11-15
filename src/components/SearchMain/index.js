@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Form from '../SearchForm';
 import Result from '../SearchResult';
-import { getModelMessage } from '../lib';
+import { getModelMessage, getKeyWithPrefix } from '../lib';
 import './SearchMain.less';
 
 export default class SearchMain extends PureComponent {
@@ -51,7 +51,7 @@ export default class SearchMain extends PureComponent {
           <Row>
             <Col xs={8}>
 
-              {getModelMessage({ i18n, key: 'model.name' })}
+              {getModelMessage({ i18n, key: getKeyWithPrefix(i18n, 'model.name') })}
 
               <Button
                 bsStyle="link"

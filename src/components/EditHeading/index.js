@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/lib/Row';
 import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import Button from 'react-bootstrap/lib/Button';
 import Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import { getModelMessage, getTabLabel } from '../lib';
+import { getKeyWithPrefix, getModelMessage, getTabLabel } from '../lib';
 import { VIEW_CREATE } from '../../crudeditor-lib/common/constants';
 import ConfirmUnsavedChanges from '../ConfirmDialog/ConfirmUnsavedChanges';
 
@@ -58,7 +58,7 @@ export default class EditHeading extends PureComponent {
 
     const { i18n } = this.context;
 
-    const modelName = getModelMessage({ i18n, key: 'model.name' });
+    const modelName = getModelMessage({ i18n, key: getKeyWithPrefix(i18n, 'model.name') });
 
     const title = exitView ?
       (

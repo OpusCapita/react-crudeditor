@@ -79,7 +79,7 @@ export default class CrudWrapper extends PureComponent {
     } = this.props;
 
     if (pathname.indexOf(baseURL) !== 0) {
-      throw new Error(`Router match.url "${baseURL}" is exptected to be a prefix of location.pathname "${pathname}"`);
+      throw new Error(`Router match.url "${baseURL}" is expected to be a prefix of location.pathname "${pathname}"`);
     }
 
     const suffix = pathname.slice(baseURL.length);
@@ -125,7 +125,12 @@ export default class CrudWrapper extends PureComponent {
           }
         }]}
         uiConfig={{
-          headerLevel: 2
+          headerLevel: 2,
+          resizableColumns: {
+            persistChanges: true,
+            initialColumnSizes: ['30px', '250px', '250px', '250px', '200px', '200px', '200px'],
+            minCellWidth: [30, 250, 250, 250, 200, 200, 200],
+          },
         }}
       />
     );

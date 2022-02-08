@@ -36,6 +36,7 @@ import {
 
 const mergeProps = /* istanbul ignore next */ (
   {
+    name,
     defaultNewInstance,
     viewModelData: {
       selectedInstances,
@@ -55,6 +56,7 @@ const mergeProps = /* istanbul ignore next */ (
   { i18n }
 ) => ({
   viewModel: {
+    name,
     uiConfig,
 
     data: {
@@ -83,7 +85,7 @@ const mergeProps = /* istanbul ignore next */ (
     },
 
     /*
-     * Operations requiering confirmation
+     * Operations requiring confirmation
      * are supplied with "confirm" property containing an object with translation texts for Confirm Dialog.
      *
      * "show" property is removed from each custom/external operation
@@ -153,6 +155,7 @@ const mergeProps = /* istanbul ignore next */ (
 export default connect(
   /* istanbul ignore next */
   (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
+    name: modelDefinition.model.name,
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),

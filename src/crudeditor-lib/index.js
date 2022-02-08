@@ -106,6 +106,11 @@ export default baseModelDefinition => {
       onTransition: PropTypes.func,
       externalOperations: PropTypes.func,
       uiConfig: PropTypes.shape({
+        resizableColumns: PropTypes.shape({
+          persistChanges: PropTypes.bool,
+          initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
+          minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+        }),
         headerLevel: PropTypes.number
       })
     }
@@ -231,7 +236,7 @@ export default baseModelDefinition => {
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
-    // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
+    // TODO: more sophisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
     shouldComponentUpdate = ({
       view: {
         name = DEFAULT_VIEW,

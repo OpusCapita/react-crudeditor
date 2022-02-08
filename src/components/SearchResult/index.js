@@ -9,10 +9,18 @@ import './SearchResult.less';
 class SearchResult extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
+      name: PropTypes.string,
       data: PropTypes.shape({
         totalCount: PropTypes.number
-      }).isRequired
-    }).isRequired
+      }).isRequired,
+    }).isRequired,
+    uiConfig: PropTypes.shape({
+      resizableColumns: PropTypes.shape({
+        persistChanges: PropTypes.bool,
+        initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
+        minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+      }),
+    }),
   }
 
   static contextTypes = {
@@ -20,13 +28,13 @@ class SearchResult extends PureComponent {
   };
 
   render() {
-    const { model } = this.props;
+    const { model, uiConfig } = this.props;
     const { i18n } = this.context;
 
     return model.data.totalCount > 0 ? (
       <div className="crud--search-result">
         <div className="crud--search-result__table">
-          <ResultListing model={model} />
+          <ResultListing model={model} uiConfig={uiConfig} />
         </div>
         <div className="crud--search-result__footer">
           <BulkOperationsPanel model={model} />

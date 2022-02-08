@@ -12,14 +12,20 @@ import './SearchMain.less';
 export default class SearchMain extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
+      name: PropTypes.string,
       actions: PropTypes.objectOf(PropTypes.func),
       data: PropTypes.shape({
         hideSearchForm: PropTypes.bool
       }),
       uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number
-      })
-    }).isRequired
+        headerLevel: PropTypes.number,
+        resizableColumns: PropTypes.shape({
+          persistChanges: PropTypes.bool,
+          initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
+          minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+        }),
+      }).isRequired,
+    }).isRequired,
   }
 
   static contextTypes = {
@@ -38,7 +44,8 @@ export default class SearchMain extends PureComponent {
         createInstance
       },
       uiConfig: {
-        headerLevel = 1
+        headerLevel = 1,
+        resizableColumns = false,
       }
     } = model;
 
@@ -92,7 +99,7 @@ export default class SearchMain extends PureComponent {
             "crud--search-main__results-container form-open"
           }
           >
-            <Result model={model} />
+            <Result model={model} uiConfig={{ resizableColumns }} />
           </div>
         </div>
       </div>

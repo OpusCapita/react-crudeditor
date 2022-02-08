@@ -6,10 +6,12 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import { getFieldLabel } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
 import './styles.less';
+import ResizableGrid from '../ResizableGrid';
 
 class SearchResultListing extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
+      name: PropTypes.string,
       data: PropTypes.shape({
         resultInstances: PropTypes.arrayOf(PropTypes.object),
         selectedInstances: PropTypes.arrayOf(PropTypes.object),
@@ -26,7 +28,14 @@ class SearchResultListing extends PureComponent {
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
       instanceOperations: PropTypes.func.isRequired,
       bulkOperations: PropTypes.object.isRequired
-    }).isRequired
+    }).isRequired,
+    uiConfig: PropTypes.shape({
+      resizableColumns: PropTypes.shape({
+        persistChanges: PropTypes.bool,
+        initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
+        minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
+      }),
+    }).isRequired,
   }
 
   static contextTypes = {
@@ -40,7 +49,7 @@ class SearchResultListing extends PureComponent {
 
   handleResort = fieldName => _ => this.props.model.actions.searchInstances({
     sort: fieldName,
-    // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+    // XXX: sortField and sortOrder must be accessed with this.props.model.data for up-to-date values!
     order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
       'desc' :
       'asc'
@@ -56,6 +65,7 @@ class SearchResultListing extends PureComponent {
 
   render() {
     const {
+      name,
       data: {
         selectedInstances,
         resultInstances: instances,
@@ -69,6 +79,10 @@ class SearchResultListing extends PureComponent {
       instanceOperations,
       bulkOperations
     } = this.props.model;
+
+    const {
+      resizableColumns
+    } = this.props.uiConfig;
 
     const { i18n } = this.context;
 
@@ -166,6 +180,11 @@ class SearchResultListing extends PureComponent {
             }
           </tbody>
         </Table>
+        {resizableColumns && <ResizableGrid
+          name={name}
+          wrapperRef={this._tableContainerRef}
+          {...resizableColumns}
+        />}
       </div>
     );
   }

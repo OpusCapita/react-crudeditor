@@ -1,0 +1,57 @@
+.resizable-table-wrapper {
+  overflow: hidden; /* Clips any scrollbars that appear */
+}
+
+.resizable-table-wrapper {
+  table {
+    width: 100%;
+    overflow: auto; /* Allow scrolling within the table */
+    display: grid;
+  }
+
+  table thead tr th {
+    position: relative;
+    align-self: center;
+    border-bottom: 1px solid #ddd;
+  }
+
+  table thead tr th:not(:first-child) {
+    padding: 15px;
+  }
+
+  table th span,
+  table td span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  table tr td {
+    border-top: 1px solid #ccc;
+  }
+
+  table thead,
+  table tbody,
+  table tr {
+    display: contents;
+  }
+}
+
+.resize-handle {
+  display: block;
+  position: absolute;
+  cursor: col-resize;
+  width: 7px;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  border-right: 2px solid transparent;
+}
+
+.resize-handle:hover {
+  border-color: #ccc;
+}
+
+.resize-handle.active {
+  border-color: #517ea5;
+}

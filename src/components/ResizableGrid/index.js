@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './styles.less';
 
 const getAbsoluteLeftOffset = (elem) => { // crossbrowser version
@@ -50,8 +50,12 @@ const ResizableGrid = ({
   if (theadElement) {
     tableHeadersContainer = theadElement;
   }
-  const tableHeaderRowElement = Array.from(tableHeadersContainer.children).filter((element) => element.tagName === 'TR')[0];
-  const tableHeaderElements = Array.from(tableHeaderRowElement.children).filter((element) => element.tagName === 'TH' || element.tagName === 'TD');
+  const tableHeaderRowElement = Array.from(tableHeadersContainer.children).filter(
+    (element) => element.tagName === 'TR'
+  )[0];
+  const tableHeaderElements = Array.from(tableHeaderRowElement.children).filter(
+    (element) => element.tagName === 'TH' || element.tagName === 'TD'
+  );
 
   const [tableHeight, setTableHeight] = useState(tableElement.offsetHeight);
   const [activeIndex, setActiveIndex] = useState(null);
@@ -59,8 +63,14 @@ const ResizableGrid = ({
 
   const savedColumnSizes = persistChanges ? getStoredChanges(name) : undefined;
   const [gridTemplateColumnsValue, setGridTemplateColumnsValue] = useState(
-    savedColumnSizes || (initialColumnSizes || tableHeaderElements.map((_) => `${100.0 / tableHeaderElements.length}%`)).join(' ')
+    savedColumnSizes || (initialColumnSizes || tableHeaderElements.map(
+      (_) => `${100.0 / tableHeaderElements.length}%`
+    )).join(' ')
   );
+
+  const mouseDown = (index) => {
+    setActiveIndex(index);
+  };
 
   useEffect(() => {
     setTableHeight(tableElement.offsetHeight);
@@ -88,15 +98,14 @@ const ResizableGrid = ({
     });
 
     setResizerElements(resizerDivs);
-
   }, []);
 
   useEffect(() => {
     resizerElements.forEach((element, i) => {
       if (i === activeIndex) {
-        element.className = 'resize-handle active';
+        element.className = 'resize-handle active'; // eslint-disable-line no-param-reassign
       } else {
-        element.className = 'resize-handle idle';
+        element.className = 'resize-handle idle'; // eslint-disable-line no-param-reassign
       }
     });
   }, [activeIndex]);
@@ -107,10 +116,6 @@ const ResizableGrid = ({
       setStoredChanges(name, gridTemplateColumnsValue);
     }
   }, [gridTemplateColumnsValue]);
-
-  const mouseDown = (index) => {
-    setActiveIndex(index);
-  };
 
   const mouseMove = useCallback((e) => {
     // Return an array of px values

@@ -12,15 +12,14 @@ import './SearchMain.less';
 export default class SearchMain extends PureComponent {
   static propTypes = {
     model: PropTypes.shape({
-      name: PropTypes.string,
       actions: PropTypes.objectOf(PropTypes.func),
       data: PropTypes.shape({
         hideSearchForm: PropTypes.bool
       }),
       uiConfig: PropTypes.shape({
-        headerLevel: PropTypes.number,
-      }).isRequired,
-    }).isRequired,
+        headerLevel: PropTypes.number
+      })
+    }).isRequired
   }
 
   static contextTypes = {
@@ -39,7 +38,7 @@ export default class SearchMain extends PureComponent {
         createInstance
       },
       uiConfig: {
-        headerLevel = 1,
+        headerLevel = 1
       }
     } = model;
 

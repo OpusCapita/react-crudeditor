@@ -11,8 +11,8 @@ class SearchResult extends PureComponent {
     model: PropTypes.shape({
       data: PropTypes.shape({
         totalCount: PropTypes.number
-      }).isRequired,
-    }).isRequired,
+      }).isRequired
+    }).isRequired
   }
 
   static contextTypes = {

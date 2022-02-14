@@ -26,7 +26,7 @@ class SearchResultListing extends PureComponent {
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
       instanceOperations: PropTypes.func.isRequired,
       bulkOperations: PropTypes.object.isRequired
-    }).isRequired,
+    }).isRequired
   }
 
   static contextTypes = {

@@ -42,7 +42,7 @@ const ResizableGrid = ({
   minCellWidth = 100,
   initialColumnSizes,
   children,
-                       }) => {
+}) => {
   const getMinCellWidth = (i) => {
     if (Array.isArray(minCellWidth)) {
       return minCellWidth[i];

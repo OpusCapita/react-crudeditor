@@ -125,7 +125,7 @@ export default class CrudWrapper extends PureComponent {
           }
         }]}
         uiConfig={{
-          headerLevel: 2,
+          headerLevel: 2
         }}
       />
     );

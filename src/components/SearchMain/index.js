@@ -19,11 +19,6 @@ export default class SearchMain extends PureComponent {
       }),
       uiConfig: PropTypes.shape({
         headerLevel: PropTypes.number,
-        resizableColumns: PropTypes.shape({
-          persistChanges: PropTypes.bool,
-          initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
-          minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
-        }),
       }).isRequired,
     }).isRequired,
   }
@@ -45,7 +40,6 @@ export default class SearchMain extends PureComponent {
       },
       uiConfig: {
         headerLevel = 1,
-        resizableColumns = false,
       }
     } = model;
 
@@ -99,7 +93,7 @@ export default class SearchMain extends PureComponent {
             "crud--search-main__results-container form-open"
           }
           >
-            <Result model={model} uiConfig={{ resizableColumns }} />
+            <Result model={model} />
           </div>
         </div>
       </div>

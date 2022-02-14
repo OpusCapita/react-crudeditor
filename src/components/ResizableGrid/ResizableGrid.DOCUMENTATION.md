@@ -16,12 +16,6 @@ Applies resize functionality to child's table DOM element.
 ## Details
 
 ...
-<ResizableGrid
-name={`showRoomTest`}
-persistChanges={true}
-initialColumnSizes={['30px', '250px', '250px', '250px', '200px', '200px', '200px']}
-minCellWidth={[30, 250, 250, 250, 200, 200, 200]}
->
 
 ## Code Example
 

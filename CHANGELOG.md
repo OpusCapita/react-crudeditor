@@ -1,10 +1,4 @@
 
-[Release 1.3.21.beta.2](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.2) Tue Feb 15 2022 12:50:34 GMT+0300 (MSK)
-=======================================================
-
-- (EPROC-20906) Updated build process. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-15 12:44:34 +0300)
-- (EPROC-20906) Updated changelog. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-15 12:35:41 +0300)
-
 [Release 1.3.20](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.20) Mon Nov 15 2021 13:20:32 GMT+0300 (MSK)
 =======================================================
 

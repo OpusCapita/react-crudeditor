@@ -1,13 +1,4 @@
 
-[Release 1.3.21.beta](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta) Tue Feb 15 2022 10:54:27 GMT+0300 (MSK)
-=======================================================
-
-- (EPROC-20906) Updated documentation. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-14 14:15:29 +0300)
-- (EPROC-20906) Removed needless changes. Fixed lint check. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-14 13:34:05 +0300)
-- (EPROC-20906) Refactoring. Changed approach of resizable grid applying. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-14 13:29:55 +0300)
-- (EPROC-20906) Fixed lint errors. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-09 19:16:41 +0300)
-- (EPROC-20906) Implemented draft version of resizable grid feature. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-08 19:20:00 +0300)
-
 [Release 1.3.20](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.20) Mon Nov 15 2021 13:20:32 GMT+0300 (MSK)
 =======================================================
 

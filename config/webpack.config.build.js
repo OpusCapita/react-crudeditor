@@ -25,7 +25,9 @@ module.exports = [
     entry: './components/ResizableGrid/index.js',
     output: {
       path: resolve(__dirname, '../lib'),
-      filename: 'ResizableGrid.js'
+      filename: 'ResizableGrid.js',
+      library: 'ResizableGrid',
+      libraryTarget: 'umd'
     },
     externals: [
       nodeExternals({

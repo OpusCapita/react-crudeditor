@@ -6,12 +6,12 @@ Applies resize functionality to child's table DOM element.
 
 ### Props Reference
 
-| Name                          | Type                     | Description                                                          |
-|-------------------------------|:-------------------------|----------------------------------------------------------------------|
-| name                          | string                   | Used for `persistChanges` functionality to identify table.           |
-| persistChanges                | bool                     | Defines whether it is necessary to save changed layout in a browser. |
-| initialColumnSizes            | array                    | Array with initial values(string) for every column.                  |
-| minCellWidth                  | oneOfType: array, number | Array or number with minimal value(s) for every column.              |
+| Name                          | Type                   | Description                                                                                                        |
+|-------------------------------|:-----------------------|--------------------------------------------------------------------------------------------------------------------|
+| name                          | string                 | Used for `persistChanges` functionality to identify table.                                                         |
+| persistChanges                | bool                   | Defines whether it is necessary to save changed layout in a browser.                                               |
+| initialColumnSizes            | array                  | Array with initial column widths in percentage for every column. If absent, it'll set equal width for each column. |
+| minCellWidth                  | array                  | Array with minimal column widths in percentage for every column.                                                   |
 
 ## Details
 
@@ -23,8 +23,8 @@ Applies resize functionality to child's table DOM element.
 <ResizableGrid
   name={`showRoomTest`}
   persistChanges={false}
-  initialColumnSizes={['200px', '200px', '200px', '200px']}
-  minCellWidth={[100, 100, 100, 100]}
+  initialColumnSizes={[25, 25, 25, 25]}
+  minCellWidth={[10, 10, 10, 10]}
 >
   <table style={{ overflowY: 'hidden' }}>
     <thead>

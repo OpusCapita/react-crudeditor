@@ -39,7 +39,7 @@ const findFirstTableDOM = (rootElement) => {
 const ResizableGrid = ({
   name,
   persistChanges = false,
-  minCellWidth = 100,
+  minCellWidth,
   initialColumnSizes,
   children,
 }) => {
@@ -57,6 +57,14 @@ const ResizableGrid = ({
   const [gridTemplateColumnsValues, setGridTemplateColumnsValues] = useState([]);
   const [tableHeight, setTableHeight] = useState(0);
   const [activeIndex, setActiveIndex] = useState(null);
+
+  const calculateColumnWidthPercentage = (widthInPx) => {
+    const totalWidth = tableHeaderElements.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.offsetWidth;
+    }, 0);
+
+    return widthInPx / totalWidth * 100;
+  };
 
   useEffect(() => {
     if (!tableElement) { // check if table element is already present is child nodes
@@ -127,7 +135,7 @@ const ResizableGrid = ({
     } else {
       const columnCount = localTableHeaderElements.length;
       initialGridTemplateColumnsValues = localTableHeaderElements.map(
-        (_) => `${100.0 / columnCount}%`
+        (_) => 100.0 / columnCount
       );
     }
     setGridTemplateColumnsValues(initialGridTemplateColumnsValues);
@@ -142,7 +150,7 @@ const ResizableGrid = ({
       return;
     }
 
-    const resizerDivs = tableHeaderElements.map((element, i) => {
+    tableHeaderElements.forEach((element) => {
       // wrap table header cell
       const wrapperElement = document.createElement('span');
       const childElements = [...element.children];
@@ -150,7 +158,9 @@ const ResizableGrid = ({
         wrapperElement.appendChild(child);
       });
       element.appendChild(wrapperElement);
+    });
 
+    const resizerDivs = tableHeaderElements.slice(0, -1).map((element, i) => {
       // create div for resizer
       const resizerElement = document.createElement('div');
       resizerElement.onmousedown = () => mouseDown(i);
@@ -185,7 +195,7 @@ const ResizableGrid = ({
     if (!tableElement || !gridTemplateColumnsValues) {
       return;
     }
-    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.join(' ');
+    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.join('% ') + '%';
     if (persistChanges) {
       setStoredChanges(name, gridTemplateColumnsValues);
     }
@@ -195,18 +205,33 @@ const ResizableGrid = ({
     if (!tableElement || activeIndex === null || activeIndex === undefined) {
       return;
     }
-    // Return an array of px values
+
+    let widthDeltaInPx = 0;
+    // Return an array of percentage values
     const gridColumns = tableHeaderElements.map((col, i) => {
       if (i === activeIndex) {
-        // Calculate the column width
-        const width = e.clientX - getAbsoluteLeftOffset(col);
-        if (width >= getMinCellWidth(i)) {
-          return `${width}px`;
+        // Calculate the column widthInPx
+        const widthInPx = e.clientX - getAbsoluteLeftOffset(col);
+        const widthInPercentage = calculateColumnWidthPercentage(widthInPx);
+        if (widthInPercentage >= getMinCellWidth(i)) {
+          widthDeltaInPx = widthInPx - col.offsetWidth;
+          // do not change the width if it requires next column to be changed more than it is allowed
+          const nextColumnWidthInPx = tableHeaderElements[i + 1].offsetWidth - widthDeltaInPx;
+          const nextColumnWidthInPercentage = calculateColumnWidthPercentage(nextColumnWidthInPx);
+          if (nextColumnWidthInPercentage >= getMinCellWidth(i + 1)) {
+            return widthInPercentage;
+          }
+        }
+      }
+      if (i === activeIndex + 1) {
+        const nextColumnWidthInPercentage = calculateColumnWidthPercentage(col.offsetWidth - widthDeltaInPx);
+        if (nextColumnWidthInPercentage >= getMinCellWidth(i)) {
+          return nextColumnWidthInPercentage;
         }
       }
 
       // Otherwise, return the previous width (no changes)
-      return `${col.offsetWidth}px`;
+      return calculateColumnWidthPercentage(col.offsetWidth);
     });
 
     // Assign the px values to the table
@@ -245,8 +270,8 @@ ResizableGrid.propTypes = {
   children: PropTypes.object.isRequired,
   name: PropTypes.string,
   persistChanges: PropTypes.bool,
-  minCellWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.arrayOf(PropTypes.number)]),
-  initialColumnSizes: PropTypes.arrayOf(PropTypes.string),
+  minCellWidth: PropTypes.arrayOf(PropTypes.number),
+  initialColumnSizes: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default ResizableGrid;

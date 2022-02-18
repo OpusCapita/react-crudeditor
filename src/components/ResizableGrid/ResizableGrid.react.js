@@ -67,34 +67,30 @@ const ResizableGrid = ({
   };
 
   useEffect(() => {
-    if (!tableElement) { // check if table element is already present is child nodes
-      const tableElementFound = findFirstTableDOM(tableWrapperRef.current);
-      if (tableElementFound) {
-        setTableElement(tableElementFound);
-      } else { // wait for probable async loading
-        let tableElementObserver;
-        const observerCallback = (_) => {
-          const tableElementFound = findFirstTableDOM(tableWrapperRef.current);
-          if (tableElementFound) {
-            setTableElement(tableElementFound);
-            tableElementObserver.disconnect();
-          }
-        };
-
-        tableElementObserver = new MutationObserver(observerCallback);
-
-        tableElementObserver.observe(tableWrapperRef.current, {
-          childList: true,
-          subtree: true
-        });
-      }
+    const tableElementFound = findFirstTableDOM(tableWrapperRef.current);
+    if (tableElementFound) {
+      setTableElement(tableElementFound);
     }
+
+    const observerCallback = (_) => {
+      const tableElementFound = findFirstTableDOM(tableWrapperRef.current);
+      if (tableElementFound && tableElementFound !== tableElement) {
+        setTableElement(tableElementFound);
+      }
+    };
+
+    const tableElementObserver = new MutationObserver(observerCallback);
+
+    tableElementObserver.observe(tableWrapperRef.current, {
+      childList: true,
+      subtree: true
+    });
   });
 
   useEffect(() => {
     if (tableElement) {
       const observerCallback = (_) => {
-        const newOffsetHeight = tableElement.offsetHeight;
+        const newOffsetHeight = tableElement.clientHeight;
         if (newOffsetHeight !== tableHeight) {
           setTableHeight(newOffsetHeight);
         }
@@ -146,7 +142,7 @@ const ResizableGrid = ({
   };
 
   useEffect(() => {
-    if (!tableHeaderElements || !tableHeight || resizerElements.length) {
+    if (!tableHeaderElements) {
       return;
     }
 
@@ -173,7 +169,7 @@ const ResizableGrid = ({
     });
 
     setResizerElements(resizerDivs);
-  }, [tableHeaderElements, tableHeight]);
+  }, [tableElement, tableHeaderElements]);
 
   useEffect(() => {
     resizerElements.forEach((element, i) => {
@@ -189,7 +185,7 @@ const ResizableGrid = ({
     resizerElements.forEach((element) => {
       element.style.height = `${tableHeight}px`; // eslint-disable-line no-param-reassign
     });
-  }, [resizerElements, tableHeight]);
+  }, [tableElement, resizerElements, tableHeight]);
 
   useEffect(() => {
     if (!tableElement || !gridTemplateColumnsValues) {
@@ -236,6 +232,7 @@ const ResizableGrid = ({
 
     // Assign the px values to the table
     setGridTemplateColumnsValues(gridColumns);
+    setTableHeight(tableElement.clientHeight);
   }, [tableElement, activeIndex]);
 
   const removeListeners = useCallback(() => {

@@ -1,15 +1,4 @@
 
-[Release 1.3.21.beta.4](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.4) Fri Feb 18 2022 12:02:45 GMT+0300 (MSK)
-=======================================================
-
-- (EPROC-20906) Fixes and improvements. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-18 11:56:01 +0300)
-
-[Release 1.3.21.beta.3](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.3) Thu Feb 17 2022 16:57:55 GMT+0300 (MSK)
-=======================================================
-
-- (EPROC-20906) Refactoring and improvements: changed way of resizing columns, adjusted columns to be more responsive. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-17 16:47:29 +0300)
-- (EPROC-20906) Updated changelog. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-15 12:57:01 +0300)
-
 [Release 1.3.20](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.20) Mon Nov 15 2021 13:20:32 GMT+0300 (MSK)
 =======================================================
 

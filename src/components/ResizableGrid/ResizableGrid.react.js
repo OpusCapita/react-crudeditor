@@ -44,10 +44,10 @@ const ResizableGrid = ({
   children,
 }) => {
   const getMinCellWidth = (i) => {
-    if (Array.isArray(minCellWidth)) {
+    if (minCellWidth !== null && minCellWidth !== undefined && Array.isArray(minCellWidth)) {
       return minCellWidth[i];
     }
-    return minCellWidth;
+    return 0;
   };
 
   const tableWrapperRef = useRef(null);

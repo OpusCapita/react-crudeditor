@@ -1,4 +1,11 @@
 
+[Release 1.3.21.beta.5](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.5) Mon Feb 21 2022 15:44:26 GMT+0300 (MSK)
+=======================================================
+
+- Refactoring code: remove minColumnSizes [skip ci] (Dmitry Divin divin@scand.com, 2022-02-21 15:42:07 +0300)
+- Refactoring code: move locale store to required property (Dmitry Divin divin@scand.com, 2022-02-21 12:34:53 +0300)
+- (EPROC-20906) Small improvement. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-02-18 12:40:48 +0300)
+
 [Release 1.3.20](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.20) Mon Nov 15 2021 13:20:32 GMT+0300 (MSK)
 =======================================================
 

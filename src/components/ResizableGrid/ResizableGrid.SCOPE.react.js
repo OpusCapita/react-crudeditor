@@ -18,10 +18,10 @@ class ResizableGridScope extends PureComponent {
   }
 
   getChildContext() {
-    return {i18n: this.i18n}
+    return { i18n: this.i18n }
   }
 
-  createLocaleStore =  (storeIdProvider, defaultValue) => {
+  createLocaleStore = (storeIdProvider, defaultValue) => {
     return localeStore(storeIdProvider, defaultValue);
   }
 

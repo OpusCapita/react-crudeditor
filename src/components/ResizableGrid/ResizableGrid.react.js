@@ -161,8 +161,9 @@ const ResizableGrid = ({
     if (!tableElement || !gridTemplateColumnsValues) {
       return;
     }
-    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.map(it => `minmax(min-content, ${it}%)`).join(" ");
-    store.setValue(gridTemplateColumnsValues.map(columnValue => columnValue/100))
+    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.map(it => `minmax(min-content, ${it}%)`).
+      join(" ");
+    store.setValue(gridTemplateColumnsValues.map(columnValue => columnValue / 100))
   }, [tableElement, gridTemplateColumnsValues]);
 
   const mouseMove = useCallback((e) => {

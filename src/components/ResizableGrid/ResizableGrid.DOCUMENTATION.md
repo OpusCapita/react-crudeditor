@@ -9,7 +9,6 @@ Applies resize functionality to child's table DOM element.
 | Name                          | Type                   | Description                                     |
 |-------------------------------|:-----------------------|-------------------------------------------------|
 | store                         | object                 | Store contains getValue/setValue
-| minColumnSizes                | array                  | Minimal column sizes for resizable column.                                                   |
 
 ## Details
 
@@ -20,7 +19,6 @@ Applies resize functionality to child's table DOM element.
 ```js
 <ResizableGrid
   store={_scope.createLocaleStore(() => `${window.location.host}/test`, [1/2, 0.25, 0.10, 0.15])}
-  minColumnSizes={[0.1, 0.1, 0.1, 0.1]}
 >
   <table style={{ overflowY: 'hidden', width: '100%' }}>
     <thead>

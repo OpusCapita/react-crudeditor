@@ -28,17 +28,8 @@ const findFirstTableDOM = (rootElement) => {
 
 const ResizableGrid = ({
   store,
-  minColumnSizes,
   children,
 }) => {
-  const getMinColumnSize = (i) => {
-    let minColumnSize = 0.1; // 10% is default
-    if (minColumnSizes !== null && minColumnSizes !== undefined && Array.isArray(minColumnSizes)) {
-      minColumnSize = minColumnSizes[i];
-    }
-    return minColumnSize * 100;
-  };
-
   const tableWrapperRef = useRef(null);
   const [tableElement, setTableElement] = useState(null);
   const [tableHeaderElements, setTableHeaderElements] = useState([]);
@@ -111,11 +102,7 @@ const ResizableGrid = ({
     );
     setTableHeaderElements(localTableHeaderElements);
 
-    const columnCount = localTableHeaderElements.length;
     let gridTemplateColumnValues = store.getValue().map(columnSizeInPercentage => columnSizeInPercentage * 100)
-    if (gridTemplateColumnValues.length !== columnCount) {
-      throw `Expected Grid Columns '${columnCount}' but store return '${gridTemplateColumnValues.length}'`
-    }
 
     setGridTemplateColumnsValues(gridTemplateColumnValues);
   }, [tableElement]);
@@ -174,7 +161,7 @@ const ResizableGrid = ({
     if (!tableElement || !gridTemplateColumnsValues) {
       return;
     }
-    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.join('% ') + '%';
+    tableElement.style.gridTemplateColumns = gridTemplateColumnsValues.map(it => `minmax(min-content, ${it}%)`).join(" ");
     store.setValue(gridTemplateColumnsValues.map(columnValue => columnValue/100))
   }, [tableElement, gridTemplateColumnsValues]);
 
@@ -190,19 +177,19 @@ const ResizableGrid = ({
         // Calculate the column widthInPx
         const widthInPx = e.clientX - getAbsoluteLeftOffset(col);
         const widthInPercentage = calculateColumnWidthPercentage(widthInPx);
-        if (widthInPercentage >= getMinColumnSize(i)) {
+        if (widthInPercentage >= 0) {
           widthDeltaInPx = widthInPx - col.offsetWidth;
           // do not change the width if it requires next column to be changed more than it is allowed
           const nextColumnWidthInPx = tableHeaderElements[i + 1].offsetWidth - widthDeltaInPx;
           const nextColumnWidthInPercentage = calculateColumnWidthPercentage(nextColumnWidthInPx);
-          if (nextColumnWidthInPercentage >= getMinColumnSize(i + 1)) {
+          if (nextColumnWidthInPercentage >= 0) {
             return widthInPercentage;
           }
         }
       }
       if (i === activeIndex + 1) {
         const nextColumnWidthInPercentage = calculateColumnWidthPercentage(col.offsetWidth - widthDeltaInPx);
-        if (nextColumnWidthInPercentage >= getMinColumnSize(i)) {
+        if (nextColumnWidthInPercentage >= 0) {
           return nextColumnWidthInPercentage;
         }
       }
@@ -246,8 +233,7 @@ const ResizableGrid = ({
 
 ResizableGrid.propTypes = {
   children: PropTypes.object.isRequired,
-  store: PropTypes.object.isRequired,
-  minColumnSizes: PropTypes.arrayOf(PropTypes.number),
+  store: PropTypes.object.isRequired
 };
 
 export default ResizableGrid;

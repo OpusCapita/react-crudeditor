@@ -6,12 +6,10 @@ Applies resize functionality to child's table DOM element.
 
 ### Props Reference
 
-| Name                          | Type                   | Description                                                                                                        |
-|-------------------------------|:-----------------------|--------------------------------------------------------------------------------------------------------------------|
-| name                          | string                 | Used for `persistChanges` functionality to identify table.                                                         |
-| persistChanges                | bool                   | Defines whether it is necessary to save changed layout in a browser.                                               |
-| initialColumnSizes            | array                  | Array with initial column widths in percentage for every column. If absent, it'll set equal width for each column. |
-| minCellWidth                  | array                  | Array with minimal column widths in percentage for every column.                                                   |
+| Name                          | Type                   | Description                                     |
+|-------------------------------|:-----------------------|-------------------------------------------------|
+| store                         | object                 | Store contains getValue/setValue
+| minColumnSizes                | array                  | Minimal column sizes for resizable column.                                                   |
 
 ## Details
 
@@ -21,12 +19,10 @@ Applies resize functionality to child's table DOM element.
 
 ```js
 <ResizableGrid
-  name={`showRoomTest`}
-  persistChanges={false}
-  initialColumnSizes={[25, 25, 25, 25]}
-  minCellWidth={[10, 10, 10, 10]}
+  store={_scope.createLocaleStore(() => `${window.location.host}/test`, [1/2, 0.25, 0.10, 0.15])}
+  minColumnSizes={[0.1, 0.1, 0.1, 0.1]}
 >
-  <table style={{ overflowY: 'hidden' }}>
+  <table style={{ overflowY: 'hidden', width: '100%' }}>
     <thead>
       <tr>
         <th>Column 1</th>

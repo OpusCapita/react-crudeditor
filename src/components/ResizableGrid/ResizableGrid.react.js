@@ -46,6 +46,27 @@ const ResizableGrid = ({
     return widthInPx / totalWidth * 100;
   };
 
+  const refreshColumnSizes = () => {
+    setGridTemplateColumnsValues(
+      store.getValue().map(columnSizeInPercentage => columnSizeInPercentage * 100)
+    );
+  }
+
+  useEffect(() => {
+    const listener = {
+      onEvent({type}) {
+        if (type === 'reset') {
+          //refresh resizable grid if store reset
+          refreshColumnSizes();
+        }
+      }
+    }
+    store.addEventListener(listener);
+    return () => {
+      store.removeEventListener(listener)
+    }
+  });
+
   useEffect(() => {
     const tableElementFound = findFirstTableDOM(tableWrapperRef.current);
     if (tableElementFound) {
@@ -102,9 +123,7 @@ const ResizableGrid = ({
     );
     setTableHeaderElements(localTableHeaderElements);
 
-    let gridTemplateColumnValues = store.getValue().map(columnSizeInPercentage => columnSizeInPercentage * 100)
-
-    setGridTemplateColumnsValues(gridTemplateColumnValues);
+    refreshColumnSizes();
   }, [tableElement]);
 
   const mouseDown = (index) => {

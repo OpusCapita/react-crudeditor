@@ -24,11 +24,34 @@ function setValue(storeIdProvider, value) {
 }
 
 export default function(storeIdProvider, defaultValue) {
+  const eventListeners = []
   return {
     getValue: () => getValue(storeIdProvider, defaultValue),
-    setValue: (value) => setValue(storeIdProvider, value),
+    setValue: (value) => {
+      const oldValue = getValue(storeIdProvider, null)
+      setValue(storeIdProvider, value);
+
+      for (let i = 0; i < eventListeners.length; i++) {
+        eventListeners[i].onEvent({type: 'change', oldValue, newValue: value});
+      }
+    },
     reset() {
+      const oldValue = getValue(storeIdProvider, -1)
       window.localStorage.removeItem(storeIdProvider())
+      if (oldValue !== -1) {
+        for (let i = 0; i < eventListeners.length; i++) {
+          eventListeners[i].onEvent({type: 'reset', oldValue});
+        }
+      }
+    },
+    addEventListener(listener) {
+      eventListeners.push(listener)
+    },
+    removeEventListener(listener) {
+      const index = eventListeners.indexOf(listener);
+      if (index !== -1) {
+        eventListeners.splice(index, 1);
+      }
     }
   }
 }

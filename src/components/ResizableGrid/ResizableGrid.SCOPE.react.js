@@ -22,7 +22,11 @@ class ResizableGridScope extends PureComponent {
   }
 
   createLocaleStore = (storeIdProvider, defaultValue) => {
-    return localeStore(storeIdProvider, defaultValue);
+    const store = localeStore(storeIdProvider, defaultValue);
+    // setInterval(() => {
+    //   store.reset();
+    // }, 1000)
+    return store;
   }
 
   render() {

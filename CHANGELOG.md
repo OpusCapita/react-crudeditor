@@ -1,4 +1,10 @@
 
+[Release 1.3.21.beta.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.7) Tue Feb 22 2022 08:54:18 GMT+0300 (MSK)
+=======================================================
+
+- Merge branch 'EPROC-20906' of ssh://github.com/OpusCapita/react-crudeditor into EPROC-20906 (Dmitry Divin divin@scand.com, 2022-02-22 08:52:28 +0300)
+- Fixing refresh column sizes [skip ci] (Dmitry Divin divin@scand.com, 2022-02-22 08:52:20 +0300)
+
 [Release 1.3.21.beta.6](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.6) Mon Feb 21 2022 15:57:33 GMT+0300 (MSK)
 =======================================================
 

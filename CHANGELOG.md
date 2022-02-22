@@ -1,4 +1,9 @@
 
+[Release 1.3.21.beta.6](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.6) Mon Feb 21 2022 15:57:33 GMT+0300 (MSK)
+=======================================================
+
+- Fix lint [skip ci] (Dmitry Divin divin@scand.com, 2022-02-21 15:56:17 +0300)
+
 [Release 1.3.21.beta.5](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.5) Mon Feb 21 2022 15:44:26 GMT+0300 (MSK)
 =======================================================
 

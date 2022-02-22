@@ -54,9 +54,9 @@ const ResizableGrid = ({
 
   useEffect(() => {
     const listener = {
-      onEvent({type}) {
+      onEvent({ type }) {
         if (type === 'reset') {
-          //refresh resizable grid if store reset
+          // refresh resizable grid if store reset
           refreshColumnSizes();
         }
       }

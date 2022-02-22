@@ -32,7 +32,7 @@ export default function(storeIdProvider, defaultValue) {
       setValue(storeIdProvider, value);
 
       for (let i = 0; i < eventListeners.length; i++) {
-        eventListeners[i].onEvent({type: 'change', oldValue, newValue: value});
+        eventListeners[i].onEvent({ type: 'change', oldValue, newValue: value });
       }
     },
     reset() {
@@ -40,7 +40,7 @@ export default function(storeIdProvider, defaultValue) {
       window.localStorage.removeItem(storeIdProvider())
       if (oldValue !== -1) {
         for (let i = 0; i < eventListeners.length; i++) {
-          eventListeners[i].onEvent({type: 'reset', oldValue});
+          eventListeners[i].onEvent({ type: 'reset', oldValue });
         }
       }
     },

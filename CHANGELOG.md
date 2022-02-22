@@ -1,4 +1,10 @@
 
+[Release 1.3.21.beta.8](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.8) Tue Feb 22 2022 08:58:34 GMT+0300 (MSK)
+=======================================================
+
+- Merge branch 'EPROC-20906' of ssh://github.com/OpusCapita/react-crudeditor into EPROC-20906 (Dmitry Divin divin@scand.com, 2022-02-22 08:57:20 +0300)
+- Fixing lint (Dmitry Divin divin@scand.com, 2022-02-22 08:57:12 +0300)
+
 [Release 1.3.21.beta.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21.beta.7) Tue Feb 22 2022 08:54:18 GMT+0300 (MSK)
 =======================================================
 

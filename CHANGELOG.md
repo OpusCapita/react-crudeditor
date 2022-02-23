@@ -1,4 +1,9 @@
 
+[Release 1.3.21](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21) Wed Feb 23 2022 10:30:36 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-20906) Added possibility to manually resize the columns. (GitHub azinchenko-sc@users.noreply.github.com, 2022-02-23 10:15:53 +0300)
+
 [Release 1.3.20](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.20) Mon Nov 15 2021 13:20:32 GMT+0300 (MSK)
 =======================================================
 

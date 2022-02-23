@@ -83,7 +83,7 @@ const mergeProps = /* istanbul ignore next */ (
     },
 
     /*
-     * Operations requiering confirmation
+     * Operations requiring confirmation
      * are supplied with "confirm" property containing an object with translation texts for Confirm Dialog.
      *
      * "show" property is removed from each custom/external operation

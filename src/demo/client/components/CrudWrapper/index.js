@@ -79,7 +79,7 @@ export default class CrudWrapper extends PureComponent {
     } = this.props;
 
     if (pathname.indexOf(baseURL) !== 0) {
-      throw new Error(`Router match.url "${baseURL}" is exptected to be a prefix of location.pathname "${pathname}"`);
+      throw new Error(`Router match.url "${baseURL}" is expected to be a prefix of location.pathname "${pathname}"`);
     }
 
     const suffix = pathname.slice(baseURL.length);

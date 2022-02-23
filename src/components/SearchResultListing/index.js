@@ -40,7 +40,7 @@ class SearchResultListing extends PureComponent {
 
   handleResort = fieldName => _ => this.props.model.actions.searchInstances({
     sort: fieldName,
-    // XXX: sortField and sortOrder must be accessed with this.props.model.data for up to date values!
+    // XXX: sortField and sortOrder must be accessed with this.props.model.data for up-to-date values!
     order: fieldName === this.props.model.data.sortParams.field && this.props.model.data.sortParams.order === 'asc' ?
       'desc' :
       'asc'

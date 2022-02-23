@@ -231,7 +231,7 @@ export default baseModelDefinition => {
     }
 
     // Prevent duplicate API call when view name/state props are received in response to onTransition() call.
-    // TODO: more sofisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
+    // TODO: more sophisticated comparison by stripping defaults/EMPTY_FIELD_VALUE off newView.
     shouldComponentUpdate = ({
       view: {
         name = DEFAULT_VIEW,

@@ -18,6 +18,7 @@
     * [props.view.state](#editorcomponent-propsviewstate)
     * [props.onTransition](#editorcomponent-propsontransition)
     * [props.externalOperations](#editorcomponent-propsexternaloperations)
+    * [props.customBulkOperations](#editorcomponent-propscustombulkoperations)
     * [props.uiConfig](#editorcomponent-propsuiconfig)
 - [Model Definition](#model-definition)
     * [Definition Object Structure](#definition-object-structure)
@@ -328,6 +329,26 @@ function(<object, entity persistent instance> ) {
     }
   }, ...]
 }
+```
+
+### *EditorComponent* props.customBulkOperations
+
+An array of objects defines bulk operations that could be done with selected instances.
+
+An object consist of two parts: handler function, that accepts an array of selected instances, and UI configuration for dropdown element(title).
+
+```javascript
+...
+customBulkOperations={[{
+    handler(instances) {
+      ...
+      return; // Return value is ignored.
+    },
+    ui: {
+      title: <string, Button title>,
+    }
+}]}
+...
 ```
 
 ### *EditorComponent* props.uiConfig

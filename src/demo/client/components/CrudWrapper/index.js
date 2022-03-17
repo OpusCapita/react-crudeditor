@@ -128,12 +128,8 @@ export default class CrudWrapper extends PureComponent {
           handler(instances) {
             console.log(instances);
           },
-          ui({ name: viewName, state: viewState }) {
-            return {
-              title: () => 'Test link',
-              icon: 'link',
-              dropdown: viewName !== VIEW_CREATE
-            };
+          ui: {
+            title: 'Print debug',
           }
         }]}
         uiConfig={{

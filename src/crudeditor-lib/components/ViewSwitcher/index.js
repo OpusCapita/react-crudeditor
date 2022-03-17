@@ -18,7 +18,9 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, customBulkOperations, uiConfig }, { i18n }) => {
+const ViewSwitcher = ({
+  activeViewName, modelDefinition, externalOperations, customBulkOperations, uiConfig
+}, { i18n }) => {
   if (!activeViewName) {
     return null;
   }

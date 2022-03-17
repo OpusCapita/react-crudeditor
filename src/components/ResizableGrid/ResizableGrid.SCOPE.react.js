@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { showroomScopeDecorator } from '@opuscapita/react-showroom-client';
 import { I18nManager } from '@opuscapita/i18n';
-import localeStore from "./store/localeStore";
+import localStore from "./store/localStore";
 
 // This @showroomScopeDecorator modifies React.Component prototype by adding _renderChildren() method.
 export default
@@ -21,8 +21,8 @@ class ResizableGridScope extends PureComponent {
     return { i18n: this.i18n }
   }
 
-  createLocaleStore = (storeIdProvider, defaultValue) => {
-    const store = localeStore(storeIdProvider, defaultValue);
+  createLocalStore = (storeIdProvider, defaultValue) => {
+    const store = localStore(storeIdProvider, defaultValue);
     // setInterval(() => {
     //   store.reset();
     // }, 1000)

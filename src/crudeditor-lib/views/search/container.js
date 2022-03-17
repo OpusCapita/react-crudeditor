@@ -45,6 +45,7 @@ const mergeProps = /* istanbul ignore next */ (
     permissions: { crudOperations },
     customOperations,
     externalOperations,
+    customBulkOperations,
     uiConfig
   },
   {
@@ -147,18 +148,26 @@ const mergeProps = /* istanbul ignore next */ (
       })
     } :
       {} // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
+    ,
+    customBulkOperations: customBulkOperations.map(customOperationObject => {
+      return {
+        handler: () => customOperationObject.handler(selectedInstances),
+        ui: customOperationObject.ui
+      }
+    }),
   }
 });
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
+  (storeState, { modelDefinition, externalOperations, customBulkOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     permissions: modelDefinition.permissions,
     customOperations: modelDefinition.ui.customOperations,
     externalOperations,
+    customBulkOperations,
     uiConfig
   }),
   {

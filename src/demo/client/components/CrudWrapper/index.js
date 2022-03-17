@@ -124,6 +124,18 @@ export default class CrudWrapper extends PureComponent {
             };
           }
         }]}
+        customBulkOperations={[{
+          handler(instances) {
+            console.log(instances);
+          },
+          ui({ name: viewName, state: viewState }) {
+            return {
+              title: () => 'Test link',
+              icon: 'link',
+              dropdown: viewName !== VIEW_CREATE
+            };
+          }
+        }]}
         uiConfig={{
           headerLevel: 2
         }}

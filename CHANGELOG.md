@@ -1,4 +1,18 @@
 
+[Release 1.3.23.beta.1](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.1) Tue Mar 22 2022 18:39:35 GMT+0300 (MSK)
+=======================================================
+
+- Updated version. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-22 18:28:24 +0300)
+- Update readme (Dmitry Divin divin@scand.com, 2022-03-22 18:22:18 +0300)
+- Merge remote-tracking branch 'origin/master' into EPROC-21069 (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-22 18:12:33 +0300)
+- (EPROC-21097) Improved env variables setting (GitHub ashestak-sc@users.noreply.github.com, 2022-03-22 17:58:51 +0300)
+- Invoking build process. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-21 13:37:11 +0300)
+- (EPROC-21069) Updated documentation. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-17 19:00:25 +0300)
+- (EPROC-21069) Fixed styles and import. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-17 17:41:06 +0300)
+- (EPROC-21069) Fixed lint errors. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-17 14:49:51 +0300)
+- (EPROC-21069) Small fixes. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-17 14:40:28 +0300)
+- (EPROC-21069) Draft changes for 'Custom Bulk Operations' feature. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-17 14:38:49 +0300)
+
 [Release 1.3.21](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21) Wed Feb 23 2022 10:30:36 GMT+0300 (MSK)
 =======================================================
 

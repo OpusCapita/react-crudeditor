@@ -54,7 +54,7 @@ ViewSwitcher.propTypes = {
   activeViewName: PropTypes.string,
   modelDefinition: PropTypes.object.isRequired,
   externalOperations: PropTypes.func.isRequired,
-  customBulkOperations: PropTypes.array.isRequired,
+  customBulkOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
   uiConfig: PropTypes.object.isRequired
 };
 

@@ -105,7 +105,7 @@ export default baseModelDefinition => {
       }),
       onTransition: PropTypes.func,
       externalOperations: PropTypes.func,
-      customBulkOperations: PropTypes.array,
+      customBulkOperations: PropTypes.arrayOf(PropTypes.object),
       uiConfig: PropTypes.shape({
         headerLevel: PropTypes.number
       })

@@ -7,13 +7,16 @@ jobs:
       - run:
           name: Inject secrets from vault to CircleCI project's environment
           command: |
-            circle_ci_add_env.sh DOCKER_USER DOCKER_PASS GH_NAME GH_TOKEN MAVEN_REPO JFROG_USER JFROG_PASSWD
+            circle_ci_add_env.sh DOCKER_USER DOCKER_PASS OC_EPROC_MACHINEUSER_GITHUB_USERNAME OC_EPROC_MACHINEUSER_GITHUB_TOKEN MAVEN_REPO JFROG_USER JFROG_PASSWD
   release:
     docker:
       - image: opuscapita/minsk-core-release-manager:1
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
+    environment:
+      GH_TOKEN: $OC_EPROC_MACHINEUSER_GITHUB_TOKEN
+      GH_NAME: $OC_EPROC_MACHINEUSER_GITHUB_USERNAME
     steps:
       - checkout
       - run:

@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.3](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.3) Wed Mar 23 2022 10:19:13 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Fixed default prop value. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-23 10:12:08 +0300)
+
 [Release 1.3.23.beta.2](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.2) Wed Mar 23 2022 09:46:37 GMT+0300 (MSK)
 =======================================================
 

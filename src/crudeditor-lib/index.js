@@ -121,7 +121,7 @@ export default baseModelDefinition => {
 
     static defaultProps = {
       externalOperations: _ => [],
-      customBulkOperations: _ => [],
+      customBulkOperations: [],
       uiConfig: {}
     };
 

@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.2](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.2) Wed Mar 23 2022 09:46:37 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Updated PropTypes. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-22 19:07:18 +0300)
+
 [Release 1.3.23.beta.1](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.1) Tue Mar 22 2022 18:39:35 GMT+0300 (MSK)
 =======================================================
 

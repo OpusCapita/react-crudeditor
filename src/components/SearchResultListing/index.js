@@ -5,8 +5,6 @@ import Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import { getFieldLabel } from '../lib';
 import SearchResultButtons from './SearchResultButtons';
-import Dropdown from 'react-bootstrap/lib/Dropdown';
-import MenuItem from 'react-bootstrap/lib/MenuItem';
 import './styles.less';
 
 class SearchResultListing extends PureComponent {
@@ -87,31 +85,11 @@ class SearchResultListing extends PureComponent {
               {
                 (bulkOperationsExist || customBulkOperationsExist) &&
                 <th>
-                  {customBulkOperationsExist ?
-                    <Dropdown id="custom-bulk-dropdown" className="crud--search-custom-bulk-operations-dropdown">
-                      <Checkbox
-                        checked={selectedInstances.length === instances.length && instances.length !== 0}
-                        disabled={instances.length === 0}
-                        onChange={this.handleToggleSelectedAll}
-                      />
-                      <Dropdown.Toggle />
-                      <Dropdown.Menu>
-                        {customBulkOperations.map((operation, idx) => {
-                          const disabled = selectedInstances.length === 0;
-                          return (<MenuItem
-                            key={idx} disabled={disabled} onClick={() => !disabled ? operation.handler() : null}
-                          >
-                            {operation.ui.title}
-                          </MenuItem>)
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown> :
-                    <Checkbox
-                      checked={selectedInstances.length === instances.length && instances.length !== 0}
-                      disabled={instances.length === 0}
-                      onChange={this.handleToggleSelectedAll}
-                    />
-                  }
+                  <Checkbox
+                    checked={selectedInstances.length === instances.length && instances.length !== 0}
+                    disabled={instances.length === 0}
+                    onChange={this.handleToggleSelectedAll}
+                  />
                 </th>
               }
 

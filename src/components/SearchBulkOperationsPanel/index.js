@@ -33,10 +33,12 @@ export default class SearchBulkOperationsPanel extends PureComponent {
       customBulkOperations,
     } = this.props.model;
 
+    const hasCustomOperations = customBulkOperations && customBulkOperations.length > 0;
+
     return (
       <div className='crud---search-bulk-operations-panel'>
         {
-          bulkDelete && (
+          (bulkDelete || hasCustomOperations) && (
             <div>
               <ButtonGroup>
                 <ConfirmDialog {...bulkDelete.confirm}>
@@ -50,7 +52,7 @@ export default class SearchBulkOperationsPanel extends PureComponent {
                     {bulkDelete.title}
                   </Button>
                 </ConfirmDialog>
-                {customBulkOperations.map((operation, idx) =>
+                {hasCustomOperations && customBulkOperations.map((operation, idx) =>
                   (<Button
                     key={idx}
                     bsSize='sm'

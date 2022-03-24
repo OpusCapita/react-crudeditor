@@ -15,7 +15,6 @@ export default function*({
 }) {
   // XXX: error(s) thrown in called below sagas are forwarded to the parent saga. Use try..catch to alter this default.
 
-  console.log(instances);
   yield call(action, instances);
 
   // Refresh search results.

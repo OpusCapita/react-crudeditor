@@ -51,14 +51,14 @@ export default class SearchBulkOperationsPanel extends PureComponent {
                   </Button>
                 </ConfirmDialog>
                 {customBulkOperations.map((operation, idx) =>
-                  <Button
+                  (<Button
                     key={idx}
                     bsSize='sm'
                     disabled={operation.disabled}
                     onClick={() => !operation.disabled ? operation.handler() : null}
                   >
                     {operation.ui.title}
-                  </Button>)}
+                  </Button>))}
               </ButtonGroup>
             </div>
           )

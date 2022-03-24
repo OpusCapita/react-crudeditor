@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.5](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.5) Thu Mar 24 2022 19:54:39 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Small fixes. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-24 19:48:04 +0300)
+
 [Release 1.3.23.beta.4](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.4) Thu Mar 24 2022 19:22:04 GMT+0300 (MSK)
 =======================================================
 

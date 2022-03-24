@@ -1,4 +1,10 @@
 
+[Release 1.3.23.beta.4](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.4) Thu Mar 24 2022 19:22:04 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Fixed lint errors. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-24 19:15:43 +0300)
+- (EPROC-21069) Implemented search refresh after custom bulk action execution. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-24 19:12:05 +0300)
+
 [Release 1.3.23.beta.3](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.3) Wed Mar 23 2022 10:19:13 GMT+0300 (MSK)
 =======================================================
 

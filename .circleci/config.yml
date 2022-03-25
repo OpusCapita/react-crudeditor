@@ -7,21 +7,18 @@ jobs:
       - run:
           name: Inject secrets from vault to CircleCI project's environment
           command: |
-            circle_ci_add_env.sh DOCKER_USER DOCKER_PASS OC_EPROC_MACHINEUSER_GITHUB_USERNAME OC_EPROC_MACHINEUSER_GITHUB_TOKEN MAVEN_REPO JFROG_USER JFROG_PASSWD
+            circle_ci_add_env.sh DOCKER_USER DOCKER_PASS OC_EPROC_MACHINEUSER_GITHUB_USERNAME OC_EPROC_MACHINEUSER_GITHUB_TOKEN
   release:
     docker:
-      - image: opuscapita/minsk-core-release-manager:1
+      - image: opuscapita/minsk-core-release-manager:2
         auth:
           username: $DOCKER_USER
           password: $DOCKER_PASS
-    environment:
-      GH_TOKEN: $OC_EPROC_MACHINEUSER_GITHUB_TOKEN
-      GH_NAME: $OC_EPROC_MACHINEUSER_GITHUB_USERNAME
     steps:
       - checkout
       - run:
           name: Executing release script
-          command: release.sh node
+          command: release.sh --node --gh-name=${OC_EPROC_MACHINEUSER_GITHUB_USERNAME} --gh-token=${OC_EPROC_MACHINEUSER_GITHUB_TOKEN}
 workflows:
   version: 2
   release-and-build:

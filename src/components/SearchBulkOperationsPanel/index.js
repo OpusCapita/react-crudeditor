@@ -41,17 +41,19 @@ export default class SearchBulkOperationsPanel extends PureComponent {
           (bulkDelete || hasCustomOperations) && (
             <div>
               <ButtonGroup>
-                <ConfirmDialog {...bulkDelete.confirm}>
-                  <Button
-                    bsSize='sm'
-                    disabled={bulkDelete.disabled}
-                    /* eslint-disable react/jsx-handler-names */
-                    onClick={bulkDelete.handler}
-                    /* eslint-enable react/jsx-handler-names */
-                  >
-                    {bulkDelete.title}
-                  </Button>
-                </ConfirmDialog>
+                {bulkDelete &&
+                  <ConfirmDialog {...bulkDelete.confirm}>
+                    <Button
+                      bsSize='sm'
+                      disabled={bulkDelete.disabled}
+                      /* eslint-disable react/jsx-handler-names */
+                      onClick={bulkDelete.handler}
+                      /* eslint-enable react/jsx-handler-names */
+                    >
+                      {bulkDelete.title}
+                    </Button>
+                  </ConfirmDialog>
+                }
                 {hasCustomOperations && customBulkOperations.map((operation, idx) =>
                   (<Button
                     key={idx}

@@ -344,8 +344,10 @@ customBulkOperations={[{
       ...
       return; // Return value is ignored.
     },
-    ui: {
-      title: <string, Button title>,
+    ui({ instances }) {
+      return {
+        title: <string, Button title>,
+      }
     }
 }]}
 ...

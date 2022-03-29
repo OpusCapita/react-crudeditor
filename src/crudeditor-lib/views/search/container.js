@@ -153,7 +153,7 @@ const mergeProps = /* istanbul ignore next */ (
     customBulkOperations: customBulkOperations.map(customOperationObject => {
       return {
         handler: _ => customBulkAction(selectedInstances, customOperationObject.handler),
-        ui: customOperationObject.ui,
+        ui: customOperationObject.ui({ instances: selectedInstances }),
         disabled: selectedInstances.length === 0,
       }
     }),

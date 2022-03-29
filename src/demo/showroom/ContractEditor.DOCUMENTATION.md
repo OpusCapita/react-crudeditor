@@ -66,8 +66,10 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
     handler(instances) {
       console.log(instances);
     },
-    ui: {
-      title: 'Print debug',
+    ui({ instances }) {
+      return {
+        title: 'Print debug (' + instances.length + ')',
+      }
     }
   }]}
 />

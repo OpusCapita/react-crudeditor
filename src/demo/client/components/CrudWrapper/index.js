@@ -128,8 +128,10 @@ export default class CrudWrapper extends PureComponent {
           handler(instances) {
             console.log(instances);
           },
-          ui: {
-            title: 'Print debug',
+          ui({ instances }) {
+            return {
+              title: 'Print debug (' + instances.length + ')',
+            }
           }
         }]}
         uiConfig={{

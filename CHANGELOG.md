@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.7) Tue Mar 29 2022 18:19:02 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Adjusted UI property to be a function. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-29 18:09:27 +0300)
+
 [Release 1.3.23.beta.6](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.6) Fri Mar 25 2022 11:27:29 GMT+0300 (MSK)
 =======================================================
 

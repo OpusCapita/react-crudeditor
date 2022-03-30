@@ -8,9 +8,12 @@
 function getValue(storeIdProvider, defaultValue) {
   let value = window.localStorage.getItem(storeIdProvider());
   if (value) {
-    return JSON.parse(value);
+    const persistedValue = JSON.parse(value);
+    if (persistedValue instanceof Object && persistedValue.version >= defaultValue.version) {
+      return persistedValue.state;
+    }
   }
-  return defaultValue;
+  return defaultValue.state;
 }
 
 /**
@@ -28,8 +31,9 @@ export default function(storeIdProvider, defaultValue) {
   return {
     getValue: () => getValue(storeIdProvider, defaultValue),
     setValue: (value) => {
-      const oldValue = getValue(storeIdProvider, null)
-      setValue(storeIdProvider, value);
+      const oldValue = window.localStorage.getItem(storeIdProvider());
+      const newValueObject = { version: oldValue instanceof Object && oldValue.version || 1, state: value };
+      setValue(storeIdProvider, newValueObject);
 
       for (let i = 0; i < eventListeners.length; i++) {
         eventListeners[i].onEvent({ type: 'change', oldValue, newValue: value });

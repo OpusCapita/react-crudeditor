@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.8](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.8) Wed Mar 30 2022 13:05:13 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Added versioning for ResizableGrid state. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-03-30 12:10:16 +0300)
+
 [Release 1.3.23.beta.7](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.7) Tue Mar 29 2022 18:19:02 GMT+0300 (MSK)
 =======================================================
 

@@ -64,7 +64,12 @@ You can *set surrent language* with a URL query param `lang`. Just add it to cur
   }]}
   customBulkOperations={[{
     handler(instances) {
-      console.log(instances);
+      return new Promise((r) => {
+        setTimeout(() => {
+          console.log(instances);
+        }, 3000);
+        r(true);
+      });
     },
     ui({ instances }) {
       return {

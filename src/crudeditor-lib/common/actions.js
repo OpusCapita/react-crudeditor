@@ -46,6 +46,6 @@ export const
     type: INSTANCES_CUSTOM,
     payload: {
       instances: Array.isArray(instances) ? instances : [instances],
-      action,
+      customBulkOperationFunction: action,
     }
   });

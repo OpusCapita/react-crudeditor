@@ -33,6 +33,7 @@ export const
    */
 
   STATUS_CREATING = 'creating',
+  STATUS_CUSTOM_PROCESSING = 'custom_processing',
   STATUS_EXTRACTING = 'extracting',
   STATUS_DELETING = 'deleting',
   STATUS_INITIALIZING = 'initializing',

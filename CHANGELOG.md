@@ -1,4 +1,9 @@
 
+[Release 1.3.23.beta.9](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.9) Mon Apr 04 2022 16:14:14 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Adjusted to deselect items after bulk operation. Fixes for UI blocking. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-04-04 16:07:30 +0300)
+
 [Release 1.3.23.beta.8](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.23.beta.8) Wed Mar 30 2022 13:05:13 GMT+0300 (MSK)
 =======================================================
 

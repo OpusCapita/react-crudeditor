@@ -21,7 +21,6 @@ export default function*({
 
   yield put({
     type: INSTANCES_CUSTOM_ACTION_INITIALIZATION,
-    payload: { instances, customBulkOperationFunction },
     meta
   });
 
@@ -30,7 +29,6 @@ export default function*({
   } finally {
     yield put({
       type: INSTANCES_CUSTOM_ACTION_FINALIZATION,
-      payload: { instances, customBulkOperationFunction },
       meta
     });
   }

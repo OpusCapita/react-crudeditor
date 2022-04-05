@@ -342,7 +342,7 @@ An object consist of two parts: handler function, that accepts an array of selec
 customBulkOperations={[{
     handler(instances) {
       ...
-      return ...; // Must return a Promise!
+      return ...; // Could return a Promise. Return nothing in case of synchronous function.
     },
     ui({ instances }) {
       return {

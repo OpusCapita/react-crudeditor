@@ -1,7 +1,3 @@
-
-[Release 1.3.22](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.22) Tue Mar 22 2022 17:29:02 GMT+0300 (MSK)
-=======================================================
-
 [Release 1.3.21](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21) Wed Feb 23 2022 10:30:36 GMT+0300 (MSK)
 =======================================================
 

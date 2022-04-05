@@ -1,3 +1,8 @@
+
+[Release 1.3.24](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.24) Tue Apr 05 2022 15:55:17 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21069) Added custom bulk operations support. Improved ResizableGrid component. (GitHub azinchenko-sc@users.noreply.github.com, 2022-04-05 14:03:04 +0200)
 [Release 1.3.21](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21) Wed Feb 23 2022 10:30:36 GMT+0300 (MSK)
 =======================================================
 

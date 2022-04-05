@@ -152,7 +152,7 @@ const mergeProps = /* istanbul ignore next */ (
       {}, // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
     customBulkOperations: customBulkOperations.map(customOperationObject => {
       return {
-        handler: _ => customBulkAction(selectedInstances, customOperationObject.handler),
+        handler: _ => customBulkAction({ instances: selectedInstances, handler: customOperationObject.handler }),
         ui: customOperationObject.ui({ instances: selectedInstances }),
         disabled: selectedInstances.length === 0,
       }

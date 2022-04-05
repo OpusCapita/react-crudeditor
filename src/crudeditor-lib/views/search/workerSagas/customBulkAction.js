@@ -13,7 +13,7 @@ export default function*({
   modelDefinition,
   softRedirectSaga,
   action: {
-    payload: { instances, customBulkOperationFunction },
+    payload: { instances, handler },
     meta
   }
 }) {
@@ -25,7 +25,7 @@ export default function*({
   });
 
   try {
-    yield call(customBulkOperationFunction, { instances });
+    yield call(handler, { instances });
   } finally {
     yield put({
       type: INSTANCES_CUSTOM_ACTION_FINALIZATION,

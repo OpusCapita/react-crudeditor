@@ -1,6 +1,6 @@
 import { call, put, spawn } from 'redux-saga/effects';
 
-import customBulkAction from './workerSagas/customBulkAction';
+import customBulkOperation from './workerSagas/customBulkOperation';
 import deleteSaga from './workerSagas/delete';
 import searchSaga from './workerSagas/search';
 import redirectSaga from '../../common/workerSagas/redirect';
@@ -26,7 +26,7 @@ import {
 const transitions = {
   blocking: {
     [INSTANCES_DELETE]: deleteSaga,
-    [INSTANCES_CUSTOM]: customBulkAction,
+    [INSTANCES_CUSTOM]: customBulkOperation,
   },
   nonBlocking: {
     [INSTANCES_SEARCH]: searchSaga,

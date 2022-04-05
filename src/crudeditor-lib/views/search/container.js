@@ -15,7 +15,7 @@ import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { isAllowed } from '../../lib';
 import {
   deleteInstances,
-  customBulkAction,
+  customBulkOperation,
   softRedirectView
 } from '../../common/actions';
 
@@ -52,7 +52,7 @@ const mergeProps = /* istanbul ignore next */ (
   {
     softRedirectView,
     deleteInstances,
-    customBulkAction,
+    customBulkOperation,
     ...dispatchProps
   },
   { i18n }
@@ -152,7 +152,7 @@ const mergeProps = /* istanbul ignore next */ (
       {}, // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
     customBulkOperations: customBulkOperations.map(customOperationObject => {
       return {
-        handler: _ => customBulkAction({ instances: selectedInstances, handler: customOperationObject.handler }),
+        handler: _ => customBulkOperation({ instances: selectedInstances, handler: customOperationObject.handler }),
         ui: customOperationObject.ui({ instances: selectedInstances }),
         disabled: selectedInstances.length === 0,
       }
@@ -174,7 +174,7 @@ export default connect(
   }),
   {
     deleteInstances,
-    customBulkAction,
+    customBulkOperation,
     resetFormFilter,
     searchInstances,
     toggleSelected,

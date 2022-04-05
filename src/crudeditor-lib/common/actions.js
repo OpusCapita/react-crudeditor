@@ -42,7 +42,7 @@ export const
     }
   }),
 
-  customBulkAction = ({ instances, handler }) => ({
+  customBulkOperation = ({ instances, handler }) => ({
     type: INSTANCES_CUSTOM,
     payload: {
       instances: Array.isArray(instances) ? instances : [instances],

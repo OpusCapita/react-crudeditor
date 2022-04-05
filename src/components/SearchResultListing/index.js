@@ -25,7 +25,8 @@ class SearchResultListing extends PureComponent {
       }).isRequired,
       actions: PropTypes.objectOf(PropTypes.func).isRequired,
       instanceOperations: PropTypes.func.isRequired,
-      bulkOperations: PropTypes.object.isRequired
+      bulkOperations: PropTypes.object.isRequired,
+      customBulkOperations: PropTypes.arrayOf(PropTypes.object),
     }).isRequired
   }
 
@@ -67,12 +68,14 @@ class SearchResultListing extends PureComponent {
         }
       },
       instanceOperations,
-      bulkOperations
+      bulkOperations,
+      customBulkOperations,
     } = this.props.model;
 
     const { i18n } = this.context;
 
     const bulkOperationsExist = Object.keys(bulkOperations).length > 0;
+    const customBulkOperationsExist = customBulkOperations && Object.keys(customBulkOperations).length > 0;
 
     return (
       <div className="crud--search-result-listing__table-container" ref={this._tableContainerRef}>
@@ -80,7 +83,7 @@ class SearchResultListing extends PureComponent {
           <thead>
             <tr>
               {
-                bulkOperationsExist &&
+                (bulkOperationsExist || customBulkOperationsExist) &&
                 <th>
                   <Checkbox
                     checked={selectedInstances.length === instances.length && instances.length !== 0}
@@ -121,12 +124,11 @@ class SearchResultListing extends PureComponent {
             </tr>
           </thead>
           <tbody>
-
             {
               instances.map((instance, index) => (
                 <tr key={`tr-${JSON.stringify(instance)}`}>
                   {
-                    bulkOperationsExist &&
+                    (bulkOperationsExist || customBulkOperationsExist) &&
                     <td>
                       <Checkbox
                         checked={selectedInstances.indexOf(instance) > -1}
@@ -140,8 +142,8 @@ class SearchResultListing extends PureComponent {
                         key={`td-${name}`}
                         className={
                           textAlignment === 'right' && 'text-right' ||
-                        textAlignment === 'center' && 'text-center' ||
-                        'text-left'
+                          textAlignment === 'center' && 'text-center' ||
+                          'text-left'
                         }
                       >
                         {

@@ -1,5 +1,5 @@
 import ResizableGrid from './ResizableGrid.react';
-import localeStore from "./store/localeStore";
+import localStore from "./store/localStore";
 
-export { ResizableGrid, localeStore };
+export { ResizableGrid, localStore };
 export default ResizableGrid;

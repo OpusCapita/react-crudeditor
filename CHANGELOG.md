@@ -1,13 +1,3 @@
-
-[Release 0.0.0-alpha-test](https://github.com/OpusCapita/react-crudeditor/releases/tag/v0.0.0-alpha-test) Thu Mar 31 2022 16:53:17 GMT+0300 (MSK)
-=======================================================
-
-- (EPROC-21097) Improved env variables setting (GitHub ashestak-sc@users.noreply.github.com, 2022-03-22 17:58:51 +0300)
-
-[Release 1.3.22](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.22) Tue Mar 22 2022 17:29:02 GMT+0300 (MSK)
-=======================================================
-
-
 [Release 1.3.21](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.21) Wed Feb 23 2022 10:30:36 GMT+0300 (MSK)
 =======================================================
 

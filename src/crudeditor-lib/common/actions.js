@@ -1,4 +1,5 @@
 import {
+  INSTANCES_CUSTOM,
   INSTANCES_DELETE,
   VIEW_HARD_REDIRECT,
   VIEW_SOFT_REDIRECT
@@ -38,5 +39,13 @@ export const
     type: INSTANCES_DELETE,
     payload: {
       instances: Array.isArray(instances) ? instances : [instances]
+    }
+  }),
+
+  customBulkOperation = ({ instances, handler }) => ({
+    type: INSTANCES_CUSTOM,
+    payload: {
+      instances: Array.isArray(instances) ? instances : [instances],
+      handler,
     }
   });

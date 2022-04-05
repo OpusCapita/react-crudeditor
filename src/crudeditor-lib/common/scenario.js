@@ -26,7 +26,7 @@ const VIEW_REDIRECT_SUCCESS = {
 
 /*
  * View life cycle scenario saga.
- * It must handle all errors and do clean-up on cancelation (happens on soft/hard redirect).
+ * It must handle all errors and do clean-up on cancellation (happens on soft/hard redirect).
  *
  * When the view wants to exit during its life cycle, it must call softRedirectSaga
  * which cancels life cycle scenario-saga in case of successful redirect,

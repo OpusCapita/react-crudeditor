@@ -18,7 +18,7 @@ Applies resize functionality to child's table DOM element.
 
 ```js
 <ResizableGrid
-  store={_scope.createLocaleStore(() => `${window.location.host}/test`, [1/2, 0.25, 0.10, 0.15])}
+  store={_scope.createLocalStore(() => `${window.location.host}/test`, { version: 1, state: [1/2, 0.25, 0.10, 0.15] })}
 >
   <table style={{ overflowY: 'hidden', width: '100%' }}>
     <thead>

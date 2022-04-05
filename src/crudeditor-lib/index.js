@@ -105,6 +105,7 @@ export default baseModelDefinition => {
       }),
       onTransition: PropTypes.func,
       externalOperations: PropTypes.func,
+      customBulkOperations: PropTypes.arrayOf(PropTypes.object),
       uiConfig: PropTypes.shape({
         headerLevel: PropTypes.number
       })
@@ -120,6 +121,7 @@ export default baseModelDefinition => {
 
     static defaultProps = {
       externalOperations: _ => [],
+      customBulkOperations: [],
       uiConfig: {}
     };
 
@@ -250,6 +252,7 @@ export default baseModelDefinition => {
           viewState={this.props.view ? this.props.view.state : undefined}
           modelDefinition={this.modelDefinition}
           externalOperations={this.props.externalOperations}
+          customBulkOperations={this.props.customBulkOperations}
           uiConfig={this.props.uiConfig}
         />
       </Provider>)

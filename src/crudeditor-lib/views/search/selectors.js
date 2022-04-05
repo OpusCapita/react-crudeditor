@@ -15,7 +15,8 @@ import {
   STATUS_INITIALIZING,
   STATUS_REDIRECTING,
   STATUS_SEARCHING,
-  PERMISSION_CREATE
+  PERMISSION_CREATE,
+  STATUS_CUSTOM_PROCESSING
 } from '../../common/constants';
 import { isAllowed } from '../../lib';
 
@@ -94,7 +95,8 @@ export const
       STATUS_DELETING,
       STATUS_INITIALIZING,
       STATUS_REDIRECTING,
-      STATUS_SEARCHING
+      STATUS_SEARCHING,
+      STATUS_CUSTOM_PROCESSING,
     ].indexOf(storeState.status) > -1,
     pageParams: {
       max: storeState.pageParams.max,

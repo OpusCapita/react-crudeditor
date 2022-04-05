@@ -15,6 +15,7 @@ import { expandExternalOperation, expandCustomOperation } from '../lib';
 import { isAllowed } from '../../lib';
 import {
   deleteInstances,
+  customBulkOperation,
   softRedirectView
 } from '../../common/actions';
 
@@ -45,11 +46,13 @@ const mergeProps = /* istanbul ignore next */ (
     permissions: { crudOperations },
     customOperations,
     externalOperations,
+    customBulkOperations,
     uiConfig
   },
   {
     softRedirectView,
     deleteInstances,
+    customBulkOperation,
     ...dispatchProps
   },
   { i18n }
@@ -146,23 +149,32 @@ const mergeProps = /* istanbul ignore next */ (
         }
       })
     } :
-      {} // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
+      {}, // viewState is undefined when view is not initialized yet (ex. during Hard Redirect).
+    customBulkOperations: customBulkOperations.map(customOperationObject => {
+      return {
+        handler: _ => customBulkOperation({ instances: selectedInstances, handler: customOperationObject.handler }),
+        ui: customOperationObject.ui({ instances: selectedInstances }),
+        disabled: selectedInstances.length === 0,
+      }
+    }),
   }
 });
 
 export default connect(
   /* istanbul ignore next */
-  (storeState, { modelDefinition, externalOperations, uiConfig }) => ({
+  (storeState, { modelDefinition, externalOperations, customBulkOperations, uiConfig }) => ({
     viewModelData: getViewModelData(storeState, modelDefinition),
     defaultNewInstance: getDefaultNewInstance(storeState, modelDefinition),
     viewState: getViewState(storeState, modelDefinition),
     permissions: modelDefinition.permissions,
     customOperations: modelDefinition.ui.customOperations,
     externalOperations,
+    customBulkOperations,
     uiConfig
   }),
   {
     deleteInstances,
+    customBulkOperation,
     resetFormFilter,
     searchInstances,
     toggleSelected,

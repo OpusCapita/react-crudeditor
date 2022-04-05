@@ -1,11 +1,13 @@
 import { call, put, spawn } from 'redux-saga/effects';
 
+import customBulkOperation from './workerSagas/customBulkOperation';
 import deleteSaga from './workerSagas/delete';
 import searchSaga from './workerSagas/search';
 import redirectSaga from '../../common/workerSagas/redirect';
 import scenarioSaga from '../../common/scenario';
 
 import {
+  INSTANCES_CUSTOM,
   INSTANCES_DELETE,
   VIEW_SOFT_REDIRECT
 } from '../../common/constants';
@@ -20,9 +22,11 @@ import {
   VIEW_NAME
 } from './constants';
 
+
 const transitions = {
   blocking: {
     [INSTANCES_DELETE]: deleteSaga,
+    [INSTANCES_CUSTOM]: customBulkOperation,
   },
   nonBlocking: {
     [INSTANCES_SEARCH]: searchSaga,

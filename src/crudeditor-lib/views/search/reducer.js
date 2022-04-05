@@ -25,6 +25,9 @@ import {
   INSTANCES_SEARCH_REQUEST,
   INSTANCES_SEARCH_SUCCESS,
 
+  INSTANCES_CUSTOM_ACTION_INITIALIZATION,
+  INSTANCES_CUSTOM_ACTION_FINALIZATION,
+
   INSTANCE_SELECT,
   INSTANCE_DESELECT,
 
@@ -46,6 +49,7 @@ import {
   STATUS_REDIRECTING,
   STATUS_SEARCHING,
   STATUS_UNINITIALIZED,
+  STATUS_CUSTOM_PROCESSING,
 
   EMPTY_FIELD_VALUE,
 
@@ -448,6 +452,17 @@ export default /* istanbul ignore next */ (modelDefinition, i18n) => {
 
     // ███████████████████████████████████████████████████████████████████████████████████████████████████████
     /* eslint-enable padded-blocks */
+    } else if (type === INSTANCES_CUSTOM_ACTION_INITIALIZATION) {
+      newStoreStateSlice.status = STATUS_CUSTOM_PROCESSING;
+
+      // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+      /* eslint-enable padded-blocks */
+    } else if (type === INSTANCES_CUSTOM_ACTION_FINALIZATION) {
+      newStoreStateSlice.status = STATUS_READY;
+      newStoreStateSlice.selectedInstances = [];
+
+      // ███████████████████████████████████████████████████████████████████████████████████████████████████████
+      /* eslint-enable padded-blocks */
     }
 
     return u(newStoreStateSlice, storeState); // returned object is frozen for NODE_ENV === 'development'

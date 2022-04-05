@@ -124,6 +124,16 @@ export default class CrudWrapper extends PureComponent {
             };
           }
         }]}
+        customBulkOperations={[{
+          handler(instances) {
+            console.log(instances);
+          },
+          ui({ instances }) {
+            return {
+              title: 'Print debug (' + instances.length + ')',
+            }
+          }
+        }]}
         uiConfig={{
           headerLevel: 2
         }}

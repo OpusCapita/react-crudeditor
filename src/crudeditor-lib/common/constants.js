@@ -33,6 +33,7 @@ export const
    */
 
   STATUS_CREATING = 'creating',
+  STATUS_CUSTOM_PROCESSING = 'custom_processing',
   STATUS_EXTRACTING = 'extracting',
   STATUS_DELETING = 'deleting',
   STATUS_INITIALIZING = 'initializing',
@@ -48,6 +49,8 @@ export const
    */
 
   ACTIVE_VIEW_CHANGE = namespace + '/ACTIVE_VIEW_CHANGE',
+
+  INSTANCES_CUSTOM = namespace + '/INSTANCES_CUSTOM',
 
   INSTANCES_DELETE = namespace + '/INSTANCES_DELETE',
   INSTANCES_DELETE_FAIL = namespace + '/INSTANCES_DELETE_FAIL',

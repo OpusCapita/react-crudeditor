@@ -18,7 +18,9 @@ import {
 
 import WithAlerts from '../WithAlertsHOC';
 
-const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiConfig }, { i18n }) => {
+const ViewSwitcher = ({
+  activeViewName, modelDefinition, externalOperations, customBulkOperations, uiConfig
+}, { i18n }) => {
   if (!activeViewName) {
     return null;
   }
@@ -38,6 +40,7 @@ const ViewSwitcher = ({ activeViewName, modelDefinition, externalOperations, uiC
           <ViewContainer
             modelDefinition={modelDefinition}
             externalOperations={externalOperations}
+            customBulkOperations={customBulkOperations}
             uiConfig={uiConfig}
             i18n={i18n}
           /> :
@@ -51,6 +54,7 @@ ViewSwitcher.propTypes = {
   activeViewName: PropTypes.string,
   modelDefinition: PropTypes.object.isRequired,
   externalOperations: PropTypes.func.isRequired,
+  customBulkOperations: PropTypes.arrayOf(PropTypes.object).isRequired,
   uiConfig: PropTypes.object.isRequired
 };
 

@@ -30,7 +30,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
     title;
 
   let element = dropdown ? (
-    <MenuItem onClick={handler} disabled={disabled}>
+    <MenuItem onClick={!disabled ? handler : null} disabled={disabled}>
       <span className="btn-sm text-left">
         {label}
       </span>
@@ -38,7 +38,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
   ) : (
     <Button
       disabled={disabled}
-      onClick={handler}
+      onClick={!disabled ? handler : null}
       {...(size !== 'medium' && { bsSize: size })}
       {...(style !== 'default' && { bsStyle: style })}
       {...(isPrimary && { type: 'submit' })}

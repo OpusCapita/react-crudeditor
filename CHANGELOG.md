@@ -1,4 +1,9 @@
 
+[Release 1.3.25.beta.1](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.25.beta.1) Mon Apr 18 2022 13:05:53 GMT+0300 (MSK)
+=======================================================
+
+- (EPROC-21142) Fixed onClick action execution in case of disabled element. (Alexey Zinchenko azinchenko-sc@users.noreply.github.com, 2022-04-18 12:56:03 +0300)
+
 [Release 1.3.24](https://github.com/OpusCapita/react-crudeditor/releases/tag/v1.3.24) Tue Apr 05 2022 15:55:17 GMT+0300 (MSK)
 =======================================================
 

@@ -16,6 +16,8 @@ export default class OperationsBar extends Component {
     children: PropTypes.func.isRequired
   }
 
+  state = {};
+
   getOperationButtons = ([mainOperation, ...restOperations]) => {
     if (!mainOperation) {
       return [];
@@ -25,6 +27,9 @@ export default class OperationsBar extends Component {
       size,
       onToggleDropdown: onToggle
     } = this.props;
+
+    const isOpenStateKey = mainOperation.title + '_isOpen';
+    const isOpen = this.state[isOpenStateKey];
 
     let element = <Operation {...mainOperation} />;
     const dropdownOperations = [];
@@ -38,13 +43,15 @@ export default class OperationsBar extends Component {
         <Dropdown
           {...(onToggle && { onToggle })}
           id={mainOperation.title}
+          open={isOpen}
+          onToggle={() => this.setState({ [isOpenStateKey]: !isOpen })}
         >
           {element}
           <Dropdown.Toggle />
           <Dropdown.Menu>
             {
               dropdownOperations.map(operation =>
-                <Operation {...operation} key={operation.title} />
+                <Operation {...operation} key={operation.title} onSelect={() => this.setState({ [isOpenStateKey]: false })} />
               )
             }
           </Dropdown.Menu>

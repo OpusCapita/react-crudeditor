@@ -1,6 +1,6 @@
 {
   "name": "@opuscapita/react-crudeditor",
-  "version": "1.3.25",
+  "version": "1.3.25.beta.2",
   "description": "React.js CRUD Editor",
   "repository": "OpusCapita/react-crudeditor",
   "main": "lib/index.js",

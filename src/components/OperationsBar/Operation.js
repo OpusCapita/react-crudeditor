@@ -29,12 +29,15 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
   ] :
     title;
 
-  const handleClick = !disabled ? () => {
-    if (onSelect) {
-      onSelect();
-    }
-    handler();
-  } : null;
+  const handleClick = disabled ?
+    null :
+    () => {
+      if (onSelect) {
+        onSelect();
+      }
+      handler();
+    };
+
   let element = dropdown ? (
     <MenuItem onClick={handleClick} disabled={disabled}>
       <span className="btn-sm text-left">

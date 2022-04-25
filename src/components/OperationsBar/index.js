@@ -51,7 +51,8 @@ export default class OperationsBar extends Component {
           <Dropdown.Menu>
             {
               dropdownOperations.map(operation => (
-                <Operation {...operation}
+                <Operation
+                  {...operation}
                   key={operation.title}
                   onSelect={() => this.setState({ [isOpenStateKey]: false })}
                 />

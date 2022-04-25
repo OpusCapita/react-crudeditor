@@ -15,7 +15,7 @@ const getIconElement = icon => {
   return <Glyphicon glyph={icon} key={icon} />
 }
 
-const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm }) => {
+const Operation = ({ icon, handler, title, disabled, dropdown, style, size, confirm, onSelect }) => {
   const isPrimary = style === 'primary';
 
   if (isPrimary && dropdown) {
@@ -29,8 +29,17 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
   ] :
     title;
 
+  const handleClick = disabled ?
+    null :
+    () => {
+      if (onSelect) {
+        onSelect();
+      }
+      handler();
+    };
+
   let element = dropdown ? (
-    <MenuItem onClick={handler} disabled={disabled}>
+    <MenuItem onClick={handleClick} disabled={disabled}>
       <span className="btn-sm text-left">
         {label}
       </span>
@@ -38,7 +47,7 @@ const Operation = ({ icon, handler, title, disabled, dropdown, style, size, conf
   ) : (
     <Button
       disabled={disabled}
-      onClick={handler}
+      onClick={handleClick}
       {...(size !== 'medium' && { bsSize: size })}
       {...(style !== 'default' && { bsStyle: style })}
       {...(isPrimary && { type: 'submit' })}
